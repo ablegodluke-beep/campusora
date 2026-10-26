@@ -411,7 +411,6 @@
 </head>
 
 <body>
-
   <main class="container">
 
     <header class="brand">
@@ -438,7 +437,6 @@
 
         <div class="cover-preview">
           <img id="coverPreview" alt="Cover photo preview">
-
           <div class="cover-placeholder" id="coverPlaceholder">
             <strong>🌄</strong>
             <span>Your cover photo will appear here</span>
@@ -447,11 +445,7 @@
 
         <label class="upload-btn">
           📷 Choose cover photo
-          <input
-            id="coverFile"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-          >
+          <input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
         </label>
 
         <p class="hint">JPG, PNG or WebP. Maximum size: 5 MB.</p>
@@ -473,52 +467,68 @@
 
             <label class="upload-btn">
               📷 Choose profile picture
-              <input
-                id="avatarFile"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-              >
+              <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp">
             </label>
           </div>
         </div>
 
         <div class="field">
           <label class="field-label" for="fullName">Full name</label>
-          <input
-            id="fullName"
-            type="text"
-            maxlength="80"
-            placeholder="Your full name"
-            autocomplete="name"
-            required
-          >
+          <input id="fullName" type="text" maxlength="80"
+                 placeholder="Your full name" autocomplete="name" required>
         </div>
 
         <div class="field">
           <label class="field-label" for="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            minlength="3"
-            maxlength="24"
-            pattern="[A-Za-z0-9_]+"
-            placeholder="your_username"
-            autocomplete="username"
-            required
-          >
-          <p class="hint">
-            Use 3–24 letters, numbers or underscores.
-          </p>
+          <input id="username" type="text" minlength="3" maxlength="24"
+                 pattern="[A-Za-z0-9_]+" placeholder="your_username"
+                 autocomplete="username" required>
+          <p class="hint">Use 3–24 letters, numbers or underscores.</p>
         </div>
 
         <div class="field">
-          <label class="field-label" for="school">School or university</label>
+          <label class="field-label" for="institutionSearch">Find your school</label>
+
+          <input
+            id="institutionSearch"
+            type="search"
+            placeholder="Type your university, polytechnic or college..."
+            autocomplete="off"
+            required
+          >
+
+          <p class="hint">
+            Search by institution name. Select the correct school from the results below.
+          </p>
+
+          <div id="institutionStatus" class="hint" aria-live="polite">
+            Loading institutions...
+          </div>
+
+          <div id="institutionResults" style="margin-top:8px;display:grid;gap:7px;"></div>
+
+          <div id="selectedInstitution"
+               style="display:none;margin-top:12px;padding:12px;border:1px solid rgba(57,215,245,.3);background:rgba(57,215,245,.07);border-radius:11px;">
+            <strong style="font-size:12px;color:#7de9e2;">Selected institution</strong>
+            <p id="selectedInstitutionName" style="font-size:13px;margin-top:5px;overflow-wrap:anywhere;"></p>
+            <button id="changeInstitution" type="button"
+                    style="margin-top:8px;background:transparent;border:0;color:#bda5ff;font-size:12px;cursor:pointer;">
+              Change school
+            </button>
+          </div>
+
+          <p class="hint">
+            Can't find your school? The directory is still growing. You can continue using the school name you enter manually.
+          </p>
+
+          <label class="field-label" for="school" style="margin-top:14px;">
+            Or enter your school manually
+          </label>
           <input
             id="school"
             type="text"
             maxlength="120"
-            placeholder="Your school or university"
-            required
+            placeholder="Enter your school name if it isn't listed"
           >
         </div>
 
@@ -548,11 +558,8 @@
 
         <div class="field">
           <label class="field-label" for="bio">About you</label>
-          <textarea
-            id="bio"
-            maxlength="300"
-            placeholder="Tell people about yourself, what you study or your interests..."
-          ></textarea>
+          <textarea id="bio" maxlength="300"
+                    placeholder="Tell people about yourself, what you study or your interests..."></textarea>
           <p class="hint">Up to 300 characters. This is optional.</p>
         </div>
 
@@ -561,11 +568,9 @@
         </button>
 
       </form>
-
     </section>
 
     <a href="./index.html" class="back">← Back to Campusora</a>
-
   </main>
 
   <script type="module">
@@ -590,19 +595,25 @@
     const roleInput = document.getElementById('role');
     const bioInput = document.getElementById('bio');
 
+    const institutionSearch = document.getElementById('institutionSearch');
+    const institutionStatus = document.getElementById('institutionStatus');
+    const institutionResults = document.getElementById('institutionResults');
+    const selectedInstitutionBox = document.getElementById('selectedInstitution');
+    const selectedInstitutionName = document.getElementById('selectedInstitutionName');
+    const changeInstitutionButton = document.getElementById('changeInstitution');
+
     const badgeName = document.getElementById('badgeName');
     const memberBadge = document.getElementById('memberBadge');
 
     let currentUser = null;
     let existingAvatarUrl = null;
     let existingCoverUrl = null;
+    let selectedInstitutionId = null;
+    let selectedInstitutionLabel = '';
+    let institutions = [];
+    let institutionSearchTimer = null;
 
-    const allowedTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/webp'
-    ];
-
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     const maxFileSize = 5 * 1024 * 1024;
 
     function showMessage(text, type) {
@@ -658,17 +669,13 @@
     }
 
     function updateBadgePreview() {
-      const name = fullNameInput.value.trim() || 'Your Name';
-      const role = roleInput.value;
-
-      badgeName.textContent = name;
-
+      badgeName.textContent = fullNameInput.value.trim() || 'Your Name';
       memberBadge.className = 'member-badge';
 
-      if (role === 'student') {
+      if (roleInput.value === 'student') {
         memberBadge.textContent = '🎓 Student';
         memberBadge.classList.add('badge-student');
-      } else if (role === 'alumni') {
+      } else if (roleInput.value === 'alumni') {
         memberBadge.textContent = '🏅 Alumni';
         memberBadge.classList.add('badge-alumni');
       } else {
@@ -679,15 +686,12 @@
 
     function validateImage(file) {
       if (!file) return null;
-
       if (!allowedTypes.includes(file.type)) {
         return 'Please choose a JPG, PNG or WebP image.';
       }
-
       if (file.size > maxFileSize) {
         return 'Your image is larger than 5 MB. Please choose a smaller image.';
       }
-
       return null;
     }
 
@@ -695,50 +699,135 @@
       if (!file) return;
 
       const error = validateImage(file);
-
       if (error) {
         showMessage(error, 'error');
-
-        if (isAvatar) {
-          avatarFile.value = '';
-        } else {
-          coverFile.value = '';
-        }
-
+        if (isAvatar) avatarFile.value = '';
+        else coverFile.value = '';
         return;
       }
 
       clearMessage();
-
       const localUrl = URL.createObjectURL(file);
 
-      if (isAvatar) {
-        setAvatarPreview(localUrl);
-      } else {
-        setImagePreview(img, placeholder, localUrl);
-      }
+      if (isAvatar) setAvatarPreview(localUrl);
+      else setImagePreview(img, placeholder, localUrl);
     }
 
     avatarFile.addEventListener('change', () => {
-      previewSelectedFile(
-        avatarFile.files[0],
-        avatarPreview,
-        avatarPlaceholder,
-        true
-      );
+      previewSelectedFile(avatarFile.files[0], avatarPreview, avatarPlaceholder, true);
     });
 
     coverFile.addEventListener('change', () => {
-      previewSelectedFile(
-        coverFile.files[0],
-        coverPreview,
-        coverPlaceholder,
-        false
-      );
+      previewSelectedFile(coverFile.files[0], coverPreview, coverPlaceholder, false);
     });
 
     fullNameInput.addEventListener('input', updateBadgePreview);
     roleInput.addEventListener('change', updateBadgePreview);
+
+    function clearSelectedInstitution() {
+      selectedInstitutionId = null;
+      selectedInstitutionLabel = '';
+      selectedInstitutionBox.style.display = 'none';
+      institutionSearch.disabled = false;
+      institutionSearch.value = '';
+      institutionResults.innerHTML = '';
+      institutionSearch.focus();
+    }
+
+    function selectInstitution(institution) {
+      selectedInstitutionId = institution.id;
+      selectedInstitutionLabel = institution.name;
+
+      institutionSearch.value = institution.name;
+      schoolInput.value = institution.name;
+      selectedInstitutionName.textContent =
+        institution.name + ' · ' +
+        institution.institution_type.replaceAll('_', ' ');
+
+      selectedInstitutionBox.style.display = 'block';
+      institutionSearch.disabled = true;
+      institutionResults.innerHTML = '';
+      institutionStatus.textContent = 'Your institution has been selected.';
+      clearMessage();
+    }
+
+    changeInstitutionButton.addEventListener('click', clearSelectedInstitution);
+
+    function renderInstitutionResults(rows) {
+      institutionResults.innerHTML = '';
+
+      if (!rows.length) {
+        institutionStatus.textContent =
+          'No matching institution found. You can enter its name manually below.';
+        return;
+      }
+
+      institutionStatus.textContent = 'Select your institution:';
+
+      rows.forEach((institution) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.style.cssText =
+          'text-align:left;padding:12px;border-radius:10px;' +
+          'border:1px solid rgba(255,255,255,.1);' +
+          'background:#171c32;color:#f5f6ff;cursor:pointer;';
+
+        const name = document.createElement('strong');
+        name.style.cssText = 'display:block;font-size:13px;';
+        name.textContent = institution.name;
+
+        const detail = document.createElement('span');
+        detail.style.cssText = 'display:block;margin-top:5px;font-size:11px;color:#929bb6;';
+        detail.textContent =
+          institution.state + ' · ' +
+          institution.institution_type.replaceAll('_', ' ') +
+          ' · ' + institution.ownership;
+
+        button.append(name, detail);
+        button.addEventListener('click', () => selectInstitution(institution));
+        institutionResults.appendChild(button);
+      });
+    }
+
+    async function searchInstitutions(query) {
+      const search = query.trim();
+
+      if (search.length < 2) {
+        institutionResults.innerHTML = '';
+        institutionStatus.textContent =
+          'Type at least 2 letters to search the institution directory.';
+        return;
+      }
+
+      institutionStatus.textContent = 'Searching institutions...';
+
+      const { data, error } = await supabase
+        .from('institutions')
+        .select('id, name, institution_type, ownership, state')
+        .eq('status', 'active')
+        .ilike('name', '%' + search.replace(/[%_,]/g, '') + '%')
+        .order('name')
+        .limit(20);
+
+      if (error) {
+        institutionStatus.textContent =
+          'We could not load the directory. You can enter your school manually below.';
+        console.error('Institution search failed:', error);
+        return;
+      }
+
+      institutions = data || [];
+      renderInstitutionResults(institutions);
+    }
+
+    institutionSearch.addEventListener('input', () => {
+      if (institutionSearch.disabled) return;
+
+      clearTimeout(institutionSearchTimer);
+      institutionSearchTimer = setTimeout(() => {
+        searchInstitutions(institutionSearch.value);
+      }, 250);
+    });
 
     async function initialise() {
       const { data, error } = await supabase.auth.getSession();
@@ -752,7 +841,7 @@
 
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('full_name, username, school, role, bio, avatar_url, cover_url')
+        .select('full_name, username, school, institution_id, role, bio, avatar_url, cover_url')
         .eq('id', currentUser.id)
         .maybeSingle();
 
@@ -782,25 +871,28 @@
         existingCoverUrl = profile.cover_url || null;
 
         setAvatarPreview(existingAvatarUrl);
+        setImagePreview(coverPreview, coverPlaceholder, existingCoverUrl);
 
-        setImagePreview(
-          coverPreview,
-          coverPlaceholder,
-          existingCoverUrl
-        );
+        if (profile.institution_id) {
+          const { data: institution, error: institutionError } = await supabase
+            .from('institutions')
+            .select('id, name, institution_type, ownership, state')
+            .eq('id', profile.institution_id)
+            .maybeSingle();
+
+          if (!institutionError && institution) {
+            selectInstitution(institution);
+          }
+        }
       } else {
-        fullNameInput.value =
-          currentUser.user_metadata?.full_name || '';
-
-        usernameInput.value =
-          currentUser.user_metadata?.username || '';
-
-        schoolInput.value =
-          currentUser.user_metadata?.school || '';
-
-        roleInput.value =
-          currentUser.user_metadata?.role || 'student';
+        fullNameInput.value = currentUser.user_metadata?.full_name || '';
+        usernameInput.value = currentUser.user_metadata?.username || '';
+        schoolInput.value = currentUser.user_metadata?.school || '';
+        roleInput.value = currentUser.user_metadata?.role || 'student';
       }
+
+      institutionStatus.textContent =
+        'Type at least 2 letters to search the institution directory.';
 
       updateBadgePreview();
     }
@@ -809,10 +901,7 @@
       if (!file) return null;
 
       const error = validateImage(file);
-
-      if (error) {
-        throw new Error(error);
-      }
+      if (error) throw new Error(error);
 
       const extension = file.type === 'image/jpeg'
         ? 'jpg'
@@ -821,8 +910,7 @@
           : 'webp';
 
       const filePath =
-        currentUser.id + '/' +
-        imageType + '-' +
+        currentUser.id + '/' + imageType + '-' +
         Date.now() + '.' + extension;
 
       const { error: uploadError } = await supabase.storage
@@ -833,9 +921,7 @@
           upsert: false
         });
 
-      if (uploadError) {
-        throw uploadError;
-      }
+      if (uploadError) throw uploadError;
 
       const { data } = supabase.storage
         .from('campusora-images')
@@ -849,18 +935,25 @@
       clearMessage();
 
       if (!currentUser) {
-        showMessage(
-          'Your session has expired. Please log in again.',
-          'error'
-        );
+        showMessage('Your session has expired. Please log in again.', 'error');
         return;
       }
 
       const fullName = fullNameInput.value.trim();
       const username = usernameInput.value.trim().toLowerCase();
-      const school = schoolInput.value.trim();
       const role = roleInput.value;
       const bio = bioInput.value.trim();
+
+      let school = schoolInput.value.trim();
+
+      if (selectedInstitutionId) {
+        school = selectedInstitutionLabel;
+      }
+
+      if (!school) {
+        showMessage('Please select your institution or enter its name manually.', 'error');
+        return;
+      }
 
       if (!/^[a-z0-9_]{3,24}$/.test(username)) {
         showMessage(
@@ -912,6 +1005,7 @@
             full_name: fullName,
             username,
             school,
+            institution_id: selectedInstitutionId,
             role,
             bio,
             avatar_url: avatarUrl,
@@ -922,11 +1016,7 @@
 
         if (error) throw error;
 
-        showMessage(
-          'Your profile is ready! Welcome to Campusora.',
-          'success'
-        );
-
+        showMessage('Your profile is ready! Welcome to Campusora.', 'success');
         saveBtn.textContent = 'Opening Campusora...';
 
         setTimeout(() => {
@@ -934,6 +1024,8 @@
         }, 800);
 
       } catch (error) {
+        console.error('Profile save failed:', error);
+
         let text = error.message ||
           'Could not save your profile. Please try again.';
 
@@ -941,15 +1033,14 @@
           text = 'That username is already taken. Please choose another one.';
         } else if (error.code === '42501') {
           text = 'Campusora could not save your profile because of a database permission issue.';
-        } else if (
-          error.message &&
-          error.message.toLowerCase().includes('row-level security')
-        ) {
-          text = 'Upload permission was denied. Please check the Campusora image storage policies.';
+        } else if (error.code === '23503') {
+          text = 'The selected institution could not be found. Please select it again.';
+        } else if (error.message &&
+                   error.message.toLowerCase().includes('row-level security')) {
+          text = 'Permission was denied. Please check the Campusora database and storage policies.';
         }
 
         showMessage(text, 'error');
-
         saveBtn.disabled = false;
         saveBtn.textContent = 'Complete profile and continue →';
       }
@@ -957,6 +1048,5 @@
 
     initialise();
   </script>
-
 </body>
-                                          </html>
+  </html>
