@@ -1,2013 +1,2334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050b1c">
-<title>Campusora | Connect, Learn, Grow, Together</title>
-
-<style>
-:root {
-  --bg: #040918;
-  --panel: #071126;
-  --card: #09162e;
-  --card2: #0c1935;
-  --border: #1b2d50;
-  --text: #f3f5ff;
-  --muted: #8e9bbd;
-  --purple: #633cff;
-  --purple2: #8b4dff;
-  --cyan: #35d5f5;
-  --pink: #f14bd8;
-  --green: #32e69a;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background:
-    radial-gradient(ellipse at 50% 0%, #10133a 0%, transparent 40%),
-    var(--bg);
-  color: var(--text);
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Arial, sans-serif;
-  font-size: 12px;
-  min-height: 100vh;
-}
-
-button, input {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:focus-visible,
-input:focus-visible {
-  outline: 2px solid var(--cyan);
-  outline-offset: 3px;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.topbar {
-  height: 62px;
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  padding: 0 24px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(4, 9, 24, .97);
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 225px;
-}
-
-.brand-mark {
-  font-size: 37px;
-  line-height: 1;
-  font-weight: 900;
-  background: linear-gradient(145deg, #ba65ff, #633cff 55%, #20d7f4);
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  transform: rotate(-12deg);
-}
-
-.brand-name {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -.6px;
-}
-
-.brand-tagline {
-  color: #a2adcb;
-  font-size: 9px;
-  margin-top: 3px;
-}
-
-.searchbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #101b36;
-  border: 1px solid #192849;
-  border-radius: 30px;
-  padding: 0 15px;
-  height: 36px;
-  max-width: 415px;
-  flex: 1;
-}
-
-.searchbox span {
-  font-size: 19px;
-  color: #a6b3d4;
-}
-
-.searchbox input {
-  width: 100%;
-  min-width: 0;
-  border: 0;
-  outline: none;
-  background: transparent;
-  color: white;
-  font-size: 11px;
-}
-
-.searchbox input::placeholder {
-  color: #8d9bbd;
-}
-
-.top-actions {
-  display: flex;
-  align-items: center;
-  gap: 19px;
-  margin-left: auto;
-}
-
-.icon-button {
-  position: relative;
-  font-size: 22px;
-  background: transparent;
-  border: 0;
-  color: white;
-}
-
-.count {
-  position: absolute;
-  top: -5px;
-  right: -6px;
-  min-width: 15px;
-  height: 15px;
-  display: grid;
-  place-items: center;
-  background: #ff3268;
-  border-radius: 50%;
-  font-size: 9px;
-  font-weight: 800;
-}
-
-.account {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-left: 5px;
-}
-
-.account img {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #b99043;
-}
-
-.account-name {
-  font-weight: 700;
-  font-size: 11px;
-}
-
-.account-sub {
-  color: #9ba8c9;
-  font-size: 10px;
-  margin-top: 3px;
-}
-
-.account-arrow {
-  color: #aeb9d4;
-  font-size: 16px;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 220px minmax(380px, 1fr) 375px;
-  gap: 14px;
-  padding: 8px 14px 0;
-  max-width: 1800px;
-  margin: auto;
-}
-
-.left-sidebar {
-  min-width: 0;
-}
-
-.nav-list {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  min-height: 39px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: #c7d0e9;
-  border-radius: 10px;
-  padding: 0 13px;
-  text-align: left;
-  width: 100%;
-  font-size: 12px;
-}
-
-.nav-item .nav-icon {
-  font-size: 20px;
-  width: 27px;
-  text-align: center;
-}
-
-.nav-item.active {
-  background: linear-gradient(105deg, #5633f3, #21156b);
-  color: white;
-  box-shadow: 0 0 18px #5936ff24;
-}
-
-.nav-item:hover:not(.active) {
-  background: #111d39;
-}
-
-.nav-badge {
-  margin-left: auto;
-  border-radius: 20px;
-  background: #ff3167;
-  color: white;
-  min-width: 19px;
-  height: 19px;
-  display: grid;
-  place-items: center;
-  font-size: 10px;
-}
-
-.side-divider {
-  border: 0;
-  border-top: 1px solid #1a2946;
-  margin: 20px 0;
-}
-
-.section-label {
-  font-weight: 700;
-  color: #e0e6fa;
-  margin: 0 7px 12px;
-  font-size: 12px;
-}
-
-.space-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 10px;
-  color: #d0d8ef;
-  padding: 0 7px;
-  font-size: 11px;
-}
-
-.space-avatar {
-  width: 27px;
-  height: 27px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  border-radius: 50%;
-  border: 1px solid #31436b;
-  font-size: 15px;
-  background: linear-gradient(135deg, #274c9b, #9a36e8);
-}
-
-.promo-card {
-  border: 1px solid #34256b;
-  background:
-    radial-gradient(circle at top right, #38136a, transparent 60%),
-    #0c1029;
-  border-radius: 13px;
-  padding: 14px 12px;
-  margin-bottom: 12px;
-}
-
-.promo-title {
-  color: #ffdc67;
-  font-size: 12px;
-  font-weight: 800;
-  margin-bottom: 7px;
-}
-
-.promo-text {
-  color: #c6cce2;
-  font-size: 10px;
-  line-height: 1.6;
-  margin-bottom: 12px;
-}
-
-.primary-button {
-  border: 0;
-  border-radius: 25px;
-  color: white;
-  background: linear-gradient(110deg, #7440ff, #5327e9);
-  padding: 9px 17px;
-  font-weight: 700;
-  box-shadow: 0 5px 18px #6035ff22;
-}
-
-.primary-button:hover {
-  filter: brightness(1.15);
-}
-
-.promo-card .primary-button {
-  width: 100%;
-}
-
-.creator-promo .promo-title {
-  color: #fff;
-}
-
-.creator-promo .promo-symbol {
-  font-size: 23px;
-  margin-bottom: 8px;
-}
-
-.main-column,
-.right-sidebar {
-  min-width: 0;
-}
-
-.hero {
-  min-height: 198px;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #273967;
-  border-radius: 16px;
-  margin-bottom: 12px;
-  background:
-    linear-gradient(90deg, #05091c 0%, #080d24 30%, #07112440 67%, #05091b30 100%),
-    url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=85")
-    center 43% / cover;
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #05091d 0%, #05091df0 28%, #05091d35 74%, #05091d55 100%);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  padding: 23px 25px;
-  max-width: 365px;
-}
-
-.hero h1 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
-  font-size: clamp(24px, 2.2vw, 32px);
-  line-height: 1.05;
-  letter-spacing: -.7px;
-  margin-bottom: 14px;
-}
-
-.hero h1 span {
-  display: block;
-}
-
-.hero h1 .purple {
-  color: #9a6aff;
-}
-
-.hero h1 .blue {
-  color: #45c8ff;
-}
-
-.hero-audience {
-  color: #d3d9ee;
-  font-size: 10px;
-  margin-bottom: 13px;
-}
-
-.hero-audience span {
-  margin: 0 4px;
-  color: #a8b7e7;
-}
-
-.hero-side-note {
-  position: absolute;
-  right: 18px;
-  bottom: 23px;
-  font-size: 14px;
-  line-height: 1.1;
-  color: #f2b3ff;
-  font-family: Georgia, serif;
-  font-style: italic;
-  transform: rotate(-8deg);
-  text-shadow: 0 2px 8px #000;
-}
-
-.panel {
-  background: linear-gradient(145deg, #09152b, #071126);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-}
-
-.composer {
-  padding: 12px;
-  margin-bottom: 10px;
-}
-
-.composer-top {
-  display: flex;
-  gap: 11px;
-  align-items: center;
-}
-
-.avatar {
-  width: 39px;
-  height: 39px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  border: 2px solid #d0a65b;
-}
-
-.composer-input {
-  flex: 1;
-  min-width: 0;
-  background: #0c1933;
-  border: 1px solid #1d2d4f;
-  color: white;
-  padding: 10px 12px;
-  border-radius: 13px;
-  cursor: pointer;
-}
-
-.composer-input strong {
-  display: block;
-  color: #a6b2d0;
-  font-size: 9px;
-  margin-bottom: 4px;
-  font-weight: 500;
-}
-
-.composer-input span {
-  color: #d0d8ee;
-  font-size: 11px;
-}
-
-.post-destination {
-  background: #171541;
-  border: 1px solid #29225e;
-  color: #d9d5ff;
-  border-radius: 14px;
-  padding: 9px 10px;
-  line-height: 1.5;
-}
-
-.post-tools {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 9px;
-  padding: 11px 0 0;
-}
-
-.post-tool {
-  background: transparent;
-  border: 0;
-  color: #c6d0e8;
-  display: flex;
-  gap: 7px;
-  align-items: center;
-  font-size: 10px;
-}
-
-.post-tool span {
-  font-size: 16px;
-}
-
-.quick-access {
-  padding: 11px 13px;
-  margin-bottom: 11px;
-}
-
-.panel-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.see-all {
-  color: #a28bff;
-  font-size: 10px;
-  font-weight: 500;
-  background: transparent;
-  border: 0;
-}
-
-.quick-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 7px;
-}
-
-.quick-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 7px;
-  min-width: 0;
-  border-radius: 16px;
-  background: linear-gradient(145deg, #101e43, #111338);
-  border: 1px solid #1d2a56;
-  text-align: left;
-  color: white;
-}
-
-.quick-icon {
-  width: 33px;
-  height: 33px;
-  border-radius: 11px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  font-size: 18px;
-  background: linear-gradient(145deg, #4d80ff, #6235f1);
-}
-
-.quick-item:nth-child(2) .quick-icon {
-  background: linear-gradient(145deg, #655bff, #4332bd);
-}
-
-.quick-item:nth-child(3) .quick-icon {
-  background: linear-gradient(145deg, #df28d5, #792df3);
-}
-
-.quick-item:nth-child(4) .quick-icon {
-  background: linear-gradient(145deg, #25d4f1, #1687bd);
-}
-
-.quick-item:nth-child(5) .quick-icon {
-  background: linear-gradient(145deg, #7764ff, #4030cf);
-}
-
-.quick-item strong {
-  display: block;
-  font-size: 9px;
-  line-height: 1.4;
-}
-
-.quick-item small {
-  display: block;
-  color: #a3b0d0;
-  font-size: 9px;
-  margin-top: 3px;
-}
-
-.feed-panel {
-  padding: 0 11px 11px;
-}
-
-.feed-tabs {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  border-bottom: 1px solid #203052;
-  padding: 9px 3px;
-}
-
-.feed-tab {
-  white-space: nowrap;
-  border: 0;
-  background: transparent;
-  color: #aebbd7;
-  padding: 9px 13px;
-  border-radius: 20px;
-  font-size: 10px;
-}
-
-.feed-tab.active {
-  background: linear-gradient(100deg, #5834f6, #3216b9);
-  color: white;
-  font-weight: 700;
-}
-
-.post-card {
-  border: 1px solid #203152;
-  background: #071329;
-  border-radius: 16px;
-  margin-top: 10px;
-  padding: 10px;
-  overflow: hidden;
-}
-
-.post-header {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
-.post-user {
-  flex: 1;
-  min-width: 0;
-}
-
-.post-user-name {
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.role-badge {
-  display: inline-block;
-  border-radius: 10px;
-  padding: 3px 7px;
-  margin-left: 4px;
-  font-size: 9px;
-  font-weight: 800;
-  color: white;
-  background: #743bff;
-}
-
-.role-badge.alumni {
-  color: #352006;
-  background: #f2b444;
-}
-
-.post-meta {
-  color: #8796b8;
-  font-size: 9px;
-  margin-top: 5px;
-}
-
-.more-button {
-  border: 0;
-  background: transparent;
-  color: #b8c3df;
-  font-size: 20px;
-  padding: 4px;
-}
-
-.post-copy {
-  color: #e1e6f5;
-  font-size: 11px;
-  line-height: 1.55;
-  margin: 9px 2px;
-}
-
-.hashtags {
-  color: #4cbdff;
-  font-size: 10px;
-  line-height: 1.7;
-  margin: 0 2px 9px;
-}
-
-.post-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 3px;
-  overflow: hidden;
-  border-radius: 11px;
-  height: 130px;
-}
-
-.post-gallery img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.post-single-image {
-  width: 100%;
-  max-height: 150px;
-  object-fit: cover;
-  border-radius: 10px;
-  display: block;
-  margin-top: 8px;
-}
-
-.post-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 10px 2px 1px;
-  color: #a9b6d5;
-}
-
-.post-action {
-  background: transparent;
-  border: 0;
-  color: inherit;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-}
-
-.post-action.liked {
-  color: #ff65a1;
-}
-
-.post-action.bookmark {
-  margin-left: auto;
-  font-size: 17px;
-}
-
-.right-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.right-top-grid {
-  display: grid;
-  grid-template-columns: 1.2fr .95fr;
-  gap: 10px;
-}
-
-.right-panel {
-  padding: 12px;
-  min-width: 0;
-}
-
-.community-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 12px;
-  min-width: 0;
-}
-
-.community-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  font-size: 20px;
-  background: linear-gradient(145deg, #9c40ff, #4b39f5);
-}
-
-.community-row:nth-of-type(3) .community-icon {
-  background: linear-gradient(145deg, #40d6f5, #3868ff);
-}
-
-.community-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.community-info strong {
-  font-size: 9px;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.community-info small {
-  display: block;
-  font-size: 9px;
-  color: #8998b9;
-  margin-top: 5px;
-  white-space: nowrap;
-}
-
-.join-button {
-  background: #171c59;
-  border: 1px solid #272b7c;
-  color: #e3e4ff;
-  padding: 6px 9px;
-  border-radius: 10px;
-  font-size: 9px;
-}
-
-.join-button.joined {
-  background: #142c35;
-  color: #70eac3;
-  border-color: #205448;
-}
-
-.online-person {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 13px;
-  min-width: 0;
-}
-
-.online-avatar-wrap {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.online-avatar-wrap img {
-  width: 31px;
-  height: 31px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.online-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--green);
-  border: 1px solid #081326;
-  position: absolute;
-  bottom: 1px;
-  right: -1px;
-}
-
-.online-person strong {
-  display: block;
-  font-size: 9px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.online-person small {
-  display: block;
-  font-size: 9px;
-  color: #91a0c1;
-  margin-top: 4px;
-}
-
-.event-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 7px;
-  margin-top: 8px;
-  border-radius: 12px;
-  background: #081329;
-  border: 1px solid #101e3b;
-}
-
-.event-date {
-  width: 54px;
-  height: 61px;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  background: linear-gradient(145deg, #4d32eb, #2920a7);
-}
-
-.event-date small {
-  font-size: 9px;
-  color: #d7d1ff;
-}
-
-.event-date strong {
-  font-size: 22px;
-  line-height: 1.3;
-}
-
-.event-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.event-info strong {
-  display: block;
-  font-size: 10px;
-  line-height: 1.5;
-}
-
-.event-info p {
-  color: #9eaccb;
-  font-size: 9px;
-  line-height: 1.7;
-  margin-top: 3px;
-}
-
-.event-info .going {
-  color: #c1cce7;
-}
-
-.interest-button {
-  border: 0;
-  color: white;
-  border-radius: 12px;
-  padding: 9px 10px;
-  background: linear-gradient(110deg, #8243ff, #6137e8);
-  font-size: 9px;
-  flex-shrink: 0;
-}
-
-.interest-button.interested {
-  background: #14362e;
-  color: #75e9b9;
-}
-
-.sponsored-content {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  background: #0a1730;
-  border-radius: 12px;
-  padding: 9px;
-}
-
-.sponsored-content img {
-  width: 92px;
-  height: 78px;
-  object-fit: cover;
-  border-radius: 10px;
-  background: white;
-}
-
-.sponsored-info {
-  min-width: 0;
-}
-
-.sponsored-info strong {
-  font-size: 11px;
-}
-
-.sponsored-info p {
-  color: #a9b6d3;
-  font-size: 9px;
-  line-height: 1.6;
-  margin: 5px 0;
-}
-
-.sponsored-info button {
-  padding: 7px 12px;
-  font-size: 9px;
-}
-
-.trending-tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 11px;
-}
-
-.trending-tab {
-  flex: 1;
-  padding: 8px 5px;
-  border-radius: 20px;
-  background: #0c1935;
-  color: #aeb9d4;
-  border: 1px solid #1c2b4d;
-  font-size: 9px;
-}
-
-.trending-tab.active {
-  background: linear-gradient(100deg, #5b36f5, #3216b9);
-  color: white;
-  border-color: transparent;
-}
-
-.trending-list {
-  list-style: none;
-  counter-reset: trend;
-}
-
-.trending-list li {
-  counter-increment: trend;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 5px 0;
-  font-size: 10px;
-  color: #e0e6f8;
-}
-
-.trending-list li::before {
-  content: counter(trend);
-  color: #9dadd1;
-  min-width: 14px;
-}
-
-.bottom-bar {
-  display: grid;
-  grid-template-columns: 1.05fr 1.55fr 1.55fr;
-  gap: 12px;
-  padding: 10px 14px;
-  max-width: 1800px;
-  margin: auto;
-}
-
-.bottom-card {
-  border: 1px solid #1c2c50;
-  background: linear-gradient(110deg, #0c1934, #080f24);
-  border-radius: 14px;
-  padding: 11px 13px;
-  min-width: 0;
-}
-
-.game-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.game-icon {
-  font-size: 27px;
-}
-
-.bottom-card strong {
-  font-size: 10px;
-}
-
-.bottom-card p {
-  font-size: 9px;
-  color: #a6b4d3;
-  line-height: 1.6;
-  margin-top: 4px;
-}
-
-.game-card .primary-button {
-  margin-left: auto;
-  padding: 10px 13px;
-  white-space: nowrap;
-  font-size: 10px;
-}
-
-.leaderboard {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.leaderboard-title {
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.leader {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-}
-
-.leader img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.leader span {
-  font-size: 9px;
-  white-space: nowrap;
-}
-
-.leader small {
-  display: block;
-  color: #a4b3d2;
-  margin-top: 3px;
-}
-
-.opportunity-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background:
-    radial-gradient(circle at 85% 20%, #542067 0%, transparent 45%),
-    linear-gradient(110deg, #13152e, #0b1026);
-}
-
-.opportunity-card .trophy {
-  font-size: 27px;
-}
-
-.opportunity-card .primary-button {
-  margin-left: auto;
-  white-space: nowrap;
-}
-
-.site-footer {
-  min-height: 37px;
-  padding: 8px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  border-top: 1px solid #14223e;
-  color: #a1aecb;
-  font-size: 9px;
-}
-
-.footer-brand {
-  font-size: 13px;
-  color: #a98aff;
-  font-weight: 800;
-}
-
-.footer-links,
-.social-links {
-  display: flex;
-  align-items: center;
-  gap: 17px;
-}
-
-.footer-links a:hover {
-  color: white;
-}
-
-.mobile-nav {
-  display: none;
-}
-
-/* Toast feedback for prototype interactions */
-.toast {
-  position: fixed;
-  bottom: 22px;
-  left: 50%;
-  transform: translate(-50%, 20px);
-  background: #172747;
-  border: 1px solid #435b91;
-  color: white;
-  border-radius: 12px;
-  padding: 12px 18px;
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: .25s;
-  box-shadow: 0 10px 40px #0008;
-  max-width: 90%;
-  text-align: center;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-@media (min-width: 1500px) {
-  .layout {
-    grid-template-columns: 245px minmax(500px, 1fr) 405px;
-  }
-
-  .hero {
-    min-height: 225px;
-  }
-
-  .post-gallery {
-    height: 155px;
-  }
-}
-
-@media (max-width: 1150px) {
-  .layout {
-    grid-template-columns: 190px minmax(0, 1fr);
-  }
-
-  .right-sidebar {
-    grid-column: 2;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-  }
-
-  .right-top-grid {
-    grid-column: 1 / -1;
-  }
-
-  .brand {
-    min-width: 190px;
-  }
-
-  .quick-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .bottom-bar {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .opportunity-card {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 700px) {
-  body {
-    font-size: 12px;
-    padding-bottom: 65px;
-  }
-
-  .topbar {
-    height: 58px;
-    padding: 0 12px;
-    gap: 10px;
-  }
-
-  .brand {
-    min-width: 0;
-    gap: 6px;
-  }
-
-  .brand-mark {
-    font-size: 31px;
-  }
-
-  .brand-name {
-    font-size: 16px;
-  }
-
-  .brand-tagline {
-    font-size: 8px;
-  }
-
-  .topbar .searchbox {
-    display: none;
-  }
-
-  .top-actions {
-    gap: 14px;
-  }
-
-  .account {
-    margin-left: 0;
-  }
-
-  .account img {
-    width: 31px;
-    height: 31px;
-  }
-
-  .account-details,
-  .account-arrow {
-    display: none;
-  }
-
-  .layout {
-    display: flex;
-    flex-direction: column;
-    padding: 9px 9px 0;
-    gap: 10px;
-  }
-
-  .left-sidebar {
-    display: none;
-  }
-
-  .hero {
-    min-height: 190px;
-    background-position: center;
-  }
-
-  .hero-content {
-    padding: 22px 17px;
-    max-width: 300px;
-  }
-
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero-side-note {
-    right: 10px;
-    bottom: 12px;
-    font-size: 11px;
-  }
-
-  .composer {
-    padding: 10px;
-  }
-
-  .composer-top {
-    gap: 8px;
-  }
-
-  .composer .avatar {
-    width: 35px;
-    height: 35px;
-  }
-
-  .post-destination {
-    display: none;
-  }
-
-  .post-tools {
-    justify-content: space-between;
-  }
-
-  .quick-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .quick-item:last-child {
-    display: none;
-  }
-
-  .quick-item {
-    padding: 9px;
-  }
-
-  .post-gallery {
-    height: 105px;
-  }
-
-  .post-card {
-    padding: 9px;
-  }
-
-  .right-sidebar {
-    display: flex;
-  }
-
-  .right-top-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .right-panel {
-    padding: 10px;
-  }
-
-  .community-row {
-    gap: 6px;
-  }
-
-  .community-icon {
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-  }
-
-  .community-info strong,
-  .online-person strong {
-    font-size: 9px;
-  }
-
-  .join-button {
-    padding: 6px;
-  }
-
-  .event-row {
-    gap: 8px;
-    padding: 7px 5px;
-  }
-
-  .event-date {
-    width: 46px;
-    height: 54px;
-  }
-
-  .event-info strong {
-    font-size: 10px;
-  }
-
-  .interest-button {
-    padding: 8px;
-  }
-
-  .bottom-bar {
-    display: flex;
-    flex-direction: column;
-    padding: 8px 9px;
-  }
-
-  .leaderboard {
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
-  .leaderboard-title {
-    width: 100%;
-  }
-
-  .leaderboard .leader:nth-of-type(n+4) {
-    display: none;
-  }
-
-  .site-footer {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 12px 8px;
-    gap: 12px;
-  }
-
-  .footer-links {
-    gap: 12px;
-  }
-
-  .social-links {
-    display: none;
-  }
-
-  .mobile-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: rgba(5, 11, 28, .97);
-    border-top: 1px solid #233457;
-    z-index: 50;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .mobile-nav button {
-    border: 0;
-    background: transparent;
-    color: #9eaccb;
-    font-size: 9px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: center;
-    min-width: 48px;
-  }
-
-  .mobile-nav button span {
-    font-size: 20px;
-  }
-
-  .mobile-nav button.active {
-    color: #a68aff;
-  }
-}
-
-@media (max-width: 360px) {
-  .brand-name {
-    font-size: 14px;
-  }
-
-  .top-actions {
-    gap: 10px;
-  }
-
-  .right-top-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .post-gallery {
-    height: 85px;
-  }
-
-  .hero h1 {
-    font-size: 25px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
+
+  <title>Campusora — Your Campus. Your People.</title>
+
+  <meta name="description" content="Connect with students, alumni and communities across campuses with Campusora.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080b18;
+      --surface: #101426;
+      --surface2: #171c32;
+      --border: rgba(255,255,255,.085);
+      --text: #f5f6ff;
+      --muted: #929bb6;
+      --purple: #925bff;
+      --blue: #526dff;
+      --cyan: #39d7f5;
+      --gradient: linear-gradient(120deg,#925bff,#526dff,#39d7f5);
+      --radius: 19px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      color: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .topbar {
+      height: 70px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,11,24,.94);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 1440px;
+      height: 100%;
+      margin: auto;
+      padding: 0 25px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -.9px;
+    }
+
+    .brand-icon {
+      width: 37px;
+      height: 37px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--gradient);
+      font-size: 22px;
+      box-shadow: 0 5px 22px #765bff33;
+    }
+
+    .brand span:last-child {
+      background: linear-gradient(90deg,#fff,#a8b7ff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .search {
+      width: min(420px, 35vw);
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 12px 15px 12px 43px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      outline: none;
+      color: white;
+    }
+
+    .search input:focus {
+      border-color: #795cff;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 11px;
+      color: var(--muted);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      width: 41px;
+      height: 41px;
+      display: grid;
+      place-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      font-size: 18px;
+      position: relative;
+    }
+
+    .notification-dot {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      border-radius: 50%;
+      background: #ff548d;
+      border: 2px solid var(--surface);
+    }
+
+    .top-avatar {
+      width: 39px;
+      height: 39px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #805bff;
+    }
+
+    .layout {
+      max-width: 1440px;
+      margin: auto;
+      padding: 25px;
+      display: grid;
+      grid-template-columns: 230px minmax(0, 650px) 300px;
+      justify-content: center;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* LEFT NAVIGATION */
+
+    .left-sidebar {
+      position: sticky;
+      top: 94px;
+    }
+
+    .nav-label {
+      padding: 0 12px;
+      margin: 6px 0 12px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 5px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 13px;
+      color: #b4bbd2;
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: .2s;
+      border: 1px solid transparent;
+      background: transparent;
+      text-align: left;
+      width: 100%;
+    }
+
+    .nav-item:hover {
+      background: var(--surface);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(100deg,#8756ff23,#526dff12);
+      border-color: #805bff30;
+      color: white;
+    }
+
+    .nav-icon {
+      font-size: 19px;
+      width: 23px;
+      text-align: center;
+    }
+
+    .nav-item.active .nav-icon {
+      filter: drop-shadow(0 0 7px #925bff);
+    }
+
+    .create-nav {
+      margin-top: 12px;
+      justify-content: center;
+      padding: 13px;
+      background: var(--gradient);
+      border: none;
+      border-radius: 13px;
+      color: white;
+      font-weight: 800;
+      box-shadow: 0 8px 24px #7256ff27;
+    }
+
+    .sidebar-note {
+      margin-top: 26px;
+      padding: 17px;
+      background: linear-gradient(145deg,#1b1740,#10172c);
+      border: 1px solid #8b6cff24;
+      border-radius: 17px;
+    }
+
+    .sidebar-note h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-note p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .sidebar-note button {
+      margin-top: 13px;
+      border: 0;
+      border-radius: 9px;
+      background: #7656ff;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* MAIN FEED */
+
+    .main-feed {
+      min-width: 0;
+    }
+
+    .feed-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .feed-heading h1 {
+      font-size: 24px;
+      letter-spacing: -.8px;
+    }
+
+    .feed-heading p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .feed-filter {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: #dfe2f4;
+      padding: 9px 11px;
+      font-size: 12px;
+    }
+
+    /* MOMENTS */
+
+    .moments {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 17px 14px 13px;
+      margin-bottom: 17px;
+      overflow: hidden;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .section-heading h2 {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .section-heading a,
+    .section-heading button {
+      color: #ad91ff;
+      font-size: 12px;
+      background: none;
+      border: 0;
+    }
+
+    .moment-list {
+      display: flex;
+      gap: 17px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 2px 1px 5px;
+    }
+
+    .moment-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .moment {
+      flex: 0 0 65px;
+      text-align: center;
+      border: none;
+      background: none;
+      min-width: 0;
+    }
+
+    .moment-ring {
+      width: 61px;
+      height: 61px;
+      padding: 3px;
+      border-radius: 50%;
+      background: var(--gradient);
+      margin: 0 auto 8px;
+    }
+
+    .moment-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid var(--surface);
+      object-fit: cover;
+    }
+
+    .moment.add .moment-ring {
+      background: #222940;
+      border: 1px dashed #65709c;
+      display: grid;
+      place-items: center;
+      color: #b49cff;
+      font-size: 27px;
+    }
+
+    .moment-name {
+      display: block;
+      font-size: 10px;
+      color: #c5cbe0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* COMPOSER */
+
+    .composer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 17px;
+      margin-bottom: 18px;
+    }
+
+    .composer-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .composer-input {
+      width: 100%;
+      min-width: 0;
+      background: var(--surface2);
+      color: #dce0f2;
+      border: 1px solid transparent;
+      border-radius: 24px;
+      padding: 13px 17px;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .composer-input:hover {
+      border-color: #8060ff50;
+    }
+
+    .composer-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .composer-action {
+      background: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #aeb6d0;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px;
+    }
+
+    .composer-action span {
+      font-size: 17px;
+    }
+
+    /* POSTS */
+
+    .post {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 17px 17px 12px;
+    }
+
+    .post-user {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .post-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .post-name {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .verified {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #6176ff;
+      color: white;
+      display: inline-grid;
+      place-items: center;
+      font-size: 9px;
+    }
+
+    .user-badge {
+      font-size: 9px;
+      color: #c6afff;
+      background: #845bff20;
+      border: 1px solid #845bff35;
+      padding: 3px 6px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .post-meta {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .more-btn {
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--muted);
+      padding: 0 3px;
+    }
+
+    .post-body {
+      padding: 0 17px 14px;
+    }
+
+    .post-body p {
+      font-size: 13px;
+      line-height: 1.8;
+      color: #e1e4f4;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .post-body p a {
+      color: #b19aff;
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 490px;
+      object-fit: cover;
+      background: #171c32;
+    }
+
+    .post-image.landscape {
+      aspect-ratio: 1.18;
+    }
+
+    .post-image.portrait {
+      aspect-ratio: 1 / 1.05;
+    }
+
+    .post-stats {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 17px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .reaction-icons {
+      letter-spacing: -3px;
+      margin-right: 6px;
+      font-size: 14px;
+    }
+
+    .post-actions {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      margin: 0 12px;
+      border-top: 1px solid var(--border);
+      padding: 5px 0;
+    }
+
+    .post-action {
+      background: none;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      color: #aeb6cf;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .post-action span {
+      font-size: 17px;
+    }
+
+    .post-action:hover {
+      background: #ffffff08;
+    }
+
+    .post-action.liked {
+      color: #ff6b9a;
+    }
+
+    .post-action.saved {
+      color: #a991ff;
+    }
+
+    .comment-area {
+      display: none;
+      padding: 12px 16px 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .comment-area.open {
+      display: block;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .comment-form input {
+      min-width: 0;
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 11px 14px;
+      color: white;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .comment-form button {
+      background: #795aff;
+      border: none;
+      padding: 0 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .comment-list {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .comment {
+      font-size: 12px;
+      color: #dce0f2;
+      background: var(--surface2);
+      padding: 10px 12px;
+      border-radius: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .comment strong {
+      margin-right: 5px;
+    }
+
+    .empty-feed {
+      text-align: center;
+      padding: 30px 15px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* RIGHT SIDEBAR */
+
+    .right-sidebar {
+      display: grid;
+      gap: 17px;
+      position: sticky;
+      top: 94px;
+    }
+
+    .right-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 17px;
+    }
+
+    .right-card .section-heading {
+      margin-bottom: 16px;
+    }
+
+    .community {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 15px;
+    }
+
+    .community:last-child {
+      margin-bottom: 0;
+    }
+
+    .community-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg,#6d4bff,#252d60);
+      font-size: 19px;
+    }
+
+    .community-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .community-info h3 {
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .community-info p {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .join-btn {
+      background: #7b5bff1b;
+      color: #b8a6ff;
+      border: 1px solid #7b5bff3c;
+      border-radius: 8px;
+      padding: 7px 9px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .join-btn.joined {
+      background: #243d38;
+      color: #72e6ba;
+      border-color: #315e4e;
+    }
+
+    .person {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .person:last-child {
+      margin-bottom: 0;
+    }
+
+    .person .avatar {
+      width: 37px;
+      height: 37px;
+    }
+
+    .person-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .person-info h3 {
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .person-info p {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .follow-btn {
+      background: transparent;
+      border: 1px solid #765bff70;
+      color: #b9a5ff;
+      border-radius: 8px;
+      padding: 7px 9px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .follow-btn.following {
+      background: #242c43;
+      border-color: #394465;
+      color: #c2cbe3;
+    }
+
+    .event {
+      display: flex;
+      gap: 11px;
+      margin-bottom: 16px;
+    }
+
+    .event:last-child {
+      margin-bottom: 0;
+    }
+
+    .event-date {
+      width: 43px;
+      height: 47px;
+      border-radius: 11px;
+      background: #815cff1a;
+      border: 1px solid #815cff35;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .event-date strong {
+      color: #c5b4ff;
+      font-size: 16px;
+    }
+
+    .event-date span {
+      font-size: 8px;
+      color: #a59bc7;
+      text-transform: uppercase;
+    }
+
+    .event-info h3 {
+      font-size: 11px;
+      margin: 3px 0 5px;
+    }
+
+    .event-info p {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px 12px;
+      padding: 0 5px;
+      color: #7e87a4;
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    /* CREATE POST DIALOG */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0,0,0,.76);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #11162a;
+      border: 1px solid #ffffff18;
+      border-radius: 22px;
+      padding: 21px;
+      box-shadow: 0 20px 90px #0008;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 17px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 17px;
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+    }
+
+    .close-modal {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      border-radius: 50%;
+      font-size: 20px;
+    }
+
+    .modal-profile {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 15px;
+    }
+
+    .modal-profile strong {
+      font-size: 13px;
+    }
+
+    .modal-profile p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    #postText {
+      width: 100%;
+      min-height: 145px;
+      background: transparent;
+      border: none;
+      resize: vertical;
+      outline: none;
+      color: white;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    #postText::placeholder {
+      color: #78819d;
+    }
+
+    .image-picker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      color: #c6cce1;
+      margin-top: 10px;
+    }
+
+    .image-picker input {
+      max-width: 180px;
+      font-size: 10px;
+    }
+
+    #imagePreview {
+      display: none;
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      margin-top: 12px;
+      border-radius: 12px;
+    }
+
+    .publish-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      background: var(--gradient);
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 16px;
+    }
+
+    .publish-btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 90px;
+      z-index: 500;
+      transform: translate(-50%,20px);
+      background: #202640;
+      color: white;
+      padding: 12px 18px;
+      border: 1px solid #ffffff20;
+      border-radius: 12px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      text-align: center;
+      max-width: calc(100% - 32px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%,0);
+    }
+
+    /* MOBILE BOTTOM NAV */
+
+    .bottom-nav {
+      display: none;
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 205px minmax(0,650px);
+        gap: 23px;
+      }
+
+      .right-sidebar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding-bottom: calc(70px + env(safe-area-inset-bottom));
+      }
+
+      .topbar {
+        height: 60px;
+      }
+
+      .topbar-inner {
+        padding: 0 15px;
+        gap: 12px;
+      }
+
+      .brand {
+        font-size: 20px;
+        gap: 8px;
+      }
+
+      .brand-icon {
+        width: 33px;
+        height: 33px;
+        border-radius: 10px;
+        font-size: 19px;
+      }
+
+      .search {
+        width: auto;
+        flex: 1;
+        margin: 0;
+      }
+
+      .search input {
+        padding: 10px 9px 10px 33px;
+        font-size: 11px;
+        border-radius: 11px;
+      }
+
+      .search-icon {
+        left: 10px;
+        top: 9px;
+        font-size: 13px;
+      }
+
+      .top-actions {
+        gap: 7px;
+      }
+
+      .top-actions .icon-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 11px;
+        font-size: 16px;
+      }
+
+      .top-avatar {
+        width: 32px;
+        height: 32px;
+      }
+
+      .desktop-only {
+        display: none !important;
+      }
+
+      .layout {
+        display: block;
+        padding: 18px 0 0;
+      }
+
+      .left-sidebar,
+      .right-sidebar {
+        display: none;
+      }
+
+      .main-feed {
+        width: 100%;
+      }
+
+      .feed-heading {
+        padding: 0 16px;
+        margin-bottom: 15px;
+      }
+
+      .feed-heading h1 {
+        font-size: 22px;
+      }
+
+      .feed-heading p {
+        font-size: 11px;
+      }
+
+      .feed-filter {
+        padding: 9px;
+        font-size: 11px;
+      }
+
+      .moments {
+        margin: 0 0 12px;
+        padding: 15px 13px 12px;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .moment-list {
+        gap: 15px;
+      }
+
+      .composer {
+        margin: 0 0 12px;
+        border-radius: 0;
+        padding: 15px;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+      }
+
+      .composer-input {
+        padding: 12px 14px;
+        font-size: 12px;
+      }
+
+      .composer-action {
+        font-size: 10px;
+        gap: 5px;
+      }
+
+      .composer-action span {
+        font-size: 16px;
+      }
+
+      .post {
+        border-radius: 0;
+        margin-bottom: 10px;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .post-header {
+        padding: 15px 15px 11px;
+      }
+
+      .post-body {
+        padding: 0 15px 13px;
+      }
+
+      .post-body p {
+        font-size: 13px;
+      }
+
+      .post-image {
+        max-height: 450px;
+      }
+
+      .post-stats {
+        padding: 11px 15px;
+      }
+
+      .post-actions {
+        margin: 0 9px;
+      }
+
+      .post-action {
+        font-size: 11px;
+        gap: 6px;
+        padding: 12px 2px;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        display: grid;
+        grid-template-columns: repeat(5,1fr);
+        align-items: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 150;
+        padding: 7px 6px calc(7px + env(safe-area-inset-bottom));
+        background: rgba(12,16,32,.97);
+        backdrop-filter: blur(22px);
+        border-top: 1px solid var(--border);
+      }
+
+      .bottom-item {
+        border: none;
+        background: none;
+        color: #858eaa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        font-size: 9px;
+        font-weight: 600;
+        min-height: 44px;
+      }
+
+      .bottom-item .bottom-icon {
+        font-size: 21px;
+        line-height: 1.1;
+      }
+
+      .bottom-item.active {
+        color: #b49aff;
+      }
+
+      .bottom-item.create .bottom-icon {
+        width: 39px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        color: white;
+        border-radius: 12px;
+        background: var(--gradient);
+        font-size: 25px;
+        box-shadow: 0 4px 18px #7656ff35;
+      }
+
+      .bottom-item.create {
+        color: #d5ccff;
+      }
+
+      .toast {
+        bottom: calc(80px + env(safe-area-inset-bottom));
+      }
+    }
+
+    @media (max-width: 370px) {
+      .brand {
+        font-size: 17px;
+      }
+
+      .brand-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .top-actions {
+        gap: 5px;
+      }
+
+      .top-actions .icon-btn {
+        width: 30px;
+        height: 30px;
+      }
+
+      .top-avatar {
+        width: 29px;
+        height: 29px;
+      }
+
+      .composer-action {
+        font-size: 9px;
+      }
+
+      .moment {
+        flex-basis: 59px;
+      }
+
+      .moment-ring {
+        width: 55px;
+        height: 55px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <a href="#" class="brand" aria-label="Campusora home">
-    <div class="brand-mark">◢</div>
-    <div>
-      <div class="brand-name">Campusora</div>
-      <div class="brand-tagline">Connect • Learn • Grow • Together</div>
+  <!-- TOP NAVIGATION -->
+
+  <header class="topbar">
+    <div class="topbar-inner">
+
+      <a href="#" class="brand" aria-label="Campusora Home">
+        <span class="brand-icon">✳</span>
+        <span>campusora</span>
+      </a>
+
+      <label class="search">
+        <span class="search-icon">⌕</span>
+        <input type="search" id="searchInput" placeholder="Search people, campuses..." aria-label="Search Campusora">
+      </label>
+
+      <div class="top-actions">
+        <button class="icon-btn" aria-label="Messages" onclick="showFeature('Messages')">✉</button>
+
+        <button class="icon-btn" aria-label="Notifications" onclick="showFeature('Notifications')">
+          ♧
+          <span class="notification-dot"></span>
+        </button>
+
+        <img
+          class="top-avatar"
+          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces"
+          alt="Your profile"
+        >
+      </div>
+
     </div>
-  </a>
+  </header>
 
-  <label class="searchbox">
-    <span>⌕</span>
-    <input id="globalSearch" type="search"
-      placeholder="Search people, communities, events, posts or anything...">
-  </label>
 
-  <div class="top-actions">
-    <button class="icon-button" data-message="Your notifications will appear here."
-      aria-label="Notifications">♧<span class="count">3</span></button>
-    <button class="icon-button" data-message="Your messages will appear here."
-      aria-label="Messages">✉<span class="count">7</span></button>
+  <!-- MAIN THREE-COLUMN LAYOUT -->
 
-    <div class="account">
-      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
-        alt="Profile photo">
-      <div class="account-details">
-        <div class="account-name">Luke Akaninyene</div>
-        <div class="account-sub">Student • AKSU</div>
-      </div>
-      <span class="account-arrow">⌄</span>
-    </div>
-  </div>
-</header>
+  <div class="layout">
 
-<div class="layout">
+    <!-- LEFT SIDEBAR -->
 
-  <!-- LEFT SIDEBAR -->
-  <aside class="left-sidebar">
-    <nav class="nav-list" aria-label="Main navigation">
-      <button class="nav-item active" data-section="Home"><span class="nav-icon">⌂</span>Home</button>
-      <button class="nav-item" data-section="Explore"><span class="nav-icon">⌕</span>Explore</button>
-      <button class="nav-item" data-section="Communities"><span class="nav-icon">♧</span>Communities</button>
-      <button class="nav-item" data-section="Messages"><span class="nav-icon">✉</span>Messages <span class="nav-badge">7</span></button>
-      <button class="nav-item" data-section="Notifications"><span class="nav-icon">♧</span>Notifications <span class="nav-badge">3</span></button>
-      <button class="nav-item" data-section="Events"><span class="nav-icon">▦</span>Events</button>
-      <button class="nav-item" data-section="Games"><span class="nav-icon">♧</span>Games</button>
-      <button class="nav-item" data-section="Marketplace"><span class="nav-icon">▤</span>Marketplace</button>
-      <button class="nav-item" data-section="Work With the Creator"><span class="nav-icon">♢</span>Work With the Creator</button>
-      <button class="nav-item" data-section="Premium"><span class="nav-icon">♧</span>Premium</button>
-    </nav>
+    <aside class="left-sidebar">
 
-    <hr class="side-divider">
+      <p class="nav-label">Your space</p>
 
-    <div class="section-label">My Spaces</div>
-    <div class="space-item"><span class="space-avatar">🎓</span>AKSU Community</div>
-    <div class="space-item"><span class="space-avatar">🎵</span>Music &amp; Entertainment</div>
-    <div class="space-item"><span class="space-avatar">💠</span>Tech &amp; Innovation</div>
-    <div class="space-item"><span class="space-avatar">💼</span>Business &amp; Hustle</div>
-    <div class="space-item"><span class="space-avatar">🌍</span>Student Life</div>
-    <div class="space-item"><span class="space-avatar">👨‍🎓</span>Alumni Network</div>
-
-    <hr class="side-divider">
-
-    <div class="promo-card">
-      <div class="promo-title">👑 Upgrade Your Profile</div>
-      <p class="promo-text">Get crowns, premium themes, and more!</p>
-      <button class="primary-button" data-message="Premium membership will be connected later.">Go Premium →</button>
-    </div>
-
-    <div class="promo-card creator-promo">
-      <div class="promo-symbol">🌟</div>
-      <div class="promo-title">Join the Campusora Creator Program</div>
-      <p class="promo-text">Promote your business, brand or event to thousands of students and alumni.</p>
-      <button class="primary-button" data-message="Creator applications will be available in a later phase.">Work With Us →</button>
-    </div>
-  </aside>
-
-  <!-- MAIN FEED -->
-  <main class="main-column">
-
-    <section class="hero">
-      <div class="hero-content">
-        <h1>
-          <span>Real People</span>
-          <span>Real Connections</span>
-          <span class="blue">Bigger <span class="purple">Opportunities</span></span>
-        </h1>
-        <p class="hero-audience">Students <span>•</span> Alumni <span>•</span> Creators <span>•</span> Businesses</p>
-        <button class="primary-button" data-message="Welcome to Campusora! Account creation is coming soon.">Join the Community →</button>
-      </div>
-      <div class="hero-side-note">Same Campus<br>Different Stories ✨</div>
-    </section>
-
-    <section class="panel composer">
-      <div class="composer-top">
-        <img class="avatar"
-          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
-          alt="Your profile">
-        <button class="composer-input" id="openComposer">
-          <strong>Create Post</strong>
-          <span>What's on your mind?</span>
+      <nav class="nav-list">
+        <button class="nav-item active" data-page="Home" onclick="selectPage('Home',this)">
+          <span class="nav-icon">⌂</span> Home Feed
         </button>
-        <button class="post-destination" data-message="Community selection will be available when accounts are connected.">
-          <small>Post to</small><br>All Communities ⌄
+
+        <button class="nav-item" data-page="Explore" onclick="selectPage('Explore',this)">
+          <span class="nav-icon">⌕</span> Explore
         </button>
+
+        <button class="nav-item" data-page="Spotlight" onclick="selectPage('Spotlight',this)">
+          <span class="nav-icon">▷</span> Spotlight
+        </button>
+
+        <button class="nav-item" data-page="Communities" onclick="selectPage('Communities',this)">
+          <span class="nav-icon">♧</span> Communities
+        </button>
+
+        <button class="nav-item" data-page="Messages" onclick="selectPage('Messages',this)">
+          <span class="nav-icon">✉</span> Messages
+        </button>
+
+        <button class="nav-item" data-page="Notifications" onclick="selectPage('Notifications',this)">
+          <span class="nav-icon">♢</span> Notifications
+        </button>
+      </nav>
+
+      <p class="nav-label" style="margin-top:27px">Campus life</p>
+
+      <nav class="nav-list">
+        <button class="nav-item" data-page="Events" onclick="selectPage('Events',this)">
+          <span class="nav-icon">▦</span> Events
+        </button>
+
+        <button class="nav-item" data-page="Marketplace" onclick="selectPage('Marketplace',this)">
+          <span class="nav-icon">▧</span> Marketplace
+        </button>
+
+        <button class="nav-item" data-page="Jobs & Opportunities" onclick="selectPage('Jobs & Opportunities',this)">
+          <span class="nav-icon">✧</span> Jobs & Opportunities
+        </button>
+
+        <button class="nav-item" data-page="Profile" onclick="selectPage('Profile',this)">
+          <span class="nav-icon">♙</span> My Profile
+        </button>
+      </nav>
+
+      <button class="nav-item create-nav" onclick="openComposer()">
+        <span class="nav-icon">＋</span> Create a post
+      </button>
+
+      <div class="sidebar-note">
+        <h3>Your campus. Your people. 💜</h3>
+        <p>Meet new people, share your story, discover opportunities and connect beyond your campus.</p>
+        <button onclick="showFeature('Explore Campusora')">Explore Campusora ↗</button>
       </div>
 
-      <div class="post-tools">
-        <button class="post-tool" data-message="Photo and video uploads will be enabled when storage is connected."><span>▣</span> Photo/Video</button>
-        <button class="post-tool" data-message="Feeling and activity options will be added later."><span>😊</span> Feeling</button>
-        <button class="post-tool" data-message="Location sharing will be optional."><span>📍</span> Check In</button>
-        <button class="post-tool" data-message="Poll creation will be added in the social feed phase."><span>▤</span> Poll</button>
-      </div>
-    </section>
+    </aside>
 
-    <section class="panel quick-access">
-      <div class="panel-heading">Quick Access</div>
-      <div class="quick-grid">
-        <button class="quick-item" data-section="Games">
-          <span class="quick-icon">🎮</span><span><strong>Campus Trivia</strong><small>Play Now</small></span>
-        </button>
-        <button class="quick-item" data-section="Jobs">
-          <span class="quick-icon">💼</span><span><strong>Find Jobs</strong><small>Explore</small></span>
-        </button>
-        <button class="quick-item" data-section="Events">
-          <span class="quick-icon">▦</span><span><strong>Upcoming Events</strong><small>View All</small></span>
-        </button>
-        <button class="quick-item" data-section="Marketplace">
-          <span class="quick-icon">▣</span><span><strong>Marketplace</strong><small>Shop &amp; Sell</small></span>
-        </button>
-        <button class="quick-item" data-section="Communities">
-          <span class="quick-icon">♧</span><span><strong>Join Communities</strong><small>Discover</small></span>
-        </button>
-      </div>
-    </section>
 
-    <section class="panel feed-panel">
-      <div class="feed-tabs" role="tablist">
-        <button class="feed-tab active" data-feed="For You">For You</button>
-        <button class="feed-tab" data-feed="Following">Following</button>
-        <button class="feed-tab" data-feed="Your School">Your School</button>
-        <button class="feed-tab" data-feed="Trending">Trending</button>
+    <!-- CENTRAL SOCIAL FEED -->
+
+    <main class="main-feed">
+
+      <div class="feed-heading">
+        <div>
+          <h1 id="feedTitle">Your Feed ✨</h1>
+          <p id="feedSubtitle">What's happening around your world?</p>
+        </div>
+
+        <select class="feed-filter" id="feedFilter" aria-label="Choose feed">
+          <option value="all">For you</option>
+          <option value="popular">Popular</option>
+          <option value="latest">Latest</option>
+        </select>
       </div>
 
-      <article class="post-card" data-post>
-        <div class="post-header">
-          <img class="avatar"
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
-            alt="Chioma Eze">
-          <div class="post-user">
-            <div class="post-user-name">Chioma Eze <span class="role-badge">Student</span></div>
-            <div class="post-meta">AKSU • 2h ago • 🌐</div>
-          </div>
-          <button class="more-button" aria-label="Post options" data-message="Post options will be available when the feed is connected.">•••</button>
+
+      <!-- CAMPUS MOMENTS -->
+
+      <section class="moments">
+        <div class="section-heading">
+          <h2>Campus Moments <span style="color:#9c7cff">✦</span></h2>
+          <button onclick="showFeature('Campus Moments')">See all →</button>
         </div>
 
-        <p class="post-copy">
-          Campus life is not just about lectures, it's about the people you meet,
-          the memories you create and the dreams you build together. 💗<br>
-          What's your favourite part of campus life so far?
-        </p>
-        <p class="hashtags">#CampusLife #AKSU #StudentVibes #GoodPeople</p>
+        <div class="moment-list">
 
-        <div class="post-gallery">
-          <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=400&q=80" alt="University campus">
-          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=400&q=80" alt="Friends together">
-          <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=400&q=80" alt="Sunset view">
-        </div>
+          <button class="moment add" onclick="showFeature('Create a Moment')">
+            <div class="moment-ring">＋</div>
+            <span class="moment-name">Your moment</span>
+          </button>
 
-        <div class="post-actions">
-          <button class="post-action like-button">💗 <span>342</span></button>
-          <button class="post-action" data-message="Comments will be enabled when the database is connected.">▢ <span>86</span></button>
-          <button class="post-action" data-message="Post sharing will be added with the social feed.">↗ <span>12</span></button>
-          <button class="post-action bookmark" aria-label="Bookmark post" data-message="Bookmarking will be saved to your account in a later phase.">♧</button>
-        </div>
-      </article>
+          <button class="moment" onclick="showFeature('Campus Moments')">
+            <div class="moment-ring">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&crop=faces" alt="">
+            </div>
+            <span class="moment-name">Amara</span>
+          </button>
 
-      <article class="post-card" data-post>
-        <div class="post-header">
-          <img class="avatar"
-            src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=100&q=80"
-            alt="Tunde Adeyemi">
-          <div class="post-user">
-            <div class="post-user-name">Tunde Adeyemi <span class="role-badge alumni">Alumni</span></div>
-            <div class="post-meta">UNILAG • 4h ago • 🌐</div>
-          </div>
-          <button class="more-button" aria-label="Post options" data-message="Post options will be available when the feed is connected.">•••</button>
-        </div>
+          <button class="moment" onclick="showFeature('Campus Moments')">
+            <div class="moment-ring">
+              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&crop=faces" alt="">
+            </div>
+            <span class="moment-name">Daniel</span>
+          </button>
 
-        <p class="post-copy">
-          Just landed in Lagos after 5 years abroad. Grateful for the journey and
-          excited for what's next. If you're a younger student, don't be afraid to dream big. 💯<br>
-          The world is bigger than you think!
-        </p>
-        <p class="hashtags">#AlumniStories #FromStudentToProfessional #KeepGoing</p>
-        <img class="post-single-image"
-          src="https://images.unsplash.com/photo-1570083665508-4c0e5f8a1d8b?auto=format&fit=crop&w=900&q=80"
-          alt="City skyline">
-        <div class="post-actions">
-          <button class="post-action like-button">💗 <span>128</span></button>
-          <button class="post-action" data-message="Comments will be enabled when the database is connected.">▢ <span>34</span></button>
-          <button class="post-action" data-message="Post sharing will be added with the social feed.">↗ <span>9</span></button>
-          <button class="post-action bookmark" aria-label="Bookmark post" data-message="Bookmarking will be saved to your account in a later phase.">♧</button>
-        </div>
-      </article>
-    </section>
-  </main>
+          <button class="moment" onclick="showFeature('Campus Moments')">
+            <div class="moment-ring">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=faces" alt="">
+            </div>
+            <span class="moment-name">Zara</span>
+          </button>
 
-  <!-- RIGHT SIDEBAR -->
-  <aside class="right-sidebar">
+          <button class="moment" onclick="showFeature('Campus Moments')">
+            <div class="moment-ring">
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces" alt="">
+            </div>
+            <span class="moment-name">Michael</span>
+          </button>
 
-    <div class="right-top-grid">
-      <section class="panel right-panel">
-        <div class="panel-heading">Active Communities <button class="see-all" data-section="Communities">See All</button></div>
+          <button class="moment" onclick="showFeature('Campus Moments')">
+            <div class="moment-ring">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&h=120&fit=crop&crop=faces" alt="">
+            </div>
+            <span class="moment-name">Precious</span>
+          </button>
 
-        <div class="community-row">
-          <span class="community-icon">🎓</span>
-          <div class="community-info"><strong>AKSU Community</strong><small>12.4K members</small></div>
-          <button class="join-button">Join</button>
-        </div>
+          <button class="moment" onclick="showFeature('Campus Moments')">
+            <div class="moment-ring">
+              <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=120&h=120&fit=crop&crop=faces" alt="">
+            </div>
+            <span class="moment-name">Samuel</span>
+          </button>
 
-        <div class="community-row">
-          <span class="community-icon">🌐</span>
-          <div class="community-info"><strong>UNILAG Students</strong><small>15.8K members</small></div>
-          <button class="join-button">Join</button>
-        </div>
-
-        <div class="community-row">
-          <span class="community-icon">💠</span>
-          <div class="community-info"><strong>Business &amp; Hustle</strong><small>8.3K members</small></div>
-          <button class="join-button">Join</button>
-        </div>
-
-        <div class="community-row">
-          <span class="community-icon">🎵</span>
-          <div class="community-info"><strong>Music &amp; Entertainment</strong><small>11.2K members</small></div>
-          <button class="join-button">Join</button>
-        </div>
-
-        <div class="community-row">
-          <span class="community-icon">🚀</span>
-          <div class="community-info"><strong>Tech &amp; Innovation</strong><small>6.7K members</small></div>
-          <button class="join-button">Join</button>
-        </div>
-
-        <div class="community-row">
-          <span class="community-icon">👩</span>
-          <div class="community-info"><strong>Alumni Network</strong><small>4.9K members</small></div>
-          <button class="join-button">Join</button>
         </div>
       </section>
 
-      <section class="panel right-panel">
-        <div class="panel-heading">Online Now <button class="see-all" data-message="The full online members list will be added with messaging.">See All</button></div>
 
-        <div class="online-person">
-          <div class="online-avatar-wrap"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt=""><span class="online-dot"></span></div>
-          <div><strong>Chioma Eze</strong><small>Student • 3m</small></div>
+      <!-- CREATE POST -->
+
+      <section class="composer">
+
+        <div class="composer-top">
+          <img
+            class="avatar"
+            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces"
+            alt="Your profile"
+          >
+
+          <button class="composer-input" onclick="openComposer()">
+            What's happening on your campus?
+          </button>
         </div>
 
-        <div class="online-person">
-          <div class="online-avatar-wrap"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt=""><span class="online-dot"></span></div>
-          <div><strong>Tunde Adeyemi</strong><small>Alumni • 5m</small></div>
+        <div class="composer-actions">
+          <button class="composer-action" onclick="openComposer()">
+            <span>▧</span> Photo
+          </button>
+
+          <button class="composer-action" onclick="openComposer()">
+            <span>▷</span> Video
+          </button>
+
+          <button class="composer-action" onclick="showFeature('Create a Poll')">
+            <span>▤</span> Poll
+          </button>
+
+          <button class="composer-action" onclick="showFeature('Ask a Question')">
+            <span>✧</span> Question
+          </button>
         </div>
 
-        <div class="online-person">
-          <div class="online-avatar-wrap"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=100&q=80" alt=""><span class="online-dot"></span></div>
-          <div><strong>Faith Daniels</strong><small>Student • 7m</small></div>
-        </div>
-
-        <div class="online-person">
-          <div class="online-avatar-wrap"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt=""><span class="online-dot"></span></div>
-          <div><strong>Emeka Nwosu</strong><small>Student • 10m</small></div>
-        </div>
-
-        <div class="online-person">
-          <div class="online-avatar-wrap"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" alt=""><span class="online-dot"></span></div>
-          <div><strong>Blessing Okafor</strong><small>Student • 12m</small></div>
-        </div>
-
-        <div class="online-person">
-          <div class="online-avatar-wrap"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt=""><span class="online-dot"></span></div>
-          <div><strong>Adazee Uche</strong><small>Alumni • 14m</small></div>
-        </div>
       </section>
+
+
+      <!-- POSTS ARE INSERTED HERE -->
+
+      <section id="feedPosts" aria-label="Social feed">
+
+        <!-- POST ONE -->
+
+        <article class="post" data-search="amara university students exam campus life studying">
+
+          <div class="post-header">
+            <img
+              class="avatar"
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"
+              alt="Amara"
+            >
+
+            <div class="post-user">
+              <div class="post-name-row">
+                <span class="post-name">Amara Williams</span>
+                <span class="verified">✓</span>
+                <span class="user-badge">Student</span>
+              </div>
+              <div class="post-meta">University community · 12 min ago</div>
+            </div>
+
+            <button class="more-btn" onclick="showFeature('Post options')" aria-label="More options">···</button>
+          </div>
+
+          <div class="post-body">
+            <p>That feeling when you finally understand a topic you've been struggling with for days! 😭📚
+
+To everyone preparing for exams, keep pushing. You will get through it! 💜
+
+What subject is giving you the most trouble right now?</p>
+          </div>
+
+          <div class="post-stats">
+            <span><span class="reaction-icons">💜 🔥</span><span class="like-count">128</span> reactions</span>
+            <span><span class="comment-count">24</span> comments · <span class="share-count">8</span> shares</span>
+          </div>
+
+          <div class="post-actions">
+            <button class="post-action" onclick="toggleLike(this)">
+              <span>♡</span> Like
+            </button>
+
+            <button class="post-action" onclick="toggleComments(this)">
+              <span>▢</span> Comment
+            </button>
+
+            <button class="post-action" onclick="sharePost(this)">
+              <span>↗</span> Share
+            </button>
+          </div>
+
+          <div class="comment-area">
+            <div class="comment-form">
+              <input type="text" placeholder="Write a comment..." aria-label="Write a comment">
+              <button onclick="addComment(this)">Send</button>
+            </div>
+            <div class="comment-list"></div>
+          </div>
+
+        </article>
+
+
+        <!-- POST TWO -->
+
+        <article class="post" data-search="campus friends university friendship hangout photography">
+
+          <div class="post-header">
+            <img
+              class="avatar"
+              src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=faces"
+              alt="Daniel"
+            >
+
+            <div class="post-user">
+              <div class="post-name-row">
+                <span class="post-name">Daniel Okafor</span>
+                <span class="user-badge">Student</span>
+              </div>
+              <div class="post-meta">Campus life · 35 min ago</div>
+            </div>
+
+            <button class="more-btn" onclick="showFeature('Post options')" aria-label="More options">···</button>
+          </div>
+
+          <div class="post-body">
+            <p>University life is more than lectures and assignments. Sometimes the best memories happen between classes. 😂🤝
+
+Tag the friend who makes your campus life better!</p>
+          </div>
+
+          <img
+            class="post-image landscape"
+            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&auto=format&fit=crop"
+            alt="Friends spending time together outdoors"
+            loading="lazy"
+          >
+
+          <div class="post-stats">
+            <span><span class="reaction-icons">💜 🔥</span><span class="like-count">246</span> reactions</span>
+            <span><span class="comment-count">39</span> comments · <span class="share-count">17</span> shares</span>
+          </div>
+
+          <div class="post-actions">
+            <button class="post-action" onclick="toggleLike(this)">
+              <span>♡</span> Like
+            </button>
+
+            <button class="post-action" onclick="toggleComments(this)">
+              <span>▢</span> Comment
+            </button>
+
+            <button class="post-action" onclick="sharePost(this)">
+              <span>↗</span> Share
+            </button>
+          </div>
+
+          <div class="comment-area">
+            <div class="comment-form">
+              <input type="text" placeholder="Write a comment..." aria-label="Write a comment">
+              <button onclick="addComment(this)">Send</button>
+            </div>
+            <div class="comment-list"></div>
+          </div>
+
+        </article>
+
+
+        <!-- POST THREE -->
+
+        <article class="post" data-search="zara creative design digital skills opportunities creator">
+
+          <div class="post-header">
+            <img
+              class="avatar"
+              src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=faces"
+              alt="Zara"
+            >
+
+            <div class="post-user">
+              <div class="post-name-row">
+                <span class="post-name">Zara James</span>
+                <span class="verified">✓</span>
+                <span class="user-badge">Student</span>
+              </div>
+              <div class="post-meta">Creative community · 1 hr ago</div>
+            </div>
+
+            <button class="more-btn" onclick="showFeature('Post options')" aria-label="More options">···</button>
+          </div>
+
+          <div class="post-body">
+            <p>Started learning digital design with just my phone, and I'm finally seeing improvement! ✨
+
+You don't need to have everything figured out before you start.
+
+What skill are you learning this year? Let's inspire each other. 🚀</p>
+          </div>
+
+          <img
+            class="post-image portrait"
+            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1000&auto=format&fit=crop"
+            alt="Creative workspace with a laptop"
+            loading="lazy"
+          >
+
+          <div class="post-stats">
+            <span><span class="reaction-icons">💜 🔥</span><span class="like-count">94</span> reactions</span>
+            <span><span class="comment-count">18</span> comments · <span class="share-count">11</span> shares</span>
+          </div>
+
+          <div class="post-actions">
+            <button class="post-action" onclick="toggleLike(this)">
+              <span>♡</span> Like
+            </button>
+
+            <button class="post-action" onclick="toggleComments(this)">
+              <span>▢</span> Comment
+            </button>
+
+            <button class="post-action" onclick="sharePost(this)">
+              <span>↗</span> Share
+            </button>
+          </div>
+
+          <div class="comment-area">
+            <div class="comment-form">
+              <input type="text" placeholder="Write a comment..." aria-label="Write a comment">
+              <button onclick="addComment(this)">Send</button>
+            </div>
+            <div class="comment-list"></div>
+          </div>
+
+        </article>
+
+      </section>
+
+    </main>
+
+
+    <!-- RIGHT SIDEBAR -->
+
+    <aside class="right-sidebar">
+
+      <section class="right-card">
+        <div class="section-heading">
+          <h2>Campus communities</h2>
+          <button onclick="showFeature('All communities')">See all</button>
+        </div>
+
+        <div class="community">
+          <div class="community-icon">🎓</div>
+          <div class="community-info">
+            <h3>Campus Connect</h3>
+            <p>2.4k members</p>
+          </div>
+          <button class="join-btn" onclick="toggleJoin(this)">Join</button>
+        </div>
+
+        <div class="community">
+          <div class="community-icon">💻</div>
+          <div class="community-info">
+            <h3>Tech & Creators</h3>
+            <p>1.8k members</p>
+          </div>
+          <button class="join-btn" onclick="toggleJoin(this)">Join</button>
+        </div>
+
+        <div class="community">
+          <div class="community-icon">🎸</div>
+          <div class="community-info">
+            <h3>Music & Entertainment</h3>
+            <p>960 members</p>
+          </div>
+          <button class="join-btn" onclick="toggleJoin(this)">Join</button>
+        </div>
+
+        <div class="community">
+          <div class="community-icon">💼</div>
+          <div class="community-info">
+            <h3>Student Opportunities</h3>
+            <p>3.1k members</p>
+          </div>
+          <button class="join-btn" onclick="toggleJoin(this)">Join</button>
+        </div>
+
+      </section>
+
+
+      <section class="right-card">
+        <div class="section-heading">
+          <h2>People you may know</h2>
+          <button onclick="showFeature('Discover people')">See all</button>
+        </div>
+
+        <div class="person">
+          <img class="avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=faces" alt="">
+          <div class="person-info">
+            <h3>Precious James</h3>
+            <p>Student · Creative</p>
+          </div>
+          <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+        </div>
+
+        <div class="person">
+          <img class="avatar" src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=100&h=100&fit=crop&crop=faces" alt="">
+          <div class="person-info">
+            <h3>Samuel David</h3>
+            <p>Alumni · Entrepreneur</p>
+          </div>
+          <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+        </div>
+
+        <div class="person">
+          <img class="avatar" src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop&crop=faces" alt="">
+          <div class="person-info">
+            <h3>Esther Johnson</h3>
+            <p>Student · Creator</p>
+          </div>
+          <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+        </div>
+
+      </section>
+
+
+      <section class="right-card">
+        <div class="section-heading">
+          <h2>Coming up 📅</h2>
+          <button onclick="showFeature('Campus events')">All events</button>
+        </div>
+
+        <div class="event">
+          <div class="event-date">
+            <strong>08</strong>
+            <span>NOV</span>
+          </div>
+          <div class="event-info">
+            <h3>Campus Creators Meetup</h3>
+            <p>Online · Creators & students</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-date">
+            <strong>15</strong>
+            <span>NOV</span>
+          </div>
+          <div class="event-info">
+            <h3>Student Innovation Challenge</h3>
+            <p>Online · Open to all campuses</p>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-date">
+            <strong>22</strong>
+            <span>NOV</span>
+          </div>
+          <div class="event-info">
+            <h3>Alumni Networking Day</h3>
+            <p>Online · Students & alumni</p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <div class="footer-links">
+        <span>About</span>
+        <span>Community Guidelines</span>
+        <span>Privacy</span>
+        <span>Terms</span>
+        <span>Help</span>
+        <span>© 2026 Campusora</span>
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+
+  <nav class="bottom-nav" aria-label="Mobile navigation">
+
+    <button class="bottom-item active" data-page="Home" onclick="selectPage('Home',this)">
+      <span class="bottom-icon">⌂</span>
+      <span>Home</span>
+    </button>
+
+    <button class="bottom-item" data-page="Explore" onclick="selectPage('Explore',this)">
+      <span class="bottom-icon">⌕</span>
+      <span>Explore</span>
+    </button>
+
+    <button class="bottom-item create" onclick="openComposer()">
+      <span class="bottom-icon">＋</span>
+      <span>Create</span>
+    </button>
+
+    <button class="bottom-item" data-page="Spotlight" onclick="selectPage('Spotlight',this)">
+      <span class="bottom-icon">▷</span>
+      <span>Spotlight</span>
+    </button>
+
+    <button class="bottom-item" data-page="Profile" onclick="selectPage('Profile',this)">
+      <span class="bottom-icon">♙</span>
+      <span>Profile</span>
+    </button>
+
+  </nav>
+
+
+  <!-- CREATE POST MODAL -->
+
+  <div class="modal" id="composerModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+        <h2 id="modalTitle">Create a post ✨</h2>
+        <button class="close-modal" onclick="closeComposer()" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-profile">
+        <img
+          class="avatar"
+          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces"
+          alt=""
+        >
+        <div>
+          <strong>Your Campusora profile</strong>
+          <p>Sharing with the community</p>
+        </div>
+      </div>
+
+      <textarea id="postText" placeholder="What's happening on your campus? Share a thought, ask a question, or tell your story..."></textarea>
+
+      <label class="image-picker">
+        <span>📷 Add a photo</span>
+        <input type="file" id="postImage" accept="image/*">
+      </label>
+
+      <img id="imagePreview" alt="Selected image preview">
+
+      <button class="publish-btn" id="publishBtn" onclick="publishPost()">Share with the community ↗</button>
+
     </div>
 
-    <section class="panel right-panel">
-      <div class="panel-heading">Upcoming Events <button class="see-all" data-section="Events">See All</button></div>
-
-      <div class="event-row">
-        <div class="event-date"><small>APR</small><strong>26</strong></div>
-        <div class="event-info">
-          <strong>AKSU End of Semester Party</strong>
-          <p>📍 AKSU Main Campus<br><span class="going">♙ 4.2K going</span></p>
-        </div>
-        <button class="interest-button">Interested</button>
-      </div>
-
-      <div class="event-row">
-        <div class="event-date"><small>MAY</small><strong>03</strong></div>
-        <div class="event-info">
-          <strong>Tech &amp; Career Webinar</strong>
-          <p>🌐 Online • 7:00 PM<br><span class="going">♙ 1.8K going</span></p>
-        </div>
-        <button class="interest-button">Interested</button>
-      </div>
-
-      <div class="event-row">
-        <div class="event-date"><small>MAY</small><strong>10</strong></div>
-        <div class="event-info">
-          <strong>UNILAG vs AKSU Trivia Battle</strong>
-          <p>🌐 Online • 6:00 PM<br><span class="going">♙ 3.6K going</span></p>
-        </div>
-        <button class="interest-button">Interested</button>
-      </div>
-    </section>
-
-    <section class="panel right-panel">
-      <div class="panel-heading">Sponsored <button class="see-all" data-message="Sponsored placements will be available to businesses later.">Sponsored ↗</button></div>
-      <div class="sponsored-content">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=300&q=80" alt="Sneakers">
-        <div class="sponsored-info">
-          <strong>ZedWear</strong>
-          <p>Trendy styles for every campus mood. Quality. Comfort. Class.</p>
-          <button class="primary-button" data-message="Sponsored shopping links will be connected later.">Shop Now</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel right-panel">
-      <div class="panel-heading">🔥 Trending Now</div>
-      <div class="trending-tabs">
-        <button class="trending-tab active" data-trend="Posts">Posts</button>
-        <button class="trending-tab" data-trend="Communities">Communities</button>
-        <button class="trending-tab" data-trend="People">People</button>
-      </div>
-      <ol class="trending-list" id="trendingList">
-        <li>Campus love stories 💗</li>
-        <li>Best foods on campus 😋</li>
-        <li>NYSC preparation tips</li>
-        <li>Small business ideas 💡</li>
-        <li>Favourite Nigerian artist 🎵</li>
-      </ol>
-    </section>
-
-  </aside>
-</div>
-
-<!-- BOTTOM UTILITY PANELS -->
-<section class="bottom-bar">
-  <div class="bottom-card game-card">
-    <span class="game-icon">🎮</span>
-    <div><strong>Campus Trivia</strong><p>Test your knowledge and win points!</p></div>
-    <button class="primary-button" data-section="Games">Play Now</button>
   </div>
 
-  <div class="bottom-card">
-    <div class="leaderboard-title">Top 3 This Week</div>
-    <div class="leaderboard" style="margin-top:10px">
-      <div class="leader">
-        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80" alt="">
-        <span>Tunde A.<small>1,250 pts</small></span>
-      </div>
-      <div class="leader">
-        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=80&q=80" alt="">
-        <span>Tunde E.<small>1,250 pts</small></span>
-      </div>
-      <div class="leader">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="">
-        <span>Chioma E.<small>1,120 pts</small></span>
-      </div>
-    </div>
-  </div>
 
-  <div class="bottom-card opportunity-card">
-    <span class="trophy">🏆</span>
-    <div><strong>Your next big opportunity might be here.</strong></div>
-    <button class="primary-button" data-message="Explore will be connected to real content later.">Explore →</button>
-  </div>
-</section>
+  <!-- TOAST MESSAGE -->
 
-<footer class="site-footer">
-  <div class="footer-brand">◢ Campusora</div>
-  <div class="footer-links">
-    <a href="#about" data-message="The About page will be built later.">About</a>
-    <a href="#privacy" data-message="The Privacy Policy will be added before launch.">Privacy</a>
-    <a href="#terms" data-message="The Terms and Conditions will be added before launch.">Terms</a>
-    <a href="mailto:hello@campusora.com">Contact</a>
-  </div>
-  <div class="social-links">𝕏　◎　♪　▶</div>
-  <div>Built for students. Made for the future. 👑</div>
-</footer>
+  <div class="toast" id="toast" role="status"></div>
 
-<nav class="mobile-nav" aria-label="Mobile navigation">
-  <button class="active" data-section="Home"><span>⌂</span>Home</button>
-  <button data-section="Explore"><span>⌕</span>Explore</button>
-  <button data-section="Communities"><span>♧</span>Communities</button>
-  <button data-section="Messages"><span>✉</span>Messages</button>
-  <button data-section="Profile"><span>☻</span>Profile</button>
-</nav>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    const modal = document.getElementById("composerModal");
+    const postText = document.getElementById("postText");
+    const postImage = document.getElementById("postImage");
+    const imagePreview = document.getElementById("imagePreview");
+    const feedPosts = document.getElementById("feedPosts");
 
-<script>
-const toast = document.getElementById("toast");
-let toastTimer;
+    let selectedImageData = "";
+    let toastTimer;
 
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
-}
+    function showToast(message) {
+      const toast = document.getElementById("toast");
 
-document.querySelectorAll("[data-message]").forEach(button => {
-  button.addEventListener("click", () => {
-    showToast(button.dataset.message);
-  });
-});
+      toast.textContent = message;
+      toast.classList.add("show");
 
-document.querySelectorAll(".nav-item").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
-    button.classList.add("active");
-    showToast(button.dataset.section + " section selected. We'll build this feature in a later phase.");
-  });
-});
+      clearTimeout(toastTimer);
 
-document.querySelectorAll(".mobile-nav button").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".mobile-nav button").forEach(item => item.classList.remove("active"));
-    button.classList.add("active");
-    showToast(button.dataset.section + " selected.");
-  });
-});
-
-document.querySelectorAll(".quick-item, [data-section]:not(.nav-item):not(.mobile-nav button)").forEach(button => {
-  button.addEventListener("click", () => {
-    if (button.dataset.section) {
-      showToast(button.dataset.section + " will be developed in a later phase.");
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
     }
-  });
-});
 
-document.querySelectorAll(".join-button").forEach(button => {
-  button.addEventListener("click", () => {
-    const joined = button.classList.toggle("joined");
-    button.textContent = joined ? "Joined ✓" : "Join";
-    showToast(joined
-      ? "Preview: you've joined this community. Membership will be saved after we connect the database."
-      : "Preview: community left.");
-  });
-});
+    function showFeature(feature) {
+      showToast(feature + " will be available as we build Campusora.");
+    }
 
-document.querySelectorAll(".interest-button").forEach(button => {
-  button.addEventListener("click", () => {
-    const interested = button.classList.toggle("interested");
-    button.textContent = interested ? "Interested ✓" : "Interested";
-    showToast(interested
-      ? "Preview: event marked as interesting. This isn't saved to an account yet."
-      : "Preview: event removed from your interests.");
-  });
-});
+    function openComposer() {
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
 
-document.querySelectorAll(".like-button").forEach(button => {
-  button.addEventListener("click", () => {
-    const count = button.querySelector("span");
-    let number = Number(count.textContent);
-    const liked = button.classList.toggle("liked");
-    number += liked ? 1 : -1;
-    count.textContent = number;
-    showToast(liked ? "Post liked in this preview." : "Like removed in this preview.");
-  });
-});
+      setTimeout(() => postText.focus(), 100);
+    }
 
-document.querySelectorAll(".feed-tab").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".feed-tab").forEach(item => item.classList.remove("active"));
-    button.classList.add("active");
-    showToast(button.dataset.feed + " feed selected. Personalized feeds will work after backend integration.");
-  });
-});
+    function closeComposer() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
 
-const trendData = {
-  Posts: [
-    "Campus love stories 💗",
-    "Best foods on campus 😋",
-    "NYSC preparation tips",
-    "Small business ideas 💡",
-    "Favourite Nigerian artist 🎵"
-  ],
-  Communities: [
-    "AKSU Community 🎓",
-    "Tech & Innovation 🚀",
-    "Student Entrepreneurs 💼",
-    "Music & Entertainment 🎵",
-    "Alumni Network 🌍"
-  ],
-  People: [
-    "Campus creators 🌟",
-    "Student entrepreneurs 💼",
-    "Alumni mentors 🎓",
-    "Campus musicians 🎵",
-    "Tech enthusiasts 🚀"
-  ]
-};
+      postText.value = "";
+      postImage.value = "";
+      selectedImageData = "";
 
-document.querySelectorAll(".trending-tab").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".trending-tab").forEach(item => item.classList.remove("active"));
-    button.classList.add("active");
+      imagePreview.src = "";
+      imagePreview.style.display = "none";
+    }
 
-    const list = document.getElementById("trendingList");
-    list.innerHTML = "";
-
-    trendData[button.dataset.trend].forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      list.appendChild(li);
+    modal.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        closeComposer();
+      }
     });
-  });
-});
 
-document.getElementById("openComposer").addEventListener("click", () => {
-  showToast("The post editor and publishing feature will be connected in the next development phase.");
-});
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        closeComposer();
+      }
+    });
 
-document.getElementById("globalSearch").addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    const query = event.target.value.trim();
-    if (query) {
-      showToast('Search for "' + query + '" will work when we connect the database.');
+    postImage.addEventListener("change", function() {
+      const file = this.files[0];
+
+      if (!file) {
+        selectedImageData = "";
+        imagePreview.style.display = "none";
+        return;
+      }
+
+      if (!file.type.startsWith("image/")) {
+        showToast("Please select an image file.");
+        this.value = "";
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showToast("Please choose an image smaller than 5MB.");
+        this.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        selectedImageData = event.target.result;
+        imagePreview.src = selectedImageData;
+        imagePreview.style.display = "block";
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, function(char) {
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[char];
+      });
     }
-  }
-});
-</script>
+
+    function publishPost() {
+      const text = postText.value.trim();
+
+      if (!text && !selectedImageData) {
+        showToast("Write something or add a photo first.");
+        return;
+      }
+
+      const button = document.getElementById("publishBtn");
+
+      button.disabled = true;
+      button.textContent = "Sharing...";
+
+      const article = document.createElement("article");
+      article.className = "post";
+      article.dataset.search = text.toLowerCase();
+
+      const safeText = escapeHTML(text);
+
+      const imageHTML = selectedImageData
+        ? '<img class="post-image landscape" src="' + selectedImageData + '" alt="Image shared with this post">'
+        : "";
+
+      article.innerHTML = `
+        <div class="post-header">
+          <img
+            class="avatar"
+            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces"
+            alt="Your profile"
+          >
+
+          <div class="post-user">
+            <div class="post-name-row">
+              <span class="post-name">You</span>
+              <span class="user-badge">Member</span>
+            </div>
+            <div class="post-meta">Just now · Campusora</div>
+          </div>
+
+          <button class="more-btn" onclick="showFeature('Post options')" aria-label="More options">···</button>
+        </div>
+
+        ${text ? '<div class="post-body"><p>' + safeText + '</p></div>' : ""}
+
+        ${imageHTML}
+
+        <div class="post-stats">
+          <span><span class="reaction-icons">💜</span><span class="like-count">0</span> reactions</span>
+          <span><span class="comment-count">0</span> comments · <span class="share-count">0</span> shares</span>
+        </div>
+
+        <div class="post-actions">
+          <button class="post-action" onclick="toggleLike(this)">
+            <span>♡</span> Like
+          </button>
+
+          <button class="post-action" onclick="toggleComments(this)">
+            <span>▢</span> Comment
+          </button>
+
+          <button class="post-action" onclick="sharePost(this)">
+            <span>↗</span> Share
+          </button>
+        </div>
+
+        <div class="comment-area">
+          <div class="comment-form">
+            <input type="text" placeholder="Write a comment..." aria-label="Write a comment">
+            <button onclick="addComment(this)">Send</button>
+          </div>
+          <div class="comment-list"></div>
+        </div>
+      `;
+
+      feedPosts.prepend(article);
+
+      closeComposer();
+
+      button.disabled = false;
+      button.textContent = "Share with the community ↗";
+
+      showToast("Your demo post has been added to the feed!");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function toggleLike(button) {
+      const post = button.closest(".post");
+      const count = post.querySelector(".like-count");
+      const icon = button.querySelector("span");
+
+      const isLiked = button.classList.toggle("liked");
+
+      let likes = Number(count.textContent);
+
+      if (isLiked) {
+        likes++;
+        icon.textContent = "♥";
+        button.lastChild.textContent = " Liked";
+      } else {
+        likes = Math.max(0, likes - 1);
+        icon.textContent = "♡";
+        button.lastChild.textContent = " Like";
+      }
+
+      count.textContent = likes;
+    }
+
+    function toggleComments(button) {
+      const post = button.closest(".post");
+      const area = post.querySelector(".comment-area");
+
+      area.classList.toggle("open");
+
+      if (area.classList.contains("open")) {
+        area.querySelector("input").focus();
+      }
+    }
+
+    function addComment(button) {
+      const area = button.closest(".comment-area");
+      const input = area.querySelector("input");
+      const commentList = area.querySelector(".comment-list");
+      const post = button.closest(".post");
+
+      const text = input.value.trim();
+
+      if (!text) {
+        showToast("Write a comment first.");
+        return;
+      }
+
+      const comment = document.createElement("div");
+      comment.className = "comment";
+
+      const strong = document.createElement("strong");
+      strong.textContent = "You";
+
+      comment.appendChild(strong);
+      comment.appendChild(document.createTextNode(text));
+
+      commentList.appendChild(comment);
+
+      const count = post.querySelector(".comment-count");
+      count.textContent = Number(count.textContent) + 1;
+
+      input.value = "";
+
+      showToast("Demo comment added.");
+    }
+
+    async function sharePost(button) {
+      const post = button.closest(".post");
+      const text = post.querySelector(".post-body p");
+
+      const shareText = text
+        ? text.innerText
+        : "Check out this post on Campusora!";
+
+      const shareData = {
+        title: "Campusora",
+        text: shareText,
+        url: window.location.href
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(
+            shareText + "\n" + window.location.href
+          );
+
+          showToast("Post text and page link copied.");
+        } else {
+          showToast("Use your browser's share option to share this post.");
+        }
+
+        const count = post.querySelector(".share-count");
+        count.textContent = Number(count.textContent) + 1;
+
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          showToast("Unable to share right now.");
+        }
+      }
+    }
+
+    function toggleJoin(button) {
+      const joined = button.classList.toggle("joined");
+
+      button.textContent = joined ? "Joined ✓" : "Join";
+
+      showToast(
+        joined
+          ? "You joined this demo community."
+          : "You left this demo community."
+      );
+    }
+
+    function toggleFollow(button) {
+      const following = button.classList.toggle("following");
+
+      button.textContent = following ? "Following" : "Follow";
+
+      showToast(
+        following
+          ? "You're now following this demo profile."
+          : "You unfollowed this demo profile."
+      );
+    }
+
+    function selectPage(page, button) {
+      if (page !== "Home") {
+        showFeature(page);
+        return;
+      }
+
+      document.querySelectorAll(".nav-item[data-page], .bottom-item[data-page]")
+        .forEach(item => item.classList.remove("active"));
+
+      document.querySelectorAll('[data-page="Home"]')
+        .forEach(item => item.classList.add("active"));
+
+      document.getElementById("feedTitle").textContent = "Your Feed ✨";
+      document.getElementById("feedSubtitle").textContent =
+        "What's happening around your world?";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+      const query = this.value.trim().toLowerCase();
+      const posts = feedPosts.querySelectorAll(".post");
+
+      let visibleCount = 0;
+
+      posts.forEach(post => {
+        const content = (
+          post.innerText + " " + (post.dataset.search || "")
+        ).toLowerCase();
+
+        const matches = content.includes(query);
+
+        post.style.display = matches ? "" : "none";
+
+        if (matches) visibleCount++;
+      });
+
+      if (query) {
+        document.getElementById("feedTitle").textContent = "Search results";
+        document.getElementById("feedSubtitle").textContent =
+          visibleCount + " matching demo post(s)";
+      } else {
+        document.getElementById("feedTitle").textContent = "Your Feed ✨";
+        document.getElementById("feedSubtitle").textContent =
+          "What's happening around your world?";
+      }
+    });
+
+    document.getElementById("feedFilter").addEventListener("change", function() {
+      const mode = this.value;
+      const posts = Array.from(feedPosts.querySelectorAll(".post"));
+
+      if (mode === "latest") {
+        posts.reverse().forEach(post => feedPosts.appendChild(post));
+        showToast("Showing demo posts in latest-first order.");
+      } else if (mode === "popular") {
+        posts.sort((a, b) => {
+          const likesA = Number(a.querySelector(".like-count").textContent);
+          const likesB = Number(b.querySelector(".like-count").textContent);
+
+          return likesB - likesA;
+        }).forEach(post => feedPosts.appendChild(post));
+
+        showToast("Showing demo posts by reactions.");
+      } else {
+        showToast("Showing all demo posts.");
+      }
+    });
+  </script>
 
 </body>
   </html>
