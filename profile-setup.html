@@ -1,1 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
 
+  <title>Set Up Your Profile | Campusora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080b18;
+      --surface: #101426;
+      --surface2: #171c32;
+      --border: rgba(255,255,255,.09);
+      --text: #f5f6ff;
+      --muted: #929bb6;
+      --purple: #925bff;
+      --blue: #526dff;
+      --cyan: #39d7f5;
+      --gradient: linear-gradient(120deg,#925bff,#526dff,#39d7f5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 25px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at top left,#25174b 0,transparent 35%),
+        radial-gradient(circle at bottom right,#102c48 0,transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--gradient);
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .brand h1 {
+      font-size: 27px;
+      letter-spacing: -.7px;
+    }
+
+    .brand h1 span {
+      color: var(--cyan);
+    }
+
+    .brand p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card {
+      background: rgba(16,20,38,.96);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 27px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.25);
+    }
+
+    .welcome {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+      font-size: 24px;
+      margin-bottom: 9px;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .avatar-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 23px;
+    }
+
+    .avatar {
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      background:
+        linear-gradient(var(--surface2),var(--surface2)) padding-box,
+        var(--gradient) border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #dce0f5;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--surface2);
+      color: white;
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(146,91,255,.12);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #737d9c;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 95px;
+      line-height: 1.6;
+    }
+
+    select option {
+      background: var(--surface);
+      color: white;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+      margin-top: 7px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 7px;
+      border: none;
+      border-radius: 11px;
+      background: var(--gradient);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary-btn:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 17px;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .message.error {
+      display: block;
+      color: #ff9ba8;
+      background: rgba(255,90,110,.1);
+      border: 1px solid rgba(255,90,110,.3);
+    }
+
+    .message.success {
+      display: block;
+      color: #7df0c4;
+      background: rgba(57,215,160,.1);
+      border: 1px solid rgba(57,215,160,.3);
+    }
+
+    .back {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      color: var(--cyan);
+    }
+
+    @media (max-width: 420px) {
+      .card {
+        padding: 22px 17px;
+      }
+
+      .welcome h2 {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <header class="brand">
+      <div class="logo">✳</div>
+      <h1>campus<span>ora</span></h1>
+      <p>Your campus. Your people.</p>
+    </header>
+
+    <section class="card">
+
+      <div class="welcome">
+        <h2>Let's build your profile ✨</h2>
+        <p>
+          Help people discover you and find your campus community.
+          You can update your details later.
+        </p>
+      </div>
+
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <span id="avatarPlaceholder">👤</span>
+          <img id="avatarPreview" alt="Profile picture preview">
+        </div>
+      </div>
+
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+
+      <form id="profileForm">
+
+        <div class="field">
+          <label for="fullName">Full name</label>
+          <input
+            id="fullName"
+            type="text"
+            maxlength="80"
+            placeholder="Your full name"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            minlength="3"
+            maxlength="24"
+            pattern="[A-Za-z0-9_]+"
+            placeholder="your_username"
+            required
+          >
+          <p class="hint">
+            Use 3–24 letters, numbers or underscores.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="school">School or university</label>
+          <input
+            id="school"
+            type="text"
+            maxlength="120"
+            placeholder="Your school or university"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="role">Membership type</label>
+          <select id="role" required>
+            <option value="student">Student</option>
+            <option value="alumni">Alumni</option>
+            <option value="general">General Member</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="bio">About you</label>
+          <textarea
+            id="bio"
+            maxlength="300"
+            placeholder="Tell people a little about yourself, your interests or what you study..."
+          ></textarea>
+          <p class="hint">Up to 300 characters. This is optional.</p>
+        </div>
+
+        <div class="field">
+          <label for="avatarUrl">Profile picture URL</label>
+          <input
+            id="avatarUrl"
+            type="url"
+            placeholder="https://example.com/my-photo.jpg"
+          >
+          <p class="hint">
+            Optional for now. Add a direct link to an image if you have one.
+          </p>
+        </div>
+
+        <button class="primary-btn" id="saveBtn" type="submit">
+          Complete profile and continue →
+        </button>
+
+      </form>
+
+    </section>
+
+    <a href="./index.html" class="back">← Back to Campusora</a>
+
+  </main>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    const form = document.getElementById('profileForm');
+    const saveBtn = document.getElementById('saveBtn');
+    const message = document.getElementById('message');
+    const avatarUrl = document.getElementById('avatarUrl');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+
+    let currentUser = null;
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = 'message ' + type;
+    }
+
+    function setAvatar(url) {
+      if (!url) {
+        avatarPreview.removeAttribute('src');
+        avatarPreview.style.display = 'none';
+        avatarPlaceholder.style.display = 'block';
+        return;
+      }
+
+      try {
+        const parsed = new URL(url);
+
+        if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+          throw new Error('Invalid image URL');
+        }
+
+        avatarPreview.onload = () => {
+          avatarPreview.style.display = 'block';
+          avatarPlaceholder.style.display = 'none';
+        };
+
+        avatarPreview.onerror = () => {
+          avatarPreview.style.display = 'none';
+          avatarPlaceholder.style.display = 'block';
+        };
+
+        avatarPreview.src = parsed.href;
+      } catch {
+        avatarPreview.style.display = 'none';
+        avatarPlaceholder.style.display = 'block';
+      }
+    }
+
+    avatarUrl.addEventListener('input', () => {
+      setAvatar(avatarUrl.value.trim());
+    });
+
+    async function initialise() {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (error || !data.session) {
+        window.location.replace('./auth.html');
+        return;
+      }
+
+      currentUser = data.session.user;
+
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('full_name, username, school, role, bio, avatar_url')
+        .eq('id', currentUser.id)
+        .maybeSingle();
+
+      if (profileError) {
+        showMessage(
+          'We could not load your profile details. You can still try filling in the form.',
+          'error'
+        );
+      }
+
+      if (profile) {
+        document.getElementById('fullName').value =
+          profile.full_name || currentUser.user_metadata?.full_name || '';
+
+        document.getElementById('username').value =
+          profile.username || currentUser.user_metadata?.username || '';
+
+        document.getElementById('school').value =
+          profile.school || currentUser.user_metadata?.school || '';
+
+        document.getElementById('role').value =
+          profile.role || currentUser.user_metadata?.role || 'student';
+
+        document.getElementById('bio').value = profile.bio || '';
+        avatarUrl.value = profile.avatar_url || '';
+        setAvatar(avatarUrl.value);
+      } else {
+        document.getElementById('fullName').value =
+          currentUser.user_metadata?.full_name || '';
+
+        document.getElementById('username').value =
+          currentUser.user_metadata?.username || '';
+
+        document.getElementById('school').value =
+          currentUser.user_metadata?.school || '';
+
+        document.getElementById('role').value =
+          currentUser.user_metadata?.role || 'student';
+      }
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!currentUser) {
+        showMessage('Your session has expired. Please log in again.', 'error');
+        return;
+      }
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const username = document.getElementById('username').value.trim().toLowerCase();
+      const school = document.getElementById('school').value.trim();
+      const role = document.getElementById('role').value;
+      const bio = document.getElementById('bio').value.trim();
+      const imageUrl = avatarUrl.value.trim();
+
+      if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+        showMessage(
+          'Your username must be 3–24 characters using letters, numbers or underscores.',
+          'error'
+        );
+        return;
+      }
+
+      if (imageUrl) {
+        try {
+          const parsed = new URL(imageUrl);
+
+          if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+            throw new Error();
+          }
+        } catch {
+          showMessage('Please enter a valid profile picture URL.', 'error');
+          return;
+        }
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving your profile...';
+
+      try {
+        const { error } = await supabase
+          .from('profiles')
+          .upsert({
+            id: currentUser.id,
+            full_name: fullName,
+            username,
+            school,
+            role,
+            bio,
+            avatar_url: imageUrl || null
+          }, {
+            onConflict: 'id'
+          });
+
+        if (error) throw error;
+
+        showMessage('Your profile is ready! Welcome to Campusora.', 'success');
+        saveBtn.textContent = 'Opening Campusora...';
+
+        window.location.replace('./index.html');
+
+      } catch (error) {
+        let text = error.message || 'Could not save your profile. Please try again.';
+
+        if (error.code === '23505') {
+          text = 'That username is already taken. Please choose another one.';
+        } else if (error.code === '42501') {
+          text = 'Campusora could not save your profile because of a database permission issue.';
+        }
+
+        showMessage(text, 'error');
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Complete profile and continue →';
+      }
+    });
+
+    initialise();
+  </script>
+
+</body>
+  </html>
