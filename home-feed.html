@@ -1,1 +1,1216 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Home Feed | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root {
+  --bg: #080b18;
+  --panel: #101528;
+  --panel2: #151b32;
+  --border: #252c46;
+  --text: #f4f6ff;
+  --muted: #929bb8;
+  --purple: #8b5cf6;
+  --blue: #4f8cff;
+  --cyan: #36d9ff;
+  --danger: #ff6685;
+}
 
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, textarea {
+  font: inherit;
+}
+
+button { cursor: pointer; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.topbar {
+  height: 68px;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: rgba(8,11,24,.96);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.8px;
+  background: linear-gradient(90deg, #a78bfa, #36d9ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-link, .refresh-btn {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 10px 13px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.top-link:hover, .refresh-btn:hover {
+  border-color: var(--purple);
+}
+
+.layout {
+  max-width: 1280px;
+  margin: 25px auto;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 650px) 260px;
+  gap: 22px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.side-panel {
+  padding: 18px;
+  position: sticky;
+  top: 90px;
+}
+
+.side-title {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  margin: 4px 0 14px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 11px;
+  margin: 5px 0;
+  color: #b8c0db;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.nav-item:hover, .nav-item.active {
+  background: linear-gradient(100deg, rgba(139,92,246,.2), rgba(79,140,255,.1));
+  color: white;
+}
+
+.nav-icon {
+  width: 22px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.main-heading {
+  margin: 0 0 7px;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.create-card {
+  padding: 17px;
+  margin-bottom: 18px;
+}
+
+.create-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #252c46;
+  border: 1px solid #343c5b;
+}
+
+.create-placeholder {
+  min-width: 0;
+  flex: 1;
+  color: var(--muted);
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px;
+  font-size: 12px;
+}
+
+.primary-btn {
+  border: 0;
+  color: white;
+  padding: 11px 15px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 800;
+  background: linear-gradient(100deg, var(--purple), var(--blue));
+}
+
+.primary-btn:hover { filter: brightness(1.12); }
+
+.post {
+  margin-bottom: 17px;
+  padding: 18px;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.author-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.author-name {
+  font-size: 13px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.author-name:hover { color: var(--cyan); }
+
+.username {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.post-time {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.role-badge {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 3px 6px;
+  font-size: 9px;
+  border-radius: 6px;
+  background: rgba(139,92,246,.18);
+  color: #c4b5fd;
+  vertical-align: middle;
+}
+
+.post-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 17px 0;
+}
+
+.post-image {
+  width: 100%;
+  max-height: 540px;
+  object-fit: contain;
+  background: #080b18;
+  border-radius: 13px;
+  border: 1px solid var(--border);
+  margin-bottom: 13px;
+}
+
+.post-stats {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  padding-top: 10px;
+}
+
+.action-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #aab3d0;
+  padding: 10px 5px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.action-btn:hover {
+  background: var(--panel2);
+  color: white;
+}
+
+.action-btn.liked { color: #ff6685; }
+
+.comments-area {
+  display: none;
+  border-top: 1px solid var(--border);
+  margin-top: 10px;
+  padding-top: 14px;
+}
+
+.comments-area.open { display: block; }
+
+.comment-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-bottom: 17px;
+}
+
+.comment-input {
+  min-width: 0;
+  flex: 1;
+  resize: vertical;
+  min-height: 43px;
+  max-height: 130px;
+  padding: 12px;
+  border-radius: 11px;
+  color: white;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  outline: none;
+  font-size: 12px;
+}
+
+.comment-input:focus { border-color: var(--purple); }
+
+.comment-submit {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px;
+  color: white;
+  background: var(--purple);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 13px 0;
+}
+
+.comment .avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.comment-main {
+  min-width: 0;
+  flex: 1;
+  background: var(--panel2);
+  border-radius: 12px;
+  padding: 11px;
+}
+
+.comment-author {
+  font-size: 11px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.comment-text {
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin-top: 7px;
+}
+
+.comment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 9px;
+}
+
+.small-action {
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.small-action:hover { color: var(--cyan); }
+
+.replies {
+  margin-left: 15px;
+  padding-left: 12px;
+  border-left: 1px solid #343c5b;
+}
+
+.reply-form {
+  display: none;
+  gap: 7px;
+  margin: 10px 0;
+}
+
+.reply-form.open { display: flex; }
+
+.reply-form .comment-input {
+  min-height: 38px;
+}
+
+.status {
+  text-align: center;
+  padding: 40px 15px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.status strong {
+  display: block;
+  color: white;
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.right-card {
+  padding: 16px;
+  margin-bottom: 15px;
+}
+
+.right-card h3 {
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+
+.right-card p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 0;
+}
+
+.gradient-banner {
+  padding: 18px;
+  margin-bottom: 16px;
+  background: linear-gradient(120deg, rgba(139,92,246,.25), rgba(54,217,255,.09));
+  border: 1px solid #38315e;
+  border-radius: 16px;
+}
+
+.gradient-banner h2 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.gradient-banner p {
+  color: #c0c8e0;
+  font-size: 11px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+footer {
+  text-align: center;
+  color: #6f7897;
+  padding: 25px 10px 40px;
+  font-size: 10px;
+}
+
+@media (max-width: 1050px) {
+  .layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+  .right-column { display: none; }
+}
+
+@media (max-width: 680px) {
+  .topbar {
+    height: 60px;
+    padding: 0 14px;
+  }
+  .brand { font-size: 21px; }
+  .top-link, .refresh-btn {
+    padding: 9px 10px;
+    font-size: 11px;
+  }
+  .layout {
+    display: block;
+    margin: 20px auto;
+    padding: 0 11px;
+  }
+  .left-column { display: none; }
+  .main-heading { font-size: 22px; }
+  .post { padding: 13px; }
+  .create-card { padding: 13px; }
+  .create-placeholder { padding: 11px; }
+  .primary-btn { padding: 10px; }
+  .avatar { width: 38px; height: 38px; }
+  .post-content { font-size: 12px; }
+  .replies { margin-left: 5px; padding-left: 8px; }
+}
+
+@media (max-width: 380px) {
+  .top-link { display: none; }
+  .post-stats { font-size: 10px; }
+}
+</style></head><body><header class="topbar">
+  <a href="index.html" class="brand">Campusora</a>  <div class="top-actions">
+    <a class="top-link" href="profile.html">My Profile</a>
+    <button class="refresh-btn" id="refreshBtn">↻ Refresh</button>
+  </div>
+</header><div class="layout">  <aside class="left-column">
+    <div class="panel side-panel">
+      <div class="side-title">Your Campusora</div>  <a class="nav-item active" href="home-feed.html">
+    <span class="nav-icon">🏠</span> Home Feed
+  </a>
+
+  <a class="nav-item" href="profile.html">
+    <span class="nav-icon">👤</span> My Profile
+  </a>
+
+  <a class="nav-item" href="create-post.html">
+    <span class="nav-icon">✏️</span> Create Post
+  </a>
+
+  <a class="nav-item" href="index.html">
+    <span class="nav-icon">🌐</span> Campusora Home
+  </a>
+
+  <div style="height:18px"></div>
+  <div class="side-title">Coming Soon</div>
+
+  <div class="nav-item">
+    <span class="nav-icon">🎬</span> Spotlight
+  </div>
+
+  <div class="nav-item">
+    <span class="nav-icon">👥</span> Communities
+  </div>
+
+  <div class="nav-item">
+    <span class="nav-icon">🛍️</span> Marketplace
+  </div>
+
+  <div class="nav-item">
+    <span class="nav-icon">🎮</span> Games
+  </div>
+</div>
+
+  </aside>  <main>
+    <div class="feed-header">
+      <div>
+        <h1 class="main-heading">Home Feed</h1>
+        <div class="subtitle">See what's happening across Campusora.</div>
+      </div>
+    </div><div class="panel create-card">
+  <div class="create-row">
+    <img id="currentAvatar" class="avatar" alt="Your profile">
+    <a href="create-post.html" class="create-placeholder">
+      What's happening on Campusora?
+    </a>
+    <a href="create-post.html" class="primary-btn">Post</a>
+  </div>
+</div>
+
+<div class="gradient-banner">
+  <h2>🌍 Your campus. Your people. Your world.</h2>
+  <p>Share your thoughts, connect with people, and discover what's happening across different campuses.</p>
+</div>
+
+<div class="feed-header">
+  <div>
+    <h2 style="font-size:16px;margin:0">Latest Posts</h2>
+    <div class="subtitle">Newest posts appear first.</div>
+  </div>
+</div>
+
+<div id="feed">
+  <div class="panel status">
+    <strong>Loading your feed...</strong>
+    Please wait while we fetch Campusora posts.
+  </div>
+</div>
+
+  </main>  <aside class="right-column">
+    <div class="panel right-card">
+      <h3>✨ Welcome to Campusora</h3>
+      <p>A place for students, alumni, and general members to connect beyond their campuses.</p>
+    </div><div class="panel right-card">
+  <h3>📣 Build your presence</h3>
+  <p>Complete your profile, publish posts, and join the conversation with the Campusora community.</p>
+  <a href="profile.html" class="primary-btn" style="display:inline-block;margin-top:13px">View Profile</a>
+</div>
+
+<div class="panel right-card">
+  <h3>💡 Community Guidelines</h3>
+  <p>Be respectful. Share helpful content. Protect your personal information and treat other members fairly.</p>
+</div>
+
+  </aside></div><footer>
+  Campusora — Connecting students, alumni, and communities.
+</footer><script type="module">
+import { supabase } from './supabase.js';
+
+const feed = document.getElementById('feed');
+const refreshBtn = document.getElementById('refreshBtn');
+const currentAvatar = document.getElementById('currentAvatar');
+
+let currentUser = null;
+let currentProfile = null;
+let busy = false;
+
+const fallbackAvatar =
+  'data:image/svg+xml;charset=UTF-8,' +
+  encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+      <rect width="100" height="100" rx="50" fill="#252c46"/>
+      <circle cx="50" cy="36" r="18" fill="#9ca8ca"/>
+      <path d="M15 95 Q15 62 50 62 Q85 62 85 95" fill="#9ca8ca"/>
+    </svg>
+  `);
+
+function escapeHTML(value = '') {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+function avatarURL(url) {
+  return url || fallbackAvatar;
+}
+
+function profileLink(userId) {
+  return 'profile.html?id=' + encodeURIComponent(userId);
+}
+
+function timeAgo(dateValue) {
+  if (!dateValue) return 'Recently';
+
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return 'Recently';
+
+  const seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+
+  if (seconds < 60) return 'Just now';
+  if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+  if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+  if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
+
+  return date.toLocaleDateString();
+}
+
+function showMessage(title, message, retry = false) {
+  feed.innerHTML = `
+    <div class="panel status">
+      <strong>${escapeHTML(title)}</strong>
+      ${escapeHTML(message)}
+      ${retry ? '<br><br><button class="primary-btn" id="retryBtn">Try Again</button>' : ''}
+    </div>
+  `;
+
+  const retryBtn = document.getElementById('retryBtn');
+  if (retryBtn) retryBtn.addEventListener('click', loadFeed);
+}
+
+async function getMyProfile() {
+  const { data: { session } } = await supabase.auth.getSession();
+  currentUser = session?.user || null;
+
+  if (!currentUser) {
+    currentProfile = null;
+    currentAvatar.src = fallbackAvatar;
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', currentUser.id)
+    .maybeSingle();
+
+  if (!error && data) {
+    currentProfile = data;
+    currentAvatar.src = avatarURL(data.avatar_url);
+  } else {
+    currentProfile = null;
+    currentAvatar.src = fallbackAvatar;
+  }
+}
+
+async function loadFeed() {
+  if (busy) return;
+  busy = true;
+
+  refreshBtn.disabled = true;
+  refreshBtn.textContent = 'Loading...';
+
+  showMessage('Loading your feed...', 'Please wait while we fetch Campusora posts.');
+
+  try {
+    await getMyProfile();
+
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    if (error) throw error;
+
+    if (!posts || posts.length === 0) {
+      showMessage(
+        'Your feed is waiting for its first post! 🌱',
+        'Be the first to share something with the Campusora community.'
+      );
+      return;
+    }
+
+    const userIds = [...new Set(posts.map(post => post.user_id).filter(Boolean))];
+    const postIds = posts.map(post => post.id);
+
+    let profiles = [];
+    let likes = [];
+    let comments = [];
+    let myLikes = [];
+
+    if (userIds.length) {
+      const { data, error: profileError } = await supabase
+        .from('profiles')
+        .select('id, username, full_name, avatar_url, role, school')
+        .in('id', userIds);
+
+      if (profileError) throw profileError;
+      profiles = data || [];
+    }
+
+    if (postIds.length) {
+      const { data, error: likesError } = await supabase
+        .from('likes')
+        .select('post_id, user_id')
+        .in('post_id', postIds);
+
+      if (likesError) throw likesError;
+      likes = data || [];
+
+      const { data: commentData, error: commentsError } = await supabase
+        .from('comments')
+        .select('id, post_id, user_id, content, created_at, parent_comment_id')
+        .in('post_id', postIds)
+        .order('created_at', { ascending: true });
+
+      if (commentsError) throw commentsError;
+      comments = commentData || [];
+
+      if (currentUser) {
+        myLikes = likes.filter(like => like.user_id === currentUser.id);
+      }
+    }
+
+    const profileMap = new Map(profiles.map(profile => [profile.id, profile]));
+    const likeCountMap = new Map();
+    const myLikeSet = new Set(myLikes.map(like => like.post_id));
+    const commentCountMap = new Map();
+
+    likes.forEach(like => {
+      likeCountMap.set(like.post_id, (likeCountMap.get(like.post_id) || 0) + 1);
+    });
+
+    comments.forEach(comment => {
+      commentCountMap.set(comment.post_id, (commentCountMap.get(comment.post_id) || 0) + 1);
+    });
+
+    feed.innerHTML = posts.map(post => {
+      const author = profileMap.get(post.user_id) || {};
+      const name = author.full_name || author.username || 'Campusora Member';
+      const username = author.username ? '@' + author.username : '';
+      const role = author.role
+        ? `<span class="role-badge">${escapeHTML(author.role)}</span>`
+        : '';
+
+      const content = post.content
+        ? `<div class="post-content">${escapeHTML(post.content)}</div>`
+        : '';
+
+      const image = post.image_url
+        ? `<img class="post-image" src="${escapeHTML(post.image_url)}" alt="Post image" loading="lazy" onerror="this.style.display='none'">`
+        : '';
+
+      const liked = myLikeSet.has(post.id);
+      const likeCount = likeCountMap.get(post.id) || 0;
+      const commentCount = commentCountMap.get(post.id) || 0;
+
+      return `
+        <article class="panel post" data-post-id="${escapeHTML(post.id)}">
+          <div class="post-author">
+            <a href="${profileLink(post.user_id)}" aria-label="View ${escapeHTML(name)}'s profile">
+              <img class="avatar" src="${escapeHTML(avatarURL(author.avatar_url))}" alt="" onerror="this.onerror=null;this.src='${fallbackAvatar}'">
+            </a>
+
+            <div class="author-info">
+              <a class="author-name" href="${profileLink(post.user_id)}">
+                ${escapeHTML(name)}${role}
+              </a>
+              <div class="username">${escapeHTML(username)}</div>
+              <div class="post-time">${escapeHTML(timeAgo(post.created_at))}</div>
+            </div>
+          </div>
+
+          ${content}
+          ${image}
+
+          <div class="post-stats">
+            <span class="like-count">${likeCount} ${likeCount === 1 ? 'like' : 'likes'}</span>
+            <span class="comment-count">${commentCount} ${commentCount === 1 ? 'comment' : 'comments'}</span>
+          </div>
+
+          <div class="post-actions">
+            <button class="action-btn ${liked ? 'liked' : ''}" data-action="like">
+              ${liked ? '❤️ Liked' : '♡ Like'}
+            </button>
+            <button class="action-btn" data-action="comments">💬 Comments</button>
+            <button class="action-btn" data-action="share">↗ Share</button>
+          </div>
+
+          <section class="comments-area" id="comments-${escapeHTML(post.id)}">
+            <form class="comment-form" data-post-id="${escapeHTML(post.id)}">
+              <img class="avatar" src="${escapeHTML(avatarURL(currentProfile?.avatar_url))}" alt="">
+              <textarea class="comment-input" name="content" maxlength="2000" placeholder="${currentUser ? 'Write a comment...' : 'Log in to comment...'}" required ${currentUser ? '' : 'disabled'}></textarea>          <button class="comment-submit" type="submit" ${currentUser ? '' : 'disabled'}>Send</button>
+        </form>
+
+        <div class="comments-list" data-comments-for="${escapeHTML(post.id)}">
+          ${renderComments(comments.filter(comment => comment.post_id === post.id), profileMap)}
+        </div>
+      </section>
+    </article>
+  `;
+}).join('');
+
+} catch (error) {
+console.error('Campusora feed error:', error);
+
+showMessage(
+  'We could not load the feed.',
+  error.message || 'Check your internet connection and try again.',
+  true
+);
+
+} finally {
+busy = false;
+refreshBtn.disabled = false;
+refreshBtn.textContent = '↻ Refresh';
+}
+}
+
+function renderComments(postComments, profileMap) {
+if (!postComments.length) {
+return '<div class="subtitle">No comments yet. Start the conversation!</div>';
+}
+
+const roots = postComments.filter(comment => !comment.parent_comment_id);
+const repliesByParent = new Map();
+
+postComments.forEach(comment => {
+if (comment.parent_comment_id) {
+const list = repliesByParent.get(comment.parent_comment_id) || [];
+list.push(comment);
+repliesByParent.set(comment.parent_comment_id, list);
+}
+});
+
+function renderOne(comment, isReply = false) {
+const author = profileMap.get(comment.user_id) || {};
+const name = author.full_name || author.username || 'Campusora Member';
+
+const replies = repliesByParent.get(comment.id) || [];
+
+return `
+  <div class="comment" data-comment-id="${escapeHTML(comment.id)}">
+    <a href="${profileLink(comment.user_id)}">
+      <img class="avatar" src="${escapeHTML(avatarURL(author.avatar_url))}" alt="" onerror="this.onerror=null;this.src='${fallbackAvatar}'">
+    </a>
+
+    <div class="comment-main">
+      <a class="comment-author" href="${profileLink(comment.user_id)}">${escapeHTML(name)}</a>
+
+      <div class="comment-text">${escapeHTML(comment.content)}</div>
+
+      <div class="comment-meta">
+        <span class="subtitle">${escapeHTML(timeAgo(comment.created_at))}</span>
+        <button class="small-action" data-comment-action="react" data-comment-id="${escapeHTML(comment.id)}">❤️ React</button>
+        ${!isReply && currentUser ? `<button class="small-action" data-comment-action="reply" data-comment-id="${escapeHTML(comment.id)}">↩ Reply</button>` : ''}
+        ${currentUser && currentUser.id === comment.user_id ? `<button class="small-action" data-comment-action="delete" data-comment-id="${escapeHTML(comment.id)}">Delete</button>` : ''}
+      </div>
+
+      <form class="reply-form" data-parent-id="${escapeHTML(comment.id)}">
+        <textarea class="comment-input" name="content" maxlength="2000" placeholder="Write a reply..." required></textarea>
+        <button class="comment-submit" type="submit">Reply</button>
+      </form>
+
+      <div class="subtitle reaction-summary" data-reaction-summary="${escapeHTML(comment.id)}"></div>
+
+      ${replies.length ? `<div class="replies">${replies.map(reply => renderOne(reply, true)).join('')}</div>` : ''}
+    </div>
+  </div>
+`;
+
+}
+
+return roots.map(comment => renderOne(comment)).join('');
+}
+
+async function toggleLike(postId, button, postElement) {
+if (!currentUser) {
+alert('Please log in to like posts.');
+return;
+}
+
+button.disabled = true;
+
+try {
+const { data: existing, error: findError } = await supabase
+.from('likes')
+.select('post_id')
+.eq('post_id', postId)
+.eq('user_id', currentUser.id)
+.maybeSingle();
+
+if (findError) throw findError;
+
+if (existing) {
+  const { error } = await supabase
+    .from('likes')
+    .delete()
+    .eq('post_id', postId)
+    .eq('user_id', currentUser.id);
+
+  if (error) throw error;
+} else {
+  const { error } = await supabase
+    .from('likes')
+    .insert({ post_id: postId, user_id: currentUser.id });
+
+  if (error) throw error;
+}
+
+const { count, error: countError } = await supabase
+  .from('likes')
+  .select('*', { count: 'exact', head: true })
+  .eq('post_id', postId);
+
+if (countError) throw countError;
+
+const isLiked = !existing;
+button.classList.toggle('liked', isLiked);
+button.textContent = isLiked ? '❤️ Liked' : '♡ Like';
+
+const countElement = postElement.querySelector('.like-count');
+countElement.textContent = `${count || 0} ${(count || 0) === 1 ? 'like' : 'likes'}`;
+
+} catch (error) {
+console.error(error);
+alert('Could not update your like. Please try again.');
+} finally {
+button.disabled = false;
+}
+}
+
+async function submitComment(form) {
+if (!currentUser) {
+alert('Please log in before commenting.');
+return;
+}
+
+const postId = form.dataset.postId;
+const textarea = form.querySelector('textarea');
+const content = textarea.value.trim();
+
+if (!content) return;
+
+const submit = form.querySelector('button[type="submit"]');
+submit.disabled = true;
+
+try {
+const { error } = await supabase
+.from('comments')
+.insert({
+post_id: postId,
+user_id: currentUser.id,
+content
+});
+
+if (error) throw error;
+
+await loadFeed();
+
+const area = document.getElementById('comments-' + postId);
+if (area) area.classList.add('open');
+
+} catch (error) {
+console.error(error);
+alert('Could not publish your comment. Please try again.');
+} finally {
+submit.disabled = false;
+}
+}
+
+async function submitReply(form) {
+if (!currentUser) {
+alert('Please log in before replying.');
+return;
+}
+
+const parentId = form.dataset.parentId;
+const parentElement = form.closest('.post');
+const postId = parentElement?.dataset.postId;
+const textarea = form.querySelector('textarea');
+const content = textarea.value.trim();
+
+if (!content || !postId) return;
+
+const submit = form.querySelector('button[type="submit"]');
+submit.disabled = true;
+
+try {
+const { error } = await supabase
+.from('comments')
+.insert({
+post_id: postId,
+user_id: currentUser.id,
+content,
+parent_comment_id: parentId
+});
+
+if (error) throw error;
+
+await loadFeed();
+
+const area = document.getElementById('comments-' + postId);
+if (area) area.classList.add('open');
+
+} catch (error) {
+console.error(error);
+alert('Could not publish your reply. Please try again.');
+} finally {
+submit.disabled = false;
+}
+}
+
+async function reactToComment(commentId) {
+if (!currentUser) {
+alert('Please log in to react to comments.');
+return;
+}
+
+try {
+const { data: existing, error: findError } = await supabase
+.from('comment_reactions')
+.select('id')
+.eq('comment_id', commentId)
+.eq('user_id', currentUser.id)
+.maybeSingle();
+
+if (findError) throw findError;
+
+if (existing) {
+  const { error } = await supabase
+    .from('comment_reactions')
+    .delete()
+    .eq('comment_id', commentId)
+    .eq('user_id', currentUser.id);
+
+  if (error) throw error;
+} else {
+  const { error } = await supabase
+    .from('comment_reactions')
+    .insert({
+      comment_id: commentId,
+      user_id: currentUser.id,
+      reaction: '❤️'
+    });
+
+  if (error) throw error;
+}
+
+await loadFeed();
+
+} catch (error) {
+console.error(error);
+alert('Could not update the reaction. Please try again.');
+}
+}
+
+async function deleteComment(commentId) {
+if (!currentUser) return;
+
+if (!confirm('Delete this comment?')) return;
+
+try {
+const { error } = await supabase
+.from('comments')
+.delete()
+.eq('id', commentId)
+.eq('user_id', currentUser.id);
+
+if (error) throw error;
+
+await loadFeed();
+
+} catch (error) {
+console.error(error);
+alert('Could not delete this comment. Please try again.');
+}
+}
+
+async function sharePost(postId) {
+const shareURL = new URL('home-feed.html', window.location.href);
+shareURL.hash = 'post-' + postId;
+
+const shareData = {
+title: 'Campusora Post',
+text: 'Check out this post on Campusora!',
+url: shareURL.href
+};
+
+try {
+if (navigator.share) {
+await navigator.share(shareData);
+} else if (navigator.clipboard && window.isSecureContext) {
+await navigator.clipboard.writeText(shareURL.href);
+alert('Post link copied! You can now share it.');
+} else {
+window.prompt('Copy this post link:', shareURL.href);
+}
+} catch (error) {
+if (error.name !== 'AbortError') {
+console.error(error);
+alert('Could not share this post.');
+}
+}
+}
+
+feed.addEventListener('click', async event => {
+const likeButton = event.target.closest('[data-action="like"]');
+if (likeButton) {
+const postElement = likeButton.closest('.post');
+await toggleLike(postElement.dataset.postId, likeButton, postElement);
+return;
+}
+
+const commentsButton = event.target.closest('[data-action="comments"]');
+if (commentsButton) {
+const postElement = commentsButton.closest('.post');
+const area = postElement.querySelector('.comments-area');
+area.classList.toggle('open');
+return;
+}
+
+const shareButton = event.target.closest('[data-action="share"]');
+if (shareButton) {
+const postElement = shareButton.closest('.post');
+await sharePost(postElement.dataset.postId);
+return;
+}
+
+const commentAction = event.target.closest('[data-comment-action]');
+if (commentAction) {
+const action = commentAction.dataset.commentAction;
+const commentId = commentAction.dataset.commentId;
+
+if (action === 'reply') {
+  const comment = commentAction.closest('.comment');
+  const form = comment.querySelector(':scope > .comment-main > .reply-form');
+  if (form) {
+    form.classList.toggle('open');
+    if (form.classList.contains('open')) form.querySelector('textarea').focus();
+  }
+}
+
+if (action === 'react') await reactToComment(commentId);
+if (action === 'delete') await deleteComment(commentId);
+
+}
+});
+
+feed.addEventListener('submit', async event => {
+const commentForm = event.target.closest('.comment-form');
+if (commentForm) {
+event.preventDefault();
+await submitComment(commentForm);
+return;
+}
+
+const replyForm = event.target.closest('.reply-form');
+if (replyForm) {
+event.preventDefault();
+await submitReply(replyForm);
+}
+});
+
+refreshBtn.addEventListener('click', loadFeed);
+
+await loadFeed();
+</script>
+
+</body>
+  </html>
