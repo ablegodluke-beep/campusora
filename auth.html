@@ -1,1 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
 
+  <title>Join Campusora</title>
+
+  <style>
+    :root {
+      --bg: #080b18;
+      --surface: #101426;
+      --surface2: #171c32;
+      --purple: #925bff;
+      --blue: #526dff;
+      --cyan: #39d7f5;
+      --text: #f5f6ff;
+      --muted: #a0a8c4;
+      --border: rgba(255,255,255,.09);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, #25174b 0, transparent 35%),
+        radial-gradient(circle at bottom right, #102c48 0, transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 55px;
+      height: 55px;
+      border-radius: 17px;
+      font-size: 25px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
+      margin-bottom: 12px;
+    }
+
+    .brand h1 {
+      font-size: 29px;
+      letter-spacing: -.8px;
+    }
+
+    .brand h1 span {
+      color: var(--cyan);
+    }
+
+    .brand p {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .card {
+      background: rgba(16,20,38,.94);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 27px 23px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.25);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 5px;
+      border-radius: 12px;
+      background: var(--bg);
+      margin-bottom: 24px;
+    }
+
+    .tab {
+      flex: 1;
+      border: none;
+      border-radius: 9px;
+      padding: 12px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      color: white;
+      background: linear-gradient(110deg, var(--purple), var(--blue));
+    }
+
+    h2 {
+      font-size: 23px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 23px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #dce0f5;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: white;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(146,91,255,.12);
+    }
+
+    input::placeholder {
+      color: #737d9c;
+    }
+
+    select option {
+      background: var(--surface);
+      color: white;
+    }
+
+    .primary-btn {
+      width: 100%;
+      border: none;
+      border-radius: 11px;
+      padding: 14px;
+      margin-top: 7px;
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      background: linear-gradient(110deg, var(--purple), var(--blue));
+      cursor: pointer;
+    }
+
+    .primary-btn:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(57,215,160,.10);
+      border: 1px solid rgba(57,215,160,.3);
+      color: #7df0c4;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(255,90,110,.10);
+      border: 1px solid rgba(255,90,110,.3);
+      color: #ff9ba8;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      color: var(--muted);
+      text-decoration: none;
+      margin-top: 22px;
+      font-size: 13px;
+    }
+
+    .back:hover {
+      color: var(--cyan);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .terms {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    @media (max-width: 380px) {
+      .card {
+        padding: 22px 17px;
+      }
+
+      .brand h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header class="brand">
+      <div class="logo">C</div>
+      <h1>Campus<span>ora</span></h1>
+      <p>Your campus. Your people. Your community.</p>
+    </header>
+
+    <section class="card">
+
+      <div class="tabs">
+        <button type="button" class="tab active" id="signupTab">
+          Create account
+        </button>
+
+        <button type="button" class="tab" id="loginTab">
+          Log in
+        </button>
+      </div>
+
+      <h2 id="formTitle">Join Campusora 🚀</h2>
+
+      <p class="subtitle" id="formSubtitle">
+        Connect with students, alumni and communities across campuses.
+      </p>
+
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+
+      <form id="authForm">
+
+        <div id="signupFields">
+
+          <div class="field">
+            <label for="fullName">Full name</label>
+            <input
+              type="text"
+              id="fullName"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Choose a username"
+              autocomplete="username"
+              minlength="3"
+              maxlength="24"
+              pattern="[A-Za-z0-9_]+"
+              title="Use letters, numbers and underscores only."
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="school">School or university</label>
+            <input
+              type="text"
+              id="school"
+              placeholder="Enter your school"
+              autocomplete="organization"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="role">I am joining as</label>
+            <select id="role" required>
+              <option value="student">Student</option>
+              <option value="alumni">Alumni</option>
+              <option value="general">General Member</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="At least 8 characters"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+        </div>
+
+        <button type="submit" class="primary-btn" id="submitBtn">
+          Create my account
+        </button>
+
+      </form>
+
+      <p class="terms">
+        By joining Campusora, you agree to use the community respectfully
+        and follow its rules.
+      </p>
+
+    </section>
+
+    <a href="./index.html" class="back">← Back to Campusora home</a>
+
+  </main>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    const form = document.getElementById('authForm');
+    const signupFields = document.getElementById('signupFields');
+    const signupTab = document.getElementById('signupTab');
+    const loginTab = document.getElementById('loginTab');
+    const formTitle = document.getElementById('formTitle');
+    const formSubtitle = document.getElementById('formSubtitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageBox = document.getElementById('message');
+    const passwordInput = document.getElementById('password');
+
+    let mode = 'signup';
+
+    function showMessage(text, type) {
+      messageBox.textContent = text;
+      messageBox.className = 'message ' + type;
+    }
+
+    function clearMessage() {
+      messageBox.textContent = '';
+      messageBox.className = 'message';
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      clearMessage();
+
+      const isSignup = mode === 'signup';
+
+      signupFields.classList.toggle('hidden', !isSignup);
+
+      document.getElementById('fullName').required = isSignup;
+      document.getElementById('username').required = isSignup;
+      document.getElementById('school').required = isSignup;
+      document.getElementById('role').required = isSignup;
+
+      passwordInput.autocomplete = isSignup
+        ? 'new-password'
+        : 'current-password';
+
+      signupTab.classList.toggle('active', isSignup);
+      loginTab.classList.toggle('active', !isSignup);
+
+      formTitle.textContent = isSignup
+        ? 'Join Campusora 🚀'
+        : 'Welcome back 👋';
+
+      formSubtitle.textContent = isSignup
+        ? 'Connect with students, alumni and communities across campuses.'
+        : 'Log in to reconnect with your campus community.';
+
+      submitBtn.textContent = isSignup
+        ? 'Create my account'
+        : 'Log in to Campusora';
+    }
+
+    signupTab.addEventListener('click', () => setMode('signup'));
+    loginTab.addEventListener('click', () => setMode('login'));
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearMessage();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = mode === 'signup'
+        ? 'Creating account...'
+        : 'Logging in...';
+
+      const email = document.getElementById('email').value.trim();
+      const password = passwordInput.value;
+
+      try {
+        if (mode === 'signup') {
+          const fullName = document.getElementById('fullName').value.trim();
+          const username = document.getElementById('username')
+            .value.trim().toLowerCase();
+          const school = document.getElementById('school').value.trim();
+          const role = document.getElementById('role').value;
+
+          if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+            throw new Error(
+              'Your username must be 3–24 characters using letters, numbers or underscores.'
+            );
+          }
+
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: window.location.origin + '/index.html',
+              data: {
+                full_name: fullName,
+                username,
+                school,
+                role
+              }
+            }
+          });
+
+          if (error) throw error;
+
+          if (data.session) {
+            showMessage('Account created! Opening Campusora...', 'success');
+
+            window.location.href = './index.html';
+          } else {
+            showMessage(
+              'Registration received! Check your email for a confirmation link. Confirm your email before logging in.',
+              'success'
+            );
+          }
+
+        } else {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) throw error;
+
+          if (!data.session) {
+            throw new Error('Login could not be completed. Please try again.');
+          }
+
+          showMessage('Login successful! Opening Campusora...', 'success');
+
+          window.location.href = './index.html';
+        }
+
+      } catch (error) {
+        showMessage(
+          error.message || 'Something went wrong. Please try again.',
+          'error'
+        );
+
+      } finally {
+        submitBtn.disabled = false;
+
+        if (mode === 'signup') {
+          submitBtn.textContent = 'Create my account';
+        } else {
+          submitBtn.textContent = 'Log in to Campusora';
+        }
+      }
+    });
+
+    // If a user is already logged in, open the homepage.
+    const { data: sessionData } = await supabase.auth.getSession();
+
+    if (sessionData.session) {
+      window.location.href = './index.html';
+    }
+  </script>
+</body>
+  </html>
