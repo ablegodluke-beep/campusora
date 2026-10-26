@@ -1,1 +1,850 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
+
+  <title>Create Post | Campusora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080b18;
+      --surface: #101426;
+      --surface2: #171d33;
+      --border: rgba(255,255,255,.09);
+      --text: #f5f7ff;
+      --muted: #929bb8;
+      --purple: #8b5cf6;
+      --blue: #4388ff;
+      --cyan: #22d3ee;
+      --green: #34d399;
+      --red: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top left, rgba(91,60,180,.13), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .topbar {
+      height: 70px;
+      padding: 0 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,11,24,.92);
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -.8px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: #c9d2ee;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .container {
+      width: min(680px, 92%);
+      margin: 35px auto 60px;
+    }
+
+    .heading {
+      margin-bottom: 23px;
+    }
+
+    .heading h1 {
+      font-size: clamp(25px, 5vw, 34px);
+      margin: 0 0 10px;
+      letter-spacing: -1px;
+    }
+
+    .heading p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .card {
+      background: rgba(16,20,38,.96);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.18);
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: linear-gradient(135deg,var(--purple),var(--cyan));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .user-school {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .field {
+      margin-bottom: 21px;
+    }
+
+    .label {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .textarea {
+      width: 100%;
+      min-height: 175px;
+      resize: vertical;
+      background: #0b1020;
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 15px;
+      padding: 17px;
+      outline: none;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .textarea:focus,
+    .select:focus {
+      border-color: var(--purple);
+    }
+
+    .textarea::placeholder {
+      color: #77809c;
+    }
+
+    .helper {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .select {
+      width: 100%;
+      padding: 14px;
+      color: white;
+      background: #0b1020;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+    }
+
+    .select option {
+      background: #101426;
+      color: white;
+    }
+
+    .community-box {
+      display: none;
+      margin-top: 13px;
+    }
+
+    .audience-info {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(139,92,246,.09);
+      border: 1px solid rgba(139,92,246,.2);
+      color: #c7c9f9;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .upload-box {
+      display: block;
+      padding: 20px;
+      border: 1px dashed rgba(139,92,246,.55);
+      border-radius: 15px;
+      background: rgba(139,92,246,.055);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 27px;
+      margin-bottom: 8px;
+    }
+
+    .upload-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .upload-subtitle {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    #photoInput {
+      display: none;
+    }
+
+    .preview-wrap {
+      display: none;
+      margin-top: 14px;
+      position: relative;
+    }
+
+    .preview-image {
+      display: block;
+      width: 100%;
+      max-height: 360px;
+      object-fit: contain;
+      background: #080b18;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .remove-photo {
+      margin-top: 10px;
+      padding: 9px 12px;
+      background: rgba(251,113,133,.1);
+      color: #fda4af;
+      border: 1px solid rgba(251,113,133,.2);
+      border-radius: 9px;
+      font-size: 12px;
+    }
+
+    .status {
+      display: none;
+      margin: 18px 0;
+      padding: 13px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .status.success {
+      display: block;
+      background: rgba(52,211,153,.09);
+      border: 1px solid rgba(52,211,153,.22);
+      color: #6ee7b7;
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(251,113,133,.09);
+      border: 1px solid rgba(251,113,133,.22);
+      color: #fda4af;
+    }
+
+    .status.info {
+      display: block;
+      background: rgba(67,136,255,.09);
+      border: 1px solid rgba(67,136,255,.22);
+      color: #93c5fd;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(110deg,var(--purple),var(--blue));
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 8px 25px rgba(91,92,246,.2);
+    }
+
+    .submit-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+      margin-top: 19px;
+    }
+
+    @media (max-width: 500px) {
+      .topbar {
+        height: 62px;
+        padding: 0 4%;
+      }
+
+      .brand {
+        font-size: 21px;
+      }
+
+      .back-link {
+        padding: 9px 11px;
+        font-size: 11px;
+      }
+
+      .container {
+        width: 94%;
+        margin-top: 25px;
+      }
+
+      .card {
+        padding: 17px;
+        border-radius: 17px;
+      }
+
+      .textarea {
+        min-height: 150px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="./index.html">Campus<span>ora</span></a>
+  <a class="back-link" href="./index.html">← Back to Campusora</a>
+</header>
+
+<main class="container">
+
+  <div class="heading">
+    <h1>Create a post ✨</h1>
+    <p>Share your thoughts, campus experiences, achievements, and updates with your community.</p>
+  </div>
+
+  <section class="card">
+
+    <div class="user-row">
+      <div class="avatar" id="avatar">C</div>
+      <div>
+        <div class="user-name" id="userName">Loading your profile...</div>
+        <div class="user-school" id="userSchool">Preparing your post</div>
+      </div>
+    </div>
+
+    <form id="postForm">
+
+      <div class="field">
+        <label class="label" for="content">What's happening?</label>
+
+        <textarea
+          id="content"
+          class="textarea"
+          maxlength="5000"
+          placeholder="Share something with Campusora..."
+        ></textarea>
+
+        <div class="helper">
+          <span>Be respectful. Be yourself.</span>
+          <span id="charCount">0 / 5000</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Add a photo (optional)</label>
+
+        <label class="upload-box" for="photoInput">
+          <div class="upload-icon">📸</div>
+          <div class="upload-title">Choose a photo</div>
+          <div class="upload-subtitle">
+            JPEG, PNG or WebP · Maximum 5 MB
+          </div>
+        </label>
+
+        <input
+          type="file"
+          id="photoInput"
+          accept="image/jpeg,image/png,image/webp"
+        >
+
+        <div class="preview-wrap" id="previewWrap">
+          <img class="preview-image" id="previewImage" alt="Selected photo preview">
+          <button class="remove-photo" id="removePhoto" type="button">
+            Remove photo
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="audience">Who can see this post?</label>
+
+        <select id="audience" class="select">
+          <option value="public">🌍 Public — Everyone on Campusora</option>
+          <option value="campus">🎓 My Campus — My institution</option>
+          <option value="community">👥 Community — A selected community</option>
+        </select>
+
+        <div class="audience-info" id="audienceInfo">
+          Your post is intended for everyone on Campusora.
+        </div>
+
+        <div class="community-box" id="communityBox">
+          <label class="label" for="communitySelect">Choose a community</label>
+
+          <select id="communitySelect" class="select">
+            <option value="">Loading communities...</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+
+      <button class="submit-btn" id="submitBtn" type="submit">
+        Publish post 🚀
+      </button>
+
+    </form>
+
+    <div class="footer-note">
+      Your post will be saved to your Campusora account.<br>
+      Please don't share private information about yourself or others.
+    </div>
+
+  </section>
+</main>
+
+<script type="module">
+  import { supabase } from './supabase.js';
+
+  const form = document.getElementById('postForm');
+  const contentInput = document.getElementById('content');
+  const photoInput = document.getElementById('photoInput');
+  const audienceInput = document.getElementById('audience');
+  const communitySelect = document.getElementById('communitySelect');
+  const communityBox = document.getElementById('communityBox');
+  const audienceInfo = document.getElementById('audienceInfo');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusBox = document.getElementById('status');
+  const previewWrap = document.getElementById('previewWrap');
+  const previewImage = document.getElementById('previewImage');
+
+  let currentUser = null;
+  let currentProfile = null;
+  let selectedPhoto = null;
+  let previewUrl = null;
+
+  function showStatus(message, type = 'info') {
+    statusBox.textContent = message;
+    statusBox.className = 'status ' + type;
+  }
+
+  function clearStatus() {
+    statusBox.textContent = '';
+    statusBox.className = 'status';
+  }
+
+  function safeErrorMessage(error) {
+    console.error('Campusora post error:', error);
+
+    if (error?.code === '42501') {
+      return 'Database permission denied. We need to check the security policies.';
+    }
+
+    if (error?.code === '23503') {
+      return 'A linked profile, institution, or community could not be found.';
+    }
+
+    return error?.message || 'Something went wrong. Please try again.';
+  }
+
+  function updateCharacterCount() {
+    document.getElementById('charCount').textContent =
+      `${contentInput.value.length} / 5000`;
+  }
+
+  contentInput.addEventListener('input', updateCharacterCount);
+
+  function updateAudienceInfo() {
+    const audience = audienceInput.value;
+
+    communityBox.style.display =
+      audience === 'community' ? 'block' : 'none';
+
+    if (audience === 'public') {
+      audienceInfo.textContent =
+        'Your post is intended for everyone on Campusora.';
+    } else if (audience === 'campus') {
+      audienceInfo.textContent =
+        'Your post is intended for members whose profiles are linked to your institution.';
+    } else {
+      audienceInfo.textContent =
+        'Choose a community for your post. Only authorised community members should be able to view it once database access policies are configured.';
+    }
+  }
+
+  audienceInput.addEventListener('change', updateAudienceInfo);
+
+  function clearPhoto() {
+    selectedPhoto = null;
+    photoInput.value = '';
+    previewWrap.style.display = 'none';
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      previewUrl = null;
+    }
+
+    previewImage.removeAttribute('src');
+  }
+
+  document.getElementById('removePhoto').addEventListener('click', clearPhoto);
+
+  photoInput.addEventListener('change', () => {
+    clearStatus();
+
+    const file = photoInput.files?.[0];
+
+    if (!file) {
+      clearPhoto();
+      return;
+    }
+
+    const allowedTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp'
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      clearPhoto();
+      showStatus('Please select a JPEG, PNG, or WebP image.', 'error');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      clearPhoto();
+      showStatus('Your photo must be 5 MB or smaller.', 'error');
+      return;
+    }
+
+    selectedPhoto = file;
+    previewUrl = URL.createObjectURL(file);
+    previewImage.src = previewUrl;
+    previewWrap.style.display = 'block';
+  });
+
+  async function loadProfile() {
+    const { data: { session }, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (!session) {
+      showStatus(
+        'Please log in to Campusora before creating a post.',
+        'error'
+      );
+
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        window.location.href = './auth.html?mode=login';
+      }, 1800);
+
+      return false;
+    }
+
+    currentUser = session.user;
+
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('id, username, full_name, school, role, avatar_url, institution_id')
+      .eq('id', currentUser.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!profile) {
+      showStatus(
+        'Please complete your Campusora profile before creating a post.',
+        'error'
+      );
+
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        window.location.href = './profile-setup.html';
+      }, 1800);
+
+      return false;
+    }
+
+    currentProfile = profile;
+
+    const displayName =
+      profile.full_name ||
+      profile.username ||
+      'Campusora Member';
+
+    document.getElementById('userName').textContent = displayName;
+
+    document.getElementById('userSchool').textContent =
+      profile.school || 'Campusora member';
+
+    const avatar = document.getElementById('avatar');
+
+    if (profile.avatar_url) {
+      const img = document.createElement('img');
+      img.src = profile.avatar_url;
+      img.alt = 'Profile photo';
+      avatar.replaceChildren(img);
+    } else {
+      avatar.textContent = displayName.charAt(0).toUpperCase();
+    }
+
+    if (!profile.institution_id) {
+      const campusOption = audienceInput.querySelector(
+        'option[value="campus"]'
+      );
+
+      campusOption.disabled = true;
+    }
+
+    return true;
+  }
+
+  async function loadCommunities() {
+    communitySelect.innerHTML =
+      '<option value="">Choose a community</option>';
+
+    const { data, error } = await supabase
+      .from('communities')
+      .select('id, name, school')
+      .order('name', { ascending: true })
+      .limit(200);
+
+    if (error) {
+      console.error('Could not load communities:', error);
+
+      communitySelect.innerHTML =
+        '<option value="">Could not load communities</option>';
+
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      communitySelect.innerHTML =
+        '<option value="">No communities available yet</option>';
+
+      return;
+    }
+
+    data.forEach(community => {
+      const option = document.createElement('option');
+
+      option.value = community.id;
+
+      option.textContent = community.school
+        ? `${community.name} — ${community.school}`
+        : community.name;
+
+      communitySelect.appendChild(option);
+    });
+  }
+
+  async function uploadPhoto(file) {
+    const extension = file.name.split('.').pop().toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+
+    const path =
+      `${currentUser.id}/posts/${crypto.randomUUID()}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('campusora-images')
+      .upload(path, file, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: file.type
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from('campusora-images')
+      .getPublicUrl(path);
+
+    return data.publicUrl;
+  }
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    clearStatus();
+
+    if (!currentUser || !currentProfile) {
+      showStatus('Your account is not ready. Please reload the page.', 'error');
+      return;
+    }
+
+    const content = contentInput.value.trim();
+    const audience = audienceInput.value;
+    const communityId = communitySelect.value || null;
+
+    if (!content && !selectedPhoto) {
+      showStatus('Write something or choose a photo before publishing.', 'error');
+      return;
+    }
+
+    if (audience === 'campus' && !currentProfile.institution_id) {
+      showStatus(
+        'Please select your institution in your profile before creating a campus post.',
+        'error'
+      );
+      return;
+    }
+
+    if (audience === 'community' && !communityId) {
+      showStatus('Please choose a community for this post.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Publishing...';
+
+    let uploadedPhotoUrl = null;
+
+    try {
+      if (selectedPhoto) {
+        showStatus('Uploading your photo...', 'info');
+        uploadedPhotoUrl = await uploadPhoto(selectedPhoto);
+      }
+
+      const postData = {
+        user_id: currentUser.id,
+        content: content,
+        image_url: uploadedPhotoUrl,
+        audience: audience,
+        institution_id:
+          audience === 'campus'
+            ? currentProfile.institution_id
+            : null,
+        community_id:
+          audience === 'community'
+            ? communityId
+            : null
+      };
+
+      showStatus('Saving your post...', 'info');
+
+      const { error: insertError } = await supabase
+        .from('posts')
+        .insert(postData);
+
+      if (insertError) throw insertError;
+
+      showStatus(
+        'Your post was published successfully! 🎉',
+        'success'
+      );
+
+      form.reset();
+      clearPhoto();
+      updateCharacterCount();
+      updateAudienceInfo();
+
+      submitBtn.textContent = 'Publish another post 🚀';
+
+    } catch (error) {
+      showStatus(safeErrorMessage(error), 'error');
+      submitBtn.textContent = 'Try again';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  async function initialise() {
+    submitBtn.disabled = true;
+
+    try {
+      const loggedIn = await loadProfile();
+
+      if (!loggedIn) return;
+
+      await loadCommunities();
+
+      updateAudienceInfo();
+      updateCharacterCount();
+
+      submitBtn.disabled = false;
+
+    } catch (error) {
+      showStatus(safeErrorMessage(error), 'error');
+      submitBtn.disabled = true;
+    }
+  }
+
+  initialise();
+</script>
+
+</body>
+  </html>
