@@ -1,47 +1,49 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b18">  <title>Profile | Campusora</title>
-  <meta name="description" content="View profiles, discover posts, and connect with people across campuses on Campusora.">  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">  <style>
+  <meta name="theme-color" content="#080b18">
+
+  <title>Profile | Campusora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
     :root {
       --bg: #080b18;
-      --surface: #101426;
-      --surface2: #171d33;
-      --border: rgba(255,255,255,.09);
-      --text: #f4f6ff;
-      --muted: #9aa5c1;
-      --purple: #8b5cf6;
-      --blue: #4f8cff;
-      --cyan: #27d7e7;
+      --card: #111629;
+      --card2: #171d33;
+      --border: #252d48;
+      --text: #f4f5ff;
+      --muted: #9ca6c5;
+      --purple: #8758ff;
+      --blue: #448aff;
+      --cyan: #42d9f5;
+      --danger: #ff6384;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html {
-      min-height: 100%;
-      overflow-x: clip;
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
-      min-height: 100vh;
-      overflow-x: clip;
       background:
-        radial-gradient(ellipse at top left, rgba(79,140,255,.10), transparent 35%),
+        radial-gradient(ellipse at top left, #171438 0%, transparent 42%),
         var(--bg);
       color: var(--text);
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
+      min-height: 100vh;
     }
 
-    button, a {
+    button, textarea {
       font: inherit;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     a {
@@ -49,763 +51,519 @@
       text-decoration: none;
     }
 
-    button {
-      cursor: pointer;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
     .topbar {
-      min-height: 68px;
-      width: 100%;
+      height: 66px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      padding: 10px 5%;
-      background: rgba(8,11,24,.94);
+      padding: 0 5%;
+      background: rgba(8, 11, 24, .94);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 20;
-      backdrop-filter: blur(18px);
+      backdrop-filter: blur(14px);
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 800;
-      letter-spacing: -.8px;
-      white-space: nowrap;
-    }
-
-    .brand-icon {
-      width: 35px;
-      height: 35px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
-      color: white;
-      font-size: 18px;
+      background: linear-gradient(90deg, #b18aff, #45dafa);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
     }
 
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
     }
 
-    .top-link {
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      background: var(--surface);
+    .top-btn {
+      background: var(--card2);
       color: var(--text);
-      border-radius: 11px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .top-link.primary {
-      border: 0;
-      background: linear-gradient(120deg, var(--purple), var(--blue));
+      border: 1px solid var(--border);
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-size: 13px;
     }
 
     .page {
-      width: min(900px, calc(100% - 32px));
-      margin: 32px auto 80px;
+      width: min(850px, 94%);
+      margin: 28px auto 60px;
     }
 
-    .profile-card {
-      background: var(--surface);
+    .profile-card,
+    .post-card {
+      background: rgba(17, 22, 41, .96);
       border: 1px solid var(--border);
-      border-radius: 22px;
+      border-radius: 18px;
       overflow: hidden;
+      margin-bottom: 20px;
     }
 
     .cover {
-      height: 245px;
-      position: relative;
+      height: 210px;
       background:
-        radial-gradient(circle at 20% 30%, rgba(39,215,231,.48), transparent 28%),
-        radial-gradient(circle at 80% 20%, rgba(139,92,246,.65), transparent 35%),
-        linear-gradient(130deg, #172b59, #17132f 65%, #102a42);
+        radial-gradient(circle at 20% 20%, #7044d9, transparent 40%),
+        linear-gradient(120deg, #151b3d, #302064, #07566c);
       background-position: center;
       background-size: cover;
     }
 
-    .cover::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 45%, rgba(8,11,24,.25));
-      pointer-events: none;
+    .profile-content {
+      padding: 0 25px 25px;
     }
 
-    .profile-content {
-      padding: 0 30px 28px;
+    .avatar {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid var(--card);
+      background: var(--card2);
+    }
+
+    .profile-avatar {
+      margin-top: -57px;
     }
 
     .profile-heading {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-end;
-      gap: 18px;
-      margin-top: -58px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .avatar-wrap {
-      width: 124px;
-      height: 124px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      padding: 5px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-    }
-
-    .avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      background: linear-gradient(135deg, var(--purple), var(--blue));
-    }
-
-    .heading-actions {
-      display: flex;
       flex-wrap: wrap;
-      gap: 9px;
-      padding-bottom: 8px;
+      gap: 12px;
     }
 
-    .btn {
-      min-height: 40px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 15px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      color: var(--text);
-      background: var(--surface2);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .btn.primary {
-      background: linear-gradient(120deg, var(--purple), var(--blue));
-      border: 0;
-    }
-
-    .identity {
-      padding-top: 17px;
-    }
-
-    .name-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .full-name {
-      margin: 0;
-      font-size: clamp(22px, 4vw, 29px);
-      font-weight: 800;
-      letter-spacing: -.8px;
+    h1 {
+      font-size: 25px;
+      margin: 12px 0 6px;
       overflow-wrap: anywhere;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      border-radius: 100px;
-      padding: 6px 10px;
-      font-size: 10px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .badge.student {
-      color: #9bc5ff;
-      background: rgba(79,140,255,.15);
-      border: 1px solid rgba(79,140,255,.3);
-    }
-
-    .badge.alumni {
-      color: #d1b4ff;
-      background: rgba(139,92,246,.15);
-      border: 1px solid rgba(139,92,246,.3);
-    }
-
-    .badge.general {
-      color: #8af0e2;
-      background: rgba(39,215,231,.12);
-      border: 1px solid rgba(39,215,231,.25);
-    }
-
     .username {
-      margin-top: 7px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(135, 88, 255, .17);
+      border: 1px solid rgba(135, 88, 255, .45);
+      color: #c8b4ff;
+      border-radius: 20px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .school, .bio {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
       overflow-wrap: anywhere;
     }
 
     .bio {
-      color: #d1d7e9;
-      line-height: 1.8;
-      margin: 18px 0 16px;
-      overflow-wrap: anywhere;
+      color: #dce1f7;
+      margin-top: 15px;
       white-space: pre-wrap;
-    }
-
-    .details {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 20px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .detail {
-      display: flex;
-      align-items: flex-start;
-      gap: 7px;
-      overflow-wrap: anywhere;
     }
 
     .stats {
       display: flex;
-      flex-wrap: wrap;
       gap: 25px;
-      margin-top: 23px;
-      padding-top: 20px;
+      flex-wrap: wrap;
       border-top: 1px solid var(--border);
-    }
-
-    .stat {
-      color: var(--muted);
-      font-size: 12px;
+      margin-top: 20px;
+      padding-top: 18px;
     }
 
     .stat strong {
-      color: var(--text);
-      font-size: 16px;
-      margin-right: 4px;
+      display: block;
+      font-size: 18px;
     }
 
-    .section {
-      margin-top: 22px;
-      padding: 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    .section-heading {
-      margin-bottom: 18px;
+    .primary-btn {
+      background: linear-gradient(110deg, var(--purple), var(--blue));
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 15px;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     .section-title {
-      margin: 0 0 7px;
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    .section-subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
+      font-size: 19px;
+      margin: 28px 0 15px;
     }
 
     .post-card {
-      margin-top: 16px;
-      padding: 18px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface2);
-      overflow: hidden;
+      padding: 19px;
     }
 
-    .post-author {
+    .post-header {
       display: flex;
       align-items: center;
       gap: 11px;
-      margin-bottom: 14px;
     }
 
     .post-avatar {
       width: 43px;
       height: 43px;
-      flex-shrink: 0;
       border-radius: 50%;
       object-fit: cover;
-      background: var(--surface);
+      background: var(--card2);
+      flex-shrink: 0;
     }
 
-    .post-author-info {
-      min-width: 0;
-    }
-
-    .post-author-name {
-      margin: 0;
-      font-size: 13px;
-      font-weight: 800;
+    .post-author {
+      font-size: 14px;
+      font-weight: 700;
       overflow-wrap: anywhere;
     }
 
-    .post-author-username {
-      margin-top: 4px;
-      color: var(--muted);
+    .post-meta {
       font-size: 11px;
-      overflow-wrap: anywhere;
-    }
-
-    .post-date {
-      margin-left: auto;
-      align-self: flex-start;
       color: var(--muted);
-      font-size: 10px;
-      line-height: 1.5;
-      text-align: right;
+      margin-top: 5px;
     }
 
-    .post-content {
-      margin: 0;
-      color: #e8ebf8;
+    .post-text {
+      font-size: 14px;
       line-height: 1.8;
-      overflow-wrap: anywhere;
       white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin: 17px 0;
     }
 
     .post-image {
       width: 100%;
       max-height: 560px;
       object-fit: contain;
-      margin-top: 14px;
+      background: #090c18;
       border-radius: 12px;
-      background: var(--bg);
+      display: block;
+      margin-bottom: 15px;
     }
 
-    .post-footer {
+    .post-stats {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 15px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
       color: var(--muted);
-      font-size: 11px;
+      font-size: 12px;
+      padding: 10px 2px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .post-share-button {
-      padding: 7px 10px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      background: rgba(255,255,255,.04);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .empty-posts {
-      text-align: center;
-      padding: 30px 12px 20px;
-    }
-
-    .empty-icon {
-      width: 55px;
-      height: 55px;
+    .post-actions {
       display: grid;
-      place-items: center;
-      margin: 0 auto 15px;
-      border-radius: 17px;
-      background: rgba(139,92,246,.14);
-      font-size: 25px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding-top: 11px;
     }
 
-    .empty-posts h3 {
-      margin: 0 0 8px;
-      font-size: 15px;
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 0;
+      background: transparent;
+      color: #b8c1df;
+      border-radius: 10px;
+      padding: 11px 5px;
+      font-size: 12px;
+      transition: background .2s, color .2s;
     }
 
-    .status {
-      margin: 0 0 18px;
-      padding: 14px 16px;
-      background: var(--surface);
+    .action-btn:hover {
+      background: var(--card2);
+      color: white;
+    }
+
+    .action-icon {
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .action-btn.liked {
+      color: #ff6b91;
+      background: rgba(255, 99, 132, .09);
+    }
+
+    .comments-area {
+      border-top: 1px solid var(--border);
+      margin-top: 12px;
+      padding-top: 15px;
+    }
+
+    .comment-form {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .comment-input {
+      width: 100%;
+      min-width: 0;
+      resize: vertical;
+      min-height: 42px;
+      max-height: 130px;
+      color: white;
+      background: #0b1020;
       border: 1px solid var(--border);
       border-radius: 12px;
-      color: var(--muted);
-      line-height: 1.7;
+      padding: 12px;
+      outline: none;
+      font-size: 13px;
+    }
+
+    .comment-input:focus {
+      border-color: var(--purple);
+    }
+
+    .comment-send {
+      background: var(--purple);
+      border: 0;
+      color: white;
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .comment {
+      display: flex;
+      gap: 9px;
+      margin: 14px 0;
+    }
+
+    .comment-avatar {
+      width: 33px;
+      height: 33px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: var(--card2);
+      flex-shrink: 0;
+    }
+
+    .comment-body {
+      flex: 1;
+      min-width: 0;
+      background: #0b1020;
+      padding: 10px 12px;
+      border-radius: 12px;
+    }
+
+    .comment-name {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .comment-text {
+      color: #dce1f7;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
 
-    .status.error {
-      color: #ffb8c0;
-      border-color: rgba(255,100,120,.3);
+    .comment-time {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 7px;
     }
 
-    .status a {
-      color: #a9c9ff;
-      text-decoration: underline;
+    .empty, .message {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 14px;
+      padding: 25px;
+      text-align: center;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .message.error {
+      color: #ff9aae;
+      border-color: rgba(255, 99, 132, .4);
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     .loading {
-      padding: 25px 10px;
       text-align: center;
+      padding: 50px 15px;
       color: var(--muted);
-    }
-
-    .footer {
-      padding: 25px 15px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.8;
     }
 
     @media (max-width: 600px) {
       .topbar {
-        min-height: 60px;
-        padding: 9px 14px;
-        gap: 8px;
+        padding: 0 4%;
+        height: 60px;
       }
 
       .brand {
-        font-size: 18px;
-        gap: 8px;
+        font-size: 19px;
       }
 
-      .brand-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 10px;
-      }
-
-      .top-actions {
-        gap: 6px;
-      }
-
-      .top-link {
-        padding: 9px 10px;
+      .top-btn {
+        padding: 8px 9px;
         font-size: 11px;
       }
 
       .page {
-        width: calc(100% - 20px);
-        margin: 15px auto 65px;
-      }
-
-      .profile-card {
-        border-radius: 17px;
+        width: 94%;
+        margin-top: 16px;
       }
 
       .cover {
-        height: 170px;
+        height: 150px;
       }
 
       .profile-content {
-        padding: 0 16px 21px;
+        padding: 0 16px 20px;
       }
 
-      .profile-heading {
-        margin-top: -45px;
-        align-items: flex-end;
-        gap: 8px;
+      .avatar {
+        width: 90px;
+        height: 90px;
       }
 
-      .avatar-wrap {
-        width: 94px;
-        height: 94px;
-        padding: 4px;
+      .profile-avatar {
+        margin-top: -46px;
       }
 
-      .heading-actions {
-        gap: 6px;
-        padding-bottom: 5px;
-      }
-
-      .btn {
-        min-height: 36px;
-        padding: 9px 10px;
-        font-size: 11px;
-      }
-
-      .identity {
-        padding-top: 15px;
-      }
-
-      .name-row {
-        gap: 8px;
-      }
-
-      .full-name {
-        font-size: 23px;
-      }
-
-      .badge {
-        padding: 5px 8px;
-        font-size: 9px;
-      }
-
-      .bio {
-        font-size: 13px;
-        margin: 15px 0;
-      }
-
-      .details {
-        gap: 12px;
-        font-size: 11px;
-      }
-
-      .stats {
-        gap: 17px;
-        margin-top: 19px;
-        padding-top: 17px;
-      }
-
-      .stat {
-        font-size: 11px;
-      }
-
-      .stat strong {
-        font-size: 15px;
-      }
-
-      .section {
-        padding: 18px 15px;
-        border-radius: 16px;
-      }
-
-      .section-title {
-        font-size: 16px;
+      h1 {
+        font-size: 21px;
       }
 
       .post-card {
-        padding: 13px;
+        padding: 14px;
+        border-radius: 15px;
       }
 
-      .post-date {
-        font-size: 9px;
-        max-width: 95px;
+      .action-btn {
+        gap: 5px;
+        font-size: 11px;
+      }
+
+      .action-icon {
+        font-size: 18px;
+      }
+
+      .stats {
+        gap: 19px;
       }
     }
+  </style>
+</head>
 
-    @media (max-width: 360px) {
-      .brand {
-        font-size: 16px;
-      }
+<body>
 
-      .top-link {
-        padding: 8px;
-        font-size: 10px;
-      }
-
-      .profile-heading {
-        align-items: center;
-        flex-wrap: wrap;
-      }
-
-      .heading-actions {
-        margin-left: auto;
-      }
-
-      .avatar-wrap {
-        width: 84px;
-        height: 84px;
-      }
-
-      .full-name {
-        font-size: 21px;
-      }
-    }
-  </style></head><body>
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Campusora home">
-      <span class="brand-icon">C</span>
-      <span>Campusora</span>
-    </a><nav class="top-actions" aria-label="Main navigation">
-  <a class="top-link" href="index.html">Home</a>
-  <a class="top-link primary hidden" id="editProfileTop" href="profile-setup.html">Edit Profile</a>
-</nav>
+    <a class="brand" href="./index.html">Campusora</a>
 
-  </header>  <main class="page">
-    <div id="status" class="status" role="status" aria-live="polite">
-      Loading profile...
-    </div><article id="profileCard" class="profile-card hidden">
-  <div id="cover" class="cover" role="img" aria-label="Profile cover photo"></div>
-
-  <div class="profile-content">
-    <div class="profile-heading">
-      <div class="avatar-wrap">
-        <img id="avatar" class="avatar" alt="Profile picture">
-      </div>
-
-      <div class="heading-actions">
-        <button id="shareButton" class="btn" type="button">↗ Share Profile</button>
-        <a id="editProfile" class="btn primary hidden" href="profile-setup.html">Edit Profile</a>
-      </div>
+    <div class="top-actions">
+      <button class="top-btn" onclick="location.href='./index.html'">
+        🏠 Home
+      </button>
+      <button class="top-btn" onclick="location.href='./create-post.html'">
+        ＋ Post
+      </button>
     </div>
+  </header>
 
-    <div class="identity">
-      <div class="name-row">
-        <h1 id="fullName" class="full-name">Campusora Member</h1>
-        <span id="roleBadge" class="badge general">🌐 General Member</span>
-      </div>
+  <main class="page">
+    <div id="pageMessage" class="message hidden"></div>
+    <div id="loading" class="loading">Loading Campusora profile...</div>
 
-      <div id="username" class="username">@campusora_member</div>
+    <section id="profileSection" class="profile-card hidden">
+      <div id="cover" class="cover"></div>
 
-      <p id="bio" class="bio"></p>
+      <div class="profile-content">
+        <img id="profileAvatar" class="avatar profile-avatar" alt="Profile photo">
 
-      <div class="details">
-        <div id="schoolDetail" class="detail hidden">
-          <span aria-hidden="true">🎓</span>
-          <span id="school"></span>
+        <div class="profile-heading">
+          <div>
+            <h1 id="profileName">Campusora Member</h1>
+            <div id="profileUsername" class="username"></div>
+            <span id="profileBadge" class="badge">Member</span>
+          </div>
+
+          <button id="shareProfileBtn" class="primary-btn">
+            ↗ Share Profile
+          </button>
         </div>
 
-        <div class="detail">
-          <span aria-hidden="true">🌍</span>
-          <span>Connecting across campuses</span>
+        <div id="profileSchool" class="school"></div>
+        <div id="profileBio" class="bio"></div>
+
+        <div class="stats">
+          <div class="stat">
+            <strong id="postCount">0</strong>
+            <span>Posts</span>
+          </div>
+          <div class="stat">
+            <strong id="followerCount">0</strong>
+            <span>Followers</span>
+          </div>
+          <div class="stat">
+            <strong id="followingCount">0</strong>
+            <span>Following</span>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="stats">
-        <div class="stat"><strong id="postCount">0</strong> Posts</div>
-        <div class="stat"><strong id="followersCount">0</strong> Followers</div>
-        <div class="stat"><strong id="followingCount">0</strong> Following</div>
-      </div>
-    </div>
-  </div>
-</article>
+    <h2 id="postsHeading" class="section-title hidden">Posts</h2>
+    <section id="postsContainer"></section>
+  </main>
 
-<section id="postsSection" class="section hidden">
-  <div class="section-heading">
-    <h2 class="section-title">Posts</h2>
-    <p class="section-subtitle">
-      Things this member shares with the Campusora community.
-    </p>
-  </div>
-
-  <div id="postsList"></div>
-
-  <div id="emptyPosts" class="empty-posts hidden">
-    <div class="empty-icon" aria-hidden="true">✦</div>
-    <h3>No posts yet</h3>
-    <p class="section-subtitle">
-      When this member publishes a post, it will appear here.
-    </p>
-  </div>
-
-  <div id="postsError" class="status error hidden">
-    We could not load posts. Please refresh and try again.
-  </div>
-</section>
-
-  </main>  <footer class="footer">
-    Campusora — Your Campus. Your People.<br>
-    Building connections across campuses and beyond.
-  </footer>  <script type="module">
+  <script type="module">
     import { supabase } from './supabase.js';
 
     const $ = (id) => document.getElementById(id);
 
     let currentUser = null;
-    let displayedProfile = null;
+    let currentProfile = null;
 
-    function showStatus(message, isError = false) {
-      const box = $('status');
-      box.textContent = message;
-      box.classList.toggle('error', isError);
-      box.classList.remove('hidden');
+    const fallbackAvatar =
+      'data:image/svg+xml;charset=UTF-8,' +
+      encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+          <rect width="100" height="100" rx="50" fill="#252d48"/>
+          <text x="50" y="62" text-anchor="middle"
+            font-size="45" fill="#c8b4ff">👤</text>
+        </svg>
+      `);
+
+    function safeText(value) {
+      return String(value ?? '');
     }
 
-    function hideStatus() {
-      $('status').classList.add('hidden');
-    }
-
-    function safeImageUrl(value) {
+    function formatDate(value) {
       if (!value) return '';
-
-      try {
-        const url = new URL(value, window.location.origin);
-
-        if (url.protocol === 'https:' || url.protocol === 'http:') {
-          return url.href;
-        }
-      } catch (_) {}
-
-      return '';
-    }
-
-    function fallbackAvatar(name) {
-      const initial = (name || 'C').trim().charAt(0).toUpperCase() || 'C';
-
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="240" height="240">
-          <defs>
-            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-              <stop stop-color="#8b5cf6"/>
-              <stop offset="1" stop-color="#4f8cff"/>
-            </linearGradient>
-          </defs>
-          <rect width="240" height="240" rx="120" fill="url(#g)"/>
-          <text x="120" y="148" font-size="100" font-family="Arial"
-            font-weight="700" text-anchor="middle" fill="white">${initial.replace(/[<&>"]/g, '')}</text>
-        </svg>`;
-
-      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-    }
-
-    function setRoleBadge(role) {
-      const roles = {
-        student: {
-          text: '🎓 Student',
-          className: 'student'
-        },
-        alumni: {
-          text: '🏅 Alumni',
-          className: 'alumni'
-        },
-        general: {
-          text: '🌐 General Member',
-          className: 'general'
-        }
-      };
-
-      const item = roles[role] || roles.general;
-
-      $('roleBadge').textContent = item.text;
-      $('roleBadge').className = 'badge ' + item.className;
-    }
-
-    function formatCount(number) {
-      return new Intl.NumberFormat().format(number || 0);
-    }
-
-    function formatPostDate(value) {
-      if (!value) return 'Recently published';
 
       const date = new Date(value);
 
-      if (Number.isNaN(date.getTime())) {
-        return 'Recently published';
-      }
+      if (Number.isNaN(date.getTime())) return '';
 
       return date.toLocaleString([], {
         dateStyle: 'medium',
@@ -813,230 +571,24 @@
       });
     }
 
-    async function countRows(table, column, value) {
-      const { count, error } = await supabase
-        .from(table)
-        .select('*', { count: 'exact', head: true })
-        .eq(column, value);
-
-      if (error) {
-        console.warn(`Could not count ${table}:`, error.message);
-        return 0;
-      }
-
-      return count || 0;
+    function showMessage(message, isError = false) {
+      const box = $('pageMessage');
+      box.textContent = message;
+      box.classList.remove('hidden');
+      box.classList.toggle('error', isError);
     }
 
-    async function loadProfilePosts(profile) {
-      const postsList = $('postsList');
-      const emptyPosts = $('emptyPosts');
-      const postsError = $('postsError');
-
-      postsList.replaceChildren();
-      emptyPosts.classList.add('hidden');
-      postsError.classList.add('hidden');
-
-      const loading = document.createElement('div');
-      loading.className = 'loading';
-      loading.textContent = 'Loading posts...';
-      postsList.appendChild(loading);
-
-      const { data: posts, error } = await supabase
-        .from('posts')
-        .select('id, user_id, content, image_url, created_at')
-        .eq('user_id', profile.id)
-        .order('created_at', { ascending: false });
-
-      postsList.replaceChildren();
-
-      if (error) {
-        console.error('Could not load profile posts:', error.message);
-        postsError.classList.remove('hidden');
-        return;
-      }
-
-      if (!posts || posts.length === 0) {
-        emptyPosts.classList.remove('hidden');
-        return;
-      }
-
-      for (const post of posts) {
-        const card = document.createElement('article');
-        card.className = 'post-card';
-
-        const author = document.createElement('div');
-        author.className = 'post-author';
-
-        const avatar = document.createElement('img');
-        avatar.className = 'post-avatar';
-        avatar.alt = 'Profile picture';
-        avatar.src = safeImageUrl(profile.avatar_url) || fallbackAvatar(profile.full_name);
-
-        avatar.onerror = () => {
-          avatar.onerror = null;
-          avatar.src = fallbackAvatar(profile.full_name);
-        };
-
-        const authorInfo = document.createElement('div');
-        authorInfo.className = 'post-author-info';
-
-        const name = document.createElement('h3');
-        name.className = 'post-author-name';
-        name.textContent = profile.full_name || profile.username || 'Campusora Member';
-
-        const username = document.createElement('div');
-        username.className = 'post-author-username';
-        username.textContent = profile.username ? '@' + profile.username : '@campusora_member';
-
-        authorInfo.append(name, username);
-
-        const date = document.createElement('time');
-        date.className = 'post-date';
-        date.dateTime = post.created_at || '';
-        date.textContent = formatPostDate(post.created_at);
-
-        author.append(avatar, authorInfo, date);
-        card.appendChild(author);
-
-        if (post.content) {
-          const content = document.createElement('p');
-          content.className = 'post-content';
-          content.textContent = post.content;
-          card.appendChild(content);
-        }
-
-        const imageUrl = safeImageUrl(post.image_url);
-
-        if (imageUrl) {
-          const image = document.createElement('img');
-          image.className = 'post-image';
-          image.alt = 'Photo shared in this post';
-          image.loading = 'lazy';
-          image.src = imageUrl;
-
-          image.onerror = () => {
-            image.remove();
-          };
-
-          card.appendChild(image);
-        }
-
-        const footer = document.createElement('div');
-        footer.className = 'post-footer';
-
-        const label = document.createElement('span');
-        label.textContent = '✦ Published on Campusora';
-
-        const shareButton = document.createElement('button');
-        shareButton.type = 'button';
-        shareButton.className = 'post-share-button';
-        shareButton.textContent = '↗ Share Post';
-
-        shareButton.addEventListener('click', () => {
-          sharePost(post, profile);
-        });
-
-        footer.append(label, shareButton);
-        card.appendChild(footer);
-
-        postsList.appendChild(card);
-      }
-    }
-
-    function getProfileUrl(profile) {
-      const url = new URL('./profile.html', window.location.href);
-
-      if (profile.username) {
-        url.searchParams.set('username', profile.username);
-      } else {
-        url.searchParams.set('id', profile.id);
-      }
-
-      return url.href;
-    }
-
-    async function copyText(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-        return true;
-      }
-
-      const input = document.createElement('textarea');
-      input.value = text;
-      input.style.position = 'fixed';
-      input.style.opacity = '0';
-
-      document.body.appendChild(input);
-      input.select();
-
-      const copied = document.execCommand('copy');
-      input.remove();
-
-      return copied;
-    }
-
-    async function shareProfile() {
-      if (!displayedProfile) return;
-
-      const url = getProfileUrl(displayedProfile);
-
-      const shareData = {
-        title: 'Campusora Profile',
-        text: `Connect with ${displayedProfile.full_name || displayedProfile.username || 'this member'} on Campusora.`,
-        url
-      };
-
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else {
-          const copied = await copyText(url);
-          alert(copied ? 'Profile link copied!' : 'Copy this profile link: ' + url);
-        }
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          alert('Could not share the profile right now.');
-        }
-      }
-    }
-
-    async function sharePost(post, profile) {
-      const profileUrl = getProfileUrl(profile);
-      const url = new URL(profileUrl);
-
-      url.hash = 'post-' + post.id;
-
-      const shareData = {
-        title: 'Campusora Post',
-        text: `${profile.full_name || profile.username || 'A Campusora member'} shared a post on Campusora.`,
-        url: url.href
-      };
-
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else {
-          const copied = await copyText(url.href);
-          alert(copied ? 'Post link copied!' : 'Copy this post link: ' + url.href);
-        }
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          alert('Could not share the post right now.');
-        }
-      }
+    function hideMessage() {
+      $('pageMessage').classList.add('hidden');
     }
 
     async function loadProfile() {
-      const { data: sessionData, error: sessionError } =
-        await supabase.auth.getSession();
+      const { data: sessionData } = await supabase.auth.getSession();
+      currentUser = sessionData?.session?.user ?? null;
 
-      if (sessionError) throw sessionError;
-
-      currentUser = sessionData.session?.user || null;
-
-      const params = new URLSearchParams(window.location.search);
-      const requestedUsername = params.get('username');
+      const params = new URLSearchParams(location.search);
       const requestedId = params.get('id');
+      const requestedUsername = params.get('username');
 
       let query = supabase
         .from('profiles')
@@ -1049,90 +601,535 @@
       } else if (currentUser) {
         query = query.eq('id', currentUser.id);
       } else {
-        showStatus('Please log in to view your profile, or open another member’s profile using their username.');
+        $('loading').classList.add('hidden');
+        showMessage('Please log in to view your profile.');
         return;
       }
 
       const { data: profile, error } = await query.maybeSingle();
 
-      if (error) throw error;
-
-      if (!profile) {
-        showStatus('We could not find this profile. Check the username or create your profile first.', true);
+      if (error || !profile) {
+        $('loading').classList.add('hidden');
+        showMessage(
+          error
+            ? 'We could not load this profile. Please refresh and try again.'
+            : 'This profile could not be found.',
+          true
+        );
         return;
       }
 
-      displayedProfile = profile;
+      currentProfile = profile;
+      renderProfile(profile);
 
-      const displayName = profile.full_name || profile.username || 'Campusora Member';
+      $('loading').classList.add('hidden');
+      $('profileSection').classList.remove('hidden');
+      $('postsHeading').classList.remove('hidden');
 
-      $('fullName').textContent = displayName;
+      await Promise.all([
+        loadCounts(profile),
+        loadPosts(profile)
+      ]);
+    }
 
-      $('username').textContent = profile.username
-        ? '@' + profile.username
-        : '@campusora_member';
+    function renderProfile(profile) {
+      $('profileName').textContent =
+        profile.full_name || profile.username || 'Campusora Member';
 
-      $('bio').textContent = profile.bio || 'This member has not added a biography yet.';
+      $('profileUsername').textContent =
+        profile.username ? '@' + profile.username : '';
 
-      setRoleBadge(profile.role);
+      $('profileSchool').textContent = profile.school || '';
 
-      $('avatar').src = safeImageUrl(profile.avatar_url) || fallbackAvatar(displayName);
+      $('profileBio').textContent = profile.bio || '';
 
-      $('avatar').onerror = () => {
-        $('avatar').onerror = null;
-        $('avatar').src = fallbackAvatar(displayName);
+      const role = (profile.role || 'general').toLowerCase();
+
+      const roleLabels = {
+        student: '🎓 Student',
+        alumni: '🏅 Alumni',
+        general: '🌟 General Member'
       };
 
-      const coverUrl = safeImageUrl(profile.cover_url);
+      $('profileBadge').textContent =
+        roleLabels[role] || '🌟 Member';
 
-      if (coverUrl) {
+      $('profileAvatar').src = profile.avatar_url || fallbackAvatar;
+
+      if (profile.cover_url) {
         $('cover').style.backgroundImage =
-          `url("${coverUrl.replace(/["\\]/g, '')}")`;
+          `url("${profile.cover_url.replaceAll('"', '%22')}")`;
       }
 
-      if (profile.school) {
-        $('school').textContent = profile.school;
-        $('schoolDetail').classList.remove('hidden');
-      } else {
-        $('schoolDetail').classList.add('hidden');
-      }
-
-      const isOwnProfile = Boolean(
-        currentUser && currentUser.id === profile.id
-      );
-
-      $('editProfile').classList.toggle('hidden', !isOwnProfile);
-      $('editProfileTop').classList.toggle('hidden', !isOwnProfile);
-
-      const [postCount, followersCount, followingCount] = await Promise.all([
-        countRows('posts', 'user_id', profile.id),
-        countRows('follows', 'following_id', profile.id),
-        countRows('follows', 'follower_id', profile.id)
-      ]);
-
-      $('postCount').textContent = formatCount(postCount);
-      $('followersCount').textContent = formatCount(followersCount);
-      $('followingCount').textContent = formatCount(followingCount);
-
-      $('profileCard').classList.remove('hidden');
-      $('postsSection').classList.remove('hidden');
-
-      hideStatus();
-
-      await loadProfilePosts(profile);
+      $('shareProfileBtn').addEventListener('click', shareProfile);
     }
 
-    $('shareButton').addEventListener('click', shareProfile);
+    async function loadCounts(profile) {
+      const [postsResult, followersResult, followingResult] =
+        await Promise.all([
+          supabase
+            .from('posts')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', profile.id),
 
-    try {
-      await loadProfile();
-    } catch (error) {
-      console.error('Profile loading error:', error);
+          supabase
+            .from('follows')
+            .select('follower_id', { count: 'exact', head: true })
+            .eq('following_id', profile.id),
 
-      showStatus(
-        'We could not load this profile. Please refresh the page and try again.',
+          supabase
+            .from('follows')
+            .select('following_id', { count: 'exact', head: true })
+            .eq('follower_id', profile.id)
+        ]);
+
+      $('postCount').textContent = postsResult.count ?? 0;
+      $('followerCount').textContent = followersResult.count ?? 0;
+      $('followingCount').textContent = followingResult.count ?? 0;
+    }
+
+    async function loadPosts(profile) {
+      const container = $('postsContainer');
+      container.replaceChildren();
+
+      const { data: posts, error } = await supabase
+        .from('posts')
+        .select('id, user_id, content, image_url, created_at')
+        .eq('user_id', profile.id)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        container.innerHTML =
+          '<div class="message error">We could not load these posts. Check the Supabase posts-table read permissions.</div>';
+        return;
+      }
+
+      if (!posts || posts.length === 0) {
+        container.innerHTML =
+          '<div class="empty">📝<br><br>No posts yet.<br>When this member publishes a post, it will appear here.</div>';
+        return;
+      }
+
+      const postUserIds = [...new Set(posts.map(post => post.user_id))];
+
+      const { data: authors } = await supabase
+        .from('profiles')
+        .select('id, username, full_name, avatar_url')
+        .in('id', postUserIds);
+
+      const authorMap = new Map(
+        (authors || []).map(author => [author.id, author])
+      );
+
+      for (const post of posts) {
+        const author = authorMap.get(post.user_id) || profile;
+        const card = await createPostCard(post, author);
+        container.appendChild(card);
+      }
+
+      // Allow shared links to jump to a particular post.
+      if (location.hash.startsWith('#post-')) {
+        setTimeout(() => {
+          document.getElementById(location.hash.slice(1))
+            ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    }
+
+    async function createPostCard(post, author) {
+      const card = document.createElement('article');
+      card.className = 'post-card';
+      card.id = 'post-' + post.id;
+
+      const header = document.createElement('div');
+      header.className = 'post-header';
+
+      const avatar = document.createElement('img');
+      avatar.className = 'post-avatar';
+      avatar.src = author.avatar_url || fallbackAvatar;
+      avatar.alt = 'Author photo';
+
+      const authorInfo = document.createElement('div');
+      authorInfo.style.minWidth = '0';
+
+      const authorName = document.createElement('div');
+      authorName.className = 'post-author';
+      authorName.textContent =
+        author.full_name || author.username || 'Campusora Member';
+
+      const meta = document.createElement('div');
+      meta.className = 'post-meta';
+      meta.textContent =
+        (author.username ? '@' + author.username + ' · ' : '') +
+        formatDate(post.created_at);
+
+      authorInfo.append(authorName, meta);
+      header.append(avatar, authorInfo);
+
+      const text = document.createElement('div');
+      text.className = 'post-text';
+      text.textContent = post.content || '';
+
+      card.append(header);
+
+      if (post.content) card.append(text);
+
+      if (post.image_url) {
+        const image = document.createElement('img');
+        image.className = 'post-image';
+        image.src = post.image_url;
+        image.alt = 'Post image';
+        image.loading = 'lazy';
+        image.onerror = () => image.remove();
+        card.append(image);
+      }
+
+      const stats = document.createElement('div');
+      stats.className = 'post-stats';
+
+      const likeStat = document.createElement('span');
+      const commentStat = document.createElement('span');
+
+      likeStat.textContent = '❤️ 0 likes';
+      commentStat.textContent = '💬 0 comments';
+
+      stats.append(likeStat, commentStat);
+
+      const actions = document.createElement('div');
+      actions.className = 'post-actions';
+
+      const likeBtn = makeActionButton('♡', 'Like');
+      const commentBtn = makeActionButton('💬', 'Comment');
+      const shareBtn = makeActionButton('↗', 'Share');
+
+      actions.append(likeBtn, commentBtn, shareBtn);
+
+      const commentsArea = document.createElement('div');
+      commentsArea.className = 'comments-area hidden';
+
+      card.append(stats, actions, commentsArea);
+
+      const [likesResult, myLikeResult, commentsResult] =
+        await Promise.all([
+          supabase
+            .from('likes')
+            .select('user_id', { count: 'exact', head: true })
+            .eq('post_id', post.id),
+
+          currentUser
+            ? supabase
+                .from('likes')
+                .select('post_id')
+                .eq('post_id', post.id)
+                .eq('user_id', currentUser.id)
+                .maybeSingle()
+            : Promise.resolve({ data: null, error: null }),
+
+          supabase
+            .from('comments')
+            .select('id', { count: 'exact', head: true })
+            .eq('post_id', post.id)
+        ]);
+
+      let likeCount = likesResult.count ?? 0;
+      let commentCount = commentsResult.count ?? 0;
+      let liked = Boolean(myLikeResult.data);
+
+      updateLikeUI();
+
+      function updateLikeUI() {
+        likeStat.textContent =
+          `❤️ ${likeCount} ${likeCount === 1 ? 'like' : 'likes'}`;
+
+        likeBtn.classList.toggle('liked', liked);
+        likeBtn.querySelector('.action-icon').textContent =
+          liked ? '♥' : '♡';
+
+        likeBtn.querySelector('.action-label').textContent =
+          liked ? 'Liked' : 'Like';
+
+        commentStat.textContent =
+          `💬 ${commentCount} ${commentCount === 1 ? 'comment' : 'comments'}`;
+      }
+
+      likeBtn.addEventListener('click', async () => {
+        if (!currentUser) {
+          alert('Please log in to like posts.');
+          location.href = './auth.html?mode=login';
+          return;
+        }
+
+        likeBtn.disabled = true;
+
+        if (liked) {
+          const { error } = await supabase
+            .from('likes')
+            .delete()
+            .eq('post_id', post.id)
+            .eq('user_id', currentUser.id);
+
+          if (error) {
+            alert('Could not remove your like. Please try again.');
+          } else {
+            liked = false;
+            likeCount = Math.max(0, likeCount - 1);
+          }
+        } else {
+          const { error } = await supabase
+            .from('likes')
+            .insert({
+              post_id: post.id,
+              user_id: currentUser.id
+            });
+
+          if (error) {
+            // A duplicate like may mean the database already has it.
+            const { data } = await supabase
+              .from('likes')
+              .select('post_id')
+              .eq('post_id', post.id)
+              .eq('user_id', currentUser.id)
+              .maybeSingle();
+
+            if (data) {
+              liked = true;
+            } else {
+              alert('Could not like this post. Please check the likes-table permissions.');
+            }
+          } else {
+            liked = true;
+            likeCount += 1;
+          }
+        }
+
+        likeBtn.disabled = false;
+        updateLikeUI();
+      });
+
+      commentBtn.addEventListener('click', async () => {
+        commentsArea.classList.toggle('hidden');
+
+        if (!commentsArea.classList.contains('hidden')) {
+          await renderComments();
+        }
+      });
+
+      shareBtn.addEventListener('click', async () => {
+        const url = new URL('./profile.html', location.href);
+        url.searchParams.set('id', profileIdForAuthor(post.user_id, author));
+        url.hash = 'post-' + post.id;
+
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              title: 'Campusora post',
+              text: 'Check out this post on Campusora!',
+              url: url.href
+            });
+          } else {
+            await navigator.clipboard.writeText(url.href);
+            alert('Post link copied!');
+          }
+        } catch (error) {
+          if (error?.name !== 'AbortError') {
+            try {
+              await navigator.clipboard.writeText(url.href);
+              alert('Post link copied!');
+            } catch {
+              prompt('Copy this post link:', url.href);
+            }
+          }
+        }
+      });
+
+      async function renderComments() {
+        commentsArea.replaceChildren();
+
+        const form = document.createElement('form');
+        form.className = 'comment-form';
+
+        const input = document.createElement('textarea');
+        input.className = 'comment-input';
+        input.rows = 1;
+        input.maxLength = 2000;
+        input.placeholder = currentUser
+          ? 'Write a comment...'
+          : 'Log in to write a comment...';
+
+        const send = document.createElement('button');
+        send.className = 'comment-send';
+        send.type = 'submit';
+        send.textContent = 'Send';
+
+        form.append(input, send);
+        commentsArea.append(form);
+
+        const list = document.createElement('div');
+        commentsArea.append(list);
+
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+
+          if (!currentUser) {
+            alert('Please log in to comment.');
+            location.href = './auth.html?mode=login';
+            return;
+          }
+
+          const content = input.value.trim();
+          if (!content) return;
+
+          send.disabled = true;
+          send.textContent = 'Sending...';
+
+          const { error } = await supabase
+            .from('comments')
+            .insert({
+              post_id: post.id,
+              user_id: currentUser.id,
+              content
+            });
+
+          send.disabled = false;
+          send.textContent = 'Send';
+
+          if (error) {
+            alert('Your comment could not be saved. Please check the comments-table permissions.');
+            return;
+          }
+
+          input.value = '';
+          commentCount += 1;
+          updateLikeUI();
+          await renderComments();
+        });
+
+        list.innerHTML =
+          '<div class="post-meta">Loading comments...</div>';
+
+        const { data: comments, error } = await supabase
+          .from('comments')
+          .select('id, user_id, content, created_at')
+          .eq('post_id', post.id)
+          .order('created_at', { ascending: true });
+
+        list.replaceChildren();
+
+        if (error) {
+          const errorText = document.createElement('div');
+          errorText.className = 'post-meta';
+          errorText.textContent =
+            'Comments could not be loaded. Check the comments-table read permissions.';
+          list.append(errorText);
+          return;
+        }
+
+        if (!comments || comments.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'post-meta';
+          empty.textContent = 'No comments yet. Be the first to comment!';
+          list.append(empty);
+          return;
+        }
+
+        const ids = [...new Set(comments.map(comment => comment.user_id))];
+
+        const { data: people } = await supabase
+          .from('profiles')
+          .select('id, username, full_name, avatar_url')
+          .in('id', ids);
+
+        const peopleMap = new Map(
+          (people || []).map(person => [person.id, person])
+        );
+
+        for (const item of comments) {
+          const person = peopleMap.get(item.user_id) || {};
+          const row = document.createElement('div');
+          row.className = 'comment';
+
+          const personAvatar = document.createElement('img');
+          personAvatar.className = 'comment-avatar';
+          personAvatar.src = person.avatar_url || fallbackAvatar;
+          personAvatar.alt = '';
+
+          const body = document.createElement('div');
+          body.className = 'comment-body';
+
+          const name = document.createElement('div');
+          name.className = 'comment-name';
+          name.textContent =
+            person.full_name || person.username || 'Campusora Member';
+
+          const commentText = document.createElement('div');
+          commentText.className = 'comment-text';
+          commentText.textContent = item.content || '';
+
+          const time = document.createElement('div');
+          time.className = 'comment-time';
+          time.textContent = formatDate(item.created_at);
+
+          body.append(name, commentText, time);
+          row.append(personAvatar, body);
+          list.append(row);
+        }
+      }
+
+      return card;
+    }
+
+    function makeActionButton(icon, label) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'action-btn';
+
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'action-icon';
+      iconSpan.textContent = icon;
+
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'action-label';
+      labelSpan.textContent = label;
+
+      button.append(iconSpan, labelSpan);
+      return button;
+    }
+
+    function profileIdForAuthor(userId, author) {
+      return author?.id || userId;
+    }
+
+    async function shareProfile() {
+      const url = new URL('./profile.html', location.href);
+      url.searchParams.set('id', currentProfile.id);
+
+      try {
+        if (navigator.share) {
+          await navigator.share({
+            title: currentProfile.full_name || 'Campusora profile',
+            text: 'Connect with me on Campusora!',
+            url: url.href
+          });
+        } else {
+          await navigator.clipboard.writeText(url.href);
+          alert('Profile link copied!');
+        }
+      } catch (error) {
+        if (error?.name !== 'AbortError') {
+          prompt('Copy your profile link:', url.href);
+        }
+      }
+    }
+
+    loadProfile().catch(error => {
+      console.error(error);
+      $('loading').classList.add('hidden');
+      showMessage(
+        'Something went wrong while loading the profile. Please refresh the page.',
         true
       );
-    }
-  </script></body>
+    });
+  </script>
+
+</body>
   </html>
