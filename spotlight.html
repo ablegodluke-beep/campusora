@@ -4,353 +4,917 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080b18">
 <title>Spotlight | Campusora</title><style>
-:root{
-  --bg:#080b18;
-  --panel:#11162a;
-  --purple:#8b5cf6;
-  --blue:#4285ff;
-  --cyan:#27d9f2;
-  --text:#f5f7ff;
-  --muted:#9aa5c2;
-  --border:rgba(255,255,255,.1);
-}
-*{box-sizing:border-box}
-html,body{
-  margin:0;width:100%;height:100%;
-  background:var(--bg);color:var(--text);
-  font-family:Arial,Helvetica,sans-serif
-}
-body{overflow:hidden}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.55;cursor:not-allowed}
-a{color:inherit;text-decoration:none}
-
-.topbar{
-  height:52px;position:fixed;inset:0 0 auto;z-index:20;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 11px;background:rgba(8,11,24,.97);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(16px)
-}
-.brand{font-size:15px;font-weight:800;letter-spacing:-.4px}
-.brand span{color:var(--cyan)}
-.top-actions{display:flex;align-items:center;gap:7px}
-.small-btn{
-  border:1px solid var(--border);background:#11162a;color:white;
-  border-radius:9px;padding:8px 9px;font-size:10px
-}
-.upload-btn{
-  background:linear-gradient(120deg,var(--purple),var(--blue));
-  border:0;font-weight:700
+:root {
+  --bg: #080b18;
+  --panel: #11162a;
+  --purple: #8b5cf6;
+  --blue: #4285ff;
+  --cyan: #27d9f2;
+  --pink: #ff386d;
+  --text: #fff;
+  --muted: #a4acc5;
+  --border: rgba(255,255,255,.12);
 }
 
-.layout{
-  position:fixed;inset:52px 0 0;
-  display:flex;justify-content:center
-}
-.feed{
-  width:min(100%,520px);height:100%;overflow-y:auto;
-  scroll-snap-type:y mandatory;scrollbar-width:none;background:#050710
-}
-.feed::-webkit-scrollbar{display:none}
-.video-card{
-  height:100%;min-height:300px;position:relative;
-  scroll-snap-align:start;scroll-snap-stop:always;
-  overflow:hidden;background:#050710;isolation:isolate
-}
-.video-card video{
-  width:100%;height:100%;position:absolute;inset:0;
-  object-fit:contain;background:#050710
-}
-.video-card:after{
-  content:"";position:absolute;z-index:1;inset:25% 0 0;
-  pointer-events:none;
-  background:linear-gradient(transparent,rgba(0,0,0,.08) 30%,rgba(0,0,0,.78))
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.video-top{
-  position:absolute;z-index:5;top:12px;left:12px;right:12px;
-  display:flex;align-items:center;justify-content:space-between;
-  pointer-events:none
-}
-.video-top>*{pointer-events:auto}
-.tag{
-  font-size:10px;background:rgba(12,16,32,.72);
-  border:1px solid rgba(255,255,255,.14);
-  padding:8px 10px;border-radius:20px;backdrop-filter:blur(12px)
-}
-.sound-btn{
-  width:37px;height:37px;display:grid;place-items:center;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(12,16,32,.7);color:white;
-  border-radius:50%;font-size:16px;backdrop-filter:blur(12px)
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
 }
 
-/* Compact floating video action panel */
-.actions{
-  position:absolute;z-index:6;right:8px;bottom:105px;
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  padding:7px 4px;border:1px solid rgba(255,255,255,.15);
-  border-radius:22px;background:rgba(8,11,24,.48);
-  box-shadow:0 5px 25px rgba(0,0,0,.15);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  transition:opacity .2s
-}
-.action{
-  width:38px;min-height:40px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:3px;
-  border:0;background:transparent;color:white;padding:3px 0;
-  border-radius:12px;transition:transform .18s
-}
-.action:active{transform:scale(.88)}
-.action .icon{font-size:22px;line-height:1.05;text-shadow:0 2px 8px #000}
-.action .count{
-  font-size:9px;font-weight:700;text-shadow:0 1px 5px #000;
-  max-width:43px;text-align:center;overflow-wrap:anywhere
-}
-.action.liked .icon{color:#ff5486;animation:heartPop .25s ease}
-@keyframes heartPop{50%{transform:scale(1.3)}}
-
-.video-info{
-  position:absolute;z-index:4;bottom:0;left:0;right:56px;
-  padding:16px 11px 16px;pointer-events:none
-}
-.video-info a,.video-info button{pointer-events:auto}
-.creator{display:flex;align-items:center;gap:8px;margin-bottom:9px}
-.avatar{
-  width:36px;height:36px;border-radius:50%;object-fit:cover;
-  background:linear-gradient(135deg,var(--purple),var(--cyan));
-  border:1px solid rgba(255,255,255,.45);display:grid;place-items:center;
-  font-size:12px;font-weight:bold;flex-shrink:0
-}
-.creator-name{font-size:12px;font-weight:700}
-.creator-school{font-size:10px;color:#c1c8dd;margin-top:3px}
-.follow-btn{
-  font-size:10px;border:1px solid rgba(255,255,255,.4);
-  border-radius:7px;background:rgba(8,11,24,.45);color:white;
-  padding:6px 8px;margin-left:3px;white-space:nowrap
-}
-.caption{font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
-.post-time{font-size:10px;color:#d0d5e6;margin-top:8px}
-
-.empty{
-  height:100%;min-height:300px;display:flex;align-items:center;
-  justify-content:center;text-align:center;padding:24px
-}
-.empty-box{max-width:290px}
-.empty-icon{font-size:42px;margin-bottom:12px}
-.empty h2{font-size:17px;margin:0 0 9px}
-.empty p{font-size:12px;line-height:1.7;color:var(--muted)}
-.loading{padding:25px;text-align:center;font-size:12px;color:var(--muted)}
-.primary{
-  border:0;border-radius:9px;
-  background:linear-gradient(120deg,var(--purple),var(--blue));
-  color:white;padding:11px 15px;font-weight:700;font-size:12px
+button, input, textarea {
+  font: inherit;
 }
 
-.bottom-nav{
-  display:flex;position:fixed;z-index:25;bottom:0;left:0;right:0;
-  height:56px;padding-bottom:env(safe-area-inset-bottom);
-  background:rgba(8,11,24,.98);border-top:1px solid var(--border);
-  align-items:center;justify-content:space-around
-}
-.nav-link{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  color:var(--muted);font-size:9px
-}
-.nav-link span{font-size:19px}
-.nav-link.active{color:var(--cyan)}
-
-/* Comments backdrop */
-.comments-backdrop{
-  position:fixed;z-index:39;inset:52px 0 0;
-  background:rgba(0,0,0,.55);opacity:0;visibility:hidden;
-  transition:opacity .25s,visibility .25s
-}
-.comments-backdrop.open{opacity:1;visibility:visible}
-
-/* Sliding bottom-sheet comments */
-.comments-sheet{
-  position:fixed;z-index:40;left:0;right:0;bottom:0;
-  height:min(70dvh,600px);
-  display:flex;flex-direction:column;
-  background:#101529;border:1px solid rgba(255,255,255,.12);
-  border-bottom:0;border-radius:20px 20px 0 0;
-  box-shadow:0 -12px 40px rgba(0,0,0,.35);
-  transform:translateY(105%);visibility:hidden;
-  transition:transform .3s ease,visibility .3s;
-  padding-bottom:env(safe-area-inset-bottom);
-  overflow:hidden
-}
-.comments-sheet.open{transform:translateY(0);visibility:visible}
-.sheet-handle{
-  width:38px;height:4px;border-radius:5px;background:#606982;
-  margin:9px auto 7px;flex-shrink:0
-}
-.sheet-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:5px 15px 12px;border-bottom:1px solid var(--border);
-  flex-shrink:0
-}
-.sheet-title{font-size:14px;font-weight:700}
-.sheet-subtitle{font-size:10px;color:var(--muted);margin-top:3px}
-.sheet-close{
-  width:31px;height:31px;border:1px solid var(--border);
-  border-radius:50%;background:#1b223b;color:white;font-size:19px
-}
-.comments-list{
-  flex:1;overflow-y:auto;overscroll-behavior:contain;
-  padding:14px 13px;display:flex;flex-direction:column;gap:16px;
-  min-height:0
-}
-.comment{
-  display:flex;gap:9px;align-items:flex-start;
-  font-size:12px;line-height:1.5;overflow-wrap:anywhere
-}
-.comment-avatar-link{flex-shrink:0}
-.comment-avatar{width:32px;height:32px}
-.comment-body{min-width:0;flex:1}
-.comment-name{font-size:11px;font-weight:700;display:block;margin-bottom:3px}
-.comment-content{font-size:12px;color:#e8ebf8;white-space:pre-wrap}
-.comment-time{font-size:9px;color:var(--muted);margin-top:5px}
-.comments-empty{
-  margin:auto;text-align:center;max-width:250px;padding:20px 10px;
-  color:var(--muted);font-size:12px;line-height:1.7
-}
-.comments-empty b{display:block;font-size:15px;color:white;margin-bottom:6px}
-
-/* Fixed composer at the bottom of comments */
-.comment-composer{
-  display:flex;align-items:flex-end;gap:8px;
-  padding:10px 12px;border-top:1px solid var(--border);
-  background:#0c1122;flex-shrink:0
-}
-.comment-input{
-  flex:1;min-width:0;max-height:100px;min-height:39px;
-  resize:none;border:1px solid rgba(255,255,255,.12);
-  border-radius:19px;background:#171d33;color:white;
-  padding:11px 13px;font-size:12px;line-height:1.4;outline:none
-}
-.comment-input:focus{border-color:var(--purple)}
-.comment-send{
-  width:40px;height:39px;flex-shrink:0;border:0;border-radius:50%;
-  color:white;font-size:17px;
-  background:linear-gradient(135deg,var(--purple),var(--blue))
-}
-.comment-send:disabled{opacity:.4}
-
-/* Upload dialog */
-.overlay{
-  position:fixed;z-index:60;inset:0;background:rgba(0,0,0,.76);
-  display:none;align-items:center;justify-content:center;padding:15px
-}
-.modal{
-  width:min(100%,410px);max-height:85dvh;overflow:auto;
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:15px;padding:15px
-}
-.modal-head{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:13px
-}
-.modal-head h3{font-size:15px;margin:0}
-.close-btn{border:0;background:transparent;color:white;font-size:23px}
-.field{
-  width:100%;background:#090d1c;border:1px solid var(--border);
-  border-radius:9px;color:white;padding:11px;margin:7px 0 12px;font-size:12px
-}
-textarea.field{min-height:80px;resize:vertical}
-.label{font-size:11px;color:var(--muted)}
-.hint{font-size:10px;line-height:1.6;color:var(--muted);margin:0 0 12px}
-.progress{
-  height:4px;background:#252b43;border-radius:9px;overflow:hidden;
-  display:none;margin:10px 0
-}
-.progress-bar{height:100%;width:0;background:var(--cyan);transition:width .2s}
-.toast{
-  position:fixed;z-index:100;bottom:68px;left:50%;
-  transform:translateX(-50%);background:#202944;
-  border:1px solid var(--border);padding:10px 14px;
-  border-radius:9px;font-size:11px;max-width:90%;
-  display:none;text-align:center
+button {
+  cursor: pointer;
 }
 
-@media(min-width:700px){
-  .topbar{height:55px}
-  .layout{top:55px;bottom:0}
-  .feed{border-left:1px solid var(--border);border-right:1px solid var(--border)}
-  .video-card{height:100%}
-  .comments-backdrop{top:55px}
-  .comments-sheet{
-    left:50%;right:auto;width:min(100%,520px);
-    transform:translate(-50%,105%)
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* TOP NAVIGATION */
+
+.topbar {
+  height: 54px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 12px;
+  background: rgba(8,11,24,.97);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+
+.brand {
+  font-size: 15px;
+  font-weight: 850;
+  letter-spacing: -.5px;
+  white-space: nowrap;
+}
+
+.brand span {
+  color: var(--cyan);
+}
+
+.top-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.top-btn {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: #151a30;
+  color: white;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.top-btn.upload {
+  border: 0;
+  background: linear-gradient(120deg, var(--purple), var(--blue));
+}
+
+/* VIDEO FEED */
+
+.feed {
+  position: fixed;
+  inset: 54px 0 0;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  background: #03050b;
+}
+
+.feed::-webkit-scrollbar {
+  display: none;
+}
+
+.video-card {
+  width: 100%;
+  height: calc(100dvh - 54px);
+  min-height: 360px;
+  position: relative;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  isolation: isolate;
+  background: #03050b;
+}
+
+.video-card video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #03050b;
+}
+
+.video-card::after {
+  content: "";
+  position: absolute;
+  inset: 35% 0 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,0,0,.12) 28%,
+    rgba(0,0,0,.66) 100%
+  );
+}
+
+/* TOP OF VIDEO */
+
+.video-top {
+  position: absolute;
+  z-index: 5;
+  top: 13px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.video-top > * {
+  pointer-events: auto;
+}
+
+.spotlight-tag {
+  padding: 9px 12px;
+  border-radius: 30px;
+  background: rgba(12,17,35,.67);
+  border: 1px solid rgba(255,255,255,.17);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .5px;
+  backdrop-filter: blur(12px);
+}
+
+.sound-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.23);
+  background: rgba(8,11,24,.55);
+  color: white;
+  font-size: 19px;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(12px);
+  transition: transform .2s;
+}
+
+.sound-btn:active {
+  transform: scale(.86);
+}
+
+/* BOLD SOCIAL ACTIONS */
+
+.actions {
+  position: absolute;
+  z-index: 6;
+  right: 9px;
+  bottom: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 19px;
+}
+
+.action {
+  width: 53px;
+  min-height: 61px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: white;
+  transition: transform .18s;
+}
+
+.action:active {
+  transform: scale(.84);
+}
+
+.action-icon {
+  display: block;
+  font-size: 33px;
+  line-height: 1;
+  font-weight: 800;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,.65));
+}
+
+.action-count {
+  display: block;
+  font-size: 12px;
+  line-height: 1.1;
+  font-weight: 850;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0,0,0,.9);
+  overflow-wrap: anywhere;
+}
+
+.action.liked .action-icon {
+  color: var(--pink);
+  animation: likePop .3s ease;
+}
+
+@keyframes likePop {
+  0% { transform: scale(.75); }
+  65% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* VIDEO CREATOR AND CAPTION */
+
+.video-info {
+  position: absolute;
+  z-index: 4;
+  left: 12px;
+  right: 72px;
+  bottom: 25px;
+  padding-bottom: 8px;
+}
+
+.creator {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 11px;
+}
+
+.creator-avatar {
+  width: 41px;
+  height: 41px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+}
+
+.creator-initials {
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.creator-details {
+  min-width: 0;
+}
+
+.creator-name {
+  font-size: 13px;
+  font-weight: 850;
+  text-shadow: 0 2px 6px #000;
+  overflow-wrap: anywhere;
+}
+
+.creator-school {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #e0e4f1;
+  text-shadow: 0 2px 6px #000;
+}
+
+.profile-pill {
+  margin-left: 3px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.65);
+  background: rgba(0,0,0,.3);
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.caption {
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  text-shadow: 0 2px 5px #000;
+}
+
+.post-time {
+  font-size: 10px;
+  color: #e1e5f1;
+  margin-top: 9px;
+  text-shadow: 0 2px 5px #000;
+}
+
+/* EMPTY AND LOADING STATES */
+
+.loading, .empty {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  text-align: center;
+}
+
+.empty-content {
+  max-width: 300px;
+}
+
+.empty-icon {
+  font-size: 43px;
+  margin-bottom: 13px;
+}
+
+.empty h2 {
+  font-size: 19px;
+  margin: 0 0 9px;
+}
+
+.empty p, .loading {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.primary-btn {
+  border: 0;
+  border-radius: 11px;
+  padding: 12px 16px;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  background: linear-gradient(120deg, var(--purple), var(--blue));
+}
+
+/* COMMENTS BACKDROP */
+
+.comments-backdrop {
+  position: fixed;
+  z-index: 35;
+  inset: 54px 0 0;
+  background: rgba(0,0,0,.22);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .22s, visibility .22s;
+}
+
+.comments-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* HALF-SCREEN COMMENTS SHEET */
+
+.comments-sheet {
+  position: fixed;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  /* Stops halfway up the screen */
+  height: 55dvh;
+  max-height: 620px;
+  min-height: 270px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #101529;
+  border: 1px solid rgba(255,255,255,.13);
+  border-bottom: 0;
+  border-radius: 21px 21px 0 0;
+  box-shadow: 0 -10px 40px rgba(0,0,0,.38);
+
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow: hidden;
+
+  transform: translateY(105%);
+  visibility: hidden;
+  transition: transform .28s cubic-bezier(.2,.8,.2,1),
+              visibility .28s;
+}
+
+.comments-sheet.open {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.sheet-handle {
+  width: 41px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  margin: 9px auto 7px;
+  background: #68718b;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px 11px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.sheet-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sheet-title {
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.comment-total {
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.sheet-subtitle {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+.close-comments {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: white;
+  background: #1c233b;
+  font-size: 21px;
+}
+
+/* INDEPENDENT COMMENT SCROLL */
+
+.comments-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 13px 13px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+
+.comment-avatar-link {
+  flex-shrink: 0;
+}
+
+.comment-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.18);
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+}
+
+.comment-avatar.initials {
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.comment-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-name {
+  display: block;
+  font-size: 11px;
+  font-weight: 850;
+  margin-bottom: 4px;
+}
+
+.comment-text {
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #e9ecf7;
+}
+
+.comment-time {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.comments-empty {
+  margin: auto;
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.comments-empty strong {
+  display: block;
+  font-size: 15px;
+  color: white;
+  margin-bottom: 5px;
+}
+
+/* FIXED COMMENT INPUT */
+
+.comment-composer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  background: #0b1020;
+}
+
+.comment-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 39px;
+  max-height: 85px;
+  resize: none;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 20px;
+  outline: none;
+  background: #181e35;
+  color: white;
+  padding: 11px 13px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.comment-input:focus {
+  border-color: var(--purple);
+}
+
+.comment-input::placeholder {
+  color: #939cb8;
+}
+
+.send-comment {
+  flex-shrink: 0;
+  width: 40px;
+  height: 39px;
+  border: 0;
+  border-radius: 50%;
+  color: white;
+  font-size: 17px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+}
+
+.send-comment:disabled {
+  opacity: .45;
+}
+
+/* UPLOAD DIALOG */
+
+.overlay {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(0,0,0,.78);
+}
+
+.modal {
+  width: min(100%, 410px);
+  max-height: 85dvh;
+  overflow-y: auto;
+  padding: 16px;
+  border-radius: 17px;
+  border: 1px solid var(--border);
+  background: #11162a;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header h3 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.modal-close {
+  border: 0;
+  background: transparent;
+  color: white;
+  font-size: 24px;
+}
+
+.field-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.field {
+  width: 100%;
+  margin: 7px 0 12px;
+  padding: 11px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  outline: none;
+  color: white;
+  background: #090d1c;
+  font-size: 12px;
+}
+
+textarea.field {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.hint {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.progress {
+  height: 4px;
+  background: #252b43;
+  border-radius: 8px;
+  overflow: hidden;
+  display: none;
+  margin: 10px 0;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--cyan);
+  transition: width .2s;
+}
+
+.toast {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: none;
+  max-width: 90%;
+  padding: 11px 15px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: #202944;
+  color: white;
+  text-align: center;
+  font-size: 11px;
+}
+
+/* MOBILE BOTTOM NAV */
+
+.bottom-nav {
+  position: fixed;
+  z-index: 25;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(57px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(8,11,24,.98);
+  border-top: 1px solid var(--border);
+}
+
+.nav-link {
+  min-width: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #969fba;
+  font-size: 9px;
+}
+
+.nav-icon {
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.nav-link.active {
+  color: var(--cyan);
+}
+
+@media (min-width: 700px) {
+  .topbar {
+    height: 58px;
   }
-  .comments-sheet.open{transform:translate(-50%,0)}
-  .bottom-nav{display:none}
-  .toast{bottom:20px}
+
+  .feed {
+    top: 58px;
+    bottom: 0;
+    left: 50%;
+    right: auto;
+    width: min(100%, 520px);
+    transform: translateX(-50%);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .video-card {
+    height: calc(100dvh - 58px);
+  }
+
+  .comments-backdrop {
+    inset: 58px 0 0;
+  }
+
+  .comments-sheet {
+    left: 50%;
+    right: auto;
+    width: min(100%, 520px);
+    transform: translate(-50%, 105%);
+  }
+
+  .comments-sheet.open {
+    transform: translate(-50%, 0);
+  }
+
+  .bottom-nav {
+    display: none;
+  }
 }
 
-@media(max-width:380px){
-  .brand{font-size:13px}
-  .small-btn{padding:7px;font-size:9px}
-  .comments-sheet{height:75dvh}
+@media (max-width: 380px) {
+  .brand {
+    font-size: 13px;
+  }
+
+  .top-btn {
+    padding: 8px;
+    font-size: 10px;
+  }
+
+  .actions {
+    right: 4px;
+    gap: 15px;
+  }
+
+  .action {
+    width: 47px;
+  }
+
+  .action-icon {
+    font-size: 30px;
+  }
+
+  .video-info {
+    left: 9px;
+    right: 61px;
+  }
+}
+
+/* Short screens: preserve enough room for video and comments */
+@media (max-height: 580px) {
+  .comments-sheet {
+    height: 62dvh;
+  }
+
+  .actions {
+    bottom: 115px;
+    gap: 9px;
+  }
+
+  .action {
+    min-height: 48px;
+  }
 }
 </style></head><body><header class="topbar">
-  <a class="brand" href="index.html">Campusora <span>Spotlight</span></a>
-  <div class="top-actions">
-    <button class="small-btn" id="refreshBtn">↻ Refresh</button>
-    <button class="small-btn upload-btn" id="uploadBtn">＋ Upload</button>
+  <a class="brand" href="index.html">Campusora <span>Spotlight</span></a>  <div class="top-actions">
+    <button class="top-btn" id="refreshBtn">↻ Refresh</button>
+    <button class="top-btn upload" id="uploadBtn">＋ Upload</button>
   </div>
-</header><main class="layout">
-  <section class="feed" id="feed" aria-label="Spotlight videos">
-    <div class="loading">Loading Spotlight videos…</div>
-  </section>
+</header><main class="feed" id="feed">
+  <div class="loading">Loading your Spotlight feed…</div>
 </main><nav class="bottom-nav">
-  <a class="nav-link" href="index.html"><span>⌂</span>Home</a>
-  <a class="nav-link" href="explore.html"><span>⌕</span>Explore</a>
-  <a class="nav-link active" href="spotlight.html"><span>▶</span>Spotlight</a>
-  <a class="nav-link" href="communities.html"><span>♧</span>Communities</a>
-  <a class="nav-link" href="messages.html"><span>✉</span>Messages</a>
-</nav><div class="comments-backdrop" id="commentsBackdrop"></div><section class="comments-sheet" id="commentsSheet" aria-label="Video comments">
+  <a class="nav-link" href="index.html">
+    <span class="nav-icon">⌂</span>Home
+  </a>
+  <a class="nav-link" href="explore.html">
+    <span class="nav-icon">⌕</span>Explore
+  </a>
+  <a class="nav-link active" href="spotlight.html">
+    <span class="nav-icon">▶</span>Spotlight
+  </a>
+  <a class="nav-link" href="communities.html">
+    <span class="nav-icon">♧</span>Communities
+  </a>
+  <a class="nav-link" href="messages.html">
+    <span class="nav-icon">✉</span>Messages
+  </a>
+</nav><div class="comments-backdrop" id="commentsBackdrop"></div><section class="comments-sheet" id="commentsSheet" aria-label="Comments">
   <div class="sheet-handle"></div>  <header class="sheet-header">
     <div>
-      <div class="sheet-title">Comments <span id="commentCount"></span></div>
-      <div class="sheet-subtitle">Join the conversation</div>
-    </div>
-    <button class="sheet-close" id="closeComments" aria-label="Close comments">×</button>
+      <div class="sheet-heading">
+        <span class="sheet-title">Comments</span>
+        <span class="comment-total" id="commentCount">(0)</span>
+      </div>
+      <div class="sheet-subtitle">Share your thoughts with the community</div>
+    </div><button class="close-comments" id="closeComments" aria-label="Close comments">×</button>
+
   </header>  <div class="comments-list" id="commentList">
     <div class="comments-empty">Loading comments…</div>
   </div>  <form class="comment-composer" id="commentForm">
-    <textarea class="comment-input" id="commentText"
-      maxlength="2000" rows="1" placeholder="Add a comment…" required></textarea>
-    <button class="comment-send" id="commentSend" type="submit" aria-label="Send comment">➤</button>
+    <textarea
+      class="comment-input"
+      id="commentText"
+      maxlength="2000"
+      rows="1"
+      placeholder="Add a comment…"
+      required
+    ></textarea><button class="send-comment" id="sendComment" type="submit" aria-label="Send comment">➤</button>
+
   </form>
 </section><div class="overlay" id="uploadOverlay">
   <div class="modal">
-    <div class="modal-head">
-      <h3>＋ Upload to Spotlight</h3>
-      <button class="close-btn" data-close="uploadOverlay">×</button>
+    <div class="modal-header">
+      <h3>🎬 Create a Spotlight</h3>
+      <button class="modal-close" data-close="uploadOverlay">×</button>
     </div><form id="uploadForm">
-  <label class="label" for="videoFile">Choose a video</label>
-  <input class="field" type="file" id="videoFile"
-    accept="video/mp4,video/webm,video/quicktime" required>
+  <label class="field-label" for="videoFile">Choose your video</label>
+  <input
+    class="field"
+    id="videoFile"
+    type="file"
+    accept="video/mp4,video/webm,video/quicktime"
+    required
+  >
 
   <p class="hint">MP4, WebM or MOV. Maximum size: 50 MB.</p>
 
-  <label class="label" for="caption">Caption</label>
-  <textarea class="field" id="caption" maxlength="1000"
-    placeholder="What's happening on your campus?"></textarea>
+  <label class="field-label" for="caption">Caption</label>
+  <textarea
+    class="field"
+    id="caption"
+    maxlength="1000"
+    placeholder="Show us what's happening on your campus…"
+  ></textarea>
 
   <div class="progress" id="progress">
     <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <p class="hint" id="uploadStatus">
-    Your video will be visible to signed-in Campusora members.
-  </p>
+  <p class="hint" id="uploadStatus">Share a moment with Campusora.</p>
 
-  <button class="primary" style="width:100%" id="publishBtn" type="submit">
+  <button class="primary-btn" id="publishBtn" type="submit" style="width:100%">
     Publish video
   </button>
 </form>
@@ -360,6 +924,7 @@ textarea.field{min-height:80px;resize:vertical}
 import { supabase } from './supabase.js';
 
 const $ = id => document.getElementById(id);
+
 const feed = $('feed');
 
 let currentUser = null;
@@ -367,632 +932,860 @@ let videos = [];
 let observer = null;
 let commentsVideoId = null;
 let commentsOpen = false;
+
 const viewedThisSession = new Set();
 const likeBusy = new Set();
 
-function toast(message){
-  const el=$('toast');
-  el.textContent=message;
-  el.style.display='block';
-  clearTimeout(toast.timer);
-  toast.timer=setTimeout(()=>el.style.display='none',3000);
+function escapeHTML(value = '') {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[ch]);
 }
 
-function escapeHTML(value=''){
-  return String(value).replace(/[&<>"']/g,c=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  })[c]);
+function initials(name = 'Campusora') {
+  return name.trim().split(/\s+/).slice(0, 2)
+    .map(part => part[0] || '').join('').toUpperCase() || 'C';
 }
 
-function shortNumber(n=0){
-  n=Number(n)||0;
-  if(n>=1000000)return (n/1000000).toFixed(1)+'m';
-  if(n>=1000)return (n/1000).toFixed(1)+'k';
+function shortNumber(value = 0) {
+  const n = Number(value) || 0;
+
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 10000) return (n / 1000).toFixed(1) + 'K';
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+
   return String(n);
 }
 
-function initials(name='Campusora member'){
-  return name.trim().split(/\s+/).slice(0,2)
-    .map(part=>part[0]||'').join('').toUpperCase()||'C';
+function timeAgo(date) {
+  const difference = Date.now() - new Date(date).getTime();
+
+  if (!Number.isFinite(difference)) return '';
+  if (difference < 60000) return 'Just now';
+  if (difference < 3600000) return Math.floor(difference / 60000) + 'm ago';
+  if (difference < 86400000) return Math.floor(difference / 3600000) + 'h ago';
+
+  return Math.floor(difference / 86400000) + 'd ago';
 }
 
-function dateLabel(date){
-  const elapsed=Date.now()-new Date(date).getTime();
-  if(!Number.isFinite(elapsed))return '';
-  if(elapsed<60000)return 'Just now';
-  if(elapsed<3600000)return Math.floor(elapsed/60000)+'m ago';
-  if(elapsed<86400000)return Math.floor(elapsed/3600000)+'h ago';
-  return Math.floor(elapsed/86400000)+'d ago';
+function profileURL(userId) {
+  return 'profile.html?id=' + encodeURIComponent(userId);
 }
 
-function profileURL(userId){
-  return 'profile.html?id='+encodeURIComponent(userId);
+function toast(message) {
+  const element = $('toast');
+
+  element.textContent = message;
+  element.style.display = 'block';
+
+  clearTimeout(toast.timer);
+
+  toast.timer = setTimeout(() => {
+    element.style.display = 'none';
+  }, 3000);
 }
 
-async function getSession(){
-  const {data,error}=await supabase.auth.getSession();
-  if(error)throw error;
-  currentUser=data.session?.user||null;
+async function getSession() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) throw error;
+
+  currentUser = data.session?.user || null;
 }
 
-function requireLogin(){
-  if(currentUser)return true;
-  toast('Please sign in to use Spotlight.');
-  setTimeout(()=>location.href='index.html',1200);
+function requireLogin() {
+  if (currentUser) return true;
+
+  toast('Please sign in to continue.');
+
+  setTimeout(() => {
+    location.href = 'index.html';
+  }, 1200);
+
   return false;
 }
 
-async function loadVideos(){
-  if(observer)observer.disconnect();
-  feed.innerHTML='<div class="loading">Loading Spotlight videos…</div>';
+async function loadVideos() {
+  if (observer) observer.disconnect();
 
-  try{
-    const {data,error}=await supabase.from('spotlight_videos')
+  feed.innerHTML = '<div class="loading">Loading your Spotlight feed…</div>';
+
+  try {
+    const { data, error } = await supabase
+      .from('spotlight_videos')
       .select('id,user_id,caption,video_url,thumbnail_url,institution_id,view_count,created_at')
-      .order('created_at',{ascending:false}).limit(40);
+      .order('created_at', { ascending: false })
+      .limit(40);
 
-    if(error)throw error;
-    const rows=data||[];
+    if (error) throw error;
 
-    if(!rows.length){
-      feed.innerHTML=`
-        <div class="empty"><div class="empty-box">
-          <div class="empty-icon">🎬</div>
-          <h2>Your Spotlight starts here</h2>
-          <p>Share campus moments, talents, funny clips and useful ideas.
-          Be the first to upload a video to Campusora Spotlight.</p>
-          <button class="primary" id="firstUpload">＋ Upload first video</button>
-        </div></div>`;
-      $('firstUpload').onclick=openUpload;
+    const rows = data || [];
+
+    if (!rows.length) {
+      feed.innerHTML = `
+        <div class="empty">
+          <div class="empty-content">
+            <div class="empty-icon">🎬</div>
+            <h2>Let's light up Spotlight!</h2>
+            <p>Share your talent, campus life, funny moments and stories.
+            Your next favourite video could be right here.</p>
+            <button class="primary-btn" id="firstUpload">＋ Create a Spotlight</button>
+          </div>
+        </div>`;
+
+      $('firstUpload').onclick = openUpload;
       return;
     }
 
-    const userIds=[...new Set(rows.map(v=>v.user_id))];
-    const videoIds=rows.map(v=>v.id);
+    const userIds = [...new Set(rows.map(video => video.user_id))];
+    const videoIds = rows.map(video => video.id);
 
-    const [profilesRes,likesRes,mineRes]=await Promise.all([
+    const [profilesResult, likesResult, myLikesResult] = await Promise.all([
       supabase.from('profiles')
-        .select('id,username,full_name,avatar_url,school,role').in('id',userIds),
+        .select('id,username,full_name,avatar_url,school,role')
+        .in('id', userIds),
+
       supabase.from('spotlight_likes')
-        .select('video_id').in('video_id',videoIds),
+        .select('video_id')
+        .in('video_id', videoIds),
+
       currentUser
-        ?supabase.from('spotlight_likes').select('video_id')
-          .eq('user_id',currentUser.id).in('video_id',videoIds)
-        :Promise.resolve({data:[],error:null})
+        ? supabase.from('spotlight_likes')
+            .select('video_id')
+            .eq('user_id', currentUser.id)
+            .in('video_id', videoIds)
+        : Promise.resolve({ data: [], error: null })
     ]);
 
-    if(profilesRes.error)throw profilesRes.error;
-    if(likesRes.error)throw likesRes.error;
-    if(mineRes.error)throw mineRes.error;
+    if (profilesResult.error) throw profilesResult.error;
+    if (likesResult.error) throw likesResult.error;
+    if (myLikesResult.error) throw myLikesResult.error;
 
-    const profileMap=new Map((profilesRes.data||[]).map(p=>[p.id,p]));
-    const counts=new Map();
+    const profileMap = new Map(
+      (profilesResult.data || []).map(profile => [profile.id, profile])
+    );
 
-    (likesRes.data||[]).forEach(l=>{
-      counts.set(l.video_id,(counts.get(l.video_id)||0)+1);
+    const likeCounts = new Map();
+
+    (likesResult.data || []).forEach(like => {
+      likeCounts.set(
+        like.video_id,
+        (likeCounts.get(like.video_id) || 0) + 1
+      );
     });
 
-    const mine=new Set((mineRes.data||[]).map(l=>l.video_id));
+    const myLikes = new Set(
+      (myLikesResult.data || []).map(like => like.video_id)
+    );
 
-    videos=rows.map(v=>({
-      ...v,
-      profile:profileMap.get(v.user_id)||{},
-      likeCount:counts.get(v.id)||0,
-      liked:mine.has(v.id)
+    videos = rows.map(video => ({
+      ...video,
+      profile: profileMap.get(video.user_id) || {},
+      likeCount: likeCounts.get(video.id) || 0,
+      liked: myLikes.has(video.id)
     }));
 
     renderVideos();
 
-    /* If a shared link contains a video ID, scroll to that video. */
-    if(location.hash){
-      const targetId=decodeURIComponent(location.hash.slice(1));
-      const target=feed.querySelector(`[data-video-id="${CSS.escape(targetId)}"]`);
-      if(target)target.scrollIntoView({behavior:'smooth'});
+    if (location.hash) {
+      const requestedId = decodeURIComponent(location.hash.slice(1));
+
+      const target = [...feed.querySelectorAll('.video-card')]
+        .find(card => card.dataset.videoId === requestedId);
+
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
     }
 
-  }catch(error){
-    console.error('Spotlight load error:',error);
-    feed.innerHTML=`
-      <div class="empty"><div class="empty-box">
-        <div class="empty-icon">⚠️</div>
-        <h2>Couldn't load Spotlight</h2>
-        <p>${escapeHTML(error.message||'Please try again.')}</p>
-        <button class="primary" id="retryBtn">Try again</button>
-      </div></div>`;
-    $('retryBtn').onclick=loadVideos;
+  } catch (error) {
+    console.error('Spotlight load error:', error);
+
+    feed.innerHTML = `
+      <div class="empty">
+        <div class="empty-content">
+          <div class="empty-icon">⚠️</div>
+          <h2>Spotlight couldn't load</h2>
+          <p>${escapeHTML(error.message || 'Please try again.')}</p>
+          <button class="primary-btn" id="retryBtn">Try again</button>
+        </div>
+      </div>`;
+
+    $('retryBtn').onclick = loadVideos;
   }
 }
 
-function renderVideos(){
-  if(observer)observer.disconnect();
+function renderVideos() {
+  if (observer) observer.disconnect();
 
-  feed.innerHTML=videos.map(v=>{
-    const p=v.profile||{};
-    const name=p.full_name||(p.username?'@'+p.username:'Campusora member');
-    const school=p.school||(p.role?p.role[0].toUpperCase()+p.role.slice(1):'Campusora member');
+  feed.innerHTML = videos.map(video => {
+    const profile = video.profile || {};
 
-    const avatar=p.avatar_url
-      ?`<img class="avatar" src="${escapeHTML(p.avatar_url)}" alt="" loading="lazy">`
-      :`<div class="avatar">${escapeHTML(initials(name))}</div>`;
+    const name = profile.full_name ||
+      (profile.username ? '@' + profile.username : 'Campusora member');
+
+    const school = profile.school || 'Campusora community';
+
+    const avatar = profile.avatar_url
+      ? `<img class="creator-avatar" src="${escapeHTML(profile.avatar_url)}" alt="${escapeHTML(name)}">`
+      : `<div class="creator-avatar creator-initials">${escapeHTML(initials(name))}</div>`;
 
     return `
-      <article class="video-card" data-video-id="${escapeHTML(v.id)}">
-        <video src="${escapeHTML(v.video_url)}"
-          ${v.thumbnail_url?`poster="${escapeHTML(v.thumbnail_url)}"`:''}
-          playsinline loop preload="metadata" muted controlslist="nodownload"></video>
+      <article class="video-card" data-video-id="${escapeHTML(video.id)}">
+
+        <video
+          src="${escapeHTML(video.video_url)}"
+          ${video.thumbnail_url ? `poster="${escapeHTML(video.thumbnail_url)}"` : ''}
+          playsinline
+          loop
+          preload="metadata"
+          muted
+        ></video>
 
         <div class="video-top">
-          <span class="tag">✦ CAMPUSORA SPOTLIGHT</span>
+          <span class="spotlight-tag">✦ CAMPUSORA SPOTLIGHT</span>
           <button class="sound-btn" data-action="sound" aria-label="Toggle sound">🔇</button>
         </div>
 
         <div class="actions">
-          <button class="action ${v.liked?'liked':''}" data-action="like" aria-label="Like">
-            <span class="icon">${v.liked?'♥':'♡'}</span>
-            <span class="count like-count">${shortNumber(v.likeCount)}</span>
+
+          <button class="action ${video.liked ? 'liked' : ''}" data-action="like" aria-label="Like video">
+            <span class="action-icon">${video.liked ? '♥' : '♡'}</span>
+            <span class="action-count like-count">${shortNumber(video.likeCount)}</span>
           </button>
-          <button class="action" data-action="comments" aria-label="Comments">
-            <span class="icon">▢</span><span class="count">Comments</span>
+
+          <button class="action" data-action="comments" aria-label="View comments">
+            <span class="action-icon">▢</span>
+            <span class="action-count comment-count">Comments</span>
           </button>
-          <button class="action" data-action="share" aria-label="Share">
-            <span class="icon">↗</span><span class="count">Share</span>
+
+          <button class="action" data-action="share" aria-label="Share video">
+            <span class="action-icon">➦</span>
+            <span class="action-count">Share</span>
           </button>
-          <button class="action" data-action="views" aria-label="Views">
-            <span class="icon">◉</span><span class="count view-count">${shortNumber(v.view_count)}</span>
-          </button>
+
+          <div class="action" aria-label="Video views">
+            <span class="action-icon">◉</span>
+            <span class="action-count view-count">${shortNumber(video.view_count)}</span>
+          </div>
+
         </div>
 
         <div class="video-info">
           <div class="creator">
-            <a href="${profileURL(v.user_id)}" aria-label="Open creator profile">${avatar}</a>
-            <div style="min-width:0">
-              <a class="creator-name" href="${profileURL(v.user_id)}">${escapeHTML(name)}</a>
+            <a href="${profileURL(video.user_id)}" aria-label="View creator profile">
+              ${avatar}
+            </a>
+
+            <div class="creator-details">
+              <a class="creator-name" href="${profileURL(video.user_id)}">${escapeHTML(name)}</a>
               <div class="creator-school">${escapeHTML(school)}</div>
             </div>
-            ${currentUser&&currentUser.id!==v.user_id
-              ?`<a class="follow-btn" href="${profileURL(v.user_id)}">View profile</a>`:''}
+
+            ${currentUser && currentUser.id !== video.user_id
+              ? `<a class="profile-pill" href="${profileURL(video.user_id)}">Profile</a>`
+              : ''}
           </div>
-          ${v.caption?`<div class="caption">${escapeHTML(v.caption)}</div>`:''}
-          <div class="post-time">♫ Original video · ${dateLabel(v.created_at)}</div>
+
+          ${video.caption
+            ? `<div class="caption">${escapeHTML(video.caption)}</div>`
+            : ''}
+
+          <div class="post-time">♫ Original video · ${timeAgo(video.created_at)}</div>
         </div>
+
       </article>`;
   }).join('');
 
-  setupObserver();
+  setupVideoObserver();
+  loadCommentCounts();
 }
 
-function setupObserver(){
-  observer=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      const video=entry.target.querySelector('video');
+async function loadCommentCounts() {
+  const videoIds = videos.map(video => video.id);
 
-      if(entry.isIntersecting&&entry.intersectionRatio>=.65){
-        document.querySelectorAll('.video-card video').forEach(other=>{
-          if(other!==video)other.pause();
-        });
-        if(!commentsOpen)video.play().catch(()=>{});
-        recordView(entry.target.dataset.videoId,entry.target.querySelector('.view-count'));
-      }else{
-        video.pause();
-      }
+  if (!videoIds.length) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('spotlight_comments')
+      .select('video_id')
+      .in('video_id', videoIds);
+
+    if (error) throw error;
+
+    const counts = new Map();
+
+    (data || []).forEach(comment => {
+      counts.set(comment.video_id, (counts.get(comment.video_id) || 0) + 1);
     });
-  },{root:feed,threshold:[.2,.65,.9]});
 
-  document.querySelectorAll('.video-card').forEach(card=>observer.observe(card));
-}
+    videos.forEach(video => {
+      video.commentCount = counts.get(video.id) || 0;
 
-async function recordView(videoId,countElement){
-  if(viewedThisSession.has(videoId)||!currentUser)return;
-  viewedThisSession.add(videoId);
+      const card = [...feed.querySelectorAll('.video-card')]
+        .find(item => item.dataset.videoId === video.id);
 
-  try{
-    const {data,error}=await supabase.rpc(
-      'campusora_increment_spotlight_view',{target_video_id:videoId}
-    );
-    if(error)throw error;
-    if(countElement)countElement.textContent=shortNumber(data);
-  }catch(error){
-    viewedThisSession.delete(videoId);
-    console.warn('Could not record view:',error.message);
+      const count = card?.querySelector('.comment-count');
+
+      if (count) count.textContent = shortNumber(video.commentCount);
+    });
+
+  } catch (error) {
+    console.warn('Could not load comment counts:', error.message);
   }
 }
 
-async function toggleLike(videoId,button){
-  if(!requireLogin()||likeBusy.has(videoId))return;
+function setupVideoObserver() {
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const video = entry.target.querySelector('video');
+
+      if (entry.isIntersecting && entry.intersectionRatio >= .65) {
+        document.querySelectorAll('.video-card video').forEach(other => {
+          if (other !== video) other.pause();
+        });
+
+        if (!commentsOpen) video.play().catch(() => {});
+
+        recordView(
+          entry.target.dataset.videoId,
+          entry.target.querySelector('.view-count')
+        );
+
+      } else {
+        video.pause();
+      }
+    });
+  }, {
+    root: feed,
+    threshold: [.2, .65, .9]
+  });
+
+  feed.querySelectorAll('.video-card').forEach(card => {
+    observer.observe(card);
+  });
+}
+
+async function recordView(videoId, counter) {
+  if (viewedThisSession.has(videoId) || !currentUser) return;
+
+  viewedThisSession.add(videoId);
+
+  try {
+    const { data, error } = await supabase.rpc(
+      'campusora_increment_spotlight_view',
+      { target_video_id: videoId }
+    );
+
+    if (error) throw error;
+
+    if (counter && data !== null) {
+      counter.textContent = shortNumber(data);
+    }
+
+  } catch (error) {
+    viewedThisSession.delete(videoId);
+    console.warn('View count was not updated:', error.message);
+  }
+}
+
+async function toggleLike(videoId, button) {
+  if (!requireLogin() || likeBusy.has(videoId)) return;
+
+  const video = videos.find(item => item.id === videoId);
+
+  if (!video) return;
+
   likeBusy.add(videoId);
 
-  const v=videos.find(item=>item.id===videoId);
-  if(!v){likeBusy.delete(videoId);return;}
+  const previousLiked = video.liked;
+  const previousCount = video.likeCount;
 
-  const wasLiked=v.liked;
-  v.liked=!wasLiked;
-  v.likeCount=Math.max(0,v.likeCount+(wasLiked?-1:1));
+  video.liked = !previousLiked;
+  video.likeCount = Math.max(0, previousCount + (previousLiked ? -1 : 1));
 
-  button.classList.toggle('liked',v.liked);
-  button.querySelector('.icon').textContent=v.liked?'♥':'♡';
-  button.querySelector('.like-count').textContent=shortNumber(v.likeCount);
+  button.classList.toggle('liked', video.liked);
+  button.querySelector('.action-icon').textContent = video.liked ? '♥' : '♡';
+  button.querySelector('.like-count').textContent = shortNumber(video.likeCount);
 
-  try{
-    if(wasLiked){
-      const {error}=await supabase.from('spotlight_likes').delete()
-        .eq('video_id',videoId).eq('user_id',currentUser.id);
-      if(error)throw error;
-    }else{
-      const {error}=await supabase.from('spotlight_likes').insert({
-        video_id:videoId,user_id:currentUser.id
-      });
-      if(error)throw error;
+  try {
+    if (previousLiked) {
+      const { error } = await supabase
+        .from('spotlight_likes')
+        .delete()
+        .eq('video_id', videoId)
+        .eq('user_id', currentUser.id);
+
+      if (error) throw error;
+
+    } else {
+      const { error } = await supabase
+        .from('spotlight_likes')
+        .insert({
+          video_id: videoId,
+          user_id: currentUser.id
+        });
+
+      if (error) throw error;
     }
-  }catch(error){
-    v.liked=wasLiked;
-    v.likeCount=Math.max(0,v.likeCount+(wasLiked?1:-1));
-    button.classList.toggle('liked',v.liked);
-    button.querySelector('.icon').textContent=v.liked?'♥':'♡';
-    button.querySelector('.like-count').textContent=shortNumber(v.likeCount);
-    toast(error.message||'Could not update like.');
-  }finally{
+
+  } catch (error) {
+    video.liked = previousLiked;
+    video.likeCount = previousCount;
+
+    button.classList.toggle('liked', video.liked);
+    button.querySelector('.action-icon').textContent = video.liked ? '♥' : '♡';
+    button.querySelector('.like-count').textContent = shortNumber(video.likeCount);
+
+    toast(error.message || 'Could not update your like.');
+
+  } finally {
     likeBusy.delete(videoId);
   }
 }
 
-/* Open the comments sheet and pause the current video. */
-async function openComments(videoId){
-  if(!requireLogin())return;
+/* COMMENTS: HALF-HEIGHT PANEL */
 
-  commentsVideoId=videoId;
-  commentsOpen=true;
+async function openComments(videoId) {
+  if (!requireLogin()) return;
 
-  const card=feed.querySelector(`[data-video-id="${CSS.escape(videoId)}"]`);
-  if(card)card.querySelector('video')?.pause();
+  commentsVideoId = videoId;
+  commentsOpen = true;
 
-  $('commentList').innerHTML='<div class="comments-empty">Loading comments…</div>';
-  $('commentCount').textContent='';
-  $('commentText').value='';
+  const card = [...feed.querySelectorAll('.video-card')]
+    .find(item => item.dataset.videoId === videoId);
+
+  card?.querySelector('video')?.pause();
+
+  $('commentList').innerHTML =
+    '<div class="comments-empty">Loading comments…</div>';
+
+  $('commentCount').textContent = '(…)';
+  $('commentText').value = '';
 
   $('commentsBackdrop').classList.add('open');
   $('commentsSheet').classList.add('open');
-  document.body.style.overflow='hidden';
 
   await loadComments(videoId);
-
-  setTimeout(()=>$('commentText').focus({preventScroll:true}),250);
 }
 
-function closeComments(){
-  commentsOpen=false;
-  commentsVideoId=null;
+function closeComments() {
+  commentsOpen = false;
+  commentsVideoId = null;
 
   $('commentsBackdrop').classList.remove('open');
   $('commentsSheet').classList.remove('open');
-  document.body.style.overflow='';
 
-  const card=feed.querySelector('.video-card');
-  const video=card?.querySelector('video');
+  const card = [...feed.querySelectorAll('.video-card')]
+    .find(item => {
+      const rect = item.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 54;
+    });
 
-  if(video&&card&&card.getBoundingClientRect().bottom>0&&
-     card.getBoundingClientRect().top<window.innerHeight){
-    video.play().catch(()=>{});
-  }
+  card?.querySelector('video')?.play().catch(() => {});
 }
 
-async function loadComments(videoId){
-  try{
-    const {data,error}=await supabase.from('spotlight_comments')
+async function loadComments(videoId) {
+  try {
+    const { data, error } = await supabase
+      .from('spotlight_comments')
       .select('id,user_id,content,created_at')
-      .eq('video_id',videoId)
-      .order('created_at',{ascending:true})
+      .eq('video_id', videoId)
+      .order('created_at', { ascending: true })
       .limit(100);
 
-    if(error)throw error;
+    if (error) throw error;
 
-    const comments=data||[];
-    $('commentCount').textContent=`(${comments.length})`;
+    const comments = data || [];
 
-    if(!comments.length){
-      $('commentList').innerHTML=`
+    $('commentCount').textContent = `(${comments.length})`;
+
+    if (!comments.length) {
+      $('commentList').innerHTML = `
         <div class="comments-empty">
-          <b>No comments yet 💬</b>
-          Be the first to share your thoughts on this video.
+          <strong>💬 Start the conversation</strong>
+          Be the first to comment on this video.
         </div>`;
       return;
     }
 
-    const ids=[...new Set(comments.map(c=>c.user_id))];
+    const userIds = [...new Set(comments.map(comment => comment.user_id))];
 
-    const {data:profiles,error:profileError}=await supabase.from('profiles')
+    const { data: profiles, error: profileError } = await supabase
+      .from('profiles')
       .select('id,username,full_name,avatar_url')
-      .in('id',ids);
+      .in('id', userIds);
 
-    if(profileError)throw profileError;
+    if (profileError) throw profileError;
 
-    const map=new Map((profiles||[]).map(p=>[p.id,p]));
+    const profileMap = new Map(
+      (profiles || []).map(profile => [profile.id, profile])
+    );
 
-    $('commentList').innerHTML=comments.map(c=>{
-      const p=map.get(c.user_id)||{};
-      const name=p.full_name||(p.username?'@'+p.username:'Campusora member');
+    $('commentList').innerHTML = comments.map(comment => {
+      const profile = profileMap.get(comment.user_id) || {};
 
-      const avatar=p.avatar_url
-        ?`<img class="avatar comment-avatar" src="${escapeHTML(p.avatar_url)}" alt="">`
-        :`<div class="avatar comment-avatar">${escapeHTML(initials(name))}</div>`;
+      const name = profile.full_name ||
+        (profile.username ? '@' + profile.username : 'Campusora member');
+
+      const avatar = profile.avatar_url
+        ? `<img class="comment-avatar" src="${escapeHTML(profile.avatar_url)}" alt="">`
+        : `<div class="comment-avatar initials">${escapeHTML(initials(name))}</div>`;
 
       return `
         <article class="comment">
-          <a class="comment-avatar-link" href="${profileURL(c.user_id)}">${avatar}</a>
+          <a class="comment-avatar-link" href="${profileURL(comment.user_id)}">
+            ${avatar}
+          </a>
+
           <div class="comment-body">
-            <a class="comment-name" href="${profileURL(c.user_id)}">${escapeHTML(name)}</a>
-            <div class="comment-content">${escapeHTML(c.content)}</div>
-            <div class="comment-time">${dateLabel(c.created_at)}</div>
+            <a class="comment-name" href="${profileURL(comment.user_id)}">
+              ${escapeHTML(name)}
+            </a>
+
+            <div class="comment-text">${escapeHTML(comment.content)}</div>
+
+            <div class="comment-time">${timeAgo(comment.created_at)}</div>
           </div>
         </article>`;
     }).join('');
 
-    $('commentList').scrollTop=$('commentList').scrollHeight;
+    $('commentList').scrollTop = $('commentList').scrollHeight;
 
-  }catch(error){
-    console.error('Comment loading error:',error);
-    $('commentList').innerHTML=`
+  } catch (error) {
+    console.error('Comments error:', error);
+
+    $('commentList').innerHTML = `
       <div class="comments-empty">
-        <b>Couldn't load comments</b>
-        ${escapeHTML(error.message||'Please try again.')}
+        <strong>Couldn't load comments</strong>
+        ${escapeHTML(error.message || 'Please try again.')}
       </div>`;
   }
 }
 
-async function submitComment(event){
+async function submitComment(event) {
   event.preventDefault();
 
-  if(!requireLogin()||!commentsVideoId)return;
+  if (!requireLogin() || !commentsVideoId) return;
 
-  const content=$('commentText').value.trim();
-  if(!content)return;
+  const content = $('commentText').value.trim();
 
-  const videoId=commentsVideoId;
-  const button=$('commentSend');
+  if (!content) return;
 
-  button.disabled=true;
+  const videoId = commentsVideoId;
+  const button = $('sendComment');
 
-  try{
-    const {error}=await supabase.from('spotlight_comments').insert({
-      video_id:videoId,
-      user_id:currentUser.id,
-      content
-    });
+  button.disabled = true;
 
-    if(error)throw error;
+  try {
+    const { error } = await supabase
+      .from('spotlight_comments')
+      .insert({
+        video_id: videoId,
+        user_id: currentUser.id,
+        content
+      });
 
-    $('commentText').value='';
-    $('commentText').style.height='39px';
+    if (error) throw error;
+
+    $('commentText').value = '';
+    $('commentText').style.height = '39px';
 
     await loadComments(videoId);
+    await loadCommentCounts();
 
-  }catch(error){
-    toast(error.message||'Could not post comment.');
-  }finally{
-    button.disabled=false;
-    $('commentText').focus({preventScroll:true});
+  } catch (error) {
+    toast(error.message || 'Could not post your comment.');
+
+  } finally {
+    button.disabled = false;
   }
 }
 
-async function shareVideo(videoId){
-  const url=new URL('spotlight.html',location.href);
-  url.hash=videoId;
+/* SHARE REAL VIDEO LINK */
 
-  try{
-    if(navigator.share){
+async function shareVideo(videoId) {
+  const url = new URL('spotlight.html', location.href);
+  url.hash = videoId;
+
+  try {
+    if (navigator.share) {
       await navigator.share({
-        title:'Campusora Spotlight',
-        text:'Watch this video on Campusora',
-        url:url.href
+        title: 'Campusora Spotlight',
+        text: 'Watch this video on Campusora!',
+        url: url.href
       });
-    }else if(navigator.clipboard?.writeText){
+
+    } else if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(url.href);
-      toast('Video link copied.');
-    }else{
-      prompt('Copy this video link:',url.href);
+      toast('Video link copied! Share it with your friends.');
+
+    } else {
+      prompt('Copy this video link:', url.href);
     }
-  }catch(error){
-    if(error.name!=='AbortError')toast('Could not share this video.');
+
+  } catch (error) {
+    if (error.name !== 'AbortError') {
+      toast('Could not share the video.');
+    }
   }
 }
 
-function openUpload(){
-  if(!requireLogin())return;
+/* UPLOAD VIDEO */
+
+function openUpload() {
+  if (!requireLogin()) return;
+
   $('uploadForm').reset();
-  $('progress').style.display='none';
-  $('progressBar').style.width='0%';
-  $('uploadStatus').textContent='Your video will be visible to signed-in Campusora members.';
-  $('uploadOverlay').style.display='flex';
+  $('progress').style.display = 'none';
+  $('progressBar').style.width = '0%';
+  $('uploadStatus').textContent = 'Share a moment with Campusora.';
+  $('uploadOverlay').style.display = 'flex';
 }
 
-async function uploadVideo(event){
+async function uploadVideo(event) {
   event.preventDefault();
-  if(!requireLogin())return;
 
-  const file=$('videoFile').files[0];
-  const caption=$('caption').value.trim();
+  if (!requireLogin()) return;
 
-  if(!file){toast('Choose a video first.');return;}
+  const file = $('videoFile').files[0];
+  const caption = $('caption').value.trim();
 
-  const types={
-    'video/mp4':'mp4',
-    'video/webm':'webm',
-    'video/quicktime':'mov'
+  if (!file) {
+    toast('Choose a video first.');
+    return;
+  }
+
+  const extensions = {
+    'video/mp4': 'mp4',
+    'video/webm': 'webm',
+    'video/quicktime': 'mov'
   };
 
-  if(!types[file.type]){
-    toast('Choose an MP4, WebM or MOV video.');
+  if (!extensions[file.type]) {
+    toast('Please choose an MP4, WebM or MOV video.');
     return;
   }
 
-  if(file.size>50*1024*1024){
-    toast('Your video is larger than 50 MB.');
+  if (file.size > 50 * 1024 * 1024) {
+    toast('The video must be 50 MB or smaller.');
     return;
   }
 
-  const button=$('publishBtn');
-  button.disabled=true;
+  const button = $('publishBtn');
+  button.disabled = true;
 
-  $('progress').style.display='block';
-  $('progressBar').style.width='10%';
-  $('uploadStatus').textContent='Uploading video… Please keep this page open.';
+  $('progress').style.display = 'block';
+  $('progressBar').style.width = '10%';
+  $('uploadStatus').textContent = 'Uploading your video…';
 
-  const path=`${currentUser.id}/${Date.now()}-${crypto.randomUUID()}.${types[file.type]}`;
-  let uploadedPath=null;
+  const path = `${currentUser.id}/${Date.now()}-${crypto.randomUUID()}.${extensions[file.type]}`;
 
-  try{
-    const {data,error}=await supabase.storage.from('campusora-videos')
-      .upload(path,file,{
-        contentType:file.type,
-        upsert:false,
-        cacheControl:'3600'
+  let uploadedPath = null;
+
+  try {
+    const { data, error } = await supabase.storage
+      .from('campusora-videos')
+      .upload(path, file, {
+        contentType: file.type,
+        upsert: false,
+        cacheControl: '3600'
       });
 
-    if(error)throw error;
-    uploadedPath=data.path;
+    if (error) throw error;
 
-    $('progressBar').style.width='75%';
-    $('uploadStatus').textContent='Saving video details…';
+    uploadedPath = data.path;
 
-    const {data:publicData}=supabase.storage.from('campusora-videos').getPublicUrl(path);
+    $('progressBar').style.width = '75%';
+    $('uploadStatus').textContent = 'Publishing your Spotlight…';
 
-    const {error:insertError}=await supabase.from('spotlight_videos').insert({
-      user_id:currentUser.id,
-      caption,
-      video_url:publicData.publicUrl
-    });
+    const { data: publicData } = supabase.storage
+      .from('campusora-videos')
+      .getPublicUrl(path);
 
-    if(insertError)throw insertError;
+    const { error: insertError } = await supabase
+      .from('spotlight_videos')
+      .insert({
+        user_id: currentUser.id,
+        caption,
+        video_url: publicData.publicUrl
+      });
 
-    $('progressBar').style.width='100%';
-    $('uploadOverlay').style.display='none';
-    toast('Your video is live on Spotlight!');
+    if (insertError) throw insertError;
+
+    $('progressBar').style.width = '100%';
+    $('uploadOverlay').style.display = 'none';
+
+    toast('Your Spotlight is live! 🎉');
 
     await loadVideos();
-    feed.scrollTo({top:0,behavior:'smooth'});
+    feed.scrollTo({ top: 0, behavior: 'smooth' });
 
-  }catch(error){
-    console.error('Upload error:',error);
+  } catch (error) {
+    console.error('Upload failed:', error);
 
-    if(uploadedPath){
-      const {error:cleanupError}=await supabase.storage.from('campusora-videos').remove([uploadedPath]);
-      if(cleanupError)console.warn(cleanupError.message);
+    if (uploadedPath) {
+      await supabase.storage
+        .from('campusora-videos')
+        .remove([uploadedPath]);
     }
 
-    $('uploadStatus').textContent=error.message||'Upload failed. Please try again.';
-    toast(error.message||'Could not upload video.');
+    $('uploadStatus').textContent = error.message || 'Upload failed.';
+    toast(error.message || 'Could not publish your video.');
 
-  }finally{
-    button.disabled=false;
+  } finally {
+    button.disabled = false;
   }
 }
 
-feed.addEventListener('click',async event=>{
-  const button=event.target.closest('[data-action]');
-  if(!button)return;
+/* INTERACTIONS */
 
-  const card=button.closest('.video-card');
-  if(!card)return;
+feed.addEventListener('click', async event => {
+  const button = event.target.closest('[data-action]');
 
-  const videoId=card.dataset.videoId;
+  if (!button) return;
 
-  if(button.dataset.action==='like'){
-    await toggleLike(videoId,button);
+  const card = button.closest('.video-card');
+
+  if (!card) return;
+
+  const videoId = card.dataset.videoId;
+  const action = button.dataset.action;
+
+  if (action === 'like') {
+    await toggleLike(videoId, button);
   }
 
-  if(button.dataset.action==='comments'){
+  if (action === 'comments') {
     await openComments(videoId);
   }
 
-  if(button.dataset.action==='share'){
+  if (action === 'share') {
     await shareVideo(videoId);
   }
 
-  if(button.dataset.action==='sound'){
-    const video=card.querySelector('video');
-    video.muted=!video.muted;
-    button.textContent=video.muted?'🔇':'🔊';
-    if(!video.muted)video.play().catch(()=>{});
+  if (action === 'sound') {
+    const video = card.querySelector('video');
+
+    video.muted = !video.muted;
+    button.textContent = video.muted ? '🔇' : '🔊';
+
+    if (!video.muted) video.play().catch(() => {});
   }
 });
 
-feed.addEventListener('dblclick',event=>{
-  const card=event.target.closest('.video-card');
+/* Double-tap video to like */
 
-  if(!card||event.target.closest('button')||event.target.closest('a'))return;
+let lastTap = 0;
 
-  const video=videos.find(v=>v.id===card.dataset.videoId);
-  const button=card.querySelector('[data-action="like"]');
+feed.addEventListener('touchend', event => {
+  const card = event.target.closest('.video-card');
 
-  if(video&&!video.liked)toggleLike(video.id,button);
-});
+  if (!card || event.target.closest('button') || event.target.closest('a')) {
+    return;
+  }
 
-$('uploadBtn').addEventListener('click',openUpload);
-$('refreshBtn').addEventListener('click',loadVideos);
-$('uploadForm').addEventListener('submit',uploadVideo);
-$('commentForm').addEventListener('submit',submitComment);
+  const now = Date.now();
 
-$('closeComments').addEventListener('click',closeComments);
-$('commentsBackdrop').addEventListener('click',closeComments);
+  if (now - lastTap < 300) {
+    const video = videos.find(item => item.id === card.dataset.videoId);
+    const button = card.querySelector('[data-action="like"]');
 
-document.querySelectorAll('[data-close]').forEach(button=>{
-  button.addEventListener('click',()=>{
-    $(button.dataset.close).style.display='none';
+    if (video && !video.liked) toggleLike(video.id, button);
+  }
+
+  lastTap = now;
+}, { passive: true });
+
+$('uploadBtn').addEventListener('click', openUpload);
+$('refreshBtn').addEventListener('click', loadVideos);
+$('uploadForm').addEventListener('submit', uploadVideo);
+$('commentForm').addEventListener('submit', submitComment);
+
+$('closeComments').addEventListener('click', closeComments);
+$('commentsBackdrop').addEventListener('click', closeComments);
+
+document.querySelectorAll('[data-close]').forEach(button => {
+  button.addEventListener('click', () => {
+    $(button.dataset.close).style.display = 'none';
   });
 });
 
-$('commentText').addEventListener('input',event=>{
-  const input=event.target;
-  input.style.height='39px';
-  input.style.height=Math.min(input.scrollHeight,100)+'px';
+/* Expand comment input while typing */
+
+$('commentText').addEventListener('input', event => {
+  const input = event.target;
+
+  input.style.height = '39px';
+  input.style.height = Math.min(input.scrollHeight, 85) + 'px';
 });
 
-document.addEventListener('keydown',event=>{
-  if(event.key==='Escape'){
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
     closeComments();
-    $('uploadOverlay').style.display='none';
+    $('uploadOverlay').style.display = 'none';
   }
 });
 
-/* Swipe down on the comments sheet to close it. */
-let touchStartY=0;
+/* Swipe down on the sheet to close it.
+   Normal vertical scrolling inside the comments remains enabled. */
 
-$('commentsSheet').addEventListener('touchstart',event=>{
-  touchStartY=event.touches[0].clientY;
-},{passive:true});
+let startTouchY = 0;
+let startTouchX = 0;
 
-$('commentsSheet').addEventListener('touchend',event=>{
-  const endY=event.changedTouches[0].clientY;
-  const distance=endY-touchStartY;
+$('commentsSheet').addEventListener('touchstart', event => {
+  startTouchY = event.touches[0].clientY;
+  startTouchX = event.touches[0].clientX;
+}, { passive: true });
 
-  if(distance>100&&$('commentList').scrollTop<=0){
+$('commentsSheet').addEventListener('touchend', event => {
+  const endY = event.changedTouches[0].clientY;
+  const endX = event.changedTouches[0].clientX;
+
+  const verticalDistance = endY - startTouchY;
+  const horizontalDistance = Math.abs(endX - startTouchX);
+
+  const list = $('commentList');
+
+  if (
+    verticalDistance > 110 &&
+    horizontalDistance < 70 &&
+    list.scrollTop <= 0 &&
+    !event.target.closest('textarea')
+  ) {
     closeComments();
   }
-},{passive:true});
+}, { passive: true });
 
-async function init(){
-  try{
+async function init() {
+  try {
     await getSession();
     await loadVideos();
 
-    supabase.auth.onAuthStateChange((_event,session)=>{
-      currentUser=session?.user||null;
+    supabase.auth.onAuthStateChange((_event, session) => {
+      currentUser = session?.user || null;
       loadVideos();
     });
 
-  }catch(error){
-    console.error(error);
+  } catch (error) {
+    console.error('Campusora connection error:', error);
 
-    feed.innerHTML=`
-      <div class="empty"><div class="empty-box">
-        <h2>Connection issue</h2>
-        <p>${escapeHTML(error.message||'Could not connect to Campusora.')}</p>
-        <button class="primary" id="retryBtn">Try again</button>
-      </div></div>`;
+    feed.innerHTML = `
+      <div class="empty">
+        <div class="empty-content">
+          <h2>Connection problem</h2>
+          <p>${escapeHTML(error.message || 'Could not connect to Campusora.')}</p>
+          <button class="primary-btn" id="retryBtn">Try again</button>
+        </div>
+      </div>`;
 
-    $('retryBtn').onclick=init;
+    $('retryBtn').onclick = init;
   }
 }
 
 init();
 </script></body>
-      </html>
+  </html>
