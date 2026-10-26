@@ -1,1 +1,581 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080b18">
+<title>Spotlight | Campusora</title><style>
+:root {
+  --bg:#080b18;
+  --panel:#11162a;
+  --panel2:#171d35;
+  --purple:#8b5cf6;
+  --blue:#4285ff;
+  --cyan:#27d9f2;
+  --text:#f5f7ff;
+  --muted:#9aa5c2;
+  --border:rgba(255,255,255,.09);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+body{overflow:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+a{color:inherit;text-decoration:none}
+.topbar{
+ height:58px;position:fixed;inset:0 0 auto;z-index:20;
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 15px;background:rgba(8,11,24,.96);
+ border-bottom:1px solid var(--border);backdrop-filter:blur(16px)
+}
+.brand{font-size:17px;font-weight:800;letter-spacing:-.5px}
+.brand span{color:var(--cyan)}
+.top-actions{display:flex;align-items:center;gap:8px}
+.small-btn{
+ border:1px solid var(--border);background:var(--panel);
+ color:var(--text);border-radius:9px;padding:8px 11px;font-size:12px
+}
+.upload-btn{background:linear-gradient(120deg,var(--purple),var(--blue));border:0;font-weight:700}
+.layout{height:100%;padding-top:58px;display:flex;justify-content:center}
+.feed{
+ height:100%;width:min(100%,520px);overflow-y:auto;scroll-snap-type:y mandatory;
+ scrollbar-width:none;background:#050710
+}
+.feed::-webkit-scrollbar{display:none}
+.video-card{
+ height:calc(100dvh - 58px);min-height:420px;position:relative;
+ scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;background:#080b18
+}
+.video-card video{
+ width:100%;height:100%;position:absolute;inset:0;object-fit:contain;background:#050710
+}
+.video-card:after{
+ content:"";position:absolute;inset:30% 0 0;pointer-events:none;
+ background:linear-gradient(transparent,rgba(0,0,0,.12) 25%,rgba(0,0,0,.86))
+}
+.video-top{position:absolute;z-index:3;top:13px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center}
+.tag{font-size:10px;background:rgba(12,16,32,.72);border:1px solid rgba(255,255,255,.12);padding:7px 9px;border-radius:20px;backdrop-filter:blur(10px)}
+.sound-btn{border:1px solid rgba(255,255,255,.15);background:rgba(12,16,32,.7);color:white;border-radius:50%;width:36px;height:36px}
+.actions{
+ position:absolute;z-index:4;right:10px;bottom:116px;display:flex;
+ flex-direction:column;align-items:center;gap:16px
+}
+.action{display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:transparent;color:white;padding:0;min-width:39px}
+.action .icon{font-size:25px;text-shadow:0 2px 9px #000}
+.action .count{font-size:10px;font-weight:700;text-shadow:0 1px 5px #000}
+.action.liked .icon{color:#ff5486}
+.video-info{
+ position:absolute;z-index:4;bottom:0;left:0;right:55px;padding:18px 13px 22px;
+}
+.creator{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.avatar{
+ width:36px;height:36px;border-radius:50%;object-fit:cover;
+ background:linear-gradient(135deg,var(--purple),var(--cyan));
+ border:1px solid rgba(255,255,255,.45);display:grid;place-items:center;font-size:13px;font-weight:bold;flex-shrink:0
+}
+.creator-name{font-size:12px;font-weight:700}
+.creator-school{font-size:10px;color:#c1c8dd;margin-top:3px}
+.follow-btn{font-size:10px;border:1px solid rgba(255,255,255,.5);border-radius:6px;background:transparent;color:white;padding:5px 8px;margin-left:3px}
+.caption{font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.post-time{font-size:10px;color:#d0d5e6;margin-top:8px}
+.empty{height:100%;min-height:420px;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px}
+.empty-box{max-width:280px}
+.empty-icon{font-size:42px;margin-bottom:12px}
+.empty h2{font-size:18px;margin:0 0 9px}
+.empty p{font-size:12px;line-height:1.7;color:var(--muted)}
+.primary{border:0;border-radius:9px;background:linear-gradient(120deg,var(--purple),var(--blue));color:white;padding:11px 15px;font-weight:700;font-size:12px}
+.loading{padding:30px;text-align:center;font-size:12px;color:var(--muted)}
+.bottom-nav{
+ display:none;position:fixed;z-index:25;bottom:0;left:0;right:0;
+ height:59px;padding-bottom:env(safe-area-inset-bottom);
+ background:rgba(8,11,24,.97);border-top:1px solid var(--border);
+ align-items:center;justify-content:space-around
+}
+.nav-link{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:9px}
+.nav-link span{font-size:19px}
+.nav-link.active{color:var(--cyan)}
+.overlay{position:fixed;z-index:50;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:15px}
+.modal{width:min(100%,410px);max-height:88dvh;overflow:auto;background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:16px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.modal-head h3{font-size:15px;margin:0}
+.close-btn{border:0;background:transparent;color:white;font-size:23px}
+.field{width:100%;background:#090d1c;border:1px solid var(--border);border-radius:9px;color:white;padding:11px;margin:7px 0 12px;font-size:12px}
+textarea.field{min-height:85px;resize:vertical}
+.label{font-size:11px;color:var(--muted)}
+.hint{font-size:10px;line-height:1.6;color:var(--muted);margin:0 0 12px}
+.progress{height:4px;background:#252b43;border-radius:9px;overflow:hidden;display:none;margin:10px 0}
+.progress-bar{height:100%;width:0;background:var(--cyan);transition:width .2s}
+.comment-list{display:flex;flex-direction:column;gap:12px;margin:12px 0}
+.comment{display:flex;gap:8px;font-size:11px;line-height:1.5}
+.comment strong{display:block;margin-bottom:3px}
+.comment small{display:block;color:var(--muted);font-size:9px;margin-top:4px}
+.toast{position:fixed;z-index:100;bottom:75px;left:50%;transform:translateX(-50%);background:#202944;border:1px solid var(--border);padding:10px 14px;border-radius:9px;font-size:11px;max-width:90%;display:none;text-align:center}
+@media(min-width:800px){
+ .layout{padding-bottom:0}
+ .feed{height:calc(100dvh - 58px);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+ .video-card{height:calc(100dvh - 58px)}
+ .bottom-nav{display:none}
+}
+@media(max-width:600px){
+ .topbar{height:52px;padding:0 11px}
+ .layout{padding-top:52px}
+ .feed{width:100%;height:calc(100dvh - 52px - 55px)}
+ .video-card{height:calc(100dvh - 107px);min-height:350px}
+ .bottom-nav{display:flex}
+ .video-info{padding-bottom:15px}
+ .actions{bottom:103px;right:9px;gap:15px}
+ .action .icon{font-size:24px}
+ .upload-btn{padding:8px 10px}
+ .brand{font-size:16px}
+ .toast{bottom:70px}
+}
+</style></head>
+<body><header class="topbar">
+  <a class="brand" href="index.html">Campusora <span>Spotlight</span></a>
+  <div class="top-actions">
+    <button class="small-btn" id="refreshBtn">↻ Refresh</button>
+    <button class="small-btn upload-btn" id="uploadBtn">＋ Upload</button>
+  </div>
+</header><main class="layout">
+  <section class="feed" id="feed" aria-label="Spotlight videos">
+    <div class="loading">Loading Spotlight videos…</div>
+  </section>
+</main><nav class="bottom-nav">
+  <a class="nav-link" href="index.html"><span>⌂</span>Home</a>
+  <a class="nav-link" href="explore.html"><span>⌕</span>Explore</a>
+  <a class="nav-link active" href="spotlight.html"><span>▶</span>Spotlight</a>
+  <a class="nav-link" href="communities.html"><span>♧</span>Communities</a>
+  <a class="nav-link" href="messages.html"><span>✉</span>Messages</a>
+</nav><div class="overlay" id="uploadOverlay">
+  <div class="modal">
+    <div class="modal-head"><h3>＋ Upload to Spotlight</h3><button class="close-btn" data-close="uploadOverlay">×</button></div>
+    <form id="uploadForm">
+      <label class="label" for="videoFile">Choose a video</label>
+      <input class="field" type="file" id="videoFile" accept="video/mp4,video/webm,video/quicktime" required>
+      <p class="hint">MP4, WebM or MOV. Maximum size: 50 MB. Short portrait videos work best.</p>
+      <label class="label" for="caption">Caption</label>
+      <textarea class="field" id="caption" maxlength="1000" placeholder="What's happening on your campus?"></textarea>
+      <div class="progress" id="progress"><div class="progress-bar" id="progressBar"></div></div>
+      <p class="hint" id="uploadStatus">Your video will be visible to signed-in Campusora members.</p>
+      <button class="primary" style="width:100%" id="publishBtn" type="submit">Publish video</button>
+    </form>
+  </div>
+</div><div class="overlay" id="commentsOverlay">
+  <div class="modal">
+    <div class="modal-head"><h3>Comments</h3><button class="close-btn" data-close="commentsOverlay">×</button></div>
+    <div class="comment-list" id="commentList"></div>
+    <form id="commentForm">
+      <label class="label" for="commentText">Add a comment</label>
+      <textarea class="field" id="commentText" maxlength="2000" placeholder="Write something…" required></textarea>
+      <button class="primary" style="width:100%">Post comment</button>
+    </form>
+  </div>
+</div><div class="toast" id="toast"></div><script type="module">
+import { supabase } from './supabase.js';
 
+const $ = id => document.getElementById(id);
+const feed = $('feed');
+let currentUser = null;
+let videos = [];
+let activeVideoId = null;
+let observer = null;
+let refreshTimer = null;
+const viewedThisSession = new Set();
+const likeBusy = new Set();
+
+function toast(message) {
+  const el = $('toast');
+  el.textContent = message;
+  el.style.display = 'block';
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => el.style.display = 'none', 3000);
+}
+function escapeHTML(value='') {
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+function shortNumber(n=0) {
+  n = Number(n) || 0;
+  return n >= 1000000 ? (n/1000000).toFixed(1)+'m' :
+    n >= 1000 ? (n/1000).toFixed(1)+'k' : String(n);
+}
+function initials(name='Campusora member') {
+  return name.trim().split(/\s+/).slice(0,2).map(s=>s[0]||'').join('').toUpperCase() || 'C';
+}
+function dateLabel(date) {
+  const ms = Date.now() - new Date(date).getTime();
+  if (!Number.isFinite(ms)) return '';
+  if (ms < 60000) return 'Just now';
+  if (ms < 3600000) return Math.floor(ms/60000)+'m ago';
+  if (ms < 86400000) return Math.floor(ms/3600000)+'h ago';
+  return Math.floor(ms/86400000)+'d ago';
+}
+async function getSession() {
+  const {data,error} = await supabase.auth.getSession();
+  if (error) throw error;
+  currentUser = data.session?.user || null;
+  return currentUser;
+}
+function requireLogin() {
+  if (currentUser) return true;
+  toast('Please sign in to use Spotlight.');
+  setTimeout(()=>location.href='index.html',1200);
+  return false;
+}
+function profileURL(id) {
+  return 'profile.html?id='+encodeURIComponent(id);
+}
+
+async function loadVideos() {
+  feed.innerHTML = '<div class="loading">Loading Spotlight videos…</div>';
+  if (observer) observer.disconnect();
+  try {
+    const {data,error} = await supabase
+      .from('spotlight_videos')
+      .select('id,user_id,caption,video_url,thumbnail_url,institution_id,view_count,created_at')
+      .order('created_at',{ascending:false})
+      .limit(40);
+    if (error) throw error;
+    const rows = data || [];
+    if (!rows.length) {
+      feed.innerHTML = `
+        <div class="empty"><div class="empty-box">
+          <div class="empty-icon">🎬</div>
+          <h2>Your Spotlight starts here</h2>
+          <p>Share campus moments, talents, funny clips and useful ideas. Be the first to upload a video to Campusora Spotlight.</p>
+          <button class="primary" id="firstUpload">＋ Upload first video</button>
+        </div></div>`;
+      $('firstUpload').onclick = openUpload;
+      return;
+    }
+
+    const userIds = [...new Set(rows.map(v=>v.user_id))];
+    const videoIds = rows.map(v=>v.id);
+    const [profilesRes,likesRes,mineRes] = await Promise.all([
+      supabase.from('profiles').select('id,username,full_name,avatar_url,school,role').in('id',userIds),
+      supabase.from('spotlight_likes').select('video_id').in('video_id',videoIds),
+      currentUser
+        ? supabase.from('spotlight_likes').select('video_id').eq('user_id',currentUser.id).in('video_id',videoIds)
+        : Promise.resolve({data:[],error:null})
+    ]);
+    if (profilesRes.error) throw profilesRes.error;
+    if (likesRes.error) throw likesRes.error;
+    if (mineRes.error) throw mineRes.error;
+
+    const profileMap = new Map((profilesRes.data||[]).map(p=>[p.id,p]));
+    const counts = new Map();
+    (likesRes.data||[]).forEach(l=>counts.set(l.video_id,(counts.get(l.video_id)||0)+1));
+    const mine = new Set((mineRes.data||[]).map(l=>l.video_id));
+
+    videos = rows.map(v=>({
+      ...v,
+      profile:profileMap.get(v.user_id)||{},
+      likeCount:counts.get(v.id)||0,
+      liked:mine.has(v.id)
+    }));
+    renderVideos();
+  } catch (error) {
+    console.error('Spotlight load error:',error);
+    feed.innerHTML = `<div class="empty"><div class="empty-box">
+      <div class="empty-icon">⚠️</div><h2>Couldn't load Spotlight</h2>
+      <p>${escapeHTML(error.message||'Please try again.')}</p>
+      <button class="primary" id="retryBtn">Try again</button>
+    </div></div>`;
+    $('retryBtn').onclick = loadVideos;
+  }
+}
+
+function renderVideos() {
+  if (observer) observer.disconnect();
+  feed.innerHTML = videos.map(v=>{
+    const p = v.profile || {};
+    const name = p.full_name || (p.username ? '@'+p.username : 'Campusora member');
+    const avatar = p.avatar_url
+      ? `<img class="avatar" src="${escapeHTML(p.avatar_url)}" alt="" loading="lazy">`
+      : `<div class="avatar">${escapeHTML(initials(name))}</div>`;
+    const school = p.school || (p.role ? p.role[0].toUpperCase()+p.role.slice(1) : 'Campusora');
+    return `<article class="video-card" data-video-id="${v.id}">
+      <video src="${escapeHTML(v.video_url)}" ${v.thumbnail_url?`poster="${escapeHTML(v.thumbnail_url)}"`:''}
+        playsinline loop preload="metadata" muted controlslist="nodownload" aria-label="Spotlight video"></video>
+      <div class="video-top"><span class="tag">✦ CAMPUSORA SPOTLIGHT</span><button class="sound-btn" data-action="sound" aria-label="Toggle sound">🔇</button></div>
+      <div class="actions">
+        <button class="action ${v.liked?'liked':''}" data-action="like" aria-label="Like video"><span class="icon">${v.liked?'♥':'♡'}</span><span class="count like-count">${shortNumber(v.likeCount)}</span></button>
+        <button class="action" data-action="comments" aria-label="Comments"><span class="icon">▢</span><span class="count">Comments</span></button>
+        <button class="action" data-action="share" aria-label="Share video"><span class="icon">↗</span><span class="count">Share</span></button>
+        <button class="action" data-action="views" aria-label="Video views"><span class="icon">◉</span><span class="count view-count">${shortNumber(v.view_count)}</span></button>
+      </div>
+      <div class="video-info">
+        <div class="creator">
+          <a href="${profileURL(v.user_id)}" aria-label="View creator profile">${avatar}</a>
+          <div style="min-width:0"><div class="creator-name">${escapeHTML(name)}</div><div class="creator-school">${escapeHTML(school)}</div></div>
+          ${currentUser && currentUser.id!==v.user_id?`<button class="follow-btn" data-action="follow" data-user-id="${v.user_id}">View profile</button>`:''}
+        </div>
+        ${v.caption?`<div class="caption">${escapeHTML(v.caption)}</div>`:''}
+        <div class="post-time">♫ Original video · ${dateLabel(v.created_at)}</div>
+      </div>
+    </article>`;
+  }).join('');
+  setupObserver();
+}
+
+function setupObserver() {
+  observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      const card = entry.target;
+      const video = card.querySelector('video');
+      if (entry.isIntersecting && entry.intersectionRatio >= .65) {
+        activeVideoId = card.dataset.videoId;
+        document.querySelectorAll('.video-card video').forEach(other=>{
+          if(other!==video) other.pause();
+        });
+        video.play().catch(()=>{});
+        recordView(card.dataset.videoId,card.querySelector('.view-count'));
+      } else {
+        video.pause();
+      }
+    });
+  },{root:feed,threshold:[.2,.65,.9]});
+  document.querySelectorAll('.video-card').forEach(card=>observer.observe(card));
+}
+
+async function recordView(videoId,countElement) {
+  if (viewedThisSession.has(videoId) || !currentUser) return;
+  viewedThisSession.add(videoId);
+  try {
+    const {data,error} = await supabase.rpc('campusora_increment_spotlight_view',{target_video_id:videoId});
+    if (error) throw error;
+    if (countElement) countElement.textContent=shortNumber(data);
+  } catch(error) {
+    viewedThisSession.delete(videoId);
+    console.warn('Could not record Spotlight view:',error.message);
+  }
+}
+
+async function toggleLike(videoId,button) {
+  if (!requireLogin() || likeBusy.has(videoId)) return;
+  likeBusy.add(videoId);
+  const v=videos.find(x=>x.id===videoId);
+  if(!v){likeBusy.delete(videoId);return}
+  const wasLiked=v.liked;
+  v.liked=!wasLiked;
+  v.likeCount=Math.max(0,v.likeCount+(wasLiked?-1:1));
+  button.classList.toggle('liked',v.liked);
+  button.querySelector('.icon').textContent=v.liked?'♥':'♡';
+  button.querySelector('.like-count').textContent=shortNumber(v.likeCount);
+  try {
+    if(wasLiked) {
+      const {error}=await supabase.from('spotlight_likes').delete().eq('video_id',videoId).eq('user_id',currentUser.id);
+      if(error) throw error;
+    } else {
+      const {error}=await supabase.from('spotlight_likes').insert({video_id:videoId,user_id:currentUser.id});
+      if(error) throw error;
+    }
+  } catch(error) {
+    v.liked=wasLiked;
+    v.likeCount=Math.max(0,v.likeCount+(wasLiked?1:-1));
+    button.classList.toggle('liked',v.liked);
+    button.querySelector('.icon').textContent=v.liked?'♥':'♡';
+    button.querySelector('.like-count').textContent=shortNumber(v.likeCount);
+    toast(error.message||'Could not update like.');
+  } finally {
+    likeBusy.delete(videoId);
+  }
+}
+
+function openOverlay(id) { $(id).style.display='flex'; }
+function closeOverlay(id) { $(id).style.display='none'; }
+function openUpload() {
+  if(!requireLogin()) return;
+  $('uploadForm').reset();
+  $('progress').style.display='none';
+  $('progressBar').style.width='0%';
+  $('uploadStatus').textContent='Your video will be visible to signed-in Campusora members.';
+  openOverlay('uploadOverlay');
+}
+let commentsVideoId=null;
+
+async function openComments(videoId) {
+  if(!requireLogin()) return;
+  commentsVideoId=videoId;
+  $('commentList').innerHTML='<div class="loading">Loading comments…</div>';
+  $('commentText').value='';
+  openOverlay('commentsOverlay');
+  try {
+    const {data,error}=await supabase.from('spotlight_comments')
+      .select('id,user_id,content,created_at')
+      .eq('video_id',videoId).order('created_at',{ascending:true}).limit(100);
+    if(error) throw error;
+    const comments=data||[];
+    if(!comments.length) {
+      $('commentList').innerHTML='<p class="hint">No comments yet. Start the conversation.</p>';
+      return;
+    }
+    const ids=[...new Set(comments.map(c=>c.user_id))];
+    const {data:profiles,error:profileError}=await supabase.from('profiles')
+      .select('id,username,full_name').in('id',ids);
+    if(profileError) throw profileError;
+    const map=new Map((profiles||[]).map(p=>[p.id,p]));
+    $('commentList').innerHTML=comments.map(c=>{
+      const p=map.get(c.user_id)||{};
+      return `<div class="comment"><div class="avatar" style="width:29px;height:29px;font-size:10px">${escapeHTML(initials(p.full_name||p.username||'Member'))}</div><div><strong>${escapeHTML(p.full_name||('@'+(p.username||'member')))}</strong>${escapeHTML(c.content)}<small>${dateLabel(c.created_at)}</small></div></div>`;
+    }).join('');
+  } catch(error) {
+    $('commentList').innerHTML=`<p class="hint">${escapeHTML(error.message||'Could not load comments.')}</p>`;
+  }
+}
+
+async function uploadVideo(event) {
+  event.preventDefault();
+  if(!requireLogin()) return;
+  const file=$('videoFile').files[0];
+  const caption=$('caption').value.trim();
+  if(!file){toast('Choose a video first.');return}
+  const allowed=['video/mp4','video/webm','video/quicktime'];
+  if(!allowed.includes(file.type)){toast('Choose an MP4, WebM or MOV video.');return}
+  if(file.size>50*1024*1024){toast('Your video is larger than 50 MB.');return}
+  if(caption.length>1000){toast('Caption must be 1,000 characters or less.');return}
+
+  const btn=$('publishBtn');
+  btn.disabled=true;
+  $('progress').style.display='block';
+  $('progressBar').style.width='10%';
+  $('uploadStatus').textContent='Uploading video… Please keep this page open.';
+  const ext=({ 'video/mp4':'mp4','video/webm':'webm','video/quicktime':'mov'})[file.type];
+  const path=`${currentUser.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  let uploadedPath=null;
+
+  try {
+    const {data:uploadData,error:uploadError}=await supabase.storage
+      .from('campusora-videos').upload(path,file,{
+        contentType:file.type,upsert:false,cacheControl:'3600'
+      });
+    if(uploadError) throw uploadError;
+    uploadedPath=uploadData.path;
+    $('progressBar').style.width='75%';
+    $('uploadStatus').textContent='Saving video details…';
+
+    const {data:publicData}=supabase.storage.from('campusora-videos').getPublicUrl(path);
+    const {error:insertError}=await supabase.from('spotlight_videos').insert({
+      user_id:currentUser.id,
+      caption,
+      video_url:publicData.publicUrl
+    });
+    if(insertError) throw insertError;
+
+    $('progressBar').style.width='100%';
+    closeOverlay('uploadOverlay');
+    toast('Your video is live on Spotlight!');
+    await loadVideos();
+    feed.scrollTo({top:0,behavior:'smooth'});
+  } catch(error) {
+    console.error('Upload error:',error);
+    if(uploadedPath) {
+      await supabase.storage.from('campusora-videos').remove([uploadedPath]).catch(()=>{});
+    }
+    $('uploadStatus').textContent=error.message||'Upload failed. Please try again.';
+    toast(error.message||'Could not upload video.');
+  } finally {
+    btn.disabled=false;
+  }
+}
+
+async function submitComment(event) {
+  event.preventDefault();
+  if(!requireLogin()||!commentsVideoId) return;
+  const content=$('commentText').value.trim();
+  if(!content){toast('Write a comment first.');return}
+  const button=$('commentForm').querySelector('button');
+  button.disabled=true;
+  try {
+    const {error}=await supabase.from('spotlight_comments').insert({
+      video_id:commentsVideoId,user_id:currentUser.id,content
+    });
+    if(error) throw error;
+    await openComments(commentsVideoId);
+    toast('Comment posted.');
+  } catch(error) {
+    toast(error.message||'Could not post comment.');
+  } finally {
+    button.disabled=false;
+  }
+}
+
+async function shareVideo(videoId) {
+  const url=new URL('spotlight.html',location.href);
+  url.hash=videoId;
+  try {
+    if(navigator.share) await navigator.share({title:'Campusora Spotlight',text:'Watch this video on Campusora',url:url.href});
+    else if(navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url.href);
+      toast('Video link copied.');
+    } else {
+      prompt('Copy this video link:',url.href);
+    }
+  } catch(error) {
+    if(error.name!=='AbortError') toast('Could not share this video.');
+  }
+}
+
+feed.addEventListener('click',async event=>{
+  const button=event.target.closest('[data-action]');
+  if(!button)return;
+  const card=button.closest('.video-card');
+  if(!card)return;
+  const videoId=card.dataset.videoId;
+  const action=button.dataset.action;
+  if(action==='like') await toggleLike(videoId,button);
+  if(action==='comments') await openComments(videoId);
+  if(action==='share') await shareVideo(videoId);
+  if(action==='sound') {
+    const video=card.querySelector('video');
+    video.muted=!video.muted;
+    button.textContent=video.muted?'🔇':'🔊';
+    if(!video.muted) video.play().catch(()=>{});
+  }
+  if(action==='follow') location.href=profileURL(button.dataset.userId);
+});
+feed.addEventListener('dblclick',event=>{
+  const card=event.target.closest('.video-card');
+  if(!card || event.target.closest('button'))return;
+  const button=card.querySelector('[data-action="like"]');
+  const v=videos.find(x=>x.id===card.dataset.videoId);
+  if(v && !v.liked) toggleLike(v.id,button);
+});
+feed.addEventListener('click',event=>{
+  const video=event.target.closest('video');
+  if(video && event.detail===1) {
+    if(video.paused) video.play().catch(()=>{});
+    else video.pause();
+  }
+});
+
+$('uploadBtn').addEventListener('click',openUpload);
+$('refreshBtn').addEventListener('click',loadVideos);
+$('uploadForm').addEventListener('submit',uploadVideo);
+$('commentForm').addEventListener('submit',submitComment);
+document.querySelectorAll('[data-close]').forEach(btn=>btn.addEventListener('click',()=>closeOverlay(btn.dataset.close)));
+document.querySelectorAll('.overlay').forEach(overlay=>overlay.addEventListener('click',event=>{
+  if(event.target===overlay) closeOverlay(overlay.id);
+}));
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape') document.querySelectorAll('.overlay').forEach(o=>o.style.display='none');
+});
+
+async function init() {
+  try {
+    await getSession();
+    await loadVideos();
+    supabase.auth.onAuthStateChange((_event,session)=>{
+      currentUser=session?.user||null;
+      loadVideos();
+    });
+  } catch(error) {
+    console.error(error);
+    feed.innerHTML=`<div class="empty"><div class="empty-box"><h2>Connection issue</h2><p>${escapeHTML(error.message||'Could not connect to Campusora.')}</p><button class="primary" id="retryBtn">Try again</button></div></div>`;
+    $('retryBtn').onclick=init;
+  }
+}
+init();
+</script></body>
+  </html>
