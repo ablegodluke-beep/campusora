@@ -1,1 +1,981 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b14">
+<title>Messages | Campusora</title><style>
+:root {
+  --bg:#0b0b14;
+  --panel:#11111d;
+  --panel2:#19192a;
+  --border:#28283c;
+  --text:#f0efff;
+  --muted:#9292ad;
+  --purple:#9065ff;
+  --blue:#548bff;
+  --cyan:#38d9ff;
+  --green:#40dfa0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:12px;line-height:1.45;min-height:100vh
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.topbar{
+  height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 max(14px,calc((100% - 1080px)/2));
+  background:rgba(11,11,20,.96);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:20;backdrop-filter:blur(14px)
+}
+.brand{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800}
+.brand-icon{
+  width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--purple),var(--blue),var(--cyan))
+}
+.top-actions{display:flex;gap:8px;align-items:center}
+.icon-btn{
+  width:32px;height:32px;display:grid;place-items:center;border-radius:9px;
+  background:var(--panel);border:1px solid var(--border);color:white
+}
+.avatar{
+  width:37px;height:37px;flex-shrink:0;border-radius:50%;
+  display:grid;place-items:center;overflow:hidden;
+  background:linear-gradient(135deg,#7952ee,#2689ee);
+  border:1px solid #504077;color:white;font-weight:700
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.layout{
+  max-width:1080px;margin:auto;padding:16px 14px 70px;
+  display:grid;grid-template-columns:195px minmax(0,1fr);gap:15px
+}
+.sidebar{position:sticky;top:67px;align-self:start}
+.side-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;padding:9px
+}
+.side-link{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;
+  margin-bottom:2px;border-radius:8px;color:#b7b6ce;font-size:12px
+}
+.side-link:hover{background:var(--panel2);color:white}
+.side-link.active{background:#38275b66;color:white;border:1px solid #514078}
+.side-icon{width:18px;text-align:center;font-size:15px}
+.messaging{
+  min-width:0;height:min(720px,calc(100vh - 84px));min-height:480px;
+  display:grid;grid-template-columns:285px minmax(0,1fr);
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:13px;overflow:hidden
+}
+.inbox{
+  min-width:0;border-right:1px solid var(--border);
+  display:flex;flex-direction:column
+}
+.inbox-head{
+  padding:14px 12px 10px;border-bottom:1px solid var(--border)
+}
+.head-line{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.inbox-title{font-size:16px;font-weight:750;letter-spacing:-.3px}
+.new-btn{
+  width:29px;height:29px;border:0;border-radius:9px;color:white;
+  background:linear-gradient(135deg,var(--purple),var(--blue));font-size:18px
+}
+.search{
+  margin-top:11px;position:relative
+}
+.search input{
+  width:100%;height:34px;border:1px solid var(--border);border-radius:9px;
+  outline:none;background:#0c0c17;color:white;padding:0 10px 0 31px;font-size:11px
+}
+.search input:focus{border-color:#795be5}
+.search-icon{position:absolute;left:10px;top:8px;color:var(--muted);font-size:14px}
+.inbox-tabs{display:flex;gap:13px;margin-top:12px}
+.inbox-tab{
+  border:0;background:transparent;color:var(--muted);
+  padding:3px 0;font-size:11px;white-space:nowrap
+}
+.inbox-tab.active{color:#c5b4ff;border-bottom:2px solid var(--purple)}
+.conversation-list{overflow:auto;flex:1}
+.conversation{
+  width:100%;display:flex;gap:9px;align-items:center;text-align:left;
+  padding:11px 10px;background:transparent;border:0;border-bottom:1px solid #202033;
+  color:inherit;transition:background .18s
+}
+.conversation:hover{background:#1b1a2c}
+.conversation.active{background:linear-gradient(90deg,#4b317a55,#1a1a2a)}
+.conversation .avatar{width:39px;height:39px}
+.conv-avatar{position:relative;flex-shrink:0}
+.online{
+  width:9px;height:9px;border-radius:50%;background:var(--green);
+  border:2px solid var(--panel);position:absolute;right:0;bottom:0
+}
+.conv-main{flex:1;min-width:0}
+.conv-top{display:flex;justify-content:space-between;gap:5px;align-items:center}
+.conv-name{font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conv-time{font-size:9px;color:#777791;white-space:nowrap}
+.conv-preview{
+  margin-top:4px;font-size:10px;color:#9695af;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap
+}
+.conv-bottom{display:flex;align-items:center;gap:5px;justify-content:space-between}
+.unread-count{
+  background:var(--purple);color:white;min-width:17px;height:17px;padding:0 4px;
+  border-radius:8px;display:grid;place-items:center;font-size:9px;font-weight:700
+}
+.chat{display:flex;flex-direction:column;min-width:0;position:relative}
+.chat-head{
+  height:61px;flex-shrink:0;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:9px;padding:0 13px
+}
+.back-btn{
+  display:none;background:transparent;color:white;border:0;font-size:20px;padding:4px
+}
+.chat-head .avatar{width:36px;height:36px}
+.chat-person{flex:1;min-width:0}
+.chat-name{font-size:12px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-status{font-size:10px;color:var(--muted);margin-top:2px}
+.chat-tools{display:flex;gap:6px}
+.chat-tools button{
+  width:29px;height:29px;border:1px solid var(--border);
+  border-radius:8px;background:var(--panel2);color:#c7c5df
+}
+.messages-area{
+  flex:1;min-height:0;overflow:auto;padding:14px 13px;
+  display:flex;flex-direction:column;gap:9px;
+  background:radial-gradient(ellipse at 50% 0%,#27204422,transparent 65%)
+}
+.date-label{text-align:center;color:#777791;font-size:9px;margin:4px 0 8px}
+.message-row{display:flex;flex-direction:column;max-width:83%;align-items:flex-start;animation:pop .2s ease both}
+.message-row.mine{align-self:flex-end;align-items:flex-end}
+.message-bubble{
+  padding:9px 11px;border:1px solid #2b2a42;border-radius:12px 12px 12px 3px;
+  background:#1a1a2b;color:#e6e4f8;font-size:12px;line-height:1.55;
+  overflow-wrap:anywhere;white-space:pre-wrap
+}
+.message-row.mine .message-bubble{
+  background:linear-gradient(135deg,#6340a5,#365cbb);
+  border-color:#7554c4;border-radius:12px 12px 3px 12px;color:white
+}
+.message-meta{display:flex;align-items:center;gap:5px;margin:4px 3px 0;font-size:9px;color:#7e7d9a}
+.message-status{color:var(--cyan)}
+.chat-empty{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;padding:22px
+}
+.chat-empty-icon{
+  width:49px;height:49px;border:1px solid #42345e;border-radius:16px;
+  display:grid;place-items:center;background:#201a35;font-size:21px;
+  margin-bottom:12px;animation:float 2.6s ease-in-out infinite
+}
+.chat-empty h3{font-size:14px;margin-bottom:5px}
+.chat-empty p{max-width:230px;color:var(--muted);font-size:11px;line-height:1.7}
+.composer{
+  padding:10px 11px;border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:flex-end;background:#10101b
+}
+.composer textarea{
+  resize:none;max-height:120px;min-height:38px;flex:1;min-width:0;
+  border:1px solid var(--border);border-radius:11px;background:#191927;color:white;
+  padding:10px 11px;outline:none;font-size:12px;line-height:1.4
+}
+.composer textarea:focus{border-color:#7457ca}
+.send-btn{
+  width:38px;height:38px;flex-shrink:0;border:0;border-radius:11px;
+  color:white;background:linear-gradient(135deg,var(--purple),var(--blue));
+  font-size:17px;transition:transform .15s,opacity .15s
+}
+.send-btn:active{transform:scale(.92)}
+.send-btn:disabled{opacity:.45;cursor:not-allowed}
+.composer-note{font-size:9px;color:#777791;padding:0 12px 7px;background:#10101b}
+.typing{font-size:10px;color:var(--cyan);min-height:14px;padding:0 14px 5px}
+.panel-message{padding:20px 12px;text-align:center;color:var(--muted);font-size:11px}
+.toast{
+  position:fixed;bottom:76px;left:50%;transform:translate(-50%,12px);
+  background:#25223a;border:1px solid #51417e;color:white;padding:10px 14px;
+  border-radius:10px;font-size:11px;z-index:90;opacity:0;
+  pointer-events:none;transition:.22s;max-width:calc(100% - 28px);text-align:center
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.bottom-nav{display:none}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media(max-width:800px){
+  .layout{grid-template-columns:1fr;max-width:650px;padding:12px 10px 70px}
+  .sidebar{display:none}
+  .messaging{grid-template-columns:245px minmax(0,1fr)}
+}
+@media(max-width:540px){
+  .topbar{height:48px;padding:0 12px}
+  .layout{display:block;padding:0 0 62px}
+  .messaging{
+    height:calc(100dvh - 48px - 59px);min-height:400px;
+    border:0;border-radius:0;display:block;position:relative
+  }
+  .inbox{height:100%;border:0}
+  .inbox-head{padding:12px 13px 9px}
+  .inbox-title{font-size:15px}
+  .conversation{padding:11px 13px}
+  .conversation .avatar{width:41px;height:41px}
+  .chat{display:none;height:100%;width:100%}
+  .messaging.chat-open .inbox{display:none}
+  .messaging.chat-open .chat{display:flex}
+  .back-btn{display:block}
+  .chat-head{height:56px;padding:0 10px}
+  .chat-tools .hide-mobile{display:none}
+  .messages-area{padding:13px 11px}
+  .message-row{max-width:88%}
+  .message-bubble{font-size:12px}
+  .composer{padding:9px}
+  .composer textarea{font-size:12px}
+  .bottom-nav{
+    height:59px;position:fixed;bottom:0;left:0;right:0;z-index:50;
+    display:flex;justify-content:space-around;align-items:center;
+    background:rgba(15,15,27,.97);border-top:1px solid var(--border);
+    backdrop-filter:blur(14px);padding-bottom:env(safe-area-inset-bottom)
+  }
+  .bottom-link{
+    flex:1;height:100%;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:3px;color:#82829f;font-size:9px;position:relative
+  }
+  .bottom-link span:first-child{font-size:17px;line-height:1.1}
+  .bottom-link.active{color:#c5aaff}
+  .bottom-link.active:before{
+    content:"";position:absolute;top:0;width:25px;height:2px;
+    background:var(--purple);border-radius:0 0 4px 4px
+  }
+  .toast{bottom:70px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style></head>
+<body><header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">C</span><span>campusora</span>
+  </a>
+  <div class="top-actions">
+    <button class="icon-btn" onclick="location.href='explore.html'" aria-label="Explore">⌕</button>
+    <a class="avatar" id="myAvatar" href="profile.html">C</a>
+  </div>
+</header><div class="layout">
+  <aside class="sidebar">
+    <div class="side-card">
+      <a class="side-link" href="index.html"><span class="side-icon">⌂</span>Home Feed</a>
+      <a class="side-link" href="explore.html"><span class="side-icon">⌕</span>Explore</a>
+      <a class="side-link" href="follow-system.html"><span class="side-icon">♧</span>Following</a>
+      <a class="side-link" href="communities.html"><span class="side-icon">♧</span>Communities</a>
+      <a class="side-link" href="spotlight.html"><span class="side-icon">▷</span>Spotlight</a>
+      <a class="side-link active" href="messages.html"><span class="side-icon">✉</span>Messages</a>
+      <a class="side-link" href="notifications.html"><span class="side-icon">♧</span>Notifications</a>
+      <a class="side-link" href="events.html"><span class="side-icon">▦</span>Events</a>
+      <a class="side-link" href="marketplace.html"><span class="side-icon">▣</span>Marketplace</a>
+      <a class="side-link" href="profile.html"><span class="side-icon">◎</span>My Profile</a>
+    </div>
+  </aside>  <main class="messaging" id="messaging">
+    <section class="inbox">
+      <div class="inbox-head">
+        <div class="head-line">
+          <h1 class="inbox-title">Messages <span id="totalCount" style="font-size:10px;color:var(--muted)"></span></h1>
+          <button class="new-btn" id="newChatBtn" aria-label="New message">＋</button>
+        </div>
+        <div class="search">
+          <span class="search-icon">⌕</span>
+          <input id="conversationSearch" placeholder="Search messages..." autocomplete="off">
+        </div>
+        <div class="inbox-tabs">
+          <button class="inbox-tab active" data-inbox-filter="all">All chats</button>
+          <button class="inbox-tab" data-inbox-filter="unread">Unread</button>
+          <button class="inbox-tab" data-inbox-filter="people">Find people</button>
+        </div>
+      </div>
+      <div class="conversation-list" id="conversationList">
+        <div class="panel-message">Loading your conversations...</div>
+      </div>
+    </section><section class="chat" id="chatPanel">
+  <header class="chat-head">
+    <button class="back-btn" id="backBtn" aria-label="Back to chats">‹</button>
+    <div id="chatAvatar" class="avatar">C</div>
+    <div class="chat-person">
+      <div class="chat-name" id="chatName">Your messages</div>
+      <div class="chat-status" id="chatStatus">Choose a conversation</div>
+    </div>
+    <div class="chat-tools">
+      <button id="profileBtn" title="View profile" class="hide-mobile">◎</button>
+      <button id="refreshBtn" title="Refresh messages">↻</button>
+    </div>
+  </header>
 
+  <div class="chat-empty" id="welcomeState">
+    <div class="chat-empty-icon">✉</div>
+    <h3>Your campus connections</h3>
+    <p>Message friends, meet students from other campuses, and keep your conversations going.</p>
+    <button class="new-btn" id="startChatBtn" style="width:auto;padding:0 13px;margin-top:14px;font-size:11px">＋ New message</button>
+  </div>
+
+  <div class="messages-area" id="messagesArea" hidden></div>
+  <div class="typing" id="typingIndicator"></div>
+
+  <form class="composer" id="messageForm" hidden>
+    <textarea id="messageInput" maxlength="5000" rows="1"
+      placeholder="Write a message..." aria-label="Write a message"></textarea>
+    <button class="send-btn" id="sendBtn" type="submit" aria-label="Send message">➤</button>
+  </form>
+  <div class="composer-note" id="composerNote" hidden>Enter to send · Shift + Enter for a new line</div>
+</section>
+
+  </main>
+</div><nav class="bottom-nav">
+  <a class="bottom-link" href="index.html"><span>⌂</span><span>Home</span></a>
+  <a class="bottom-link" href="explore.html"><span>⌕</span><span>Explore</span></a>
+  <a class="bottom-link" href="create-post.html"><span>＋</span><span>Create</span></a>
+  <a class="bottom-link active" href="messages.html"><span>✉</span><span>Messages</span></a>
+  <a class="bottom-link" href="profile.html"><span>◎</span><span>Profile</span></a>
+</nav><div class="toast" id="toast"></div><script type="module">
+import { supabase } from './supabase.js';
+
+const $ = id => document.getElementById(id);
+
+let me = null;
+let myProfile = null;
+let conversations = [];
+let currentConversation = null;
+let currentOtherUser = null;
+let currentMessages = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let realtimeMessages = null;
+let realtimeInbox = null;
+let refreshInterval = null;
+let sending = false;
+let loadingMessages = false;
+let messagePoll = null;
+let profileCache = new Map();
+let messageSubscriptions = [];
+
+function esc(value = '') {
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+
+function initials(name = 'C') {
+  return name.trim().split(/\s+/).filter(Boolean).slice(0,2)
+    .map(p => p[0]).join('').toUpperCase() || 'C';
+}
+
+function avatarHTML(profile, cls = '') {
+  const name = profile?.full_name || profile?.username || 'Member';
+  if (profile?.avatar_url) {
+    return `<div class="avatar ${cls}"><img src="${esc(profile.avatar_url)}" alt=""></div>`;
+  }
+  return `<div class="avatar ${cls}">${esc(initials(name))}</div>`;
+}
+
+function toast(message) {
+  const el = $('toast');
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function ago(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  const sec = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+  if (sec < 60) return 'now';
+  if (sec < 3600) return Math.floor(sec / 60) + 'm';
+  if (sec < 86400) return Math.floor(sec / 3600) + 'h';
+  if (sec < 604800) return Math.floor(sec / 86400) + 'd';
+  return date.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+}
+
+function profileName(profile) {
+  return profile?.full_name || profile?.username || 'Campusora member';
+}
+
+function conversationOther(conversation) {
+  return conversation.otherProfile || null;
+}
+
+function lastMessage(conversation) {
+  return conversation.lastMessage || null;
+}
+
+function unreadCount(conversation) {
+  if (!conversation.lastReadAt || !conversation.lastMessage) {
+    return conversation.lastMessage &&
+      conversation.lastMessage.sender_id !== me.id ? 1 : 0;
+  }
+  return conversation.lastMessage.sender_id !== me.id &&
+    new Date(conversation.lastMessage.created_at) > new Date(conversation.lastReadAt) ? 1 : 0;
+}
+
+async function getProfiles(ids) {
+  const unique = [...new Set(ids.filter(Boolean))];
+  const missing = unique.filter(id => !profileCache.has(id));
+  if (!missing.length) return;
+
+  const {data,error} = await supabase.from('profiles')
+    .select('id,username,full_name,avatar_url,school,role')
+    .in('id',missing);
+
+  if (error) {
+    console.warn('Profile lookup:',error.message);
+    return;
+  }
+  (data || []).forEach(p => profileCache.set(p.id,p));
+}
+
+async function loadInbox() {
+  $('conversationList').innerHTML =
+    '<div class="panel-message">Loading conversations...</div>';
+
+  const {data:members,error} = await supabase
+    .from('conversation_members')
+    .select('conversation_id,user_id,last_read_at,joined_at')
+    .eq('user_id',me.id);
+
+  if (error) {
+    console.error(error);
+    $('conversationList').innerHTML =
+      '<div class="panel-message">Could not load chats. Check your database policies and try again.</div>';
+    return;
+  }
+
+  if (!members?.length) {
+    conversations = [];
+    renderInbox();
+    return;
+  }
+
+  const ids = members.map(m => m.conversation_id);
+  const {data:convRows,error:convError} = await supabase
+    .from('conversations')
+    .select('id,created_by,is_group,group_name,created_at')
+    .in('id',ids);
+
+  if (convError) {
+    console.error(convError);
+    $('conversationList').innerHTML =
+      '<div class="panel-message">Could not load conversations.</div>';
+    return;
+  }
+
+  const {data:allMembers,error:memberError} = await supabase
+    .from('conversation_members')
+    .select('conversation_id,user_id,last_read_at,joined_at')
+    .in('conversation_id',ids);
+
+  if (memberError) console.warn('Participant lookup:',memberError.message);
+
+  const participantIds = [...new Set((allMembers || []).map(m => m.user_id))];
+  await getProfiles(participantIds);
+
+  const {data:messageRows,error:messageError} = await supabase
+    .from('messages')
+    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+    .in('conversation_id',ids)
+    .is('deleted_at',null)
+    .order('created_at',{ascending:false})
+    .limit(Math.min(500,ids.length * 30));
+
+  if (messageError) console.warn('Message preview lookup:',messageError.message);
+
+  conversations = (convRows || []).map(c => {
+    const myMembership = members.find(m => m.conversation_id === c.id);
+    const participants = (allMembers || []).filter(m => m.conversation_id === c.id);
+    const other = participants.find(m => m.user_id !== me.id);
+    const last = (messageRows || []).find(m => m.conversation_id === c.id) || null;
+
+    return {
+      ...c,
+      participants,
+      otherUserId: other?.user_id || null,
+      otherProfile: other ? profileCache.get(other.user_id) : null,
+      lastMessage:last,
+      lastReadAt:myMembership?.last_read_at || null
+    };
+  }).sort((a,b) => new Date(b.lastMessage?.created_at || b.created_at) -
+                    new Date(a.lastMessage?.created_at || a.created_at));
+
+  renderInbox();
+}
+
+function renderInbox() {
+  const list = $('conversationList');
+  const q = currentSearch.trim().toLowerCase();
+  let items = conversations.filter(c => {
+    const name = c.is_group ? c.group_name : profileName(conversationOther(c));
+    const preview = c.lastMessage?.content || '';
+    const matches = !q || name.toLowerCase().includes(q) || preview.toLowerCase().includes(q);
+    if (!matches) return false;
+    if (currentFilter === 'unread') return unreadCount(c) > 0;
+    return true;
+  });
+
+  $('totalCount').textContent = conversations.length ? `(${conversations.length})` : '';
+
+  if (currentFilter === 'people') {
+    list.innerHTML = `<div class="panel-message">Search for a name above to find Campusora members.</div>`;
+    if (q.length >= 2) searchPeople(q);
+    return;
+  }
+
+  if (!items.length) {
+    list.innerHTML = `<div class="panel-message">${
+      conversations.length ? 'No chats match your search.' : 'No conversations yet.<br>Tap ＋ to message someone.'
+    }</div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(c => {
+    const profile = conversationOther(c);
+    const name = c.is_group ? (c.group_name || 'Group chat') : profileName(profile);
+    const last = c.lastMessage;
+    const preview = last ? (last.sender_id === me.id ? 'You: ' : '') + last.content : 'Start a conversation';
+    const count = unreadCount(c);
+    const selected = currentConversation?.id === c.id;
+    return `<button class="conversation ${selected?'active':''}" data-conversation="${esc(c.id)}">
+      <div class="conv-avatar">
+        ${avatarHTML(profile)}
+      </div>
+      <div class="conv-main">
+        <div class="conv-top">
+          <span class="conv-name">${esc(name)}</span>
+          <span class="conv-time">${ago(last?.created_at || c.created_at)}</span>
+        </div>
+        <div class="conv-bottom">
+          <div class="conv-preview">${esc(preview)}</div>
+          ${count ? `<span class="unread-count">${count}</span>` : ''}
+        </div>
+      </div>
+    </button>`;
+  }).join('');
+}
+
+let peopleSearchRequest = 0;
+
+async function searchPeople(q) {
+  const request = ++peopleSearchRequest;
+  const {data,error} = await supabase.from('profiles')
+    .select('id,username,full_name,avatar_url,school,role')
+    .or(`username.ilike.%${q.replace(/[,%()]/g,'')}%,full_name.ilike.%${q.replace(/[,%()]/g,'')}%`)
+    .neq('id',me.id)
+    .limit(20);
+
+  if (request !== peopleSearchRequest || currentFilter !== 'people') return;
+
+  const list = $('conversationList');
+  if (error) {
+    console.warn(error);
+    list.innerHTML = '<div class="panel-message">Could not search members. Try another name.</div>';
+    return;
+  }
+
+  const people = (data || []).filter(p => p.id !== me.id);
+  people.forEach(p => profileCache.set(p.id,p));
+
+  if (!people.length) {
+    list.innerHTML = '<div class="panel-message">No members found. Try another name.</div>';
+    return;
+  }
+
+  list.innerHTML = people.map(p => {
+    const school = p.school ? `<div class="conv-preview">${esc(p.school)}</div>` : '<div class="conv-preview">Campusora member</div>';
+    return `<button class="conversation" data-person="${esc(p.id)}">
+      <div class="conv-avatar">${avatarHTML(p)}</div>
+      <div class="conv-main">
+        <div class="conv-name">${esc(profileName(p))}</div>${school}
+      </div>
+      <span style="color:var(--cyan)">＋</span>
+    </button>`;
+  }).join('');
+}
+
+async function startConversation(userId) {
+  if (!userId || userId === me.id) return;
+
+  const existing = conversations.find(c =>
+    !c.is_group && c.participants?.length === 2 &&
+    c.participants.some(p => p.user_id === me.id) &&
+    c.participants.some(p => p.user_id === userId)
+  );
+
+  if (existing) {
+    await openConversation(existing.id);
+    return;
+  }
+
+  const {data:created,error} = await supabase.from('conversations')
+    .insert({created_by:me.id,is_group:false})
+    .select('id,created_by,is_group,group_name,created_at')
+    .single();
+
+  if (error) {
+    console.error(error);
+    toast('Could not start a conversation. Please try again.');
+    return;
+  }
+
+  const {error:memberError} = await supabase.from('conversation_members')
+    .insert([
+      {conversation_id:created.id,user_id:me.id},
+      {conversation_id:created.id,user_id:userId}
+    ]);
+
+  if (memberError) {
+    console.error(memberError);
+    // A conversation without both participants should not be used.
+    await supabase.from('conversations').delete().eq('id',created.id);
+    toast('Could not add the participant. Check database permissions.');
+    return;
+  }
+
+  await loadInbox();
+  await openConversation(created.id);
+}
+
+async function openConversation(id) {
+  const conversation = conversations.find(c => c.id === id);
+  if (!conversation) return;
+
+  currentConversation = conversation;
+  currentOtherUser = conversation.otherUserId
+    ? profileCache.get(conversation.otherUserId) || null
+    : null;
+
+  if (!conversation.is_group && !currentOtherUser) {
+    toast('This member profile is unavailable.');
+  }
+
+  $('messaging').classList.add('chat-open');
+  $('welcomeState').hidden = true;
+  $('messagesArea').hidden = false;
+  $('messageForm').hidden = false;
+  $('composerNote').hidden = false;
+  $('messagesArea').innerHTML = '<div class="panel-message">Loading messages...</div>';
+
+  $('chatAvatar').outerHTML = avatarHTML(currentOtherUser);
+  // Restore the stable ID on the new avatar element.
+  const avatarEl = $('chatPanel').querySelector('.chat-head .avatar');
+  if (avatarEl) avatarEl.id = 'chatAvatar';
+
+  $('chatName').textContent = conversation.is_group
+    ? conversation.group_name || 'Group chat'
+    : profileName(currentOtherUser);
+
+  $('chatStatus').textContent = currentOtherUser?.school || 'Campusora member';
+  $('profileBtn').style.display = currentOtherUser ? '' : 'none';
+
+  renderInbox();
+  await loadMessages(id);
+  await markConversationRead(id);
+  setupMessageRealtime(id);
+
+  if (messagePoll) clearInterval(messagePoll);
+  // Fallback refresh if Realtime has not been enabled.
+  messagePoll = setInterval(() => {
+    if (currentConversation?.id === id) loadMessages(id,false);
+  },10000);
+}
+
+function renderMessages() {
+  const area = $('messagesArea');
+  if (!currentMessages.length) {
+    area.innerHTML = `<div class="chat-empty" style="min-height:220px">
+      <div class="chat-empty-icon">✦</div>
+      <h3>Say hello 👋</h3>
+      <p>Your conversation starts here. Send the first message.</p>
+    </div>`;
+    return;
+  }
+
+  let previousDate = '';
+  const output = [];
+
+  currentMessages.forEach(m => {
+    const date = new Date(m.created_at);
+    const dateKey = date.toDateString();
+
+    if (dateKey !== previousDate) {
+      output.push(`<div class="date-label">${dateKey === new Date().toDateString() ? 'Today' :
+        esc(date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}))}</div>`);
+      previousDate = dateKey;
+    }
+
+    const mine = m.sender_id === me.id;
+    const messageText = m.deleted_at ? 'This message was deleted' : m.content;
+    output.push(`<div class="message-row ${mine?'mine':''}" data-message="${esc(m.id)}">
+      <div class="message-bubble">${esc(messageText)}</div>
+      <div class="message-meta">${ago(m.created_at)} ${mine?'<span class="message-status">✓</span>':''}</div>
+    </div>`);
+  });
+
+  area.innerHTML = output.join('');
+  area.scrollTop = area.scrollHeight;
+}
+
+async function loadMessages(id,showLoading = false) {
+  if (loadingMessages && showLoading) return;
+  if (showLoading) loadingMessages = true;
+
+  const {data,error} = await supabase.from('messages')
+    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+    .eq('conversation_id',id)
+    .order('created_at',{ascending:true})
+    .limit(300);
+
+  if (showLoading) loadingMessages = false;
+
+  if (error) {
+    console.error(error);
+    if (currentConversation?.id === id) {
+      $('messagesArea').innerHTML = '<div class="panel-message">Could not load messages. Please retry.</div>';
+    }
+    return;
+  }
+
+  if (currentConversation?.id !== id) return;
+
+  currentMessages = data || [];
+  renderMessages();
+}
+
+async function markConversationRead(id) {
+  const now = new Date().toISOString();
+  const {error} = await supabase.from('conversation_members')
+    .update({last_read_at:now})
+    .eq('conversation_id',id)
+    .eq('user_id',me.id);
+
+  if (error) console.warn('Read status update:',error.message);
+
+  const c = conversations.find(item => item.id === id);
+  if (c) c.lastReadAt = now;
+  renderInbox();
+}
+
+function setupMessageRealtime(id) {
+  if (realtimeMessages) {
+    supabase.removeChannel(realtimeMessages);
+    realtimeMessages = null;
+  }
+
+  realtimeMessages = supabase.channel('campusora-chat-' + id)
+    .on('postgres_changes',{
+      event:'INSERT',schema:'public',table:'messages',
+      filter:`conversation_id=eq.${id}`
+    },async payload => {
+      if (currentConversation?.id !== id) return;
+      if (!currentMessages.some(m => m.id === payload.new.id)) {
+        currentMessages.push(payload.new);
+        renderMessages();
+        if (payload.new.sender_id !== me.id) await markConversationRead(id);
+        loadInbox();
+      }
+    })
+    .subscribe(status => {
+      if (currentConversation?.id === id) {
+        $('chatStatus').textContent = status === 'SUBSCRIBED'
+          ? (currentOtherUser?.school || 'Connected')
+          : 'Connecting...';
+      }
+    });
+}
+
+async function sendMessage(event) {
+  event.preventDefault();
+  if (sending || !currentConversation || !me) return;
+
+  const input = $('messageInput');
+  const content = input.value.trim();
+  if (!content) return;
+
+  sending = true;
+  $('sendBtn').disabled = true;
+
+  const {data,error} = await supabase.from('messages')
+    .insert({
+      conversation_id:currentConversation.id,
+      sender_id:me.id,
+      content
+    })
+    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+    .single();
+
+  sending = false;
+  $('sendBtn').disabled = false;
+
+  if (error) {
+    console.error(error);
+    toast('Message could not be sent. Check your connection.');
+    return;
+  }
+
+  input.value = '';
+  input.style.height = '38px';
+
+  if (!currentMessages.some(m => m.id === data.id)) {
+    currentMessages.push(data);
+    renderMessages();
+  }
+
+  await loadInbox();
+  input.focus();
+}
+
+function setupInboxRealtime() {
+  if (realtimeInbox) supabase.removeChannel(realtimeInbox);
+
+  realtimeInbox = supabase.channel('campusora-inbox-' + me.id)
+    .on('postgres_changes',{
+      event:'INSERT',schema:'public',table:'messages'
+    },payload => {
+      if (conversations.some(c => c.id === payload.new.conversation_id)) {
+        loadInbox();
+      }
+    })
+    .subscribe();
+}
+
+function showNewChat() {
+  currentFilter = 'people';
+  document.querySelectorAll('[data-inbox-filter]').forEach(b =>
+    b.classList.toggle('active',b.dataset.inboxFilter === 'people')
+  );
+  $('conversationSearch').placeholder = 'Find a member by name...';
+  $('conversationSearch').focus();
+  renderInbox();
+
+  if (window.innerWidth <= 540) {
+    $('messaging').classList.remove('chat-open');
+  }
+}
+
+function setupEvents() {
+  $('conversationList').addEventListener('click',async event => {
+    const convButton = event.target.closest('[data-conversation]');
+    if (convButton) {
+      await openConversation(convButton.dataset.conversation);
+      return;
+    }
+
+    const personButton = event.target.closest('[data-person]');
+    if (personButton) {
+      await startConversation(personButton.dataset.person);
+    }
+  });
+
+  $('conversationSearch').addEventListener('input',event => {
+    currentSearch = event.target.value;
+    renderInbox();
+  });
+
+  document.querySelectorAll('[data-inbox-filter]').forEach(button => {
+    button.addEventListener('click',() => {
+      currentFilter = button.dataset.inboxFilter;
+      document.querySelectorAll('[data-inbox-filter]').forEach(b =>
+        b.classList.toggle('active',b === button)
+      );
+      $('conversationSearch').placeholder = currentFilter === 'people'
+        ? 'Find a member by name...' : 'Search messages...';
+      renderInbox();
+    });
+  });
+
+  $('newChatBtn').addEventListener('click',showNewChat);
+  $('startChatBtn').addEventListener('click',showNewChat);
+  $('messageForm').addEventListener('submit',sendMessage);
+
+  $('messageInput').addEventListener('input',event => {
+    const input = event.target;
+    input.style.height = '38px';
+    input.style.height = Math.min(input.scrollHeight,120) + 'px';
+  });
+
+  $('messageInput').addEventListener('keydown',event => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      $('messageForm').requestSubmit();
+    }
+  });
+
+  $('backBtn').addEventListener('click',() => {
+    $('messaging').classList.remove('chat-open');
+  });
+
+  $('refreshBtn').addEventListener('click',async () => {
+    if (currentConversation) await loadMessages(currentConversation.id,true);
+    await loadInbox();
+    toast('Messages refreshed');
+  });
+
+  $('profileBtn').addEventListener('click',() => {
+    if (!currentOtherUser) return;
+    window.location.href = currentOtherUser.username
+      ? `profile.html?username=${encodeURIComponent(currentOtherUser.username)}`
+      : `profile.html?id=${encodeURIComponent(currentOtherUser.id)}`;
+  });
+}
+
+async function initialize() {
+  setupEvents();
+
+  const {data,error} = await supabase.auth.getUser();
+
+  if (error || !data?.user) {
+    $('conversationList').innerHTML = `
+      <div class="panel-message">
+        Sign in to use Campusora messages.<br><br>
+        <a href="index.html" style="color:#b8a2ff">Go to Campusora →</a>
+      </div>`;
+    $('welcomeState').querySelector('h3').textContent = 'Sign in to connect';
+    $('welcomeState').querySelector('p').textContent =
+      'Sign in to message students, alumni, and other Campusora members.';
+    $('newChatBtn').disabled = true;
+    $('startChatBtn').disabled = true;
+    return;
+  }
+
+  me = data.user;
+
+  const {data:profile} = await supabase.from('profiles')
+    .select('id,username,full_name,avatar_url,school,role')
+    .eq('id',me.id).maybeSingle();
+
+  myProfile = profile;
+  if (profile) {
+    profileCache.set(profile.id,profile);
+    $('myAvatar').outerHTML = avatarHTML(profile);
+    const avatar = document.querySelector('.top-actions .avatar');
+    if (avatar) {
+      avatar.id = 'myAvatar';
+      avatar.href = profile.username
+        ? `profile.html?username=${encodeURIComponent(profile.username)}`
+        : `profile.html?id=${encodeURIComponent(me.id)}`;
+    }
+  }
+
+  await loadInbox();
+  setupInboxRealtime();
+
+  refreshInterval = setInterval(() => {
+    loadInbox();
+    if (currentConversation) loadMessages(currentConversation.id);
+  },30000);
+}
+
+window.addEventListener('beforeunload',() => {
+  if (realtimeMessages) supabase.removeChannel(realtimeMessages);
+  if (realtimeInbox) supabase.removeChannel(realtimeInbox);
+  if (messagePoll) clearInterval(messagePoll);
+  if (refreshInterval) clearInterval(refreshInterval);
+});
+
+initialize();
+</script></body>
+  </html>
