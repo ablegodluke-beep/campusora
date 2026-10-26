@@ -1,1 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
 
+  <title>Profile | Campusora</title>
+  <meta name="description" content="View profiles and connect with people across campuses on Campusora.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080b18;
+      --surface: #101426;
+      --surface2: #171d33;
+      --border: rgba(255,255,255,.09);
+      --text: #f4f6ff;
+      --muted: #9aa5c1;
+      --purple: #8b5cf6;
+      --blue: #4f8cff;
+      --cyan: #27d7e7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: clip;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: clip;
+      background:
+        radial-gradient(ellipse at top left, rgba(79,140,255,.10), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+
+    button, a {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .topbar {
+      height: 68px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 0 5%;
+      background: rgba(8,11,24,.92);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.8px;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
+      color: white;
+      font-size: 18px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .top-link.primary {
+      border: 0;
+      background: linear-gradient(120deg, var(--purple), var(--blue));
+    }
+
+    .page {
+      width: min(900px, calc(100% - 32px));
+      margin: 32px auto 90px;
+    }
+
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .cover {
+      height: 245px;
+      position: relative;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(39,215,231,.48), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(139,92,246,.65), transparent 35%),
+        linear-gradient(130deg, #172b59, #17132f 65%, #102a42);
+      background-position: center;
+      background-size: cover;
+    }
+
+    .cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(8,11,24,.25));
+      pointer-events: none;
+    }
+
+    .profile-content {
+      padding: 0 30px 28px;
+    }
+
+    .profile-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-top: -58px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-wrap {
+      width: 124px;
+      height: 124px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      padding: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+    }
+
+    .heading-actions {
+      display: flex;
+      gap: 9px;
+      padding-bottom: 8px;
+    }
+
+    .btn {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      background: var(--surface2);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      background: linear-gradient(120deg, var(--purple), var(--blue));
+      border: 0;
+    }
+
+    .identity {
+      padding-top: 17px;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .full-name {
+      margin: 0;
+      font-size: clamp(22px, 4vw, 29px);
+      font-weight: 800;
+      letter-spacing: -.8px;
+      overflow-wrap: anywhere;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 100px;
+      padding: 6px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge.student {
+      color: #9bc5ff;
+      background: rgba(79,140,255,.15);
+      border: 1px solid rgba(79,140,255,.3);
+    }
+
+    .badge.alumni {
+      color: #d1b4ff;
+      background: rgba(139,92,246,.15);
+      border: 1px solid rgba(139,92,246,.3);
+    }
+
+    .badge.general {
+      color: #8af0e2;
+      background: rgba(39,215,231,.12);
+      border: 1px solid rgba(39,215,231,.25);
+    }
+
+    .username {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .bio {
+      color: #d1d7e9;
+      line-height: 1.8;
+      margin: 18px 0 16px;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .stats {
+      display: flex;
+      gap: 25px;
+      margin-top: 23px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat strong {
+      color: var(--text);
+      font-size: 16px;
+      margin-right: 4px;
+    }
+
+    .section {
+      margin-top: 22px;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    .section-title {
+      margin: 0 0 7px;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .section-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .empty-posts {
+      text-align: center;
+      padding: 30px 12px 20px;
+    }
+
+    .empty-icon {
+      width: 55px;
+      height: 55px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      border-radius: 17px;
+      background: rgba(139,92,246,.14);
+      font-size: 25px;
+    }
+
+    .status {
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .status.error {
+      color: #ffb8c0;
+      border-color: rgba(255,100,120,.3);
+    }
+
+    .status a {
+      color: #a9c9ff;
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .footer {
+      padding: 25px 15px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        height: 60px;
+        padding: 0 14px;
+        gap: 8px;
+      }
+
+      .brand {
+        font-size: 18px;
+        gap: 8px;
+      }
+
+      .brand-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+      }
+
+      .top-actions {
+        gap: 6px;
+      }
+
+      .top-link {
+        padding: 9px 10px;
+        font-size: 11px;
+      }
+
+      .page {
+        width: calc(100% - 20px);
+        margin: 15px auto 85px;
+      }
+
+      .profile-card {
+        border-radius: 17px;
+      }
+
+      .cover {
+        height: 170px;
+      }
+
+      .profile-content {
+        padding: 0 16px 21px;
+      }
+
+      .profile-heading {
+        margin-top: -45px;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      .avatar-wrap {
+        width: 94px;
+        height: 94px;
+        padding: 4px;
+      }
+
+      .heading-actions {
+        gap: 6px;
+        padding-bottom: 5px;
+      }
+
+      .btn {
+        min-height: 36px;
+        padding: 9px 10px;
+        font-size: 11px;
+      }
+
+      .identity {
+        padding-top: 15px;
+      }
+
+      .name-row {
+        gap: 8px;
+      }
+
+      .full-name {
+        font-size: 23px;
+      }
+
+      .badge {
+        padding: 5px 8px;
+        font-size: 9px;
+      }
+
+      .bio {
+        font-size: 13px;
+        margin: 15px 0;
+      }
+
+      .details {
+        gap: 12px;
+        font-size: 11px;
+      }
+
+      .stats {
+        gap: 17px;
+        margin-top: 19px;
+        padding-top: 17px;
+      }
+
+      .stat {
+        font-size: 11px;
+      }
+
+      .stat strong {
+        font-size: 15px;
+      }
+
+      .section {
+        padding: 18px 15px;
+        border-radius: 16px;
+      }
+
+      .section-title {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .brand {
+        font-size: 16px;
+      }
+
+      .top-link {
+        padding: 8px;
+        font-size: 10px;
+      }
+
+      .profile-heading {
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .heading-actions {
+        margin-left: auto;
+      }
+
+      .avatar-wrap {
+        width: 84px;
+        height: 84px;
+      }
+
+      .full-name {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Campusora home">
+      <span class="brand-icon">C</span>
+      <span>Campusora</span>
+    </a>
+
+    <nav class="top-actions" aria-label="Main navigation">
+      <a class="top-link" href="index.html">Home</a>
+      <a class="top-link primary" id="editProfileTop" href="profile-setup.html">Edit Profile</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div id="status" class="status" role="status" aria-live="polite">
+      Loading profile...
+    </div>
+
+    <article id="profileCard" class="profile-card hidden">
+      <div id="cover" class="cover" role="img" aria-label="Profile cover photo"></div>
+
+      <div class="profile-content">
+        <div class="profile-heading">
+          <div class="avatar-wrap">
+            <img id="avatar" class="avatar" alt="Profile picture">
+          </div>
+
+          <div class="heading-actions">
+            <button id="shareButton" class="btn" type="button">↗ Share</button>
+            <a id="editProfile" class="btn primary" href="profile-setup.html">Edit Profile</a>
+          </div>
+        </div>
+
+        <div class="identity">
+          <div class="name-row">
+            <h1 id="fullName" class="full-name">Campusora Member</h1>
+            <span id="roleBadge" class="badge general">🌐 General Member</span>
+          </div>
+
+          <div id="username" class="username">@campusora_member</div>
+
+          <p id="bio" class="bio"></p>
+
+          <div class="details">
+            <div id="schoolDetail" class="detail hidden">
+              <span aria-hidden="true">🎓</span>
+              <span id="school"></span>
+            </div>
+
+            <div class="detail">
+              <span aria-hidden="true">🌍</span>
+              <span>Connecting across campuses</span>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><strong id="postCount">0</strong> Posts</div>
+            <div class="stat"><strong id="followersCount">0</strong> Followers</div>
+            <div class="stat"><strong id="followingCount">0</strong> Following</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section id="postsSection" class="section hidden">
+      <h2 class="section-title">Posts</h2>
+      <p class="section-subtitle">Things this member shares with the Campusora community.</p>
+
+      <div id="emptyPosts" class="empty-posts">
+        <div class="empty-icon" aria-hidden="true">✦</div>
+        <h3>No posts yet</h3>
+        <p class="section-subtitle">When this member publishes a post, it will appear here.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Campusora — Your Campus. Your People.<br>
+    Building connections across campuses and beyond.
+  </footer>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    const $ = (id) => document.getElementById(id);
+
+    const statusBox = $('status');
+    const profileCard = $('profileCard');
+    const postsSection = $('postsSection');
+
+    let currentUser = null;
+    let displayedProfileId = null;
+
+    function showStatus(message, isError = false) {
+      statusBox.textContent = message;
+      statusBox.classList.toggle('error', isError);
+      statusBox.classList.remove('hidden');
+    }
+
+    function hideStatus() {
+      statusBox.classList.add('hidden');
+    }
+
+    function safeImageUrl(value) {
+      if (!value) return '';
+      try {
+        const url = new URL(value, window.location.origin);
+        if (url.protocol === 'https:' || url.protocol === 'http:') {
+          return url.href;
+        }
+      } catch (_) {}
+      return '';
+    }
+
+    function fallbackAvatar(name) {
+      const initial = (name || 'C').trim().charAt(0).toUpperCase() || 'C';
+      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#8b5cf6"/>
+              <stop offset="1" stop-color="#4f8cff"/>
+            </linearGradient>
+          </defs>
+          <rect width="240" height="240" rx="120" fill="url(#g)"/>
+          <text x="120" y="148" font-size="100" font-family="Arial" font-weight="700"
+            text-anchor="middle" fill="white">${initial.replace(/[<&>"]/g, '')}</text>
+        </svg>`
+      );
+    }
+
+    function setRoleBadge(role) {
+      const badge = $('roleBadge');
+      const roleNames = {
+        student: { text: '🎓 Student', className: 'student' },
+        alumni: { text: '🏅 Alumni', className: 'alumni' },
+        general: { text: '🌐 General Member', className: 'general' }
+      };
+
+      const item = roleNames[role] || roleNames.general;
+      badge.textContent = item.text;
+      badge.className = 'badge ' + item.className;
+    }
+
+    function formatCount(number) {
+      return new Intl.NumberFormat().format(number || 0);
+    }
+
+    async function countRows(table, column, value) {
+      const { count, error } = await supabase
+        .from(table)
+        .select('*', { count: 'exact', head: true })
+        .eq(column, value);
+
+      if (error) {
+        console.warn(`Could not count ${table}:`, error.message);
+        return 0;
+      }
+
+      return count || 0;
+    }
+
+    async function loadProfile() {
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+
+      if (sessionError) throw sessionError;
+
+      currentUser = sessionData.session?.user || null;
+
+      const requestedUsername = new URLSearchParams(location.search)
+        .get('username');
+
+      const requestedId = new URLSearchParams(location.search).get('id');
+
+      let query = supabase
+        .from('profiles')
+        .select('id, username, full_name, school, role, bio, avatar_url, cover_url, created_at');
+
+      if (requestedId) {
+        query = query.eq('id', requestedId);
+      } else if (requestedUsername) {
+        query = query.eq('username', requestedUsername);
+      } else if (currentUser) {
+        query = query.eq('id', currentUser.id);
+      } else {
+        showStatus('Log in to view your profile, or open another member’s profile using their username.');
+        return;
+      }
+
+      const { data: profile, error } = await query.maybeSingle();
+
+      if (error) throw error;
+
+      if (!profile) {
+        showStatus('We could not find this profile. Check the username or create your profile first.', true);
+        return;
+      }
+
+      displayedProfileId = profile.id;
+
+      const displayName = profile.full_name || profile.username || 'Campusora Member';
+
+      $('fullName').textContent = displayName;
+      $('username').textContent = profile.username
+        ? '@' + profile.username
+        : '@campusora_member';
+
+      $('bio').textContent = profile.bio || 'This member has not added a biography yet.';
+      setRoleBadge(profile.role);
+
+      const avatarUrl = safeImageUrl(profile.avatar_url);
+      $('avatar').src = avatarUrl || fallbackAvatar(displayName);
+      $('avatar').onerror = () => {
+        $('avatar').src = fallbackAvatar(displayName);
+      };
+
+      const coverUrl = safeImageUrl(profile.cover_url);
+      if (coverUrl) {
+        $('cover').style.backgroundImage = `url("${coverUrl.replace(/["\\]/g, '')}")`;
+      }
+
+      if (profile.school) {
+        $('school').textContent = profile.school;
+        $('schoolDetail').classList.remove('hidden');
+      } else {
+        $('schoolDetail').classList.add('hidden');
+      }
+
+      const isOwnProfile = currentUser && currentUser.id === profile.id;
+
+      $('editProfile').classList.toggle('hidden', !isOwnProfile);
+      $('editProfileTop').classList.toggle('hidden', !isOwnProfile);
+
+      $('shareButton').addEventListener('click', shareProfile, { once: true });
+
+      const [postCount, followersCount, followingCount] = await Promise.all([
+        countRows('posts', 'user_id', profile.id),
+        countRows('follows', 'following_id', profile.id),
+        countRows('follows', 'follower_id', profile.id)
+      ]);
+
+      $('postCount').textContent = formatCount(postCount);
+      $('followersCount').textContent = formatCount(followersCount);
+      $('followingCount').textContent = formatCount(followingCount);
+
+      profileCard.classList.remove('hidden');
+      postsSection.classList.remove('hidden');
+      hideStatus();
+
+      // Posts will be connected to the profile feed in the next development step.
+    }
+
+    async function shareProfile() {
+      const profile = new URL(window.location.href);
+      const username = new URLSearchParams(profile.search).get('username');
+
+      if (!profile.search && currentUser) {
+        profile.searchParams.set('id', currentUser.id);
+      } else if (username) {
+        profile.searchParams.set('username', username);
+      }
+
+      const shareData = {
+        title: 'Campusora Profile',
+        text: `Connect with ${$('fullName').textContent} on Campusora.`,
+        url: profile.href
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(profile.href);
+          alert('Profile link copied!');
+        } else {
+          prompt('Copy this profile link:', profile.href);
+        }
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          alert('Could not share the profile right now.');
+        }
+      }
+    }
+
+    $('shareButton').addEventListener('click', shareProfile);
+
+    try {
+      await loadProfile();
+    } catch (error) {
+      console.error('Profile loading error:', error);
+      showStatus(
+        'We could not load this profile. Please refresh the page and try again.',
+        true
+      );
+    }
+  </script>
+</body>
+  </html>
