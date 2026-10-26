@@ -565,15 +565,17 @@
       if (error) throw error;
 
       showStatus(
-        'Your post was published successfully! 🎉',
-        'success'
-      );
+  'Your post was published successfully! 🎉 Returning to Campusora...',
+  'success'
+);
 
-      form.reset();
-      clearPhoto();
-      updateCharacterCount();
+form.reset();
+clearPhoto();
+updateCharacterCount();
 
-      submitBtn.textContent = 'Publish another post 🚀';
+setTimeout(() => {
+  window.location.href = './index.html';
+}, 1200);
 
     } catch (error) {
       console.error('Campusora post error:', error);
