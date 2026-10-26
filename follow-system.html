@@ -1,1 +1,750 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>People | Campusora</title><style>
+:root {
+  --bg: #080b14;
+  --panel: #111625;
+  --panel2: #171e30;
+  --border: #252d43;
+  --text: #f4f6ff;
+  --muted: #9aa5bd;
+  --purple: #8657ff;
+  --blue: #3988ff;
+  --cyan: #35d8ee;
+  --green: #42dfa2;
+  --red: #ff6b85;
+}
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at top left, #171238 0, transparent 42%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 16px 6%;
+  background: rgba(8,11,20,.94);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  text-decoration: none;
+  color: white;
+}
+
+.logo span {
+  background: linear-gradient(90deg, #9b78ff, #35d8ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.back {
+  color: #d7d9ff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.container {
+  width: min(1000px, 92%);
+  margin: 30px auto;
+}
+
+.hero {
+  padding: 28px;
+  border: 1px solid #39315f;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 90% 10%, #253b70 0, transparent 38%),
+    linear-gradient(130deg, #21163e, #11182b 70%);
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(27px, 5vw, 40px);
+  margin: 12px 0;
+}
+
+.hero p {
+  color: #bdc7df;
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 20px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.panel h2 {
+  font-size: 19px;
+  margin: 0 0 17px;
+}
+
+.search {
+  width: 100%;
+  padding: 15px 17px;
+  color: white;
+  background: #090d18;
+  border: 1px solid #303951;
+  border-radius: 13px;
+  outline: none;
+}
+
+.search:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px #8657ff20;
+}
+
+.tabs {
+  display: flex;
+  gap: 9px;
+  margin: 18px 0;
+  overflow-x: auto;
+  padding-bottom: 3px;
+}
+
+.tab {
+  white-space: nowrap;
+  padding: 11px 17px;
+  border: 1px solid var(--border);
+  background: #0b101d;
+  color: #b6bfd4;
+  border-radius: 11px;
+}
+
+.tab.active {
+  color: white;
+  background: linear-gradient(110deg, #6940d9, #315fca);
+  border-color: transparent;
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.person {
+  min-width: 0;
+  background: linear-gradient(145deg, #171e30, #101522);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 18px;
+  transition: transform .2s, border-color .2s;
+}
+
+.person:hover {
+  transform: translateY(-2px);
+  border-color: #6651a8;
+}
+
+.person-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.avatar-link {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #8557ff, #2c8bfa);
+  color: white;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.person-info {
+  min-width: 0;
+}
+
+.person-name {
+  display: block;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.username {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  margin-top: 7px;
+  background: #34265e;
+  color: #c9b9ff;
+  text-transform: capitalize;
+}
+
+.badge.alumni {
+  background: #16473e;
+  color: #7df0c6;
+}
+
+.badge.general {
+  background: #203951;
+  color: #8dd7ff;
+}
+
+.school {
+  color: #aab5cc;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 15px 0;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.btn {
+  flex: 1;
+  border: 1px solid #373f56;
+  border-radius: 10px;
+  padding: 11px 10px;
+  color: white;
+  background: #1b2234;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.btn.follow {
+  background: linear-gradient(110deg, var(--purple), var(--blue));
+  border-color: transparent;
+}
+
+.btn:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.profile-btn {
+  display: block;
+  text-align: center;
+  color: #c6caff;
+  text-decoration: none;
+  font-size: 12px;
+  margin-top: 13px;
+}
+
+.status {
+  color: var(--muted);
+  text-align: center;
+  padding: 35px 12px;
+  line-height: 1.7;
+}
+
+.message {
+  padding: 13px 15px;
+  margin-bottom: 15px;
+  border-radius: 11px;
+  display: none;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.message.success {
+  display: block;
+  background: #10352d;
+  border: 1px solid #216b56;
+  color: #9af1d0;
+}
+
+.message.error {
+  display: block;
+  background: #391b29;
+  border: 1px solid #79344b;
+  color: #ffb2c0;
+}
+
+@media(max-width: 600px) {
+  .topbar {
+    padding: 14px 4%;
+  }
+
+  .logo {
+    font-size: 21px;
+  }
+
+  .container {
+    width: 94%;
+    margin-top: 20px;
+  }
+
+  .hero, .panel {
+    padding: 18px;
+    border-radius: 17px;
+  }
+
+  .people {
+    grid-template-columns: 1fr;
+  }
+
+  .person {
+    padding: 16px;
+  }
+}
+</style></head><body><header class="topbar">
+  <a class="logo" href="index.html">Campus<span>ora</span></a>
+  <a class="back" href="index.html">← Homepage</a>
+</header><main class="container">  <section class="hero">
+    <div class="eyebrow">Your Campusora Network</div>
+    <h1>Find your people. 🌍</h1>
+    <p>
+      Connect with students, alumni, and other members across different
+      institutions. Discover people, build friendships, and grow your network.
+    </p>
+  </section>  <div id="message" class="message"></div>  <section class="stats">
+    <div class="stat">
+      <strong id="followersCount">—</strong>
+      <span>People following you</span>
+    </div><div class="stat">
+  <strong id="followingCount">—</strong>
+  <span>People you follow</span>
+</div>
+
+  </section>  <section class="panel">
+    <h2>Discover people ✨</h2><input
+  class="search"
+  id="searchInput"
+  type="search"
+  placeholder="Search by name, username, or school..."
+  autocomplete="off"
+>
+
+<div class="tabs">
+  <button class="tab active" data-view="discover">Discover</button>
+  <button class="tab" data-view="following">Following</button>
+  <button class="tab" data-view="followers">Followers</button>
+</div>
+
+<div id="peopleList" class="people">
+  <div class="status">Loading Campusora members...</div>
+</div>
+
+  </section></main><script type="module">
+import { supabase } from './supabase.js';
+
+const peopleList = document.getElementById('peopleList');
+const searchInput = document.getElementById('searchInput');
+const messageBox = document.getElementById('message');
+
+let currentUser = null;
+let profiles = [];
+let followingIds = new Set();
+let followerIds = new Set();
+let currentView = 'discover';
+let busyIds = new Set();
+
+function showMessage(text, type = 'success') {
+  messageBox.textContent = text;
+  messageBox.className = 'message ' + type;
+
+  window.clearTimeout(showMessage.timer);
+  showMessage.timer = window.setTimeout(() => {
+    messageBox.className = 'message';
+  }, 4500);
+}
+
+function escapeHTML(value = '') {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+function getName(profile) {
+  return profile.full_name || profile.username || 'Campusora Member';
+}
+
+function getInitial(profile) {
+  return getName(profile).trim().charAt(0).toUpperCase() || 'C';
+}
+
+function profileURL(profile) {
+  return 'profile.html?id=' + encodeURIComponent(profile.id);
+}
+
+function avatarHTML(profile) {
+  const url = profile.avatar_url;
+
+  if (url) {
+    return `
+      <img
+        class="avatar"
+        src="${escapeHTML(url)}"
+        alt=""
+        loading="lazy"
+        onerror="this.outerHTML='<div class=&quot;avatar&quot;>C</div>'"
+      >
+    `;
+  }
+
+  return `<div class="avatar">${escapeHTML(getInitial(profile))}</div>`;
+}
+
+function roleBadge(role) {
+  const safeRole = ['student', 'alumni', 'general'].includes(role)
+    ? role
+    : 'general';
+
+  const label = safeRole === 'general'
+    ? 'General Member'
+    : safeRole.charAt(0).toUpperCase() + safeRole.slice(1);
+
+  return `<span class="badge ${safeRole}">${label}</span>`;
+}
+
+async function loadPeople() {
+  peopleList.innerHTML = '<div class="status">Loading members...</div>';
+
+  try {
+    const [
+      profileResult,
+      followingResult,
+      followersResult
+    ] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('id, username, full_name, avatar_url, school, role')
+        .order('full_name', { ascending: true })
+        .limit(500),
+
+      supabase
+        .from('follows')
+        .select('following_id')
+        .eq('follower_id', currentUser.id),
+
+      supabase
+        .from('follows')
+        .select('follower_id')
+        .eq('following_id', currentUser.id)
+    ]);
+
+    if (profileResult.error) throw profileResult.error;
+    if (followingResult.error) throw followingResult.error;
+    if (followersResult.error) throw followersResult.error;
+
+    profiles = profileResult.data || [];
+
+    followingIds = new Set(
+      (followingResult.data || []).map(row => row.following_id)
+    );
+
+    followerIds = new Set(
+      (followersResult.data || []).map(row => row.follower_id)
+    );
+
+    document.getElementById('followingCount').textContent =
+      followingIds.size;
+
+    document.getElementById('followersCount').textContent =
+      followerIds.size;
+
+    renderPeople();
+
+  } catch (error) {
+    console.error('Campusora follow system:', error);
+
+    peopleList.innerHTML = `
+      <div class="status">
+        We couldn't load members right now.<br>
+        Please refresh the page and try again.
+      </div>
+    `;
+
+    showMessage(
+      error.message || 'Could not load members. Check your Supabase policies.',
+      'error'
+    );
+  }
+}
+
+function renderPeople() {
+  const searchTerm = searchInput.value.trim().toLowerCase();
+
+  let results = profiles.filter(profile => profile.id !== currentUser.id);
+
+  if (currentView === 'following') {
+    results = results.filter(profile => followingIds.has(profile.id));
+  }
+
+  if (currentView === 'followers') {
+    results = results.filter(profile => followerIds.has(profile.id));
+  }
+
+  if (searchTerm) {
+    results = results.filter(profile => {
+      const searchable = [
+        profile.full_name,
+        profile.username,
+        profile.school,
+        profile.role
+      ].filter(Boolean).join(' ').toLowerCase();
+
+      return searchable.includes(searchTerm);
+    });
+  }
+
+  if (!results.length) {
+    let emptyText = 'No members found. Try another search.';
+
+    if (currentView === 'following') {
+      emptyText = 'You are not following anyone matching this search yet.';
+    } else if (currentView === 'followers') {
+      emptyText = 'No followers match this search yet.';
+    }
+
+    peopleList.innerHTML = `
+      <div class="status">${escapeHTML(emptyText)}</div>
+    `;
+
+    return;
+  }
+
+  peopleList.innerHTML = results.map(profile => {
+    const isFollowing = followingIds.has(profile.id);
+    const isBusy = busyIds.has(profile.id);
+
+    const buttonText = isBusy
+      ? 'Please wait...'
+      : isFollowing
+        ? '✓ Following'
+        : '+ Follow';
+
+    return `
+      <article class="person">
+        <div class="person-top">
+          <a class="avatar-link" href="${profileURL(profile)}">
+            ${avatarHTML(profile)}
+          </a>
+
+          <div class="person-info">
+            <a class="person-name" href="${profileURL(profile)}">
+              ${escapeHTML(getName(profile))}
+            </a>
+
+            <div class="username">
+              ${profile.username
+                ? '@' + escapeHTML(profile.username)
+                : 'Campusora member'}
+            </div>
+
+            ${roleBadge(profile.role)}
+          </div>
+        </div>
+
+        <div class="school">
+          🏫 ${escapeHTML(profile.school || 'School not added')}
+        </div>
+
+        <div class="actions">
+          <button
+            class="btn ${isFollowing ? '' : 'follow'}"
+            data-follow="${escapeHTML(profile.id)}"
+            ${isBusy ? 'disabled' : ''}
+          >${buttonText}</button>
+        </div>
+
+        <a class="profile-btn" href="${profileURL(profile)}">
+          View profile →
+        </a>
+      </article>
+    `;
+  }).join('');
+}
+
+async function toggleFollow(profileId) {
+  if (!currentUser || profileId === currentUser.id) return;
+  if (busyIds.has(profileId)) return;
+
+  const wasFollowing = followingIds.has(profileId);
+  busyIds.add(profileId);
+  renderPeople();
+
+  try {
+    if (wasFollowing) {
+      const { error } = await supabase
+        .from('follows')
+        .delete()
+        .eq('follower_id', currentUser.id)
+        .eq('following_id', profileId);
+
+      if (error) throw error;
+
+      followingIds.delete(profileId);
+
+      showMessage('You unfollowed this member.');
+    } else {
+      const { error } = await supabase
+        .from('follows')
+        .insert({
+          follower_id: currentUser.id,
+          following_id: profileId
+        });
+
+      if (error) throw error;
+
+      followingIds.add(profileId);
+
+      showMessage('You are now following this member! 🎉');
+    }
+
+    document.getElementById('followingCount').textContent =
+      followingIds.size;
+
+  } catch (error) {
+    console.error('Follow action:', error);
+
+    showMessage(
+      error.message || 'The action failed. Please try again.',
+      'error'
+    );
+  } finally {
+    busyIds.delete(profileId);
+    renderPeople();
+  }
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    currentView = tab.dataset.view;
+
+    document.querySelectorAll('.tab').forEach(item => {
+      item.classList.toggle('active', item === tab);
+    });
+
+    renderPeople();
+  });
+});
+
+searchInput.addEventListener('input', renderPeople);
+
+peopleList.addEventListener('click', event => {
+  const button = event.target.closest('[data-follow]');
+  if (!button) return;
+
+  toggleFollow(button.dataset.follow);
+});
+
+async function start() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    peopleList.innerHTML = `
+      <div class="status">Could not verify your login. Refresh and try again.</div>
+    `;
+    return;
+  }
+
+  currentUser = data.session?.user || null;
+
+  if (!currentUser) {
+    peopleList.innerHTML = `
+      <div class="status">
+        Please log in to Campusora before using the Follow System.
+        <br><br>
+        <a href="login.html" style="color:#a99aff">
+          Go to login →
+        </a>
+      </div>
+    `;
+
+    return;
+  }
+
+  await loadPeople();
+}
+
+start();
+</script></body>
+  </html>
