@@ -1,1 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
 
+  <title>Explore | Campusora</title>
+
+  <style>
+    :root {
+      --bg: #080b18;
+      --panel: #11162a;
+      --panel2: #171d35;
+      --border: #252d49;
+      --text: #f4f6ff;
+      --muted: #9ca8c8;
+      --purple: #8957ff;
+      --blue: #477bff;
+      --cyan: #45e0e5;
+      --green: #36d99a;
+      --danger: #ff647c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top right, #15183b 0, transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: auto;
+      padding: 22px;
+    }
+
+    /* TOP BAR */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .brand-icon {
+      width: 39px;
+      height: 39px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      box-shadow: 0 5px 20px #8957ff40;
+      font-size: 20px;
+    }
+
+    .brand span:last-child {
+      color: var(--cyan);
+    }
+
+    .back-btn {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .back-btn:hover {
+      border-color: var(--purple);
+    }
+
+    /* HERO */
+
+    .hero {
+      border: 1px solid #39315f;
+      border-radius: 19px;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 90% 10%, #253b70 0, transparent 38%),
+        linear-gradient(130deg, #21163e, #11182b 70%);
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.2;
+      margin-bottom: 9px;
+    }
+
+    .hero p {
+      color: #bdc7df;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 620px;
+    }
+
+    /* SEARCH */
+
+    .search-area {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 0 14px;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #8957ff16;
+    }
+
+    .search-icon {
+      color: var(--cyan);
+      font-size: 18px;
+    }
+
+    .search-box input {
+      width: 100%;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      padding: 14px 0;
+      font-size: 13px;
+    }
+
+    .search-box input::placeholder {
+      color: #7985a7;
+    }
+
+    .search-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 0 20px;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+    }
+
+    /* QUICK STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat {
+      background: #11162ac9;
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 14px;
+    }
+
+    .stat-number {
+      font-size: 23px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* TABS */
+
+    .tabs {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      margin-bottom: 18px;
+      padding-bottom: 3px;
+    }
+
+    .tab {
+      white-space: nowrap;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 11px;
+      padding: 11px 17px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .tab.active {
+      color: white;
+      background: linear-gradient(135deg, #7544e9, #315ce5);
+      border-color: transparent;
+    }
+
+    /* SECTION HEADINGS */
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .section-heading h2 {
+      font-size: 17px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .refresh-btn {
+      color: var(--cyan);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-size: 11px;
+    }
+
+    /* GRIDS */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      min-width: 0;
+      background: linear-gradient(145deg, #141a30, #0f1426);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #51458a;
+    }
+
+    /* PEOPLE */
+
+    .person-top {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 14px;
+    }
+
+    .avatar {
+      width: 49px;
+      height: 49px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      border: 2px solid #ffffff17;
+    }
+
+    .person-name {
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .username {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .role-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 7px;
+      border-radius: 6px;
+      background: #8957ff20;
+      color: #c0aaff;
+      font-size: 9px;
+      text-transform: capitalize;
+      font-weight: bold;
+    }
+
+    .role-badge.alumni {
+      background: #45e0e520;
+      color: var(--cyan);
+    }
+
+    .role-badge.general {
+      background: #36d99a20;
+      color: var(--green);
+    }
+
+    .person-school {
+      color: #c3cce3;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-bottom: 9px;
+      overflow-wrap: anywhere;
+    }
+
+    .person-bio {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      min-height: 38px;
+      margin-bottom: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      flex: 1;
+      min-width: 0;
+      border-radius: 9px;
+      padding: 10px 8px;
+      font-size: 11px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .primary-btn {
+      color: white;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      border: none;
+    }
+
+    .primary-btn.following {
+      color: var(--cyan);
+      background: #45e0e510;
+      border: 1px solid #45e0e540;
+    }
+
+    .secondary-btn {
+      color: var(--text);
+      background: #ffffff05;
+      border: 1px solid var(--border);
+    }
+
+    .primary-btn:disabled,
+    .secondary-btn:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    /* POSTS */
+
+    .post-card {
+      padding: 17px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 13px;
+    }
+
+    .post-header .avatar {
+      width: 39px;
+      height: 39px;
+    }
+
+    .post-date {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .post-content {
+      font-size: 13px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin-bottom: 13px;
+    }
+
+    .post-image {
+      display: block;
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 11px;
+      margin-bottom: 13px;
+      background: #080b18;
+    }
+
+    .post-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-tag {
+      font-size: 10px;
+      color: var(--cyan);
+      background: #45e0e510;
+      padding: 6px 8px;
+      border-radius: 7px;
+    }
+
+    .view-profile {
+      font-size: 11px;
+      color: #bba4ff;
+      font-weight: bold;
+    }
+
+    /* COMMUNITIES */
+
+    .community-icon {
+      width: 47px;
+      height: 47px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #7544e933, #45e0e51c);
+      border: 1px solid #ffffff12;
+      font-size: 22px;
+      margin-bottom: 13px;
+    }
+
+    .community-name {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .community-school {
+      color: var(--cyan);
+      font-size: 10px;
+      margin-bottom: 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .community-description {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      min-height: 41px;
+      margin-bottom: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    /* EMPTY AND LOADING STATES */
+
+    .message-box {
+      grid-column: 1 / -1;
+      background: var(--panel);
+      border: 1px dashed #303958;
+      border-radius: 15px;
+      padding: 35px 18px;
+      text-align: center;
+    }
+
+    .message-icon {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .message-box h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .message-box p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .status-message {
+      display: none;
+      padding: 12px 14px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      background: #45e0e510;
+      border: 1px solid #45e0e530;
+      color: var(--cyan);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .status-message.error {
+      color: #ff9bab;
+      background: #ff647c10;
+      border-color: #ff647c35;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .footer {
+      text-align: center;
+      color: #7682a3;
+      font-size: 11px;
+      line-height: 1.8;
+      padding: 35px 10px 15px;
+    }
+
+    .footer strong {
+      color: var(--cyan);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .page {
+        padding: 17px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page {
+        padding: 13px;
+      }
+
+      .topbar {
+        margin-bottom: 18px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .brand-icon {
+        width: 35px;
+        height: 35px;
+      }
+
+      .back-btn {
+        padding: 9px 10px;
+        font-size: 11px;
+      }
+
+      .hero {
+        padding: 17px;
+        border-radius: 15px;
+      }
+
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      .hero p {
+        font-size: 12px;
+      }
+
+      .search-area {
+        gap: 7px;
+      }
+
+      .search-box {
+        padding: 0 10px;
+      }
+
+      .search-box input {
+        font-size: 12px;
+      }
+
+      .search-btn {
+        padding: 0 12px;
+        font-size: 11px;
+      }
+
+      .stats {
+        gap: 8px;
+      }
+
+      .stat {
+        padding: 12px 9px;
+      }
+
+      .stat-number {
+        font-size: 20px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .tabs {
+        gap: 7px;
+      }
+
+      .tab {
+        padding: 10px 13px;
+        font-size: 11px;
+      }
+
+      .grid {
+        gap: 10px;
+      }
+
+      .card {
+        padding: 12px;
+        border-radius: 13px;
+      }
+
+      .person-top {
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .avatar {
+        width: 39px;
+        height: 39px;
+      }
+
+      .person-name {
+        font-size: 12px;
+      }
+
+      .username {
+        font-size: 10px;
+      }
+
+      .person-school,
+      .person-bio,
+      .community-description {
+        font-size: 11px;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        padding: 9px 5px;
+        font-size: 10px;
+      }
+
+      .post-content {
+        font-size: 12px;
+      }
+
+      .section-heading h2 {
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <header class="topbar">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">✦</div>
+        <div>Campus<span>ora</span></div>
+      </a>
+
+      <button class="back-btn" onclick="goBack()">← Back</button>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Discover your world</div>
+      <h1>Explore Campusora 🌍</h1>
+      <p>
+        Discover new people, explore conversations, and find communities
+        connected to your school, interests, and campus life.
+      </p>
+    </section>
+
+    <form class="search-area" id="searchForm">
+      <label class="search-box">
+        <span class="search-icon">⌕</span>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search people, schools, posts..."
+          autocomplete="off"
+        >
+      </label>
+
+      <button class="search-btn" type="submit">Search</button>
+    </form>
+
+    <div id="statusMessage" class="status-message"></div>
+
+    <section class="stats">
+      <div class="stat">
+        <div class="stat-number" id="peopleCount">—</div>
+        <div class="stat-label">Members discovered</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-number" id="postCount">—</div>
+        <div class="stat-label">Public posts</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-number" id="communityCount">—</div>
+        <div class="stat-label">Communities</div>
+      </div>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="people">👥 People</button>
+      <button class="tab" data-tab="posts">📰 Posts</button>
+      <button class="tab" data-tab="communities">🏫 Communities</button>
+    </nav>
+
+    <!-- PEOPLE -->
+
+    <section id="peopleSection">
+      <div class="section-heading">
+        <div>
+          <h2>People you may know</h2>
+          <p>Discover students, alumni, and other members.</p>
+        </div>
+
+        <button class="refresh-btn" onclick="loadPeople()">↻ Refresh</button>
+      </div>
+
+      <div id="peopleGrid" class="grid">
+        <div class="message-box">
+          <div class="message-icon">⏳</div>
+          <h3>Loading members...</h3>
+          <p>Finding people on Campusora.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- POSTS -->
+
+    <section id="postsSection" class="hidden">
+      <div class="section-heading">
+        <div>
+          <h2>Discover posts</h2>
+          <p>See what people across Campusora are sharing.</p>
+        </div>
+
+        <button class="refresh-btn" onclick="loadPosts()">↻ Refresh</button>
+      </div>
+
+      <div id="postsGrid" class="grid">
+        <div class="message-box">
+          <div class="message-icon">⏳</div>
+          <h3>Loading posts...</h3>
+          <p>Fetching public posts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITIES -->
+
+    <section id="communitiesSection" class="hidden">
+      <div class="section-heading">
+        <div>
+          <h2>Find your community</h2>
+          <p>Discover groups built around schools and shared interests.</p>
+        </div>
+
+        <button class="refresh-btn" onclick="loadCommunities()">↻ Refresh</button>
+      </div>
+
+      <div id="communitiesGrid" class="grid">
+        <div class="message-box">
+          <div class="message-icon">⏳</div>
+          <h3>Loading communities...</h3>
+          <p>Finding communities to explore.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>Campusora</strong><br>
+      Connecting students, alumni, and communities across campuses.
+    </footer>
+
+  </main>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    const $ = (id) => document.getElementById(id);
+
+    let currentUser = null;
+    let currentTab = 'people';
+    let searchTerm = '';
+
+    let people = [];
+    let posts = [];
+    let communities = [];
+
+    let followingIds = new Set();
+    let joinedCommunityIds = new Set();
+
+    let loadingPeople = false;
+    let loadingPosts = false;
+    let loadingCommunities = false;
+
+    function escapeHTML(value = '') {
+      return String(value).replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[character]);
+    }
+
+    function safeURL(value = '') {
+      try {
+        const url = new URL(value, window.location.origin);
+
+        if (url.protocol === 'https:' || url.protocol === 'http:') {
+          return url.href;
+        }
+
+        return '';
+      } catch {
+        return '';
+      }
+    }
+
+    function avatarHTML(url, name) {
+      const safeImage = safeURL(url);
+      const fallback = 'https://ui-avatars.com/api/?name=' +
+        encodeURIComponent(name || 'Campusora Member') +
+        '&background=252044&color=ffffff&size=100';
+
+      return `
+        <img
+          class="avatar"
+          src="${escapeHTML(safeImage || fallback)}"
+          alt="${escapeHTML(name || 'Member')}"
+          loading="lazy"
+          onerror="this.onerror=null;this.src='${fallback}'"
+        >
+      `;
+    }
+
+    function formatDate(value) {
+      if (!value) return 'Recently';
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) return 'Recently';
+
+      return date.toLocaleDateString(undefined, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+
+    function showMessage(message, isError = false) {
+      const box = $('statusMessage');
+
+      box.textContent = message;
+      box.classList.toggle('error', isError);
+      box.style.display = 'block';
+
+      if (!isError) {
+        setTimeout(() => {
+          box.style.display = 'none';
+        }, 3500);
+      }
+    }
+
+    function showEmpty(container, icon, title, description) {
+      $(container).innerHTML = `
+        <div class="message-box">
+          <div class="message-icon">${icon}</div>
+          <h3>${escapeHTML(title)}</h3>
+          <p>${escapeHTML(description)}</p>
+        </div>
+      `;
+    }
+
+    function matchesSearch(values) {
+      if (!searchTerm) return true;
+
+      return values.some(value =>
+        String(value || '').toLowerCase().includes(searchTerm)
+      );
+    }
+
+    function updateStats() {
+      $('peopleCount').textContent = people.length;
+      $('postCount').textContent = posts.length;
+      $('communityCount').textContent = communities.length;
+    }
+
+    // TAB SWITCHING
+
+    document.querySelectorAll('.tab').forEach(button => {
+      button.addEventListener('click', () => {
+        currentTab = button.dataset.tab;
+
+        document.querySelectorAll('.tab').forEach(tab => {
+          tab.classList.toggle('active', tab === button);
+        });
+
+        $('peopleSection').classList.toggle(
+          'hidden', currentTab !== 'people'
+        );
+
+        $('postsSection').classList.toggle(
+          'hidden', currentTab !== 'posts'
+        );
+
+        $('communitiesSection').classList.toggle(
+          'hidden', currentTab !== 'communities'
+        );
+
+        renderCurrentTab();
+      });
+    });
+
+    // SEARCH
+
+    $('searchForm').addEventListener('submit', event => {
+      event.preventDefault();
+
+      searchTerm = $('searchInput').value.trim().toLowerCase();
+
+      renderCurrentTab();
+    });
+
+    $('searchInput').addEventListener('input', () => {
+      searchTerm = $('searchInput').value.trim().toLowerCase();
+
+      renderCurrentTab();
+    });
+
+    function renderCurrentTab() {
+      if (currentTab === 'people') renderPeople();
+      if (currentTab === 'posts') renderPosts();
+      if (currentTab === 'communities') renderCommunities();
+    }
+
+    // LOAD PEOPLE
+
+    window.loadPeople = loadPeople;
+
+    async function loadPeople() {
+      if (loadingPeople) return;
+      loadingPeople = true;
+
+      const grid = $('peopleGrid');
+
+      showEmpty(grid.id, '⏳', 'Loading members...', 'Please wait.');
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, username, full_name, bio, avatar_url, school, role, created_at')
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+
+        people = (data || []).filter(person =>
+          !currentUser || person.id !== currentUser.id
+        );
+
+        if (currentUser) {
+          const { data: followsData, error: followsError } = await supabase
+            .from('follows')
+            .select('following_id')
+            .eq('follower_id', currentUser.id);
+
+          if (followsError) throw followsError;
+
+          followingIds = new Set(
+            (followsData || []).map(item => item.following_id)
+          );
+        }
+
+        updateStats();
+        renderPeople();
+
+      } catch (error) {
+        console.error('Explore people error:', error);
+
+        showEmpty(
+          grid.id,
+          '⚠️',
+          'Could not load members',
+          'Check your internet connection and Supabase profiles table permissions, then try refreshing.'
+        );
+      } finally {
+        loadingPeople = false;
+      }
+    }
+
+    function renderPeople() {
+      const grid = $('peopleGrid');
+
+      const filtered = people.filter(person => matchesSearch([
+        person.full_name,
+        person.username,
+        person.school,
+        person.role,
+        person.bio
+      ]));
+
+      if (!filtered.length) {
+        showEmpty(
+          grid.id,
+          '👥',
+          'No members found',
+          searchTerm
+            ? 'Try another name, username, school, or keyword.'
+            : 'New members will appear here when they join Campusora.'
+        );
+        return;
+      }
+
+      grid.innerHTML = filtered.map(person => {
+        const name = person.full_name || person.username || 'Campusora Member';
+        const role = (person.role || 'general').toLowerCase();
+
+        const roleClass = role === 'alumni'
+          ? 'alumni'
+          : role === 'general'
+            ? 'general'
+            : '';
+
+        const isFollowing = followingIds.has(person.id);
+
+        return `
+          <article class="card">
+            <div class="person-top">
+              ${avatarHTML(person.avatar_url, name)}
+
+              <div>
+                <div class="person-name">${escapeHTML(name)}</div>
+
+                <div class="username">
+                  @${escapeHTML(person.username || 'member')}
+                </div>
+
+                <span class="role-badge ${roleClass}">
+                  ${escapeHTML(role)}
+                </span>
+              </div>
+            </div>
+
+            <div class="person-school">
+              🏫 ${escapeHTML(person.school || 'School not added')}
+            </div>
+
+            <div class="person-bio">
+              ${escapeHTML(person.bio || 'Part of the Campusora community.')}
+            </div>
+
+            <div class="card-actions">
+              <a
+                class="secondary-btn"
+                href="profile.html?id=${encodeURIComponent(person.id)}"
+              >
+                View Profile
+              </a>
+
+              <button
+                class="primary-btn ${isFollowing ? 'following' : ''}"
+                data-follow-id="${escapeHTML(person.id)}"
+              >
+                ${isFollowing ? '✓ Following' : '+ Follow'}
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('[data-follow-id]').forEach(button => {
+        button.addEventListener('click', () => {
+          toggleFollow(button.dataset.followId, button);
+        });
+      });
+    }
+
+    // FOLLOW / UNFOLLOW
+
+    async function toggleFollow(profileId, button) {
+      if (!currentUser) {
+        showMessage('Please log in before following members.', true);
+        return;
+      }
+
+      if (profileId === currentUser.id) return;
+
+      button.disabled = true;
+
+      try {
+        if (followingIds.has(profileId)) {
+          const { error } = await supabase
+            .from('follows')
+            .delete()
+            .eq('follower_id', currentUser.id)
+            .eq('following_id', profileId);
+
+          if (error) throw error;
+
+          followingIds.delete(profileId);
+          showMessage('You unfollowed this member.');
+
+        } else {
+          const { error } = await supabase
+            .from('follows')
+            .insert({
+              follower_id: currentUser.id,
+              following_id: profileId
+            });
+
+          if (error) throw error;
+
+          followingIds.add(profileId);
+          showMessage('You are now following this member.');
+        }
+
+        renderPeople();
+
+      } catch (error) {
+        console.error('Follow error:', error);
+
+        showMessage(
+          error.message || 'Could not update follow status. Please try again.',
+          true
+        );
+
+        button.disabled = false;
+      }
+    }
+
+    // LOAD PUBLIC POSTS
+
+    window.loadPosts = loadPosts;
+
+    async function loadPosts() {
+      if (loadingPosts) return;
+      loadingPosts = true;
+
+      const grid = $('postsGrid');
+
+      showEmpty(grid.id, '⏳', 'Loading posts...', 'Fetching public posts.');
+
+      try {
+        const { data: postData, error: postError } = await supabase
+          .from('posts')
+          .select('id, user_id, content, image_url, created_at, audience')
+          .eq('audience', 'public')
+          .order('created_at', { ascending: false })
+          .limit(60);
+
+        if (postError) throw postError;
+
+        const postRows = postData || [];
+        const userIds = [...new Set(postRows.map(post => post.user_id))];
+
+        let profileMap = {};
+
+        if (userIds.length) {
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('id, username, full_name, avatar_url, school, role')
+            .in('id', userIds);
+
+          if (profileError) throw profileError;
+
+          (profileData || []).forEach(profile => {
+            profileMap[profile.id] = profile;
+          });
+        }
+
+        posts = postRows.map(post => ({
+          ...post,
+          author: profileMap[post.user_id] || null
+        }));
+
+        updateStats();
+        renderPosts();
+
+      } catch (error) {
+        console.error('Explore posts error:', error);
+
+        showEmpty(
+          grid.id,
+          '⚠️',
+          'Could not load posts',
+          'Check your internet connection and Supabase posts table permissions, then try refreshing.'
+        );
+      } finally {
+        loadingPosts = false;
+      }
+    }
+
+    function renderPosts() {
+      const grid = $('postsGrid');
+
+      const filtered = posts.filter(post => {
+        const author = post.author || {};
+
+        return matchesSearch([
+          post.content,
+          author.full_name,
+          author.username,
+          author.school
+        ]);
+      });
+
+      if (!filtered.length) {
+        showEmpty(
+          grid.id,
+          '📰',
+          'No posts found',
+          searchTerm
+            ? 'Try a different search word.'
+            : 'Public posts will appear here when members publish them.'
+        );
+        return;
+      }
+
+      grid.innerHTML = filtered.map(post => {
+        const author = post.author || {};
+        const name = author.full_name || author.username || 'Campusora Member';
+
+        const imageURL = safeURL(post.image_url);
+
+        return `
+          <article class="card post-card">
+            <div class="post-header">
+              ${avatarHTML(author.avatar_url, name)}
+
+              <div>
+                <div class="person-name">
+                  ${escapeHTML(name)}
+                </div>
+
+                <div class="post-date">
+                  ${escapeHTML(formatDate(post.created_at))}
+                </div>
+              </div>
+            </div>
+
+            <div class="post-content">
+              ${escapeHTML(post.content || '')}
+            </div>
+
+            ${
+              imageURL
+                ? `<img class="post-image"
+                        src="${escapeHTML(imageURL)}"
+                        alt="Post image"
+                        loading="lazy">`
+                : ''
+            }
+
+            <div class="post-footer">
+              <span class="post-tag">🌍 Public post</span>
+
+              ${
+                author.id
+                  ? `<a class="view-profile"
+                        href="profile.html?id=${encodeURIComponent(author.id)}">
+                        View Profile →
+                     </a>`
+                  : ''
+              }
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // LOAD COMMUNITIES
+
+    window.loadCommunities = loadCommunities;
+
+    async function loadCommunities() {
+      if (loadingCommunities) return;
+      loadingCommunities = true;
+
+      const grid = $('communitiesGrid');
+
+      showEmpty(grid.id, '⏳', 'Loading communities...', 'Please wait.');
+
+      try {
+        const { data, error } = await supabase
+          .from('communities')
+          .select('id, name, description, school, created_by')
+          .order('name', { ascending: true })
+          .limit(100);
+
+        if (error) throw error;
+
+        communities = data || [];
+
+        if (currentUser) {
+          const { data: membershipData, error: membershipError } = await supabase
+            .from('community_members')
+            .select('community_id')
+            .eq('user_id', currentUser.id);
+
+          if (membershipError) throw membershipError;
+
+          joinedCommunityIds = new Set(
+            (membershipData || []).map(item => item.community_id)
+          );
+        }
+
+        updateStats();
+        renderCommunities();
+
+      } catch (error) {
+        console.error('Explore communities error:', error);
+
+        showEmpty(
+          grid.id,
+          '⚠️',
+          'Could not load communities',
+          'Check your internet connection and Supabase communities table permissions, then try refreshing.'
+        );
+      } finally {
+        loadingCommunities = false;
+      }
+    }
+
+    function renderCommunities() {
+      const grid = $('communitiesGrid');
+
+      const filtered = communities.filter(community => matchesSearch([
+        community.name,
+        community.description,
+        community.school
+      ]));
+
+      if (!filtered.length) {
+        showEmpty(
+          grid.id,
+          '🏫',
+          'No communities found',
+          searchTerm
+            ? 'Try searching with another school or keyword.'
+            : 'Communities will appear here when they are created.'
+        );
+        return;
+      }
+
+      grid.innerHTML = filtered.map(community => {
+        const joined = joinedCommunityIds.has(community.id);
+
+        return `
+          <article class="card">
+            <div class="community-icon">🏫</div>
+
+            <h3 class="community-name">
+              ${escapeHTML(community.name || 'Campus Community')}
+            </h3>
+
+            <div class="community-school">
+              ${escapeHTML(community.school || 'Open community')}
+            </div>
+
+            <p class="community-description">
+              ${escapeHTML(
+                community.description || 'Connect with people and share ideas in this community.'
+              )}
+            </p>
+
+            <div class="card-actions">
+              <button
+                class="primary-btn ${joined ? 'following' : ''}"
+                data-community-id="${escapeHTML(community.id)}"
+              >
+                ${joined ? '✓ Joined' : '+ Join Community'}
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('[data-community-id]').forEach(button => {
+        button.addEventListener('click', () => {
+          toggleCommunity(button.dataset.communityId, button);
+        });
+      });
+    }
+
+    // JOIN / LEAVE COMMUNITY
+
+    async function toggleCommunity(communityId, button) {
+      if (!currentUser) {
+        showMessage('Please log in before joining a community.', true);
+        return;
+      }
+
+      button.disabled = true;
+
+      try {
+        if (joinedCommunityIds.has(communityId)) {
+          const { error } = await supabase
+            .from('community_members')
+            .delete()
+            .eq('community_id', communityId)
+            .eq('user_id', currentUser.id);
+
+          if (error) throw error;
+
+          joinedCommunityIds.delete(communityId);
+          showMessage('You left the community.');
+
+        } else {
+          const { error } = await supabase
+            .from('community_members')
+            .insert({
+              community_id: communityId,
+              user_id: currentUser.id
+            });
+
+          if (error) throw error;
+
+          joinedCommunityIds.add(communityId);
+          showMessage('You joined the community!');
+        }
+
+        renderCommunities();
+
+      } catch (error) {
+        console.error('Community membership error:', error);
+
+        showMessage(
+          error.message || 'Could not update membership. Please try again.',
+          true
+        );
+
+        button.disabled = false;
+      }
+    }
+
+    // BACK BUTTON
+
+    window.goBack = function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    };
+
+    // START PAGE
+
+    async function initExplore() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        currentUser = data?.session?.user || null;
+
+      } catch (error) {
+        console.error('Session check error:', error);
+        currentUser = null;
+      }
+
+      await Promise.all([
+        loadPeople(),
+        loadPosts(),
+        loadCommunities()
+      ]);
+    }
+
+    initExplore();
+  </script>
+</body>
+  </html>
