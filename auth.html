@@ -228,6 +228,19 @@
       text-align: center;
     }
 
+    .secondary-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: white;
+      background: var(--surface2);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     @media (max-width: 380px) {
       .card {
         padding: 22px 17px;
@@ -280,6 +293,7 @@
               id="fullName"
               placeholder="Enter your full name"
               autocomplete="name"
+              maxlength="80"
               required
             >
           </div>
@@ -306,6 +320,7 @@
               id="school"
               placeholder="Enter your school"
               autocomplete="organization"
+              maxlength="120"
               required
             >
           </div>
@@ -348,6 +363,14 @@
           Create my account
         </button>
 
+        <button
+          type="button"
+          id="resendBtn"
+          class="secondary-btn hidden"
+        >
+          Resend confirmation email
+        </button>
+
       </form>
 
       <p class="terms">
@@ -373,8 +396,10 @@
     const submitBtn = document.getElementById('submitBtn');
     const messageBox = document.getElementById('message');
     const passwordInput = document.getElementById('password');
+    const resendBtn = document.getElementById('resendBtn');
 
     let mode = 'signup';
+    let pendingConfirmationEmail = '';
 
     function showMessage(text, type) {
       messageBox.textContent = text;
@@ -389,6 +414,7 @@
     function setMode(newMode) {
       mode = newMode;
       clearMessage();
+      resendBtn.classList.add('hidden');
 
       const isSignup = mode === 'signup';
 
@@ -422,11 +448,22 @@
     signupTab.addEventListener('click', () => setMode('signup'));
     loginTab.addEventListener('click', () => setMode('login'));
 
+    // If the URL requests login, show the login form.
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('mode') === 'login') {
+      setMode('login');
+    }
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       clearMessage();
 
       submitBtn.disabled = true;
+      resendBtn.classList.add('hidden');
+
+      const originalMode = mode;
+
       submitBtn.textContent = mode === 'signup'
         ? 'Creating account...'
         : 'Logging in...';
@@ -452,7 +489,8 @@
             email,
             password,
             options: {
-              emailRedirectTo: window.location.origin + '/index.html',
+              emailRedirectTo:
+                window.location.origin + '/profile-setup.html',
               data: {
                 full_name: fullName,
                 username,
@@ -465,15 +503,23 @@
           if (error) throw error;
 
           if (data.session) {
-            showMessage('Account created! Opening Campusora...', 'success');
-
-            window.location.href = './index.html';
-          } else {
             showMessage(
-              'Registration received! Check your email for a confirmation link. Confirm your email before logging in.',
+              'Your account has been created! Taking you to profile setup...',
               'success'
             );
+
+            window.location.replace('./profile-setup.html');
+            return;
           }
+
+          pendingConfirmationEmail = email;
+
+          showMessage(
+            'Your registration was received. Check your email and tap the confirmation link. After confirmation, you should be returned to Campusora to set up your profile.',
+            'success'
+          );
+
+          resendBtn.classList.remove('hidden');
 
         } else {
           const { data, error } = await supabase.auth.signInWithPassword({
@@ -487,9 +533,13 @@
             throw new Error('Login could not be completed. Please try again.');
           }
 
-          showMessage('Login successful! Opening Campusora...', 'success');
+          showMessage(
+            'Login successful! Taking you to profile setup...',
+            'success'
+          );
 
-          window.location.href = './index.html';
+          window.location.replace('./profile-setup.html');
+          return;
         }
 
       } catch (error) {
@@ -501,7 +551,7 @@
       } finally {
         submitBtn.disabled = false;
 
-        if (mode === 'signup') {
+        if (originalMode === 'signup') {
           submitBtn.textContent = 'Create my account';
         } else {
           submitBtn.textContent = 'Log in to Campusora';
@@ -509,11 +559,53 @@
       }
     });
 
-    // If a user is already logged in, open the homepage.
-    const { data: sessionData } = await supabase.auth.getSession();
+    resendBtn.addEventListener('click', async () => {
+      if (!pendingConfirmationEmail) {
+        showMessage(
+          'Enter your email address and register again if you have not received a confirmation email.',
+          'error'
+        );
+        return;
+      }
 
-    if (sessionData.session) {
-      window.location.href = './index.html';
+      resendBtn.disabled = true;
+      resendBtn.textContent = 'Sending...';
+
+      try {
+        const { error } = await supabase.auth.resend({
+          type: 'signup',
+          email: pendingConfirmationEmail,
+          options: {
+            emailRedirectTo:
+              window.location.origin + '/profile-setup.html'
+          }
+        });
+
+        if (error) throw error;
+
+        showMessage(
+          'A new confirmation email has been requested. Check your inbox and spam folder.',
+          'success'
+        );
+
+      } catch (error) {
+        showMessage(
+          error.message || 'Could not resend the email. Please try again later.',
+          'error'
+        );
+
+      } finally {
+        resendBtn.disabled = false;
+        resendBtn.textContent = 'Resend confirmation email';
+      }
+    });
+
+    // Do not redirect signed-in users away from a requested login form.
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (!sessionError && sessionData.session && params.get('mode') !== 'login') {
+      window.location.replace('./profile-setup.html');
     }
   </script>
 </body>
