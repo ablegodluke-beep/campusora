@@ -46,7 +46,7 @@
 
     .container {
       width: 100%;
-      max-width: 560px;
+      max-width: 600px;
     }
 
     .brand {
@@ -106,15 +106,58 @@
       line-height: 1.7;
     }
 
-    .avatar-wrap {
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 25px 0 14px;
+    }
+
+    .cover-preview {
+      height: 165px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 20% 20%,#3a246b,transparent 45%),
+        linear-gradient(120deg,#171c32,#172d49);
+      margin-bottom: 13px;
+    }
+
+    .cover-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .cover-placeholder {
+      position: absolute;
+      inset: 0;
       display: flex;
+      align-items: center;
       justify-content: center;
-      margin-bottom: 23px;
+      flex-direction: column;
+      gap: 8px;
+      color: #c3cbe5;
+      font-size: 13px;
+    }
+
+    .cover-placeholder strong {
+      font-size: 27px;
+    }
+
+    .picture-row {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      margin: 20px 0 25px;
     }
 
     .avatar {
-      width: 95px;
-      height: 95px;
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
       border-radius: 50%;
       border: 3px solid transparent;
       background:
@@ -123,7 +166,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 35px;
+      font-size: 36px;
       overflow: hidden;
     }
 
@@ -134,11 +177,51 @@
       display: none;
     }
 
+    .upload-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .upload-info strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .upload-info p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #202744;
+      border: 1px solid rgba(146,91,255,.4);
+      color: white;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .upload-btn:hover {
+      border-color: var(--cyan);
+    }
+
+    .upload-btn input {
+      display: none;
+    }
+
     .field {
       margin-bottom: 17px;
     }
 
-    label {
+    label.field-label {
       display: block;
       font-size: 13px;
       font-weight: 700;
@@ -146,7 +229,7 @@
       color: #dce0f5;
     }
 
-    input, textarea, select {
+    input:not([type="file"]), textarea, select {
       width: 100%;
       padding: 13px 14px;
       border: 1px solid var(--border);
@@ -183,6 +266,68 @@
       font-size: 11px;
       line-height: 1.6;
       margin-top: 7px;
+    }
+
+    .badge-panel {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      margin-bottom: 20px;
+    }
+
+    .badge-panel h3 {
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+
+    .badge-panel > p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .member-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .member-name {
+      font-size: 15px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .member-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge-student {
+      color: #8ed5ff;
+      background: rgba(65,155,255,.13);
+      border: 1px solid rgba(65,155,255,.32);
+    }
+
+    .badge-alumni {
+      color: #d1a5ff;
+      background: rgba(146,91,255,.14);
+      border: 1px solid rgba(146,91,255,.35);
+    }
+
+    .badge-general {
+      color: #7de9e2;
+      background: rgba(57,215,245,.1);
+      border: 1px solid rgba(57,215,245,.3);
     }
 
     .primary-btn {
@@ -248,6 +393,19 @@
       .welcome h2 {
         font-size: 21px;
       }
+
+      .cover-preview {
+        height: 125px;
+      }
+
+      .avatar {
+        width: 82px;
+        height: 82px;
+      }
+
+      .picture-row {
+        gap: 12px;
+      }
     }
   </style>
 </head>
@@ -267,24 +425,65 @@
       <div class="welcome">
         <h2>Let's build your profile ✨</h2>
         <p>
-          Help people discover you and find your campus community.
-          You can update your details later.
+          Add your pictures, introduce yourself and help people
+          discover you and your campus community.
         </p>
-      </div>
-
-      <div class="avatar-wrap">
-        <div class="avatar">
-          <span id="avatarPlaceholder">👤</span>
-          <img id="avatarPreview" alt="Profile picture preview">
-        </div>
       </div>
 
       <div id="message" class="message" role="status" aria-live="polite"></div>
 
       <form id="profileForm">
 
+        <h3 class="section-title">Your cover photo</h3>
+
+        <div class="cover-preview">
+          <img id="coverPreview" alt="Cover photo preview">
+
+          <div class="cover-placeholder" id="coverPlaceholder">
+            <strong>🌄</strong>
+            <span>Your cover photo will appear here</span>
+          </div>
+        </div>
+
+        <label class="upload-btn">
+          📷 Choose cover photo
+          <input
+            id="coverFile"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+          >
+        </label>
+
+        <p class="hint">JPG, PNG or WebP. Maximum size: 5 MB.</p>
+
+        <h3 class="section-title">Your profile picture</h3>
+
+        <div class="picture-row">
+          <div class="avatar">
+            <span id="avatarPlaceholder">👤</span>
+            <img id="avatarPreview" alt="Profile picture preview">
+          </div>
+
+          <div class="upload-info">
+            <strong>Make it recognisable</strong>
+            <p>
+              Choose a clear picture so people can recognise you
+              in the Campusora community.
+            </p>
+
+            <label class="upload-btn">
+              📷 Choose profile picture
+              <input
+                id="avatarFile"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+              >
+            </label>
+          </div>
+        </div>
+
         <div class="field">
-          <label for="fullName">Full name</label>
+          <label class="field-label" for="fullName">Full name</label>
           <input
             id="fullName"
             type="text"
@@ -296,7 +495,7 @@
         </div>
 
         <div class="field">
-          <label for="username">Username</label>
+          <label class="field-label" for="username">Username</label>
           <input
             id="username"
             type="text"
@@ -304,6 +503,7 @@
             maxlength="24"
             pattern="[A-Za-z0-9_]+"
             placeholder="your_username"
+            autocomplete="username"
             required
           >
           <p class="hint">
@@ -312,7 +512,7 @@
         </div>
 
         <div class="field">
-          <label for="school">School or university</label>
+          <label class="field-label" for="school">School or university</label>
           <input
             id="school"
             type="text"
@@ -323,34 +523,37 @@
         </div>
 
         <div class="field">
-          <label for="role">Membership type</label>
+          <label class="field-label" for="role">Membership type</label>
           <select id="role" required>
-            <option value="student">Student</option>
-            <option value="alumni">Alumni</option>
-            <option value="general">General Member</option>
+            <option value="student">🎓 Student</option>
+            <option value="alumni">🏅 Alumni</option>
+            <option value="general">🌐 General Member</option>
           </select>
         </div>
 
-        <div class="field">
-          <label for="bio">About you</label>
-          <textarea
-            id="bio"
-            maxlength="300"
-            placeholder="Tell people a little about yourself, your interests or what you study..."
-          ></textarea>
-          <p class="hint">Up to 300 characters. This is optional.</p>
+        <div class="badge-panel">
+          <h3>Your Campusora identity</h3>
+          <p>
+            Your membership badge helps people identify your role
+            in the Campusora community.
+          </p>
+
+          <div class="member-preview">
+            <span class="member-name" id="badgeName">Your Name</span>
+            <span id="memberBadge" class="member-badge badge-student">
+              🎓 Student
+            </span>
+          </div>
         </div>
 
         <div class="field">
-          <label for="avatarUrl">Profile picture URL</label>
-          <input
-            id="avatarUrl"
-            type="url"
-            placeholder="https://example.com/my-photo.jpg"
-          >
-          <p class="hint">
-            Optional for now. Add a direct link to an image if you have one.
-          </p>
+          <label class="field-label" for="bio">About you</label>
+          <textarea
+            id="bio"
+            maxlength="300"
+            placeholder="Tell people about yourself, what you study or your interests..."
+          ></textarea>
+          <p class="hint">Up to 300 characters. This is optional.</p>
         </div>
 
         <button class="primary-btn" id="saveBtn" type="submit">
@@ -371,18 +574,69 @@
     const form = document.getElementById('profileForm');
     const saveBtn = document.getElementById('saveBtn');
     const message = document.getElementById('message');
-    const avatarUrl = document.getElementById('avatarUrl');
+
+    const avatarFile = document.getElementById('avatarFile');
+    const coverFile = document.getElementById('coverFile');
+
     const avatarPreview = document.getElementById('avatarPreview');
     const avatarPlaceholder = document.getElementById('avatarPlaceholder');
 
+    const coverPreview = document.getElementById('coverPreview');
+    const coverPlaceholder = document.getElementById('coverPlaceholder');
+
+    const fullNameInput = document.getElementById('fullName');
+    const usernameInput = document.getElementById('username');
+    const schoolInput = document.getElementById('school');
+    const roleInput = document.getElementById('role');
+    const bioInput = document.getElementById('bio');
+
+    const badgeName = document.getElementById('badgeName');
+    const memberBadge = document.getElementById('memberBadge');
+
     let currentUser = null;
+    let existingAvatarUrl = null;
+    let existingCoverUrl = null;
+
+    const allowedTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp'
+    ];
+
+    const maxFileSize = 5 * 1024 * 1024;
 
     function showMessage(text, type) {
       message.textContent = text;
       message.className = 'message ' + type;
     }
 
-    function setAvatar(url) {
+    function clearMessage() {
+      message.textContent = '';
+      message.className = 'message';
+    }
+
+    function setImagePreview(img, placeholder, url) {
+      if (!url) {
+        img.removeAttribute('src');
+        img.style.display = 'none';
+        placeholder.style.display = 'flex';
+        return;
+      }
+
+      img.onload = () => {
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      };
+
+      img.onerror = () => {
+        img.style.display = 'none';
+        placeholder.style.display = 'flex';
+      };
+
+      img.src = url;
+    }
+
+    function setAvatarPreview(url) {
       if (!url) {
         avatarPreview.removeAttribute('src');
         avatarPreview.style.display = 'none';
@@ -390,33 +644,101 @@
         return;
       }
 
-      try {
-        const parsed = new URL(url);
+      avatarPreview.onload = () => {
+        avatarPreview.style.display = 'block';
+        avatarPlaceholder.style.display = 'none';
+      };
 
-        if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
-          throw new Error('Invalid image URL');
-        }
-
-        avatarPreview.onload = () => {
-          avatarPreview.style.display = 'block';
-          avatarPlaceholder.style.display = 'none';
-        };
-
-        avatarPreview.onerror = () => {
-          avatarPreview.style.display = 'none';
-          avatarPlaceholder.style.display = 'block';
-        };
-
-        avatarPreview.src = parsed.href;
-      } catch {
+      avatarPreview.onerror = () => {
         avatarPreview.style.display = 'none';
         avatarPlaceholder.style.display = 'block';
+      };
+
+      avatarPreview.src = url;
+    }
+
+    function updateBadgePreview() {
+      const name = fullNameInput.value.trim() || 'Your Name';
+      const role = roleInput.value;
+
+      badgeName.textContent = name;
+
+      memberBadge.className = 'member-badge';
+
+      if (role === 'student') {
+        memberBadge.textContent = '🎓 Student';
+        memberBadge.classList.add('badge-student');
+      } else if (role === 'alumni') {
+        memberBadge.textContent = '🏅 Alumni';
+        memberBadge.classList.add('badge-alumni');
+      } else {
+        memberBadge.textContent = '🌐 General Member';
+        memberBadge.classList.add('badge-general');
       }
     }
 
-    avatarUrl.addEventListener('input', () => {
-      setAvatar(avatarUrl.value.trim());
+    function validateImage(file) {
+      if (!file) return null;
+
+      if (!allowedTypes.includes(file.type)) {
+        return 'Please choose a JPG, PNG or WebP image.';
+      }
+
+      if (file.size > maxFileSize) {
+        return 'Your image is larger than 5 MB. Please choose a smaller image.';
+      }
+
+      return null;
+    }
+
+    function previewSelectedFile(file, img, placeholder, isAvatar = false) {
+      if (!file) return;
+
+      const error = validateImage(file);
+
+      if (error) {
+        showMessage(error, 'error');
+
+        if (isAvatar) {
+          avatarFile.value = '';
+        } else {
+          coverFile.value = '';
+        }
+
+        return;
+      }
+
+      clearMessage();
+
+      const localUrl = URL.createObjectURL(file);
+
+      if (isAvatar) {
+        setAvatarPreview(localUrl);
+      } else {
+        setImagePreview(img, placeholder, localUrl);
+      }
+    }
+
+    avatarFile.addEventListener('change', () => {
+      previewSelectedFile(
+        avatarFile.files[0],
+        avatarPreview,
+        avatarPlaceholder,
+        true
+      );
     });
+
+    coverFile.addEventListener('change', () => {
+      previewSelectedFile(
+        coverFile.files[0],
+        coverPreview,
+        coverPlaceholder,
+        false
+      );
+    });
+
+    fullNameInput.addEventListener('input', updateBadgePreview);
+    roleInput.addEventListener('change', updateBadgePreview);
 
     async function initialise() {
       const { data, error } = await supabase.auth.getSession();
@@ -430,62 +752,115 @@
 
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('full_name, username, school, role, bio, avatar_url')
+        .select('full_name, username, school, role, bio, avatar_url, cover_url')
         .eq('id', currentUser.id)
         .maybeSingle();
 
       if (profileError) {
         showMessage(
-          'We could not load your profile details. You can still try filling in the form.',
+          'We could not load your saved profile. You can still complete the form.',
           'error'
         );
       }
 
       if (profile) {
-        document.getElementById('fullName').value =
+        fullNameInput.value =
           profile.full_name || currentUser.user_metadata?.full_name || '';
 
-        document.getElementById('username').value =
+        usernameInput.value =
           profile.username || currentUser.user_metadata?.username || '';
 
-        document.getElementById('school').value =
+        schoolInput.value =
           profile.school || currentUser.user_metadata?.school || '';
 
-        document.getElementById('role').value =
+        roleInput.value =
           profile.role || currentUser.user_metadata?.role || 'student';
 
-        document.getElementById('bio').value = profile.bio || '';
-        avatarUrl.value = profile.avatar_url || '';
-        setAvatar(avatarUrl.value);
+        bioInput.value = profile.bio || '';
+
+        existingAvatarUrl = profile.avatar_url || null;
+        existingCoverUrl = profile.cover_url || null;
+
+        setAvatarPreview(existingAvatarUrl);
+
+        setImagePreview(
+          coverPreview,
+          coverPlaceholder,
+          existingCoverUrl
+        );
       } else {
-        document.getElementById('fullName').value =
+        fullNameInput.value =
           currentUser.user_metadata?.full_name || '';
 
-        document.getElementById('username').value =
+        usernameInput.value =
           currentUser.user_metadata?.username || '';
 
-        document.getElementById('school').value =
+        schoolInput.value =
           currentUser.user_metadata?.school || '';
 
-        document.getElementById('role').value =
+        roleInput.value =
           currentUser.user_metadata?.role || 'student';
       }
+
+      updateBadgePreview();
+    }
+
+    async function uploadImage(file, imageType) {
+      if (!file) return null;
+
+      const error = validateImage(file);
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      const extension = file.type === 'image/jpeg'
+        ? 'jpg'
+        : file.type === 'image/png'
+          ? 'png'
+          : 'webp';
+
+      const filePath =
+        currentUser.id + '/' +
+        imageType + '-' +
+        Date.now() + '.' + extension;
+
+      const { error: uploadError } = await supabase.storage
+        .from('campusora-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          contentType: file.type,
+          upsert: false
+        });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data } = supabase.storage
+        .from('campusora-images')
+        .getPublicUrl(filePath);
+
+      return data.publicUrl;
     }
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      clearMessage();
 
       if (!currentUser) {
-        showMessage('Your session has expired. Please log in again.', 'error');
+        showMessage(
+          'Your session has expired. Please log in again.',
+          'error'
+        );
         return;
       }
 
-      const fullName = document.getElementById('fullName').value.trim();
-      const username = document.getElementById('username').value.trim().toLowerCase();
-      const school = document.getElementById('school').value.trim();
-      const role = document.getElementById('role').value;
-      const bio = document.getElementById('bio').value.trim();
-      const imageUrl = avatarUrl.value.trim();
+      const fullName = fullNameInput.value.trim();
+      const username = usernameInput.value.trim().toLowerCase();
+      const school = schoolInput.value.trim();
+      const role = roleInput.value;
+      const bio = bioInput.value.trim();
 
       if (!/^[a-z0-9_]{3,24}$/.test(username)) {
         showMessage(
@@ -495,23 +870,41 @@
         return;
       }
 
-      if (imageUrl) {
-        try {
-          const parsed = new URL(imageUrl);
+      if (!['student', 'alumni', 'general'].includes(role)) {
+        showMessage('Please choose a valid membership type.', 'error');
+        return;
+      }
 
-          if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
-            throw new Error();
-          }
-        } catch {
-          showMessage('Please enter a valid profile picture URL.', 'error');
-          return;
-        }
+      const avatar = avatarFile.files[0];
+      const cover = coverFile.files[0];
+
+      const avatarError = validateImage(avatar);
+      const coverError = validateImage(cover);
+
+      if (avatarError || coverError) {
+        showMessage(avatarError || coverError, 'error');
+        return;
       }
 
       saveBtn.disabled = true;
       saveBtn.textContent = 'Saving your profile...';
 
       try {
+        let avatarUrl = existingAvatarUrl;
+        let coverUrl = existingCoverUrl;
+
+        if (avatar) {
+          showMessage('Uploading your profile picture...', 'success');
+          avatarUrl = await uploadImage(avatar, 'profile');
+        }
+
+        if (cover) {
+          showMessage('Uploading your cover photo...', 'success');
+          coverUrl = await uploadImage(cover, 'cover');
+        }
+
+        showMessage('Saving your profile details...', 'success');
+
         const { error } = await supabase
           .from('profiles')
           .upsert({
@@ -521,28 +914,42 @@
             school,
             role,
             bio,
-            avatar_url: imageUrl || null
+            avatar_url: avatarUrl,
+            cover_url: coverUrl
           }, {
             onConflict: 'id'
           });
 
         if (error) throw error;
 
-        showMessage('Your profile is ready! Welcome to Campusora.', 'success');
+        showMessage(
+          'Your profile is ready! Welcome to Campusora.',
+          'success'
+        );
+
         saveBtn.textContent = 'Opening Campusora...';
 
-        window.location.replace('./index.html');
+        setTimeout(() => {
+          window.location.replace('./index.html');
+        }, 800);
 
       } catch (error) {
-        let text = error.message || 'Could not save your profile. Please try again.';
+        let text = error.message ||
+          'Could not save your profile. Please try again.';
 
         if (error.code === '23505') {
           text = 'That username is already taken. Please choose another one.';
         } else if (error.code === '42501') {
           text = 'Campusora could not save your profile because of a database permission issue.';
+        } else if (
+          error.message &&
+          error.message.toLowerCase().includes('row-level security')
+        ) {
+          text = 'Upload permission was denied. Please check the Campusora image storage policies.';
         }
 
         showMessage(text, 'error');
+
         saveBtn.disabled = false;
         saveBtn.textContent = 'Complete profile and continue →';
       }
@@ -552,4 +959,4 @@
   </script>
 
 </body>
-  </html>
+                                          </html>
