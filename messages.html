@@ -597,47 +597,48 @@ async function searchPeople(q) {
 }
 
 async function startConversation(userId) {
-  if (!userId || userId === me.id) return;
-
-  const existing = conversations.find(c =>
-    !c.is_group && c.participants?.length === 2 &&
-    c.participants.some(p => p.user_id === me.id) &&
-    c.participants.some(p => p.user_id === userId)
-  );
-
-  if (existing) {
-    await openConversation(existing.id);
-    return;
-  }
-
-  const {data:created,error} = await supabase.from('conversations')
-    .insert({created_by:me.id,is_group:false})
-    .select('id,created_by,is_group,group_name,created_at')
-    .single();
-
-  if (error) {
-    console.error(error);
-    toast('Could not start a conversation. Please try again.');
-    return;
-  }
-
-  const {error:memberError} = await supabase.from('conversation_members')
-    .insert([
-      {conversation_id:created.id,user_id:me.id},
-      {conversation_id:created.id,user_id:userId}
-    ]);
-
-  if (memberError) {
-    console.error(memberError);
-    // A conversation without both participants should not be used.
-    await supabase.from('conversations').delete().eq('id',created.id);
-    toast('Could not add the participant. Check database permissions.');
-    return;
-  }
-
-  await loadInbox();
-  await openConversation(created.id);
+if (!userId || !me || userId === me.id) {
+toast('Invalid seller.');
+return;
 }
+
+try {
+toast('Opening conversation...');
+
+const { data: conversationId, error } = await supabase.rpc(
+  'start_direct_conversation',
+  { target_user_id: userId }
+);
+
+if (error) {
+  console.error('Conversation error:', error);
+  toast(error.message || 'Could not open conversation.');
+  return;
+}
+
+if (!conversationId) {
+  toast('No conversation was returned.');
+  return;
+}
+
+await loadInbox();
+
+const conversation = conversations.find(
+  item => item.id === conversationId
+);
+
+if (!conversation) {
+  toast('Conversation created, but could not load it. Check database permissions.');
+  return;
+}
+
+await openConversation(conversationId);
+
+} catch (error) {
+console.error('Could not start conversation:', error);
+toast('Something went wrong. Please try again.');
+}
+
 
 async function openConversation(id) {
   const conversation = conversations.find(c => c.id === id);
@@ -660,7 +661,7 @@ async function openConversation(id) {
   $('messagesArea').innerHTML = '<div class="panel-message">Loading messages...</div>';
 
   $('chatAvatar').outerHTML = avatarHTML(currentOtherUser);
-  // Restore the stable ID on the new avatar element.
+  // Restore the stew avatar element.
   const avatarEl = $('chatPanel').querySelector('.chat-head .avatar');
   if (avatarEl) avatarEl.id = 'chatAvatar';
 
