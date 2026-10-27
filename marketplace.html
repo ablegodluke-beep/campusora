@@ -1,1311 +1,1337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080b18">
-
-<title>Marketplace | Campusora</title>
-
-<style>
-:root {
-  --bg: #080b18;
-  --panel: #101426;
-  --panel2: #171c32;
-  --border: #282d48;
-  --text: #f5f6ff;
-  --muted: #9299b6;
-  --purple: #925bff;
-  --blue: #526dff;
-  --cyan: #38d9ff;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Inter, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  min-height: 100vh;
-}
-
-button, input, textarea, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.topbar {
-  height: 66px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 max(16px, calc((100% - 1180px) / 2));
-  background: rgba(8, 11, 24, .96);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  backdrop-filter: blur(16px);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 21px;
-  font-weight: 800;
-  letter-spacing: -.6px;
-}
-
-.brand-icon {
-  width: 39px;
-  height: 39px;
-  display: grid;
-  place-items: center;
-  border-radius: 13px;
-  background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
-  box-shadow: 0 0 25px #7952ee44;
-  font-size: 23px;
-}
-
-.top-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.icon-btn {
-  min-width: 40px;
-  height: 40px;
-  padding: 0 12px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: white;
-}
-
-.icon-btn:hover {
-  border-color: var(--purple);
-}
-
-.page {
-  max-width: 1180px;
-  margin: auto;
-  padding: 30px 18px 80px;
-}
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 34px;
-  border: 1px solid #37315d;
-  border-radius: 23px;
-  background:
-    radial-gradient(ellipse at 85% 15%, #7751d733, transparent 38%),
-    radial-gradient(ellipse at 10% 100%, #315ce622, transparent 40%),
-    linear-gradient(135deg, #14172d, #0d1121 75%);
-}
-
-.hero:after {
-  content: "";
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  right: -85px;
-  bottom: -120px;
-  border-radius: 50%;
-  background: #8654ff22;
-  filter: blur(12px);
-}
-
-.eyebrow {
-  color: #bda7ff;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.hero h1 {
-  margin-top: 8px;
-  font-size: clamp(27px, 5vw, 43px);
-  letter-spacing: -1.4px;
-  line-height: 1.15;
-}
-
-.hero h1 span {
-  background: linear-gradient(90deg, #b995ff, #6a91ff, #47dcff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.hero p {
-  max-width: 520px;
-  margin-top: 12px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 23px;
-}
-
-.primary-btn,
-.secondary-btn {
-  min-height: 43px;
-  padding: 0 17px;
-  border-radius: 12px;
-  font-weight: 750;
-  border: 1px solid transparent;
-  transition: transform .2s, opacity .2s;
-}
-
-.primary-btn {
-  color: white;
-  background: linear-gradient(120deg, var(--purple), var(--blue));
-  box-shadow: 0 7px 24px #7650f333;
-}
-
-.secondary-btn {
-  background: #171b30;
-  border-color: var(--border);
-  color: var(--text);
-}
-
-.primary-btn:hover,
-.secondary-btn:hover {
-  transform: translateY(-2px);
-}
-
-.search-row {
-  display: flex;
-  gap: 12px;
-  margin: 23px 0 17px;
-}
-
-.search-box {
-  flex: 1;
-  position: relative;
-}
-
-.search-box span {
-  position: absolute;
-  top: 12px;
-  left: 15px;
-  color: var(--muted);
-  font-size: 17px;
-}
-
-.search-box input {
-  width: 100%;
-  height: 47px;
-  padding: 0 15px 0 44px;
-  outline: none;
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  background: var(--panel);
-  color: white;
-}
-
-.search-box input:focus {
-  border-color: var(--purple);
-  box-shadow: 0 0 0 3px #925bff18;
-}
-
-.categories {
-  display: flex;
-  gap: 9px;
-  overflow-x: auto;
-  padding: 3px 0 15px;
-  scrollbar-width: thin;
-}
-
-.category-btn {
-  white-space: nowrap;
-  padding: 9px 15px;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  background: var(--panel);
-  color: #b5bad2;
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.category-btn.active,
-.category-btn:hover {
-  background: linear-gradient(120deg, #6940b744, #3452a344);
-  color: white;
-  border-color: #8061d6;
-}
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 17px 0;
-}
-
-.section-heading h2 {
-  font-size: 21px;
-  letter-spacing: -.4px;
-}
-
-.section-heading p {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.product-count {
-  color: #bba7ff;
-  font-size: 12px;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 17px;
-}
-
-.product-card {
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  background: linear-gradient(160deg, #14182b, #0f1323);
-  transition: transform .2s, border-color .2s, box-shadow .2s;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  border-color: #6352a2;
-  box-shadow: 0 12px 30px #0003;
-}
-
-.product-image-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / .85;
-  overflow: hidden;
-  background: #1a1e33;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform .3s;
-}
-
-.product-card:hover .product-image {
-  transform: scale(1.04);
-}
-
-.image-placeholder {
-  height: 100%;
-  display: grid;
-  place-items: center;
-  color: #a6a9c5;
-  font-size: 38px;
-  background: radial-gradient(circle at 50% 40%, #40335f, #15192b 70%);
-}
-
-.product-category {
-  position: absolute;
-  top: 11px;
-  left: 11px;
-  padding: 5px 9px;
-  border-radius: 8px;
-  background: #080b18d9;
-  border: 1px solid #ffffff20;
-  color: #d9ceff;
-  font-size: 10px;
-  font-weight: 750;
-  backdrop-filter: blur(8px);
-}
-
-.product-info {
-  padding: 14px;
-}
-
-.product-price {
-  font-size: 20px;
-  font-weight: 850;
-  letter-spacing: -.5px;
-  color: #c5a8ff;
-  overflow-wrap: anywhere;
-}
-
-.product-name {
-  margin-top: 5px;
-  font-size: 14px;
-  font-weight: 750;
-  overflow-wrap: anywhere;
-}
-
-.product-description {
-  margin-top: 7px;
-  color: #a1a7c1;
-  font-size: 12px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 57px;
-}
-
-.product-location {
-  color: var(--muted);
-  margin-top: 10px;
-  font-size: 11px;
-}
-
-.seller-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-top: 12px;
-  margin-top: 12px;
-  border-top: 1px solid #252a40;
-  min-width: 0;
-}
-
-.seller-avatar {
-  width: 31px;
-  height: 31px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--purple), var(--blue));
-  font-weight: 800;
-  font-size: 11px;
-}
-
-.seller-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.seller-details {
-  min-width: 0;
-  flex: 1;
-}
-
-.seller-name {
-  font-size: 11px;
-  font-weight: 750;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.seller-caption {
-  margin-top: 2px;
-  font-size: 10px;
-  color: var(--muted);
-}
-
-.message-seller-btn {
-  width: 100%;
-  margin-top: 13px;
-  min-height: 39px;
-  border: 1px solid #7356c4;
-  border-radius: 11px;
-  background: linear-gradient(110deg, #6840b9, #3554b6);
-  color: white;
-  font-weight: 750;
-  font-size: 12px;
-}
-
-.message-seller-btn:hover {
-  filter: brightness(1.13);
-}
-
-.message-seller-btn:disabled {
-  opacity: .55;
-  cursor: not-allowed;
-}
-
-.empty-state {
-  grid-column: 1 / -1;
-  padding: 55px 20px;
-  text-align: center;
-  border: 1px dashed #383653;
-  border-radius: 17px;
-  background: #111426;
-}
-
-.empty-icon {
-  font-size: 36px;
-  margin-bottom: 12px;
-}
-
-.empty-state h3 {
-  font-size: 17px;
-}
-
-.empty-state p {
-  color: var(--muted);
-  margin-top: 7px;
-  font-size: 12px;
-}
-
-.loading {
-  grid-column: 1 / -1;
-  padding: 45px 20px;
-  text-align: center;
-  color: var(--muted);
-}
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  background: #050611cc;
-  backdrop-filter: blur(9px);
-}
-
-.modal-backdrop.open {
-  display: flex;
-}
-
-.modal {
-  width: 100%;
-  max-width: 510px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border: 1px solid #393456;
-  border-radius: 19px;
-  background: #101426;
-  box-shadow: 0 20px 70px #0008;
-}
-
-.modal-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 19px;
-  border-bottom: 1px solid var(--border);
-}
-
-.modal-head h2 {
-  font-size: 19px;
-}
-
-.close-btn {
-  width: 33px;
-  height: 33px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--panel2);
-  color: white;
-  font-size: 19px;
-}
-
-.modal-body {
-  padding: 19px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 7px;
-  color: #d8daed;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  outline: none;
-  background: #0b0f1e;
-  color: white;
-  padding: 12px;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  border-color: var(--purple);
-}
-
-.form-group textarea {
-  min-height: 95px;
-  resize: vertical;
-}
-
-.form-group input[type="file"] {
-  padding: 10px;
-  font-size: 11px;
-}
-
-.form-help {
-  display: block;
-  color: var(--muted);
-  margin-top: 6px;
-  font-size: 10px;
-}
-
-.form-error {
-  color: #ff929e;
-  font-size: 12px;
-  margin-bottom: 12px;
-}
-
-.toast {
-  position: fixed;
-  bottom: 25px;
-  left: 50%;
-  z-index: 150;
-  transform: translate(-50%, 15px);
-  opacity: 0;
-  pointer-events: none;
-  background: #24223c;
-  border: 1px solid #504477;
-  border-radius: 11px;
-  padding: 11px 16px;
-  max-width: calc(100% - 30px);
-  color: white;
-  font-size: 12px;
-  text-align: center;
-  transition: .2s;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-.footer {
-  margin-top: 42px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-  text-align: center;
-  color: #777f9d;
-  font-size: 11px;
-}
-
-@media (max-width: 1000px) {
-  .product-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 700px) {
-  .topbar {
-    height: 58px;
-    padding: 0 13px;
-  }
-
-  .brand {
-    font-size: 18px;
-  }
-
-  .brand-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 11px;
-  }
-
-  .page {
-    padding: 17px 12px 60px;
-  }
-
-  .hero {
-    padding: 24px 19px;
-    border-radius: 18px;
-  }
-
-  .hero h1 {
-    font-size: 30px;
-  }
-
-  .product-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 11px;
-  }
-
-  .product-info {
-    padding: 11px;
-  }
-
-  .product-price {
-    font-size: 17px;
-  }
-
-  .product-name {
-    font-size: 13px;
-  }
-
-  .product-description {
-    font-size: 11px;
-  }
-
-  .section-heading h2 {
-    font-size: 19px;
-  }
-
-  .search-row {
-    gap: 8px;
-  }
-}
-
-@media (max-width: 360px) {
-  .product-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .product-image-wrap {
-    aspect-ratio: 1 / .7;
-  }
-
-  .hero h1 {
-    font-size: 27px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d1b">
+
+  <title>Marketplace | Campusora</title>
+
+  <style>
+    :root {
+      --bg: #080d1b;
+      --panel: #0e1729;
+      --card: #101a2d;
+      --border: #243451;
+      --text: #f5f7ff;
+      --muted: #98a9ca;
+      --purple: #594bff;
+      --purple-light: #7568ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* TOP NAVIGATION */
+
+    .topbar {
+      height: 66px;
+      padding: 0 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: #0a1020;
+      border-bottom: 1px solid #1c2941;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 23px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #5c51ff, #23b8df);
+      font-size: 23px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      height: 100%;
+    }
+
+    .nav-links a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .nav-links a.active {
+      color: var(--purple-light);
+      border-bottom: 3px solid var(--purple-light);
+    }
+
+    .nav-icons {
+      display: flex;
+      gap: 18px;
+      font-size: 22px;
+    }
+
+    /* MAIN CONTENT */
+
+    .container {
+      max-width: 1450px;
+      margin: auto;
+      padding: 34px 26px 50px;
+    }
+
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 22px;
+      margin-bottom: 32px;
+    }
+
+    .heading-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .heading-icon {
+      font-size: 39px;
+    }
+
+    h1 {
+      font-size: clamp(27px, 3vw, 36px);
+      margin: 0 0 9px;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .search-box {
+      width: min(100%, 465px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 15px;
+      height: 50px;
+      background: #111b30;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+    }
+
+    .search-box span {
+      font-size: 21px;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: white;
+      min-width: 0;
+    }
+
+    .search-box input::placeholder {
+      color: #8193b5;
+    }
+
+    /* SELL PANEL */
+
+    .sell-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 26px;
+      margin-bottom: 25px;
+      background: linear-gradient(115deg, #0f192d, #0c1426);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+    }
+
+    .sell-info {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .sell-icon {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #1a2843;
+      font-size: 30px;
+    }
+
+    .sell-info h2 {
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+
+    .sell-info p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .primary-btn {
+      border: 0;
+      color: white;
+      background: linear-gradient(135deg, #6357ff, #5145f5);
+      border-radius: 11px;
+      padding: 15px 22px;
+      font-weight: 700;
+      transition: transform .2s, opacity .2s;
+    }
+
+    .primary-btn:hover {
+      opacity: .9;
+      transform: translateY(-1px);
+    }
+
+    /* CATEGORY FILTERS */
+
+    .categories {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 22px;
+      scrollbar-width: thin;
+    }
+
+    .category-btn {
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      background: #101a2d;
+      color: #d5def2;
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-size: 13px;
+    }
+
+    .category-btn.active {
+      background: var(--purple);
+      color: white;
+      border-color: var(--purple);
+    }
+
+    /* PRODUCT GRID */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      min-width: 0;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid #23324c;
+      border-radius: 14px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      border-color: #5145f5;
+    }
+
+    .product-image-wrap {
+      position: relative;
+      aspect-ratio: 1 / .82;
+      background: #1a2334;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .price-tag {
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      background: var(--purple);
+      color: white;
+      padding: 8px 11px;
+      font-weight: 800;
+      border-radius: 10px;
+      font-size: 13px;
+      box-shadow: 0 3px 12px #0005;
+    }
+
+    .product-details {
+      padding: 13px;
+    }
+
+    .product-name {
+      font-size: 15px;
+      line-height: 1.4;
+      font-weight: 700;
+      margin: 0 0 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .product-condition {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .product-description {
+      font-size: 12px;
+      color: #a9b7d1;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .seller {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 13px;
+      min-width: 0;
+    }
+
+    .seller-avatar {
+      width: 37px;
+      height: 37px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #293852;
+      font-size: 17px;
+    }
+
+    .seller-info {
+      min-width: 0;
+    }
+
+    .seller-name {
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .seller-time {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .buy-btn {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      color: white;
+      background: linear-gradient(135deg, #6256ff, #5045f5);
+      padding: 12px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .chat-btn {
+      width: 46px;
+      flex-shrink: 0;
+      border: 1px solid #2b3d5e;
+      color: #d7e2ff;
+      background: #111b30;
+      border-radius: 10px;
+      font-size: 19px;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--muted);
+      padding: 50px 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    /* ADD PRODUCT MODAL */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #000b;
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 510px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #101a2d;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 23px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .close-btn {
+      border: 0;
+      color: white;
+      background: #26344e;
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-size: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #d7e0f4;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      min-height: 45px;
+      padding: 12px;
+      color: white;
+      background: #091121;
+      border: 1px solid #2a3b5a;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--purple-light);
+    }
+
+    .form-group input[type="file"] {
+      padding: 10px;
+    }
+
+    .form-group select option {
+      background: #101a2d;
+    }
+
+    .preview-image {
+      display: none;
+      width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+      margin-top: 10px;
+      border-radius: 10px;
+      background: #080d1b;
+    }
+
+    .form-message {
+      font-size: 13px;
+      color: #ffb7b7;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    /* TABLET */
+
+    @media (max-width: 1000px) {
+      .nav-links {
+        gap: 15px;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .container {
+        padding: 28px 20px 40px;
+      }
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+      .topbar {
+        height: 60px;
+        padding: 0 14px;
+      }
+
+      .brand {
+        font-size: 19px;
+        gap: 7px;
+      }
+
+      .brand-icon {
+        width: 33px;
+        height: 33px;
+        font-size: 20px;
+      }
+
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-links a {
+        display: none;
+      }
+
+      .nav-links a.active {
+        display: flex;
+        border-bottom: 0;
+        background: #1a2140;
+        padding: 9px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+      }
+
+      .nav-icons {
+        display: none;
+      }
+
+      .container {
+        padding: 24px 12px 35px;
+      }
+
+      .page-heading {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        margin-bottom: 23px;
+      }
+
+      .heading-title {
+        gap: 10px;
+      }
+
+      .heading-icon {
+        font-size: 32px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+
+      .search-box {
+        width: 100%;
+        height: 46px;
+      }
+
+      .sell-panel {
+        padding: 16px;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .sell-info {
+        gap: 11px;
+      }
+
+      .sell-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 21px;
+      }
+
+      .sell-info h2 {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .sell-info p {
+        font-size: 11px;
+      }
+
+      .sell-panel .primary-btn {
+        padding: 12px;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .categories {
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .category-btn {
+        padding: 10px 16px;
+        font-size: 12px;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .product-image-wrap {
+        aspect-ratio: 1 / .88;
+      }
+
+      .price-tag {
+        top: 7px;
+        right: 6px;
+        padding: 6px 7px;
+        font-size: 11px;
+        border-radius: 7px;
+      }
+
+      .product-details {
+        padding: 9px;
+      }
+
+      .product-name {
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+
+      .product-condition {
+        font-size: 10px;
+        margin-bottom: 10px;
+      }
+
+      .product-description {
+        font-size: 11px;
+      }
+
+      .seller {
+        gap: 7px;
+        margin-bottom: 10px;
+      }
+
+      .seller-avatar {
+        width: 29px;
+        height: 29px;
+        font-size: 14px;
+      }
+
+      .seller-name {
+        font-size: 10px;
+      }
+
+      .seller-time {
+        font-size: 9px;
+      }
+
+      .product-actions {
+        gap: 6px;
+      }
+
+      .buy-btn {
+        padding: 11px 5px;
+        font-size: 12px;
+      }
+
+      .chat-btn {
+        width: 35px;
+        font-size: 16px;
+      }
+
+      .modal {
+        padding: 12px;
+      }
+
+      .modal-content {
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .brand {
+        font-size: 17px;
+      }
+
+      .sell-panel {
+        align-items: flex-start;
+      }
+
+      .sell-panel .primary-btn {
+        padding: 10px 8px;
+      }
+
+      .product-details {
+        padding: 7px;
+      }
+
+      .product-name {
+        font-size: 12px;
+      }
+
+      .buy-btn {
+        font-size: 11px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <a href="index.html" class="brand">
-    <span class="brand-icon">✳</span>
-    <span>campusora</span>
-  </a>
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-icon">C</span>
+      <span>Campusora</span>
+    </a>
 
-  <div class="top-actions">
-    <a class="icon-btn" href="messages.html" aria-label="Messages">✉</a>
-    <a class="icon-btn" href="profile.html" aria-label="Profile">◎</a>
-  </div>
-</header>
+    <nav class="nav-links">
+      <a href="index.html">⌂ Home</a>
+      <a href="courses.html">♧ Courses</a>
+      <a href="community.html">♙ Community</a>
+      <a href="marketplace.html" class="active">♧ Marketplace</a>
+    </nav>
 
-<main class="page">
-
-  <section class="hero">
-    <div class="eyebrow">Your campus marketplace ✦</div>
-
-    <h1>Discover something <span>you love.</span></h1>
-
-    <p>
-      Find useful items from other Campusora members.
-      See something you like? Message the seller and start a conversation.
-    </p>
-
-    <div class="hero-actions">
-      <button class="primary-btn" id="openListingBtn">
-        ＋ List a product
-      </button>
-
-      <button class="secondary-btn" id="browseBtn">
-        Explore products ↓
-      </button>
+    <div class="nav-icons">
+      <a href="messages.html" aria-label="Messages">♧</a>
     </div>
-  </section>
+  </header>
 
-  <div class="search-row">
-    <div class="search-box">
-      <span>⌕</span>
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="Search products..."
-        autocomplete="off"
-      >
-    </div>
-  </div>
+  <main class="container">
 
-  <div class="categories" id="categories">
-    <button class="category-btn active" data-category="All">✦ All products</button>
-    <button class="category-btn" data-category="Electronics">💻 Electronics</button>
-    <button class="category-btn" data-category="Fashion">👕 Fashion</button>
-    <button class="category-btn" data-category="Books">📚 Books</button>
-    <button class="category-btn" data-category="Hostel">🛏️ Hostel</button>
-    <button class="category-btn" data-category="Food">🍔 Food</button>
-    <button class="category-btn" data-category="Other">✧ Other</button>
-  </div>
-
-  <section id="productsSection">
-    <div class="section-heading">
+    <section class="page-heading">
       <div>
-        <h2>Explore products ✨</h2>
-        <p>Discover what's available in your campus community.</p>
-      </div>
-
-      <span class="product-count" id="productCount"></span>
-    </div>
-
-    <div class="product-grid" id="productGrid">
-      <div class="loading">Loading products...</div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    Campusora · Discover. Connect. Trade.
-  </footer>
-
-</main>
-
-<!-- Create product modal -->
-<div class="modal-backdrop" id="listingModal">
-  <section class="modal">
-    <header class="modal-head">
-      <h2>List a product ✨</h2>
-      <button class="close-btn" id="closeListingBtn" type="button">×</button>
-    </header>
-
-    <form class="modal-body" id="listingForm">
-
-      <div class="form-error" id="formError"></div>
-
-      <div class="form-group">
-        <label for="productName">Product name *</label>
-        <input id="productName" maxlength="120" required
-          placeholder="e.g. Samsung Galaxy phone">
-      </div>
-
-      <div class="form-group">
-        <label for="productPrice">Price in ₦ *</label>
-        <input id="productPrice" type="number" min="0" step="0.01"
-          required placeholder="e.g. 45000">
-      </div>
-
-      <div class="form-group">
-        <label for="productCategory">Category *</label>
-        <select id="productCategory" required>
-          <option value="">Choose a category</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Fashion">Fashion</option>
-          <option value="Books">Books</option>
-          <option value="Hostel">Hostel</option>
-          <option value="Food">Food</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="productCondition">Condition</label>
-        <select id="productCondition">
-          <option value="Used">Used</option>
-          <option value="Like new">Like new</option>
-          <option value="New">New</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="productDescription">Description *</label>
-        <textarea id="productDescription" maxlength="3000" required
-          placeholder="Describe the product, its condition, and anything buyers should know..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="productLocation">Location</label>
-        <input id="productLocation" maxlength="150"
-          placeholder="e.g. Your campus or city">
-      </div>
-
-      <div class="form-group">
-        <label for="productImage">Product image URL</label>
-        <input id="productImage" type="url"
-          placeholder="https://example.com/image.jpg">
-        <small class="form-help">
-          Paste a direct image link. Photo uploads from your phone require
-          a configured Supabase Storage bucket.
-        </small>
-      </div>
-
-      <button class="primary-btn" id="publishBtn" type="submit"
-        style="width:100%">
-        Publish product
-      </button>
-    </form>
-  </section>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script type="module">
-import { supabase } from './supabase.js';
-
-const $ = id => document.getElementById(id);
-
-let me = null;
-let products = [];
-let selectedCategory = 'All';
-let searchTerm = '';
-let isPublishing = false;
-
-function esc(value = '') {
-  return String(value).replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[char]);
-}
-
-function initials(name = 'C') {
-  return name.trim().split(/\s+/).filter(Boolean).slice(0, 2)
-    .map(part => part[0]).join('').toUpperCase() || 'C';
-}
-
-function showToast(message) {
-  const el = $('toast');
-  el.textContent = message;
-  el.classList.add('show');
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => el.classList.remove('show'), 2800);
-}
-
-function profileName(profile) {
-  return profile?.full_name || profile?.username || 'Campusora member';
-}
-
-function formatPrice(price) {
-  const number = Number(price);
-  if (!Number.isFinite(number)) return 'Price not listed';
-
-  return '₦' + number.toLocaleString('en-NG', {
-    maximumFractionDigits: 2
-  });
-}
-
-function imageURL(product) {
-  let images = product.image_urls;
-
-  if (typeof images === 'string') {
-    try {
-      images = JSON.parse(images);
-    } catch {
-      images = [images];
-    }
-  }
-
-  if (Array.isArray(images)) return images[0] || '';
-  if (images && typeof images === 'object') {
-    return images.url || '';
-  }
-
-  return '';
-}
-
-function sellerAvatar(profile) {
-  const name = profileName(profile);
-  const avatar = profile?.avatar_url;
-
-  if (avatar) {
-    return `<div class="seller-avatar">
-      <img src="${esc(avatar)}" alt=""
-        onerror="this.parentElement.textContent='${esc(initials(name))}'">
-    </div>`;
-  }
-
-  return `<div class="seller-avatar">${esc(initials(name))}</div>`;
-}
-
-function categoryIcon(category) {
-  const icons = {
-    Electronics: '💻',
-    Fashion: '👕',
-    Books: '📚',
-    Hostel: '🛏️',
-    Food: '🍔',
-    Other: '✧'
-  };
-
-  return icons[category] || '✦';
-}
-
-function renderProducts() {
-  const grid = $('productGrid');
-  const query = searchTerm.trim().toLowerCase();
-
-  const filtered = products.filter(product => {
-    const text = [
-      product.name,
-      product.description,
-      product.category,
-      product.location,
-      product.condition,
-      profileName(product.seller)
-    ].filter(Boolean).join(' ').toLowerCase();
-
-    const matchesSearch = !query || text.includes(query);
-    const matchesCategory =
-      selectedCategory === 'All' ||
-      product.category?.toLowerCase() === selectedCategory.toLowerCase();
-
-    return matchesSearch && matchesCategory;
-  });
-
-  $('productCount').textContent =
-    `${filtered.length} product${filtered.length === 1 ? '' : 's'}`;
-
-  if (!filtered.length) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">✧</div>
-        <h3>No products found</h3>
-        <p>Try another search or category, or check back later.</p>
-      </div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(product => {
-    const seller = product.seller || {};
-    const image = imageURL(product);
-    const category = product.category || 'Other';
-    const description = product.description || 'No description provided.';
-    const location = product.location || '';
-    const sellerId = product.seller_id;
-
-    return `
-      <article class="product-card">
-        <div class="product-image-wrap">
-          ${
-            image
-              ? `<img class="product-image"
-                  src="${esc(image)}"
-                  alt="${esc(product.name)}"
-                  loading="lazy"
-                  onerror="this.style.display='none';
-                    this.nextElementSibling.style.display='grid'">`
-              : ''
-          }
-
-          <div class="image-placeholder"
-            style="display:${image ? 'none' : 'grid'}">
-            ${categoryIcon(category)}
-          </div>
-
-          <span class="product-category">
-            ${esc(category)}
-          </span>
+        <div class="heading-title">
+          <span class="heading-icon">♧</span>
+          <h1>Marketplace</h1>
         </div>
 
-        <div class="product-info">
-          <div class="product-price">${esc(formatPrice(product.price))}</div>
+        <p class="subtitle">
+          Buy and sell with your campus community. Great deals, real people.
+        </p>
+      </div>
 
-          <h3 class="product-name">${esc(product.name)}</h3>
+      <label class="search-box">
+        <span>⌕</span>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search for products..."
+          aria-label="Search products"
+        >
+      </label>
+    </section>
 
-          <p class="product-description">${esc(description)}</p>
+    <section class="sell-panel">
+      <div class="sell-info">
+        <div class="sell-icon">♧</div>
 
-          ${
-            location
-              ? `<div class="product-location">⌖ ${esc(location)}</div>`
-              : ''
-          }
+        <div>
+          <h2>Post a Product</h2>
+          <p>Share something you're selling. Add a photo, description and price.</p>
+        </div>
+      </div>
 
-          <div class="seller-row">
-            ${sellerAvatar(seller)}
+      <button class="primary-btn" id="openSellModal">
+        ＋ Add Product
+      </button>
+    </section>
 
-            <div class="seller-details">
-              <div class="seller-name">${esc(profileName(seller))}</div>
-              <div class="seller-caption">
-                ${esc(product.condition || 'Product seller')}
+    <div class="categories" id="categories">
+      <button class="category-btn active" data-category="All">All</button>
+      <button class="category-btn" data-category="Electronics">Electronics</button>
+      <button class="category-btn" data-category="Books">Books</button>
+      <button class="category-btn" data-category="Clothing">Clothing</button>
+      <button class="category-btn" data-category="Accessories">Accessories</button>
+      <button class="category-btn" data-category="Furniture">Furniture</button>
+      <button class="category-btn" data-category="Study Materials">Study Materials</button>
+      <button class="category-btn" data-category="Other">Other</button>
+    </div>
+
+    <section class="products-grid" id="productsGrid">
+      <div class="empty-state">Loading marketplace products...</div>
+    </section>
+
+  </main>
+
+  <!-- ADD PRODUCT FORM -->
+
+  <div class="modal" id="sellModal">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h2>Sell an Item</h2>
+        <button class="close-btn" id="closeSellModal" aria-label="Close">×</button>
+      </div>
+
+      <form id="productForm">
+
+        <div class="form-group">
+          <label for="productName">Product name *</label>
+          <input id="productName" type="text" maxlength="100"
+                 placeholder="e.g. Samsung Galaxy phone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="productPrice">Price in naira (₦) *</label>
+          <input id="productPrice" type="number" min="1" step="1"
+                 placeholder="e.g. 25000" required>
+        </div>
+
+        <div class="form-group">
+          <label for="productCategory">Category *</label>
+          <select id="productCategory" required>
+            <option value="">Choose a category</option>
+            <option>Electronics</option>
+            <option>Books</option>
+            <option>Clothing</option>
+            <option>Accessories</option>
+            <option>Furniture</option>
+            <option>Study Materials</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="productCondition">Condition *</label>
+          <select id="productCondition" required>
+            <option value="">Choose condition</option>
+            <option>New</option>
+            <option>Like New</option>
+            <option>Good condition</option>
+            <option>Fair condition</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="productLocation">Location *</label>
+          <input id="productLocation" type="text" maxlength="100"
+                 placeholder="e.g. University campus" required>
+        </div>
+
+        <div class="form-group">
+          <label for="productDescription">Description *</label>
+          <textarea id="productDescription" maxlength="1500"
+                    placeholder="Describe your item..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="productImage">Product photo *</label>
+          <input id="productImage" type="file"
+                 accept="image/jpeg,image/png,image/webp,image/gif" required>
+          <small style="display:block;color:#98a9ca;margin-top:7px">
+            Choose a photo from your phone. Maximum size: 5 MB.
+          </small>
+          <img id="imagePreview" class="preview-image" alt="Product photo preview">
+        </div>
+
+        <p class="form-message" id="formMessage" role="status"></p>
+
+        <button type="submit" class="primary-btn submit-btn" id="submitProduct">
+          Publish Product
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase } from "./supabase.js";
+
+    const grid = document.getElementById("productsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const modal = document.getElementById("sellModal");
+    const productForm = document.getElementById("productForm");
+    const imageInput = document.getElementById("productImage");
+    const imagePreview = document.getElementById("imagePreview");
+    const formMessage = document.getElementById("formMessage");
+    const submitButton = document.getElementById("submitProduct");
+
+    let products = [];
+    let activeCategory = "All";
+    let currentUser = null;
+    let previewUrl = null;
+
+    const placeholderImage =
+      "https://placehold.co/600x500/101a2d/98a9ca?text=Product+Photo";
+
+    function escapeHTML(value = "") {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[character]);
+    }
+
+    function formatPrice(price) {
+      return "₦" + Number(price || 0).toLocaleString("en-NG");
+    }
+
+    function getProductImage(product) {
+      let images = product.image_urls;
+
+      if (typeof images === "string") {
+        try {
+          images = JSON.parse(images);
+        } catch {
+          images = [images];
+        }
+      }
+
+      if (Array.isArray(images) && images.length) {
+        return images[0];
+      }
+
+      return placeholderImage;
+    }
+
+    function timeAgo(date) {
+      if (!date) return "Recently";
+
+      const seconds = Math.max(
+        0,
+        Math.floor((Date.now() - new Date(date).getTime()) / 1000)
+      );
+
+      if (seconds < 60) return "Just now";
+      if (seconds < 3600) return Math.floor(seconds / 60) + "m ago";
+      if (seconds < 86400) return Math.floor(seconds / 3600) + "h ago";
+      if (seconds < 604800) return Math.floor(seconds / 86400) + "d ago";
+
+      return new Date(date).toLocaleDateString();
+    }
+
+    function sellerName(product) {
+      const profile = product.profiles;
+      if (Array.isArray(profile)) {
+        return profile[0]?.full_name || "Campusora seller";
+      }
+
+      return profile?.full_name || "Campusora seller";
+    }
+
+    function renderProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+
+      const filtered = products.filter(product => {
+        const matchesCategory =
+          activeCategory === "All" ||
+          product.category === activeCategory;
+
+        const searchableText = [
+          product.name,
+          product.description,
+          product.category,
+          product.location
+        ].join(" ").toLowerCase();
+
+        return matchesCategory && searchableText.includes(query);
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size:35px;margin-bottom:12px">🛍️</div>
+            <h3>No products found</h3>
+            <p>Try another search or be the first to post an item.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(product => {
+        const image = getProductImage(product);
+        const name = escapeHTML(product.name);
+        const condition = escapeHTML(product.condition || "Used");
+        const category = escapeHTML(product.category || "Other");
+        const location = escapeHTML(product.location || "Campus");
+        const description = escapeHTML(product.description || "");
+        const seller = escapeHTML(sellerName(product));
+        const price = formatPrice(product.price);
+        const time = timeAgo(product.created_at);
+        const isOwnProduct =
+          currentUser && product.seller_id === currentUser.id;
+
+        return `
+          <article class="product-card">
+            <div class="product-image-wrap">
+              <img
+                class="product-image"
+                src="${escapeHTML(image)}"
+                alt="${name}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='${placeholderImage}'"
+              >
+              <span class="price-tag">${price}</span>
+            </div>
+
+            <div class="product-details">
+              <h3 class="product-name">${name}</h3>
+
+              <div class="product-condition">
+                ${condition} · ${category}
+              </div>
+
+              ${description ? `
+                <div class="product-description">${description}</div>
+              ` : ""}
+
+              <div class="product-description">📍 ${location}</div>
+
+              <div class="seller">
+                <div class="seller-avatar">👤</div>
+                <div class="seller-info">
+                  <div class="seller-name">${seller}</div>
+                  <div class="seller-time">${time}</div>
+                </div>
+              </div>
+
+              <div class="product-actions">
+                <button
+                  class="buy-btn"
+                  data-action="buy"
+                  data-seller="${escapeHTML(product.seller_id)}"
+                  data-product="${escapeHTML(product.name)}"
+                  ${isOwnProduct ? "disabled" : ""}
+                >${isOwnProduct ? "Your item" : "Buy"}</button>
+
+                <button
+                  class="chat-btn"
+                  data-action="chat"
+                  data-seller="${escapeHTML(product.seller_id)}"
+                  data-product="${escapeHTML(product.name)}"
+                  aria-label="Message seller"
+                  ${isOwnProduct ? "disabled" : ""}
+                >☏</button>
               </div>
             </div>
-          </div>
-
-          <button
-            class="message-seller-btn"
-            data-seller-id="${esc(sellerId || '')}"
-            data-product-name="${esc(product.name || '')}"
-            ${!sellerId || sellerId === me?.id ? 'disabled' : ''}>
-            ${
-              sellerId === me?.id
-                ? 'Your listing'
-                : '💬 Message Seller'
-            }
-          </button>
-        </div>
-      </article>`;
-  }).join('');
-}
-
-async function loadProducts() {
-  $('productGrid').innerHTML =
-    '<div class="loading">Loading products...</div>';
-
-  const { data, error } = await supabase
-    .from('products')
-    .select(`
-      id,
-      seller_id,
-      name,
-      description,
-      price,
-      category,
-      condition,
-      location,
-      image_urls,
-      status,
-      created_at
-    `)
-    .eq('status', 'available')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error('Product loading error:', error);
-
-    $('productGrid').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <h3>We couldn't load the products</h3>
-        <p>Check the products table and its Supabase security policies.</p>
-      </div>`;
-
-    return;
-  }
-
-  const rows = data || [];
-  const sellerIds = [...new Set(rows.map(p => p.seller_id).filter(Boolean))];
-
-  let profiles = [];
-
-  if (sellerIds.length) {
-    const { data: profileRows, error: profileError } = await supabase
-      .from('profiles')
-      .select('id, username, full_name, avatar_url')
-      .in('id', sellerIds);
-
-    if (profileError) {
-      console.warn('Seller profile lookup failed:', profileError);
-    } else {
-      profiles = profileRows || [];
+          </article>`;
+      }).join("");
     }
-  }
 
-  const profileMap = new Map(profiles.map(p => [p.id, p]));
+    async function loadProducts() {
+      grid.innerHTML = '<div class="empty-state">Loading products...</div>';
 
-  products = rows.map(product => ({
-    ...product,
-    seller: profileMap.get(product.seller_id) || null
-  }));
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("status", "active")
+        .order("created_at", { ascending: false });
 
-  renderProducts();
-}
+      if (error) {
+        console.error("Could not load products:", error);
 
-async function openSellerMessages(sellerId, productName) {
-  if (!sellerId) {
-    showToast('This listing has no seller account attached.');
-    return;
-  }
+        grid.innerHTML = `
+          <div class="empty-state">
+            <h3>Couldn't load products</h3>
+            <p>Check your internet connection and Supabase product-table permissions.</p>
+            <button class="primary-btn" id="retryProducts">Try again</button>
+          </div>`;
 
-  if (!me) {
-    showToast('Please sign in before messaging a seller.');
-    setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 1200);
-    return;
-  }
+        document.getElementById("retryProducts")
+          ?.addEventListener("click", loadProducts);
 
-  if (sellerId === me.id) {
-    showToast('This is your own listing.');
-    return;
-  }
-
-  /*
-   * The messages.html connection code reads the "user" parameter,
-   * finds or creates a conversation, and opens that conversation.
-   */
-  window.location.href =
-    `messages.html?user=${encodeURIComponent(sellerId)}`;
-}
-
-function openListingModal() {
-  if (!me) {
-    showToast('Please sign in before listing a product.');
-    return;
-  }
-
-  $('formError').textContent = '';
-  $('listingModal').classList.add('open');
-}
-
-function closeListingModal() {
-  $('listingModal').classList.remove('open');
-}
-
-async function publishProduct(event) {
-  event.preventDefault();
-
-  if (!me) {
-    showToast('Please sign in first.');
-    return;
-  }
-
-  if (isPublishing) return;
-
-  const name = $('productName').value.trim();
-  const description = $('productDescription').value.trim();
-  const price = Number($('productPrice').value);
-  const category = $('productCategory').value;
-  const condition = $('productCondition').value;
-  const location = $('productLocation').value.trim();
-  const image = $('productImage').value.trim();
-
-  $('formError').textContent = '';
-
-  if (!name || !description || !category ||
-      $('productPrice').value === '' ||
-      !Number.isFinite(price) || price < 0) {
-    $('formError').textContent =
-      'Please enter a valid name, price, category, and description.';
-    return;
-  }
-
-  if (image) {
-    try {
-      const parsed = new URL(image);
-      if (!['http:', 'https:'].includes(parsed.protocol)) {
-        throw new Error('Invalid image URL');
+        return;
       }
-    } catch {
-      $('formError').textContent =
-        'Please enter a valid image URL beginning with https:// or http://.';
-      return;
+
+      products = data || [];
+      renderProducts();
     }
-  }
 
-  isPublishing = true;
-  $('publishBtn').disabled = true;
-  $('publishBtn').textContent = 'Publishing...';
+    async function getCurrentUser() {
+      const { data, error } = await supabase.auth.getUser();
 
-  const payload = {
-    seller_id: me.id,
-    name,
-    description,
-    price,
-    category,
-    condition,
-    location: location || null,
-    image_urls: image ? [image] : [],
-    status: 'available'
-  };
+      if (error) {
+        console.error("Could not check login:", error);
+        return null;
+      }
 
-  const { error } = await supabase
-    .from('products')
-    .insert(payload);
+      return data.user;
+    }
 
-  isPublishing = false;
-  $('publishBtn').disabled = false;
-  $('publishBtn').textContent = 'Publish product';
+    document.getElementById("openSellModal").addEventListener("click", async () => {
+      currentUser = await getCurrentUser();
 
-  if (error) {
-    console.error('Product publishing error:', error);
+      if (!currentUser) {
+        alert("Please log in to Campusora before posting a product.");
+        window.location.href = "index.html";
+        return;
+      }
 
-    $('formError').textContent =
-      'Could not publish. Check your products table columns and insert security policy.';
-    return;
-  }
-
-  $('listingForm').reset();
-  closeListingModal();
-
-  showToast('Your product has been published!');
-  await loadProducts();
-}
-
-function setupEvents() {
-  $('searchInput').addEventListener('input', event => {
-    searchTerm = event.target.value;
-    renderProducts();
-  });
-
-  $('categories').addEventListener('click', event => {
-    const button = event.target.closest('[data-category]');
-    if (!button) return;
-
-    selectedCategory = button.dataset.category;
-
-    document.querySelectorAll('[data-category]').forEach(item => {
-      item.classList.toggle('active', item === button);
+      formMessage.textContent = "";
+      modal.classList.add("open");
     });
 
-    renderProducts();
-  });
+    document.getElementById("closeSellModal").addEventListener("click", () => {
+      modal.classList.remove("open");
+    });
 
-  $('productGrid').addEventListener('click', async event => {
-    const button = event.target.closest('[data-seller-id]');
-    if (!button || button.disabled) return;
+    modal.addEventListener("click", event => {
+      if (event.target === modal) {
+        modal.classList.remove("open");
+      }
+    });
 
-    await openSellerMessages(
-      button.dataset.sellerId,
-      button.dataset.productName
-    );
-  });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        modal.classList.remove("open");
+      }
+    });
 
-  $('openListingBtn').addEventListener('click', openListingModal);
-  $('closeListingBtn').addEventListener('click', closeListingModal);
+    imageInput.addEventListener("change", () => {
+      const file = imageInput.files[0];
 
-  $('browseBtn').addEventListener('click', () => {
-    $('productsSection').scrollIntoView({ behavior: 'smooth' });
-  });
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+      }
 
-  $('listingModal').addEventListener('click', event => {
-    if (event.target === $('listingModal')) closeListingModal();
-  });
+      if (!file) {
+        imagePreview.style.display = "none";
+        imagePreview.removeAttribute("src");
+        return;
+      }
 
-  $('listingForm').addEventListener('submit', publishProduct);
-}
+      if (!file.type.startsWith("image/")) {
+        imageInput.value = "";
+        formMessage.textContent = "Please select an image file.";
+        return;
+      }
 
-async function initialize() {
-  setupEvents();
+      if (file.size > 5 * 1024 * 1024) {
+        imageInput.value = "";
+        imagePreview.style.display = "none";
+        formMessage.textContent = "Your photo is too large. Please choose one under 5 MB.";
+        return;
+      }
 
-  const { data, error } = await supabase.auth.getUser();
+      previewUrl = URL.createObjectURL(file);
+      imagePreview.src = previewUrl;
+      imagePreview.style.display = "block";
+      formMessage.textContent = "";
+    });
 
-  if (error) {
-    console.warn('Could not check signed-in user:', error);
-  }
+    productForm.addEventListener("submit", async event => {
+      event.preventDefault();
 
-  me = data?.user || null;
+      currentUser = await getCurrentUser();
 
-  await loadProducts();
-}
+      if (!currentUser) {
+        formMessage.textContent = "Please log in before publishing a product.";
+        return;
+      }
 
-initialize();
-</script>
+      const file = imageInput.files[0];
+
+      if (!file) {
+        formMessage.textContent = "Please choose a product photo.";
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        formMessage.textContent = "Please choose an image smaller than 5 MB.";
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Publishing...";
+      formMessage.textContent = "Uploading your photo. Please wait...";
+
+      let uploadedPath = null;
+
+      try {
+        const extension = file.name.split(".").pop().toLowerCase();
+        const safeExtension = /^[a-z0-9]+$/.test(extension)
+          ? extension
+          : "jpg";
+
+        const filePath =
+          `${currentUser.id}/${crypto.randomUUID()}.${safeExtension}`;
+
+        const { data: uploadData, error: uploadError } = await supabase
+          .storage
+          .from("product-images")
+          .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: file.type
+          });
+
+        if (uploadError) throw uploadError;
+
+        uploadedPath = uploadData.path;
+
+        const { data: publicData } = supabase
+          .storage
+          .from("product-images")
+          .getPublicUrl(uploadData.path);
+
+        const imageUrl = publicData.publicUrl;
+
+        const product = {
+          seller_id: currentUser.id,
+          name: document.getElementById("productName").value.trim(),
+          price: Number(document.getElementById("productPrice").value),
+          category: document.getElementById("productCategory").value,
+          condition: document.getElementById("productCondition").value,
+          location: document.getElementById("productLocation").value.trim(),
+          description: document.getElementById("productDescription").value.trim(),
+          image_urls: [imageUrl],
+          status: "active"
+        };
+
+        const { error: insertError } = await supabase
+          .from("products")
+          .insert(product);
+
+        if (insertError) throw insertError;
+
+        productForm.reset();
+        imagePreview.style.display = "none";
+
+        if (previewUrl) {
+          URL.revokeObjectURL(previewUrl);
+          previewUrl = null;
+        }
+
+        modal.classList.remove("open");
+        alert("Your product has been published!");
+
+        await loadProducts();
+
+      } catch (error) {
+        console.error("Product publishing error:", error);
+
+        formMessage.textContent =
+          error.message ||
+          "Something went wrong. Please check your Supabase settings and try again.";
+
+        if (uploadedPath) {
+          console.warn(
+            "The photo uploaded but product publishing failed. The uploaded file is:",
+            uploadedPath
+          );
+        }
+
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Publish Product";
+      }
+    });
+
+    searchInput.addEventListener("input", renderProducts);
+
+    document.querySelectorAll(".category-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelector(".category-btn.active")
+          ?.classList.remove("active");
+
+        button.classList.add("active");
+        activeCategory = button.dataset.category;
+
+        renderProducts();
+      });
+    });
+
+    grid.addEventListener("click", event => {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+
+      const sellerId = button.dataset.seller;
+      const productName = button.dataset.product;
+
+      if (!sellerId || !productName) return;
+
+      const params = new URLSearchParams({
+        user: sellerId,
+        product: productName
+      });
+
+      window.location.href = `messages.html?${params.toString()}`;
+    });
+
+    currentUser = await getCurrentUser();
+    await loadProducts();
+  </script>
 
 </body>
   </html>
