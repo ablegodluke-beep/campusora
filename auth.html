@@ -396,10 +396,13 @@
     const submitBtn = document.getElementById('submitBtn');
     const messageBox = document.getElementById('message');
     const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
     const resendBtn = document.getElementById('resendBtn');
 
     let mode = 'signup';
     let pendingConfirmationEmail = '';
+
+    const params = new URLSearchParams(window.location.search);
 
     function showMessage(text, type) {
       messageBox.textContent = text;
@@ -448,11 +451,75 @@
     signupTab.addEventListener('click', () => setMode('signup'));
     loginTab.addEventListener('click', () => setMode('login'));
 
-    // If the URL requests login, show the login form.
-    const params = new URLSearchParams(window.location.search);
+    /*
+      Profile routing:
+      - New registrations go to profile setup.
+      - Existing users go to the main feed unless their profile
+        is incomplete.
+      - If a profile cannot be checked, use the main feed rather
+        than trapping an existing user in profile setup.
+    */
 
+    async function getDestination(user) {
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (error) {
+          console.warn('Could not check profile:', error.message);
+          return './index.html';
+        }
+
+        // No profile row: send to setup.
+        if (!profile) {
+          return './profile-setup.html';
+        }
+
+        // Check common fields used to identify a completed profile.
+        const name = profile.full_name || profile.name || '';
+        const username = profile.username || '';
+        const school = profile.school || profile.school_name || '';
+
+        if (!name.trim() || !username.trim() || !school.trim()) {
+          return './profile-setup.html';
+        }
+
+        return './index.html';
+
+      } catch (error) {
+        console.warn('Profile check failed:', error);
+        return './index.html';
+      }
+    }
+
+    async function redirectSignedInUser(user, isNewUser = false) {
+      if (isNewUser) {
+        window.location.replace('./profile-setup.html');
+        return;
+      }
+
+      const destination = await getDestination(user);
+      window.location.replace(destination);
+    }
+
+    // Open login mode when requested in the URL.
     if (params.get('mode') === 'login') {
       setMode('login');
+    }
+
+    // Existing signed-in users should not see the signup form.
+    // Login links redirect to the feed unless profile completion is needed.
+    try {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (!error && data.session && data.session.user) {
+        await redirectSignedInUser(data.session.user, false);
+      }
+    } catch (error) {
+      console.warn('Could not check existing session:', error);
     }
 
     form.addEventListener('submit', async (event) => {
@@ -468,7 +535,7 @@
         ? 'Creating account...'
         : 'Logging in...';
 
-      const email = document.getElementById('email').value.trim();
+      const email = emailInput.value.trim();
       const password = passwordInput.value;
 
       try {
@@ -502,7 +569,7 @@
 
           if (error) throw error;
 
-          if (data.session) {
+          if (data.session && data.user) {
             showMessage(
               'Your account has been created! Taking you to profile setup...',
               'success'
@@ -515,7 +582,7 @@
           pendingConfirmationEmail = email;
 
           showMessage(
-            'Your registration was received. Check your email and tap the confirmation link. After confirmation, you should be returned to Campusora to set up your profile.',
+            'Your registration was received. Check your email and tap the confirmation link. After confirmation, you can complete your profile.',
             'success'
           );
 
@@ -529,16 +596,16 @@
 
           if (error) throw error;
 
-          if (!data.session) {
+          if (!data.session || !data.user) {
             throw new Error('Login could not be completed. Please try again.');
           }
 
           showMessage(
-            'Login successful! Taking you to profile setup...',
+            'Login successful! Taking you to Campusora...',
             'success'
           );
 
-          window.location.replace('./profile-setup.html');
+          await redirectSignedInUser(data.user, false);
           return;
         }
 
@@ -599,14 +666,6 @@
         resendBtn.textContent = 'Resend confirmation email';
       }
     });
-
-    // Do not redirect signed-in users away from a requested login form.
-    const { data: sessionData, error: sessionError } =
-      await supabase.auth.getSession();
-
-    if (!sessionError && sessionData.session && params.get('mode') !== 'login') {
-      window.location.replace('./profile-setup.html');
-    }
   </script>
 </body>
   </html>
