@@ -3,865 +3,1308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campusora Marketplace</title>
+<meta name="theme-color" content="#080b18">
+
+<title>Marketplace | Campusora</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f3f5fa;color:#182338;font:15px Arial,sans-serif}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0}
-.top{position:sticky;top:0;z-index:5;background:white;border-bottom:1px solid #e3e7ef;padding:12px;display:flex;align-items:center;gap:12px}
-.logo{font-weight:900;font-size:25px;color:#2864e8}
-.logo span{color:#182338}
-.search{flex:1}
-.search input{width:100%;border:0;border-radius:25px;background:#f0f2f7;padding:12px}
-.circle{width:40px;height:40px;border-radius:50%;background:#eef1f7}
-.wrap{max-width:1120px;margin:20px auto;padding:0 14px;display:grid;grid-template-columns:205px minmax(0,650px) 235px;gap:18px}
-.panel{background:white;border:1px solid #e3e7ef;border-radius:16px;overflow:hidden}
-.left{padding:12px;height:max-content;position:sticky;top:78px}
-.nav{display:block;padding:12px;border-radius:10px;text-decoration:none;color:#354158;font-weight:bold}
-.nav.active,.nav:hover{background:#edf2ff;color:#2864e8}
-main{min-width:0}
-.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
-.heading h1{margin:0;font-size:25px}
-.muted{color:#6c7688;font-size:13px}
-.primary{background:#2864e8;color:white;border-radius:11px;padding:11px 14px;font-weight:bold}
-.chips{display:flex;gap:8px;overflow:auto;padding-bottom:13px}
-.chip{white-space:nowrap;padding:9px 13px;border-radius:22px;background:white;border:1px solid #e0e5ef;color:#58657a}
-.chip.active{background:#2864e8;color:white}
-.stories{display:flex;gap:12px;padding:13px;margin-bottom:13px;overflow:auto}
-.story{min-width:60px;text-align:center;font-size:12px;color:#626d7f}
-.ring{width:54px;height:54px;margin:auto auto 5px;padding:3px;border-radius:50%;background:linear-gradient(135deg,#2864e8,#a84eff,#ff7b54)}
-.ring span{height:100%;display:grid;place-items:center;background:white;border-radius:50%;color:#2864e8;font-size:24px}
-.composer{padding:14px;margin-bottom:14px}
-.composerline{display:flex;gap:10px;align-items:center}
-.avatar{width:42px;height:42px;border-radius:50%;background:#e8edfa;display:grid;place-items:center;overflow:hidden;flex-shrink:0;font-weight:bold;color:#37518a}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.fakeinput{flex:1;text-align:left;border-radius:24px;background:#f0f2f7;color:#737d8e;padding:12px 16px}
-.quick{display:flex;justify-content:space-around;border-top:1px solid #e9ecf2;margin-top:12px;padding-top:8px}
-.quick button{background:none;color:#606b7e;padding:7px}
-.feedtitle{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 10px}
-.feedtitle h2{font-size:18px;margin:0}
-.post{margin-bottom:15px}
-.posthead{display:flex;align-items:center;gap:10px;padding:14px 14px 8px}
-.seller{flex:1;min-width:0}
-.sellername{font-weight:bold;cursor:pointer}
-.sellername:hover{color:#2864e8}
-.copy{padding:0 14px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
-.photo{width:100%;max-height:520px;aspect-ratio:1.1;object-fit:cover;display:block;background:#edf0f7}
-.placeholder{width:100%;aspect-ratio:1.1;display:grid;place-items:center;background:linear-gradient(135deg,#edf2ff,#f9eefe);font-size:64px}
-.details{padding:13px 14px}
-.price{font-weight:900;font-size:23px}
-.pname{font-size:17px;font-weight:bold}
-.actions{display:flex;padding:5px 9px;border-top:1px solid #e9ecf2}
-.actions button{flex:1;background:none;color:#626d7f;padding:10px 2px;font-weight:bold}
-.buy{margin:0 13px 13px;width:calc(100% - 26px);padding:12px;background:#2864e8;color:white;border-radius:11px;font-weight:bold}
-.right{height:max-content;padding:16px}
-.right p{font-size:13px;color:#6c7688}
-.hint{padding:12px 0;border-bottom:1px solid #eef0f5}
-.empty{text-align:center;padding:34px 18px;color:#6c7688}
-.empty h3{color:#182338}
-.modalback{display:none;position:fixed;inset:0;background:#10192d88;z-index:20;align-items:center;justify-content:center;padding:14px}
-.modalback.open{display:flex}
-.modal{width:min(550px,100%);max-height:90vh;overflow:auto;background:white;border-radius:17px}
-.modalhead{padding:16px 18px;border-bottom:1px solid #e6eaf1;display:flex;justify-content:space-between;align-items:center}
-.modalhead h2{font-size:19px;margin:0}
-.close{width:34px;height:34px;border-radius:50%;background:#f0f2f7;font-size:22px}
-.form{padding:17px;display:grid;gap:12px}
-.form label{display:grid;gap:5px;font-size:13px;font-weight:bold;color:#4a566d}
-.form input,.form textarea,.form select{width:100%;border:1px solid #dce2ee;border-radius:10px;padding:11px;background:white}
-.form textarea{min-height:85px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.note{font-size:12px;color:#6c7688}
-.cover{height:100px;background:linear-gradient(120deg,#2864e8,#9854e8)}
-.profile{padding:0 18px 20px}
-.bigavatar{margin-top:-35px;width:76px;height:76px;border-radius:50%;border:4px solid white;background:#e8edfa;display:grid;place-items:center;font-size:25px;font-weight:bold;overflow:hidden}
-.bigavatar img{width:100%;height:100%;object-fit:cover}
-.profile h2{margin:7px 0 2px}
-.profile p{color:#6c7688}
-.mini{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
-.miniitem{border:1px solid #e3e7ef;border-radius:10px;overflow:hidden}
-.miniitem img{width:100%;aspect-ratio:1.2;object-fit:cover}
-.miniitem div{padding:8px;font-size:13px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:30;background:#182338;color:white;padding:12px 16px;border-radius:10px;max-width:90%}
-.hidden{display:none!important}
-
-@media(max-width:900px){
-.wrap{grid-template-columns:175px minmax(0,1fr)}
-.right{display:none}
+:root {
+  --bg: #080b18;
+  --panel: #101426;
+  --panel2: #171c32;
+  --border: #282d48;
+  --text: #f5f6ff;
+  --muted: #9299b6;
+  --purple: #925bff;
+  --blue: #526dff;
+  --cyan: #38d9ff;
 }
-@media(max-width:620px){
-.top{padding:10px;gap:8px}
-.logo{font-size:21px}
-.wrap{display:block;margin:13px auto;padding:0 9px}
-.left{display:none}
-.heading h1{font-size:22px}
-.heading .primary{padding:9px;font-size:13px}
-.photo,.placeholder{aspect-ratio:1/1}
-.row{grid-template-columns:1fr}
-.actions button{font-size:13px}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.topbar {
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(16px, calc((100% - 1180px) / 2));
+  background: rgba(8, 11, 24, .96);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(16px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+}
+
+.brand-icon {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
+  box-shadow: 0 0 25px #7952ee44;
+  font-size: 23px;
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.icon-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: white;
+}
+
+.icon-btn:hover {
+  border-color: var(--purple);
+}
+
+.page {
+  max-width: 1180px;
+  margin: auto;
+  padding: 30px 18px 80px;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 34px;
+  border: 1px solid #37315d;
+  border-radius: 23px;
+  background:
+    radial-gradient(ellipse at 85% 15%, #7751d733, transparent 38%),
+    radial-gradient(ellipse at 10% 100%, #315ce622, transparent 40%),
+    linear-gradient(135deg, #14172d, #0d1121 75%);
+}
+
+.hero:after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -85px;
+  bottom: -120px;
+  border-radius: 50%;
+  background: #8654ff22;
+  filter: blur(12px);
+}
+
+.eyebrow {
+  color: #bda7ff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.hero h1 {
+  margin-top: 8px;
+  font-size: clamp(27px, 5vw, 43px);
+  letter-spacing: -1.4px;
+  line-height: 1.15;
+}
+
+.hero h1 span {
+  background: linear-gradient(90deg, #b995ff, #6a91ff, #47dcff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p {
+  max-width: 520px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 23px;
+}
+
+.primary-btn,
+.secondary-btn {
+  min-height: 43px;
+  padding: 0 17px;
+  border-radius: 12px;
+  font-weight: 750;
+  border: 1px solid transparent;
+  transition: transform .2s, opacity .2s;
+}
+
+.primary-btn {
+  color: white;
+  background: linear-gradient(120deg, var(--purple), var(--blue));
+  box-shadow: 0 7px 24px #7650f333;
+}
+
+.secondary-btn {
+  background: #171b30;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+  transform: translateY(-2px);
+}
+
+.search-row {
+  display: flex;
+  gap: 12px;
+  margin: 23px 0 17px;
+}
+
+.search-box {
+  flex: 1;
+  position: relative;
+}
+
+.search-box span {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.search-box input {
+  width: 100%;
+  height: 47px;
+  padding: 0 15px 0 44px;
+  outline: none;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--panel);
+  color: white;
+}
+
+.search-box input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px #925bff18;
+}
+
+.categories {
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  padding: 3px 0 15px;
+  scrollbar-width: thin;
+}
+
+.category-btn {
+  white-space: nowrap;
+  padding: 9px 15px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--panel);
+  color: #b5bad2;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.category-btn.active,
+.category-btn:hover {
+  background: linear-gradient(120deg, #6940b744, #3452a344);
+  color: white;
+  border-color: #8061d6;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 17px 0;
+}
+
+.section-heading h2 {
+  font-size: 21px;
+  letter-spacing: -.4px;
+}
+
+.section-heading p {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.product-count {
+  color: #bba7ff;
+  font-size: 12px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.product-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: linear-gradient(160deg, #14182b, #0f1323);
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: #6352a2;
+  box-shadow: 0 12px 30px #0003;
+}
+
+.product-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / .85;
+  overflow: hidden;
+  background: #1a1e33;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .3s;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.04);
+}
+
+.image-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #a6a9c5;
+  font-size: 38px;
+  background: radial-gradient(circle at 50% 40%, #40335f, #15192b 70%);
+}
+
+.product-category {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: #080b18d9;
+  border: 1px solid #ffffff20;
+  color: #d9ceff;
+  font-size: 10px;
+  font-weight: 750;
+  backdrop-filter: blur(8px);
+}
+
+.product-info {
+  padding: 14px;
+}
+
+.product-price {
+  font-size: 20px;
+  font-weight: 850;
+  letter-spacing: -.5px;
+  color: #c5a8ff;
+  overflow-wrap: anywhere;
+}
+
+.product-name {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.product-description {
+  margin-top: 7px;
+  color: #a1a7c1;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 57px;
+}
+
+.product-location {
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 11px;
+}
+
+.seller-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid #252a40;
+  min-width: 0;
+}
+
+.seller-avatar {
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.seller-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.seller-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.seller-name {
+  font-size: 11px;
+  font-weight: 750;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.seller-caption {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.message-seller-btn {
+  width: 100%;
+  margin-top: 13px;
+  min-height: 39px;
+  border: 1px solid #7356c4;
+  border-radius: 11px;
+  background: linear-gradient(110deg, #6840b9, #3554b6);
+  color: white;
+  font-weight: 750;
+  font-size: 12px;
+}
+
+.message-seller-btn:hover {
+  filter: brightness(1.13);
+}
+
+.message-seller-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 55px 20px;
+  text-align: center;
+  border: 1px dashed #383653;
+  border-radius: 17px;
+  background: #111426;
+}
+
+.empty-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.empty-state h3 {
+  font-size: 17px;
+}
+
+.empty-state p {
+  color: var(--muted);
+  margin-top: 7px;
+  font-size: 12px;
+}
+
+.loading {
+  grid-column: 1 / -1;
+  padding: 45px 20px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #050611cc;
+  backdrop-filter: blur(9px);
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal {
+  width: 100%;
+  max-width: 510px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #393456;
+  border-radius: 19px;
+  background: #101426;
+  box-shadow: 0 20px 70px #0008;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 19px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-head h2 {
+  font-size: 19px;
+}
+
+.close-btn {
+  width: 33px;
+  height: 33px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: white;
+  font-size: 19px;
+}
+
+.modal-body {
+  padding: 19px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #d8daed;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  outline: none;
+  background: #0b0f1e;
+  color: white;
+  padding: 12px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--purple);
+}
+
+.form-group textarea {
+  min-height: 95px;
+  resize: vertical;
+}
+
+.form-group input[type="file"] {
+  padding: 10px;
+  font-size: 11px;
+}
+
+.form-help {
+  display: block;
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 10px;
+}
+
+.form-error {
+  color: #ff929e;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  z-index: 150;
+  transform: translate(-50%, 15px);
+  opacity: 0;
+  pointer-events: none;
+  background: #24223c;
+  border: 1px solid #504477;
+  border-radius: 11px;
+  padding: 11px 16px;
+  max-width: calc(100% - 30px);
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  transition: .2s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.footer {
+  margin-top: 42px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: #777f9d;
+  font-size: 11px;
+}
+
+@media (max-width: 1000px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    height: 58px;
+    padding: 0 13px;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .brand-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+
+  .page {
+    padding: 17px 12px 60px;
+  }
+
+  .hero {
+    padding: 24px 19px;
+    border-radius: 18px;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+  }
+
+  .product-info {
+    padding: 11px;
+  }
+
+  .product-price {
+    font-size: 17px;
+  }
+
+  .product-name {
+    font-size: 13px;
+  }
+
+  .product-description {
+    font-size: 11px;
+  }
+
+  .section-heading h2 {
+    font-size: 19px;
+  }
+
+  .search-row {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-image-wrap {
+    aspect-ratio: 1 / .7;
+  }
+
+  .hero h1 {
+    font-size: 27px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<header class="top">
-  <div class="logo">campus<span>ora</span></div>
-  <div class="search">
-    <input id="search" placeholder="Search products, sellers, categories...">
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">✳</span>
+    <span>campusora</span>
+  </a>
+
+  <div class="top-actions">
+    <a class="icon-btn" href="messages.html" aria-label="Messages">✉</a>
+    <a class="icon-btn" href="profile.html" aria-label="Profile">◎</a>
   </div>
-  <button class="circle" id="msgTop">✉</button>
-  <button class="circle" id="accountTop">👤</button>
 </header>
 
-<div class="wrap">
+<main class="page">
 
-<aside class="left panel">
-  <a class="nav" href="index.html">🏠 Home feed</a>
-  <a class="nav" href="#">👥 Community</a>
-  <a class="nav active" href="marketplace.html">🛍️ Marketplace</a>
-  <a class="nav" href="#" id="navMessages">💬 Messages</a>
-  <a class="nav" href="#" id="navProfile">👤 My profile</a>
-  <p class="muted" style="padding:8px">
-    People first. Products second. Find things, meet sellers, and connect.
-  </p>
-</aside>
+  <section class="hero">
+    <div class="eyebrow">Your campus marketplace ✦</div>
 
-<main>
+    <h1>Discover something <span>you love.</span></h1>
 
-  <div class="heading">
-    <div>
-      <h1>Marketplace</h1>
-      <div class="muted">Discover what your community is selling.</div>
-    </div>
-    <button class="primary" id="sell">＋ Sell something</button>
-  </div>
+    <p>
+      Find useful items from other Campusora members.
+      See something you like? Message the seller and start a conversation.
+    </p>
 
-  <div class="chips" id="categories">
-    <button class="chip active" data-cat="All">For you</button>
-    <button class="chip" data-cat="Electronics">📱 Electronics</button>
-    <button class="chip" data-cat="Fashion">👟 Fashion</button>
-    <button class="chip" data-cat="Food">🍲 Food</button>
-    <button class="chip" data-cat="Home">🪑 Home</button>
-    <button class="chip" data-cat="Books">📚 Books</button>
-    <button class="chip" data-cat="Other">✨ Other</button>
-  </div>
+    <div class="hero-actions">
+      <button class="primary-btn" id="openListingBtn">
+        ＋ List a product
+      </button>
 
-  <div class="stories panel">
-    <div class="story"><div class="ring"><span>＋</span></div>Sell today</div>
-    <div class="story"><div class="ring"><span>✦</span></div>Fresh finds</div>
-    <div class="story"><div class="ring"><span>♡</span></div>Popular</div>
-    <div class="story"><div class="ring"><span>⌖</span></div>Near you</div>
-    <div class="story"><div class="ring"><span>↗</span></div>Good deals</div>
-  </div>
-
-  <section class="composer panel">
-    <div class="composerline">
-      <div class="avatar" id="myAvatar">C</div>
-      <button class="fakeinput" id="compose">What are you selling today?</button>
-    </div>
-    <div class="quick">
-      <button id="quickPhoto">▧ Photo</button>
-      <button id="quickPrice">₦ Add price</button>
-      <button id="quickList">＋ Create listing</button>
+      <button class="secondary-btn" id="browseBtn">
+        Explore products ↓
+      </button>
     </div>
   </section>
 
-  <div class="feedtitle">
-    <h2>Latest from the community</h2>
-    <span class="muted" id="count">Loading...</span>
+  <div class="search-row">
+    <div class="search-box">
+      <span>⌕</span>
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search products..."
+        autocomplete="off"
+      >
+    </div>
   </div>
 
-  <div id="feed">
-    <div class="panel empty">Loading real Campusora listings...</div>
+  <div class="categories" id="categories">
+    <button class="category-btn active" data-category="All">✦ All products</button>
+    <button class="category-btn" data-category="Electronics">💻 Electronics</button>
+    <button class="category-btn" data-category="Fashion">👕 Fashion</button>
+    <button class="category-btn" data-category="Books">📚 Books</button>
+    <button class="category-btn" data-category="Hostel">🛏️ Hostel</button>
+    <button class="category-btn" data-category="Food">🍔 Food</button>
+    <button class="category-btn" data-category="Other">✧ Other</button>
   </div>
+
+  <section id="productsSection">
+    <div class="section-heading">
+      <div>
+        <h2>Explore products ✨</h2>
+        <p>Discover what's available in your campus community.</p>
+      </div>
+
+      <span class="product-count" id="productCount"></span>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <div class="loading">Loading products...</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Campusora · Discover. Connect. Trade.
+  </footer>
 
 </main>
 
-<aside class="right panel">
-  <h3>Shop with confidence</h3>
-  <div class="hint">
-    <b>🛡️ Check the seller</b>
-    <p>Open their profile and ask questions before arranging a purchase.</p>
-  </div>
-  <div class="hint">
-    <b>📍 Meet safely</b>
-    <p>Agree on a public meeting place and check the item before paying.</p>
-  </div>
-  <div class="hint">
-    <b>💙 Community first</b>
-    <p>Campusora is about people connecting, not just products.</p>
-  </div>
-  <button class="primary" style="width:100%" id="sell2">Create a listing</button>
-</aside>
+<!-- Create product modal -->
+<div class="modal-backdrop" id="listingModal">
+  <section class="modal">
+    <header class="modal-head">
+      <h2>List a product ✨</h2>
+      <button class="close-btn" id="closeListingBtn" type="button">×</button>
+    </header>
 
-</div>
+    <form class="modal-body" id="listingForm">
 
-<!-- CREATE LISTING -->
-<div class="modalback" id="listingModal">
-  <div class="modal">
-    <div class="modalhead">
-      <h2>Create a marketplace post</h2>
-      <button class="close" data-close="listingModal">×</button>
-    </div>
+      <div class="form-error" id="formError"></div>
 
-    <form class="form" id="listingForm">
-      <div class="note">Publish from your real Campusora account.</div>
-
-      <label>Product name
-        <input name="name" required maxlength="100" placeholder="e.g. Samsung phone">
-      </label>
-
-      <div class="row">
-        <label>Price (₦)
-          <input name="price" type="number" min="0" required>
-        </label>
-        <label>Category
-          <select name="category">
-            <option>Electronics</option>
-            <option>Fashion</option>
-            <option>Food</option>
-            <option>Home</option>
-            <option>Books</option>
-            <option>Other</option>
-          </select>
-        </label>
+      <div class="form-group">
+        <label for="productName">Product name *</label>
+        <input id="productName" maxlength="120" required
+          placeholder="e.g. Samsung Galaxy phone">
       </div>
 
-      <div class="row">
-        <label>Condition
-          <select name="condition">
-            <option>Used</option>
-            <option>New</option>
-            <option>Refurbished</option>
-          </select>
-        </label>
-        <label>Location
-          <input name="location" placeholder="City or area">
-        </label>
+      <div class="form-group">
+        <label for="productPrice">Price in ₦ *</label>
+        <input id="productPrice" type="number" min="0" step="0.01"
+          required placeholder="e.g. 45000">
       </div>
 
-      <label>Photo URL (optional)
-        <input name="image_url" type="url" placeholder="https://...">
-      </label>
+      <div class="form-group">
+        <label for="productCategory">Category *</label>
+        <select id="productCategory" required>
+          <option value="">Choose a category</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Books">Books</option>
+          <option value="Hostel">Hostel</option>
+          <option value="Food">Food</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
 
-      <label>Description
-        <textarea name="description" required placeholder="Tell people about your item..."></textarea>
-      </label>
+      <div class="form-group">
+        <label for="productCondition">Condition</label>
+        <select id="productCondition">
+          <option value="Used">Used</option>
+          <option value="Like new">Like new</option>
+          <option value="New">New</option>
+        </select>
+      </div>
 
-      <button class="primary" id="publish">Publish listing</button>
-      <div class="note">Listings are published using your real account.</div>
+      <div class="form-group">
+        <label for="productDescription">Description *</label>
+        <textarea id="productDescription" maxlength="3000" required
+          placeholder="Describe the product, its condition, and anything buyers should know..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="productLocation">Location</label>
+        <input id="productLocation" maxlength="150"
+          placeholder="e.g. Your campus or city">
+      </div>
+
+      <div class="form-group">
+        <label for="productImage">Product image URL</label>
+        <input id="productImage" type="url"
+          placeholder="https://example.com/image.jpg">
+        <small class="form-help">
+          Paste a direct image link. Photo uploads from your phone require
+          a configured Supabase Storage bucket.
+        </small>
+      </div>
+
+      <button class="primary-btn" id="publishBtn" type="submit"
+        style="width:100%">
+        Publish product
+      </button>
     </form>
-  </div>
+  </section>
 </div>
 
-<!-- LOGIN AND SIGNUP -->
-<div class="modalback" id="authModal">
-  <div class="modal">
-    <div class="modalhead">
-      <h2 id="authTitle">Log in to Campusora</h2>
-      <button class="close" data-close="authModal">×</button>
-    </div>
+<div class="toast" id="toast"></div>
 
-    <form class="form" id="authForm">
-      <label>Email
-        <input name="email" type="email" required>
-      </label>
+<script type="module">
+import { supabase } from './supabase.js';
 
-      <label>Password
-        <input name="password" type="password" minlength="6" required>
-      </label>
+const $ = id => document.getElementById(id);
 
-      <button class="primary" id="authSubmit">Log in</button>
-      <button type="button" class="chip" id="toggleAuth">Need an account? Sign up</button>
-      <p class="note">Email confirmation may be required by your Supabase settings.</p>
-    </form>
-  </div>
-</div>
-
-<!-- SELLER PROFILE -->
-<div class="modalback" id="profileModal">
-  <div class="modal">
-    <div class="modalhead">
-      <h2>Seller profile</h2>
-      <button class="close" data-close="profileModal">×</button>
-    </div>
-    <div id="profileContent" class="empty">Loading profile...</div>
-  </div>
-</div>
-
-<!-- MESSAGE SELLER -->
-<div class="modalback" id="messageModal">
-  <div class="modal">
-    <div class="modalhead">
-      <h2>Message seller</h2>
-      <button class="close" data-close="messageModal">×</button>
-    </div>
-    <div class="form" id="messageContent"></div>
-  </div>
-</div>
-
-<div id="toast" class="toast hidden"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL = "https://ssdhygwozbroqjhuecgp.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_gbbFNsXzzJSh8k3aqEl4kg_XO-YRo4N";
-
-const db = window.supabase
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-  : null;
-
-let user = null;
-let profile = null;
+let me = null;
 let products = [];
-let cat = "All";
-let term = "";
-let authMode = "login";
-let activeSeller = null;
+let selectedCategory = 'All';
+let searchTerm = '';
+let isPublishing = false;
 
-const $ = s => document.querySelector(s);
-
-const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;"
-}[c]));
-
-const cash = v => "₦" + Number(v || 0).toLocaleString("en-NG");
-
-const pname = p =>
-  p?.display_name ||
-  p?.full_name ||
-  p?.username ||
-  p?.name ||
-  p?.email?.split("@")[0] ||
-  "Campusora member";
-
-function toast(message) {
-  const t = $("#toast");
-  t.textContent = message;
-  t.classList.remove("hidden");
-  clearTimeout(window.tt);
-  window.tt = setTimeout(() => t.classList.add("hidden"), 4000);
+function esc(value = '') {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
 }
 
-function open(id) {
-  $("#" + id).classList.add("open");
+function initials(name = 'C') {
+  return name.trim().split(/\s+/).filter(Boolean).slice(0, 2)
+    .map(part => part[0]).join('').toUpperCase() || 'C';
 }
 
-function close(id) {
-  $("#" + id).classList.remove("open");
+function showToast(message) {
+  const el = $('toast');
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
-function needUser() {
-  if (!db) {
-    toast("Supabase did not load. Check your internet connection.");
-    return false;
+function profileName(profile) {
+  return profile?.full_name || profile?.username || 'Campusora member';
+}
+
+function formatPrice(price) {
+  const number = Number(price);
+  if (!Number.isFinite(number)) return 'Price not listed';
+
+  return '₦' + number.toLocaleString('en-NG', {
+    maximumFractionDigits: 2
+  });
+}
+
+function imageURL(product) {
+  let images = product.image_urls;
+
+  if (typeof images === 'string') {
+    try {
+      images = JSON.parse(images);
+    } catch {
+      images = [images];
+    }
   }
 
-  if (!user) {
-    authMode = "login";
-    authLabels();
-    open("authModal");
-    return false;
+  if (Array.isArray(images)) return images[0] || '';
+  if (images && typeof images === 'object') {
+    return images.url || '';
   }
 
-  return true;
+  return '';
 }
 
-function authLabels() {
-  $("#authTitle").textContent =
-    authMode === "login"
-      ? "Log in to Campusora"
-      : "Create your Campusora account";
+function sellerAvatar(profile) {
+  const name = profileName(profile);
+  const avatar = profile?.avatar_url;
 
-  $("#authSubmit").textContent =
-    authMode === "login" ? "Log in" : "Sign up";
+  if (avatar) {
+    return `<div class="seller-avatar">
+      <img src="${esc(avatar)}" alt=""
+        onerror="this.parentElement.textContent='${esc(initials(name))}'">
+    </div>`;
+  }
 
-  $("#toggleAuth").textContent =
-    authMode === "login"
-      ? "Need an account? Sign up"
-      : "Already have an account? Log in";
+  return `<div class="seller-avatar">${esc(initials(name))}</div>`;
 }
 
-async function initUser() {
-  if (!db) return;
+function categoryIcon(category) {
+  const icons = {
+    Electronics: '💻',
+    Fashion: '👕',
+    Books: '📚',
+    Hostel: '🛏️',
+    Food: '🍔',
+    Other: '✧'
+  };
 
-  const { data: { session } } = await db.auth.getSession();
-  user = session?.user || null;
-  profile = null;
-
-  if (user) {
-    const r = await db
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    profile = r.data || { id: user.id, email: user.email };
-
-    $("#myAvatar").innerHTML = profile.avatar_url
-      ? `<img src="${esc(profile.avatar_url)}">`
-      : esc(pname(profile).slice(0, 1).toUpperCase());
-  } else {
-    $("#myAvatar").textContent = "C";
-  }
+  return icons[category] || '✦';
 }
 
-async function load() {
-  if (!db) {
-    $("#feed").innerHTML =
-      '<div class="panel empty"><h3>Could not connect</h3><p>Check your internet connection.</p></div>';
-    return;
-  }
+function renderProducts() {
+  const grid = $('productGrid');
+  const query = searchTerm.trim().toLowerCase();
 
-  const { data, error } = await db
-    .from("products")
-    .select("*")
-    .eq("status", "available")
-    .order("created_at", { ascending: false })
-    .limit(100);
+  const filtered = products.filter(product => {
+    const text = [
+      product.name,
+      product.description,
+      product.category,
+      product.location,
+      product.condition,
+      profileName(product.seller)
+    ].filter(Boolean).join(' ').toLowerCase();
 
-  if (error) {
-    $("#count").textContent = "Feed unavailable";
-    $("#feed").innerHTML =
-      `<div class="panel empty"><h3>Couldn't load listings</h3>
-      <p>${esc(error.message)}<br>Check the products table and its SELECT policy.</p></div>`;
-    return;
-  }
+    const matchesSearch = !query || text.includes(query);
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      product.category?.toLowerCase() === selectedCategory.toLowerCase();
 
-  products = data || [];
+    return matchesSearch && matchesCategory;
+  });
 
-  const ids = [...new Set(products.map(p => p.seller_id).filter(Boolean))];
+  $('productCount').textContent =
+    `${filtered.length} product${filtered.length === 1 ? '' : 's'}`;
 
-  if (ids.length) {
-    const r = await db.from("profiles").select("*").in("id", ids);
-    const m = new Map((r.data || []).map(p => [p.id, p]));
-
-    products = products.map(p => ({
-      ...p,
-      _seller: m.get(p.seller_id) || null
-    }));
-  }
-
-  render();
-}
-
-function render() {
-  const rows = products.filter(p =>
-    (cat === "All" ||
-      String(p.category || "Other").toLowerCase() === cat.toLowerCase()) &&
-    [
-      p.name,
-      p.description,
-      p.category,
-      p.location,
-      p._seller?.display_name,
-      p._seller?.full_name,
-      p._seller?.username
-    ].join(" ").toLowerCase().includes(term.toLowerCase())
-  );
-
-  $("#count").textContent =
-    rows.length + " listing" + (rows.length === 1 ? "" : "s");
-
-  if (!rows.length) {
-    $("#feed").innerHTML = `
-      <div class="panel empty">
-        <div style="font-size:40px">🛍️</div>
-        <h3>${term || cat !== "All"
-          ? "No matching listings yet"
-          : "Your community feed starts here"}</h3>
-        <p>${term || cat !== "All"
-          ? "Try another search or category."
-          : "When real sellers publish items, their posts will appear here."}</p>
-        <button class="primary" id="emptySell">＋ Create a listing</button>
+  if (!filtered.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">✧</div>
+        <h3>No products found</h3>
+        <p>Try another search or category, or check back later.</p>
       </div>`;
-
-    $("#emptySell").onclick = listing;
     return;
   }
 
-  $("#feed").innerHTML = rows.map(p => {
-    const s = p._seller || {};
-    const name = pname(s);
-    const img = Array.isArray(p.image_urls)
-      ? p.image_urls[0]
-      : (p.image_url || "");
+  grid.innerHTML = filtered.map(product => {
+    const seller = product.seller || {};
+    const image = imageURL(product);
+    const category = product.category || 'Other';
+    const description = product.description || 'No description provided.';
+    const location = product.location || '';
+    const sellerId = product.seller_id;
 
     return `
-      <article class="panel post">
-        <div class="posthead">
-          <div class="avatar">
-            ${s.avatar_url
-              ? `<img src="${esc(s.avatar_url)}">`
-              : esc(name.slice(0, 1).toUpperCase())}
+      <article class="product-card">
+        <div class="product-image-wrap">
+          ${
+            image
+              ? `<img class="product-image"
+                  src="${esc(image)}"
+                  alt="${esc(product.name)}"
+                  loading="lazy"
+                  onerror="this.style.display='none';
+                    this.nextElementSibling.style.display='grid'">`
+              : ''
+          }
+
+          <div class="image-placeholder"
+            style="display:${image ? 'none' : 'grid'}">
+            ${categoryIcon(category)}
           </div>
 
-          <div class="seller">
-            <div class="sellername" data-profile="${esc(p.seller_id || "")}">
-              ${esc(name)}
+          <span class="product-category">
+            ${esc(category)}
+          </span>
+        </div>
+
+        <div class="product-info">
+          <div class="product-price">${esc(formatPrice(product.price))}</div>
+
+          <h3 class="product-name">${esc(product.name)}</h3>
+
+          <p class="product-description">${esc(description)}</p>
+
+          ${
+            location
+              ? `<div class="product-location">⌖ ${esc(location)}</div>`
+              : ''
+          }
+
+          <div class="seller-row">
+            ${sellerAvatar(seller)}
+
+            <div class="seller-details">
+              <div class="seller-name">${esc(profileName(seller))}</div>
+              <div class="seller-caption">
+                ${esc(product.condition || 'Product seller')}
+              </div>
             </div>
-            <div class="muted">
-              ${p.created_at
-                ? new Date(p.created_at).toLocaleDateString()
-                : "Recently"}
-              ${p.location ? " · 📍 " + esc(p.location) : ""}
-            </div>
           </div>
-          <span class="muted">···</span>
+
+          <button
+            class="message-seller-btn"
+            data-seller-id="${esc(sellerId || '')}"
+            data-product-name="${esc(product.name || '')}"
+            ${!sellerId || sellerId === me?.id ? 'disabled' : ''}>
+            ${
+              sellerId === me?.id
+                ? 'Your listing'
+                : '💬 Message Seller'
+            }
+          </button>
         </div>
-
-        ${p.description
-          ? `<div class="copy">${esc(p.description)}</div>`
-          : ""}
-
-        ${img
-          ? `<img class="photo" src="${esc(img)}" alt="${esc(p.name)}">`
-          : '<div class="placeholder">🛍️</div>'}
-
-        <div class="details">
-          <div class="price">${cash(p.price)}</div>
-          <div class="pname">${esc(p.name)}</div>
-          <div class="muted">
-            ${esc(p.category || "Other")}
-            ${p.condition ? " · " + esc(p.condition) : ""}
-            ${p.location ? " · " + esc(p.location) : ""}
-          </div>
-        </div>
-
-        <div class="actions">
-          <button data-like="${esc(p.id)}">♡ Like</button>
-          <button data-comment="${esc(p.id)}">▢ Comment</button>
-          <button data-share="${esc(p.id)}">↗ Share</button>
-        </div>
-
-        <button class="buy" data-buy="${esc(p.id)}">
-          View seller &amp; message
-        </button>
       </article>`;
-  }).join("");
+  }).join('');
+}
 
-  $("#feed").querySelectorAll("[data-profile]").forEach(b => {
-    b.onclick = () => sellerProfile(b.dataset.profile);
-  });
+async function loadProducts() {
+  $('productGrid').innerHTML =
+    '<div class="loading">Loading products...</div>';
 
-  $("#feed").querySelectorAll("[data-buy]").forEach(b => {
-    b.onclick = () => {
-      const p = products.find(x => String(x.id) === b.dataset.buy);
-      sellerProfile(p?.seller_id);
-    };
-  });
+  const { data, error } = await supabase
+    .from('products')
+    .select(`
+      id,
+      seller_id,
+      name,
+      description,
+      price,
+      category,
+      condition,
+      location,
+      image_urls,
+      status,
+      created_at
+    `)
+    .eq('status', 'available')
+    .order('created_at', { ascending: false });
 
-  $("#feed").querySelectorAll("[data-like]").forEach(b => {
-    b.onclick = async () => {
-      if (!needUser()) return;
+  if (error) {
+    console.error('Product loading error:', error);
 
-      const r = await db.from("product_likes").insert({
-        product_id: b.dataset.like,
-        user_id: user.id
-      });
+    $('productGrid').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>We couldn't load the products</h3>
+        <p>Check the products table and its Supabase security policies.</p>
+      </div>`;
 
-      toast(r.error
-        ? "Like could not be saved. Check the likes table and permissions."
-        : "Liked!");
-    };
-  });
+    return;
+  }
 
-  $("#feed").querySelectorAll("[data-comment]").forEach(b => {
-    b.onclick = () => toast("The comments feature still needs to be connected.");
-  });
+  const rows = data || [];
+  const sellerIds = [...new Set(rows.map(p => p.seller_id).filter(Boolean))];
 
-  $("#feed").querySelectorAll("[data-share]").forEach(b => {
-    b.onclick = async () => {
-      const u = new URL(location.href);
-      u.searchParams.set("product", b.dataset.share);
+  let profiles = [];
 
-      try {
-        await navigator.clipboard.writeText(u.toString());
-        toast("Listing link copied!");
-      } catch (e) {
-        toast(u.toString());
+  if (sellerIds.length) {
+    const { data: profileRows, error: profileError } = await supabase
+      .from('profiles')
+      .select('id, username, full_name, avatar_url')
+      .in('id', sellerIds);
+
+    if (profileError) {
+      console.warn('Seller profile lookup failed:', profileError);
+    } else {
+      profiles = profileRows || [];
+    }
+  }
+
+  const profileMap = new Map(profiles.map(p => [p.id, p]));
+
+  products = rows.map(product => ({
+    ...product,
+    seller: profileMap.get(product.seller_id) || null
+  }));
+
+  renderProducts();
+}
+
+async function openSellerMessages(sellerId, productName) {
+  if (!sellerId) {
+    showToast('This listing has no seller account attached.');
+    return;
+  }
+
+  if (!me) {
+    showToast('Please sign in before messaging a seller.');
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1200);
+    return;
+  }
+
+  if (sellerId === me.id) {
+    showToast('This is your own listing.');
+    return;
+  }
+
+  /*
+   * The messages.html connection code reads the "user" parameter,
+   * finds or creates a conversation, and opens that conversation.
+   */
+  window.location.href =
+    `messages.html?user=${encodeURIComponent(sellerId)}`;
+}
+
+function openListingModal() {
+  if (!me) {
+    showToast('Please sign in before listing a product.');
+    return;
+  }
+
+  $('formError').textContent = '';
+  $('listingModal').classList.add('open');
+}
+
+function closeListingModal() {
+  $('listingModal').classList.remove('open');
+}
+
+async function publishProduct(event) {
+  event.preventDefault();
+
+  if (!me) {
+    showToast('Please sign in first.');
+    return;
+  }
+
+  if (isPublishing) return;
+
+  const name = $('productName').value.trim();
+  const description = $('productDescription').value.trim();
+  const price = Number($('productPrice').value);
+  const category = $('productCategory').value;
+  const condition = $('productCondition').value;
+  const location = $('productLocation').value.trim();
+  const image = $('productImage').value.trim();
+
+  $('formError').textContent = '';
+
+  if (!name || !description || !category ||
+      $('productPrice').value === '' ||
+      !Number.isFinite(price) || price < 0) {
+    $('formError').textContent =
+      'Please enter a valid name, price, category, and description.';
+    return;
+  }
+
+  if (image) {
+    try {
+      const parsed = new URL(image);
+      if (!['http:', 'https:'].includes(parsed.protocol)) {
+        throw new Error('Invalid image URL');
       }
-    };
-  });
-}
-
-async function sellerProfile(id) {
-  if (!id) {
-    toast("This listing has no linked seller profile yet.");
-    return;
+    } catch {
+      $('formError').textContent =
+        'Please enter a valid image URL beginning with https:// or http://.';
+      return;
+    }
   }
 
-  open("profileModal");
-  $("#profileContent").innerHTML =
-    '<div class="empty">Loading seller profile...</div>';
-
-  const r = await db
-    .from("profiles")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle();
-
-  const s = r.data ||
-    products.find(p => p.seller_id === id)?._seller ||
-    { id };
-
-  const name = pname(s);
-  const mine = user && user.id === id;
-  const own = products.filter(p => String(p.seller_id) === String(id));
-
-  $("#profileContent").innerHTML = `
-    <div class="cover"></div>
-    <div class="profile">
-      <div class="bigavatar">
-        ${s.avatar_url
-          ? `<img src="${esc(s.avatar_url)}">`
-          : esc(name.slice(0, 1).toUpperCase())}
-      </div>
-
-      <h2>${esc(name)}</h2>
-      <p>${esc(s.bio || "Campusora community member")}</p>
-
-      <div class="note">${own.length} active marketplace listing(s)</div>
-
-      ${mine ? "" : '<button class="primary" id="messageSeller">✉ Message seller</button>'}
-
-      <h3>Listings from ${esc(name)}</h3>
-
-      <div class="mini">
-        ${own.length
-          ? own.map(p => {
-              const im = Array.isArray(p.image_urls)
-                ? p.image_urls[0]
-                : (p.image_url || "");
-
-              return `
-                <div class="miniitem">
-                  ${im
-                    ? `<img src="${esc(im)}">`
-                    : '<div class="placeholder">🛍️</div>'}
-                  <div><b>${esc(p.name)}</b><br>${cash(p.price)}</div>
-                </div>`;
-            }).join("")
-          : '<p class="note">No active listings to show.</p>'}
-      </div>
-    </div>`;
-
-  $("#messageSeller")?.addEventListener("click", () => messageComposer(s));
-}
-
-function messageComposer(s) {
-  if (!needUser()) return;
-
-  if (user.id === s.id) {
-    toast("This is your own profile.");
-    return;
-  }
-
-  activeSeller = s;
-  close("profileModal");
-
-  $("#messageContent").innerHTML = `
-    <p>Send a message to <b>${esc(pname(s))}</b> about their listing.</p>
-    <label>Your message
-      <textarea id="messageText" placeholder="Hi, is this item still available?"></textarea>
-    </label>
-    <button class="primary" id="sendMessage">Send message</button>
-    <p class="note">
-      Sending messages requires the messages table and its security policies.
-    </p>`;
-
-  open("messageModal");
-  $("#sendMessage").onclick = sendMessage;
-}
-
-async function sendMessage() {
-  if (!needUser() || !activeSeller) return;
-
-  const content = $("#messageText").value.trim();
-
-  if (!content) {
-    toast("Write a message first.");
-    return;
-  }
-
-  const b = $("#sendMessage");
-  b.disabled = true;
-
-  const r = await db.from("messages").insert({
-    sender_id: user.id,
-    recipient_id: activeSeller.id,
-    content
-  });
-
-  b.disabled = false;
-
-  if (r.error) {
-    toast("Message could not be sent. Check the messages table and permissions.");
-    return;
-  }
-
-  close("messageModal");
-  toast("Message sent to seller!");
-}
-
-function listing() {
-  if (needUser()) open("listingModal");
-}
-
-$("#listingForm").onsubmit = async e => {
-  e.preventDefault();
-  if (!needUser()) return;
-
-  const f = new FormData(e.currentTarget);
-  const im = String(f.get("image_url") || "").trim();
+  isPublishing = true;
+  $('publishBtn').disabled = true;
+  $('publishBtn').textContent = 'Publishing...';
 
   const payload = {
-    seller_id: user.id,
-    name: String(f.get("name")).trim(),
-    description: String(f.get("description")).trim(),
-    price: Number(f.get("price")),
-    category: f.get("category"),
-    condition: f.get("condition"),
-    location: String(f.get("location") || "").trim(),
-    image_urls: im ? [im] : [],
-    status: "available"
+    seller_id: me.id,
+    name,
+    description,
+    price,
+    category,
+    condition,
+    location: location || null,
+    image_urls: image ? [image] : [],
+    status: 'available'
   };
 
-  const b = $("#publish");
-  b.disabled = true;
-  b.textContent = "Publishing...";
+  const { error } = await supabase
+    .from('products')
+    .insert(payload);
 
-  const r = await db.from("products").insert(payload);
+  isPublishing = false;
+  $('publishBtn').disabled = false;
+  $('publishBtn').textContent = 'Publish product';
 
-  b.disabled = false;
-  b.textContent = "Publish listing";
+  if (error) {
+    console.error('Product publishing error:', error);
 
-  if (r.error) {
-    toast("Could not publish. Check your products table and INSERT policy.");
+    $('formError').textContent =
+      'Could not publish. Check your products table columns and insert security policy.';
     return;
   }
 
-  e.currentTarget.reset();
-  close("listingModal");
-  toast("Your listing is live!");
-  await load();
-};
+  $('listingForm').reset();
+  closeListingModal();
 
-$("#authForm").onsubmit = async e => {
-  e.preventDefault();
+  showToast('Your product has been published!');
+  await loadProducts();
+}
 
-  const f = new FormData(e.currentTarget);
-  const email = f.get("email");
-  const password = f.get("password");
-
-  const r = authMode === "login"
-    ? await db.auth.signInWithPassword({ email, password })
-    : await db.auth.signUp({ email, password });
-
-  if (r.error) {
-    toast(r.error.message);
-    return;
-  }
-
-  if (authMode === "signup" && !r.data.session) {
-    toast("Account created. Confirm your email, then log in.");
-    close("authModal");
-    return;
-  }
-
-  close("authModal");
-  toast("You're signed in!");
-  await initUser();
-  await load();
-};
-
-$("#toggleAuth").onclick = () => {
-  authMode = authMode === "login" ? "signup" : "login";
-  authLabels();
-};
-
-$("#categories").onclick = e => {
-  const b = e.target.closest("[data-cat]");
-  if (!b) return;
-
-  cat = b.dataset.cat;
-
-  document.querySelectorAll(".chip").forEach(x => {
-    x.classList.toggle("active", x === b);
+function setupEvents() {
+  $('searchInput').addEventListener('input', event => {
+    searchTerm = event.target.value;
+    renderProducts();
   });
 
-  render();
-};
+  $('categories').addEventListener('click', event => {
+    const button = event.target.closest('[data-category]');
+    if (!button) return;
 
-$("#search").oninput = e => {
-  term = e.target.value.trim();
-  render();
-};
+    selectedCategory = button.dataset.category;
 
-["sell", "sell2", "compose", "quickPhoto", "quickPrice", "quickList"]
-  .forEach(id => {
-    $("#" + id).onclick = listing;
+    document.querySelectorAll('[data-category]').forEach(item => {
+      item.classList.toggle('active', item === button);
+    });
+
+    renderProducts();
   });
 
-$("#accountTop").onclick = () => {
-  if (user) {
-    sellerProfile(user.id);
-  } else {
-    authMode = "login";
-    authLabels();
-    open("authModal");
-  }
-};
+  $('productGrid').addEventListener('click', async event => {
+    const button = event.target.closest('[data-seller-id]');
+    if (!button || button.disabled) return;
 
-$("#navProfile").onclick = e => {
-  e.preventDefault();
+    await openSellerMessages(
+      button.dataset.sellerId,
+      button.dataset.productName
+    );
+  });
 
-  if (user) {
-    sellerProfile(user.id);
-  } else {
-    authMode = "login";
-    authLabels();
-    open("authModal");
-  }
-};
+  $('openListingBtn').addEventListener('click', openListingModal);
+  $('closeListingBtn').addEventListener('click', closeListingModal);
 
-$("#msgTop").onclick = $("#navMessages").onclick = e => {
-  if (e) e.preventDefault();
+  $('browseBtn').addEventListener('click', () => {
+    $('productsSection').scrollIntoView({ behavior: 'smooth' });
+  });
 
-  if (!needUser()) return;
+  $('listingModal').addEventListener('click', event => {
+    if (event.target === $('listingModal')) closeListingModal();
+  });
 
-  toast("The inbox page still needs to be built.");
-};
+  $('listingForm').addEventListener('submit', publishProduct);
+}
 
-document.querySelectorAll("[data-close]").forEach(b => {
-  b.onclick = () => close(b.dataset.close);
-});
+async function initialize() {
+  setupEvents();
 
-document.querySelectorAll(".modalback").forEach(m => {
-  m.onclick = e => {
-    if (e.target === m) m.classList.remove("open");
-  };
-});
+  const { data, error } = await supabase.auth.getUser();
 
-(async () => {
-  if (!db) {
-    $("#feed").innerHTML =
-      '<div class="panel empty">Could not load Supabase. Check your internet connection.</div>';
-    return;
+  if (error) {
+    console.warn('Could not check signed-in user:', error);
   }
 
-  await initUser();
-  await load();
+  me = data?.user || null;
 
-  db.auth.onAuthStateChange(() => initUser());
-})();
+  await loadProducts();
+}
+
+initialize();
 </script>
 
 </body>
