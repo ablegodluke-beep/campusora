@@ -1,1 +1,2163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Campusora Marketplace | Buy and Sell</title>
+
+  <meta
+    name="description"
+    content="Discover products, shop from sellers, and list your own items on Campusora Marketplace."
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --primary: #635bff;
+      --primary-dark: #4b43df;
+      --dark: #17172b;
+      --muted: #73758b;
+      --background: #f6f7fb;
+      --white: #ffffff;
+      --border: #e7e8f0;
+      --green: #138a55;
+      --radius: 16px;
+      --shadow: 0 8px 28px rgba(20, 20, 50, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: auto;
+    }
+
+    /* HEADER */
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: var(--dark);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .button-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .button-light {
+      background: #f0efff;
+      color: var(--primary);
+    }
+
+    .button-outline {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--dark);
+    }
+
+    .button-danger {
+      background: #fff0f0;
+      color: #b42318;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 58px 0 44px;
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          #e7e4ff 0,
+          transparent 35%
+        ),
+        linear-gradient(135deg, #ffffff, #f3f2ff);
+    }
+
+    .hero-content {
+      max-width: 760px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--primary);
+      background: #eceaff;
+      padding: 6px 13px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 53px);
+      line-height: 1.12;
+      letter-spacing: -1.8px;
+      margin-bottom: 17px;
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero p {
+      max-width: 580px;
+      margin: auto;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* SEARCH */
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 28px auto 0;
+      max-width: 700px;
+      padding: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .search-icon {
+      padding-left: 12px;
+      font-size: 21px;
+    }
+
+    .search-box input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      padding: 10px 0;
+      background: transparent;
+    }
+
+    /* SELLER NOTICE */
+
+    .notice {
+      background: #eeedff;
+      border: 1px solid #dcd9ff;
+      padding: 17px 20px;
+      margin-top: 25px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .notice p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* MARKETPLACE */
+
+    .marketplace {
+      padding: 40px 0 65px;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      font-size: 27px;
+      letter-spacing: -0.7px;
+    }
+
+    .section-heading p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .category-button {
+      background: white;
+      border: 1px solid var(--border);
+      color: #5d5e73;
+      padding: 9px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .category-button:hover,
+    .category-button.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .sort-select {
+      margin-left: auto;
+      padding: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    /* PRODUCTS GRID */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      min-width: 0;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .product-image-wrap {
+      height: 190px;
+      position: relative;
+      background: #eeedff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-placeholder {
+      font-size: 56px;
+    }
+
+    .condition-badge {
+      position: absolute;
+      top: 11px;
+      left: 11px;
+      padding: 5px 9px;
+      background: white;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-category {
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .product-name {
+      font-size: 16px;
+      line-height: 1.4;
+      margin: 6px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .product-description {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 7px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 900;
+      margin: 9px 0;
+    }
+
+    .product-location {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .product-actions .button {
+      flex: 1;
+      padding: 9px 6px;
+      font-size: 12px;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      background: white;
+      border: 1px dashed #d9d9e8;
+      border-radius: var(--radius);
+      padding: 50px 20px;
+    }
+
+    .empty-state .empty-icon {
+      font-size: 45px;
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* MODALS */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      background: rgba(15, 15, 35, 0.65);
+      overflow-y: auto;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: min(540px, 100%);
+      max-height: 92vh;
+      overflow-y: auto;
+      background: white;
+      border-radius: 18px;
+      padding: 25px;
+      position: relative;
+      margin: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      font-size: 23px;
+    }
+
+    .close-button {
+      width: 35px;
+      height: 35px;
+      border: none;
+      border-radius: 50%;
+      background: #f0f0f5;
+      font-size: 22px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dedee9;
+      border-radius: 9px;
+      outline: none;
+      background: white;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-help {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .form-message {
+      margin-top: 12px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .success-text {
+      color: var(--green);
+    }
+
+    .error-text {
+      color: #b42318;
+    }
+
+    .switch-auth {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .text-button {
+      border: none;
+      background: transparent;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* DETAIL MODAL */
+
+    .detail-image {
+      width: 100%;
+      height: 250px;
+      object-fit: contain;
+      background: #f2f1ff;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .detail-price {
+      color: var(--primary);
+      font-size: 27px;
+      font-weight: 900;
+      margin: 8px 0;
+    }
+
+    .detail-description {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin: 12px 0;
+    }
+
+    .detail-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 5px 0;
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #202034;
+      color: white;
+      padding: 13px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s;
+      width: max-content;
+      max-width: 90%;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: #17172b;
+      color: white;
+      padding: 35px 0;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-content p {
+      font-size: 13px;
+      color: #b8b8ca;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 950px) {
+      .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .product-image-wrap {
+        height: 170px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .navbar {
+        min-height: 66px;
+        gap: 10px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .nav-actions {
+        gap: 6px;
+      }
+
+      .nav-actions .button {
+        padding: 9px;
+        font-size: 11px;
+      }
+
+      .hero {
+        padding: 42px 0 30px;
+      }
+
+      .hero h1 {
+        letter-spacing: -1px;
+      }
+
+      .search-box .button {
+        padding: 10px;
+        font-size: 12px;
+      }
+
+      .notice {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .product-image-wrap {
+        height: 145px;
+      }
+
+      .product-info {
+        padding: 11px;
+      }
+
+      .product-name {
+        font-size: 14px;
+      }
+
+      .product-price {
+        font-size: 17px;
+      }
+
+      .product-actions {
+        flex-direction: column;
+      }
+
+      .sort-select {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .modal-content {
+        padding: 19px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-image-wrap {
+        height: 210px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header>
+    <div class="container navbar">
+
+      <a class="logo" href="./index.html">
+        Campusora<span>.</span>
+      </a>
+
+      <div class="nav-actions">
+
+        <button
+          class="button button-outline"
+          id="accountButton"
+          type="button"
+        >
+          Log in
+        </button>
+
+        <button
+          class="button button-primary"
+          id="sellButton"
+          type="button"
+        >
+          + Sell Something
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero">
+    <div class="container hero-content">
+
+      <span class="eyebrow">Welcome to Campusora</span>
+
+      <h1>
+        Discover great finds.<br>
+        <span>Buy and sell anything.</span>
+      </h1>
+
+      <p>
+        Find products you love, discover new deals, and give your
+        items a new home. Everything you need, all in one marketplace.
+      </p>
+
+      <form class="search-box" id="searchForm">
+
+        <span class="search-icon">🔎</span>
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="What are you looking for today?"
+          autocomplete="off"
+          aria-label="Search products"
+        >
+
+        <button class="button button-primary" type="submit">
+          Search
+        </button>
+
+      </form>
+
+    </div>
+  </section>
+
+  <main class="container">
+
+    <!-- SELLER NOTICE -->
+
+    <section class="notice">
+
+      <div>
+        <strong>Have something to sell?</strong>
+        <p>
+          Create an account, post your product, and connect with
+          interested buyers.
+        </p>
+      </div>
+
+      <button
+        class="button button-primary"
+        id="noticeSellButton"
+        type="button"
+      >
+        Start Selling
+      </button>
+
+    </section>
+
+    <!-- PRODUCTS -->
+
+    <section class="marketplace" id="marketplace">
+
+      <div class="section-heading">
+
+        <div>
+          <h2>Explore Marketplace</h2>
+          <p id="resultsLabel">Discover what's available.</p>
+        </div>
+
+        <span id="productCount">Loading products...</span>
+
+      </div>
+
+      <!-- CATEGORIES -->
+
+      <div class="filters" id="categoryFilters">
+
+        <button
+          class="category-button active"
+          data-category="All"
+          type="button"
+        >
+          🌟 All Products
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Electronics"
+          type="button"
+        >
+          📱 Electronics
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Fashion"
+          type="button"
+        >
+          👕 Fashion
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Books & Education"
+          type="button"
+        >
+          📚 Books
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Home & Living"
+          type="button"
+        >
+          🪑 Home & Living
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Beauty & Personal Care"
+          type="button"
+        >
+          💄 Beauty
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Food & Drinks"
+          type="button"
+        >
+          🍔 Food & Drinks
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Services"
+          type="button"
+        >
+          🛠️ Services
+        </button>
+
+        <button
+          class="category-button"
+          data-category="Other"
+          type="button"
+        >
+          📦 Other
+        </button>
+
+        <select
+          class="sort-select"
+          id="sortSelect"
+          aria-label="Sort products"
+        >
+          <option value="newest">Newest first</option>
+          <option value="low">Price: Low to high</option>
+          <option value="high">Price: High to low</option>
+        </select>
+
+      </div>
+
+      <!-- PRODUCT GRID -->
+
+      <div class="products-grid" id="productsGrid">
+
+        <div class="empty-state">
+          <div class="empty-icon">⏳</div>
+          <h3>Loading Campusora Marketplace</h3>
+          <p>Please wait while we find available products.</p>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="container footer-content">
+
+      <div>
+        <div class="logo" style="color: white;">
+          Campusora<span style="color: #aaa9ff;">.</span>
+        </div>
+
+        <p>Discover more. Buy smarter. Sell easier.</p>
+      </div>
+
+      <p>© <span id="year"></span> Campusora. All rights reserved.</p>
+
+    </div>
+  </footer>
+
+  <!-- AUTHENTICATION MODAL -->
+
+  <div class="modal" id="authModal">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h2 id="authTitle">Welcome back</h2>
+
+        <button
+          class="close-button"
+          type="button"
+          data-close="authModal"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <form id="authForm">
+
+        <div class="form-group" id="nameGroup" hidden>
+          <label for="authName">Your name</label>
+
+          <input
+            type="text"
+            id="authName"
+            autocomplete="name"
+            maxlength="80"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="authEmail">Email address</label>
+
+          <input
+            type="email"
+            id="authEmail"
+            required
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="authPassword">Password</label>
+
+          <input
+            type="password"
+            id="authPassword"
+            required
+            minlength="8"
+            autocomplete="current-password"
+          >
+
+          <small class="form-help">
+            Use at least 8 characters.
+          </small>
+        </div>
+
+        <button
+          class="button button-primary form-submit"
+          id="authSubmit"
+          type="submit"
+        >
+          Log in
+        </button>
+
+        <div
+          class="form-message"
+          id="authMessage"
+          role="status"
+        ></div>
+
+      </form>
+
+      <div class="switch-auth">
+
+        <span id="switchText">Don't have an account?</span>
+
+        <button
+          class="text-button"
+          id="switchAuthButton"
+          type="button"
+        >
+          Create account
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SELL PRODUCT MODAL -->
+
+  <div class="modal" id="sellModal">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h2>Sell an Item</h2>
+
+        <button
+          class="close-button"
+          type="button"
+          data-close="sellModal"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <form id="sellForm">
+
+        <div class="form-group">
+          <label for="productName">Product name *</label>
+
+          <input
+            id="productName"
+            type="text"
+            maxlength="120"
+            required
+            placeholder="e.g. Samsung Galaxy A54"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="productPrice">Price in Nigerian naira (₦) *</label>
+
+          <input
+            id="productPrice"
+            type="number"
+            min="0"
+            max="9999999999"
+            step="0.01"
+            required
+            placeholder="e.g. 150000"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="productCategory">Category *</label>
+
+          <select id="productCategory" required>
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Books & Education">Books & Education</option>
+            <option value="Home & Living">Home & Living</option>
+            <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+            <option value="Food & Drinks">Food & Drinks</option>
+            <option value="Accommodation">Accommodation</option>
+            <option value="Services">Services</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="productCondition">Product condition *</label>
+
+          <select id="productCondition" required>
+            <option value="New">New</option>
+            <option value="Used" selected>Used</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="productLocation">Location</label>
+
+          <input
+            id="productLocation"
+            type="text"
+            maxlength="120"
+            placeholder="e.g. Port Harcourt"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="productImage">Product image URL</label>
+
+          <input
+            id="productImage"
+            type="url"
+            maxlength="2000"
+            placeholder="https://example.com/product.jpg"
+          >
+
+          <small class="form-help">
+            For now, enter a publicly accessible image URL.
+            Direct photo uploads will be added using Supabase Storage.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="productDescription">Description *</label>
+
+          <textarea
+            id="productDescription"
+            maxlength="5000"
+            required
+            placeholder="Describe your product, its condition, and other useful details."
+          ></textarea>
+        </div>
+
+        <button
+          class="button button-primary form-submit"
+          id="publishButton"
+          type="submit"
+        >
+          Publish Listing
+        </button>
+
+        <div
+          class="form-message"
+          id="sellMessage"
+          role="status"
+        ></div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAILS MODAL -->
+
+  <div class="modal" id="detailModal">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h2>Product Details</h2>
+
+        <button
+          class="close-button"
+          type="button"
+          data-close="detailModal"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <div id="detailContent"></div>
+
+    </div>
+  </div>
+
+  <!-- TOAST MESSAGE -->
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+
+    // ==========================================
+    // 1. SUPABASE CONNECTION
+    // ==========================================
+
+    const SUPABASE_URL =
+      "https://ssdhygwozbroqjhuecgp.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_gbbFNsXzzJSh8k3aqEl4kg_XO-YRo4N";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    // ==========================================
+    // 2. PAGE ELEMENTS
+    // ==========================================
+
+    const productsGrid = document.getElementById("productsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const searchForm = document.getElementById("searchForm");
+    const sortSelect = document.getElementById("sortSelect");
+    const productCount = document.getElementById("productCount");
+
+    const authModal = document.getElementById("authModal");
+    const sellModal = document.getElementById("sellModal");
+    const detailModal = document.getElementById("detailModal");
+
+    let currentUser = null;
+    let currentProducts = [];
+    let activeCategory = "All";
+    let searchTimer = null;
+    let toastTimer = null;
+    let searchRequestNumber = 0;
+    let authMode = "login";
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    // ==========================================
+    // 3. GENERAL HELPERS
+    // ==========================================
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3500);
+    }
+
+    function setFormMessage(elementId, message, type = "") {
+      const element = document.getElementById(elementId);
+
+      element.textContent = message;
+      element.className = "form-message";
+
+      if (type === "success") {
+        element.classList.add("success-text");
+      }
+
+      if (type === "error") {
+        element.classList.add("error-text");
+      }
+    }
+
+    function setModalOpen(modal, open) {
+      modal.classList.toggle("open", open);
+      modal.setAttribute("aria-hidden", String(!open));
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(
+        /[&<>"']/g,
+        character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[character]
+      );
+    }
+
+    function formatPrice(value) {
+      return "₦" + Number(value || 0).toLocaleString("en-NG", {
+        maximumFractionDigits: 2
+      });
+    }
+
+    function getImageUrl(product) {
+      if (
+        Array.isArray(product.image_urls) &&
+        product.image_urls.length > 0
+      ) {
+        const url = product.image_urls[0];
+
+        if (
+          typeof url === "string" &&
+          /^https?:\/\//i.test(url)
+        ) {
+          return url;
+        }
+      }
+
+      return "";
+    }
+
+    // ==========================================
+    // 4. AUTHENTICATION
+    // ==========================================
+
+    function updateAccountButton() {
+      const button = document.getElementById("accountButton");
+
+      if (currentUser) {
+        button.textContent = "My Account";
+      } else {
+        button.textContent = "Log in";
+      }
+    }
+
+    function openAuth(mode = "login") {
+      if (currentUser) {
+        const shouldLogout = confirm(
+          "You are logged in. Do you want to log out?"
+        );
+
+        if (shouldLogout) {
+          logout();
+        }
+
+        return;
+      }
+
+      authMode = mode;
+      updateAuthForm();
+      setFormMessage("authMessage", "");
+      setModalOpen(authModal, true);
+    }
+
+    function updateAuthForm() {
+      const isSignup = authMode === "signup";
+
+      document.getElementById("authTitle").textContent =
+        isSignup ? "Create your account" : "Welcome back";
+
+      document.getElementById("authSubmit").textContent =
+        isSignup ? "Create Account" : "Log In";
+
+      document.getElementById("nameGroup").hidden = !isSignup;
+
+      document.getElementById("authName").required = isSignup;
+
+      document.getElementById("authPassword").autocomplete =
+        isSignup ? "new-password" : "current-password";
+
+      document.getElementById("switchText").textContent =
+        isSignup
+          ? "Already have an account?"
+          : "Don't have an account?";
+
+      document.getElementById("switchAuthButton").textContent =
+        isSignup ? "Log in" : "Create account";
+    }
+
+    async function logout() {
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) {
+        showToast("Could not log out. Please try again.");
+        return;
+      }
+
+      currentUser = null;
+      updateAccountButton();
+
+      showToast("You have logged out.");
+
+      await loadProducts();
+    }
+
+    document.getElementById("accountButton").addEventListener(
+      "click",
+      () => {
+        openAuth();
+      }
+    );
+
+    document.getElementById("switchAuthButton").addEventListener(
+      "click",
+      () => {
+        authMode = authMode === "login" ? "signup" : "login";
+
+        updateAuthForm();
+        setFormMessage("authMessage", "");
+      }
+    );
+
+    document.getElementById("authForm").addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        const email = document.getElementById("authEmail")
+          .value.trim();
+
+        const password = document.getElementById("authPassword")
+          .value;
+
+        const name = document.getElementById("authName")
+          .value.trim();
+
+        const submitButton = document.getElementById("authSubmit");
+
+        submitButton.disabled = true;
+        setFormMessage("authMessage", "Please wait...");
+
+        try {
+          if (authMode === "signup") {
+            const { data, error } = await supabaseClient.auth.signUp({
+              email,
+              password,
+              options: {
+                data: {
+                  full_name: name
+                }
+              }
+            });
+
+            if (error) {
+              throw error;
+            }
+
+            if (data.session) {
+              currentUser = data.user;
+              updateAccountButton();
+
+              setModalOpen(authModal, false);
+
+              showToast("Your account has been created!");
+
+              await loadProducts();
+            } else {
+              setFormMessage(
+                "authMessage",
+                "Account created. Check your email to confirm your account before logging in.",
+                "success"
+              );
+            }
+
+          } else {
+            const { data, error } =
+              await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+              });
+
+            if (error) {
+              throw error;
+            }
+
+            currentUser = data.user;
+
+            updateAccountButton();
+            setModalOpen(authModal, false);
+
+            showToast("Welcome back!");
+
+            await loadProducts();
+          }
+
+        } catch (error) {
+          console.error("Authentication error:", error);
+
+          setFormMessage(
+            "authMessage",
+            error.message || "Something went wrong.",
+            "error"
+          );
+
+        } finally {
+          submitButton.disabled = false;
+        }
+      }
+    );
+
+    // ==========================================
+    // 5. OPEN SELL FORM
+    // ==========================================
+
+    function openSellForm() {
+      if (!currentUser) {
+        showToast("Please log in or create an account to sell.");
+
+        openAuth("signup");
+        return;
+      }
+
+      document.getElementById("sellForm").reset();
+
+      setFormMessage("sellMessage", "");
+
+      setModalOpen(sellModal, true);
+    }
+
+    document.getElementById("sellButton").addEventListener(
+      "click",
+      openSellForm
+    );
+
+    document.getElementById("noticeSellButton").addEventListener(
+      "click",
+      openSellForm
+    );
+
+    // ==========================================
+    // 6. PUBLISH A PRODUCT
+    // ==========================================
+
+    document.getElementById("sellForm").addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        if (!currentUser) {
+          setFormMessage(
+            "sellMessage",
+            "Please log in before publishing a product.",
+            "error"
+          );
+
+          return;
+        }
+
+        const name = document.getElementById("productName")
+          .value.trim();
+
+        const description = document.getElementById("productDescription")
+          .value.trim();
+
+        const price = Number(
+          document.getElementById("productPrice").value
+        );
+
+        const category = document.getElementById("productCategory")
+          .value;
+
+        const condition = document.getElementById("productCondition")
+          .value;
+
+        const location = document.getElementById("productLocation")
+          .value.trim();
+
+        const imageUrl = document.getElementById("productImage")
+          .value.trim();
+
+        if (!name || !description) {
+          setFormMessage(
+            "sellMessage",
+            "Please enter a product name and description.",
+            "error"
+          );
+
+          return;
+        }
+
+        if (!Number.isFinite(price) || price < 0) {
+          setFormMessage(
+            "sellMessage",
+            "Please enter a valid price.",
+            "error"
+          );
+
+          return;
+        }
+
+        if (
+          imageUrl &&
+          !/^https?:\/\//i.test(imageUrl)
+        ) {
+          setFormMessage(
+            "sellMessage",
+            "Please enter a valid public image URL.",
+            "error"
+          );
+
+          return;
+        }
+
+        const publishButton =
+          document.getElementById("publishButton");
+
+        publishButton.disabled = true;
+        publishButton.textContent = "Publishing...";
+
+        setFormMessage("sellMessage", "Saving your product...");
+
+        try {
+          const { data: sessionData, error: sessionError } =
+            await supabaseClient.auth.getSession();
+
+          if (sessionError) {
+            throw sessionError;
+          }
+
+          const user = sessionData.session?.user;
+
+          if (!user) {
+            throw new Error(
+              "Your session has expired. Please log in again."
+            );
+          }
+
+          const product = {
+            seller_id: user.id,
+            name,
+            description,
+            price,
+            category,
+            condition,
+            location: location || null,
+            image_urls: imageUrl ? [imageUrl] : [],
+            status: "available"
+          };
+
+          const { error } = await supabaseClient
+            .from("products")
+            .insert(product);
+
+          if (error) {
+            throw error;
+          }
+
+          setModalOpen(sellModal, false);
+
+          showToast("Your product has been published!");
+
+          searchInput.value = "";
+          activeCategory = "All";
+
+          document.querySelectorAll(".category-button").forEach(
+            button => {
+              button.classList.toggle(
+                "active",
+                button.dataset.category === "All"
+              );
+            }
+          );
+
+          await loadProducts();
+
+        } catch (error) {
+          console.error("Product publishing error:", error);
+
+          setFormMessage(
+            "sellMessage",
+            error.message ||
+              "Unable to publish the product. Please try again.",
+            "error"
+          );
+
+        } finally {
+          publishButton.disabled = false;
+          publishButton.textContent = "Publish Listing";
+        }
+      }
+    );
+
+    // ==========================================
+    // 7. SEARCH PRODUCTS IN SUPABASE
+    // ==========================================
+
+    async function loadProducts() {
+      const requestNumber = ++searchRequestNumber;
+      const searchTerm = searchInput.value.trim();
+
+      productCount.textContent = "Loading...";
+
+      let query = supabaseClient
+        .from("products")
+        .select(
+          "id, seller_id, name, description, price, category, condition, location, image_urls, status, created_at"
+        )
+        .eq("status", "available")
+        .order("created_at", { ascending: false })
+        .limit(1000);
+
+      if (searchTerm) {
+        /*
+          Restrict characters that could interfere with
+          the PostgREST OR-filter expression.
+        */
+
+        const safeTerm = searchTerm
+          .replace(/[,%()]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        if (safeTerm) {
+          query = query.or(
+            "name.ilike.%" + safeTerm +
+            "%,description.ilike.%" + safeTerm +
+            "%,category.ilike.%" + safeTerm + "%"
+          );
+        }
+      }
+
+      try {
+        const { data, error } = await query;
+
+        if (requestNumber !== searchRequestNumber) {
+          return;
+        }
+
+        if (error) {
+          throw error;
+        }
+
+        currentProducts = data || [];
+
+        renderProducts();
+
+      } catch (error) {
+        console.error("Could not load products:", error);
+
+        productsGrid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">⚠️</div>
+            <h3>We couldn't load the products</h3>
+            <p>
+              Please check your internet connection, Supabase settings,
+              and database security policies.
+            </p>
+            <button
+              class="button button-primary"
+              id="retryProductsButton"
+              type="button"
+              style="margin-top:15px"
+            >
+              Try Again
+            </button>
+          </div>
+        `;
+
+        const retryButton = document.getElementById(
+          "retryProductsButton"
+        );
+
+        retryButton.addEventListener("click", loadProducts);
+
+        productCount.textContent = "Unavailable";
+      }
+    }
+
+    // ==========================================
+    // 8. DISPLAY PRODUCTS
+    // ==========================================
+
+    function renderProducts() {
+      let visibleProducts = currentProducts.filter(product => {
+        return (
+          activeCategory === "All" ||
+          product.category === activeCategory
+        );
+      });
+
+      const sortMode = sortSelect.value;
+
+      if (sortMode === "low") {
+        visibleProducts.sort(
+          (a, b) => Number(a.price) - Number(b.price)
+        );
+
+      } else if (sortMode === "high") {
+        visibleProducts.sort(
+          (a, b) => Number(b.price) - Number(a.price)
+        );
+
+      } else {
+        visibleProducts.sort(
+          (a, b) =>
+            new Date(b.created_at) - new Date(a.created_at)
+        );
+      }
+
+      productCount.textContent =
+        visibleProducts.length +
+        (visibleProducts.length === 1 ? " product" : " products");
+
+      if (visibleProducts.length === 0) {
+        productsGrid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔎</div>
+            <h3>No matching products found</h3>
+            <p>
+              Try another search, select a different category,
+              or check back when more sellers publish products.
+            </p>
+          </div>
+        `;
+
+        return;
+      }
+
+      productsGrid.innerHTML = visibleProducts.map(product => {
+        const imageUrl = getImageUrl(product);
+
+        const imageMarkup = imageUrl
+          ? `
+            <img
+              class="product-image"
+              src="${escapeHTML(imageUrl)}"
+              alt="${escapeHTML(product.name)}"
+              loading="lazy"
+            >
+          `
+          : `
+            <div class="image-placeholder">🛍️</div>
+          `;
+
+        return `
+          <article class="product-card">
+
+            <div class="product-image-wrap">
+
+              ${imageMarkup}
+
+              <span class="condition-badge">
+                ${escapeHTML(product.condition || "Used")}
+              </span>
+
+            </div>
+
+            <div class="product-info">
+
+              <div class="product-category">
+                ${escapeHTML(product.category || "Other")}
+              </div>
+
+              <h3 class="product-name">
+                ${escapeHTML(product.name)}
+              </h3>
+
+              <p class="product-description">
+                ${escapeHTML(product.description)}
+              </p>
+
+              <div class="product-price">
+                ${formatPrice(product.price)}
+              </div>
+
+              <div class="product-location">
+                📍 ${escapeHTML(product.location || "Location not provided")}
+              </div>
+
+              <div class="product-actions">
+
+                <button
+                  class="button button-light"
+                  type="button"
+                  data-action="details"
+                  data-id="${escapeHTML(product.id)}"
+                >
+                  View Details
+                </button>
+
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-action="contact"
+                  data-id="${escapeHTML(product.id)}"
+                >
+                  Contact Seller
+                </button>
+
+              </div>
+
+            </div>
+
+          </article>
+        `;
+      }).join("");
+    }
+
+    // ==========================================
+    // 9. PRODUCT DETAILS
+    // ==========================================
+
+    function openProductDetails(productId) {
+      const product = currentProducts.find(
+        item => String(item.id) === String(productId)
+      );
+
+      if (!product) {
+        showToast("This product is no longer available.");
+        return;
+      }
+
+      const imageUrl = getImageUrl(product);
+
+      const detailContent = document.getElementById("detailContent");
+
+      detailContent.innerHTML = `
+        ${
+          imageUrl
+            ? `
+              <img
+                class="detail-image"
+                src="${escapeHTML(imageUrl)}"
+                alt="${escapeHTML(product.name)}"
+              >
+            `
+            : `
+              <div class="detail-image image-placeholder"
+                style="display:flex;align-items:center;justify-content:center">
+                🛍️
+              </div>
+            `
+        }
+
+        <div class="product-category">
+          ${escapeHTML(product.category || "Other")}
+        </div>
+
+        <h2>${escapeHTML(product.name)}</h2>
+
+        <div class="detail-price">
+          ${formatPrice(product.price)}
+        </div>
+
+        <div class="detail-meta">
+          Condition: ${escapeHTML(product.condition || "Used")}
+        </div>
+
+        <div class="detail-meta">
+          Location: ${escapeHTML(product.location || "Not provided")}
+        </div>
+
+        <div class="detail-meta">
+          Posted: ${escapeHTML(
+            new Date(product.created_at).toLocaleDateString()
+          )}
+        </div>
+
+        <h3 style="margin-top:18px">Description</h3>
+
+        <p class="detail-description">
+          ${escapeHTML(product.description || "No description provided.")}
+        </p>
+
+        <button
+          class="button button-primary"
+          type="button"
+          id="detailContactButton"
+          style="width:100%;margin-top:15px"
+        >
+          Contact Seller
+        </button>
+      `;
+
+      document.getElementById("detailContactButton").addEventListener(
+        "click",
+        () => contactSeller(product)
+      );
+
+      setModalOpen(detailModal, true);
+    }
+
+    // ==========================================
+    // 10. CONTACT SELLER
+    // ==========================================
+
+    function contactSeller(product) {
+      if (!currentUser) {
+        showToast("Please log in to continue.");
+
+        setModalOpen(detailModal, false);
+
+        openAuth("login");
+
+        return;
+      }
+
+      if (currentUser.id === product.seller_id) {
+        showToast("This is your own listing.");
+        return;
+      }
+
+      /*
+        Internal messaging requires a conversations table,
+        a messages table, and secure access policies.
+
+        We will add the real messaging system next.
+      */
+
+      showToast(
+        "Seller messaging is not set up yet. We'll add it next."
+      );
+    }
+
+    // Handle product button clicks.
+    productsGrid.addEventListener("click", event => {
+      const button = event.target.closest("button[data-action]");
+
+      if (!button) {
+        return;
+      }
+
+      const productId = button.dataset.id;
+      const action = button.dataset.action;
+
+      if (action === "details") {
+        openProductDetails(productId);
+      }
+
+      if (action === "contact") {
+        const product = currentProducts.find(
+          item => String(item.id) === String(productId)
+        );
+
+        if (product) {
+          contactSeller(product);
+        }
+      }
+    });
+
+    // ==========================================
+    // 11. SEARCH AND FILTERS
+    // ==========================================
+
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+
+      searchTimer = setTimeout(() => {
+        loadProducts();
+      }, 350);
+    });
+
+    searchForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      clearTimeout(searchTimer);
+
+      loadProducts();
+    });
+
+    sortSelect.addEventListener("change", renderProducts);
+
+    document.querySelectorAll(".category-button").forEach(button => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.category || "All";
+
+        document.querySelectorAll(".category-button").forEach(item => {
+          item.classList.toggle("active", item === button);
+        });
+
+        renderProducts();
+      });
+    });
+
+    // ==========================================
+    // 12. CLOSE MODALS
+    // ==========================================
+
+    document.querySelectorAll("[data-close]").forEach(button => {
+      button.addEventListener("click", () => {
+        const modal = document.getElementById(button.dataset.close);
+
+        if (modal) {
+          setModalOpen(modal, false);
+        }
+      });
+    });
+
+    [authModal, sellModal, detailModal].forEach(modal => {
+      modal.addEventListener("click", event => {
+        if (event.target === modal) {
+          setModalOpen(modal, false);
+        }
+      });
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        [authModal, sellModal, detailModal].forEach(modal => {
+          setModalOpen(modal, false);
+        });
+      }
+    });
+
+    // ==========================================
+    // 13. CHECK LOGIN AND START MARKETPLACE
+    // ==========================================
+
+    async function initializeMarketplace() {
+      try {
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error) {
+          throw error;
+        }
+
+        currentUser = data.session?.user || null;
+
+        updateAccountButton();
+
+        supabaseClient.auth.onAuthStateChange(
+          (_event, session) => {
+            currentUser = session?.user || null;
+
+            updateAccountButton();
+          }
+        );
+
+        await loadProducts();
+
+      } catch (error) {
+        console.error("Campusora initialization error:", error);
+
+        productsGrid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">⚠️</div>
+            <h3>Unable to connect</h3>
+            <p>
+              Check your internet connection and Supabase project settings,
+              then refresh the page.
+            </p>
+          </div>
+        `;
+
+        productCount.textContent = "Connection error";
+      }
+    }
+
+    initializeMarketplace();
+  </script>
+
+</body>
+  </html>
