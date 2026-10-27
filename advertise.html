@@ -1,1 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sponsored Posts | Campusora</title>
+<meta name="theme-color" content="#0b1020">
 
+<style>
+:root {
+  --bg: #080d1b;
+  --panel: #111a2e;
+  --panel2: #17223a;
+  --border: rgba(255,255,255,.09);
+  --text: #f4f7ff;
+  --muted: #94a3bd;
+  --purple: #7957ff;
+  --blue: #438bff;
+  --cyan: #36d7f5;
+  --green: #38d99b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at top left, #18244a 0, transparent 45%),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 5%;
+  background: rgba(8,13,27,.9);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -.6px;
+}
+
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,var(--purple),var(--blue));
+  box-shadow: 0 5px 22px #7957ff45;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.top-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 9px;
+}
+
+.top-link:hover {
+  color: white;
+}
+
+.small-btn {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: white;
+  padding: 10px 13px;
+  border-radius: 11px;
+  font-size: 12px;
+}
+
+.container {
+  max-width: 1120px;
+  padding: 28px 18px 60px;
+  margin: auto;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #8a78ff35;
+  border-radius: 23px;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 90% 10%, #4f46e533, transparent 35%),
+    linear-gradient(125deg,#161c39,#10182c 60%,#12243a);
+  margin-bottom: 25px;
+}
+
+.hero::after {
+  content: "✦";
+  position: absolute;
+  right: 8%;
+  top: 5px;
+  font-size: 120px;
+  color: #7c68ff14;
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #b9aaff;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  font-size: clamp(27px,5vw,40px);
+  line-height: 1.14;
+  letter-spacing: -1.3px;
+  max-width: 560px;
+  margin-bottom: 12px;
+}
+
+.hero h1 span {
+  color: #a99aff;
+}
+
+.hero p {
+  color: #b2bfd6;
+  max-width: 510px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.pill {
+  padding: 8px 11px;
+  background: #ffffff09;
+  border: 1px solid #ffffff14;
+  border-radius: 20px;
+  color: #d8e1f5;
+  font-size: 11px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 330px;
+  gap: 22px;
+  align-items: start;
+}
+
+.card {
+  background: linear-gradient(145deg,#111a2e,#0e1628);
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.card-heading h2 {
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+.card-heading p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.step-tag {
+  white-space: nowrap;
+  color: #b5a6ff;
+  background: #7957ff1c;
+  border: 1px solid #7957ff36;
+  border-radius: 8px;
+  padding: 7px 9px;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field label,
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 750;
+  margin-bottom: 9px;
+}
+
+.optional {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 13px 14px;
+  color: white;
+  background: #0a1223;
+  border: 1px solid #27344e;
+  border-radius: 11px;
+  outline: none;
+  font-size: 13px;
+  transition: .2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px #7957ff17;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 105px;
+  line-height: 1.7;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #667590;
+}
+
+select option {
+  background: #111a2e;
+}
+
+.hint {
+  color: #7f8da7;
+  font-size: 10px;
+  line-height: 1.7;
+  margin-top: 7px;
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 12px;
+  border: 1px solid #283550;
+  background: #0b1426;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.choice:has(input:checked) {
+  border-color: var(--purple);
+  background: #7957ff13;
+  box-shadow: inset 0 0 0 1px #7957ff25;
+}
+
+.choice input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--purple);
+  flex-shrink: 0;
+}
+
+.choice strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.choice small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.duration-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 10px;
+}
+
+.duration {
+  position: relative;
+  padding: 14px 11px;
+  border-radius: 13px;
+  background: #0b1426;
+  border: 1px solid #283550;
+  cursor: pointer;
+  transition: .2s;
+  min-width: 0;
+}
+
+.duration:has(input:checked) {
+  border-color: #8b74ff;
+  background: linear-gradient(150deg,#7957ff20,#438bff0a);
+  box-shadow: inset 0 0 0 1px #7957ff28;
+}
+
+.duration input {
+  position: absolute;
+  top: 13px;
+  right: 11px;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--purple);
+}
+
+.duration .days {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 13px;
+}
+
+.duration .price {
+  display: block;
+  font-size: 18px;
+  font-weight: 850;
+  letter-spacing: -.5px;
+  margin-bottom: 8px;
+}
+
+.duration .reach {
+  display: block;
+  color: #91a3c3;
+  font-size: 10px;
+}
+
+.summary {
+  background: linear-gradient(140deg,#20234a,#13243d);
+  border: 1px solid #7f71ff40;
+  border-radius: 16px;
+  padding: 19px;
+  margin-bottom: 18px;
+}
+
+.summary-title {
+  font-size: 12px;
+  color: #c7d2f0;
+  margin-bottom: 16px;
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 13px 0;
+  color: #bac7e0;
+  font-size: 12px;
+}
+
+.summary-row strong {
+  color: white;
+  text-align: right;
+}
+
+.summary-total {
+  border-top: 1px solid #ffffff19;
+  padding-top: 15px;
+  margin-top: 16px;
+}
+
+.summary-total strong {
+  font-size: 25px;
+  color: white;
+  letter-spacing: -.8px;
+}
+
+.estimate {
+  color: #9cafff;
+  font-size: 11px;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+
+.primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 15px;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  background: linear-gradient(110deg,#7957ff,#4778ff);
+  box-shadow: 0 8px 25px #7957ff29;
+  transition: transform .2s, opacity .2s;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+}
+
+.primary-btn:disabled {
+  opacity: .6;
+  cursor: wait;
+  transform: none;
+}
+
+.security-note {
+  text-align: center;
+  font-size: 10px;
+  color: #8595b2;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+
+.side-card {
+  background: linear-gradient(145deg,#131d32,#0f1729);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 19px;
+  margin-bottom: 17px;
+}
+
+.side-card h3 {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.benefit {
+  display: flex;
+  gap: 11px;
+  margin: 16px 0;
+}
+
+.benefit-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 35px;
+  height: 35px;
+  background: #7957ff19;
+  border: 1px solid #7957ff25;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.benefit strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.benefit p {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.preview {
+  background: #0a1221;
+  border: 1px solid #26344e;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.preview-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#7957ff,#36bff5);
+  font-weight: 850;
+  font-size: 13px;
+}
+
+.preview-name {
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.sponsored-label {
+  color: #b6a6ff;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.preview-body {
+  padding: 0 13px 14px;
+}
+
+.preview-copy {
+  font-size: 12px;
+  color: #dbe4f7;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.preview-media {
+  display: none;
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 9px;
+  margin-top: 12px;
+  background: #17223a;
+}
+
+.preview-action {
+  margin-top: 13px;
+  background: #7957ff;
+  color: white;
+  display: inline-block;
+  border-radius: 9px;
+  padding: 9px 14px;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.notice {
+  display: none;
+  padding: 13px 14px;
+  border-radius: 11px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.notice.show {
+  display: block;
+}
+
+.notice.error {
+  background: #ff555514;
+  border: 1px solid #ff555540;
+  color: #ffb3b3;
+}
+
+.notice.success {
+  background: #38d99b12;
+  border: 1px solid #38d99b40;
+  color: #a7f3d0;
+}
+
+.notice.info {
+  background: #438bff12;
+  border: 1px solid #438bff40;
+  color: #b9d4ff;
+}
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 22px 15px;
+  text-align: center;
+  color: #75839d;
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.footer strong {
+  color: #c1cbea;
+}
+
+@media(max-width:850px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .side-card {
+    margin-bottom: 0;
+  }
+}
+
+@media(max-width:520px) {
+  .topbar {
+    padding: 12px 15px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .top-link {
+    display: none;
+  }
+
+  .container {
+    padding: 17px 12px 35px;
+  }
+
+  .hero {
+    padding: 23px 19px;
+    border-radius: 18px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .card {
+    padding: 17px 14px;
+    border-radius: 16px;
+  }
+
+  .duration-grid {
+    gap: 7px;
+  }
+
+  .duration {
+    padding: 13px 8px;
+  }
+
+  .duration input {
+    top: 12px;
+    right: 7px;
+  }
+
+  .duration .days {
+    font-size: 11px;
+    padding-right: 13px;
+  }
+
+  .duration .price {
+    font-size: 16px;
+  }
+
+  .duration .reach {
+    font-size: 9px;
+  }
+
+  .sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .two-cols {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-icon">C</span>
+    Campusora
+  </a>
+
+  <div class="top-actions">
+    <a class="top-link" href="marketplace.html">Marketplace</a>
+    <a class="top-link" href="messages.html">Messages</a>
+    <button class="small-btn" id="dashboardBtn">My campaigns ↗</button>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="eyebrow">✦ Campusora Ads</div>
+
+    <h1>Get your post seen.<br><span>Reach more people.</span></h1>
+
+    <p>
+      Promote your content to the Campusora community.
+      Choose your duration, set up your post, and track its performance.
+    </p>
+
+    <div class="hero-pills">
+      <span class="pill">✦ Students & creators</span>
+      <span class="pill">◉ Campaign insights</span>
+      <span class="pill">↗ Flexible duration</span>
+    </div>
+  </section>
+
+  <div class="layout">
+
+    <section>
+
+      <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+      <form id="campaignForm">
+
+        <div class="card">
+          <div class="card-heading">
+            <div>
+              <h2>Create a sponsored post</h2>
+              <p>Make your post clear and engaging.</p>
+            </div>
+            <span class="step-tag">STEP 1 OF 2</span>
+          </div>
+
+          <div class="field">
+            <label for="postContent">What's your post about?</label>
+            <textarea id="postContent" maxlength="1200"
+              placeholder="Share your announcement, product, event or opportunity..."
+              required></textarea>
+            <div class="hint"><span id="charCount">0</span>/1200 characters</div>
+          </div>
+
+          <div class="field">
+            <label for="imageUrl">Image URL <span class="optional">(optional)</span></label>
+            <input id="imageUrl" type="url"
+              placeholder="https://example.com/image.jpg">
+            <div class="hint">Use a publicly accessible image link. Upload support can be added later.</div>
+          </div>
+
+          <div class="field">
+            <label for="destinationUrl">Button link <span class="optional">(optional)</span></label>
+            <input id="destinationUrl" type="url"
+              placeholder="https://yourwebsite.com">
+            <div class="hint">Where should people go after clicking your post?</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-heading">
+            <div>
+              <h2>Contact options</h2>
+              <p>Choose how people can reach you.</p>
+            </div>
+            <span class="step-tag">OPTIONAL</span>
+          </div>
+
+          <div class="contact-grid">
+
+            <label class="choice">
+              <input type="radio" name="contactMethod" value="messages" checked>
+              <span>
+                <strong>💬 Messages</strong>
+                <small>Campusora chat</small>
+              </span>
+            </label>
+
+            <label class="choice">
+              <input type="radio" name="contactMethod" value="whatsapp">
+              <span>
+                <strong>🟢 WhatsApp</strong>
+                <small>Direct contact</small>
+              </span>
+            </label>
+
+            <label class="choice">
+              <input type="radio" name="contactMethod" value="both">
+              <span>
+                <strong>✦ Both</strong>
+                <small>Give people a choice</small>
+              </span>
+            </label>
+
+            <label class="choice">
+              <input type="radio" name="contactMethod" value="none">
+              <span>
+                <strong>⊘ No contact</strong>
+                <small>Just promote the post</small>
+              </span>
+            </label>
+
+          </div>
+
+          <div class="field" id="whatsappField" style="display:none;margin-top:17px;">
+            <label for="whatsappNumber">WhatsApp number</label>
+            <input id="whatsappNumber" type="tel"
+              maxlength="20" placeholder="e.g. +2348012345678">
+            <div class="hint">Include your country code. Your number will be visible to people who choose WhatsApp.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-heading">
+            <div>
+              <h2>Campaign duration</h2>
+              <p>Choose how long your post should run.</p>
+            </div>
+            <span class="step-tag">STEP 2 OF 2</span>
+          </div>
+
+          <div class="duration-grid">
+
+            <label class="duration">
+              <input type="radio" name="duration" value="1">
+              <span class="days">1 Day</span>
+              <span class="price">₦1,000</span>
+              <span class="reach">Est. 1.2k views</span>
+            </label>
+
+            <label class="duration">
+              <input type="radio" name="duration" value="3" checked>
+              <span class="days">3 Days</span>
+              <span class="price">₦2,500</span>
+              <span class="reach">Est. 3.5k views</span>
+            </label>
+
+            <label class="duration">
+              <input type="radio" name="duration" value="7">
+              <span class="days">7 Days</span>
+              <span class="price">₦5,000</span>
+              <span class="reach">Est. 8k views</span>
+            </label>
+
+          </div>
+
+          <p class="hint" style="margin-top:13px;">
+            Reach figures are estimates, not guarantees. Actual results depend on audience activity.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-heading">
+            <div>
+              <h2>Post preview</h2>
+              <p>This is how your sponsored post may look.</p>
+            </div>
+            <span class="step-tag">PREVIEW</span>
+          </div>
+
+          <div class="preview">
+            <div class="preview-top">
+              <div class="avatar" id="avatarLetter">C</div>
+              <div>
+                <div class="preview-name" id="previewName">Your Campusora profile</div>
+                <div class="sponsored-label">✦ Sponsored</div>
+              </div>
+            </div>
+
+            <div class="preview-body">
+              <div class="preview-copy" id="previewCopy">Your sponsored post will appear here...</div>
+              <img id="previewImage" class="preview-media" alt="Sponsored post preview">
+              <span class="preview-action" id="previewAction" style="display:none;">Learn more ↗</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="summary-title">CAMPAIGN SUMMARY</div>
+
+          <div class="summary-row">
+            <span>Duration</span>
+            <strong id="summaryDuration">3 days</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Estimated reach</span>
+            <strong id="summaryReach">3,500 people</strong>
+          </div>
+
+          <div class="summary-row summary-total">
+            <span>Total price</span>
+            <strong id="summaryPrice">₦2,500</strong>
+          </div>
+
+          <div class="estimate">
+            ✓ Your campaign will stop when its paid duration ends.<br>
+            ✓ It must pass payment verification and review before going live.
+          </div>
+        </div>
+
+        <button class="primary-btn" id="submitBtn" type="submit">
+          Save campaign →
+        </button>
+
+        <p class="security-note">
+          🔒 Your campaign will not go live just because you save it.<br>
+          Payment and approval must be completed first.
+        </p>
+
+      </form>
+    </section>
+
+    <aside class="sidebar">
+
+      <div class="side-card">
+        <h3>Why sponsor a post?</h3>
+
+        <div class="benefit">
+          <div class="benefit-icon">◉</div>
+          <div>
+            <strong>Reach more people</strong>
+            <p>Give your content more opportunities to be seen.</p>
+          </div>
+        </div>
+
+        <div class="benefit">
+          <div class="benefit-icon">↗</div>
+          <div>
+            <strong>Bring in visitors</strong>
+            <p>Direct interested people to your page or website.</p>
+          </div>
+        </div>
+
+        <div class="benefit">
+          <div class="benefit-icon">▤</div>
+          <div>
+            <strong>Track performance</strong>
+            <p>See impressions, clicks and contact activity.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Before you start</h3>
+
+        <div class="benefit">
+          <div class="benefit-icon">✓</div>
+          <div>
+            <strong>Keep it honest</strong>
+            <p>Use accurate information and genuine offers.</p>
+          </div>
+        </div>
+
+        <div class="benefit">
+          <div class="benefit-icon">⌁</div>
+          <div>
+            <strong>Use suitable content</strong>
+            <p>Posts must follow Campusora's rules.</p>
+          </div>
+        </div>
+
+        <div class="benefit">
+          <div class="benefit-icon">⏱</div>
+          <div>
+            <strong>Allow time for review</strong>
+            <p>Payment alone does not guarantee approval.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Need help?</h3>
+        <p style="font-size:12px;color:var(--muted);line-height:1.8;">
+          Questions about sponsored posts?
+        </p>
+        <a href="mailto:ablegodluke@gmail.com"
+           style="display:inline-block;margin-top:12px;color:#a99aff;font-size:12px;text-decoration:none;">
+          Contact Campusora support ↗
+        </a>
+      </div>
+
+    </aside>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <strong>Campusora</strong><br>
+  Connecting students, alumni and communities.<br>
+  Building opportunities across campuses and beyond.
+</footer>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const form = document.getElementById('campaignForm');
+const notice = document.getElementById('notice');
+const submitBtn = document.getElementById('submitBtn');
+
+const contentInput = document.getElementById('postContent');
+const imageInput = document.getElementById('imageUrl');
+const destinationInput = document.getElementById('destinationUrl');
+const whatsappInput = document.getElementById('whatsappNumber');
+const whatsappField = document.getElementById('whatsappField');
+
+const prices = {
+  1: 1000,
+  3: 2500,
+  7: 5000
+};
+
+const reaches = {
+  1: 1200,
+  3: 3500,
+  7: 8000
+};
+
+const money = amount =>
+  new Intl.NumberFormat('en-NG', {
+    style: 'currency',
+    currency: 'NGN',
+    maximumFractionDigits: 0
+  }).format(amount);
+
+let currentUser = null;
+let currentProfile = null;
+
+function showNotice(message, type = 'info') {
+  notice.textContent = message;
+  notice.className = 'notice show ' + type;
+  notice.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function selectedDuration() {
+  return Number(
+    document.querySelector('input[name="duration"]:checked')?.value || 3
+  );
+}
+
+function selectedContact() {
+  return document.querySelector(
+    'input[name="contactMethod"]:checked'
+  )?.value || 'messages';
+}
+
+function safeUrl(value) {
+  if (!value) return null;
+
+  try {
+    const url = new URL(value);
+    if (url.protocol === 'https:' || url.protocol === 'http:') {
+      return url.href;
+    }
+  } catch (_) {}
+
+  return null;
+}
+
+function updatePreview() {
+  const duration = selectedDuration();
+  const content = contentInput.value.trim();
+  const imageUrl = safeUrl(imageInput.value.trim());
+  const destination = safeUrl(destinationInput.value.trim());
+
+  document.getElementById('charCount').textContent = contentInput.value.length;
+  document.getElementById('summaryDuration').textContent =
+    duration + (duration === 1 ? ' day' : ' days');
+  document.getElementById('summaryReach').textContent =
+    reaches[duration].toLocaleString('en-NG') + ' people';
+  document.getElementById('summaryPrice').textContent = money(prices[duration]);
+
+  document.getElementById('previewCopy').textContent =
+    content || 'Your sponsored post will appear here...';
+
+  const previewImage = document.getElementById('previewImage');
+
+  if (imageUrl) {
+    previewImage.src = imageUrl;
+    previewImage.style.display = 'block';
+  } else {
+    previewImage.removeAttribute('src');
+    previewImage.style.display = 'none';
+  }
+
+  const previewAction = document.getElementById('previewAction');
+  previewAction.style.display = destination ? 'inline-block' : 'none';
+}
+
+function updateContactFields() {
+  const method = selectedContact();
+  whatsappField.style.display =
+    method === 'whatsapp' || method === 'both' ? 'block' : 'none';
+}
+
+contentInput.addEventListener('input', updatePreview);
+imageInput.addEventListener('input', updatePreview);
+destinationInput.addEventListener('input', updatePreview);
+
+document.querySelectorAll('input[name="duration"]').forEach(input => {
+  input.addEventListener('change', updatePreview);
+});
+
+document.querySelectorAll('input[name="contactMethod"]').forEach(input => {
+  input.addEventListener('change', updateContactFields);
+});
+
+document.getElementById('dashboardBtn').addEventListener('click', () => {
+  window.location.href = 'advertiser-dashboard.html';
+});
+
+async function loadUser() {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data.user) {
+    showNotice(
+      'Please log in to Campusora before creating a sponsored campaign. Your post has not been saved.',
+      'error'
+    );
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Log in to continue';
+
+    submitBtn.onclick = event => {
+      event.preventDefault();
+      window.location.href = 'index.html';
+    };
+
+    return;
+  }
+
+  currentUser = data.user;
+
+  // Try common profile table names without changing existing data.
+  // Profile lookup is only for displaying the preview name.
+  for (const table of ['profiles', 'users']) {
+    try {
+      const { data: profile } = await supabase
+        .from(table)
+        .select('*')
+        .eq('id', currentUser.id)
+        .maybeSingle();
+
+      if (profile) {
+        currentProfile = profile;
+        break;
+      }
+    } catch (_) {}
+  }
+
+  const displayName =
+    currentProfile?.full_name ||
+    currentProfile?.username ||
+    currentProfile?.display_name ||
+    currentUser.user_metadata?.full_name ||
+    currentUser.user_metadata?.username ||
+    currentUser.email?.split('@')[0] ||
+    'Your Campusora profile';
+
+  document.getElementById('previewName').textContent = displayName;
+  document.getElementById('avatarLetter').textContent =
+    displayName.charAt(0).toUpperCase();
+}
+
+form.addEventListener('submit', async event => {
+  event.preventDefault();
+
+  if (!currentUser) {
+    showNotice('Please log in before creating a campaign.', 'error');
+    return;
+  }
+
+  const postContent = contentInput.value.trim();
+  const imageRaw = imageInput.value.trim();
+  const destinationRaw = destinationInput.value.trim();
+  const duration = selectedDuration();
+  const contactMethod = selectedContact();
+  const whatsappNumber = whatsappInput.value.trim();
+
+  if (postContent.length < 5) {
+    showNotice('Please enter a little more information about your post.', 'error');
+    contentInput.focus();
+    return;
+  }
+
+  if (imageRaw && !safeUrl(imageRaw)) {
+    showNotice('Please enter a valid image URL starting with https:// or http://.', 'error');
+    imageInput.focus();
+    return;
+  }
+
+  if (destinationRaw && !safeUrl(destinationRaw)) {
+    showNotice('Please enter a valid destination link.', 'error');
+    destinationInput.focus();
+    return;
+  }
+
+  if (
+    (contactMethod === 'whatsapp' || contactMethod === 'both') &&
+    !/^\+?[0-9\s()-]{8,20}$/.test(whatsappNumber)
+  ) {
+    showNotice('Enter a valid WhatsApp number, including your country code.', 'error');
+    whatsappInput.focus();
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Saving campaign...';
+
+  try {
+    const campaign = {
+      user_id: currentUser.id,
+      post_content: postContent,
+      post_image_url: safeUrl(imageRaw),
+      destination_url: safeUrl(destinationRaw),
+      contact_method: contactMethod,
+      whatsapp_number:
+        contactMethod === 'whatsapp' || contactMethod === 'both'
+          ? whatsappNumber.replace(/[\s()-]/g, '')
+          : null,
+      duration_days: duration,
+      amount_kobo: prices[duration] * 100,
+      estimated_reach: reaches[duration],
+      status: 'pending_payment',
+      payment_verified: false
+    };
+
+    const { data, error } = await supabase
+      .from('sponsored_campaigns')
+      .insert(campaign)
+      .select('id')
+      .single();
+
+    if (error) {
+      console.error('Campaign save error:', error);
+      throw new Error(error.message);
+    }
+
+    showNotice(
+      'Campaign saved! Reference: ' + data.id +
+      '. It is awaiting payment setup. It is NOT live yet. Next, we will connect secure Paystack verification and the review process.',
+      'success'
+    );
+
+    submitBtn.textContent = 'Campaign saved ✓';
+    form.reset();
+    updateContactFields();
+    updatePreview();
+
+  } catch (error) {
+    console.error(error);
+
+    showNotice(
+      'We could not save your campaign. ' +
+      (error.message || 'Please try again.'),
+      'error'
+    );
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Save campaign →';
+  }
+});
+
+updatePreview();
+updateContactFields();
+loadUser();
+</script>
+
+</body>
+  </html>
