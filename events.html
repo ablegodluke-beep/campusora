@@ -1,1137 +1,954 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090d1c">
-  <title>Campusora | Campus Events</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b14">
+<title>Campusora | Events</title>
 
-  <style>
-    :root {
-      --bg: #090d1c;
-      --panel: #11182b;
-      --panel-light: #18213a;
-      --purple: #8b5cf6;
-      --blue: #4f8cff;
-      --cyan: #22d3ee;
-      --text: #f4f6ff;
-      --muted: #9ca9c6;
-      --border: rgba(255,255,255,.09);
-    }
+<style>
+:root {
+  --bg: #0b0b14;
+  --card: #151522;
+  --pink: #ff91c8;
+  --purple: #b7a0ff;
+  --text: #f7f4fb;
+  --muted: #aaa6bb;
+  --border: #292538;
+}
 
-    * { box-sizing: border-box; }
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, system-ui, Arial, sans-serif;
-    }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px Arial, sans-serif;
+}
 
-    button, input, textarea, select { font: inherit; }
-    button { cursor: pointer; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(9,13,28,.94);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
+header {
+  border-bottom: 1px solid var(--border);
+  background: #10101b;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
 
-    .nav {
-      max-width: 1200px;
-      margin: auto;
-      padding: 17px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
+nav {
+  max-width: 1000px;
+  margin: auto;
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
 
-    .brand {
-      font-size: 23px;
-      font-weight: 900;
-      letter-spacing: -.8px;
-    }
+.logo {
+  font-size: 19px;
+  font-weight: bold;
+}
 
-    .brand span {
-      background: linear-gradient(90deg,var(--purple),var(--cyan));
-      color: transparent;
-      background-clip: text;
-    }
+.logo span { color: var(--pink); }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-    }
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+}
 
-    .nav-links a.active { color: white; }
+nav a.active { color: var(--pink); }
 
-    .btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 17px;
-      color: white;
-      font-weight: 750;
-      background: linear-gradient(110deg,var(--purple),var(--blue));
-    }
+button.primary {
+  border: 0;
+  border-radius: 9px;
+  background: linear-gradient(110deg,var(--pink),var(--purple));
+  color: #1b1224;
+  font-weight: bold;
+  padding: 9px 12px;
+}
 
-    .btn:disabled { opacity: .55; cursor: wait; }
+button.secondary {
+  border: 1px solid var(--border);
+  background: #1b1928;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 8px 11px;
+}
 
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--border);
-    }
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px 16px 40px;
+}
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 30px 22px 60px;
-    }
+.intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: linear-gradient(110deg,#191424,#141522);
+}
 
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 40px;
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      background:
-        radial-gradient(ellipse at 90% 10%,rgba(34,211,238,.16),transparent 35%),
-        radial-gradient(ellipse at 10% 100%,rgba(139,92,246,.2),transparent 45%),
-        var(--panel);
-    }
+.intro h1 {
+  font-size: 22px;
+  margin: 0 0 7px;
+  font-weight: 700;
+}
 
-    .eyebrow {
-      color: var(--cyan);
-      font-size: 12px;
-      font-weight: 850;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+.intro p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
 
-    h1 {
-      margin: 14px 0;
-      max-width: 680px;
-      font-size: clamp(32px,5vw,54px);
-      line-height: 1.08;
-      letter-spacing: -1.8px;
-    }
+.intro-icon {
+  font-size: 33px;
+  flex-shrink: 0;
+}
 
-    .gradient-text {
-      background: linear-gradient(90deg,#a78bfa,#67e8f9);
-      color: transparent;
-      background-clip: text;
-    }
+.search {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: white;
+  outline: none;
+}
 
-    .hero p {
-      max-width: 560px;
-      color: var(--muted);
-      line-height: 1.8;
-    }
+.search:focus, .field:focus { border-color: var(--pink); }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 23px;
-    }
+.categories {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 12px 0;
+  scrollbar-width: none;
+}
 
-    .section { margin-top: 38px; }
+.categories::-webkit-scrollbar { display: none; }
 
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
+.chip {
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--card);
+  padding: 8px 12px;
+  border-radius: 25px;
+}
 
-    h2 { margin: 0; font-size: 23px; }
-    .muted { color: var(--muted); }
+.chip.active {
+  color: var(--pink);
+  border-color: var(--pink);
+  background: #211725;
+}
 
-    .search {
-      width: 100%;
-      padding: 15px 17px;
-      border-radius: 13px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: white;
-      outline: none;
-    }
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 17px 0 13px;
+}
 
-    .search:focus, .field:focus {
-      border-color: var(--purple);
-    }
+.section-title h2 {
+  font-size: 16px;
+  margin: 0;
+}
 
-    .categories {
-      display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
+.muted { color: var(--muted); }
 
-    .chip {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--muted);
-      padding: 9px 14px;
-      border-radius: 30px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 13px;
+}
 
-    .chip.active {
-      color: white;
-      background: rgba(139,92,246,.2);
-      border-color: var(--purple);
-    }
+.event-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 13px;
+}
 
-    .featured {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: var(--panel);
-    }
+.poster {
+  height: 135px;
+  background: linear-gradient(135deg,#32203b,#20203a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 32px;
+}
 
-    .featured-art {
-      min-height: 270px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-      background:
-        radial-gradient(circle at 30% 30%,rgba(139,92,246,.7),transparent 40%),
-        linear-gradient(135deg,#14284d,#11182b 70%);
-    }
+.poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .featured-art .symbol { font-size: 68px; }
-    .featured-content { padding: 28px 28px 28px 0; }
+.card-body { padding: 12px; }
 
-    .badge {
-      display: inline-block;
-      color: #c4b5fd;
-      background: rgba(139,92,246,.15);
-      border: 1px solid rgba(139,92,246,.3);
-      border-radius: 7px;
-      padding: 6px 9px;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
+.badge {
+  color: var(--pink);
+  background: #291b2c;
+  display: inline-block;
+  padding: 4px 7px;
+  font-size: 10px;
+  border-radius: 5px;
+}
 
-    .featured-content h3 {
-      font-size: 27px;
-      line-height: 1.2;
-      margin: 16px 0 10px;
-    }
+.card-body h3 {
+  margin: 9px 0 7px;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
 
-    .event-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 15px;
-      color: var(--muted);
-      font-size: 13px;
-      margin: 17px 0;
-    }
+.info {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
 
-    .featured-content p {
-      color: var(--muted);
-      line-height: 1.7;
-    }
+.description {
+  color: #d0ccdc;
+  font-size: 12px;
+  line-height: 1.5;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3,minmax(0,1fr));
-      gap: 18px;
-    }
+.card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  margin-top: 12px;
+}
 
-    .event-card {
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--panel);
-      transition: transform .2s,border-color .2s;
-    }
+.small-btn {
+  background: #211d30;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 7px 9px;
+  border-radius: 7px;
+  font-size: 11px;
+}
 
-    .event-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(139,92,246,.55);
-    }
+.small-btn.active {
+  color: var(--pink);
+  border-color: var(--pink);
+}
 
-    .poster {
-      height: 165px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 20% 20%,rgba(79,140,255,.35),transparent 45%),
-        var(--panel-light);
-      font-size: 48px;
-    }
+.empty {
+  grid-column: 1/-1;
+  padding: 30px 15px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
 
-    .poster img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.status {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
 
-    .card-body { padding: 17px; }
-    .card-body h3 { margin: 12px 0 8px; font-size: 18px; }
-    .card-body p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
+.status.error { color: #ff9aa9; }
 
-    .card-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-top: 16px;
-    }
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: #000b;
+}
 
-    .small-btn {
-      padding: 9px 12px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--panel-light);
-      color: white;
-    }
+.modal.open { display: flex; }
 
-    .small-btn.interested {
-      background: rgba(139,92,246,.22);
-      border-color: var(--purple);
-    }
+.modal-box {
+  background: #151522;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 20px;
+  width: min(100%,520px);
+  max-height: 90vh;
+  overflow-y: auto;
+}
 
-    .empty {
-      grid-column: 1/-1;
-      text-align: center;
-      padding: 40px 20px;
-      border: 1px dashed var(--border);
-      border-radius: 18px;
-      color: var(--muted);
-    }
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
 
-    .status-message {
-      margin: 18px 0;
-      padding: 13px 15px;
-      border-radius: 12px;
-      background: var(--panel);
-      color: var(--muted);
-      line-height: 1.6;
-    }
+.modal-head h2 { font-size: 17px; margin: 0; }
 
-    .status-message.error { color: #fda4af; }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 30;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      background: rgba(0,0,0,.75);
-      overflow-y: auto;
-    }
+.form-field { min-width: 0; }
+.form-field.full { grid-column: 1/-1; }
 
-    .modal.open { display: flex; }
+label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: #d5d0e2;
+}
 
-    .modal-box {
-      width: min(100%,600px);
-      max-height: 92vh;
-      overflow-y: auto;
-      background: #10172a;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-    }
+.field {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #0c0c17;
+  color: white;
+  outline: none;
+}
 
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+textarea.field {
+  min-height: 85px;
+  resize: vertical;
+}
 
-    .close-btn {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--panel-light);
-      color: white;
-      padding: 8px 12px;
-    }
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0;
+  color: var(--muted);
+}
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+#formMessage {
+  font-size: 12px;
+  margin: 10px 0;
+  color: #ff9aa9;
+}
 
-    .form-field { margin-bottom: 15px; }
-    .form-field.full { grid-column: 1/-1; }
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+}
 
-    .form-field label {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 7px;
-      color: #d5dcf0;
-    }
+@media(max-width:700px) {
+  main { padding: 15px 12px 30px; }
 
-    .field {
-      width: 100%;
-      padding: 12px;
-      background: #0b1121;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: white;
-      outline: none;
-    }
+  .grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 9px;
+  }
 
-    textarea.field { min-height: 110px; resize: vertical; }
+  .poster { height: 105px; }
+  .card-body { padding: 9px; }
+  .card-body h3 { font-size: 12px; }
+  .description { font-size: 11px; }
+  .card-bottom { flex-wrap: wrap; }
+  .small-btn { padding: 6px; font-size: 10px; }
+  .intro h1 { font-size: 19px; }
+}
 
-    .checkbox-row {
-      display: flex;
-      gap: 9px;
-      align-items: center;
-      margin: 12px 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 25px 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media(max-width:800px) {
-      .grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .featured { grid-template-columns: 1fr; }
-      .featured-art { min-height: 180px; }
-      .featured-content { padding: 24px; }
-    }
-
-    @media(max-width:560px) {
-      .nav { padding: 15px; }
-      .nav-links a { display: none; }
-      .container { padding: 20px 14px 40px; }
-      .hero { padding: 27px 20px; }
-      .grid { grid-template-columns: 1fr; }
-      .section-head { align-items: flex-start; }
-      .form-grid { grid-template-columns: 1fr; }
-      .form-field.full { grid-column: auto; }
-      .featured-content h3 { font-size: 23px; }
-    }
-  </style>
+@media(max-width:400px) {
+  nav { padding: 12px 10px; }
+  .logo { font-size: 17px; }
+  .nav-links { gap: 8px; }
+  nav a { font-size: 11px; }
+  .nav-links a:nth-child(2),
+  .nav-links a:nth-child(3) { display: none; }
+  .intro { padding: 14px; }
+  .intro-icon { font-size: 26px; }
+  .grid { gap: 8px; }
+}
+</style>
 </head>
 
 <body>
-  <header class="topbar">
-    <nav class="nav">
-      <div class="brand">Campus<span>ora</span></div>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="messages.html">Messages</a>
-        <a href="marketplace.html">Marketplace</a>
-        <a href="events.html" class="active">Events</a>
-        <button class="btn" id="openCreate">+ Create Event</button>
-      </div>
-    </nav>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="eyebrow">Discover · Connect · Experience</div>
-      <h1>Your campus life,<br><span class="gradient-text">beyond the classroom.</span></h1>
-      <p>
-        Discover campus events, meet people who share your interests,
-        and never miss an opportunity to learn, connect, and have fun.
-      </p>
-      <div class="hero-actions">
-        <button class="btn" id="exploreBtn">Explore Events ↓</button>
-        <button class="btn btn-outline" id="heroCreate">Host an Event +</button>
-      </div>
-    </section>
-
-    <div id="pageMessage" class="status-message" role="status">
-      Connecting to Campusora events…
+<header>
+  <nav>
+    <div class="logo">Campus<span>ora</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="messages.html">Messages</a>
+      <a href="marketplace.html">Market</a>
+      <a href="events.html" class="active">Events</a>
+      <button class="primary" id="openCreate">+ Create</button>
     </div>
+  </nav>
+</header>
 
-    <section class="section" id="explore">
-      <div class="section-head">
-        <div>
-          <h2>Find your next experience</h2>
-          <p class="muted">Search for something happening around you.</p>
-        </div>
-      </div>
-
-      <input
-        id="searchInput"
-        class="search"
-        type="search"
-        placeholder="🔎 Search events, topics, or locations..."
-        aria-label="Search events"
-      >
-
-      <div class="categories" id="categories">
-        <button class="chip active" data-category="All">All events</button>
-        <button class="chip" data-category="Academic">Academic</button>
-        <button class="chip" data-category="Technology">Technology</button>
-        <button class="chip" data-category="Business">Business</button>
-        <button class="chip" data-category="Career">Career</button>
-        <button class="chip" data-category="Sports">Sports</button>
-        <button class="chip" data-category="Entertainment">Entertainment</button>
-        <button class="chip" data-category="Social">Social</button>
-        <button class="chip" data-category="Other">Other</button>
-      </div>
-    </section>
-
-    <section class="section" id="featuredSection" hidden>
-      <div class="section-head">
-        <h2>⭐ Featured event</h2>
-      </div>
-      <div id="featuredEvent"></div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>Upcoming events</h2>
-          <p class="muted" id="eventCount">Discover what's happening next.</p>
-        </div>
-      </div>
-      <div class="grid" id="eventsGrid">
-        <div class="empty">Loading events…</div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    Campusora © <span id="year"></span> · Discover your campus. Build your community.
-  </footer>
-
-  <div class="modal" id="createModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h2 id="modalTitle">Create an event</h2>
-        <button class="close-btn" id="closeModal" type="button">✕</button>
-      </div>
-
-      <form id="eventForm">
-        <div class="form-grid">
-          <div class="form-field full">
-            <label for="eventTitle">Event title *</label>
-            <input class="field" id="eventTitle" maxlength="150" required
-              placeholder="e.g. Campus Tech Summit">
-          </div>
-
-          <div class="form-field full">
-            <label for="eventDescription">Description *</label>
-            <textarea class="field" id="eventDescription" maxlength="5000"
-              required placeholder="What should people know about this event?"></textarea>
-          </div>
-
-          <div class="form-field">
-            <label for="eventCategory">Category</label>
-            <select class="field" id="eventCategory">
-              <option>Academic</option>
-              <option>Technology</option>
-              <option>Business</option>
-              <option>Career</option>
-              <option>Sports</option>
-              <option>Entertainment</option>
-              <option>Social</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="eventVisibility">Who can see it?</label>
-            <select class="field" id="eventVisibility">
-              <option value="public">Everyone</option>
-              <option value="campus">My campus</option>
-              <option value="private">Private</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="startTime">Start date and time *</label>
-            <input class="field" id="startTime" type="datetime-local" required>
-          </div>
-
-          <div class="form-field">
-            <label for="endTime">End date and time *</label>
-            <input class="field" id="endTime" type="datetime-local" required>
-          </div>
-
-          <div class="form-field full">
-            <label for="eventLocation">Location</label>
-            <input class="field" id="eventLocation" maxlength="250"
-              placeholder="e.g. Main Auditorium">
-          </div>
-
-          <div class="form-field">
-            <label for="eventInstitution">School or institution</label>
-            <input class="field" id="eventInstitution" maxlength="250"
-              placeholder="e.g. Your university">
-          </div>
-
-          <div class="form-field">
-            <label for="eventPrice">Entry</label>
-            <select class="field" id="eventPrice">
-              <option value="free">Free</option>
-              <option value="paid">Paid</option>
-            </select>
-          </div>
-
-          <div class="form-field full" id="ticketField" hidden>
-            <label for="ticketUrl">Ticket link</label>
-            <input class="field" id="ticketUrl" type="url"
-              placeholder="https://...">
-          </div>
-
-          <div class="form-field full">
-            <label for="eventPoster">Event poster (optional, max 5 MB)</label>
-            <input class="field" id="eventPoster" type="file"
-              accept="image/jpeg,image/png,image/webp">
-          </div>
-
-          <div class="form-field full">
-            <label for="onlineUrl">Online meeting link (optional)</label>
-            <input class="field" id="onlineUrl" type="url"
-              placeholder="https://...">
-          </div>
-        </div>
-
-        <label class="checkbox-row">
-          <input type="checkbox" id="isOnline">
-          This is an online event
-        </label>
-
-        <div id="formMessage" class="status-message" hidden></div>
-
-        <button class="btn" id="submitEvent" type="submit" style="width:100%">
-          Publish event
-        </button>
-      </form>
+<main>
+  <section class="intro">
+    <div>
+      <h1>Campus Events 💗</h1>
+      <p>Find events. Meet people. Join in.</p>
     </div>
+    <div class="intro-icon">🎟️</div>
+  </section>
+
+  <input
+    class="search"
+    id="searchInput"
+    type="search"
+    placeholder="Search events or locations..."
+    aria-label="Search events"
+  >
+
+  <div class="categories" id="categories">
+    <button class="chip active" data-category="All">All</button>
+    <button class="chip" data-category="Academic">Academic</button>
+    <button class="chip" data-category="Technology">Tech</button>
+    <button class="chip" data-category="Business">Business</button>
+    <button class="chip" data-category="Career">Career</button>
+    <button class="chip" data-category="Sports">Sports</button>
+    <button class="chip" data-category="Entertainment">Fun</button>
+    <button class="chip" data-category="Social">Social</button>
+    <button class="chip" data-category="Other">Other</button>
   </div>
 
-  <script type="module">
-    import { supabase } from './supabase.js';
+  <div class="section-title">
+    <h2>Upcoming events</h2>
+    <span class="muted" id="eventCount"></span>
+  </div>
 
-    const $ = (id) => document.getElementById(id);
+  <div id="pageMessage" class="status">Connecting...</div>
 
-    let allEvents = [];
-    let selectedCategory = 'All';
-    let currentUser = null;
-    let myInterests = new Set();
+  <div class="grid" id="eventsGrid">
+    <div class="empty">Loading events...</div>
+  </div>
+</main>
 
-    $('year').textContent = new Date().getFullYear();
+<footer>Campusora · Your campus community</footer>
 
-    function showMessage(message, isError = false) {
-      const box = $('pageMessage');
-      box.textContent = message;
-      box.classList.toggle('error', isError);
-      box.hidden = false;
-    }
+<div class="modal" id="createModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Create an event</h2>
+      <button class="secondary" id="closeModal" type="button">✕</button>
+    </div>
 
-    function escapeHTML(value = '') {
-      return String(value).replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      })[char]);
-    }
+    <form id="eventForm">
+      <div class="form-grid">
+        <div class="form-field full">
+          <label for="eventTitle">Event name *</label>
+          <input class="field" id="eventTitle" maxlength="150" required>
+        </div>
 
-    function safeURL(value) {
-      if (!value) return '';
-      try {
-        const url = new URL(value, window.location.href);
-        if (url.protocol === 'https:' || url.protocol === 'http:') {
-          return url.href;
-        }
-      } catch (_) {}
-      return '';
-    }
+        <div class="form-field full">
+          <label for="eventDescription">Description *</label>
+          <textarea class="field" id="eventDescription" maxlength="5000"
+            placeholder="What's happening?" required></textarea>
+        </div>
 
-    function formatDate(value) {
-      return new Intl.DateTimeFormat(undefined, {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit'
-      }).format(new Date(value));
-    }
+        <div class="form-field">
+          <label for="eventCategory">Category</label>
+          <select class="field" id="eventCategory">
+            <option>Academic</option>
+            <option>Technology</option>
+            <option>Business</option>
+            <option>Career</option>
+            <option>Sports</option>
+            <option>Entertainment</option>
+            <option>Social</option>
+            <option>Other</option>
+          </select>
+        </div>
 
-    function isFuture(event) {
-      return new Date(event.start_time).getTime() >= Date.now();
-    }
+        <div class="form-field">
+          <label for="eventVisibility">Audience</label>
+          <select class="field" id="eventVisibility">
+            <option value="public">Public</option>
+            <option value="campus">Campus</option>
+            <option value="private">Private</option>
+          </select>
+        </div>
 
-    function eventArt(event) {
-      const url = safeURL(event.poster_url);
-      if (url) {
-        return `<img src="${escapeHTML(url)}" alt="${escapeHTML(event.title)} poster" loading="lazy">`;
-      }
-      return '🎓';
-    }
+        <div class="form-field">
+          <label for="startTime">Starts *</label>
+          <input class="field" id="startTime" type="datetime-local" required>
+        </div>
 
-    function filteredEvents() {
-      const query = $('searchInput').value.trim().toLowerCase();
+        <div class="form-field">
+          <label for="endTime">Ends *</label>
+          <input class="field" id="endTime" type="datetime-local" required>
+        </div>
 
-      return allEvents.filter(event => {
-        const matchesCategory =
-          selectedCategory === 'All' || event.category === selectedCategory;
+        <div class="form-field full">
+          <label for="eventLocation">Location</label>
+          <input class="field" id="eventLocation" maxlength="250"
+            placeholder="Where is it happening?">
+        </div>
 
-        const searchable = [
-          event.title,
-          event.description,
-          event.category,
-          event.location,
-          event.institution
-        ].filter(Boolean).join(' ').toLowerCase();
+        <div class="form-field full">
+          <label for="eventInstitution">School</label>
+          <input class="field" id="eventInstitution" maxlength="250"
+            placeholder="Your school">
+        </div>
 
-        return matchesCategory && searchable.includes(query);
-      });
-    }
+        <div class="form-field">
+          <label for="eventPrice">Entry</label>
+          <select class="field" id="eventPrice">
+            <option value="free">Free</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
 
-    function renderFeatured(events) {
-      const event = events.find(isFuture);
+        <div class="form-field">
+          <label for="eventPoster">Poster (optional)</label>
+          <input class="field" id="eventPoster" type="file"
+            accept="image/jpeg,image/png,image/webp">
+        </div>
 
-      if (!event) {
-        $('featuredSection').hidden = true;
-        return;
-      }
+        <div class="form-field full" id="ticketField" hidden>
+          <label for="ticketUrl">Ticket link *</label>
+          <input class="field" id="ticketUrl" type="url"
+            placeholder="https://...">
+        </div>
 
-      $('featuredSection').hidden = false;
+        <div class="form-field full">
+          <label for="onlineUrl">Meeting link (optional)</label>
+          <input class="field" id="onlineUrl" type="url"
+            placeholder="https://...">
+        </div>
+      </div>
 
-      $('featuredEvent').innerHTML = `
-        <article class="featured">
-          <div class="featured-art">
-            <div>
-              <div class="symbol">${event.poster_url ? '' : '✨'}</div>
-              ${event.poster_url
-                ? `<img src="${escapeHTML(safeURL(event.poster_url))}"
-                     alt="${escapeHTML(event.title)} poster"
-                     style="max-width:100%;max-height:240px;object-fit:contain">`
-                : '<div class="eyebrow">Something worth showing up for</div>'}
-            </div>
+      <label class="check-row">
+        <input id="isOnline" type="checkbox">
+        Online event
+      </label>
+
+      <div id="formMessage" hidden></div>
+
+      <button class="primary" id="submitEvent" type="submit"
+        style="width:100%">Publish event</button>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const $ = id => document.getElementById(id);
+
+let events = [];
+let currentUser = null;
+let interests = new Set();
+let category = 'All';
+
+function escapeHTML(value = '') {
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
+
+function safeURL(value) {
+  if (!value) return '';
+  try {
+    const url = new URL(value);
+    return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+  } catch {
+    return '';
+  }
+}
+
+function dateText(value) {
+  return new Intl.DateTimeFormat(undefined, {
+    day:'numeric',
+    month:'short',
+    year:'numeric',
+    hour:'numeric',
+    minute:'2-digit'
+  }).format(new Date(value));
+}
+
+function message(text, error = false) {
+  $('pageMessage').textContent = text;
+  $('pageMessage').classList.toggle('error', error);
+}
+
+function filteredEvents() {
+  const q = $('searchInput').value.trim().toLowerCase();
+
+  return events.filter(e => {
+    const categoryMatch = category === 'All' || e.category === category;
+    const words = [
+      e.title, e.description, e.location, e.category, e.institution
+    ].filter(Boolean).join(' ').toLowerCase();
+
+    return categoryMatch && words.includes(q);
+  });
+}
+
+function render() {
+  const list = filteredEvents();
+
+  $('eventCount').textContent = list.length;
+
+  if (!list.length) {
+    $('eventsGrid').innerHTML = `
+      <div class="empty">
+        <p>No upcoming events yet.</p>
+        <button class="primary" data-create>+ Create event</button>
+      </div>`;
+    return;
+  }
+
+  $('eventsGrid').innerHTML = list.map(e => {
+    const poster = safeURL(e.poster_url);
+
+    return `
+      <article class="event-card">
+        <div class="poster">
+          ${poster
+            ? `<img src="${escapeHTML(poster)}" alt="${escapeHTML(e.title)}" loading="lazy">`
+            : '🎟️'}
+        </div>
+
+        <div class="card-body">
+          <span class="badge">${escapeHTML(e.category || 'Other')}</span>
+          <h3>${escapeHTML(e.title)}</h3>
+
+          <div class="info">
+            📅 ${escapeHTML(dateText(e.start_time))}<br>
+            📍 ${escapeHTML(e.location || (e.is_online ? 'Online' : 'TBA'))}
+            ${e.institution ? `<br>🎓 ${escapeHTML(e.institution)}` : ''}
           </div>
-          <div class="featured-content">
-            <span class="badge">${escapeHTML(event.category || 'Event')}</span>
-            <h3>${escapeHTML(event.title)}</h3>
-            <div class="event-meta">
-              <span>📅 ${escapeHTML(formatDate(event.start_time))}</span>
-              <span>📍 ${escapeHTML(event.location || (event.is_online ? 'Online' : 'Location to be announced'))}</span>
-            </div>
-            <p>${escapeHTML((event.description || '').slice(0, 220))}${(event.description || '').length > 220 ? '…' : ''}</p>
-            <button class="btn" data-interest="${event.id}">
-              ${myInterests.has(event.id) ? '✓ Interested' : '♡ I’m interested'}
+
+          <p class="description">
+            ${escapeHTML((e.description || '').slice(0,90))}
+            ${(e.description || '').length > 90 ? '…' : ''}
+          </p>
+
+          <div class="card-bottom">
+            <button class="small-btn ${interests.has(e.id) ? 'active' : ''}"
+              data-interest="${e.id}">
+              ${interests.has(e.id) ? '♥ Interested' : '♡ Interested'}
             </button>
-            <button class="small-btn" data-share="${event.id}">Share ↗</button>
+
+            <button class="small-btn" data-share="${e.id}">Share ↗</button>
           </div>
-        </article>
-      `;
-    }
+        </div>
+      </article>`;
+  }).join('');
+}
 
-    function renderEvents() {
-      const events = filteredEvents()
-        .filter(isFuture)
-        .sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+async function loadEvents() {
+  message('Loading events...');
 
-      renderFeatured(events);
+  try {
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('status', 'published')
+      .eq('visibility', 'public')
+      .gte('start_time', new Date().toISOString())
+      .order('start_time', { ascending:true });
 
-      const featuredId = events.find(isFuture)?.id;
-      const cards = events.filter(event => event.id !== featuredId);
+    if (error) throw error;
 
-      $('eventCount').textContent =
-        `${events.length} upcoming event${events.length === 1 ? '' : 's'} found`;
+    events = data || [];
+    render();
 
-      if (!cards.length) {
-        $('eventsGrid').innerHTML = `
-          <div class="empty">
-            <div style="font-size:35px">🗓️</div>
-            <h3>No other upcoming events yet</h3>
-            <p>Try another category or be the first to publish an event.</p>
-            <button class="btn" data-create>+ Create an event</button>
-          </div>`;
-        return;
-      }
+    message(events.length
+      ? 'Events are up to date.'
+      : 'No public upcoming events yet. Be the first to create one!');
+  } catch (error) {
+    console.error(error);
+    message('Could not load events. Check Supabase settings.', true);
+    $('eventsGrid').innerHTML = `
+      <div class="empty">Events could not load. Please try again later.</div>`;
+  }
+}
 
-      $('eventsGrid').innerHTML = cards.map(event => `
-        <article class="event-card">
-          <div class="poster">${eventArt(event)}</div>
-          <div class="card-body">
-            <span class="badge">${escapeHTML(event.category || 'Other')}</span>
-            <h3>${escapeHTML(event.title)}</h3>
-            <p>📅 ${escapeHTML(formatDate(event.start_time))}</p>
-            <p>📍 ${escapeHTML(event.location || (event.is_online ? 'Online event' : 'Location to be announced'))}</p>
-            <p>${escapeHTML((event.description || '').slice(0, 115))}${(event.description || '').length > 115 ? '…' : ''}</p>
-            <div class="card-bottom">
-              <button class="small-btn ${myInterests.has(event.id) ? 'interested' : ''}"
-                data-interest="${event.id}">
-                ${myInterests.has(event.id) ? '✓ Interested' : '♡ Interested'}
-              </button>
-              <button class="small-btn" data-share="${event.id}">Share ↗</button>
-            </div>
-          </div>
-        </article>
-      `).join('');
-    }
+async function loadUser() {
+  const { data, error } = await supabase.auth.getUser();
 
-    async function loadEvents() {
-      showMessage('Loading published events…');
+  if (error || !data.user) return;
 
-      try {
-        const { data, error } = await supabase
-          .from('events')
-          .select('*')
-          .eq('status', 'published')
-          .eq('visibility', 'public')
-          .gte('start_time', new Date().toISOString())
-          .order('start_time', { ascending: true });
+  currentUser = data.user;
 
-        if (error) throw error;
+  const { data: rows, error: interestError } = await supabase
+    .from('event_interests')
+    .select('event_id')
+    .eq('user_id', currentUser.id);
 
-        allEvents = data || [];
-        renderEvents();
+  if (!interestError && rows) {
+    interests = new Set(rows.map(row => row.event_id));
+  }
+}
 
-        if (allEvents.length) {
-          showMessage(`You're all set! ${allEvents.length} upcoming event(s) loaded.`);
-        } else {
-          showMessage('Your events page is ready. No public upcoming events have been published yet.');
-        }
-      } catch (error) {
-        console.error('Loading events failed:', error);
-        showMessage(
-          'We could not load events. Check your Supabase connection and database policies, then reload this page.',
-          true
-        );
-        $('eventsGrid').innerHTML = `
-          <div class="empty">
-            <h3>Unable to load events</h3>
-            <p>Check the browser console and Supabase settings for the exact error.</p>
-          </div>`;
-      }
-    }
+async function toggleInterest(id) {
+  if (!currentUser) {
+    alert('Please sign in first.');
+    return;
+  }
 
-    async function loadMyInterests() {
-      const { data: userResult, error: userError } =
-        await supabase.auth.getUser();
-
-      if (userError || !userResult.user) return;
-
-      currentUser = userResult.user;
-
-      const { data, error } = await supabase
+  try {
+    if (interests.has(id)) {
+      const { error } = await supabase
         .from('event_interests')
-        .select('event_id')
+        .delete()
+        .eq('event_id', id)
         .eq('user_id', currentUser.id);
 
-      if (!error && data) {
-        myInterests = new Set(data.map(row => row.event_id));
-      }
+      if (error) throw error;
+      interests.delete(id);
+    } else {
+      const { error } = await supabase
+        .from('event_interests')
+        .insert({ event_id:id, user_id:currentUser.id });
+
+      if (error) throw error;
+      interests.add(id);
     }
 
-    async function toggleInterest(eventId) {
-      if (!currentUser) {
-        alert('Please sign in to express interest in an event.');
-        return;
-      }
+    render();
+  } catch (error) {
+    console.error(error);
+    alert('Could not update your interest. Please try again.');
+  }
+}
 
-      const alreadyInterested = myInterests.has(eventId);
+async function shareEvent(id) {
+  const e = events.find(item => item.id === id);
+  if (!e) return;
 
-      try {
-        if (alreadyInterested) {
-          const { error } = await supabase
-            .from('event_interests')
-            .delete()
-            .eq('event_id', eventId)
-            .eq('user_id', currentUser.id);
+  const url = new URL(location.href);
+  url.searchParams.set('event', id);
 
-          if (error) throw error;
-          myInterests.delete(eventId);
-        } else {
-          const { error } = await supabase
-            .from('event_interests')
-            .insert({
-              event_id: eventId,
-              user_id: currentUser.id
-            });
-
-          if (error) throw error;
-          myInterests.add(eventId);
-        }
-
-        renderEvents();
-      } catch (error) {
-        console.error('Updating interest failed:', error);
-        alert('We could not update your interest. Please try again.');
-      }
-    }
-
-    async function shareEvent(eventId) {
-      const event = allEvents.find(item => item.id === eventId);
-      if (!event) return;
-
-      const url = new URL(window.location.href);
-      url.searchParams.set('event', eventId);
-
-      const shareData = {
-        title: event.title,
-        text: `Check out this Campusora event: ${event.title}`,
-        url: url.href
-      };
-
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else if (navigator.clipboard) {
-          await navigator.clipboard.writeText(url.href);
-          alert('Event link copied!');
-        } else {
-          window.prompt('Copy this event link:', url.href);
-        }
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          alert('Sharing was not completed.');
-        }
-      }
-    }
-
-    function openModal() {
-      $('createModal').classList.add('open');
-      $('formMessage').hidden = true;
-    }
-
-    function closeModal() {
-      $('createModal').classList.remove('open');
-    }
-
-    $('openCreate').addEventListener('click', openModal);
-    $('heroCreate').addEventListener('click', openModal);
-    $('closeModal').addEventListener('click', closeModal);
-    $('exploreBtn').addEventListener('click', () => {
-      $('explore').scrollIntoView({ behavior: 'smooth' });
-    });
-
-    $('createModal').addEventListener('click', event => {
-      if (event.target === $('createModal')) closeModal();
-    });
-
-    $('eventPrice').addEventListener('change', () => {
-      $('ticketField').hidden = $('eventPrice').value !== 'paid';
-    });
-
-    $('categories').addEventListener('click', event => {
-      const button = event.target.closest('[data-category]');
-      if (!button) return;
-
-      selectedCategory = button.dataset.category;
-
-      document.querySelectorAll('.chip').forEach(chip => {
-        chip.classList.toggle('active', chip === button);
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title:e.title,
+        text:`Check out ${e.title} on Campusora`,
+        url:url.href
       });
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url.href);
+      alert('Event link copied!');
+    } else {
+      prompt('Copy event link:', url.href);
+    }
+  } catch (error) {
+    if (error.name !== 'AbortError') alert('Sharing failed.');
+  }
+}
 
-      renderEvents();
-    });
+function openModal() {
+  $('createModal').classList.add('open');
+  $('formMessage').hidden = true;
+}
 
-    $('searchInput').addEventListener('input', renderEvents);
+function closeModal() {
+  $('createModal').classList.remove('open');
+}
 
-    document.addEventListener('click', event => {
-      const interestButton = event.target.closest('[data-interest]');
-      const shareButton = event.target.closest('[data-share]');
-      const createButton = event.target.closest('[data-create]');
+$('openCreate').addEventListener('click', openModal);
+$('closeModal').addEventListener('click', closeModal);
 
-      if (interestButton) toggleInterest(interestButton.dataset.interest);
-      if (shareButton) shareEvent(shareButton.dataset.share);
-      if (createButton) openModal();
-    });
+$('createModal').addEventListener('click', e => {
+  if (e.target === $('createModal')) closeModal();
+});
 
-    $('eventForm').addEventListener('submit', async event => {
-      event.preventDefault();
+$('categories').addEventListener('click', e => {
+  const button = e.target.closest('[data-category]');
+  if (!button) return;
 
-      const message = $('formMessage');
-      const submitButton = $('submitEvent');
+  category = button.dataset.category;
 
-      function formError(text) {
-        message.textContent = text;
-        message.classList.add('error');
-        message.hidden = false;
-      }
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.classList.toggle('active', chip === button);
+  });
 
-      if (!currentUser) {
-        formError('Please sign in to publish an event.');
-        return;
-      }
+  render();
+});
 
-      const title = $('eventTitle').value.trim();
-      const description = $('eventDescription').value.trim();
-      const startValue = $('startTime').value;
-      const endValue = $('endTime').value;
-      const startDate = new Date(startValue);
-      const endDate = new Date(endValue);
-      const file = $('eventPoster').files[0];
+$('searchInput').addEventListener('input', render);
 
-      if (!title || !description) {
-        formError('Please enter an event title and description.');
-        return;
-      }
+$('eventPrice').addEventListener('change', () => {
+  $('ticketField').hidden = $('eventPrice').value !== 'paid';
+});
 
-      if (!startValue || !endValue ||
-          Number.isNaN(startDate.getTime()) ||
-          Number.isNaN(endDate.getTime()) ||
-          endDate <= startDate) {
-        formError('Please choose valid start and end times. The end must be after the start.');
-        return;
-      }
+document.addEventListener('click', e => {
+  const interest = e.target.closest('[data-interest]');
+  const share = e.target.closest('[data-share]');
+  const create = e.target.closest('[data-create]');
 
-      if (startDate < new Date()) {
-        formError('Please choose a future start time.');
-        return;
-      }
+  if (interest) toggleInterest(interest.dataset.interest);
+  if (share) shareEvent(share.dataset.share);
+  if (create) openModal();
+});
 
-      if (file && file.size > 5 * 1024 * 1024) {
-        formError('Your poster must be 5 MB or smaller.');
-        return;
-      }
+$('eventForm').addEventListener('submit', async e => {
+  e.preventDefault();
 
-      if (file && !['image/jpeg','image/png','image/webp'].includes(file.type)) {
-        formError('Please upload a JPEG, PNG, or WebP image.');
-        return;
-      }
+  const formMessage = $('formMessage');
+  const submit = $('submitEvent');
 
-      const ticketUrl = safeURL($('ticketUrl').value.trim());
-      const onlineUrl = safeURL($('onlineUrl').value.trim());
+  function formError(text) {
+    formMessage.textContent = text;
+    formMessage.hidden = false;
+  }
 
-      if ($('eventPrice').value === 'paid' &&
-          (!$('ticketUrl').value.trim() || !ticketUrl)) {
-        formError('Please provide a valid ticket link for a paid event.');
-        return;
-      }
+  if (!currentUser) {
+    formError('Please sign in to create an event.');
+    return;
+  }
 
-      if ($('onlineUrl').value.trim() && !onlineUrl) {
-        formError('Please enter a valid online meeting URL.');
-        return;
-      }
+  const title = $('eventTitle').value.trim();
+  const description = $('eventDescription').value.trim();
+  const start = new Date($('startTime').value);
+  const end = new Date($('endTime').value);
+  const file = $('eventPoster').files[0];
 
-      submitButton.disabled = true;
-      submitButton.textContent = 'Publishing…';
-      message.classList.remove('error');
-      message.textContent = 'Publishing your event…';
-      message.hidden = false;
+  if (!title || !description) {
+    formError('Enter the event name and description.');
+    return;
+  }
 
-      let posterUrl = null;
-      let uploadedPath = null;
+  if (!$('startTime').value || !$('endTime').value ||
+      isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
+    formError('Check the start and end times.');
+    return;
+  }
 
-      try {
-        if (file) {
-          const extension = file.type === 'image/png' ? 'png'
-            : file.type === 'image/webp' ? 'webp' : 'jpg';
+  if (start <= new Date()) {
+    formError('Choose a future start time.');
+    return;
+  }
 
-          uploadedPath = `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+  if (file && file.size > 5 * 1024 * 1024) {
+    formError('Poster must be 5 MB or smaller.');
+    return;
+  }
 
-          const { error: uploadError } = await supabase.storage
-            .from('event-posters')
-            .upload(uploadedPath, file, {
-              contentType: file.type,
-              upsert: false
-            });
+  if (file && !['image/jpeg','image/png','image/webp'].includes(file.type)) {
+    formError('Use a JPG, PNG, or WebP poster.');
+    return;
+  }
 
-          if (uploadError) throw uploadError;
+  const rawTicket = $('ticketUrl').value.trim();
+  const rawOnline = $('onlineUrl').value.trim();
+  const ticket = safeURL(rawTicket);
+  const online = safeURL(rawOnline);
 
-          const { data: publicData } = supabase.storage
-            .from('event-posters')
-            .getPublicUrl(uploadedPath);
+  if ($('eventPrice').value === 'paid' && !ticket) {
+    formError('Add a valid ticket link for paid events.');
+    return;
+  }
 
-          posterUrl = publicData.publicUrl;
-        }
+  if (rawOnline && !online) {
+    formError('Enter a valid meeting link.');
+    return;
+  }
 
-        const { error: insertError } = await supabase
-          .from('events')
-          .insert({
-            organizer_id: currentUser.id,
-            title,
-            description,
-            category: $('eventCategory').value,
-            poster_url: posterUrl,
-            start_time: startDate.toISOString(),
-            end_time: endDate.toISOString(),
-            location: $('eventLocation').value.trim() || null,
-            institution: $('eventInstitution').value.trim() || null,
-            is_online: $('isOnline').checked,
-            online_url: onlineUrl || null,
-            visibility: $('eventVisibility').value,
-            price_type: $('eventPrice').value,
-            ticket_url: ticketUrl || null,
-            status: 'published'
-          });
+  submit.disabled = true;
+  submit.textContent = 'Publishing...';
+  formMessage.hidden = true;
 
-        if (insertError) throw insertError;
+  let path = null;
 
-        $('eventForm').reset();
-        $('ticketField').hidden = true;
-        closeModal();
+  try {
+    let posterUrl = null;
 
-        await loadEvents();
+    if (file) {
+      const ext = file.type === 'image/png' ? 'png'
+        : file.type === 'image/webp' ? 'webp' : 'jpg';
 
-        alert('Your event has been published!');
-      } catch (error) {
-        console.error('Publishing event failed:', error);
+      path = `${currentUser.id}/${crypto.randomUUID()}.${ext}`;
 
-        if (uploadedPath) {
-          await supabase.storage
-            .from('event-posters')
-            .remove([uploadedPath])
-            .catch(() => {});
-        }
+      const { error } = await supabase.storage
+        .from('event-posters')
+        .upload(path, file, { contentType:file.type });
 
-        formError(
-          'We could not publish your event. Please check your connection, sign-in status, and Supabase permissions, then try again.'
-        );
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Publish event';
-      }
-    });
+      if (error) throw error;
 
-    async function initialize() {
-      try {
-        const { data } = await supabase.auth.getSession();
-        currentUser = data.session?.user || null;
-
-        if (currentUser) {
-          await loadMyInterests();
-        }
-
-        await loadEvents();
-      } catch (error) {
-        console.error('Initialization failed:', error);
-        showMessage('Could not initialize Campusora Events. Check your Supabase connection.', true);
-      }
+      posterUrl = supabase.storage
+        .from('event-posters')
+        .getPublicUrl(path).data.publicUrl;
     }
 
-    initialize();
-  </script>
+    const { error } = await supabase.from('events').insert({
+      organizer_id:currentUser.id,
+      title,
+      description,
+      category:$('eventCategory').value,
+      poster_url:posterUrl,
+      start_time:start.toISOString(),
+      end_time:end.toISOString(),
+      location:$('eventLocation').value.trim() || null,
+      institution:$('eventInstitution').value.trim() || null,
+      is_online:$('isOnline').checked,
+      online_url:online || null,
+      visibility:$('eventVisibility').value,
+      price_type:$('eventPrice').value,
+      ticket_url:ticket || null,
+      status:'published'
+    });
+
+    if (error) throw error;
+
+    $('eventForm').reset();
+    $('ticketField').hidden = true;
+    closeModal();
+    await loadEvents();
+    alert('Event published!');
+  } catch (error) {
+    console.error(error);
+
+    if (path) {
+      await supabase.storage.from('event-posters')
+        .remove([path]);
+    }
+
+    formError('Could not publish. Check your connection and Supabase permissions.');
+  } finally {
+    submit.disabled = false;
+    submit.textContent = 'Publish event';
+  }
+});
+
+async function initialize() {
+  try {
+    await loadUser();
+    await loadEvents();
+  } catch (error) {
+    console.error(error);
+    message('Could not connect to Campusora.', true);
+  }
+}
+
+initialize();
+</script>
 </body>
-  </html>
+                                       </html>
