@@ -961,12 +961,26 @@ async function initialize() {
   }
 
   await loadInbox();
-  setupInboxRealtime();
+setupInboxRealtime();
 
-  refreshInterval = setInterval(() => {
-    loadInbox();
-    if (currentConversation) loadMessages(currentConversation.id);
-  },30000);
+// Open a seller's conversation when arriving from the marketplace.
+const params = new URLSearchParams(window.location.search);
+const targetUserId = params.get('user');
+
+if (targetUserId && targetUserId !== me.id) {
+await getProfiles([targetUserId]);
+await startConversation(targetUserId);
+
+// Remove the parameter after processing so refreshing
+// the page does not unnecessarily start another conversation.
+window.history.replaceState({}, '', 'messages.html');
+
+}
+
+refreshInterval = setInterval(() => {
+loadInbox();
+if (currentConversation) loadMessages(currentConversation.id);
+},30000);
 }
 
 window.addEventListener('beforeunload',() => {
