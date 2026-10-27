@@ -47,11 +47,7 @@ nav {
   gap: 10px;
 }
 
-.logo {
-  font-size: 19px;
-  font-weight: bold;
-}
-
+.logo { font-size: 19px; font-weight: bold; }
 .logo span { color: var(--pink); }
 
 .nav-links {
@@ -71,7 +67,7 @@ nav a.active { color: var(--pink); }
 button.primary {
   border: 0;
   border-radius: 9px;
-  background: linear-gradient(110deg,var(--pink),var(--purple));
+  background: linear-gradient(110deg, var(--pink), var(--purple));
   color: #1b1224;
   font-weight: bold;
   padding: 9px 12px;
@@ -99,30 +95,16 @@ main {
   padding: 19px;
   border: 1px solid var(--border);
   border-radius: 15px;
-  background: linear-gradient(110deg,#191424,#141522);
+  background: linear-gradient(110deg, #191424, #141522);
 }
 
-.intro h1 {
-  font-size: 22px;
-  margin: 0 0 7px;
-  font-weight: 700;
-}
-
-.intro p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.intro-icon {
-  font-size: 33px;
-  flex-shrink: 0;
-}
+.intro h1 { font-size: 22px; margin: 0 0 7px; }
+.intro p { margin: 0; color: var(--muted); line-height: 1.5; }
+.intro-icon { font-size: 33px; }
 
 .search {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 16px;
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -138,10 +120,7 @@ main {
   gap: 7px;
   overflow-x: auto;
   padding: 12px 0;
-  scrollbar-width: none;
 }
-
-.categories::-webkit-scrollbar { display: none; }
 
 .chip {
   white-space: nowrap;
@@ -163,18 +142,15 @@ main {
   justify-content: space-between;
   align-items: center;
   margin: 17px 0 13px;
+  gap: 10px;
 }
 
-.section-title h2 {
-  font-size: 16px;
-  margin: 0;
-}
-
+.section-title h2 { font-size: 16px; margin: 0; }
 .muted { color: var(--muted); }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 13px;
 }
 
@@ -188,7 +164,7 @@ main {
 
 .poster {
   height: 135px;
-  background: linear-gradient(135deg,#32203b,#20203a);
+  background: linear-gradient(135deg, #32203b, #20203a);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -231,13 +207,14 @@ main {
   color: #d0ccdc;
   font-size: 12px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .card-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 5px;
+  flex-wrap: wrap;
   margin-top: 12px;
 }
 
@@ -255,6 +232,27 @@ main {
   border-color: var(--pink);
 }
 
+.organizer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 11px 0 3px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #30243d;
+  border: 1px solid var(--border);
+}
+
+.organizer-name { font-size: 11px; overflow-wrap: anywhere; }
+.organizer-name strong { display: block; font-size: 12px; }
+.organizer-name span { color: var(--muted); }
+
 .empty {
   grid-column: 1/-1;
   padding: 30px 15px;
@@ -264,13 +262,8 @@ main {
   border-radius: 12px;
 }
 
-.status {
-  margin-top: 12px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.status.error { color: #ff9aa9; }
+.status { margin-top: 12px; font-size: 12px; color: var(--muted); }
+.status.error, #formMessage { color: #ff9aa9; }
 
 .modal {
   position: fixed;
@@ -290,7 +283,7 @@ main {
   border: 1px solid var(--border);
   border-radius: 15px;
   padding: 20px;
-  width: min(100%,520px);
+  width: min(100%, 560px);
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -299,6 +292,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
@@ -330,10 +324,7 @@ label {
   outline: none;
 }
 
-textarea.field {
-  min-height: 85px;
-  resize: vertical;
-}
+textarea.field { min-height: 85px; resize: vertical; }
 
 .check-row {
   display: flex;
@@ -343,10 +334,21 @@ textarea.field {
   color: var(--muted);
 }
 
-#formMessage {
-  font-size: 12px;
-  margin: 10px 0;
-  color: #ff9aa9;
+#formMessage { font-size: 12px; margin: 10px 0; }
+
+.detail-text {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #d0ccdc;
+  overflow-wrap: anywhere;
+}
+
+.detail-poster {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
 }
 
 footer {
@@ -359,17 +361,11 @@ footer {
 
 @media(max-width:700px) {
   main { padding: 15px 12px 30px; }
-
-  .grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 9px;
-  }
-
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
   .poster { height: 105px; }
   .card-body { padding: 9px; }
   .card-body h3 { font-size: 12px; }
   .description { font-size: 11px; }
-  .card-bottom { flex-wrap: wrap; }
   .small-btn { padding: 6px; font-size: 10px; }
   .intro h1 { font-size: 19px; }
 }
@@ -389,18 +385,17 @@ footer {
 </head>
 
 <body>
-
 <header>
-  <nav>
-    <div class="logo">Campus<span>ora</span></div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="messages.html">Messages</a>
-      <a href="marketplace.html">Market</a>
-      <a href="events.html" class="active">Events</a>
-      <button class="primary" id="openCreate">+ Create</button>
-    </div>
-  </nav>
+<nav>
+  <div class="logo">Campus<span>ora</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="messages.html">Messages</a>
+    <a href="marketplace.html">Market</a>
+    <a href="events.html" class="active">Events</a>
+    <button class="primary" id="openCreate">+ Create</button>
+  </div>
+</nav>
 </header>
 
 <main>
@@ -412,13 +407,8 @@ footer {
     <div class="intro-icon">🎟️</div>
   </section>
 
-  <input
-    class="search"
-    id="searchInput"
-    type="search"
-    placeholder="Search events or locations..."
-    aria-label="Search events"
-  >
+  <input class="search" id="searchInput" type="search"
+    placeholder="Search events or locations..." aria-label="Search events">
 
   <div class="categories" id="categories">
     <button class="chip active" data-category="All">All</button>
@@ -438,10 +428,15 @@ footer {
   </div>
 
   <div id="pageMessage" class="status">Connecting...</div>
-
   <div class="grid" id="eventsGrid">
     <div class="empty">Loading events...</div>
   </div>
+
+  <div class="section-title" id="myEventsHeading" hidden>
+    <h2>My events</h2>
+    <span class="muted">Manage your events</span>
+  </div>
+  <div class="grid" id="myEventsGrid"></div>
 </main>
 
 <footer>Campusora · Your campus community</footer>
@@ -449,7 +444,7 @@ footer {
 <div class="modal" id="createModal" role="dialog" aria-modal="true">
   <div class="modal-box">
     <div class="modal-head">
-      <h2>Create an event</h2>
+      <h2 id="formTitle">Create an event</h2>
       <button class="secondary" id="closeModal" type="button">✕</button>
     </div>
 
@@ -527,55 +522,64 @@ footer {
 
         <div class="form-field full" id="ticketField" hidden>
           <label for="ticketUrl">Ticket link *</label>
-          <input class="field" id="ticketUrl" type="url"
-            placeholder="https://...">
+          <input class="field" id="ticketUrl" type="url" placeholder="https://...">
         </div>
 
         <div class="form-field full">
           <label for="onlineUrl">Meeting link (optional)</label>
-          <input class="field" id="onlineUrl" type="url"
-            placeholder="https://...">
+          <input class="field" id="onlineUrl" type="url" placeholder="https://...">
         </div>
       </div>
 
       <label class="check-row">
-        <input id="isOnline" type="checkbox">
-        Online event
+        <input id="isOnline" type="checkbox"> Online event
       </label>
 
       <div id="formMessage" hidden></div>
-
-      <button class="primary" id="submitEvent" type="submit"
-        style="width:100%">Publish event</button>
+      <button class="primary" id="submitEvent" type="submit" style="width:100%">
+        Publish event
+      </button>
     </form>
   </div>
 </div>
 
-<script type="module">
+<div class="modal" id="detailModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Event details</h2>
+      <button class="secondary" id="closeDetail" type="button">✕</button>
+    </div>
+    <div id="detailContent"></div>
+  </div>
+  </div>
+
+  <script type="module">
 import { supabase } from './supabase.js';
 
 const $ = id => document.getElementById(id);
 
 let events = [];
+let myEvents = [];
 let currentUser = null;
+let profile = null;
 let interests = new Set();
+let counts = {};
+let organizers = {};
 let category = 'All';
+let editingEventId = null;
 
 function escapeHTML(value = '') {
   return String(value).replace(/[&<>"']/g, c => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
+    '&':'&amp;', '<':'&lt;', '>':'&gt;',
+    '"':'&quot;', "'":'&#39;'
   })[c]);
 }
 
 function safeURL(value) {
   if (!value) return '';
   try {
-    const url = new URL(value);
-    return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+    const u = new URL(value);
+    return ['https:', 'http:'].includes(u.protocol) ? u.href : '';
   } catch {
     return '';
   }
@@ -583,12 +587,18 @@ function safeURL(value) {
 
 function dateText(value) {
   return new Intl.DateTimeFormat(undefined, {
-    day:'numeric',
-    month:'short',
-    year:'numeric',
-    hour:'numeric',
-    minute:'2-digit'
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
   }).format(new Date(value));
+}
+
+function localDateValue(value) {
+  const d = new Date(value);
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 16);
 }
 
 function message(text, error = false) {
@@ -596,97 +606,228 @@ function message(text, error = false) {
   $('pageMessage').classList.toggle('error', error);
 }
 
-function filteredEvents() {
+function organizerFor(event) {
+  return organizers[event.organizer_id] || {
+    full_name: 'Campusora member',
+    username: '',
+    avatar_url: ''
+  };
+}
+
+function organizerHTML(event) {
+  const p = organizerFor(event);
+  const name = p.full_name || p.username || 'Campusora member';
+  const avatar = safeURL(p.avatar_url);
+
+  return `
+    <div class="organizer">
+      ${avatar
+        ? `<img class="avatar" src="${escapeHTML(avatar)}" alt="">`
+        : `<div class="avatar" style="display:flex;align-items:center;justify-content:center">👤</div>`
+      }
+      <div class="organizer-name">
+        <strong>${escapeHTML(name)}</strong>
+        <span>Event organizer</span>
+      </div>
+    </div>`;
+}
+
+function filtered(list) {
   const q = $('searchInput').value.trim().toLowerCase();
 
-  return events.filter(e => {
-    const categoryMatch = category === 'All' || e.category === category;
+  return list.filter(event => {
+    const categoryMatch =
+      category === 'All' || event.category === category;
+
     const words = [
-      e.title, e.description, e.location, e.category, e.institution
+      event.title,
+      event.description,
+      event.location,
+      event.category,
+      event.institution
     ].filter(Boolean).join(' ').toLowerCase();
 
     return categoryMatch && words.includes(q);
   });
 }
 
-function render() {
-  const list = filteredEvents();
+function cardHTML(event, manage = false) {
+  const poster = safeURL(event.poster_url);
+  const interested = interests.has(event.id);
+  const count = counts[event.id] ?? 0;
 
+  return `
+    <article class="event-card">
+      <div class="poster">
+        ${poster
+          ? `<img src="${escapeHTML(poster)}" alt="${escapeHTML(event.title)}" loading="lazy">`
+          : '🎟️'}
+      </div>
+
+      <div class="card-body">
+        <span class="badge">
+          ${escapeHTML(event.category || 'Other')}
+          · ${escapeHTML(event.visibility || 'public')}
+        </span>
+
+        <h3>${escapeHTML(event.title)}</h3>
+
+        <div class="info">
+          📅 ${escapeHTML(dateText(event.start_time))}<br>
+          📍 ${escapeHTML(event.location || (event.is_online ? 'Online' : 'TBA'))}
+          ${event.institution
+            ? `<br>🎓 ${escapeHTML(event.institution)}`
+            : ''}
+          <br>❤️ ${count} interested
+          ${event.status === 'cancelled' ? '<br>⚠️ Cancelled' : ''}
+        </div>
+
+        ${organizerHTML(event)}
+
+        <p class="description">
+          ${escapeHTML((event.description || '').slice(0, 95))}
+          ${(event.description || '').length > 95 ? '…' : ''}
+        </p>
+
+        <div class="card-bottom">
+          ${!manage && event.status !== 'cancelled'
+            ? `<button class="small-btn ${interested ? 'active' : ''}"
+                data-interest="${escapeHTML(event.id)}">
+                ${interested ? '♥ Interested' : '♡ Interested'}
+              </button>`
+            : ''}
+
+          <button class="small-btn" data-details="${escapeHTML(event.id)}">
+            Details
+          </button>
+
+          <button class="small-btn" data-share="${escapeHTML(event.id)}">
+            Share ↗
+          </button>
+
+          ${manage
+            ? `<button class="small-btn" data-edit="${escapeHTML(event.id)}">Edit</button>
+               ${event.status !== 'cancelled'
+                 ? `<button class="small-btn" data-cancel="${escapeHTML(event.id)}">Cancel</button>`
+                 : ''}`
+            : ''}
+        </div>
+      </div>
+    </article>`;
+}
+
+function render() {
+  const list = filtered(events);
   $('eventCount').textContent = list.length;
 
-  if (!list.length) {
-    $('eventsGrid').innerHTML = `
-      <div class="empty">
-        <p>No upcoming events yet.</p>
-        <button class="primary" data-create>+ Create event</button>
-      </div>`;
-    return;
+  $('eventsGrid').innerHTML = list.length
+    ? list.map(event => cardHTML(event)).join('')
+    : `<div class="empty">No matching upcoming events. Try another search or create one.</div>`;
+
+  const mine = filtered(myEvents);
+
+  $('myEventsHeading').hidden = !currentUser || myEvents.length === 0;
+
+  $('myEventsGrid').innerHTML = mine
+    .map(event => cardHTML(event, true))
+    .join('');
+}
+
+async function loadProfiles(rows) {
+  const ids = [...new Set(rows.map(e => e.organizer_id).filter(Boolean))];
+
+  if (!ids.length) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id,username,full_name,avatar_url,school')
+      .in('id', ids);
+
+    if (error) {
+      console.warn('Could not load organizer profiles:', error.message);
+      return;
+    }
+
+    (data || []).forEach(p => {
+      organizers[p.id] = p;
+    });
+  } catch (error) {
+    console.warn(error);
   }
+}
 
-  $('eventsGrid').innerHTML = list.map(e => {
-    const poster = safeURL(e.poster_url);
+async function loadCounts(rows) {
+  const ids = [...new Set(rows.map(e => e.id))];
+  if (!ids.length) return;
 
-    return `
-      <article class="event-card">
-        <div class="poster">
-          ${poster
-            ? `<img src="${escapeHTML(poster)}" alt="${escapeHTML(e.title)}" loading="lazy">`
-            : '🎟️'}
-        </div>
+  try {
+    const { data, error } = await supabase.rpc(
+      'get_event_interest_counts',
+      { event_ids: ids }
+    );
 
-        <div class="card-body">
-          <span class="badge">${escapeHTML(e.category || 'Other')}</span>
-          <h3>${escapeHTML(e.title)}</h3>
+    if (error) {
+      console.warn('Interest counts unavailable:', error.message);
+      return;
+    }
 
-          <div class="info">
-            📅 ${escapeHTML(dateText(e.start_time))}<br>
-            📍 ${escapeHTML(e.location || (e.is_online ? 'Online' : 'TBA'))}
-            ${e.institution ? `<br>🎓 ${escapeHTML(e.institution)}` : ''}
-          </div>
-
-          <p class="description">
-            ${escapeHTML((e.description || '').slice(0,90))}
-            ${(e.description || '').length > 90 ? '…' : ''}
-          </p>
-
-          <div class="card-bottom">
-            <button class="small-btn ${interests.has(e.id) ? 'active' : ''}"
-              data-interest="${e.id}">
-              ${interests.has(e.id) ? '♥ Interested' : '♡ Interested'}
-            </button>
-
-            <button class="small-btn" data-share="${e.id}">Share ↗</button>
-          </div>
-        </div>
-      </article>`;
-  }).join('');
+    (data || []).forEach(row => {
+      counts[row.event_id] = Number(row.interest_count) || 0;
+    });
+  } catch (error) {
+    console.warn(error);
+  }
 }
 
 async function loadEvents() {
   message('Loading events...');
 
   try {
+    const now = new Date().toISOString();
+
     const { data, error } = await supabase
       .from('events')
       .select('*')
       .eq('status', 'published')
-      .eq('visibility', 'public')
-      .gte('start_time', new Date().toISOString())
-      .order('start_time', { ascending:true });
+      .in('visibility', ['public', 'campus'])
+      .gte('start_time', now)
+      .order('start_time', { ascending: true });
 
     if (error) throw error;
 
     events = data || [];
+    myEvents = [];
+
+    if (currentUser) {
+      const { data: mine, error: mineError } = await supabase
+        .from('events')
+        .select('*')
+        .eq('organizer_id', currentUser.id)
+        .order('start_time', { ascending: true });
+
+      if (!mineError) myEvents = mine || [];
+    }
+
+    const all = [
+      ...new Map([...events, ...myEvents].map(e => [e.id, e])).values()
+    ];
+
+    await Promise.all([
+      loadProfiles(all),
+      loadCounts(all)
+    ]);
+
     render();
 
     message(events.length
       ? 'Events are up to date.'
-      : 'No public upcoming events yet. Be the first to create one!');
+      : 'No public or campus upcoming events yet. Be the first to create one!');
   } catch (error) {
     console.error(error);
-    message('Could not load events. Check Supabase settings.', true);
-    $('eventsGrid').innerHTML = `
-      <div class="empty">Events could not load. Please try again later.</div>`;
+    message('Could not load events. Check Supabase settings and permissions.', true);
+    $('eventsGrid').innerHTML =
+      '<div class="empty">Events could not load. Please try again later.</div>';
   }
 }
 
@@ -696,6 +837,14 @@ async function loadUser() {
   if (error || !data.user) return;
 
   currentUser = data.user;
+
+  const { data: p, error: profileError } = await supabase
+    .from('profiles')
+    .select('id,username,full_name,avatar_url,school')
+    .eq('id', currentUser.id)
+    .maybeSingle();
+
+  if (!profileError && p) profile = p;
 
   const { data: rows, error: interestError } = await supabase
     .from('event_interests')
@@ -722,14 +871,21 @@ async function toggleInterest(id) {
         .eq('user_id', currentUser.id);
 
       if (error) throw error;
+
       interests.delete(id);
+      counts[id] = Math.max(0, (counts[id] || 0) - 1);
     } else {
       const { error } = await supabase
         .from('event_interests')
-        .insert({ event_id:id, user_id:currentUser.id });
+        .insert({
+          event_id: id,
+          user_id: currentUser.id
+        });
 
       if (error) throw error;
+
       interests.add(id);
+      counts[id] = (counts[id] || 0) + 1;
     }
 
     render();
@@ -740,8 +896,8 @@ async function toggleInterest(id) {
 }
 
 async function shareEvent(id) {
-  const e = events.find(item => item.id === id);
-  if (!e) return;
+  const event = [...events, ...myEvents].find(item => item.id === id);
+  if (!event) return;
 
   const url = new URL(location.href);
   url.searchParams.set('event', id);
@@ -749,9 +905,9 @@ async function shareEvent(id) {
   try {
     if (navigator.share) {
       await navigator.share({
-        title:e.title,
-        text:`Check out ${e.title} on Campusora`,
-        url:url.href
+        title: event.title,
+        text: `Check out ${event.title} on Campusora`,
+        url: url.href
       });
     } else if (navigator.clipboard) {
       await navigator.clipboard.writeText(url.href);
@@ -764,191 +920,386 @@ async function shareEvent(id) {
   }
 }
 
-function openModal() {
-  $('createModal').classList.add('open');
-  $('formMessage').hidden = true;
+    // Open the event details modal
+function openDetails(id) {
+  const event = [...events, ...myEvents].find(item => item.id === id);
+  if (!event) return;
+
+  const p = organizerFor(event);
+  const poster = safeURL(event.poster_url);
+  const ticket = safeURL(event.ticket_url);
+  const meeting = safeURL(event.online_url);
+
+  $('detailContent').innerHTML = `
+    ${poster
+      ? `<img src="${escapeHTML(poster)}"
+          alt="${escapeHTML(event.title)}"
+          style="width:100%;max-height:260px;object-fit:cover;border-radius:14px">`
+      : ''}
+
+    <h2>${escapeHTML(event.title)}</h2>
+
+    ${organizerHTML(event)}
+
+    <p><strong>Category:</strong>
+      ${escapeHTML(event.category || 'Other')}</p>
+
+    <p><strong>Date:</strong>
+      ${escapeHTML(dateText(event.start_time))}</p>
+
+    ${event.end_time
+      ? `<p><strong>Ends:</strong>
+          ${escapeHTML(dateText(event.end_time))}</p>`
+      : ''}
+
+    <p><strong>Location:</strong>
+      ${escapeHTML(event.location || (event.is_online ? 'Online' : 'TBA'))}</p>
+
+    ${event.institution
+      ? `<p><strong>Institution:</strong>
+          ${escapeHTML(event.institution)}</p>`
+      : ''}
+
+    <p><strong>Price:</strong>
+      ${event.price_type === 'paid' ? 'Paid' : 'Free'}</p>
+
+    <p><strong>Description:</strong><br>
+      ${escapeHTML(event.description || 'No description provided.')}</p>
+
+    ${ticket
+      ? `<p><a href="${escapeHTML(ticket)}" target="_blank"
+          rel="noopener noreferrer">🎟️ Get tickets</a></p>`
+      : ''}
+
+    ${meeting
+      ? `<p><a href="${escapeHTML(meeting)}" target="_blank"
+          rel="noopener noreferrer">💻 Join online event</a></p>`
+      : ''}
+  `;
+
+  $('detailModal').classList.add('show');
 }
 
-function closeModal() {
-  $('createModal').classList.remove('open');
+// Open the form for a new event
+function openCreateForm() {
+  if (!currentUser) {
+    alert('Please sign in before creating an event.');
+    return;
+  }
+
+  editingEventId = null;
+  $('eventForm').reset();
+
+  $('eventFormTitle').textContent = 'Create an event';
+  $('submitEvent').textContent = 'Publish event';
+
+  if (profile?.school) {
+    $('institution').value = profile.school;
+  }
+
+  $('eventModal').classList.add('show');
 }
 
-$('openCreate').addEventListener('click', openModal);
-$('closeModal').addEventListener('click', closeModal);
+// Edit an existing event
+function openEditForm(id) {
+  const event = myEvents.find(item => item.id === id);
 
-$('createModal').addEventListener('click', e => {
-  if (e.target === $('createModal')) closeModal();
+  if (!event || event.organizer_id !== currentUser?.id) {
+    alert('You can only edit your own events.');
+    return;
+  }
+
+  editingEventId = id;
+
+  $('eventFormTitle').textContent = 'Edit event';
+  $('submitEvent').textContent = 'Save changes';
+
+  $('title').value = event.title || '';
+  $('description').value = event.description || '';
+  $('categorySelect').value = event.category || 'Other';
+  $('startTime').value = localDateValue(event.start_time);
+  $('endTime').value = event.end_time
+    ? localDateValue(event.end_time)
+    : '';
+  $('location').value = event.location || '';
+  $('institution').value = event.institution || '';
+  $('visibility').value = event.visibility || 'public';
+  $('priceType').value = event.price_type || 'free';
+  $('ticketUrl').value = event.ticket_url || '';
+  $('onlineUrl').value = event.online_url || '';
+  $('isOnline').checked = !!event.is_online;
+
+  $('eventModal').classList.add('show');
+}
+
+// Cancel one of your events
+async function cancelEvent(id) {
+  const event = myEvents.find(item => item.id === id);
+
+  if (!event || event.organizer_id !== currentUser?.id) {
+    alert('You can only cancel your own events.');
+    return;
+  }
+
+  if (!confirm(`Cancel "${event.title}"?`)) return;
+
+  const { error } = await supabase
+    .from('events')
+    .update({
+      status: 'cancelled',
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .eq('organizer_id', currentUser.id);
+
+  if (error) {
+    console.error(error);
+    alert('Could not cancel the event. Check your Supabase permissions.');
+    return;
+  }
+
+  alert('Event cancelled.');
+  await loadEvents();
+}
+
+// Create or update an event
+async function saveEvent(e) {
+  e.preventDefault();
+
+  if (!currentUser) {
+    alert('Please sign in first.');
+    return;
+  }
+
+  const title = $('title').value.trim();
+  const description = $('description').value.trim();
+  const startValue = $('startTime').value;
+  const endValue = $('endTime').value;
+
+  if (!title || !description || !startValue) {
+    alert('Please fill in the event title, description and start date.');
+    return;
+  }
+
+  const start = new Date(startValue);
+  const end = endValue ? new Date(endValue) : null;
+
+  if (Number.isNaN(start.getTime()) || start <= new Date()) {
+    alert('Choose a valid future start date and time.');
+    return;
+  }
+
+  if (end && (Number.isNaN(end.getTime()) || end <= start)) {
+    alert('The end date and time must be after the start date.');
+    return;
+  }
+
+  const ticketUrl = $('ticketUrl').value.trim();
+  const onlineUrl = $('onlineUrl').value.trim();
+
+  if (ticketUrl && !safeURL(ticketUrl)) {
+    alert('Please enter a valid ticket URL beginning with https://');
+    return;
+  }
+
+  if (onlineUrl && !safeURL(onlineUrl)) {
+    alert('Please enter a valid online meeting URL beginning with https://');
+    return;
+  }
+
+  const posterFile = $('poster').files[0];
+  let posterUrl = '';
+
+  if (posterFile) {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+    if (!allowedTypes.includes(posterFile.type)) {
+      alert('Please upload a JPG, PNG or WebP image.');
+      return;
+    }
+
+    if (posterFile.size > 5 * 1024 * 1024) {
+      alert('The poster must be smaller than 5 MB.');
+      return;
+    }
+  }
+
+  const oldEvent = editingEventId
+    ? myEvents.find(item => item.id === editingEventId)
+    : null;
+
+  posterUrl = oldEvent?.poster_url || '';
+
+  $('submitEvent').disabled = true;
+  $('submitEvent').textContent = 'Saving...';
+
+  try {
+    // Upload a new poster if the user selected one
+    if (posterFile) {
+      const extension = posterFile.name.split('.').pop().toLowerCase();
+      const path = `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('event-posters')
+        .upload(path, posterFile, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: posterFile.type
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicData } = supabase.storage
+        .from('event-posters')
+        .getPublicUrl(path);
+
+      posterUrl = publicData.publicUrl;
+    }
+
+    const eventData = {
+      title,
+      description,
+      category: $('categorySelect').value,
+      start_time: start.toISOString(),
+      end_time: end ? end.toISOString() : null,
+      location: $('location').value.trim(),
+      institution: $('institution').value.trim(),
+      visibility: $('visibility').value,
+      price_type: $('priceType').value,
+      ticket_url: ticketUrl || null,
+      online_url: onlineUrl || null,
+      is_online: $('isOnline').checked,
+      poster_url: posterUrl || null,
+      updated_at: new Date().toISOString()
+    };
+
+    let result;
+
+    if (editingEventId) {
+      result = await supabase
+        .from('events')
+        .update(eventData)
+        .eq('id', editingEventId)
+        .eq('organizer_id', currentUser.id);
+    } else {
+      result = await supabase
+        .from('events')
+        .insert({
+          ...eventData,
+          organizer_id: currentUser.id,
+          status: 'published'
+        });
+    }
+
+    if (result.error) throw result.error;
+
+    $('eventModal').classList.remove('show');
+    $('eventForm').reset();
+
+    alert(editingEventId
+      ? 'Your event has been updated!'
+      : 'Your event has been published!');
+
+    editingEventId = null;
+
+    await loadEvents();
+
+  } catch (error) {
+    console.error('Saving event failed:', error);
+    alert('Could not save your event. Check your internet connection and Supabase settings.');
+  } finally {
+    $('submitEvent').disabled = false;
+    $('submitEvent').textContent = editingEventId
+      ? 'Save changes'
+      : 'Publish event';
+  }
+}
+
+// Buttons and search
+$('createEventBtn').addEventListener('click', openCreateForm);
+
+$('closeEvent').addEventListener('click', () => {
+  $('eventModal').classList.remove('show');
 });
 
-$('categories').addEventListener('click', e => {
-  const button = e.target.closest('[data-category]');
-  if (!button) return;
-
-  category = button.dataset.category;
-
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.classList.toggle('active', chip === button);
-  });
-
-  render();
+$('closeDetail').addEventListener('click', () => {
+  $('detailModal').classList.remove('show');
 });
+
+$('eventForm').addEventListener('submit', saveEvent);
 
 $('searchInput').addEventListener('input', render);
 
-$('eventPrice').addEventListener('change', () => {
-  $('ticketField').hidden = $('eventPrice').value !== 'paid';
-});
+document.querySelectorAll('[data-category]').forEach(button => {
+  button.addEventListener('click', () => {
+    category = button.dataset.category;
 
-document.addEventListener('click', e => {
-  const interest = e.target.closest('[data-interest]');
-  const share = e.target.closest('[data-share]');
-  const create = e.target.closest('[data-create]');
-
-  if (interest) toggleInterest(interest.dataset.interest);
-  if (share) shareEvent(share.dataset.share);
-  if (create) openModal();
-});
-
-$('eventForm').addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const formMessage = $('formMessage');
-  const submit = $('submitEvent');
-
-  function formError(text) {
-    formMessage.textContent = text;
-    formMessage.hidden = false;
-  }
-
-  if (!currentUser) {
-    formError('Please sign in to create an event.');
-    return;
-  }
-
-  const title = $('eventTitle').value.trim();
-  const description = $('eventDescription').value.trim();
-  const start = new Date($('startTime').value);
-  const end = new Date($('endTime').value);
-  const file = $('eventPoster').files[0];
-
-  if (!title || !description) {
-    formError('Enter the event name and description.');
-    return;
-  }
-
-  if (!$('startTime').value || !$('endTime').value ||
-      isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
-    formError('Check the start and end times.');
-    return;
-  }
-
-  if (start <= new Date()) {
-    formError('Choose a future start time.');
-    return;
-  }
-
-  if (file && file.size > 5 * 1024 * 1024) {
-    formError('Poster must be 5 MB or smaller.');
-    return;
-  }
-
-  if (file && !['image/jpeg','image/png','image/webp'].includes(file.type)) {
-    formError('Use a JPG, PNG, or WebP poster.');
-    return;
-  }
-
-  const rawTicket = $('ticketUrl').value.trim();
-  const rawOnline = $('onlineUrl').value.trim();
-  const ticket = safeURL(rawTicket);
-  const online = safeURL(rawOnline);
-
-  if ($('eventPrice').value === 'paid' && !ticket) {
-    formError('Add a valid ticket link for paid events.');
-    return;
-  }
-
-  if (rawOnline && !online) {
-    formError('Enter a valid meeting link.');
-    return;
-  }
-
-  submit.disabled = true;
-  submit.textContent = 'Publishing...';
-  formMessage.hidden = true;
-
-  let path = null;
-
-  try {
-    let posterUrl = null;
-
-    if (file) {
-      const ext = file.type === 'image/png' ? 'png'
-        : file.type === 'image/webp' ? 'webp' : 'jpg';
-
-      path = `${currentUser.id}/${crypto.randomUUID()}.${ext}`;
-
-      const { error } = await supabase.storage
-        .from('event-posters')
-        .upload(path, file, { contentType:file.type });
-
-      if (error) throw error;
-
-      posterUrl = supabase.storage
-        .from('event-posters')
-        .getPublicUrl(path).data.publicUrl;
-    }
-
-    const { error } = await supabase.from('events').insert({
-      organizer_id:currentUser.id,
-      title,
-      description,
-      category:$('eventCategory').value,
-      poster_url:posterUrl,
-      start_time:start.toISOString(),
-      end_time:end.toISOString(),
-      location:$('eventLocation').value.trim() || null,
-      institution:$('eventInstitution').value.trim() || null,
-      is_online:$('isOnline').checked,
-      online_url:online || null,
-      visibility:$('eventVisibility').value,
-      price_type:$('eventPrice').value,
-      ticket_url:ticket || null,
-      status:'published'
+    document.querySelectorAll('[data-category]').forEach(item => {
+      item.classList.toggle('active', item === button);
     });
 
-    if (error) throw error;
+    render();
+  });
+});
 
-    $('eventForm').reset();
-    $('ticketField').hidden = true;
-    closeModal();
-    await loadEvents();
-    alert('Event published!');
-  } catch (error) {
-    console.error(error);
+// Handle buttons inside event cards
+document.addEventListener('click', async e => {
+  const interestButton = e.target.closest('[data-interest]');
+  const detailButton = e.target.closest('[data-details]');
+  const shareButton = e.target.closest('[data-share]');
+  const editButton = e.target.closest('[data-edit]');
+  const cancelButton = e.target.closest('[data-cancel]');
 
-    if (path) {
-      await supabase.storage.from('event-posters')
-        .remove([path]);
-    }
+  if (interestButton) {
+    await toggleInterest(interestButton.dataset.interest);
+  }
 
-    formError('Could not publish. Check your connection and Supabase permissions.');
-  } finally {
-    submit.disabled = false;
-    submit.textContent = 'Publish event';
+  if (detailButton) {
+    openDetails(detailButton.dataset.details);
+  }
+
+  if (shareButton) {
+    await shareEvent(shareButton.dataset.share);
+  }
+
+  if (editButton) {
+    openEditForm(editButton.dataset.edit);
+  }
+
+  if (cancelButton) {
+    await cancelEvent(cancelButton.dataset.cancel);
   }
 });
 
-async function initialize() {
+// Close modals when clicking outside their boxes
+['eventModal', 'detailModal'].forEach(id => {
+  $(id).addEventListener('click', e => {
+    if (e.target.id === id) {
+      $(id).classList.remove('show');
+    }
+  });
+});
+
+// Start Campusora Events
+async function startEventsPage() {
   try {
     await loadUser();
     await loadEvents();
+
+    // Open a shared event automatically if its ID is in the URL
+    const sharedEventId = new URLSearchParams(location.search).get('event');
+
+    if (sharedEventId) {
+      const event = [...events, ...myEvents]
+        .find(item => item.id === sharedEventId);
+
+      if (event) openDetails(sharedEventId);
+    }
   } catch (error) {
     console.error(error);
-    message('Could not connect to Campusora.', true);
+    message('Something went wrong while starting the events page.', true);
   }
 }
 
-initialize();
+startEventsPage();
 </script>
-</body>
-                                       </html>
