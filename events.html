@@ -8,406 +8,693 @@
 
 <style>
 :root {
-  --bg: #0b0b14;
-  --card: #151522;
-  --pink: #ff91c8;
-  --purple: #b7a0ff;
-  --text: #f7f4fb;
-  --muted: #aaa6bb;
-  --border: #292538;
+  --bg:#0b0b14;
+  --card:#151522;
+  --card2:#1c192b;
+  --pink:#ff91c8;
+  --purple:#b7a0ff;
+  --text:#f7f4fb;
+  --muted:#aaa6bb;
+  --border:#292538;
+  --gradient:linear-gradient(120deg,#ff83c5,#b49aff);
 }
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 14px Arial, sans-serif;
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse at 50% -20%,#281632 0,transparent 45%),
+    var(--bg);
+  color:var(--text);
+  font:15px Arial,sans-serif;
+  overflow-x:hidden;
 }
 
-button, input, textarea, select { font: inherit; }
-button { cursor: pointer; }
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+a{color:var(--pink)}
 
-header {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: #10101b;
-  border-bottom: 1px solid var(--border);
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#10101bf2;
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
 }
 
-nav {
-  max-width: 1000px;
-  margin: auto;
-  padding: 13px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+nav{
+  max-width:1050px;
+  margin:auto;
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
 }
 
-.logo { font-size: 20px; font-weight: bold; }
-.logo span { color: var(--pink); }
-
-.nav-links {
-  display: flex;
-  gap: 13px;
-  flex-wrap: wrap;
+.logo{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-1px;
 }
 
-.nav-links a {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 12px;
+.logo span{color:var(--pink)}
+
+.nav-links{display:flex;gap:9px}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  padding:10px 15px;
+  border-radius:12px;
+  transition:.2s;
 }
 
-.nav-links a.active { color: var(--pink); }
-
-main {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px 16px 50px;
+.nav-links a:hover{
+  background:#211a30;
+  color:white;
 }
 
-.intro {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  background: linear-gradient(110deg, #191424, #141522);
+.nav-links a.active{
+  color:var(--pink);
+  background:#291a30;
 }
 
-.intro h1 { font-size: 23px; margin: 0 0 7px; }
-.intro p { color: var(--muted); line-height: 1.5; margin: 0; }
-.intro-icon { font-size: 35px; }
-
-.primary {
-  border: 0;
-  border-radius: 9px;
-  background: linear-gradient(110deg, var(--pink), var(--purple));
-  color: #1b1224;
-  font-weight: bold;
-  padding: 10px 13px;
+main{
+  max-width:1050px;
+  margin:auto;
+  padding:22px 18px 60px;
 }
 
-.secondary, .small-btn {
-  border: 1px solid var(--border);
-  background: #211d30;
-  color: var(--text);
-  border-radius: 8px;
-  padding: 8px 10px;
+/* Compact animated welcome banner */
+
+.intro{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 22px;
+  border:1px solid #49314f;
+  border-radius:20px;
+  background:linear-gradient(115deg,#21142c,#171728 65%,#21172f);
+  box-shadow:0 12px 35px #0003;
+  animation:appear .65s ease both;
 }
 
-.small-btn { font-size: 12px; }
-.small-btn.active { color: var(--pink); border-color: var(--pink); }
-
-.search {
-  width: 100%;
-  margin-top: 16px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--card);
-  color: white;
-  outline: none;
+.intro:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:180px;
+  height:180px;
+  right:100px;
+  top:-100px;
+  background:#ff80c5;
+  filter:blur(75px);
+  opacity:.22;
+  animation:glow 5s ease-in-out infinite alternate;
 }
 
-.search:focus, .field:focus { border-color: var(--pink); }
+.intro-copy{min-width:0}
 
-.categories {
-  display: flex;
-  gap: 7px;
-  overflow-x: auto;
-  padding: 12px 0;
+.eyebrow{
+  color:var(--pink);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-size:10px;
+  font-weight:bold;
+  margin-bottom:8px;
 }
 
-.chip {
-  white-space: nowrap;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  background: var(--card);
-  padding: 8px 12px;
-  border-radius: 25px;
+.intro h1{
+  font-size:clamp(21px,4vw,30px);
+  margin:0 0 7px;
+  letter-spacing:-.8px;
 }
 
-.chip.active {
-  color: var(--pink);
-  border-color: var(--pink);
-  background: #211725;
+.intro p{
+  color:var(--muted);
+  line-height:1.55;
+  margin:0;
+  max-width:510px;
 }
 
-.section-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 18px 0 13px;
-  gap: 10px;
+.intro-emoji{
+  font-size:37px;
+  flex-shrink:0;
+  animation:bounce 2.5s ease-in-out infinite;
 }
 
-.section-title h2 { font-size: 17px; margin: 0; }
-.muted { color: var(--muted); }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 13px;
+.primary{
+  border:0;
+  border-radius:12px;
+  padding:12px 16px;
+  color:#211329;
+  background:var(--gradient);
+  font-weight:800;
+  box-shadow:0 5px 20px #e98ac53a;
+  transition:transform .2s,box-shadow .2s;
 }
 
-.event-card {
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--card);
-  border-radius: 13px;
+.primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px #e98ac566;
 }
 
-.poster {
-  height: 145px;
-  background: linear-gradient(135deg, #32203b, #20203a);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  font-size: 34px;
+.create-btn{
+  flex-shrink:0;
+  white-space:nowrap;
 }
 
-.poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.create-btn .plus{font-size:19px;margin-right:5px}
+
+/* Search and filters */
+
+.search-wrap{
+  position:relative;
+  margin-top:20px;
 }
 
-.card-body { padding: 12px; }
-
-.badge {
-  color: var(--pink);
-  background: #291b2c;
-  display: inline-block;
-  padding: 4px 7px;
-  font-size: 10px;
-  border-radius: 5px;
+.search-icon{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:17px;
+  pointer-events:none;
 }
 
-.card-body h3 {
-  margin: 9px 0 7px;
-  font-size: 15px;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
+.search{
+  width:100%;
+  padding:15px 15px 15px 44px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:#151522;
+  color:white;
+  outline:none;
+  transition:.2s;
 }
 
-.info {
-  font-size: 12px;
-  line-height: 1.7;
-  color: var(--muted);
-  overflow-wrap: anywhere;
+.search:focus,.field:focus{
+  border-color:var(--pink);
+  box-shadow:0 0 0 3px #ff91c81b;
 }
 
-.description {
-  color: #d0ccdc;
-  font-size: 12px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
+.categories{
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  padding:14px 0 8px;
+  scrollbar-width:none;
 }
 
-.card-bottom {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  flex-wrap: wrap;
-  margin-top: 12px;
+.categories::-webkit-scrollbar{display:none}
+
+.chip{
+  flex-shrink:0;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background:#151522;
+  padding:10px 16px;
+  border-radius:25px;
+  transition:.2s;
 }
 
-.organizer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 11px 0 3px;
+.chip:hover{
+  border-color:#8b648c;
+  color:white;
 }
 
-.avatar {
-  width: 31px;
-  height: 31px;
-  flex: 0 0 31px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #30243d;
-  border: 1px solid var(--border);
+.chip.active{
+  color:#ffc1e3;
+  border-color:var(--pink);
+  background:#291b30;
+  box-shadow:0 0 16px #ff91c817;
 }
 
-.organizer-name { font-size: 11px; overflow-wrap: anywhere; }
-.organizer-name strong { display: block; font-size: 12px; }
-.organizer-name span { color: var(--muted); }
+/* Section headings */
 
-.empty {
-  grid-column: 1/-1;
-  padding: 30px 15px;
-  text-align: center;
-  color: var(--muted);
-  border: 1px dashed var(--border);
-  border-radius: 12px;
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:27px 0 15px;
 }
 
-.status {
-  margin-top: 12px;
-  font-size: 12px;
-  color: var(--muted);
+.section-title h2{
+  font-size:20px;
+  margin:0;
+  letter-spacing:-.4px;
 }
 
-.status.error { color: #ff9aa9; }
-
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 14px;
-  background: #000b;
+.count{
+  font-size:12px;
+  color:var(--muted);
+  padding:7px 11px;
+  border:1px solid var(--border);
+  background:#151522;
+  border-radius:20px;
 }
 
-.modal.open { display: flex; }
+/* Event cards */
 
-.modal-box {
-  background: #151522;
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 20px;
-  width: min(100%, 560px);
-  max-height: 90vh;
-  overflow-y: auto;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
 }
 
-.modal-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 15px;
+.event-card{
+  min-width:0;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:linear-gradient(160deg,#191827,#13131f);
+  border-radius:17px;
+  transition:transform .25s,border-color .25s,box-shadow .25s;
+  animation:appear .4s ease both;
 }
 
-.modal-head h2 { font-size: 19px; margin: 0; }
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.event-card:hover{
+  transform:translateY(-5px);
+  border-color:#76517d;
+  box-shadow:0 15px 35px #0004;
 }
 
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.poster{
+  height:175px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 25% 20%,#70456c,transparent 45%),
+    linear-gradient(135deg,#30203c,#191a32);
+  font-size:45px;
 }
 
-.form-field.full { grid-column: 1/-1; }
-
-.form-field label {
-  font-size: 12px;
-  color: var(--muted);
+.poster:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(0deg,#0b0b1480,transparent 55%);
 }
 
-.field {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #0e0e18;
-  color: var(--text);
-  outline: none;
+.poster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .5s;
 }
 
-.field[type=file] { padding: 8px; }
+.event-card:hover .poster img{transform:scale(1.05)}
 
-.check-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
+.poster .poster-label{
+  position:absolute;
+  z-index:1;
+  left:12px;
+  bottom:12px;
+  font-size:10px;
+  font-weight:bold;
+  color:white;
+  background:#0b0b14b8;
+  padding:7px 10px;
+  border-radius:20px;
+  backdrop-filter:blur(8px);
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 16px;
+.card-body{padding:14px}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:#ffb8df;
+  background:#2c1b31;
+  border:1px solid #513052;
+  padding:5px 9px;
+  font-size:10px;
+  border-radius:20px;
 }
 
-.detail-copy {
-  white-space: pre-wrap;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
+.card-body h3{
+  margin:11px 0 9px;
+  font-size:17px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
 }
 
-.detail-poster {
-  width: 100%;
-  max-height: 260px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 12px;
+.info{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.9;
+  overflow-wrap:anywhere;
 }
 
-@media(max-width:760px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .intro { align-items: flex-start; }
-  .intro h1 { font-size: 20px; }
+.description{
+  color:#d0ccdc;
+  font-size:13px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
 }
 
-@media(max-width:500px) {
-  nav { align-items: flex-start; flex-direction: column; }
-  .grid { grid-template-columns: 1fr; }
-  .intro { padding: 15px; }
-  .intro-icon { display: none; }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-field.full { grid-column: auto; }
-  .modal-box { padding: 15px; }
+.organizer{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:14px 0 8px;
+  min-width:0;
+}
+
+.avatar{
+  width:34px;
+  height:34px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:linear-gradient(135deg,#ff91c8,#b7a0ff);
+  border:2px solid #46314e;
+}
+
+.organizer-name{
+  min-width:0;
+  overflow-wrap:anywhere;
+  font-size:12px;
+}
+
+.organizer-name strong{
+  display:block;
+  font-size:12px;
+}
+
+.organizer-name span{
+  display:block;
+  color:var(--muted);
+  margin-top:3px;
+  font-size:10px;
+}
+
+.card-bottom{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+}
+
+.small-btn{
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:8px 10px;
+  color:#e8e1f0;
+  background:#211d30;
+  font-size:11px;
+  transition:.2s;
+}
+
+.small-btn:hover{
+  border-color:var(--pink);
+  color:var(--pink);
+}
+
+.small-btn.active{
+  color:var(--pink);
+  background:#301a30;
+  border-color:#71406b;
+}
+
+.empty{
+  grid-column:1/-1;
+  padding:38px 20px;
+  text-align:center;
+  border:1px dashed #40324b;
+  border-radius:18px;
+  background:linear-gradient(135deg,#151522,#171321);
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.empty .empty-icon{
+  font-size:35px;
+  margin-bottom:10px;
+}
+
+.empty strong{
+  display:block;
+  color:var(--text);
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.status{
+  margin-top:16px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+.status.error{color:#ff9aa9}
+
+/* Modals */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:30;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+  background:#05040cce;
+  backdrop-filter:blur(8px);
+}
+
+.modal.open{
+  display:flex;
+  animation:fadeIn .2s ease;
+}
+
+.modal-box{
+  width:min(100%,570px);
+  max-height:90vh;
+  overflow-y:auto;
+  background:#171624;
+  border:1px solid #40304a;
+  border-radius:20px;
+  padding:21px;
+  box-shadow:0 25px 80px #0008;
+  animation:modalIn .25s ease;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.modal-head h2{
+  font-size:20px;
+  margin:0;
+}
+
+.secondary{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:9px 12px;
+  color:var(--text);
+  background:#211d30;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+
+.form-field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  min-width:0;
+}
+
+.form-field.full{grid-column:1/-1}
+
+.form-field label{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.field{
+  width:100%;
+  min-width:0;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#0e0e18;
+  color:var(--text);
+  outline:none;
+}
+
+.field option{background:#151522}
+
+.field[type=file]{font-size:11px}
+
+.check-row{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--muted);
+}
+
+.check-row input{accent-color:var(--pink)}
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:18px;
+}
+
+.detail-copy{
+  white-space:pre-wrap;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+
+.detail-poster{
+  display:block;
+  width:100%;
+  max-height:290px;
+  object-fit:cover;
+  border-radius:13px;
+  margin-bottom:15px;
+}
+
+@keyframes appear{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0) rotate(-5deg)}
+  50%{transform:translateY(-6px) rotate(5deg)}
+}
+
+@keyframes glow{
+  from{transform:translateX(-20px);opacity:.14}
+  to{transform:translateX(35px);opacity:.3}
+}
+
+@media(max-width:760px){
+  main{padding:17px 14px 45px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .poster{height:150px}
+  .card-body{padding:11px}
+  .intro{padding:17px}
+}
+
+@media(max-width:520px){
+  nav{padding:13px 15px}
+  .logo{font-size:23px}
+  .nav-links{gap:5px}
+  .nav-links a{padding:9px 12px;font-size:13px}
+  .intro{gap:10px;padding:15px;border-radius:16px}
+  .intro h1{font-size:20px}
+  .intro p{font-size:12px}
+  .intro-emoji{font-size:26px}
+  .create-btn{padding:11px 12px;font-size:12px}
+  .grid{grid-template-columns:1fr}
+  .poster{height:205px}
+  .card-body{padding:14px}
+  .form-grid{grid-template-columns:1fr}
+  .form-field.full{grid-column:auto}
+  .modal-box{padding:16px}
+  .section-title h2{font-size:18px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <header>
   <nav>
     <div class="logo">Campus<span>ora</span></div>
     <div class="nav-links">
       <a href="index.html">Home</a>
-      <a href="marketplace.html">Marketplace</a>
-      <a href="messages.html">Messages</a>
       <a class="active" href="events.html">Events</a>
     </div>
   </nav>
 </header>
 
 <main>
+
   <section class="intro">
-    <div>
-      <h1>Campus events 🎉</h1>
-      <p>Discover what is happening around you, meet people, and share your event with the Campusora community.</p>
+    <div class="intro-copy">
+      <div class="eyebrow">Your campus. Your people.</div>
+      <h1>What's happening? </h1>
+      <p>Find your people, discover exciting events and make memories on Campusora.</p>
     </div>
-    <div class="intro-icon">🎟️</div>
-    <button class="primary" id="createEventBtn" type="button">+ Create event</button>
+
+    <div class="intro-emoji" aria-hidden="true">🎟️</div>
+
+    <button class="primary create-btn" id="createEventBtn" type="button">
+      <span class="plus">＋</span>Create
+    </button>
   </section>
 
-  <input class="search" id="searchInput" type="search"
-    placeholder="Search events, locations or schools..." aria-label="Search events">
+  <div class="search-wrap">
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input
+      class="search"
+      id="searchInput"
+      type="search"
+      placeholder="Find events, places or schools..."
+      aria-label="Search events">
+  </div>
 
   <div class="categories" id="categories">
-    <button class="chip active" data-category="All" type="button">All</button>
-    <button class="chip" data-category="Academic" type="button">Academic</button>
-    <button class="chip" data-category="Party" type="button">Party</button>
-    <button class="chip" data-category="Sports" type="button">Sports</button>
-    <button class="chip" data-category="Career" type="button">Career</button>
-    <button class="chip" data-category="Music" type="button">Music</button>
-    <button class="chip" data-category="Other" type="button">Other</button>
+    <button class="chip active" data-category="All" type="button">✨ For you</button>
+    <button class="chip" data-category="Academic" type="button">📚 Academic</button>
+    <button class="chip" data-category="Party" type="button">🎉 Party</button>
+    <button class="chip" data-category="Sports" type="button">⚽ Sports</button>
+    <button class="chip" data-category="Career" type="button">💼 Career</button>
+    <button class="chip" data-category="Music" type="button">🎵 Music</button>
+    <button class="chip" data-category="Other" type="button">🌟 Other</button>
   </div>
 
   <div class="section-title">
-    <h2>Upcoming events</h2>
-    <span class="muted"><span id="eventCount">0</span> events</span>
+    <h2> Upcoming events</h2>
+    <span class="count"><span id="eventCount">0</span> events</span>
   </div>
 
   <div class="grid" id="eventsGrid">
@@ -418,31 +705,39 @@ main {
 
   <section id="myEventsSection" hidden>
     <div class="section-title">
-      <h2>My events</h2>
-      <span class="muted">Manage events you created</span>
+      <h2>💜 Your events</h2>
+      <span class="count">Manage your events</span>
     </div>
     <div class="grid" id="myEventsGrid"></div>
   </section>
+
 </main>
 
+<!-- CREATE / EDIT EVENT -->
+
 <div class="modal" id="eventModal" role="dialog" aria-modal="true"
-  aria-labelledby="eventFormTitle">
+     aria-labelledby="eventFormTitle">
+
   <div class="modal-box">
     <div class="modal-head">
-      <h2 id="eventFormTitle">Create an event</h2>
-      <button class="secondary" id="closeEvent" type="button" aria-label="Close">✕</button>
+      <h2 id="eventFormTitle"> Create an event</h2>
+      <button class="secondary" id="closeEvent" type="button">✕</button>
     </div>
 
     <form id="eventForm">
       <div class="form-grid">
+
         <div class="form-field full">
-          <label for="title">Event title *</label>
-          <input class="field" id="title" maxlength="120" required>
+          <label for="title">What's the event called? *</label>
+          <input class="field" id="title" maxlength="120"
+                 placeholder="Give your event a great name" required>
         </div>
 
         <div class="form-field full">
-          <label for="description">Description *</label>
-          <textarea class="field" id="description" rows="4" required></textarea>
+          <label for="description">Tell people about it *</label>
+          <textarea class="field" id="description" rows="4"
+                    placeholder="What's happening? Why should people come?"
+                    required></textarea>
         </div>
 
         <div class="form-field">
@@ -460,19 +755,19 @@ main {
         <div class="form-field">
           <label for="visibility">Who can see it?</label>
           <select class="field" id="visibility">
-            <option value="public">Public</option>
-            <option value="campus">Campus</option>
+            <option value="public">Everyone</option>
+            <option value="campus">Campus community</option>
             <option value="private">Private</option>
           </select>
         </div>
 
         <div class="form-field">
-          <label for="startTime">Start date and time *</label>
+          <label for="startTime">Starts *</label>
           <input class="field" id="startTime" type="datetime-local" required>
         </div>
 
         <div class="form-field">
-          <label for="endTime">End date and time</label>
+          <label for="endTime">Ends</label>
           <input class="field" id="endTime" type="datetime-local">
         </div>
 
@@ -482,12 +777,12 @@ main {
         </div>
 
         <div class="form-field">
-          <label for="institution">School / institution</label>
-          <input class="field" id="institution" placeholder="Your school">
+          <label for="institution">School</label>
+          <input class="field" id="institution" placeholder="Your institution">
         </div>
 
         <div class="form-field">
-          <label for="priceType">Entry</label>
+          <label for="priceType">Entry fee</label>
           <select class="field" id="priceType">
             <option value="free">Free</option>
             <option value="paid">Paid</option>
@@ -495,44 +790,51 @@ main {
         </div>
 
         <div class="form-field">
-          <label for="ticketUrl">Ticket URL (optional)</label>
-          <input class="field" id="ticketUrl" type="url" placeholder="https://...">
+          <label for="ticketUrl">Ticket link</label>
+          <input class="field" id="ticketUrl" type="url"
+                 placeholder="https://...">
         </div>
 
         <div class="form-field full">
-          <label for="onlineUrl">Online meeting URL (optional)</label>
-          <input class="field" id="onlineUrl" type="url" placeholder="https://...">
+          <label for="onlineUrl">Online meeting link</label>
+          <input class="field" id="onlineUrl" type="url"
+                 placeholder="https://...">
         </div>
 
         <div class="form-field full">
-          <label for="poster">Event poster (JPG, PNG or WebP, max 5 MB)</label>
+          <label for="poster">Add an event poster (maximum 5 MB)</label>
           <input class="field" id="poster" type="file"
-            accept="image/jpeg,image/png,image/webp">
+                 accept="image/jpeg,image/png,image/webp">
         </div>
 
         <div class="form-field full">
           <label class="check-row">
-            <input id="isOnline" type="checkbox"> This is an online event
+            <input id="isOnline" type="checkbox">
+            This is an online event
           </label>
         </div>
+
       </div>
 
-      <p class="status" id="formMessage"></p>
+      <p class="status" id="formMessage" role="status"></p>
 
       <div class="form-actions">
         <button class="secondary" id="cancelForm" type="button">Close</button>
-        <button class="primary" id="submitEvent" type="submit">Publish event</button>
+        <button class="primary" id="submitEvent" type="submit">Publish event 🚀</button>
       </div>
     </form>
   </div>
 </div>
 
+<!-- EVENT DETAILS -->
+
 <div class="modal" id="detailModal" role="dialog" aria-modal="true"
-  aria-labelledby="detailTitle">
+     aria-labelledby="detailTitle">
+
   <div class="modal-box">
     <div class="modal-head">
       <h2 id="detailTitle">Event details</h2>
-      <button class="secondary" id="closeDetail" type="button" aria-label="Close">✕</button>
+      <button class="secondary" id="closeDetail" type="button">✕</button>
     </div>
     <div id="detailContent"></div>
   </div>
@@ -552,48 +854,61 @@ let organizers = {};
 let interestCounts = {};
 let selectedCategory = 'All';
 let editingEventId = null;
+let authReady = false;
 
 function escapeHTML(value = '') {
-  return String(value).replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[char]);
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
 }
 
 function safeURL(value) {
   if (!value) return '';
+
   try {
     const url = new URL(value);
-    return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+
+    return ['https:', 'http:'].includes(url.protocol)
+      ? url.href
+      : '';
   } catch {
     return '';
   }
 }
 
-function setMessage(text, isError = false) {
-  $('pageMessage').textContent = text;
-  $('pageMessage').classList.toggle('error', isError);
+function setMessage(message, error = false) {
+  $('pageMessage').textContent = message;
+  $('pageMessage').classList.toggle('error', error);
 }
 
 function dateText(value) {
   if (!value) return 'Date to be announced';
 
   const date = new Date(value);
+
   if (Number.isNaN(date.getTime())) return 'Date to be announced';
 
   return new Intl.DateTimeFormat(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short'
+    dateStyle:'medium',
+    timeStyle:'short'
   }).format(date);
 }
 
 function localDateValue(value) {
   const date = new Date(value);
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-  return date.toISOString().slice(0, 16);
+
+  return date.toISOString().slice(0,16);
+}
+
+function allVisibleEvents() {
+  return [...new Map(
+    [...events,...myEvents].map(event => [event.id,event])
+  ).values()];
 }
 
 function getOrganizer(event) {
@@ -609,7 +924,7 @@ function organizerHTML(event) {
     <div class="organizer">
       ${avatar
         ? `<img class="avatar" src="${escapeHTML(avatar)}" alt="">`
-        : `<div class="avatar" aria-hidden="true"></div>`}
+        : `<div class="avatar"></div>`}
       <div class="organizer-name">
         <strong>${escapeHTML(name)}</strong>
         <span>Event organizer</span>
@@ -617,18 +932,13 @@ function organizerHTML(event) {
     </div>`;
 }
 
-function allVisibleEvents() {
-  return [...new Map(
-    [...events, ...myEvents].map(event => [event.id, event])
-  ).values()];
-}
-
 function matching(list) {
   const query = $('searchInput').value.trim().toLowerCase();
 
   return list.filter(event => {
     const categoryOK =
-      selectedCategory === 'All' || event.category === selectedCategory;
+      selectedCategory === 'All' ||
+      event.category === selectedCategory;
 
     const searchable = [
       event.title,
@@ -649,24 +959,31 @@ function eventCard(event, manage = false) {
 
   return `
     <article class="event-card">
+
       <div class="poster">
         ${poster
           ? `<img src="${escapeHTML(poster)}"
-              alt="${escapeHTML(event.title)}" loading="lazy">`
-          : '🎟️'}
+               alt="${escapeHTML(event.title)}" loading="lazy">`
+          : '🎉'}
+
+        <span class="poster-label">
+          ${event.price_type === 'paid' ? '🎟️ Paid event' : '💜 Free event'}
+        </span>
       </div>
 
       <div class="card-body">
+
         <span class="badge">
-          ${escapeHTML(event.category || 'Other')}
-          · ${escapeHTML(event.visibility || 'public')}
+          ✨ ${escapeHTML(event.category || 'Other')}
         </span>
 
         <h3>${escapeHTML(event.title)}</h3>
 
         <div class="info">
           📅 ${escapeHTML(dateText(event.start_time))}<br>
-          📍 ${escapeHTML(event.location || (event.is_online ? 'Online' : 'Location TBA'))}
+          📍 ${escapeHTML(
+            event.location || (event.is_online ? 'Online' : 'Location TBA')
+          )}
           ${event.institution
             ? `<br>🎓 ${escapeHTML(event.institution)}`
             : ''}
@@ -676,35 +993,37 @@ function eventCard(event, manage = false) {
         ${organizerHTML(event)}
 
         <p class="description">
-          ${escapeHTML((event.description || '').slice(0, 100))}
-          ${(event.description || '').length > 100 ? '…' : ''}
+          ${escapeHTML((event.description || '').slice(0,110))}
+          ${(event.description || '').length > 110 ? '…' : ''}
         </p>
 
         <div class="card-bottom">
+
           ${!manage && !cancelled
             ? `<button class="small-btn ${interested ? 'active' : ''}"
-                type="button" data-interest="${escapeHTML(event.id)}">
-                ${interested ? '♥ Interested' : '♡ Interested'}
-                ${interestCounts[event.id] !== undefined
-                  ? ` (${interestCounts[event.id]})`
-                  : ''}
-              </button>`
+                 type="button" data-interest="${escapeHTML(event.id)}">
+                 ${interested ? '♥ Interested' : '♡ Interested'}
+                 ${interestCounts[event.id] !== undefined
+                   ? ` · ${interestCounts[event.id]}`
+                   : ''}
+               </button>`
             : ''}
 
           <button class="small-btn" type="button"
-            data-details="${escapeHTML(event.id)}">Details</button>
+            data-details="${escapeHTML(event.id)}">View details</button>
 
           <button class="small-btn" type="button"
             data-share="${escapeHTML(event.id)}">Share ↗</button>
 
           ${manage
             ? `<button class="small-btn" type="button"
-                data-edit="${escapeHTML(event.id)}">Edit</button>
+                 data-edit="${escapeHTML(event.id)}">Edit</button>
                ${!cancelled
                  ? `<button class="small-btn" type="button"
-                     data-cancel="${escapeHTML(event.id)}">Cancel</button>`
+                      data-cancel="${escapeHTML(event.id)}">Cancel</button>`
                  : ''}`
             : ''}
+
         </div>
       </div>
     </article>`;
@@ -714,39 +1033,68 @@ function render() {
   const upcoming = matching(events);
 
   $('eventCount').textContent = upcoming.length;
+
   $('eventsGrid').innerHTML = upcoming.length
     ? upcoming.map(event => eventCard(event)).join('')
-    : '<div class="empty">No upcoming events found. Try another search or create an event.</div>';
+    : `<div class="empty">
+         <div class="empty-icon">🎈</div>
+         <strong>No events found just yet</strong>
+         Try another category or be the first to share something exciting.
+         <br><br>
+         <button class="primary" type="button" data-create-inline>
+           ＋ Create an event
+         </button>
+       </div>`;
 
   const mine = matching(myEvents);
 
-  $('myEventsSection').hidden = !currentUser || myEvents.length === 0;
+  $('myEventsSection').hidden =
+    !currentUser || myEvents.length === 0;
+
   $('myEventsGrid').innerHTML = mine.length
-    ? mine.map(event => eventCard(event, true)).join('')
-    : '<div class="empty">You have no events matching this search.</div>';
+    ? mine.map(event => eventCard(event,true)).join('')
+    : '<div class="empty">No events match your search.</div>';
 }
 
+/*
+ * Check the existing Supabase session.
+ * Use the session first, then refresh the user information.
+ */
+
 async function loadUser() {
-  const { data, error } = await supabase.auth.getUser();
+  const {data:sessionData,error:sessionError} =
+    await supabase.auth.getSession();
 
-  if (error) console.warn('Could not check signed-in user:', error.message);
+  if (sessionError) throw sessionError;
 
-  currentUser = data?.user || null;
+  currentUser = sessionData?.session?.user || null;
+
+  if (currentUser) {
+    const {data:userData,error:userError} =
+      await supabase.auth.getUser();
+
+    if (!userError && userData?.user) {
+      currentUser = userData.user;
+    }
+  }
+
+  profile = null;
+  interests = new Set();
 
   if (!currentUser) return;
 
-  const { data: person, error: profileError } = await supabase
+  const {data:person,error:profileError} = await supabase
     .from('profiles')
     .select('id,username,full_name,avatar_url,school')
-    .eq('id', currentUser.id)
+    .eq('id',currentUser.id)
     .maybeSingle();
 
   if (!profileError && person) profile = person;
 
-  const { data: myInterests, error: interestError } = await supabase
+  const {data:myInterests,error:interestError} = await supabase
     .from('event_interests')
     .select('event_id')
-    .eq('user_id', currentUser.id);
+    .eq('user_id',currentUser.id);
 
   if (!interestError && myInterests) {
     interests = new Set(myInterests.map(row => row.event_id));
@@ -760,13 +1108,13 @@ async function loadProfiles(list) {
 
   if (!ids.length) return;
 
-  const { data, error } = await supabase
+  const {data,error} = await supabase
     .from('profiles')
     .select('id,username,full_name,avatar_url,school')
-    .in('id', ids);
+    .in('id',ids);
 
   if (error) {
-    console.warn('Organizer profiles could not be loaded:', error.message);
+    console.warn('Could not load organizer profiles:',error.message);
     return;
   }
 
@@ -777,16 +1125,16 @@ async function loadProfiles(list) {
 
 async function loadInterestCounts(list) {
   const ids = [...new Set(list.map(event => event.id))];
+
   if (!ids.length) return;
 
-  // Optional Supabase function. The rest of the page still works if absent.
-  const { data, error } = await supabase.rpc(
+  const {data,error} = await supabase.rpc(
     'get_event_interest_counts',
-    { event_ids: ids }
+    {event_ids:ids}
   );
 
   if (error) {
-    console.info('Optional interest-count function is not configured yet.');
+    // Interest counts are optional; the page still works without this RPC.
     return;
   }
 
@@ -796,71 +1144,71 @@ async function loadInterestCounts(list) {
 }
 
 async function loadEvents() {
-  setMessage('Loading events…');
+  setMessage('Finding events for you…');
 
-  try {
-    const now = new Date().toISOString();
+  const now = new Date().toISOString();
 
-    const { data, error } = await supabase
+  const {data,error} = await supabase
+    .from('events')
+    .select('*')
+    .eq('status','published')
+    .in('visibility',['public','campus'])
+    .gte('start_time',now)
+    .order('start_time',{ascending:true});
+
+  if (error) throw error;
+
+  events = data || [];
+  myEvents = [];
+
+  if (currentUser) {
+    const {data:mine,error:mineError} = await supabase
       .from('events')
       .select('*')
-      .eq('status', 'published')
-      .in('visibility', ['public', 'campus'])
-      .gte('start_time', now)
-      .order('start_time', { ascending: true });
+      .eq('organizer_id',currentUser.id)
+      .order('start_time',{ascending:true});
 
-    if (error) throw error;
-
-    events = data || [];
-    myEvents = [];
-
-    if (currentUser) {
-      const { data: mine, error: mineError } = await supabase
-        .from('events')
-        .select('*')
-        .eq('organizer_id', currentUser.id)
-        .order('start_time', { ascending: true });
-
-      if (!mineError) myEvents = mine || [];
-    }
-
-    const combined = allVisibleEvents();
-
-    await Promise.all([
-      loadProfiles(combined),
-      loadInterestCounts(combined)
-    ]);
-
-    render();
-
-    setMessage(events.length
-      ? 'Events are up to date.'
-      : 'No public or campus upcoming events yet. Be the first to create one!');
-  } catch (error) {
-    console.error('Loading events failed:', error);
-
-    setMessage(
-      'Could not load events. Check your Supabase connection and table permissions.',
-      true
-    );
-
-    $('eventsGrid').innerHTML =
-      '<div class="empty">Events could not load. Please check your connection and try again.</div>';
+    if (!mineError) myEvents = mine || [];
   }
+
+  const combined = allVisibleEvents();
+
+  await Promise.all([
+    loadProfiles(combined),
+    loadInterestCounts(combined)
+  ]);
+
+  render();
+
+  setMessage(
+    events.length
+      ? 'You are all caught up. Go discover something exciting! ✨'
+      : 'No public or campus events yet. Be the first to create one!'
+  );
 }
 
 function openCreateForm() {
+  if (!authReady) {
+    alert('Campusora is still checking your sign-in. Please try again in a moment.');
+    return;
+  }
+
   if (!currentUser) {
-    alert('Please sign in to create an event.');
+    alert(
+      'You are not signed in according to the current Supabase session. ' +
+      'Please sign in on Campusora and return to Events.'
+    );
     return;
   }
 
   editingEventId = null;
+
   $('eventForm').reset();
-  $('eventFormTitle').textContent = 'Create an event';
-  $('submitEvent').textContent = 'Publish event';
+  $('eventFormTitle').textContent = '✨ Create an event';
+  $('submitEvent').textContent = 'Publish event 🚀';
   $('formMessage').textContent = '';
   $('institution').value = profile?.school || '';
+
   $('eventModal').classList.add('open');
 }
 
@@ -873,18 +1221,20 @@ function openEditForm(id) {
   }
 
   editingEventId = id;
-  $('eventForm').reset();
 
-  $('eventFormTitle').textContent = 'Edit event';
+  $('eventForm').reset();
+  $('eventFormTitle').textContent = '✏️ Edit event';
   $('submitEvent').textContent = 'Save changes';
-  $('formMessage').textContent = 'Leave poster empty to keep the current poster.';
+  $('formMessage').textContent =
+    'Leave the poster empty to keep the existing poster.';
 
   $('title').value = event.title || '';
   $('description').value = event.description || '';
   $('categorySelect').value = event.category || 'Other';
   $('visibility').value = event.visibility || 'public';
   $('startTime').value = localDateValue(event.start_time);
-  $('endTime').value = event.end_time ? localDateValue(event.end_time) : '';
+  $('endTime').value =
+    event.end_time ? localDateValue(event.end_time) : '';
   $('location').value = event.location || '';
   $('institution').value = event.institution || '';
   $('priceType').value = event.price_type || 'free';
@@ -897,6 +1247,7 @@ function openEditForm(id) {
 
 function openDetails(id) {
   const event = allVisibleEvents().find(item => item.id === id);
+
   if (!event) return;
 
   const poster = safeURL(event.poster_url);
@@ -908,16 +1259,21 @@ function openDetails(id) {
   $('detailContent').innerHTML = `
     ${poster
       ? `<img class="detail-poster"
-          src="${escapeHTML(poster)}" alt="${escapeHTML(event.title)}">`
+          src="${escapeHTML(poster)}"
+          alt="${escapeHTML(event.title)}">`
       : ''}
 
     ${organizerHTML(event)}
 
-    <p><strong>Category:</strong> ${escapeHTML(event.category || 'Other')}</p>
-    <p><strong>Starts:</strong> ${escapeHTML(dateText(event.start_time))}</p>
+    <p><strong>Category:</strong>
+      ${escapeHTML(event.category || 'Other')}</p>
+
+    <p><strong>Starts:</strong>
+      ${escapeHTML(dateText(event.start_time))}</p>
 
     ${event.end_time
-      ? `<p><strong>Ends:</strong> ${escapeHTML(dateText(event.end_time))}</p>`
+      ? `<p><strong>Ends:</strong>
+          ${escapeHTML(dateText(event.end_time))}</p>`
       : ''}
 
     <p><strong>Location:</strong>
@@ -925,23 +1281,25 @@ function openDetails(id) {
     </p>
 
     ${event.institution
-      ? `<p><strong>Institution:</strong> ${escapeHTML(event.institution)}</p>`
+      ? `<p><strong>School:</strong>
+          ${escapeHTML(event.institution)}</p>`
       : ''}
 
     <p><strong>Entry:</strong>
-      ${event.price_type === 'paid' ? 'Paid' : 'Free'}
+      ${event.price_type === 'paid' ? 'Paid' : 'Free'}</p>
+
+    <p class="detail-copy">
+      ${escapeHTML(event.description || 'No description provided.')}
     </p>
 
-    <p class="detail-copy">${escapeHTML(event.description || 'No description provided.')}</p>
-
     ${ticket
-      ? `<p><a href="${escapeHTML(ticket)}" target="_blank"
-          rel="noopener noreferrer">🎟️ Get tickets</a></p>`
+      ? `<p><a href="${escapeHTML(ticket)}"
+          target="_blank" rel="noopener noreferrer">🎟️ Get tickets</a></p>`
       : ''}
 
     ${meeting
-      ? `<p><a href="${escapeHTML(meeting)}" target="_blank"
-          rel="noopener noreferrer">💻 Join online event</a></p>`
+      ? `<p><a href="${escapeHTML(meeting)}"
+          target="_blank" rel="noopener noreferrer">💻 Join online</a></p>`
       : ''}
   `;
 
@@ -950,31 +1308,31 @@ function openDetails(id) {
 
 async function toggleInterest(id) {
   if (!currentUser) {
-    alert('Please sign in first.');
+    alert('Please sign in to show interest in an event.');
     return;
   }
 
   try {
     if (interests.has(id)) {
-      const { error } = await supabase
+      const {error} = await supabase
         .from('event_interests')
         .delete()
-        .eq('event_id', id)
-        .eq('user_id', currentUser.id);
+        .eq('event_id',id)
+        .eq('user_id',currentUser.id);
 
       if (error) throw error;
 
       interests.delete(id);
 
       if (interestCounts[id] !== undefined) {
-        interestCounts[id] = Math.max(0, interestCounts[id] - 1);
+        interestCounts[id] = Math.max(0,interestCounts[id]-1);
       }
     } else {
-      const { error } = await supabase
+      const {error} = await supabase
         .from('event_interests')
         .insert({
-          event_id: id,
-          user_id: currentUser.id
+          event_id:id,
+          user_id:currentUser.id
         });
 
       if (error) throw error;
@@ -982,40 +1340,41 @@ async function toggleInterest(id) {
       interests.add(id);
 
       if (interestCounts[id] !== undefined) {
-        interestCounts[id] += 1;
+        interestCounts[id]++;
       }
     }
 
     render();
   } catch (error) {
-    console.error(error);
-    alert('Could not update your interest. Check your sign-in and Supabase permissions.');
+    console.error('Interest update failed:',error);
+    alert('Could not update your interest. Please check your connection and try again.');
   }
 }
 
 async function shareEvent(id) {
   const event = allVisibleEvents().find(item => item.id === id);
+
   if (!event) return;
 
   const url = new URL(location.href);
-  url.searchParams.set('event', id);
+  url.searchParams.set('event',id);
 
   try {
     if (navigator.share) {
       await navigator.share({
-        title: event.title,
-        text: `Check out ${event.title} on Campusora`,
-        url: url.href
+        title:event.title,
+        text:`Check out ${event.title} on Campusora! 🎉`,
+        url:url.href
       });
     } else if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(url.href);
-      alert('Event link copied!');
+      alert('Event link copied! Share it with your friends.');
     } else {
-      prompt('Copy this event link:', url.href);
+      prompt('Copy this event link:',url.href);
     }
   } catch (error) {
     if (error.name !== 'AbortError') {
-      prompt('Copy this event link:', url.href);
+      prompt('Copy this event link:',url.href);
     }
   }
 }
@@ -1030,22 +1389,22 @@ async function cancelEvent(id) {
 
   if (!confirm(`Cancel "${event.title}"?`)) return;
 
-  const { error } = await supabase
+  const {error} = await supabase
     .from('events')
     .update({
-      status: 'cancelled',
-      updated_at: new Date().toISOString()
+      status:'cancelled',
+      updated_at:new Date().toISOString()
     })
-    .eq('id', id)
-    .eq('organizer_id', currentUser.id);
+    .eq('id',id)
+    .eq('organizer_id',currentUser.id);
 
   if (error) {
     console.error(error);
-    alert('Could not cancel event. Check your Supabase update policy.');
+    alert('Could not cancel this event. Check your Supabase update policy.');
     return;
   }
 
-  await loadEvents();
+  await refreshPageData();
   alert('Event cancelled.');
 }
 
@@ -1053,18 +1412,19 @@ async function saveEvent(e) {
   e.preventDefault();
 
   if (!currentUser) {
-    alert('Please sign in first.');
+    alert('No active Supabase sign-in was found. Please sign in again.');
     return;
   }
 
   const title = $('title').value.trim();
   const description = $('description').value.trim();
-  const start = new Date($('startTime').value);
+  const startValue = $('startTime').value;
   const endValue = $('endTime').value;
+  const start = new Date(startValue);
   const end = endValue ? new Date(endValue) : null;
 
-  if (!title || !description || !$('startTime').value) {
-    alert('Fill in the title, description and start date.');
+  if (!title || !description || !startValue) {
+    alert('Please complete the title, description and start date.');
     return;
   }
 
@@ -1093,13 +1453,13 @@ async function saveEvent(e) {
 
   const file = $('poster').files[0];
 
-  if (file && !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-    alert('Use a JPG, PNG or WebP poster.');
+  if (file && !['image/jpeg','image/png','image/webp'].includes(file.type)) {
+    alert('Use a JPG, PNG or WebP image.');
     return;
   }
 
-  if (file && file.size > 5 * 1024 * 1024) {
-    alert('Poster must be 5 MB or smaller.');
+  if (file && file.size > 5*1024*1024) {
+    alert('Your event poster must be 5 MB or smaller.');
     return;
   }
 
@@ -1109,22 +1469,26 @@ async function saveEvent(e) {
 
   const button = $('submitEvent');
   button.disabled = true;
-  button.textContent = 'Saving…';
+  button.textContent = 'Publishing…';
   $('formMessage').textContent = '';
 
   try {
     let posterUrl = existing?.poster_url || null;
 
     if (file) {
-      const ext = file.name.split('.').pop().toLowerCase();
-      const path = `${currentUser.id}/${crypto.randomUUID()}.${ext}`;
+      const extension = file.name.split('.').pop().toLowerCase();
+      const uniqueId = crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-      const { error: uploadError } = await supabase.storage
+      const path = `${currentUser.id}/${uniqueId}.${extension}`;
+
+      const {error:uploadError} = await supabase.storage
         .from('event-posters')
-        .upload(path, file, {
-          cacheControl: '3600',
-          upsert: false,
-          contentType: file.type
+        .upload(path,file,{
+          cacheControl:'3600',
+          upsert:false,
+          contentType:file.type
         });
 
       if (uploadError) throw uploadError;
@@ -1137,18 +1501,18 @@ async function saveEvent(e) {
     const payload = {
       title,
       description,
-      category: $('categorySelect').value,
-      start_time: start.toISOString(),
-      end_time: end ? end.toISOString() : null,
-      location: $('location').value.trim() || null,
-      institution: $('institution').value.trim() || null,
-      visibility: $('visibility').value,
-      price_type: $('priceType').value,
-      ticket_url: ticketUrl || null,
-      online_url: onlineUrl || null,
-      is_online: $('isOnline').checked,
-      poster_url: posterUrl,
-      updated_at: new Date().toISOString()
+      category:$('categorySelect').value,
+      start_time:start.toISOString(),
+      end_time:end ? end.toISOString() : null,
+      location:$('location').value.trim() || null,
+      institution:$('institution').value.trim() || null,
+      visibility:$('visibility').value,
+      price_type:$('priceType').value,
+      ticket_url:ticketUrl || null,
+      online_url:onlineUrl || null,
+      is_online:$('isOnline').checked,
+      poster_url:posterUrl,
+      updated_at:new Date().toISOString()
     };
 
     let result;
@@ -1157,72 +1521,62 @@ async function saveEvent(e) {
       result = await supabase
         .from('events')
         .update(payload)
-        .eq('id', editingEventId)
-        .eq('organizer_id', currentUser.id);
+        .eq('id',editingEventId)
+        .eq('organizer_id',currentUser.id);
     } else {
       result = await supabase
         .from('events')
         .insert({
           ...payload,
-          organizer_id: currentUser.id,
-          status: 'published'
+          organizer_id:currentUser.id,
+          status:'published'
         });
     }
 
     if (result.error) throw result.error;
 
+    const wasEditing = !!editingEventId;
+
     $('eventModal').classList.remove('open');
     $('eventForm').reset();
     editingEventId = null;
 
-    await loadEvents();
+    await refreshPageData();
 
-    alert(existing ? 'Event updated successfully!' : 'Event published successfully!');
+    alert(wasEditing
+      ? 'Your event has been updated! ✨'
+      : 'Your event is live on Campusora! 🎉');
+
   } catch (error) {
-    console.error('Could not save event:', error);
+    console.error('Saving event failed:',error);
 
     $('formMessage').textContent =
-      `Could not save event: ${error.message || 'Check your Supabase settings and permissions.'}`;
+      'Could not publish: ' +
+      (error.message || 'Check your Supabase settings and permissions.');
+
   } finally {
     button.disabled = false;
-    button.textContent = editingEventId ? 'Save changes' : 'Publish event';
+    button.textContent = editingEventId
+      ? 'Save changes'
+      : 'Publish event 🚀';
   }
 }
 
-// Main buttons
-$('createEventBtn').addEventListener('click', openCreateForm);
+async function refreshPageData() {
+  await loadUser();
+  await loadEvents();
+}
 
-$('closeEvent').addEventListener('click', () => {
-  $('eventModal').classList.remove('open');
-});
+/* Button actions */
 
-$('cancelForm').addEventListener('click', () => {
-  $('eventModal').classList.remove('open');
-});
+$('createEventBtn').addEventListener('click',openCreateForm);
 
-$('closeDetail').addEventListener('click', () => {
-  $('detailModal').classList.remove('open');
-});
+document.addEventListener('click',async e => {
+  if (e.target.closest('[data-create-inline]')) {
+    openCreateForm();
+    return;
+  }
 
-$('eventForm').addEventListener('submit', saveEvent);
-
-$('searchInput').addEventListener('input', render);
-
-// Category filters
-document.querySelectorAll('[data-category]').forEach(button => {
-  button.addEventListener('click', () => {
-    selectedCategory = button.dataset.category;
-
-    document.querySelectorAll('[data-category]').forEach(item => {
-      item.classList.toggle('active', item === button);
-    });
-
-    render();
-  });
-});
-
-// Event card buttons
-document.addEventListener('click', async e => {
   const interest = e.target.closest('[data-interest]');
   const details = e.target.closest('[data-details]');
   const share = e.target.closest('[data-share]');
@@ -1236,24 +1590,73 @@ document.addEventListener('click', async e => {
   else if (cancel) await cancelEvent(cancel.dataset.cancel);
 });
 
-// Close modals by tapping outside or pressing Escape
-['eventModal', 'detailModal'].forEach(id => {
-  $(id).addEventListener('click', e => {
-    if (e.target.id === id) $(id).classList.remove('open');
+$('closeEvent').addEventListener('click',() => {
+  $('eventModal').classList.remove('open');
+});
+
+$('cancelForm').addEventListener('click',() => {
+  $('eventModal').classList.remove('open');
+});
+
+$('closeDetail').addEventListener('click',() => {
+  $('detailModal').classList.remove('open');
+});
+
+$('eventForm').addEventListener('submit',saveEvent);
+
+$('searchInput').addEventListener('input',render);
+
+document.querySelectorAll('[data-category]').forEach(button => {
+  button.addEventListener('click',() => {
+    selectedCategory = button.dataset.category;
+
+    document.querySelectorAll('[data-category]').forEach(item => {
+      item.classList.toggle('active',item === button);
+    });
+
+    render();
   });
 });
 
-document.addEventListener('keydown', e => {
+['eventModal','detailModal'].forEach(id => {
+  $(id).addEventListener('click',e => {
+    if (e.target.id === id) {
+      $(id).classList.remove('open');
+    }
+  });
+});
+
+document.addEventListener('keydown',e => {
   if (e.key === 'Escape') {
     $('eventModal').classList.remove('open');
     $('detailModal').classList.remove('open');
   }
 });
 
-// Start the Events page
+/*
+ * Keep the page informed when a user signs in or out.
+ */
+
+supabase.auth.onAuthStateChange((_event,session) => {
+  currentUser = session?.user || null;
+
+  if (authReady) {
+    setTimeout(async () => {
+      try {
+        await refreshPageData();
+      } catch (error) {
+        console.error('Could not refresh after sign-in:',error);
+      }
+    },0);
+  }
+});
+
+/* Start the page */
+
 async function start() {
   try {
     await loadUser();
+    authReady = true;
     await loadEvents();
 
     const sharedId = new URLSearchParams(location.search).get('event');
@@ -1261,16 +1664,28 @@ async function start() {
     if (sharedId && allVisibleEvents().some(event => event.id === sharedId)) {
       openDetails(sharedId);
     }
+
   } catch (error) {
-    console.error(error);
+    console.error('Campusora Events failed to start:',error);
+
+    authReady = true;
+
     setMessage(
-      'Campusora could not start. Check your Supabase configuration.',
+      'Could not connect to Campusora. Please check your internet connection and Supabase configuration.',
       true
     );
+
+    $('eventsGrid').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <strong>Something went wrong</strong>
+        We could not load events. Please refresh the page.
+      </div>`;
   }
 }
 
 start();
 </script>
+
 </body>
-  </html>
+</html>
