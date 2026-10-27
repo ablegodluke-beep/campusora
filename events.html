@@ -1068,6 +1068,10 @@ async function loadUser() {
   if (sessionError) throw sessionError;
 
   currentUser = sessionData?.session?.user || null;
+  alert(
+  'Events login test: ' +
+  (currentUser ? 'USER FOUND: ' + currentUser.email : 'NO SESSION FOUND')
+);
 
   if (currentUser) {
     const {data:userData,error:userError} =
