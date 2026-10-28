@@ -1,80 +1,630 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
 <title>Profile | Campusora</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
 :root {
-  --bg:#080b18;--card:#111629;--card2:#171d33;
-  --border:#252d48;--text:#f4f5ff;--muted:#9ca6c5;
-  --purple:#8758ff;--blue:#448aff;--cyan:#42d9f5;
+  --bg:#080b18;
+  --card:#111629;
+  --card2:#171d33;
+  --border:#252d48;
+  --text:#f4f5ff;
+  --muted:#9ca6c5;
+  --purple:#8758ff;
+  --blue:#448aff;
+  --cyan:#42d9f5;
+  --gold:#f5ce75;
+  --gold-dark:#a87925;
 }
+
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top left,#171438 0%,transparent 42%),var(--bg);color:var(--text);font-family:Inter,sans-serif;min-height:100vh}
-button,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
-.topbar{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:rgba(8,11,24,.94);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;backdrop-filter:blur(14px)}
-.brand{font-size:22px;font-weight:800;background:linear-gradient(90deg,#b18aff,#45dafa);color:transparent;background-clip:text;-webkit-background-clip:text}
+
+body{
+  margin:0;
+  background:radial-gradient(ellipse at top left,#171438 0%,transparent 42%),var(--bg);
+  color:var(--text);
+  font-family:Inter,sans-serif;
+  min-height:100vh
+}
+
+button,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+a{color:inherit;text-decoration:none}
+
+.topbar{
+  height:66px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  background:rgba(8,11,24,.94);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(14px)
+}
+
+.brand{
+  font-size:22px;
+  font-weight:800;
+  background:linear-gradient(90deg,#b18aff,#45dafa);
+  color:transparent;
+  background-clip:text;
+  -webkit-background-clip:text
+}
+
 .top-actions{display:flex;gap:10px}
-.top-btn{background:var(--card2);color:var(--text);border:1px solid var(--border);padding:9px 13px;border-radius:10px;font-size:13px}
-.page{width:min(850px,94%);margin:28px auto 60px}
-.profile-card,.post-card{background:rgba(17,22,41,.96);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:20px}
-.cover{height:210px;background:radial-gradient(circle at 20% 20%,#7044d9,transparent 40%),linear-gradient(120deg,#151b3d,#302064,#07566c);background-position:center;background-size:cover}
+
+.top-btn{
+  background:var(--card2);
+  color:var(--text);
+  border:1px solid var(--border);
+  padding:9px 13px;
+  border-radius:10px;
+  font-size:13px
+}
+
+.page{
+  width:min(850px,94%);
+  margin:28px auto 60px
+}
+
+.profile-card,.post-card{
+  background:rgba(17,22,41,.96);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  margin-bottom:20px;
+  transition:border-color .25s,box-shadow .25s
+}
+
+.cover{
+  height:210px;
+  background:radial-gradient(circle at 20% 20%,#7044d9,transparent 40%),linear-gradient(120deg,#151b3d,#302064,#07566c);
+  background-position:center;
+  background-size:cover
+}
+
 .profile-content{padding:0 25px 25px}
-.avatar{width:112px;height:112px;border-radius:50%;object-fit:cover;border:5px solid var(--card);background:var(--card2)}
+
+.avatar{
+  width:112px;
+  height:112px;
+  border-radius:50%;
+  object-fit:cover;
+  border:5px solid var(--card);
+  background:var(--card2)
+}
+
 .profile-avatar{margin-top:-57px}
-.profile-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-h1{font-size:25px;margin:12px 0 6px;overflow-wrap:anywhere}
-.username,.school,.bio{color:var(--muted);font-size:14px;line-height:1.7;overflow-wrap:anywhere}
-.badge{display:inline-block;background:rgba(135,88,255,.17);border:1px solid rgba(135,88,255,.45);color:#c8b4ff;border-radius:20px;padding:6px 10px;font-size:11px;font-weight:700;margin-top:10px}
-.bio{color:#dce1f7;margin-top:15px;white-space:pre-wrap}
-.stats{display:flex;gap:25px;flex-wrap:wrap;border-top:1px solid var(--border);margin-top:20px;padding-top:18px}
-.stat strong{display:block;font-size:18px}.stat span{color:var(--muted);font-size:12px}
-.primary-btn{background:linear-gradient(110deg,var(--purple),var(--blue));color:white;border:0;border-radius:10px;padding:11px 15px;font-size:13px;font-weight:700}
+
+.profile-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px
+}
+
+.profile-heading > div:first-child{min-width:0;flex:1}
+
+h1{
+  font-size:25px;
+  margin:12px 0 6px;
+  overflow-wrap:anywhere
+}
+
+.username,.school,.bio{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+  overflow-wrap:anywhere
+}
+
+.badge{
+  display:inline-block;
+  background:rgba(135,88,255,.17);
+  border:1px solid rgba(135,88,255,.45);
+  color:#c8b4ff;
+  border-radius:20px;
+  padding:6px 10px;
+  font-size:11px;
+  font-weight:700;
+  margin-top:10px
+}
+
+/* Premium badge */
+.premium-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:linear-gradient(135deg,rgba(245,206,117,.17),rgba(168,121,37,.1));
+  border:1px solid rgba(245,206,117,.7);
+  color:var(--gold);
+  border-radius:20px;
+  padding:6px 10px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.6px;
+  margin:10px 0 0 5px
+}
+
+.bio{
+  color:#dce1f7;
+  margin-top:15px;
+  white-space:pre-wrap
+}
+
+.profile-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap
+}
+
+.primary-btn{
+  background:linear-gradient(110deg,var(--purple),var(--blue));
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:11px 15px;
+  font-size:13px;
+  font-weight:700
+}
+
+/* Small, discreet Premium button */
+.premium-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  background:linear-gradient(135deg,#17130d,#282013);
+  color:#f5ce75;
+  border:1px solid rgba(245,206,117,.65);
+  border-radius:9px;
+  padding:9px 11px;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+  box-shadow:0 2px 12px rgba(0,0,0,.18);
+  transition:background .2s,border-color .2s,transform .2s
+}
+
+.premium-btn:hover{
+  background:linear-gradient(135deg,#282013,#3b2b14);
+  border-color:#f5ce75;
+  transform:translateY(-1px)
+}
+
+.premium-symbol{font-size:14px;line-height:1}
+
+.stats{
+  display:flex;
+  gap:25px;
+  flex-wrap:wrap;
+  border-top:1px solid var(--border);
+  margin-top:20px;
+  padding-top:18px
+}
+
+.stat strong{display:block;font-size:18px}
+.stat span{color:var(--muted);font-size:12px}
+
 .section-title{font-size:19px;margin:28px 0 15px}
+
 .post-card{padding:19px}
+
 .post-header{display:flex;align-items:center;gap:11px}
-.post-avatar{width:43px;height:43px;border-radius:50%;object-fit:cover;background:var(--card2);flex-shrink:0}
+
+.post-avatar{
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  object-fit:cover;
+  background:var(--card2);
+  flex-shrink:0
+}
+
 .post-author{font-size:14px;font-weight:700;overflow-wrap:anywhere}
+
 .post-meta{font-size:11px;color:var(--muted);margin-top:5px}
-.post-text{font-size:14px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;margin:17px 0}
-.post-image{width:100%;max-height:560px;object-fit:contain;background:#090c18;border-radius:12px;display:block;margin-bottom:15px}
-.post-stats{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;padding:10px 2px;border-bottom:1px solid var(--border)}
-.post-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:11px}
-.action-btn{display:flex;align-items:center;justify-content:center;gap:7px;border:0;background:transparent;color:#b8c1df;border-radius:10px;padding:11px 5px;font-size:12px}
+
+.post-text{
+  font-size:14px;
+  line-height:1.8;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  margin:17px 0
+}
+
+.post-image{
+  width:100%;
+  max-height:560px;
+  object-fit:contain;
+  background:#090c18;
+  border-radius:12px;
+  display:block;
+  margin-bottom:15px
+}
+
+.post-stats{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:var(--muted);
+  font-size:12px;
+  padding:10px 2px;
+  border-bottom:1px solid var(--border)
+}
+
+.post-actions{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  padding-top:11px
+}
+
+.action-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border:0;
+  background:transparent;
+  color:#b8c1df;
+  border-radius:10px;
+  padding:11px 5px;
+  font-size:12px
+}
+
 .action-btn:hover{background:var(--card2);color:white}
 .action-icon{font-size:19px;line-height:1}
 .action-btn.liked,.react-btn.reacted{color:#ff6b91;background:rgba(255,99,132,.09)}
-.comments-area{border-top:1px solid var(--border);margin-top:12px;padding-top:15px}
-.comment-form{display:flex;align-items:center;gap:8px;margin-bottom:15px}
-.comment-input{width:100%;min-width:0;resize:vertical;min-height:42px;max-height:130px;color:white;background:#0b1020;border:1px solid var(--border);border-radius:12px;padding:12px;outline:none;font-size:13px}
+
+.comments-area{
+  border-top:1px solid var(--border);
+  margin-top:12px;
+  padding-top:15px
+}
+
+.comment-form{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:15px
+}
+
+.comment-input{
+  width:100%;
+  min-width:0;
+  resize:vertical;
+  min-height:42px;
+  max-height:130px;
+  color:white;
+  background:#0b1020;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+  outline:none;
+  font-size:13px
+}
+
 .comment-input:focus{border-color:var(--purple)}
-.comment-send{background:var(--purple);border:0;color:white;border-radius:10px;padding:11px 13px;font-size:12px;font-weight:700;flex-shrink:0}
-.comment{display:flex;gap:9px;margin:14px 0}
-.comment-avatar{width:33px;height:33px;object-fit:cover;border-radius:50%;background:var(--card2);flex-shrink:0}
-.comment-body{flex:1;min-width:0;background:#0b1020;padding:10px 12px;border-radius:12px}
-.comment-name{font-size:12px;font-weight:700;margin-bottom:6px;color:#c8b4ff;display:inline-block}
-.comment-text{color:#dce1f7;font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+
+.comment-send{
+  background:var(--purple);
+  border:0;
+  color:white;
+  border-radius:10px;
+  padding:11px 13px;
+  font-size:12px;
+  font-weight:700;
+  flex-shrink:0
+}
+
+.comment{
+  display:flex;
+  gap:9px;
+  margin:14px 0
+}
+
+.comment-avatar{
+  width:33px;
+  height:33px;
+  object-fit:cover;
+  border-radius:50%;
+  background:var(--card2);
+  flex-shrink:0
+}
+
+.comment-body{
+  flex:1;
+  min-width:0;
+  background:#0b1020;
+  padding:10px 12px;
+  border-radius:12px
+}
+
+.comment-name{
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:6px;
+  color:#c8b4ff;
+  display:inline-block
+}
+
+.comment-text{
+  color:#dce1f7;
+  font-size:13px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere
+}
+
 .comment-time{font-size:10px;color:var(--muted);margin-top:7px}
-.comment-tools{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:9px}
-.small-action{border:0;background:transparent;color:var(--muted);padding:3px 0;font-size:11px}
+
+.comment-tools{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:9px
+}
+
+.small-action{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:3px 0;
+  font-size:11px
+}
+
 .small-action:hover{color:white}
-.replies{margin:9px 0 0 12px;padding-left:12px;border-left:2px solid var(--border)}
+
+.replies{
+  margin:9px 0 0 12px;
+  padding-left:12px;
+  border-left:2px solid var(--border)
+}
+
 .reply-form{display:flex;gap:7px;margin-top:10px}
 .reply-form .comment-input{min-height:38px;padding:9px}
 .reply-form .comment-send{padding:9px 11px}
-.empty,.message{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:14px;padding:25px;text-align:center;line-height:1.7;font-size:13px}
-.message.error{color:#ff9aae;border-color:rgba(255,99,132,.4)}
-.hidden{display:none!important}.loading{text-align:center;padding:50px 15px;color:var(--muted)}
-@media(max-width:600px){
-.topbar{padding:0 4%;height:60px}.brand{font-size:19px}.top-btn{padding:8px 9px;font-size:11px}
-.page{width:94%;margin-top:16px}.cover{height:150px}.profile-content{padding:0 16px 20px}
-.avatar{width:90px;height:90px}.profile-avatar{margin-top:-46px}h1{font-size:21px}
-.post-card{padding:14px;border-radius:15px}.action-btn{gap:5px;font-size:11px}
-.action-icon{font-size:18px}.stats{gap:19px}.replies{margin-left:5px;padding-left:8px}
+
+.empty,.message{
+  background:var(--card);
+  border:1px solid var(--border);
+  color:var(--muted);
+  border-radius:14px;
+  padding:25px;
+  text-align:center;
+  line-height:1.7;
+  font-size:13px
 }
-</style></head>
+
+.message.error{color:#ff9aae;border-color:rgba(255,99,132,.4)}
+
+.hidden{display:none!important}
+.loading{text-align:center;padding:50px 15px;color:var(--muted)}
+
+/* Premium appearance */
+body.premium-active{
+  background:
+    radial-gradient(ellipse at top left,rgba(101,63,153,.25),transparent 42%),
+    radial-gradient(ellipse at top right,rgba(168,121,37,.1),transparent 40%),
+    #08090f
+}
+
+body.premium-active .profile-card{
+  border-color:rgba(245,206,117,.55);
+  box-shadow:0 0 28px rgba(168,121,37,.08)
+}
+
+body.premium-active .cover{
+  background:
+    radial-gradient(circle at 20% 20%,rgba(245,206,117,.35),transparent 35%),
+    linear-gradient(120deg,#100e18,#35234e,#17120b);
+  border-bottom:1px solid rgba(245,206,117,.3)
+}
+
+/* Premium plan modal */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(3,5,14,.78);
+  backdrop-filter:blur(9px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px
+}
+
+.premium-modal{
+  width:min(420px,100%);
+  max-height:90vh;
+  overflow-y:auto;
+  background:linear-gradient(160deg,#171522,#0d1020 75%);
+  border:1px solid rgba(245,206,117,.4);
+  border-radius:19px;
+  padding:22px;
+  box-shadow:0 20px 70px rgba(0,0,0,.5);
+  animation:modalIn .2s ease-out
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(8px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.modal-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:8px
+}
+
+.modal-title{
+  margin:0;
+  font-size:19px;
+  line-height:1.4;
+  color:#fff4d9
+}
+
+.modal-subtitle{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin:8px 0 18px
+}
+
+.modal-close{
+  width:30px;
+  height:30px;
+  flex-shrink:0;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#171d33;
+  color:white;
+  font-size:17px
+}
+
+.plan-card{
+  border:1px solid rgba(245,206,117,.25);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
+  padding:15px;
+  margin-top:11px;
+  transition:border-color .2s,background .2s
+}
+
+.plan-card:hover{
+  border-color:rgba(245,206,117,.7);
+  background:rgba(245,206,117,.045)
+}
+
+.plan-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px
+}
+
+.plan-name{
+  color:#f9f4e8;
+  font-size:13px;
+  font-weight:800
+}
+
+.plan-description{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+  margin-top:5px
+}
+
+.plan-price{
+  color:var(--gold);
+  font-size:19px;
+  font-weight:800;
+  white-space:nowrap
+}
+
+.plan-duration{
+  color:#c3b58e;
+  font-size:10px;
+  margin-top:4px;
+  text-align:right
+}
+
+.plan-continue{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  margin-top:13px;
+  padding:10px 12px;
+  border:1px solid rgba(245,206,117,.55);
+  border-radius:9px;
+  background:linear-gradient(135deg,#342713,#20190f);
+  color:#f5ce75;
+  font-size:12px;
+  font-weight:800
+}
+
+.plan-continue:hover{background:linear-gradient(135deg,#4a3618,#2d2110)}
+
+.plan-card.permanent{
+  border-color:rgba(135,88,255,.45)
+}
+
+.plan-card.permanent .plan-continue{
+  background:linear-gradient(110deg,#6641c8,#3b5ac7);
+  border-color:transparent;
+  color:white
+}
+
+.modal-note{
+  margin:15px 0 0;
+  color:#7f89a8;
+  font-size:10px;
+  line-height:1.7;
+  text-align:center
+}
+
+.premium-status{
+  padding:13px;
+  margin-top:12px;
+  background:rgba(245,206,117,.07);
+  border:1px solid rgba(245,206,117,.3);
+  border-radius:11px;
+  color:#f5ce75;
+  font-size:12px;
+  line-height:1.8
+}
+
+.modal-message{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-top:13px
+}
+
+@media(max-width:600px){
+  .topbar{padding:0 4%;height:60px}
+  .brand{font-size:19px}
+  .top-btn{padding:8px 9px;font-size:11px}
+  .page{width:94%;margin-top:16px}
+  .cover{height:150px}
+  .profile-content{padding:0 16px 20px}
+  .avatar{width:90px;height:90px}
+  .profile-avatar{margin-top:-46px}
+  h1{font-size:21px}
+  .post-card{padding:14px;border-radius:15px}
+  .action-btn{gap:5px;font-size:11px}
+  .action-icon{font-size:18px}
+  .stats{gap:19px}
+  .replies{margin-left:5px;padding-left:8px}
+  .profile-actions{width:100%;justify-content:flex-start}
+  .premium-btn{padding:9px 10px;font-size:11px}
+  .primary-btn{padding:10px 12px}
+  .premium-modal{padding:18px}
+}
+</style>
+</head>
+
 <body>
 <header class="topbar">
   <a class="brand" href="./index.html">Campusora</a>
@@ -82,23 +632,42 @@ h1{font-size:25px;margin:12px 0 6px;overflow-wrap:anywhere}
     <button class="top-btn" onclick="location.href='./index.html'">🏠 Home</button>
     <button class="top-btn" onclick="location.href='./create-post.html'">＋ Post</button>
   </div>
-</header><main class="page">
+</header>
+
+<main class="page">
   <div id="pageMessage" class="message hidden"></div>
   <div id="loading" class="loading">Loading Campusora profile...</div>
+
   <section id="profileSection" class="profile-card hidden">
     <div id="cover" class="cover"></div>
+
     <div class="profile-content">
       <img id="profileAvatar" class="avatar profile-avatar" alt="Profile photo">
+
       <div class="profile-heading">
         <div>
           <h1 id="profileName">Campusora Member</h1>
           <div id="profileUsername" class="username"></div>
+
           <span id="profileBadge" class="badge">Member</span>
+          <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
         </div>
-        <button id="shareProfileBtn" class="primary-btn">↗ Share Profile</button>
+
+        <div class="profile-actions">
+          <button id="premiumButton" class="premium-btn hidden" type="button">
+            <span class="premium-symbol">✦</span>
+            <span>Upgrade to Premium</span>
+          </button>
+
+          <button id="shareProfileBtn" class="primary-btn" type="button">
+            ↗ Share Profile
+          </button>
+        </div>
       </div>
+
       <div id="profileSchool" class="school"></div>
       <div id="profileBio" class="bio"></div>
+
       <div class="stats">
         <div class="stat"><strong id="postCount">0</strong><span>Posts</span></div>
         <div class="stat"><strong id="followerCount">0</strong><span>Followers</span></div>
@@ -106,14 +675,78 @@ h1{font-size:25px;margin:12px 0 6px;overflow-wrap:anywhere}
       </div>
     </div>
   </section>
+
   <h2 id="postsHeading" class="section-title hidden">Posts</h2>
   <section id="postsContainer"></section>
-</main><script type="module">
+</main>
+
+<!-- Premium plan panel -->
+<div id="premiumModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="premiumModalTitle">
+  <div class="premium-modal">
+    <div class="modal-top">
+      <h2 id="premiumModalTitle" class="modal-title">✦ Upgrade to Premium</h2>
+      <button id="closePremiumModal" class="modal-close" type="button" aria-label="Close">×</button>
+    </div>
+
+    <p class="modal-subtitle">
+      Give your Campusora profile a more exclusive look with Premium styling and a special badge.
+    </p>
+
+    <div id="premiumStatus" class="premium-status hidden"></div>
+
+    <div id="premiumPlans">
+      <div class="plan-card">
+        <div class="plan-top">
+          <div>
+            <div class="plan-name">Monthly Premium</div>
+            <div class="plan-description">Premium badge and exclusive profile styling.</div>
+          </div>
+          <div>
+            <div class="plan-price">₦2,000</div>
+            <div class="plan-duration">30 days</div>
+          </div>
+        </div>
+        <button class="plan-continue" type="button" data-plan="monthly">
+          Continue <span>→</span>
+        </button>
+      </div>
+
+      <div class="plan-card permanent">
+        <div class="plan-top">
+          <div>
+            <div class="plan-name">Permanent Premium</div>
+            <div class="plan-description">One payment for Premium membership without an expiry date.</div>
+          </div>
+          <div>
+            <div class="plan-price">₦10,000</div>
+            <div class="plan-duration">One-time</div>
+          </div>
+        </div>
+        <button class="plan-continue" type="button" data-plan="permanent">
+          Choose Permanent <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="premiumModalMessage" class="modal-message hidden" role="status"></div>
+
+    <p class="modal-note">
+      Monthly Premium lasts 30 days and does not automatically renew.
+      Payment must be verified before Premium is activated.
+    </p>
+  </div>
+</div>
+
+<script type="module">
 import { supabase } from './supabase.js';
 
 const $ = id => document.getElementById(id);
+
 let currentUser = null;
 let currentProfile = null;
+let isOwnProfile = false;
+let activePremium = null;
+let premiumBusy = false;
 
 const fallbackAvatar = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" rx="50" fill="#252d48"/><text x="50" y="62" text-anchor="middle" font-size="45" fill="#c8b4ff">👤</text></svg>'
@@ -125,24 +758,34 @@ function formatDate(value) {
   if (Number.isNaN(date.getTime())) return '';
   return date.toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
 }
+
 function showMessage(message,error=false) {
   $('pageMessage').textContent=message;
   $('pageMessage').classList.remove('hidden');
   $('pageMessage').classList.toggle('error',error);
 }
+
 function makeActionButton(icon,label) {
   const button=document.createElement('button');
-  button.type='button';button.className='action-btn';
+  button.type='button';
+  button.className='action-btn';
+
   const iconSpan=document.createElement('span');
-  iconSpan.className='action-icon';iconSpan.textContent=icon;
+  iconSpan.className='action-icon';
+  iconSpan.textContent=icon;
+
   const labelSpan=document.createElement('span');
-  labelSpan.className='action-label';labelSpan.textContent=label;
+  labelSpan.className='action-label';
+  labelSpan.textContent=label;
+
   button.append(iconSpan,labelSpan);
   return button;
 }
+
 function profileLink(userId) {
   return './profile.html?id='+encodeURIComponent(userId);
 }
+
 function makeProfileAvatar(person, className='comment-avatar') {
   const img=document.createElement('img');
   img.className=className;
@@ -152,6 +795,7 @@ function makeProfileAvatar(person, className='comment-avatar') {
   img.addEventListener('click',()=>location.href=profileLink(person.id));
   return img;
 }
+
 function makeProfileName(person) {
   const a=document.createElement('a');
   a.className='comment-name';
@@ -160,38 +804,339 @@ function makeProfileName(person) {
   return a;
 }
 
+/* ==========================
+   PREMIUM MEMBERSHIP
+========================== */
+
+function openPremiumModal() {
+  $('premiumModal').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+
+function closePremiumModal() {
+  $('premiumModal').classList.add('hidden');
+  document.body.style.overflow='';
+}
+
+$('closePremiumModal').addEventListener('click',closePremiumModal);
+
+$('premiumModal').addEventListener('click',event=>{
+  if(event.target===$('premiumModal'))closePremiumModal();
+});
+
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&!$('premiumModal').classList.contains('hidden')){
+    closePremiumModal();
+  }
+});
+
+$('premiumButton').addEventListener('click',async()=>{
+  if(!currentUser){
+    alert('Please log in to upgrade your profile.');
+    location.href='./auth.html?mode=login';
+    return;
+  }
+
+  if(!isOwnProfile){
+    alert('You can upgrade your own profile from your profile page.');
+    return;
+  }
+
+  await refreshPremiumStatus();
+  openPremiumModal();
+});
+
+function showPremiumStatus(membership) {
+  activePremium=membership||null;
+
+  const badge=$('premiumBadge');
+  const status=$('premiumStatus');
+  const plans=$('premiumPlans');
+
+  if(!membership){
+    badge.classList.add('hidden');
+    document.body.classList.remove('premium-active');
+    status.classList.add('hidden');
+    plans.classList.remove('hidden');
+    return;
+  }
+
+  badge.classList.remove('hidden');
+  document.body.classList.add('premium-active');
+  status.classList.remove('hidden');
+  plans.classList.add('hidden');
+
+  if(membership.plan_type==='permanent'){
+    status.textContent='✦ Your Permanent Premium membership is active. You have no expiry date.';
+  }else{
+    const expiry=membership.expires_at?formatDate(membership.expires_at):'the end of your membership period';
+    status.textContent='✦ Your Monthly Premium membership is active until '+expiry+'.';
+  }
+}
+
+async function refreshPremiumStatus() {
+  if(!currentUser||!isOwnProfile||!currentProfile)return;
+
+  const {data,error}=await supabase
+    .from('premium_memberships')
+    .select('plan_type,status,payment_verified,starts_at,expires_at')
+    .eq('user_id',currentUser.id)
+    .eq('status','active')
+    .eq('payment_verified',true);
+
+  if(error){
+    console.error('Premium status could not be loaded:',error);
+    return;
+  }
+
+  const now=Date.now();
+
+  const membership=(data||[])
+    .filter(item=>{
+      if(item.plan_type==='permanent')return true;
+      return item.plan_type==='monthly'&&item.expires_at&&new Date(item.expires_at).getTime()>now;
+    })
+    .sort((a,b)=>{
+      if(a.plan_type==='permanent')return -1;
+      if(b.plan_type==='permanent')return 1;
+      return new Date(b.expires_at)-new Date(a.expires_at);
+    })[0]||null;
+
+  showPremiumStatus(membership);
+}
+
+function setPremiumMessage(message,isError=false) {
+  const box=$('premiumModalMessage');
+  box.textContent=message;
+  box.classList.remove('hidden');
+  box.style.color=isError?'#ff9aae':'#d7c99e';
+}
+
+function clearPremiumMessage() {
+  $('premiumModalMessage').textContent='';
+  $('premiumModalMessage').classList.add('hidden');
+}
+
+async function startPremiumCheckout(planType) {
+  if(premiumBusy)return;
+
+  if(!currentUser){
+    alert('Please log in before purchasing Premium.');
+    location.href='./auth.html?mode=login';
+    return;
+  }
+
+  if(!isOwnProfile){
+    setPremiumMessage('Open your own profile to purchase Premium.',true);
+    return;
+  }
+
+  if(!['monthly','permanent'].includes(planType)){
+    setPremiumMessage('This Premium plan is not valid.',true);
+    return;
+  }
+
+  if(activePremium){
+    setPremiumMessage('You already have an active Premium membership.');
+    return;
+  }
+
+  const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
+  const session=sessionData?.session;
+
+  if(sessionError||!session?.access_token){
+    setPremiumMessage('Your login session could not be confirmed. Please log in again.',true);
+    return;
+  }
+
+  premiumBusy=true;
+  clearPremiumMessage();
+
+  const buttons=[...document.querySelectorAll('[data-plan]')];
+  buttons.forEach(button=>{
+    button.disabled=true;
+    button.dataset.originalText=button.textContent;
+    button.textContent='Connecting to payment...';
+  });
+
+  try{
+    const response=await fetch('/api/premium/initialize',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+session.access_token
+      },
+      body:JSON.stringify({plan_type:planType})
+    });
+
+    const result=await response.json().catch(()=>({}));
+
+    if(!response.ok||!result.authorization_url){
+      throw new Error(result.error||result.message||'Could not start payment. Please try again.');
+    }
+
+    // The server supplies the checkout URL.
+    // No Paystack secret key is exposed in this page.
+    window.location.assign(result.authorization_url);
+
+  }catch(error){
+    console.error('Premium checkout error:',error);
+    setPremiumMessage(error.message||'Payment could not be started. Please try again.',true);
+  }finally{
+    premiumBusy=false;
+    buttons.forEach(button=>{
+      button.disabled=false;
+      button.textContent=button.dataset.originalText||'Continue';
+    });
+  }
+}
+
+document.querySelectorAll('[data-plan]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    startPremiumCheckout(button.dataset.plan);
+  });
+});
+
+async function verifyPremiumPaymentReturn() {
+  const params=new URLSearchParams(location.search);
+  const reference=params.get('reference')||params.get('trxref');
+
+  if(!reference)return;
+
+  // Remove payment reference parameters from the address bar.
+  params.delete('reference');
+  params.delete('trxref');
+
+  const newQuery=params.toString();
+  const cleanUrl=location.pathname+(newQuery?'?'+newQuery:'')+location.hash;
+  history.replaceState({},'',cleanUrl);
+
+  if(!currentUser){
+    showMessage('Your payment return was detected. Please log in again to verify and activate Premium.',true);
+    return;
+  }
+
+  if(!isOwnProfile){
+    showMessage('Please open your own profile to finish verifying your Premium payment.',true);
+    return;
+  }
+
+  const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
+  const session=sessionData?.session;
+
+  if(sessionError||!session?.access_token){
+    showMessage('Please log in again to verify your Premium payment.',true);
+    return;
+  }
+
+  showMessage('Verifying your Premium payment. Please wait...');
+
+  try{
+    const response=await fetch('/api/premium/verify',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+session.access_token
+      },
+      body:JSON.stringify({reference})
+    });
+
+    const result=await response.json().catch(()=>({}));
+
+    if(!response.ok||!result.success){
+      throw new Error(result.error||result.message||'Payment verification was unsuccessful.');
+    }
+
+    showMessage('Payment verified successfully! Your Premium membership is now active.');
+    await refreshPremiumStatus();
+
+    // Refresh status again after the database update has been read.
+    setTimeout(()=>refreshPremiumStatus(),1200);
+
+  }catch(error){
+    console.error('Premium verification error:',error);
+    showMessage(
+      error.message||'We could not verify your payment. If you were charged, please contact Campusora support.',
+      true
+    );
+  }
+}
+
+/* ==========================
+   PROFILE
+========================== */
+
 async function loadProfile() {
   const {data:sessionData}=await supabase.auth.getSession();
   currentUser=sessionData?.session?.user||null;
+
   const params=new URLSearchParams(location.search);
   const requestedId=params.get('id');
   const requestedUsername=params.get('username');
-  let query=supabase.from('profiles').select('id,username,full_name,school,role,bio,avatar_url,cover_url,created_at');
+
+  let query=supabase.from('profiles')
+    .select('id,username,full_name,school,role,bio,avatar_url,cover_url,created_at');
+
   if(requestedId)query=query.eq('id',requestedId);
   else if(requestedUsername)query=query.eq('username',requestedUsername);
   else if(currentUser)query=query.eq('id',currentUser.id);
-  else {$('loading').classList.add('hidden');showMessage('Please log in to view your profile.');return;}
-
-  const {data:profile,error}=await query.maybeSingle();
-  if(error||!profile){
+  else{
     $('loading').classList.add('hidden');
-    showMessage(error?'We could not load this profile. Please refresh and try again.':'This profile could not be found.',true);
+    showMessage('Please log in to view your profile.');
     return;
   }
+
+  const {data:profile,error}=await query.maybeSingle();
+
+  if(error||!profile){
+    $('loading').classList.add('hidden');
+    showMessage(
+      error?'We could not load this profile. Please refresh and try again.':'This profile could not be found.',
+      true
+    );
+    return;
+  }
+
   currentProfile=profile;
+  isOwnProfile=!!currentUser&&currentUser.id===profile.id;
+
   $('profileName').textContent=profile.full_name||profile.username||'Campusora Member';
   $('profileUsername').textContent=profile.username?'@'+profile.username:'';
   $('profileSchool').textContent=profile.school||'';
   $('profileBio').textContent=profile.bio||'';
-  const roles={student:'🎓 Student',alumni:'🏅 Alumni',general:'🌟 General Member'};
+
+  const roles={
+    student:'🎓 Student',
+    alumni:'🏅 Alumni',
+    general:'🌟 General Member'
+  };
+
   $('profileBadge').textContent=roles[(profile.role||'general').toLowerCase()]||'🌟 Member';
+
   $('profileAvatar').src=profile.avatar_url||fallbackAvatar;
-  if(profile.cover_url)$('cover').style.backgroundImage=`url("${profile.cover_url.replaceAll('"','%22')}")`;
+
+  if(profile.cover_url){
+    $('cover').style.backgroundImage=`url("${profile.cover_url.replaceAll('"','%22')}")`;
+  }
+
   $('shareProfileBtn').addEventListener('click',shareProfile);
+
+  // Only the owner sees the upgrade button.
+  $('premiumButton').classList.toggle('hidden',!isOwnProfile);
+
   $('loading').classList.add('hidden');
   $('profileSection').classList.remove('hidden');
   $('postsHeading').classList.remove('hidden');
-  await Promise.all([loadCounts(profile),loadPosts(profile)]);
+
+  await Promise.all([
+    loadCounts(profile),
+    loadPosts(profile)
+  ]);
+
+  if(isOwnProfile){
+    await refreshPremiumStatus();
+    await verifyPremiumPaymentReturn();
+  }
 }
 
 async function loadCounts(profile) {
@@ -200,52 +1145,128 @@ async function loadCounts(profile) {
     supabase.from('follows').select('follower_id',{count:'exact',head:true}).eq('following_id',profile.id),
     supabase.from('follows').select('following_id',{count:'exact',head:true}).eq('follower_id',profile.id)
   ]);
+
   $('postCount').textContent=p.count??0;
   $('followerCount').textContent=f.count??0;
   $('followingCount').textContent=following.count??0;
 }
 
 async function loadPosts(profile) {
-  const container=$('postsContainer');container.replaceChildren();
+  const container=$('postsContainer');
+  container.replaceChildren();
+
   const {data:posts,error}=await supabase.from('posts')
     .select('id,user_id,content,image_url,created_at')
-    .eq('user_id',profile.id).order('created_at',{ascending:false});
-  if(error){container.textContent='We could not load these posts. Please check post read permissions.';return;}
-  if(!posts?.length){container.innerHTML='<div class="empty">📝<br><br>No posts yet.<br>When this member publishes a post, it will appear here.</div>';return;}
+    .eq('user_id',profile.id)
+    .order('created_at',{ascending:false});
+
+  if(error){
+    container.textContent='We could not load these posts. Please check post read permissions.';
+    return;
+  }
+
+  if(!posts?.length){
+    container.innerHTML='<div class="empty">📝<br><br>No posts yet.<br>When this member publishes a post, it will appear here.</div>';
+    return;
+  }
+
   const ids=[...new Set(posts.map(p=>p.user_id))];
-  const {data:authors}=await supabase.from('profiles').select('id,username,full_name,avatar_url').in('id',ids);
+
+  const {data:authors}=await supabase.from('profiles')
+    .select('id,username,full_name,avatar_url')
+    .in('id',ids);
+
   const map=new Map((authors||[]).map(a=>[a.id,a]));
-  for(const post of posts)container.appendChild(await createPostCard(post,map.get(post.user_id)||profile));
-  if(location.hash.startsWith('#post-'))setTimeout(()=>document.getElementById(location.hash.slice(1))?.scrollIntoView({behavior:'smooth',block:'center'}),200);
+
+  for(const post of posts){
+    container.appendChild(await createPostCard(post,map.get(post.user_id)||profile));
+  }
+
+  if(location.hash.startsWith('#post-')){
+    setTimeout(()=>{
+      document.getElementById(location.hash.slice(1))?.scrollIntoView({
+        behavior:'smooth',
+        block:'center'
+      });
+    },200);
+  }
 }
 
 async function createPostCard(post,author) {
-  const card=document.createElement('article');card.className='post-card';card.id='post-'+post.id;
-  const header=document.createElement('div');header.className='post-header';
+  const card=document.createElement('article');
+  card.className='post-card';
+  card.id='post-'+post.id;
+
+  const header=document.createElement('div');
+  header.className='post-header';
+
   const avatar=makeProfileAvatar(author,'post-avatar');
-  const info=document.createElement('div');info.style.minWidth='0';
-  const authorName=document.createElement('a');authorName.className='post-author';authorName.href=profileLink(author.id);authorName.textContent=author.full_name||author.username||'Campusora Member';
-  const meta=document.createElement('div');meta.className='post-meta';meta.textContent=(author.username?'@'+author.username+' · ':'')+formatDate(post.created_at);
-  info.append(authorName,meta);header.append(avatar,info);card.append(header);
+  const info=document.createElement('div');
+  info.style.minWidth='0';
 
-  if(post.content){const text=document.createElement('div');text.className='post-text';text.textContent=post.content;card.append(text);}
-  if(post.image_url){const image=document.createElement('img');image.className='post-image';image.src=post.image_url;image.alt='Post image';image.loading='lazy';image.onerror=()=>image.remove();card.append(image);}
+  const authorName=document.createElement('a');
+  authorName.className='post-author';
+  authorName.href=profileLink(author.id);
+  authorName.textContent=author.full_name||author.username||'Campusora Member';
 
-  const stats=document.createElement('div');stats.className='post-stats';
-  const likeStat=document.createElement('span');const commentStat=document.createElement('span');
+  const meta=document.createElement('div');
+  meta.className='post-meta';
+  meta.textContent=(author.username?'@'+author.username+' · ':'')+formatDate(post.created_at);
+
+  info.append(authorName,meta);
+  header.append(avatar,info);
+  card.append(header);
+
+  if(post.content){
+    const text=document.createElement('div');
+    text.className='post-text';
+    text.textContent=post.content;
+    card.append(text);
+  }
+
+  if(post.image_url){
+    const image=document.createElement('img');
+    image.className='post-image';
+    image.src=post.image_url;
+    image.alt='Post image';
+    image.loading='lazy';
+    image.onerror=()=>image.remove();
+    card.append(image);
+  }
+
+  const stats=document.createElement('div');
+  stats.className='post-stats';
+
+  const likeStat=document.createElement('span');
+  const commentStat=document.createElement('span');
   stats.append(likeStat,commentStat);
-  const actions=document.createElement('div');actions.className='post-actions';
-  const likeBtn=makeActionButton('♡','Like'),commentBtn=makeActionButton('💬','Comment'),shareBtn=makeActionButton('↗','Share');
+
+  const actions=document.createElement('div');
+  actions.className='post-actions';
+
+  const likeBtn=makeActionButton('♡','Like');
+  const commentBtn=makeActionButton('💬','Comment');
+  const shareBtn=makeActionButton('↗','Share');
+
   actions.append(likeBtn,commentBtn,shareBtn);
-  const area=document.createElement('div');area.className='comments-area hidden';
+
+  const area=document.createElement('div');
+  area.className='comments-area hidden';
+
   card.append(stats,actions,area);
 
   const [likes,myLike,comments]=await Promise.all([
     supabase.from('likes').select('user_id',{count:'exact',head:true}).eq('post_id',post.id),
-    currentUser?supabase.from('likes').select('post_id').eq('post_id',post.id).eq('user_id',currentUser.id).maybeSingle():Promise.resolve({data:null}),
+    currentUser
+      ?supabase.from('likes').select('post_id').eq('post_id',post.id).eq('user_id',currentUser.id).maybeSingle()
+      :Promise.resolve({data:null}),
     supabase.from('comments').select('id',{count:'exact',head:true}).eq('post_id',post.id)
   ]);
-  let likeCount=likes.count??0,commentCount=comments.count??0,liked=!!myLike.data;
+
+  let likeCount=likes.count??0;
+  let commentCount=comments.count??0;
+  let liked=!!myLike.data;
+
   function updateStats(){
     likeStat.textContent=`❤️ ${likeCount} ${likeCount===1?'like':'likes'}`;
     commentStat.textContent=`💬 ${commentCount} ${commentCount===1?'comment':'comments'}`;
@@ -253,61 +1274,165 @@ async function createPostCard(post,author) {
     likeBtn.querySelector('.action-icon').textContent=liked?'♥':'♡';
     likeBtn.querySelector('.action-label').textContent=liked?'Liked':'Like';
   }
+
   updateStats();
 
   likeBtn.addEventListener('click',async()=>{
-    if(!currentUser){alert('Please log in to like posts.');location.href='./auth.html?mode=login';return;}
-    likeBtn.disabled=true;
-    if(liked){
-      const {error}=await supabase.from('likes').delete().eq('post_id',post.id).eq('user_id',currentUser.id);
-      if(error)alert('Could not remove your like.');
-      else{liked=false;likeCount=Math.max(0,likeCount-1);}
-    }else{
-      const {error}=await supabase.from('likes').insert({post_id:post.id,user_id:currentUser.id});
-      if(error){
-        const {data}=await supabase.from('likes').select('post_id').eq('post_id',post.id).eq('user_id',currentUser.id).maybeSingle();
-        if(data)liked=true;else alert('Could not like this post. Check the likes-table permissions.');
-      }else{liked=true;likeCount++;}
+    if(!currentUser){
+      alert('Please log in to like posts.');
+      location.href='./auth.html?mode=login';
+      return;
     }
-    likeBtn.disabled=false;updateStats();
+
+    likeBtn.disabled=true;
+
+    if(liked){
+      const {error}=await supabase.from('likes')
+        .delete()
+        .eq('post_id',post.id)
+        .eq('user_id',currentUser.id);
+
+      if(error)alert('Could not remove your like.');
+      else{
+        liked=false;
+        likeCount=Math.max(0,likeCount-1);
+      }
+    }else{
+      const {error}=await supabase.from('likes')
+        .insert({post_id:post.id,user_id:currentUser.id});
+
+      if(error){
+        const {data}=await supabase.from('likes')
+          .select('post_id')
+          .eq('post_id',post.id)
+          .eq('user_id',currentUser.id)
+          .maybeSingle();
+
+        if(data)liked=true;
+        else alert('Could not like this post. Check the likes-table permissions.');
+      }else{
+        liked=true;
+        likeCount++;
+      }
+    }
+
+    likeBtn.disabled=false;
+    updateStats();
   });
-  commentBtn.addEventListener('click',async()=>{area.classList.toggle('hidden');if(!area.classList.contains('hidden'))await renderComments();});
+
+  commentBtn.addEventListener('click',async()=>{
+    area.classList.toggle('hidden');
+    if(!area.classList.contains('hidden'))await renderComments();
+  });
+
   shareBtn.addEventListener('click',async()=>{
-    const url=new URL('./profile.html',location.href);url.searchParams.set('id',author.id);url.hash='post-'+post.id;
-    try{if(navigator.share)await navigator.share({title:'Campusora post',text:'Check out this post on Campusora!',url:url.href});else{await navigator.clipboard.writeText(url.href);alert('Post link copied!');}}
-    catch(e){if(e.name!=='AbortError')prompt('Copy this post link:',url.href);}
+    const url=new URL('./profile.html',location.href);
+    url.searchParams.set('id',author.id);
+    url.hash='post-'+post.id;
+
+    try{
+      if(navigator.share){
+        await navigator.share({
+          title:'Campusora post',
+          text:'Check out this post on Campusora!',
+          url:url.href
+        });
+      }else{
+        await navigator.clipboard.writeText(url.href);
+        alert('Post link copied!');
+      }
+    }catch(e){
+      if(e.name!=='AbortError')prompt('Copy this post link:',url.href);
+    }
   });
 
   async function renderComments() {
     area.replaceChildren();
-    const form=document.createElement('form');form.className='comment-form';
-    const input=document.createElement('textarea');input.className='comment-input';input.rows=1;input.maxLength=2000;
+
+    const form=document.createElement('form');
+    form.className='comment-form';
+
+    const input=document.createElement('textarea');
+    input.className='comment-input';
+    input.rows=1;
+    input.maxLength=2000;
     input.placeholder=currentUser?'Write a comment...':'Log in to write a comment...';
-    const send=document.createElement('button');send.className='comment-send';send.type='submit';send.textContent='Send';
-    form.append(input,send);area.append(form);
-    const list=document.createElement('div');area.append(list);
+
+    const send=document.createElement('button');
+    send.className='comment-send';
+    send.type='submit';
+    send.textContent='Send';
+
+    form.append(input,send);
+    area.append(form);
+
+    const list=document.createElement('div');
+    area.append(list);
 
     form.addEventListener('submit',async e=>{
       e.preventDefault();
-      if(!currentUser){alert('Please log in to comment.');location.href='./auth.html?mode=login';return;}
-      const content=input.value.trim();if(!content)return;
-      send.disabled=true;send.textContent='Sending...';
-      const {error}=await supabase.from('comments').insert({post_id:post.id,user_id:currentUser.id,content,parent_comment_id:null});
-      if(error){alert('Comment could not be saved. Check comments-table permissions and parent_comment_id.');send.disabled=false;send.textContent='Send';return;}
-      commentCount++;updateStats();await renderComments();
+
+      if(!currentUser){
+        alert('Please log in to comment.');
+        location.href='./auth.html?mode=login';
+        return;
+      }
+
+      const content=input.value.trim();
+      if(!content)return;
+
+      send.disabled=true;
+      send.textContent='Sending...';
+
+      const {error}=await supabase.from('comments').insert({
+        post_id:post.id,
+        user_id:currentUser.id,
+        content,
+        parent_comment_id:null
+      });
+
+      if(error){
+        alert('Comment could not be saved. Check comments-table permissions and parent_comment_id.');
+        send.disabled=false;
+        send.textContent='Send';
+        return;
+      }
+
+      commentCount++;
+      updateStats();
+      await renderComments();
     });
 
     list.textContent='Loading comments...';
+
     const {data:all,error}=await supabase.from('comments')
       .select('id,post_id,user_id,content,created_at,parent_comment_id')
-      .eq('post_id',post.id).order('created_at',{ascending:true});
+      .eq('post_id',post.id)
+      .order('created_at',{ascending:true});
+
     list.replaceChildren();
-    if(error){list.textContent='Comments could not be loaded. Check comments-table read permissions.';return;}
+
+    if(error){
+      list.textContent='Comments could not be loaded. Check comments-table read permissions.';
+      return;
+    }
+
     const top=(all||[]).filter(c=>!c.parent_comment_id);
-    if(!top.length){const empty=document.createElement('div');empty.className='post-meta';empty.textContent='No comments yet. Be the first to comment!';list.append(empty);return;}
+
+    if(!top.length){
+      const empty=document.createElement('div');
+      empty.className='post-meta';
+      empty.textContent='No comments yet. Be the first to comment!';
+      list.append(empty);
+      return;
+    }
 
     const userIds=[...new Set((all||[]).map(c=>c.user_id))];
-    const {data:people}=await supabase.from('profiles').select('id,username,full_name,avatar_url').in('id',userIds);
+
+    const {data:people}=await supabase.from('profiles')
+      .select('id,username,full_name,avatar_url')
+      .in('id',userIds);
+
     const peopleMap=new Map((people||[]).map(p=>[p.id,p]));
 
     for(const item of top){
@@ -319,87 +1444,219 @@ async function createPostCard(post,author) {
 
   async function buildComment(item,person,all,peopleMap,depth) {
     const wrapper=document.createElement('div');
-    const row=document.createElement('div');row.className='comment';
-    const avatar=makeProfileAvatar(person);
-    const body=document.createElement('div');body.className='comment-body';
-    const name=makeProfileName(person);
-    const text=document.createElement('div');text.className='comment-text';text.textContent=item.content||'';
-    const time=document.createElement('div');time.className='comment-time';time.textContent=formatDate(item.created_at);
-    const tools=document.createElement('div');tools.className='comment-tools';
+    const row=document.createElement('div');
+    row.className='comment';
 
-    const react=document.createElement('button');react.type='button';react.className='small-action react-btn';react.textContent='❤️ React';
-    const reply=document.createElement('button');reply.type='button';reply.className='small-action';reply.textContent='↩ Reply';
-    const reactCount=document.createElement('span');reactCount.className='small-action';reactCount.textContent='0 reactions';
+    const avatar=makeProfileAvatar(person);
+    const body=document.createElement('div');
+    body.className='comment-body';
+
+    const name=makeProfileName(person);
+    const text=document.createElement('div');
+    text.className='comment-text';
+    text.textContent=item.content||'';
+
+    const time=document.createElement('div');
+    time.className='comment-time';
+    time.textContent=formatDate(item.created_at);
+
+    const tools=document.createElement('div');
+    tools.className='comment-tools';
+
+    const react=document.createElement('button');
+    react.type='button';
+    react.className='small-action react-btn';
+    react.textContent='❤️ React';
+
+    const reply=document.createElement('button');
+    reply.type='button';
+    reply.className='small-action';
+    reply.textContent='↩ Reply';
+
+    const reactCount=document.createElement('span');
+    reactCount.className='small-action';
+    reactCount.textContent='0 reactions';
+
     tools.append(react,reactCount);
     if(depth===0)tools.append(reply);
+
     body.append(name,text,time,tools);
-    row.append(avatar,body);wrapper.append(row);
+    row.append(avatar,body);
+    wrapper.append(row);
 
     const [reactionResult,myReaction]=await Promise.all([
-      supabase.from('comment_reactions').select('user_id',{count:'exact',head:true}).eq('comment_id',item.id),
-      currentUser?supabase.from('comment_reactions').select('id').eq('comment_id',item.id).eq('user_id',currentUser.id).maybeSingle():Promise.resolve({data:null})
+      supabase.from('comment_reactions')
+        .select('user_id',{count:'exact',head:true})
+        .eq('comment_id',item.id),
+
+      currentUser
+        ?supabase.from('comment_reactions')
+          .select('id')
+          .eq('comment_id',item.id)
+          .eq('user_id',currentUser.id)
+          .maybeSingle()
+        :Promise.resolve({data:null})
     ]);
-    let reactionCount=reactionResult.count??0,reacted=!!myReaction.data;
+
+    let reactionCount=reactionResult.count??0;
+    let reacted=!!myReaction.data;
+
     function updateReaction(){
       react.textContent=reacted?'❤️ Reacted':'🤍 React';
       react.classList.toggle('reacted',reacted);
       reactCount.textContent=`${reactionCount} ${reactionCount===1?'reaction':'reactions'}`;
     }
+
     updateReaction();
 
     react.addEventListener('click',async()=>{
-      if(!currentUser){alert('Please log in to react.');location.href='./auth.html?mode=login';return;}
-      react.disabled=true;
-      if(reacted){
-        const {error}=await supabase.from('comment_reactions').delete().eq('comment_id',item.id).eq('user_id',currentUser.id);
-        if(error)alert('Could not remove reaction.');
-        else{reacted=false;reactionCount=Math.max(0,reactionCount-1);}
-      }else{
-        const {error}=await supabase.from('comment_reactions').insert({comment_id:item.id,user_id:currentUser.id,reaction:'❤️'});
-        if(error)alert('Could not add reaction. Please try again.');
-        else{reacted=true;reactionCount++;}
+      if(!currentUser){
+        alert('Please log in to react.');
+        location.href='./auth.html?mode=login';
+        return;
       }
-      react.disabled=false;updateReaction();
+
+      react.disabled=true;
+
+      if(reacted){
+        const {error}=await supabase.from('comment_reactions')
+          .delete()
+          .eq('comment_id',item.id)
+          .eq('user_id',currentUser.id);
+
+        if(error)alert('Could not remove reaction.');
+        else{
+          reacted=false;
+          reactionCount=Math.max(0,reactionCount-1);
+        }
+      }else{
+        const {error}=await supabase.from('comment_reactions')
+          .insert({
+            comment_id:item.id,
+            user_id:currentUser.id,
+            reaction:'❤️'
+          });
+
+        if(error)alert('Could not add reaction. Please try again.');
+        else{
+          reacted=true;
+          reactionCount++;
+        }
+      }
+
+      react.disabled=false;
+      updateReaction();
     });
 
     const replies=all.filter(c=>c.parent_comment_id===item.id);
+
     if(depth===0){
-      const repliesBox=document.createElement('div');repliesBox.className='replies';
+      const repliesBox=document.createElement('div');
+      repliesBox.className='replies';
+
       if(replies.length){
         for(const r of replies){
           const rp=peopleMap.get(r.user_id)||{id:r.user_id};
           repliesBox.append(await buildComment(r,rp,all,peopleMap,1));
         }
       }
-      const replyForm=document.createElement('form');replyForm.className='reply-form hidden';
-      const replyInput=document.createElement('textarea');replyInput.className='comment-input';replyInput.rows=1;replyInput.maxLength=2000;replyInput.placeholder='Write a reply...';
-      const replySend=document.createElement('button');replySend.className='comment-send';replySend.type='submit';replySend.textContent='Reply';
-      replyForm.append(replyInput,replySend);repliesBox.append(replyForm);
+
+      const replyForm=document.createElement('form');
+      replyForm.className='reply-form hidden';
+
+      const replyInput=document.createElement('textarea');
+      replyInput.className='comment-input';
+      replyInput.rows=1;
+      replyInput.maxLength=2000;
+      replyInput.placeholder='Write a reply...';
+
+      const replySend=document.createElement('button');
+      replySend.className='comment-send';
+      replySend.type='submit';
+      replySend.textContent='Reply';
+
+      replyForm.append(replyInput,replySend);
+      repliesBox.append(replyForm);
+
       reply.addEventListener('click',()=>{
-        if(!currentUser){alert('Please log in to reply.');location.href='./auth.html?mode=login';return;}
-        replyForm.classList.toggle('hidden');if(!replyForm.classList.contains('hidden'))replyInput.focus();
+        if(!currentUser){
+          alert('Please log in to reply.');
+          location.href='./auth.html?mode=login';
+          return;
+        }
+
+        replyForm.classList.toggle('hidden');
+        if(!replyForm.classList.contains('hidden'))replyInput.focus();
       });
+
       replyForm.addEventListener('submit',async e=>{
         e.preventDefault();
-        if(!currentUser){alert('Please log in to reply.');location.href='./auth.html?mode=login';return;}
-        const content=replyInput.value.trim();if(!content)return;
-        replySend.disabled=true;replySend.textContent='Sending...';
-        const {error}=await supabase.from('comments').insert({post_id:post.id,user_id:currentUser.id,content,parent_comment_id:item.id});
-        if(error){alert('Reply could not be saved. Check the comments table and parent_comment_id column.');replySend.disabled=false;replySend.textContent='Reply';return;}
-        commentCount++;updateStats();await renderComments();
+
+        if(!currentUser){
+          alert('Please log in to reply.');
+          location.href='./auth.html?mode=login';
+          return;
+        }
+
+        const content=replyInput.value.trim();
+        if(!content)return;
+
+        replySend.disabled=true;
+        replySend.textContent='Sending...';
+
+        const {error}=await supabase.from('comments').insert({
+          post_id:post.id,
+          user_id:currentUser.id,
+          content,
+          parent_comment_id:item.id
+        });
+
+        if(error){
+          alert('Reply could not be saved. Check the comments table and parent_comment_id column.');
+          replySend.disabled=false;
+          replySend.textContent='Reply';
+          return;
+        }
+
+        commentCount++;
+        updateStats();
+        await renderComments();
       });
+
       wrapper.append(repliesBox);
     }
+
     return wrapper;
   }
+
   return card;
 }
 
 async function shareProfile() {
-  const url=new URL('./profile.html',location.href);url.searchParams.set('id',currentProfile.id);
-  try{if(navigator.share)await navigator.share({title:currentProfile.full_name||'Campusora profile',text:'Connect with me on Campusora!',url:url.href});else{await navigator.clipboard.writeText(url.href);alert('Profile link copied!');}}
-  catch(e){if(e.name!=='AbortError')prompt('Copy your profile link:',url.href);}
+  const url=new URL('./profile.html',location.href);
+  url.searchParams.set('id',currentProfile.id);
+
+  try{
+    if(navigator.share){
+      await navigator.share({
+        title:currentProfile.full_name||'Campusora profile',
+        text:'Connect with me on Campusora!',
+        url:url.href
+      });
+    }else{
+      await navigator.clipboard.writeText(url.href);
+      alert('Profile link copied!');
+    }
+  }catch(e){
+    if(e.name!=='AbortError')prompt('Copy your profile link:',url.href);
+  }
 }
-loadProfile().catch(error=>{console.error(error);$('loading').classList.add('hidden');showMessage('Something went wrong while loading the profile. Please refresh the page.',true);});
-</script></body>
+
+loadProfile().catch(error=>{
+  console.error(error);
+  $('loading').classList.add('hidden');
+  showMessage('Something went wrong while loading the profile. Please refresh the page.',true);
+});
+</script>
+</body>
   </html>
