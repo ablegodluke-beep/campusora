@@ -1026,65 +1026,74 @@ body.premium-active .cover{
   <div id="pageMessage" class="message hidden"></div>
   <div id="loading" class="loading">Loading Campusora profile...</div>
 
-  <section id="profileSection" class="profile-card hidden">
-    <div id="cover" class="cover" aria-label="View cover photo"></div>
+ <section id="profileSection" class="profile-card hidden">
+    <div id="cover" class="cover" aria-label="View cover photo"></div><div class="profile-content">
+  <img id="profileAvatar" class="avatar profile-avatar" alt="View profile photo">
 
-    <div class="profile-content">
-      <img id="profileAvatar" class="avatar profile-avatar" alt="View profile photo">
-
-      <div class="profile-heading">
-        <div class="profile-main">
-          <div class="name-line">
-            <h1 id="profileName">Campusora Member</h1>
-          </div>
-
-          <div class="username-line">
-            <span id="profileUsername" class="username"></span>
-            <span id="profileBadge" class="badge">🎓 Student</span>
-          </div>
-
-          <div class="premium-line">
-            <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
-          </div>
-
-          <div id="profileSchool" class="school"></div>
-          <div id="profileBio" class="bio"></div>
-        </div>
-
-        <div class="profile-actions">
-          <button id="premiumButton" class="premium-btn hidden" type="button">
-            <span class="premium-symbol">✦</span>
-            <span>Upgrade to Premium</span>
-          </button>
-
-          <button id="giftButton" class="gift-button" type="button">
-            🎁 Send a Gift
-          </button>
-        </div>
+  <div class="profile-heading">
+    <div class="profile-main">
+      <div class="name-line">
+        <h1 id="profileName">Campusora Member</h1>
       </div>
 
-      <!-- Gift counts appear in one compact horizontal row. -->
-      <section id="giftStrip" class="gift-strip" aria-label="Received gifts">
-        <div class="gift-strip-top">
-          <span class="gift-strip-title">🎁 Gifts received</span>
-          <span id="giftTotal" class="gift-strip-subtitle">0 gifts</span>
-        </div>
-        <div id="giftCounts" class="gift-row">
-          <span class="gift-empty">Loading gifts...</span>
-        </div>
-      </section>
-
-      <div class="stats">
-        <div class="stat"><strong id="postCount">0</strong><span>Posts</span></div>
-        <div class="stat"><strong id="followerCount">0</strong><span>Followers</span></div>
-        <div class="stat"><strong id="followingCount">0</strong><span>Following</span></div>
+      <div class="username-line">
+        <span id="profileUsername" class="username"></span>
+        <span id="profileBadge" class="badge">🎓 Student</span>
       </div>
+
+      <div class="premium-line">
+        <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
+      </div>
+
+      <div id="profileSchool" class="school"></div>
+      <div id="profileBio" class="bio"></div>
+    </div>
+
+    <div class="profile-actions">
+      <button id="premiumButton" class="premium-btn hidden" type="button">
+        <span class="premium-symbol">✦</span>
+        <span>Upgrade to Premium</span>
+      </button>
+
+      <button id="giftButton" class="gift-button" type="button">
+        🎁 Send a Gift
+      </button>
+    </div>
+  </div>
+
+  <!-- Profile statistics appear above My Gifts -->
+  <div class="stats">
+    <div class="stat">
+      <strong id="postCount">0</strong>
+      <span>Posts</span>
+    </div>
+
+    <div class="stat">
+      <strong id="followerCount">0</strong>
+      <span>Followers</span>
+    </div>
+
+    <div class="stat">
+      <strong id="followingCount">0</strong>
+      <span>Following</span>
+    </div>
+  </div>
+
+  <!-- My Gifts appears below the statistics -->
+  <section id="giftStrip" class="gift-strip" aria-label="Received gifts">
+    <div class="gift-strip-top">
+      <span class="gift-strip-title">🎁 My Gifts</span>
+      <span id="giftTotal" class="gift-strip-subtitle">0 gifts</span>
+    </div>
+
+    <div id="giftCounts" class="gift-row">
+      <span class="gift-empty">Loading gifts...</span>
     </div>
   </section>
+</div>
 
-  <h2 id="postsHeading" class="section-title hidden">Posts</h2>
-  <section id="postsContainer"></section>
-</main>
+  </section>  <h2 id="postsHeading" class="section-title hidden">Posts</h2>
+  <section id="postsContainer"></section> 
 
 <!-- Full-size profile and cover photo viewer -->
 <div id="photoViewer" class="photo-viewer hidden" role="dialog" aria-modal="true" aria-label="Photo viewer">
