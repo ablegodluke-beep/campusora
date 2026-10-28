@@ -4,163 +4,131 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#090d1b">
-
   <title>Sponsor a Post | Campusora</title>
 
   <style>
     :root {
-      --bg: #090d1b;
-      --panel: #11182b;
-      --panel2: #151e35;
-      --border: rgba(255,255,255,.09);
-      --text: #f4f6ff;
-      --muted: #9aa7c4;
-      --purple: #8b5cf6;
-      --blue: #3978ff;
-      --cyan: #43d9ff;
-      --green: #37d99a;
-      --red: #ff657d;
+      --bg:#090d1b;
+      --panel:#11182b;
+      --panel2:#151e35;
+      --border:rgba(255,255,255,.09);
+      --text:#f4f6ff;
+      --muted:#9aa7c4;
+      --purple:#8b5cf6;
+      --blue:#3978ff;
+      --cyan:#43d9ff;
+      --green:#37d99a;
     }
 
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
     }
 
     body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:
-        radial-gradient(ellipse at top left, rgba(87,55,180,.15), transparent 42%),
+        radial-gradient(ellipse at top left,rgba(87,55,180,.15),transparent 42%),
         var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.5;
+      color:var(--text);
+      min-height:100vh;
+      line-height:1.5;
     }
 
-    button, input, textarea, select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    button,input,textarea,select {font:inherit}
+    button {cursor:pointer}
+    a {color:inherit;text-decoration:none}
 
     .topbar {
-      height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      border-bottom: 1px solid var(--border);
-      background: rgba(9,13,27,.92);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(16px);
+      height:68px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 5%;
+      border-bottom:1px solid var(--border);
+      background:rgba(9,13,27,.92);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(16px);
     }
 
     .brand {
-      font-size: 21px;
-      font-weight: 900;
-      letter-spacing: -.7px;
+      font-size:21px;
+      font-weight:900;
+      letter-spacing:-.7px;
     }
 
-    .brand span {
-      color: var(--cyan);
-    }
-
-    .nav {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
+    .brand span {color:var(--cyan)}
+    .nav {display:flex;gap:10px;align-items:center}
 
     .nav a {
-      color: var(--muted);
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 13px;
+      color:var(--muted);
+      padding:9px 12px;
+      border-radius:10px;
+      font-size:13px;
     }
 
     .nav a:hover {
-      background: rgba(255,255,255,.06);
-      color: white;
+      background:rgba(255,255,255,.06);
+      color:white;
     }
 
     .page {
-      width: min(1120px, 92%);
-      margin: 32px auto 60px;
+      width:min(1120px,92%);
+      margin:32px auto 60px;
     }
 
-    .page-heading {
-      margin-bottom: 24px;
-    }
+    .page-heading {margin-bottom:24px}
 
     .page-heading h1 {
-      font-size: clamp(24px, 4vw, 34px);
-      letter-spacing: -.8px;
-      margin-bottom: 5px;
+      font-size:clamp(24px,4vw,34px);
+      letter-spacing:-.8px;
+      margin-bottom:5px;
     }
 
-    .page-heading p {
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .page-heading p {color:var(--muted);font-size:14px}
 
     .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(280px, .8fr);
-      gap: 22px;
-      align-items: start;
+      display:grid;
+      grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr);
+      gap:22px;
+      align-items:start;
     }
 
     .panel {
-      background: rgba(17,24,43,.94);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-      margin-bottom: 18px;
+      background:rgba(17,24,43,.94);
+      border:1px solid var(--border);
+      border-radius:18px;
+      overflow:hidden;
+      margin-bottom:18px;
     }
 
     .panel-heading {
-      padding: 17px 19px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 750;
-      font-size: 15px;
+      padding:17px 19px;
+      border-bottom:1px solid var(--border);
+      font-weight:750;
+      font-size:15px;
     }
 
-    .panel-body {
-      padding: 19px;
-    }
+    .panel-body {padding:19px}
+    .field {margin-bottom:21px}
+    .field:last-child {margin-bottom:0}
 
-    .field {
-      margin-bottom: 21px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    label, .field-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 8px;
+    label,.field-label {
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:8px;
     }
 
     .hint {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 6px;
-      line-height: 1.5;
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:6px;
+      line-height:1.5;
     }
 
     input[type="text"],
@@ -168,394 +136,316 @@
     input[type="tel"],
     textarea,
     select {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: #0c1325;
-      color: var(--text);
-      padding: 12px 13px;
-      border-radius: 11px;
-      outline: none;
-      transition: border .2s;
+      width:100%;
+      border:1px solid var(--border);
+      background:#0c1325;
+      color:var(--text);
+      padding:12px 13px;
+      border-radius:11px;
+      outline:none;
+      transition:border .2s;
     }
 
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--purple);
+    input:focus,textarea:focus,select:focus {
+      border-color:var(--purple);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 125px;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: #677493;
-    }
+    textarea {resize:vertical;min-height:125px}
+    input::placeholder,textarea::placeholder {color:#677493}
 
     .upload-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
     }
 
     .upload-box {
-      min-height: 110px;
-      border: 1px dashed rgba(139,92,246,.55);
-      background: rgba(139,92,246,.06);
-      border-radius: 13px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 13px;
-      text-align: center;
-      cursor: pointer;
-      gap: 5px;
+      min-height:110px;
+      border:1px dashed rgba(139,92,246,.55);
+      background:rgba(139,92,246,.06);
+      border-radius:13px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:13px;
+      text-align:center;
+      cursor:pointer;
+      gap:5px;
     }
 
-    .upload-box strong {
-      font-size: 13px;
-    }
-
-    .upload-box span {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .upload-box input {
-      display: none;
-    }
+    .upload-box strong {font-size:13px}
+    .upload-box span {font-size:11px;color:var(--muted)}
+    .upload-box input {display:none}
 
     .media-status {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      overflow-wrap: anywhere;
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      overflow-wrap:anywhere;
     }
 
     .media-preview {
-      display: none;
-      margin-top: 12px;
-      position: relative;
+      display:none;
+      margin-top:12px;
+      position:relative;
     }
 
-    .media-preview img,
-    .media-preview video {
-      width: 100%;
-      max-height: 280px;
-      object-fit: contain;
-      background: #080b14;
-      border-radius: 12px;
+    .media-preview img,.media-preview video {
+      width:100%;
+      max-height:280px;
+      object-fit:contain;
+      background:#080b14;
+      border-radius:12px;
     }
 
     .remove-media {
-      margin-top: 8px;
-      border: 1px solid rgba(255,101,125,.3);
-      background: rgba(255,101,125,.08);
-      color: #ff9eae;
-      padding: 7px 10px;
-      border-radius: 8px;
-      font-size: 12px;
+      margin-top:8px;
+      border:1px solid rgba(255,101,125,.3);
+      background:rgba(255,101,125,.08);
+      color:#ff9eae;
+      padding:7px 10px;
+      border-radius:8px;
+      font-size:12px;
     }
 
     .choice-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 10px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
     }
 
     .choice {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      padding: 12px;
-      background: #0c1325;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
+      display:flex;
+      align-items:flex-start;
+      gap:9px;
+      padding:12px;
+      background:#0c1325;
+      border:1px solid var(--border);
+      border-radius:12px;
+      cursor:pointer;
     }
 
     .choice:has(input:checked) {
-      border-color: var(--purple);
-      background: rgba(139,92,246,.1);
+      border-color:var(--purple);
+      background:rgba(139,92,246,.1);
     }
 
-    .choice input {
-      margin-top: 4px;
-      accent-color: var(--purple);
-    }
-
-    .choice strong {
-      display: block;
-      font-size: 13px;
-    }
+    .choice input {margin-top:4px;accent-color:var(--purple)}
+    .choice strong {display:block;font-size:13px}
 
     .choice small {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 3px;
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:3px;
     }
 
-    .plans {
-      display: grid;
-      gap: 10px;
-    }
+    .plans {display:grid;gap:10px}
 
     .plan {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px;
-      background: #0c1325;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:13px;
+      background:#0c1325;
+      border:1px solid var(--border);
+      border-radius:12px;
+      cursor:pointer;
     }
 
     .plan:has(input:checked) {
-      border-color: var(--cyan);
-      background: rgba(67,217,255,.06);
+      border-color:var(--cyan);
+      background:rgba(67,217,255,.06);
     }
 
-    .plan input {
-      accent-color: var(--cyan);
-    }
-
-    .plan-info {
-      flex: 1;
-    }
-
-    .plan-info strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .plan-info small {
-      color: var(--muted);
-      font-size: 11px;
-    }
+    .plan input {accent-color:var(--cyan)}
+    .plan-info {flex:1}
+    .plan-info strong {display:block;font-size:14px}
+    .plan-info small {color:var(--muted);font-size:11px}
 
     .plan-price {
-      font-size: 15px;
-      font-weight: 850;
-      white-space: nowrap;
+      font-size:15px;
+      font-weight:850;
+      white-space:nowrap;
     }
 
     .primary-btn {
-      width: 100%;
-      border: none;
-      color: white;
-      font-weight: 800;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: linear-gradient(100deg, var(--purple), var(--blue));
-      box-shadow: 0 8px 25px rgba(87,83,255,.15);
-      transition: opacity .2s, transform .2s;
+      width:100%;
+      border:none;
+      color:white;
+      font-weight:800;
+      padding:14px 16px;
+      border-radius:12px;
+      background:linear-gradient(100deg,var(--purple),var(--blue));
+      box-shadow:0 8px 25px rgba(87,83,255,.15);
+      transition:opacity .2s,transform .2s;
     }
 
-    .primary-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
+    .primary-btn:hover:not(:disabled) {transform:translateY(-1px)}
 
     .primary-btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    /*
+      The status area stays below the button.
+      Its reserved height prevents the layout from jumping
+      when payment messages appear.
+    */
+    .payment-status {
+      display:block;
+      min-height:52px;
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(55,217,154,.2);
+      background:rgba(55,217,154,.055);
+      color:#9bf4ce;
+      font-size:13px;
+      line-height:1.55;
+      overflow-wrap:anywhere;
+      white-space:pre-wrap;
+    }
+
+    .payment-status:empty {
+      visibility:hidden;
     }
 
     .notice {
-      display: none;
-      padding: 13px 14px;
-      border-radius: 11px;
-      font-size: 13px;
-      margin-bottom: 17px;
-      overflow-wrap: anywhere;
+      display:none;
+      padding:13px 14px;
+      border-radius:11px;
+      font-size:13px;
+      margin-bottom:17px;
+      overflow-wrap:anywhere;
+      color:#9bf4ce;
+      background:rgba(55,217,154,.08);
+      border:1px solid rgba(55,217,154,.2);
     }
 
-    .notice.info {
-      display: block;
-      color: #b6ddff;
-      background: rgba(57,120,255,.12);
-      border: 1px solid rgba(57,120,255,.25);
-    }
-
-    .notice.success {
-      display: block;
-      color: #9bf4ce;
-      background: rgba(55,217,154,.1);
-      border: 1px solid rgba(55,217,154,.25);
-    }
-
-    .notice.error {
-      display: block;
-      color: #ffadba;
-      background: rgba(255,101,125,.1);
-      border: 1px solid rgba(255,101,125,.25);
-    }
+    .notice.visible {display:block}
 
     .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+      border-bottom:1px solid var(--border);
+      font-size:13px;
     }
 
-    .summary-row:last-child {
-      border-bottom: none;
-    }
-
-    .summary-row span:first-child {
-      color: var(--muted);
-    }
+    .summary-row:last-child {border-bottom:none}
+    .summary-row span:first-child {color:var(--muted)}
 
     .summary-row strong {
-      text-align: right;
-      overflow-wrap: anywhere;
+      text-align:right;
+      overflow-wrap:anywhere;
     }
 
-    .total-row {
-      font-size: 16px;
-      font-weight: 850;
-    }
+    .total-row {font-size:16px;font-weight:850}
 
     .preview-card {
-      background: #0c1325;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
+      background:#0c1325;
+      border:1px solid var(--border);
+      border-radius:14px;
+      overflow:hidden;
     }
 
     .preview-top {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      padding: 13px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:13px;
     }
 
     .avatar {
-      width: 38px;
-      height: 38px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple), var(--cyan));
-      color: white;
-      font-weight: 900;
+      width:38px;
+      height:38px;
+      flex-shrink:0;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--purple),var(--cyan));
+      color:white;
+      font-weight:900;
     }
 
-    .preview-name {
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .preview-sub {
-      font-size: 11px;
-      color: var(--muted);
-    }
+    .preview-name {font-size:13px;font-weight:800}
+    .preview-sub {font-size:11px;color:var(--muted)}
 
     .sponsored-tag {
-      margin-left: auto;
-      font-size: 10px;
-      padding: 5px 8px;
-      border-radius: 20px;
-      color: #b7dfff;
-      background: rgba(57,120,255,.14);
-      white-space: nowrap;
+      margin-left:auto;
+      font-size:10px;
+      padding:5px 8px;
+      border-radius:20px;
+      color:#b7dfff;
+      background:rgba(57,120,255,.14);
+      white-space:nowrap;
     }
 
     .preview-content {
-      font-size: 13px;
-      padding: 0 13px 13px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
+      font-size:13px;
+      padding:0 13px 13px;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
     }
 
     .preview-media {
-      display: none;
-      width: 100%;
-      max-height: 280px;
-      object-fit: contain;
-      background: #070a12;
+      display:none;
+      width:100%;
+      max-height:280px;
+      object-fit:contain;
+      background:#070a12;
     }
 
     .preview-link {
-      display: none;
-      padding: 12px 13px;
-      color: var(--cyan);
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      overflow-wrap: anywhere;
+      display:none;
+      padding:12px 13px;
+      color:var(--cyan);
+      border-top:1px solid var(--border);
+      font-size:12px;
+      overflow-wrap:anywhere;
     }
 
     .side-note {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 12px;
-      line-height: 1.7;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:12px;
+      line-height:1.7;
     }
 
-    .side-note li {
-      margin-left: 17px;
-      margin-bottom: 8px;
-    }
+    .side-note li {margin-left:17px;margin-bottom:8px}
 
     .secure-note {
-      text-align: center;
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 12px;
+      text-align:center;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:12px;
     }
 
     .footer {
-      text-align: center;
-      padding: 22px 12px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 12px;
+      text-align:center;
+      padding:22px 12px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:12px;
     }
 
-    @media (max-width: 780px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .topbar {
-        padding: 0 4%;
-      }
-
-      .nav {
-        gap: 2px;
-      }
-
-      .nav a {
-        padding: 8px;
-        font-size: 12px;
-      }
-
-      .page {
-        margin-top: 24px;
-      }
+    @media(max-width:780px) {
+      .layout {grid-template-columns:1fr}
+      .topbar {padding:0 4%}
+      .nav {gap:2px}
+      .nav a {padding:8px;font-size:12px}
+      .page {margin-top:24px}
     }
 
-    @media (max-width: 420px) {
-      .brand {
-        font-size: 18px;
-      }
-
-      .nav a {
-        font-size: 11px;
-      }
-
-      .panel-body {
-        padding: 15px;
-      }
-
-      .choice-grid,
-      .upload-grid {
-        grid-template-columns: 1fr;
-      }
+    @media(max-width:420px) {
+      .brand {font-size:18px}
+      .nav a {font-size:11px}
+      .panel-body {padding:15px}
+      .choice-grid,.upload-grid {grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -563,7 +453,6 @@
 <body>
   <header class="topbar">
     <a class="brand" href="index.html">Campus<span>ora</span></a>
-
     <nav class="nav">
       <a href="marketplace.html">Marketplace</a>
       <a href="messages.html">Messages</a>
@@ -584,18 +473,12 @@
         <form id="campaignForm">
           <div class="panel">
             <div class="panel-heading">Post details</div>
-
             <div class="panel-body">
               <div class="field">
                 <label for="postContent">What do you want to share?</label>
-
-                <textarea
-                  id="postContent"
-                  maxlength="1200"
+                <textarea id="postContent" maxlength="1200"
                   placeholder="Write your announcement, product offer, event or business promotion..."
-                  required
-                ></textarea>
-
+                  required></textarea>
                 <span class="hint">
                   Maximum 1,200 characters.
                   <span id="characterCount">0/1200</span>
@@ -604,36 +487,25 @@
 
               <div class="field">
                 <span class="field-label">Add media (optional)</span>
-
                 <div class="upload-grid">
                   <label class="upload-box">
                     <strong>＋ Add image</strong>
                     <span>JPG, PNG, WebP or GIF</span>
-                    <input
-                      type="file"
-                      id="imageFile"
-                      accept="image/jpeg,image/png,image/webp,image/gif"
-                    >
+                    <input type="file" id="imageFile"
+                      accept="image/jpeg,image/png,image/webp,image/gif">
                   </label>
-
                   <label class="upload-box">
                     <strong>▶ Add video</strong>
                     <span>MP4, WebM or MOV</span>
-                    <input
-                      type="file"
-                      id="videoFile"
-                      accept="video/mp4,video/webm,video/quicktime"
-                    >
+                    <input type="file" id="videoFile"
+                      accept="video/mp4,video/webm,video/quicktime">
                   </label>
                 </div>
-
                 <span class="hint">
                   Maximum file size: 50 MB. Adding a new image removes the
                   selected video, and vice versa.
                 </span>
-
                 <div id="mediaStatus" class="media-status"></div>
-
                 <div id="mediaPreview" class="media-preview">
                   <div id="mediaPreviewContent"></div>
                   <button type="button" class="remove-media" id="removeMedia">
@@ -644,13 +516,8 @@
 
               <div class="field">
                 <label for="destinationUrl">Destination link (optional)</label>
-
-                <input
-                  type="url"
-                  id="destinationUrl"
-                  placeholder="https://example.com"
-                >
-
+                <input type="url" id="destinationUrl"
+                  placeholder="https://example.com">
                 <span class="hint">
                   Where people should go when they want to learn more.
                 </span>
@@ -660,56 +527,37 @@
 
           <div class="panel">
             <div class="panel-heading">Contact options</div>
-
             <div class="panel-body">
               <div class="field">
                 <span class="field-label">How should people contact you?</span>
-
                 <div class="choice-grid">
                   <label class="choice">
                     <input type="radio" name="contactMethod" value="messages" checked>
-                    <span>
-                      <strong>Campusora messages</strong>
-                      <small>Receive messages on Campusora</small>
-                    </span>
+                    <span><strong>Campusora messages</strong>
+                      <small>Receive messages on Campusora</small></span>
                   </label>
-
                   <label class="choice">
                     <input type="radio" name="contactMethod" value="whatsapp">
-                    <span>
-                      <strong>WhatsApp</strong>
-                      <small>Contact you on WhatsApp</small>
-                    </span>
+                    <span><strong>WhatsApp</strong>
+                      <small>Contact you on WhatsApp</small></span>
                   </label>
-
                   <label class="choice">
                     <input type="radio" name="contactMethod" value="both">
-                    <span>
-                      <strong>Both</strong>
-                      <small>Messages and WhatsApp</small>
-                    </span>
+                    <span><strong>Both</strong>
+                      <small>Messages and WhatsApp</small></span>
                   </label>
-
                   <label class="choice">
                     <input type="radio" name="contactMethod" value="none">
-                    <span>
-                      <strong>No contact button</strong>
-                      <small>Use your post and destination link</small>
-                    </span>
+                    <span><strong>No contact button</strong>
+                      <small>Use your post and destination link</small></span>
                   </label>
                 </div>
               </div>
 
               <div class="field" id="whatsappField" hidden>
                 <label for="whatsappNumber">WhatsApp number</label>
-
-                <input
-                  type="tel"
-                  id="whatsappNumber"
-                  maxlength="20"
-                  placeholder="e.g. 2348012345678"
-                >
-
+                <input type="tel" id="whatsappNumber" maxlength="20"
+                  placeholder="e.g. 2348012345678">
                 <span class="hint">
                   Include your country code, without the + sign.
                 </span>
@@ -719,51 +567,36 @@
 
           <div class="panel">
             <div class="panel-heading">Choose campaign duration</div>
-
             <div class="panel-body">
               <div class="plans">
                 <label class="plan">
                   <input type="radio" name="duration" value="1" checked>
-                  <span class="plan-info">
-                    <strong>1 day</strong>
-                    <small>Short promotion</small>
-                  </span>
+                  <span class="plan-info"><strong>1 day</strong>
+                    <small>Short promotion</small></span>
                   <span class="plan-price">₦1,000</span>
                 </label>
-
                 <label class="plan">
                   <input type="radio" name="duration" value="3">
-                  <span class="plan-info">
-                    <strong>3 days</strong>
-                    <small>Short campaign</small>
-                  </span>
+                  <span class="plan-info"><strong>3 days</strong>
+                    <small>Short campaign</small></span>
                   <span class="plan-price">₦2,500</span>
                 </label>
-
                 <label class="plan">
                   <input type="radio" name="duration" value="7">
-                  <span class="plan-info">
-                    <strong>7 days</strong>
-                    <small>One week</small>
-                  </span>
+                  <span class="plan-info"><strong>7 days</strong>
+                    <small>One week</small></span>
                   <span class="plan-price">₦5,000</span>
                 </label>
-
                 <label class="plan">
                   <input type="radio" name="duration" value="14">
-                  <span class="plan-info">
-                    <strong>14 days</strong>
-                    <small>Two weeks</small>
-                  </span>
+                  <span class="plan-info"><strong>14 days</strong>
+                    <small>Two weeks</small></span>
                   <span class="plan-price">₦8,000</span>
                 </label>
-
                 <label class="plan">
                   <input type="radio" name="duration" value="30">
-                  <span class="plan-info">
-                    <strong>30 days</strong>
-                    <small>One month</small>
-                  </span>
+                  <span class="plan-info"><strong>30 days</strong>
+                    <small>One month</small></span>
                   <span class="plan-price">₦15,000</span>
                 </label>
               </div>
@@ -772,9 +605,13 @@
 
           <div class="panel">
             <div class="panel-body">
-              <button class="primary-btn" id="submitBtn" type="submit">
-                Continue to Paystack →
+              <button class="primary-btn" id="submitBtn" type="submit" disabled>
+                Checking your account...
               </button>
+
+              <!-- All payment feedback appears here, beneath the button. -->
+              <div id="paymentStatus" class="payment-status"
+                role="status" aria-live="polite"></div>
 
               <p class="secure-note">
                 Payment is processed through Paystack. Your post will not go
@@ -788,63 +625,42 @@
       <aside>
         <div class="panel">
           <div class="panel-heading">Post preview</div>
-
           <div class="panel-body">
             <div class="preview-card">
               <div class="preview-top">
                 <div class="avatar" id="previewAvatar">C</div>
-
                 <div>
                   <div class="preview-name" id="previewName">Your Campusora profile</div>
                   <div class="preview-sub">Sponsored post</div>
                 </div>
-
                 <span class="sponsored-tag">Sponsored</span>
               </div>
-
               <div class="preview-content" id="previewContent">
                 Your post will appear here.
               </div>
-
               <img class="preview-media" id="previewImage" alt="Post preview">
-
               <video class="preview-media" id="previewVideo" controls playsinline></video>
-
-              <a
-                class="preview-link"
-                id="previewLink"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-              >Learn more →</a>
+              <a class="preview-link" id="previewLink" href="#" target="_blank"
+                rel="noopener noreferrer">Learn more →</a>
             </div>
           </div>
         </div>
 
         <div class="panel">
           <div class="panel-heading">Campaign summary</div>
-
           <div class="panel-body">
             <div class="summary-row">
-              <span>Duration</span>
-              <strong id="summaryDuration">1 day</strong>
+              <span>Duration</span><strong id="summaryDuration">1 day</strong>
             </div>
-
             <div class="summary-row">
-              <span>Media</span>
-              <strong id="summaryMedia">None</strong>
+              <span>Media</span><strong id="summaryMedia">None</strong>
             </div>
-
             <div class="summary-row">
-              <span>Estimated reach</span>
-              <strong>Not available yet</strong>
+              <span>Estimated reach</span><strong>Not available yet</strong>
             </div>
-
             <div class="summary-row total-row">
-              <span>Total</span>
-              <strong id="summaryPrice">₦1,000</strong>
+              <span>Total</span><strong id="summaryPrice">₦1,000</strong>
             </div>
-
             <p class="side-note">
               Reach figures are not guaranteed. Actual delivery depends on
               campaign approval and platform activity.
@@ -854,7 +670,6 @@
 
         <div class="panel">
           <div class="panel-heading">Before you publish</div>
-
           <div class="panel-body">
             <ul class="side-note">
               <li>Use accurate information about your offer.</li>
@@ -887,16 +702,11 @@
     };
 
     const ALLOWED_IMAGE_TYPES = [
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-      'image/gif'
+      'image/jpeg', 'image/png', 'image/webp', 'image/gif'
     ];
 
     const ALLOWED_VIDEO_TYPES = [
-      'video/mp4',
-      'video/webm',
-      'video/quicktime'
+      'video/mp4', 'video/webm', 'video/quicktime'
     ];
 
     const MAX_FILE_SIZE = 50 * 1024 * 1024;
@@ -904,6 +714,7 @@
     const form = document.getElementById('campaignForm');
     const submitBtn = document.getElementById('submitBtn');
     const notice = document.getElementById('notice');
+    const paymentStatus = document.getElementById('paymentStatus');
 
     const postContent = document.getElementById('postContent');
     const imageFile = document.getElementById('imageFile');
@@ -932,19 +743,19 @@
     let selectedMediaType = null;
     let localPreviewUrl = null;
     let submitting = false;
+    let verificationInProgress = false;
 
-    function showNotice(message, type = 'info') {
-      notice.textContent = message;
-      notice.className = `notice ${type}`;
-      notice.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
-      });
+    function showStatus(message) {
+      paymentStatus.textContent = message || '';
+    }
+
+    function showNotice(message) {
+      notice.textContent = message || '';
+      notice.classList.toggle('visible', Boolean(message));
     }
 
     function clearNotice() {
-      notice.textContent = '';
-      notice.className = 'notice';
+      showNotice('');
     }
 
     function formatNaira(amount) {
@@ -965,9 +776,7 @@
 
     function updateContactFields() {
       const method = getContactMethod();
-
-      const needsWhatsApp =
-        method === 'whatsapp' || method === 'both';
+      const needsWhatsApp = method === 'whatsapp' || method === 'both';
 
       document.getElementById('whatsappField').hidden = !needsWhatsApp;
       whatsappNumber.required = needsWhatsApp;
@@ -975,20 +784,16 @@
 
     function updatePreview() {
       const content = postContent.value.trim();
-
       previewContent.textContent = content || 'Your post will appear here.';
-
       characterCount.textContent = `${postContent.value.length}/1200`;
 
       const duration = getDuration();
-
       summaryDuration.textContent =
         `${duration} ${duration === 1 ? 'day' : 'days'}`;
-
       summaryPrice.textContent = formatNaira(PRICES[duration]);
 
       summaryMedia.textContent = selectedMediaType
-        ? selectedMediaType === 'image' ? 'Image selected' : 'Video selected'
+        ? (selectedMediaType === 'image' ? 'Image selected' : 'Video selected')
         : 'None';
 
       const link = destinationUrl.value.trim();
@@ -996,7 +801,6 @@
       if (link) {
         try {
           const parsed = new URL(link);
-
           if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
             previewLink.href = parsed.href;
             previewLink.style.display = 'block';
@@ -1010,39 +814,36 @@
         previewLink.style.display = 'none';
       }
 
-      document.getElementById('previewImage').style.display =
-        selectedMediaType === 'image' ? 'block' : 'none';
-
-      document.getElementById('previewVideo').style.display =
-        selectedMediaType === 'video' ? 'block' : 'none';
+      previewImage.style.display = selectedMediaType === 'image' ? 'block' : 'none';
+      previewVideo.style.display = selectedMediaType === 'video' ? 'block' : 'none';
     }
 
     async function loadUser() {
-      const {
-        data: { user },
-        error
-      } = await supabase.auth.getUser();
+      try {
+        const { data, error } = await supabase.auth.getUser();
 
-      if (error) {
-        console.error('Authentication lookup failed:', error);
+        if (error) throw error;
+
+        currentUser = data?.user || null;
+      } catch (error) {
+        console.error('[Campusora Auth] Could not get user:', error);
+        currentUser = null;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Log in to continue';
+        showStatus('We could not confirm your login. Please log in again and reload this page.');
+        return;
       }
-
-      currentUser = user || null;
 
       if (!currentUser) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Log in to continue';
-
-        showNotice(
-          'Please log in to your Campusora account before creating a sponsored campaign.',
-          'error'
-        );
-
+        showStatus('Please log in to your Campusora account before creating a sponsored campaign.');
         return;
       }
 
       submitBtn.disabled = false;
       submitBtn.textContent = 'Continue to Paystack →';
+      showStatus('');
 
       let displayName =
         currentUser.user_metadata?.full_name ||
@@ -1053,29 +854,24 @@
 
       for (const table of ['profiles', 'users']) {
         try {
-          const { data, error: profileError } = await supabase
+          const { data, error } = await supabase
             .from(table)
             .select('*')
             .eq('id', currentUser.id)
             .maybeSingle();
 
-          if (!profileError && data) {
+          if (!error && data) {
             displayName =
-              data.full_name ||
-              data.username ||
-              data.display_name ||
-              displayName;
-
+              data.full_name || data.username || data.display_name || displayName;
             break;
           }
         } catch (error) {
-          console.warn(`Could not read ${table} profile:`, error);
+          console.warn(`[Campusora Profile] Could not read ${table}:`, error);
         }
       }
 
       previewName.textContent = displayName;
-      previewAvatar.textContent =
-        displayName.trim().charAt(0).toUpperCase() || 'C';
+      previewAvatar.textContent = displayName.trim().charAt(0).toUpperCase() || 'C';
     }
 
     function clearSelectedMedia() {
@@ -1086,7 +882,6 @@
 
       selectedFile = null;
       selectedMediaType = null;
-
       imageFile.value = '';
       videoFile.value = '';
 
@@ -1103,33 +898,23 @@
 
     function selectMedia(file, type) {
       clearNotice();
-
       if (!file) return;
 
-      const allowedTypes =
-        type === 'image' ? ALLOWED_IMAGE_TYPES : ALLOWED_VIDEO_TYPES;
+      const allowedTypes = type === 'image'
+        ? ALLOWED_IMAGE_TYPES
+        : ALLOWED_VIDEO_TYPES;
 
       if (!allowedTypes.includes(file.type)) {
-        showNotice(
-          `This file type is not supported. Please choose a valid ${type} file.`,
-          'error'
-        );
-
+        showStatus(`That file type is not supported. Please choose a valid ${type} file.`);
         if (type === 'image') imageFile.value = '';
         else videoFile.value = '';
-
         return;
       }
 
       if (file.size > MAX_FILE_SIZE) {
-        showNotice(
-          'This file is larger than 50 MB. Please choose a smaller file.',
-          'error'
-        );
-
+        showStatus('This file is larger than 50 MB. Please choose a smaller file.');
         if (type === 'image') imageFile.value = '';
         else videoFile.value = '';
-
         return;
       }
 
@@ -1137,13 +922,9 @@
 
       selectedFile = file;
       selectedMediaType = type;
-
       localPreviewUrl = URL.createObjectURL(file);
 
-      const mediaElement = document.createElement(
-        type === 'image' ? 'img' : 'video'
-      );
-
+      const mediaElement = document.createElement(type === 'image' ? 'img' : 'video');
       mediaElement.src = localPreviewUrl;
 
       if (type === 'video') {
@@ -1155,7 +936,6 @@
 
       mediaPreviewContent.replaceChildren(mediaElement);
       mediaPreview.style.display = 'block';
-
       mediaStatus.textContent =
         `${file.name} · ${(file.size / (1024 * 1024)).toFixed(2)} MB`;
 
@@ -1177,10 +957,7 @@
 
     async function uploadSelectedMedia() {
       if (!selectedFile || !selectedMediaType) {
-        return {
-          imageUrl: null,
-          videoUrl: null
-        };
+        return { imageUrl: null, videoUrl: null };
       }
 
       if (!currentUser) {
@@ -1189,16 +966,15 @@
 
       const file = selectedFile;
       const mediaType = selectedMediaType;
-
       const originalName = file.name || 'upload';
+
       const extension = originalName.includes('.')
         ? originalName.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g, '')
-        : mediaType === 'image' ? 'jpg' : 'mp4';
+        : (mediaType === 'image' ? 'jpg' : 'mp4');
 
-      const filePath =
-        `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+      const filePath = `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
 
-      showNotice('Uploading your media...', 'info');
+      showStatus('Uploading your media. Please wait...');
 
       const { error: uploadError } = await supabase.storage
         .from(BUCKET)
@@ -1209,16 +985,13 @@
         });
 
       if (uploadError) {
-        console.error('Media upload failed:', uploadError);
-
+        console.error('[Campusora Media] Upload failed:', uploadError);
         throw new Error(
           `Media upload failed: ${uploadError.message}. Check the sponsored-media bucket and its storage policies.`
         );
       }
 
-      const { data } = supabase.storage
-        .from(BUCKET)
-        .getPublicUrl(filePath);
+      const { data } = supabase.storage.from(BUCKET).getPublicUrl(filePath);
 
       if (!data?.publicUrl) {
         throw new Error('Could not create the public media URL.');
@@ -1232,11 +1005,9 @@
 
     function validateDestinationUrl() {
       const value = destinationUrl.value.trim();
-
       if (!value) return null;
 
       let parsed;
-
       try {
         parsed = new URL(value);
       } catch {
@@ -1253,76 +1024,128 @@
     function validateWhatsAppNumber() {
       const method = getContactMethod();
 
-      if (method !== 'whatsapp' && method !== 'both') {
-        return null;
-      }
+      if (method !== 'whatsapp' && method !== 'both') return null;
 
       const number = whatsappNumber.value.trim();
-
-      if (!number) {
-        throw new Error('Please enter your WhatsApp number.');
-      }
+      if (!number) throw new Error('Please enter your WhatsApp number.');
 
       const cleaned = number.replace(/[\s()+-]/g, '');
 
       if (!/^\d{8,15}$/.test(cleaned)) {
-        throw new Error(
-          'Please enter a valid WhatsApp number with your country code.'
-        );
+        throw new Error('Please enter a valid WhatsApp number with your country code.');
       }
 
       return cleaned;
     }
 
+    /*
+      Initialize Paystack through the existing server-side Edge Function.
+      Supabase's client supplies the configured project key and signed-in
+      user's access token. Never put a Paystack secret key in this file.
+    */
     async function beginPayment(campaignId) {
-      showNotice('Preparing secure Paystack checkout...', 'info');
-      submitBtn.textContent = 'Preparing payment...';
+      showStatus('Connecting to Campusora payment services...');
 
-      console.log('[Campusora Payment] Starting initialization');
-console.log('[Campusora Payment] Campaign ID:', campaignId);
+      if (!currentUser) {
+        throw new Error('Your login session has expired. Please log in again.');
+      }
 
-const { data: paymentData, error: paymentError } =
-  await supabase.functions.invoke(
-    'initialize-sponsored-payment',
-    {
-      body: { campaign_id: campaignId }
-    }
-  );
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
 
-if (paymentError) {
-  console.error('[Campusora Payment] Request failed:', {
-    name: paymentError.name,
-    message: paymentError.message,
-    context: paymentError.context
-  });
+      if (sessionError) {
+        console.error('[Campusora Payment] Session error:', sessionError);
+        throw new Error('Could not confirm your login session. Please log in again.');
+      }
 
-  throw new Error(
-    'Payment request failed: ' +
-    paymentError.name + ' — ' +
-    paymentError.message
-  );
-}
+      const accessToken = sessionData?.session?.access_token;
 
-console.log('[Campusora Payment] Function response:', paymentData);
+      if (!accessToken) {
+        throw new Error('Your login session is missing. Please log in again.');
+      }
 
-      if (paymentError) {
-        console.error(
-          'Payment initialization error:',
-          paymentError,
-          paymentData
+      console.log('[Campusora Payment] Initializing campaign:', campaignId);
+
+      let paymentData;
+      let paymentError;
+
+      try {
+        const result = await supabase.functions.invoke(
+          'initialize-sponsored-payment',
+          {
+            body: { campaign_id: campaignId },
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
         );
 
+        paymentData = result.data;
+        paymentError = result.error;
+      } catch (error) {
+        console.error('[Campusora Payment] Request could not be sent:', error);
         throw new Error(
-          paymentData?.error ||
+          'Could not reach the payment service. Your campaign may already be saved. Do not submit it repeatedly. Please try again later or contact Campusora support.'
+        );
+      }
+
+      if (paymentError) {
+        let serverMessage = '';
+
+        try {
+          if (paymentError.context instanceof Response) {
+            const responseText = await paymentError.context.clone().text();
+            console.error('[Campusora Payment] Server response:', responseText);
+
+            try {
+              const parsed = JSON.parse(responseText);
+              serverMessage = parsed.error || parsed.message || parsed.msg || '';
+            } catch {
+              serverMessage = responseText.slice(0, 300);
+            }
+          }
+        } catch (readError) {
+          console.warn('[Campusora Payment] Could not read error response:', readError);
+        }
+
+        console.error('[Campusora Payment] Invocation error:', {
+          name: paymentError.name,
+          message: paymentError.message,
+          serverMessage
+        });
+
+        if (paymentError.name === 'FunctionsFetchError') {
+          throw new Error(
+            'The browser could not connect to the payment function. This is usually a network, CORS, or Edge Function gateway issue. Your campaign may have been saved, so do not create another campaign yet.'
+          );
+        }
+
+        if (paymentError.name === 'FunctionsHttpError') {
+          throw new Error(
+            serverMessage ||
+            'The payment service returned an HTTP error. Check the deployed Edge Function logs before retrying.'
+          );
+        }
+
+        if (paymentError.name === 'FunctionsRelayError') {
+          throw new Error(
+            serverMessage ||
+            'Supabase could not route the payment request to the function. Check the function deployment and configuration.'
+          );
+        }
+
+        throw new Error(
+          serverMessage ||
           paymentError.message ||
-          'Could not start Paystack checkout. Your campaign may have been saved. Check its status before creating another.'
+          'Could not initialize Paystack. Check the payment function before trying again.'
         );
       }
 
       if (!paymentData?.authorization_url) {
+        console.error('[Campusora Payment] Unexpected response:', paymentData);
         throw new Error(
           paymentData?.error ||
-          'Paystack did not return a checkout link.'
+          'The payment service did not return a Paystack checkout link. Do not pay again; the server response needs checking.'
         );
       }
 
@@ -1340,41 +1163,27 @@ console.log('[Campusora Payment] Function response:', paymentData);
         checkoutUrl.hostname.endsWith('.paystack.com');
 
       if (checkoutUrl.protocol !== 'https:' || !allowedHost) {
-        throw new Error(
-          'The checkout address was not a valid secure Paystack address.'
-        );
+        throw new Error('The checkout address was not a valid secure Paystack address.');
       }
 
-      showNotice('Opening Paystack checkout...', 'success');
-
+      showStatus('Paystack checkout is ready. Redirecting you securely...');
       window.location.assign(checkoutUrl.href);
     }
 
     async function handlePaymentReturn() {
       const params = new URLSearchParams(window.location.search);
-
-      const reference =
-        params.get('reference') ||
-        params.get('trxref');
+      const reference = params.get('reference') || params.get('trxref');
 
       if (!reference) {
         await loadUser();
         return;
       }
 
-      /*
-       * This function is called after Paystack returns the visitor
-       * to advertise.html. The reference is verified by the server-side
-       * Supabase Edge Function, not trusted from the browser alone.
-       */
-
-      showNotice(
-        'Checking your payment with Paystack. Please wait...',
-        'info'
-      );
-
+      verificationInProgress = true;
       submitBtn.disabled = true;
       submitBtn.textContent = 'Verifying payment...';
+
+      showStatus('Checking your payment with Paystack. Please wait...');
 
       try {
         await loadUser();
@@ -1385,64 +1194,51 @@ console.log('[Campusora Payment] Function response:', paymentData);
           );
         }
 
-        const {
-          data,
-          error
-        } = await supabase.functions.invoke(
+        const { data, error } = await supabase.functions.invoke(
           'verify-sponsored-payment',
           {
-            body: {
-              reference
-            }
+            body: { reference }
           }
         );
 
         if (error) {
-          console.error('Verification request error:', error, data);
-
+          console.error('[Campusora Payment] Verification request failed:', error, data);
           throw new Error(
             data?.error ||
             error.message ||
-            'Could not verify this payment.'
+            'Could not verify this payment. Do not pay again until the transaction has been checked.'
           );
         }
 
         if (!data?.success) {
           throw new Error(
             data?.error ||
-            'Paystack has not confirmed this payment.'
+            'Paystack has not confirmed this payment. Do not pay again until the transaction has been checked.'
           );
         }
 
-        showNotice(
-          'Payment verified successfully! Your campaign is awaiting admin approval. It is not live yet.',
-          'success'
+        showStatus(
+          'Payment verified successfully! Your campaign is awaiting admin approval. It is not live yet.'
         );
 
         submitBtn.textContent = 'Payment verified ✓';
         submitBtn.disabled = true;
 
-        /*
-         * Remove the payment reference from the address bar only
-         * after successful verification.
-         */
         window.history.replaceState(
           {},
           document.title,
           window.location.pathname
         );
-
       } catch (error) {
-        console.error('Payment verification error:', error);
-
-        showNotice(
+        console.error('[Campusora Payment] Verification error:', error);
+        showStatus(
           error.message ||
-          'We could not verify your payment. Do not pay again until the transaction has been checked.',
-          'error'
+          'We could not verify your payment. Do not pay again until the transaction has been checked.'
         );
-
-        submitBtn.disabled = false;
         submitBtn.textContent = 'Retry payment verification';
+        submitBtn.disabled = false;
+      } finally {
+        verificationInProgress = false;
       }
     }
 
@@ -1473,9 +1269,10 @@ console.log('[Campusora Payment] Function response:', paymentData);
     form.addEventListener('submit', async event => {
       event.preventDefault();
 
-      if (submitting) return;
+      if (submitting || verificationInProgress) return;
 
       clearNotice();
+      showStatus('');
 
       try {
         if (!currentUser) {
@@ -1513,12 +1310,10 @@ console.log('[Campusora Payment] Function response:', paymentData);
         submitBtn.disabled = true;
         submitBtn.textContent = 'Saving campaign...';
 
+        showStatus('Preparing your campaign...');
+
         const { imageUrl, videoUrl } = await uploadSelectedMedia();
 
-        /*
-         * Amount is stored in kobo because Paystack processes NGN
-         * amounts in the smallest currency unit.
-         */
         const campaign = {
           user_id: currentUser.id,
           post_content: content,
@@ -1534,7 +1329,7 @@ console.log('[Campusora Payment] Function response:', paymentData);
           payment_verified: false
         };
 
-        showNotice('Saving your campaign...', 'info');
+        showStatus('Saving your campaign...');
 
         const {
           data: campaignData,
@@ -1546,8 +1341,7 @@ console.log('[Campusora Payment] Function response:', paymentData);
           .single();
 
         if (campaignError) {
-          console.error('Campaign save error:', campaignError);
-
+          console.error('[Campusora Campaign] Save failed:', campaignError);
           throw new Error(
             `Could not save the campaign: ${campaignError.message}`
           );
@@ -1555,45 +1349,39 @@ console.log('[Campusora Payment] Function response:', paymentData);
 
         if (!campaignData?.id) {
           throw new Error(
-            'The campaign was saved without returning its ID. Check your sponsored_campaigns table.'
+            'The campaign save did not return an ID. Check the sponsored_campaigns table before retrying.'
           );
         }
 
         /*
-         * The server function checks ownership, status, duration,
-         * and the expected amount before initializing Paystack.
-         */
+          The campaign now exists in pending_payment status.
+          If initialization fails, we deliberately do not create another
+          campaign automatically because that could create duplicates.
+        */
         await beginPayment(campaignData.id);
-
       } catch (error) {
-        console.error('Campaign submission error:', error);
+        console.error('[Campusora Campaign] Submission error:', error);
 
-        showNotice(
+        showStatus(
           error.message ||
-          'Something went wrong while preparing your campaign.',
-          'error'
+          'Something went wrong while preparing your campaign.'
         );
 
         submitBtn.disabled = false;
         submitBtn.textContent = 'Retry / Continue to Paystack →';
-
       } finally {
         submitting = false;
+
+        if (!verificationInProgress &&
+            submitBtn.textContent !== 'Payment verified ✓') {
+          submitBtn.disabled = !currentUser;
+        }
       }
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      updatePreview();
-      updateContactFields();
-    });
-
-    /*
-     * Load the current account and check whether Paystack returned
-     * the visitor to this page after payment.
-     */
     updatePreview();
     updateContactFields();
     handlePaymentReturn();
   </script>
 </body>
-        </html>
+                    </html>
