@@ -92,7 +92,12 @@ a{color:inherit;text-decoration:none}
     radial-gradient(circle at 20% 20%,#7044d9,transparent 40%),
     linear-gradient(120deg,#151b3d,#302064,#07566c);
   background-position:center;
-  background-size:cover
+  background-size:cover;
+  position:relative
+}
+
+.cover.has-cover{
+  cursor:zoom-in
 }
 
 .profile-content{padding:0 25px 25px}
@@ -106,7 +111,12 @@ a{color:inherit;text-decoration:none}
   background:var(--card2)
 }
 
-.profile-avatar{margin-top:-57px}
+.profile-avatar{
+  margin-top:-57px;
+  position:relative;
+  cursor:zoom-in;
+  display:block
+}
 
 .profile-heading{
   display:flex;
@@ -122,6 +132,7 @@ a{color:inherit;text-decoration:none}
   flex:1
 }
 
+/* Name appears on its own line */
 .name-line{
   display:flex;
   align-items:center;
@@ -138,15 +149,24 @@ h1{
   overflow-wrap:anywhere
 }
 
+/* Username and role badge share one line */
+.username-line{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:5px;
+  min-width:0
+}
+
 .username{
   color:var(--muted);
   font-size:13px;
-  line-height:1.6;
-  margin-top:4px;
+  line-height:1.5;
   overflow-wrap:anywhere
 }
 
-/* Small role badge beside the name */
+/* Small role badge beside username */
 .badge{
   display:inline-flex;
   align-items:center;
@@ -155,29 +175,38 @@ h1{
   border:1px solid rgba(135,88,255,.4);
   color:#c8b4ff;
   border-radius:20px;
-  padding:4px 7px;
-  font-size:10px;
+  padding:3px 6px;
+  font-size:9px;
   font-weight:700;
   line-height:1.2;
   white-space:nowrap;
   margin:0
 }
 
-/* Compact Premium badge */
+/* Extra-small Premium badge below username */
+.premium-line{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:5px;
+  min-height:0
+}
+
 .premium-badge{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:3px;
-  background:rgba(245,206,117,.09);
-  border:1px solid rgba(245,206,117,.48);
+  gap:2px;
+  background:rgba(245,206,117,.08);
+  border:1px solid rgba(245,206,117,.4);
   color:var(--gold);
-  border-radius:20px;
-  padding:3px 6px;
-  font-size:9px;
+  border-radius:12px;
+  padding:2px 5px;
+  font-size:7px;
   font-weight:800;
-  letter-spacing:.25px;
-  line-height:1.2;
+  letter-spacing:.2px;
+  line-height:1.1;
   white-space:nowrap;
   margin:0
 }
@@ -218,8 +247,8 @@ h1{
   color:#f5ce75;
   border:1px solid rgba(245,206,117,.5);
   border-radius:8px;
-  padding:7px 8px;
-  font-size:10px;
+  padding:6px 8px;
+  font-size:9px;
   font-weight:800;
   white-space:nowrap;
   box-shadow:0 2px 8px rgba(0,0,0,.15);
@@ -232,7 +261,7 @@ h1{
 }
 
 .premium-symbol{
-  font-size:11px;
+  font-size:10px;
   line-height:1
 }
 
@@ -260,7 +289,8 @@ h1{
   border-radius:50%;
   object-fit:cover;
   background:var(--card2);
-  flex-shrink:0
+  flex-shrink:0;
+  cursor:pointer
 }
 
 .post-author{
@@ -270,6 +300,24 @@ h1{
 }
 
 .post-meta{font-size:11px;color:var(--muted);margin-top:5px}
+
+/* Small Premium indicator beside a creator's name */
+.inline-premium{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  vertical-align:middle;
+  margin-left:5px;
+  padding:2px 4px;
+  border:1px solid rgba(245,206,117,.38);
+  border-radius:6px;
+  color:var(--gold);
+  background:rgba(245,206,117,.07);
+  font-size:7px;
+  font-weight:800;
+  line-height:1.2;
+  white-space:nowrap
+}
 
 .post-text{
   font-size:14px;
@@ -286,7 +334,8 @@ h1{
   background:#090c18;
   border-radius:12px;
   display:block;
-  margin-bottom:15px
+  margin-bottom:15px;
+  cursor:zoom-in
 }
 
 .post-stats{
@@ -367,11 +416,7 @@ h1{
   flex-shrink:0
 }
 
-.comment{
-  display:flex;
-  gap:9px;
-  margin:14px 0
-}
+.comment{display:flex;gap:9px;margin:14px 0}
 
 .comment-avatar{
   width:33px;
@@ -379,7 +424,8 @@ h1{
   object-fit:cover;
   border-radius:50%;
   background:var(--card2);
-  flex-shrink:0
+  flex-shrink:0;
+  cursor:pointer
 }
 
 .comment-body{
@@ -473,6 +519,51 @@ body.premium-active .cover{
     radial-gradient(circle at 20% 20%,rgba(245,206,117,.3),transparent 35%),
     linear-gradient(120deg,#100e18,#35234e,#17120b);
   border-bottom:1px solid rgba(245,206,117,.25)
+}
+
+/* Full-size photo viewer */
+.photo-viewer{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:rgba(2,4,12,.94);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+
+.photo-viewer-content{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative
+}
+
+.photo-viewer-image{
+  display:block;
+  max-width:100%;
+  max-height:85vh;
+  object-fit:contain;
+  border-radius:12px;
+  box-shadow:0 15px 60px rgba(0,0,0,.45)
+}
+
+.photo-viewer-close{
+  position:absolute;
+  top:4px;
+  right:4px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:rgba(23,29,51,.95);
+  color:white;
+  border:1px solid var(--border);
+  font-size:25px;
+  z-index:2
 }
 
 /* Premium modal */
@@ -651,8 +742,11 @@ body.premium-active .cover{
   .profile-avatar{margin-top:-46px}
   h1{font-size:19px}
   .name-line{gap:6px}
-  .badge{font-size:9px;padding:4px 6px}
-  .premium-badge{font-size:8px;padding:3px 5px}
+  .username-line{gap:5px;margin-top:4px}
+  .username{font-size:12px}
+  .badge{font-size:8px;padding:3px 5px}
+  .premium-line{margin-top:4px}
+  .premium-badge{font-size:6px;padding:2px 4px;gap:2px}
   .school{font-size:11px;margin-top:8px}
   .bio{font-size:12px;margin-top:8px}
   .profile-heading{gap:8px}
@@ -665,6 +759,7 @@ body.premium-active .cover{
   .stats{gap:19px}
   .replies{margin-left:5px;padding-left:8px}
   .premium-modal{padding:18px}
+  .photo-viewer{padding:12px}
 }
 
 @media(max-width:380px){
@@ -678,8 +773,8 @@ body.premium-active .cover{
 <header class="topbar">
   <a class="brand" href="./index.html">Campusora</a>
   <div class="top-actions">
-    <button class="top-btn" onclick="location.href='./index.html'">🏠 Home</button>
-    <button class="top-btn" onclick="location.href='./create-post.html'">＋ Post</button>
+    <button class="top-btn" id="homeButton" type="button">🏠 Home</button>
+    <button class="top-btn" id="createPostButton" type="button">＋ Post</button>
   </div>
 </header>
 
@@ -688,20 +783,27 @@ body.premium-active .cover{
   <div id="loading" class="loading">Loading Campusora profile...</div>
 
   <section id="profileSection" class="profile-card hidden">
-    <div id="cover" class="cover"></div>
+    <div id="cover" class="cover" aria-label="View cover photo"></div>
 
     <div class="profile-content">
-      <img id="profileAvatar" class="avatar profile-avatar" alt="Profile photo">
+      <img id="profileAvatar" class="avatar profile-avatar" alt="View profile photo">
 
       <div class="profile-heading">
         <div class="profile-main">
+
           <div class="name-line">
             <h1 id="profileName">Campusora Member</h1>
-            <span id="profileBadge" class="badge">Member</span>
+          </div>
+
+          <div class="username-line">
+            <span id="profileUsername" class="username"></span>
+            <span id="profileBadge" class="badge">🎓 Student</span>
+          </div>
+
+          <div class="premium-line">
             <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
           </div>
 
-          <div id="profileUsername" class="username"></div>
           <div id="profileSchool" class="school"></div>
           <div id="profileBio" class="bio"></div>
         </div>
@@ -725,6 +827,14 @@ body.premium-active .cover{
   <h2 id="postsHeading" class="section-title hidden">Posts</h2>
   <section id="postsContainer"></section>
 </main>
+
+<!-- Full-size profile and cover photo viewer -->
+<div id="photoViewer" class="photo-viewer hidden" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <div class="photo-viewer-content">
+    <button id="closePhotoViewer" class="photo-viewer-close" type="button" aria-label="Close photo">×</button>
+    <img id="photoViewerImage" class="photo-viewer-image" alt="Expanded photo">
+  </div>
+</div>
 
 <!-- Premium plan modal -->
 <div id="premiumModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="premiumModalTitle">
@@ -798,6 +908,9 @@ const fallbackAvatar = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" rx="50" fill="#252d48"/><text x="50" y="62" text-anchor="middle" font-size="45" fill="#c8b4ff">👤</text></svg>'
 );
 
+$('homeButton').addEventListener('click',()=>location.href='./index.html');
+$('createPostButton').addEventListener('click',()=>location.href='./create-post.html');
+
 function formatDate(value) {
   if (!value) return '';
   const date = new Date(value);
@@ -832,22 +945,110 @@ function profileLink(userId) {
   return './profile.html?id='+encodeURIComponent(userId);
 }
 
-function makeProfileAvatar(person, className='comment-avatar') {
+/* PHOTO VIEWER */
+
+function openPhotoViewer(url,alt='Photo') {
+  if(!url)return;
+
+  $('photoViewerImage').src=url;
+  $('photoViewerImage').alt=alt;
+  $('photoViewer').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+
+function closePhotoViewer() {
+  $('photoViewer').classList.add('hidden');
+  $('photoViewerImage').src='';
+  document.body.style.overflow='';
+}
+
+$('closePhotoViewer').addEventListener('click',closePhotoViewer);
+
+$('photoViewer').addEventListener('click',event=>{
+  if(event.target===$('photoViewer'))closePhotoViewer();
+});
+
+$('photoViewerImage').addEventListener('click',event=>{
+  event.stopPropagation();
+});
+
+$('profileAvatar').addEventListener('click',()=>{
+  const url=currentProfile?.avatar_url;
+  if(url)openPhotoViewer(url,'Profile photo');
+});
+
+$('cover').addEventListener('click',()=>{
+  const url=currentProfile?.cover_url;
+  if(url)openPhotoViewer(url,'Cover photo');
+});
+
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){
+    if(!$('photoViewer').classList.contains('hidden'))closePhotoViewer();
+    else if(!$('premiumModal').classList.contains('hidden'))closePremiumModal();
+  }
+});
+
+function makeProfileAvatar(person,className='comment-avatar') {
   const img=document.createElement('img');
   img.className=className;
   img.src=person?.avatar_url||fallbackAvatar;
   img.alt='View profile';
-  img.style.cursor='pointer';
-  img.addEventListener('click',()=>location.href=profileLink(person.id));
+  img.loading='lazy';
+
+  img.addEventListener('error',()=>{
+    img.src=fallbackAvatar;
+  },{once:true});
+
+  img.addEventListener('click',()=>{
+    if(person?.avatar_url){
+      openPhotoViewer(person.avatar_url,'Profile photo');
+    }else if(person?.id){
+      location.href=profileLink(person.id);
+    }
+  });
+
   return img;
 }
 
 function makeProfileName(person) {
+  const container=document.createElement('span');
+  container.style.display='inline-flex';
+  container.style.alignItems='center';
+  container.style.flexWrap='wrap';
+  container.style.gap='4px';
+
   const a=document.createElement('a');
   a.className='comment-name';
   a.href=profileLink(person.id);
   a.textContent=person?.full_name||person?.username||'Campusora Member';
-  return a;
+
+  container.append(a);
+
+  /*
+    This indicator is shown when the active Premium status for the
+    profile owner is known on this page. Other members' membership
+    visibility depends on the existing Supabase permissions.
+  */
+  if(activePremium&&currentProfile&&person?.id===currentProfile.id){
+    const premium=document.createElement('span');
+    premium.className='inline-premium';
+    premium.textContent='✦ PREMIUM';
+    premium.setAttribute('aria-label','Premium member');
+    container.append(premium);
+  }
+
+  return container;
+}
+
+function appendPostPremiumIndicator(authorName,author) {
+  if(!activePremium||!currentProfile||author?.id!==currentProfile.id)return;
+
+  const indicator=document.createElement('span');
+  indicator.className='inline-premium';
+  indicator.textContent='✦ PREMIUM';
+  indicator.setAttribute('aria-label','Premium member');
+  authorName.append(indicator);
 }
 
 /* PREMIUM MEMBERSHIP */
@@ -866,12 +1067,6 @@ $('closePremiumModal').addEventListener('click',closePremiumModal);
 
 $('premiumModal').addEventListener('click',event=>{
   if(event.target===$('premiumModal'))closePremiumModal();
-});
-
-document.addEventListener('keydown',event=>{
-  if(event.key==='Escape'&&!$('premiumModal').classList.contains('hidden')){
-    closePremiumModal();
-  }
 });
 
 $('premiumButton').addEventListener('click',async()=>{
@@ -1093,6 +1288,9 @@ async function verifyPremiumPaymentReturn() {
 
     showMessage('Payment verified successfully! Your Premium membership is now active.');
     await refreshPremiumStatus();
+
+    /* Refresh posts so the Premium indicators appear immediately. */
+    await loadPosts(currentProfile);
     setTimeout(()=>refreshPremiumStatus(),1200);
 
   }catch(error){
@@ -1144,6 +1342,8 @@ async function loadProfile() {
   $('profileUsername').textContent=profile.username?'@'+profile.username:'';
   $('profileSchool').textContent=profile.school||'';
 
+  $('profileSchool').classList.toggle('hidden',!profile.school);
+
   const bio=$('profileBio');
   bio.textContent=profile.bio||'';
   bio.classList.toggle('hidden',!profile.bio);
@@ -1157,18 +1357,32 @@ async function loadProfile() {
   $('profileBadge').textContent=roles[(profile.role||'general').toLowerCase()]||'🌟 Member';
 
   $('profileAvatar').src=profile.avatar_url||fallbackAvatar;
-  $('profileAvatar').onerror=()=>{$('profileAvatar').src=fallbackAvatar};
+  $('profileAvatar').onerror=()=>{
+    $('profileAvatar').src=fallbackAvatar;
+  };
+
+  $('cover').style.backgroundImage='';
+  $('cover').classList.remove('has-cover');
 
   if(profile.cover_url){
-    $('cover').style.backgroundImage=`url("${profile.cover_url.replaceAll('"','%22')}")`;
+    const safeCoverUrl=profile.cover_url.replaceAll('"','%22');
+    $('cover').style.backgroundImage=`url("${safeCoverUrl}")`;
+    $('cover').classList.add('has-cover');
   }
 
-  // The Premium button is only shown on the logged-in user's own profile.
   $('premiumButton').classList.toggle('hidden',!isOwnProfile);
 
   $('loading').classList.add('hidden');
   $('profileSection').classList.remove('hidden');
   $('postsHeading').classList.remove('hidden');
+
+  /*
+    Load the owner's membership status before loading their posts,
+    so the Premium indicator can be added to their post names.
+  */
+  if(isOwnProfile){
+    await refreshPremiumStatus();
+  }
 
   await Promise.all([
     loadCounts(profile),
@@ -1176,7 +1390,6 @@ async function loadProfile() {
   ]);
 
   if(isOwnProfile){
-    await refreshPremiumStatus();
     await verifyPremiumPaymentReturn();
   }
 }
@@ -1243,6 +1456,7 @@ async function createPostCard(post,author) {
   header.className='post-header';
 
   const avatar=makeProfileAvatar(author,'post-avatar');
+
   const info=document.createElement('div');
   info.style.minWidth='0';
 
@@ -1250,6 +1464,8 @@ async function createPostCard(post,author) {
   authorName.className='post-author';
   authorName.href=profileLink(author.id);
   authorName.textContent=author.full_name||author.username||'Campusora Member';
+
+  appendPostPremiumIndicator(authorName,author);
 
   const meta=document.createElement('div');
   meta.className='post-meta';
@@ -1270,8 +1486,11 @@ async function createPostCard(post,author) {
     const image=document.createElement('img');
     image.className='post-image';
     image.src=post.image_url;
-    image.alt='Post image';
+    image.alt='View post image';
     image.loading='lazy';
+    image.addEventListener('click',()=>{
+      openPhotoViewer(post.image_url,'Post image');
+    });
     image.onerror=()=>image.remove();
     card.append(image);
   }
@@ -1486,6 +1705,7 @@ async function createPostCard(post,author) {
 
   async function buildComment(item,person,all,peopleMap,depth) {
     const wrapper=document.createElement('div');
+
     const row=document.createElement('div');
     row.className='comment';
 
@@ -1494,6 +1714,7 @@ async function createPostCard(post,author) {
     body.className='comment-body';
 
     const name=makeProfileName(person);
+
     const text=document.createElement('div');
     text.className='comment-text';
     text.textContent=item.content||'';
