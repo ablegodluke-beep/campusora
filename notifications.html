@@ -33,18 +33,9 @@ body {
   min-height: 100vh;
 }
 
-button, input {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
+button, input { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
 
 .topbar {
   height: 54px;
@@ -169,9 +160,7 @@ a {
   font-size: 15px;
 }
 
-.page {
-  min-width: 0;
-}
+.page { min-width: 0; }
 
 .page-head {
   display: flex;
@@ -199,12 +188,10 @@ a {
   color: #a995ff;
   font-size: 11px;
   font-weight: 650;
-  padding: 6px 0 6px 6px;
+  padding: 6px;
 }
 
-.text-btn:hover {
-  color: var(--cyan);
-}
+.text-btn:hover { color: var(--cyan); }
 
 .tabs {
   display: flex;
@@ -215,9 +202,7 @@ a {
   padding-bottom: 2px;
 }
 
-.tabs::-webkit-scrollbar {
-  display: none;
-}
+.tabs::-webkit-scrollbar { display: none; }
 
 .tab {
   flex-shrink: 0;
@@ -264,13 +249,8 @@ a {
   animation: enter .3s ease both;
 }
 
-.notification:last-child {
-  border-bottom: 0;
-}
-
-.notification:hover {
-  background: #1a192b;
-}
+.notification:last-child { border-bottom: 0; }
+.notification:hover { background: #1a192b; }
 
 .notification.unread {
   background: linear-gradient(90deg, #49327624, #11111d);
@@ -316,6 +296,7 @@ a {
 .type-reply { background: #9065ff; }
 .type-follow { background: #22b78c; }
 .type-community_join { background: #d99b32; }
+.type-gift { background: linear-gradient(135deg, #9065ff, #e84d84); }
 
 .notification-body {
   flex: 1;
@@ -393,9 +374,7 @@ a {
   line-height: 1.6;
 }
 
-.right-card {
-  margin-bottom: 12px;
-}
+.right-card { margin-bottom: 12px; }
 
 .card-title {
   font-size: 12px;
@@ -457,9 +436,7 @@ a {
   transform: translate(-50%, 0);
 }
 
-.bottom-nav {
-  display: none;
-}
+.bottom-nav { display: none; }
 
 .loading {
   display: flex;
@@ -500,9 +477,7 @@ a {
     max-width: 740px;
   }
 
-  .right-sidebar {
-    display: none;
-  }
+  .right-sidebar { display: none; }
 }
 
 @media (max-width: 580px) {
@@ -522,7 +497,6 @@ a {
   }
 
   .sidebar, .right-sidebar { display: none; }
-
   .page { width: 100%; }
 
   .page-head {
@@ -532,9 +506,7 @@ a {
 
   .page-title { font-size: 17px; }
 
-  .tabs {
-    padding: 0 13px 3px;
-  }
+  .tabs { padding: 0 13px 3px; }
 
   .notification-list {
     border-radius: 0;
@@ -553,7 +525,6 @@ a {
   }
 
   .notification-text { font-size: 12px; }
-
   .section-label { padding-left: 13px; }
 
   .bottom-nav {
@@ -611,7 +582,8 @@ a {
     transition-duration: .01ms !important;
   }
 }
-</style></head><body><header class="topbar">
+</style></head><body>
+<header class="topbar">
   <a href="index.html" class="brand">
     <span class="brand-icon">C</span>
     <span>campusora</span>
@@ -621,55 +593,36 @@ a {
     <a href="profile.html" class="avatar" id="topAvatar"
       aria-label="My profile">C</a>
   </div>
-</header><div class="layout">  <aside class="sidebar">
+</header><div class="layout">
+  <aside class="sidebar">
     <div class="side-card">
-      <a class="side-link" href="index.html">
-        <span class="side-emoji">⌂</span> Home Feed
-      </a>
-      <a class="side-link" href="explore.html">
-        <span class="side-emoji">⌕</span> Explore
-      </a>
-      <a class="side-link" href="follow-system.html">
-        <span class="side-emoji">♧</span> Following
-      </a>
-      <a class="side-link" href="communities.html">
-        <span class="side-emoji">♧</span> Communities
-      </a>
-      <a class="side-link" href="spotlight.html">
-        <span class="side-emoji">▷</span> Spotlight
-      </a>
-      <a class="side-link" href="messages.html">
-        <span class="side-emoji">✉</span> Messages
-      </a>
-      <a class="side-link active" href="notifications.html">
-        <span class="side-emoji">♧</span> Notifications
-      </a>
-      <a class="side-link" href="events.html">
-        <span class="side-emoji">▦</span> Events
-      </a>
-      <a class="side-link" href="marketplace.html">
-        <span class="side-emoji">▣</span> Marketplace
-      </a>
-      <a class="side-link" href="profile.html">
-        <span class="side-emoji">◎</span> My Profile
-      </a>
+      <a class="side-link" href="index.html"><span class="side-emoji">⌂</span> Home Feed</a>
+      <a class="side-link" href="explore.html"><span class="side-emoji">⌕</span> Explore</a>
+      <a class="side-link" href="follow-system.html"><span class="side-emoji">♧</span> Following</a>
+      <a class="side-link" href="communities.html"><span class="side-emoji">♧</span> Communities</a>
+      <a class="side-link" href="spotlight.html"><span class="side-emoji">▷</span> Spotlight</a>
+      <a class="side-link" href="messages.html"><span class="side-emoji">✉</span> Messages</a>
+      <a class="side-link active" href="notifications.html"><span class="side-emoji">♧</span> Notifications</a>
+      <a class="side-link" href="events.html"><span class="side-emoji">▦</span> Events</a>
+      <a class="side-link" href="marketplace.html"><span class="side-emoji">▣</span> Marketplace</a>
+      <a class="side-link" href="profile.html"><span class="side-emoji">◎</span> My Profile</a>
     </div>
-  </aside>  <main class="page"><div class="page-head">
-  <div>
-    <h1 class="page-title">Notifications <span id="unreadTitle"></span></h1>
-    <p class="page-subtitle">Your latest activity on Campusora</p>
-  </div>
-  <button class="text-btn" id="markAllBtn" onclick="markAllRead()">
-    Mark all read
-  </button>
-</div>
-
-<div class="tabs" id="filterTabs">
+  </aside>  <main class="page">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Notifications <span id="unreadTitle"></span></h1>
+        <p class="page-subtitle">Your latest activity on Campusora</p>
+      </div>
+      <button class="text-btn" id="markAllBtn" onclick="markAllRead()">
+        Mark all read
+      </button>
+    </div><div class="tabs" id="filterTabs">
   <button class="tab active" data-filter="all">All</button>
   <button class="tab" data-filter="unread">Unread</button>
   <button class="tab" data-filter="like">Likes</button>
   <button class="tab" data-filter="comment">Comments</button>
   <button class="tab" data-filter="follow">Follows</button>
+  <button class="tab" data-filter="gift">🎁 Gifts</button>
 </div>
 
 <section class="notification-list" id="notificationList">
@@ -678,19 +631,18 @@ a {
   </div>
 </section>
 
-  </main>  <aside class="right-sidebar"><div class="right-card">
-  <div class="card-title">Your activity</div>
-  <div class="status-line">
-    <span class="status-dot"></span>
-    <span id="connectionStatus">Connecting...</span>
-  </div>
-  <div class="status-line">
-    <span>🔔</span>
-    <span id="activityCount">Loading activity...</span>
-  </div>
-</div>
-
-<div class="right-card">
+  </main>  <aside class="right-sidebar">
+    <div class="right-card">
+      <div class="card-title">Your activity</div>
+      <div class="status-line">
+        <span class="status-dot"></span>
+        <span id="connectionStatus">Connecting...</span>
+      </div>
+      <div class="status-line">
+        <span>🔔</span>
+        <span id="activityCount">Loading activity...</span>
+      </div>
+    </div><div class="right-card">
   <div class="card-title">Stay connected</div>
   <p class="tip">
     Follow students, join campus communities, and share what's happening
@@ -703,26 +655,17 @@ a {
   Campusora · Building connections across campuses
 </div>
 
-  </aside></div><nav class="bottom-nav">
-  <a class="bottom-link" href="index.html">
-    <span>⌂</span><span>Home</span>
-  </a>
-  <a class="bottom-link" href="explore.html">
-    <span>⌕</span><span>Explore</span>
-  </a>
-  <a class="bottom-link" href="create-post.html">
-    <span>＋</span><span>Create</span>
-  </a>
-  <a class="bottom-link" href="notifications.html" aria-current="page">
-    <span>♧</span><span>Activity</span>
-  </a>
-  <a class="bottom-link" href="profile.html">
-    <span>◎</span><span>Profile</span>
-  </a>
+  </aside>
+</div><nav class="bottom-nav">
+  <a class="bottom-link" href="index.html"><span>⌂</span><span>Home</span></a>
+  <a class="bottom-link" href="explore.html"><span>⌕</span><span>Explore</span></a>
+  <a class="bottom-link" href="create-post.html"><span>＋</span><span>Create</span></a>
+  <a class="bottom-link active" href="notifications.html" aria-current="page"><span>♧</span><span>Activity</span></a>
+  <a class="bottom-link" href="profile.html"><span>◎</span><span>Profile</span></a>
 </nav><div class="toast" id="toast"></div><script type="module">
 import { supabase } from './supabase.js';
 
-const $ = (id) => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 let currentUser = null;
 let notifications = [];
@@ -733,9 +676,10 @@ let refreshTimer = null;
 const profileCache = new Map();
 const postCache = new Map();
 const communityCache = new Map();
+const giftCache = new Map();
 
 function escapeHTML(value = '') {
-  return String(value).replace(/[&<>"']/g, (char) => ({
+  return String(value).replace(/[&<>"']/g, char => ({
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
@@ -753,8 +697,8 @@ function toast(message) {
 }
 
 function initials(name = 'C') {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  return parts.slice(0, 2).map(p => p[0]).join('').toUpperCase() || 'C';
+  const parts = String(name).trim().split(/\s+/).filter(Boolean);
+  return parts.slice(0, 2).map(part => part[0]).join('').toUpperCase() || 'C';
 }
 
 function avatarHTML(profile, extraClass = '') {
@@ -782,11 +726,39 @@ function timeAgo(dateString) {
   if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
   if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
 
-  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  return date.toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric'
+  });
 }
 
 function actorName(profile) {
   return profile?.full_name || profile?.username || 'A Campusora member';
+}
+
+function giftDetails(n) {
+  const knownGifts = {
+    rose: { name: 'Rose', icon: '🌹' },
+    love: { name: 'Love', icon: '❤️' },
+    golden_star: { name: 'Golden Star', icon: '⭐' },
+    diamond: { name: 'Diamond', icon: '💎' },
+    royal_crown: { name: 'Royal Crown', icon: '👑' },
+    premium_heart: { name: 'Premium Heart', icon: '💖' }
+  };
+
+  const gift = giftCache.get(n.gift_id);
+  const fallback = knownGifts[n.gift_id] || {
+    name: 'a gift',
+    icon: '🎁'
+  };
+
+  const catalogName = gift?.name;
+  const knownIcon = knownGifts[n.gift_id]?.icon || '🎁';
+
+  return {
+    name: catalogName || fallback.name,
+    icon: knownIcon
+  };
 }
 
 function notificationMessage(n, actor) {
@@ -795,14 +767,24 @@ function notificationMessage(n, actor) {
   switch (n.type) {
     case 'like':
       return `${name} liked your post ❤️`;
+
     case 'comment':
       return `${name} commented on your post 💬`;
+
     case 'reply':
       return `${name} replied to a comment ↩️`;
+
     case 'follow':
       return `${name} started following you 👤`;
+
     case 'community_join':
       return `${name} joined your community 🏫`;
+
+    case 'gift': {
+      const gift = giftDetails(n);
+      return `${name} sent you ${escapeHTML(gift.name)} ${gift.icon}`;
+    }
+
     default:
       return `${name} interacted with you`;
   }
@@ -814,8 +796,10 @@ function iconFor(type) {
     comment: '●',
     reply: '↩',
     follow: '+',
-    community_join: '⌂'
+    community_join: '⌂',
+    gift: '🎁'
   };
+
   return icons[type] || '•';
 }
 
@@ -825,8 +809,10 @@ function typeLabel(type) {
     comment: 'comment',
     reply: 'comment',
     follow: 'follow',
-    community_join: 'community'
+    community_join: 'community',
+    gift: 'gift'
   };
+
   return labels[type] || 'all';
 }
 
@@ -843,9 +829,16 @@ async function loadRelatedData() {
     notifications.map(n => n.community_id).filter(Boolean)
   )];
 
+  const giftIds = [...new Set(
+    notifications
+      .filter(n => n.type === 'gift' && n.gift_id)
+      .map(n => n.gift_id)
+  )];
+
   const missingActors = actorIds.filter(id => !profileCache.has(id));
   const missingPosts = postIds.filter(id => !postCache.has(id));
   const missingCommunities = communityIds.filter(id => !communityCache.has(id));
+  const missingGifts = giftIds.filter(id => !giftCache.has(id));
 
   const tasks = [];
 
@@ -855,8 +848,11 @@ async function loadRelatedData() {
         .select('id,username,full_name,avatar_url,school,role')
         .in('id', missingActors)
         .then(({ data, error }) => {
-          if (error) console.warn('Could not load notification profiles:', error.message);
-          (data || []).forEach(p => profileCache.set(p.id, p));
+          if (error) {
+            console.warn('Could not load notification profiles:', error.message);
+            return;
+          }
+          (data || []).forEach(profile => profileCache.set(profile.id, profile));
         })
     );
   }
@@ -867,8 +863,11 @@ async function loadRelatedData() {
         .select('id,content,user_id')
         .in('id', missingPosts)
         .then(({ data, error }) => {
-          if (error) console.warn('Could not load notification posts:', error.message);
-          (data || []).forEach(p => postCache.set(p.id, p));
+          if (error) {
+            console.warn('Could not load notification posts:', error.message);
+            return;
+          }
+          (data || []).forEach(post => postCache.set(post.id, post));
         })
     );
   }
@@ -879,8 +878,28 @@ async function loadRelatedData() {
         .select('id,name')
         .in('id', missingCommunities)
         .then(({ data, error }) => {
-          if (error) console.warn('Could not load communities:', error.message);
-          (data || []).forEach(c => communityCache.set(c.id, c));
+          if (error) {
+            console.warn('Could not load communities:', error.message);
+            return;
+          }
+          (data || []).forEach(community =>
+            communityCache.set(community.id, community)
+          );
+        })
+    );
+  }
+
+  if (missingGifts.length) {
+    tasks.push(
+      supabase.from('campusora_gift_catalog')
+        .select('id,name')
+        .in('id', missingGifts)
+        .then(({ data, error }) => {
+          if (error) {
+            console.warn('Could not load gift names:', error.message);
+            return;
+          }
+          (data || []).forEach(gift => giftCache.set(gift.id, gift));
         })
     );
   }
@@ -889,14 +908,21 @@ async function loadRelatedData() {
 }
 
 function notificationTarget(n) {
-  if (n.post_id) return `index.html?post=${encodeURIComponent(n.post_id)}`;
-  if (n.community_id) return `communities.html?id=${encodeURIComponent(n.community_id)}`;
+  if (n.post_id) {
+    return `index.html?post=${encodeURIComponent(n.post_id)}`;
+  }
+
+  if (n.community_id) {
+    return `communities.html?id=${encodeURIComponent(n.community_id)}`;
+  }
 
   if (n.actor_id) {
     const profile = profileCache.get(n.actor_id);
+
     if (profile?.username) {
       return `profile.html?username=${encodeURIComponent(profile.username)}`;
     }
+
     return `profile.html?id=${encodeURIComponent(n.actor_id)}`;
   }
 
@@ -907,12 +933,15 @@ function renderNotification(n) {
   const actor = n.actor_id ? profileCache.get(n.actor_id) : null;
   const post = n.post_id ? postCache.get(n.post_id) : null;
   const community = n.community_id ? communityCache.get(n.community_id) : null;
+  const gift = n.type === 'gift' ? giftDetails(n) : null;
 
   const preview = post?.content
     ? `<div class="notification-preview">${escapeHTML(post.content.slice(0, 110))}${post.content.length > 110 ? '…' : ''}</div>`
     : community?.name
       ? `<div class="notification-preview">Community: ${escapeHTML(community.name)}</div>`
-      : '';
+      : gift
+        ? `<div class="notification-preview">Gift received: ${escapeHTML(gift.name)} ${gift.icon}</div>`
+        : '';
 
   const unread = !n.is_read;
 
@@ -922,7 +951,7 @@ function renderNotification(n) {
       data-type="${escapeHTML(n.type)}"
       tabindex="0"
       role="button"
-      aria-label="${escapeHTML(actorName(actor))}: ${escapeHTML(n.type)} notification"
+      aria-label="${escapeHTML(actorName(actor))}: ${escapeHTML(typeLabel(n.type))} notification"
       onclick="window.openCampusoraNotification('${escapeHTML(n.id)}')"
       onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.openCampusoraNotification('${escapeHTML(n.id)}')}">
 
@@ -981,6 +1010,10 @@ function render() {
       title = 'No new followers';
       description = 'When someone follows you, you’ll see it here.';
       icon = '♧';
+    } else if (activeFilter === 'gift') {
+      title = 'No gifts yet';
+      description = 'When someone sends you a gift, it will appear here.';
+      icon = '🎁';
     }
 
     list.innerHTML = `
@@ -998,7 +1031,9 @@ function render() {
 
   filtered.forEach(n => {
     const date = new Date(n.created_at);
-    const isToday = date.toDateString() === now.toDateString();
+    const isToday = !Number.isNaN(date.getTime()) &&
+      date.toDateString() === now.toDateString();
+
     (isToday ? today : earlier).push(n);
   });
 
@@ -1021,13 +1056,14 @@ async function loadNotifications(showLoading = false) {
 
   const { data, error } = await supabase
     .from('notifications')
-    .select('id,recipient_id,actor_id,type,post_id,comment_id,community_id,is_read,created_at')
+    .select('id,recipient_id,actor_id,type,post_id,comment_id,community_id,gift_id,is_read,created_at')
     .eq('recipient_id', currentUser.id)
     .order('created_at', { ascending: false })
     .limit(100);
 
   if (error) {
     console.error('Notification load error:', error);
+
     $('notificationList').innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">!</div>
@@ -1045,8 +1081,9 @@ async function loadNotifications(showLoading = false) {
 }
 
 async function markRead(id) {
-  const notification = notifications.find(n => n.id === id);
-  if (!notification || notification.is_read) return;
+  const notification = notifications.find(item => item.id === id);
+
+  if (!notification || notification.is_read || !currentUser) return;
 
   const { error } = await supabase
     .from('notifications')
@@ -1066,7 +1103,7 @@ async function markRead(id) {
 async function markAllRead() {
   if (!currentUser) return;
 
-  const unread = notifications.filter(n => !n.is_read);
+  const unread = notifications.filter(item => !item.is_read);
   if (!unread.length) return;
 
   const { error } = await supabase
@@ -1081,18 +1118,21 @@ async function markAllRead() {
     return;
   }
 
-  notifications.forEach(n => n.is_read = true);
+  notifications.forEach(item => {
+    item.is_read = true;
+  });
+
   render();
   toast('All notifications marked as read ✓');
 }
 
 async function openNotification(id) {
-  const n = notifications.find(item => item.id === id);
-  if (!n) return;
+  const notification = notifications.find(item => item.id === id);
+  if (!notification) return;
 
   await markRead(id);
 
-  const target = notificationTarget(n);
+  const target = notificationTarget(notification);
   window.location.href = target;
 }
 
@@ -1111,26 +1151,32 @@ function setupRealtime() {
         table: 'notifications',
         filter: `recipient_id=eq.${currentUser.id}`
       },
-      async (payload) => {
-        if (!notifications.some(n => n.id === payload.new.id)) {
-          notifications.unshift(payload.new);
+      async payload => {
+        if (notifications.some(item => item.id === payload.new.id)) return;
 
-          if (notifications.length > 100) {
-            notifications = notifications.slice(0, 100);
-          }
+        // Include the new notification's gift_id in the realtime record.
+        notifications.unshift(payload.new);
 
-          await loadRelatedData();
-          render();
+        if (notifications.length > 100) {
+          notifications = notifications.slice(0, 100);
+        }
 
-          const actor = payload.new.actor_id
-            ? profileCache.get(payload.new.actor_id)
-            : null;
+        await loadRelatedData();
+        render();
 
+        const actor = payload.new.actor_id
+          ? profileCache.get(payload.new.actor_id)
+          : null;
+
+        if (payload.new.type === 'gift') {
+          const gift = giftDetails(payload.new);
+          toast(`${actorName(actor)} sent you ${gift.name} ${gift.icon}`);
+        } else {
           toast(`New activity from ${actorName(actor)} ✨`);
         }
       }
     )
-    .subscribe((status) => {
+    .subscribe(status => {
       const statusEl = $('connectionStatus');
 
       if (status === 'SUBSCRIBED') {
@@ -1144,13 +1190,13 @@ function setupRealtime() {
 }
 
 function setupFilters() {
-  $('filterTabs').addEventListener('click', (event) => {
+  $('filterTabs').addEventListener('click', event => {
     const button = event.target.closest('[data-filter]');
     if (!button) return;
 
     activeFilter = button.dataset.filter;
 
-    document.querySelectorAll('.tab').forEach(tab => {
+    document.querySelectorAll('#filterTabs .tab').forEach(tab => {
       tab.classList.toggle('active', tab === button);
     });
 
@@ -1184,7 +1230,7 @@ async function initialize() {
       <div class="empty-state">
         <div class="empty-icon">◎</div>
         <h3>Sign in to see your activity</h3>
-        <p>Your likes, comments, and new followers will appear here after you sign in.</p>
+        <p>Your likes, comments, gifts, and new followers will appear here after you sign in.</p>
         <br>
         <a href="index.html" class="text-btn">Go to Campusora →</a>
       </div>`;
@@ -1208,7 +1254,6 @@ async function initialize() {
   await loadNotifications(true);
   setupRealtime();
 
-  // Keep relative timestamps fresh while this page remains open.
   refreshTimer = setInterval(render, 60000);
 }
 
