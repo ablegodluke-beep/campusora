@@ -27,12 +27,10 @@
 
 body{
   margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(ellipse at top left,#171438 0%,transparent 42%),
-    var(--bg);
+  background:radial-gradient(ellipse at top left,#171438 0%,transparent 42%),var(--bg);
   color:var(--text);
   font-family:Inter,sans-serif;
+  min-height:100vh
 }
 
 button,textarea{font:inherit}
@@ -41,7 +39,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 a{color:inherit;text-decoration:none}
 
 .topbar{
-  height:62px;
+  height:66px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -51,211 +49,234 @@ a{color:inherit;text-decoration:none}
   position:sticky;
   top:0;
   z-index:20;
-  backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px)
 }
 
 .brand{
-  font-size:21px;
+  font-size:22px;
   font-weight:800;
   background:linear-gradient(90deg,#b18aff,#45dafa);
   color:transparent;
   background-clip:text;
-  -webkit-background-clip:text;
+  -webkit-background-clip:text
 }
 
-.top-actions{display:flex;gap:8px}
+.top-actions{display:flex;gap:10px}
 
 .top-btn{
   background:var(--card2);
   color:var(--text);
   border:1px solid var(--border);
-  padding:8px 11px;
-  border-radius:9px;
-  font-size:12px;
+  padding:9px 13px;
+  border-radius:10px;
+  font-size:13px
 }
 
 .page{
   width:min(850px,94%);
-  margin:25px auto 55px;
+  margin:28px auto 60px
 }
 
 .profile-card,.post-card{
   background:rgba(17,22,41,.96);
   border:1px solid var(--border);
-  border-radius:17px;
+  border-radius:18px;
   overflow:hidden;
-  margin-bottom:19px;
-  transition:border-color .25s,box-shadow .25s;
+  margin-bottom:20px;
+  transition:border-color .25s,box-shadow .25s
 }
 
 .cover{
-  height:195px;
+  height:210px;
   background:
     radial-gradient(circle at 20% 20%,#7044d9,transparent 40%),
     linear-gradient(120deg,#151b3d,#302064,#07566c);
   background-position:center;
-  background-size:cover;
+  background-size:cover
 }
 
-.profile-content{padding:0 23px 23px}
+.profile-content{padding:0 25px 25px}
 
 .avatar{
-  width:105px;
-  height:105px;
+  width:112px;
+  height:112px;
   border-radius:50%;
   object-fit:cover;
   border:5px solid var(--card);
-  background:var(--card2);
+  background:var(--card2)
 }
 
-.profile-avatar{margin-top:-53px}
+.profile-avatar{margin-top:-57px}
 
 .profile-heading{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   flex-wrap:wrap;
-  gap:10px;
+  gap:12px;
+  margin-top:2px
 }
 
-.profile-heading>div:first-child{
+.profile-main{
   min-width:0;
-  flex:1;
+  flex:1
+}
+
+.name-line{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  min-width:0;
+  margin-top:10px
 }
 
 h1{
-  font-size:24px;
-  margin:11px 0 5px;
-  overflow-wrap:anywhere;
+  font-size:23px;
+  line-height:1.35;
+  margin:0;
+  overflow-wrap:anywhere
 }
 
-.username,.school,.bio{
+.username{
   color:var(--muted);
   font-size:13px;
-  line-height:1.7;
-  overflow-wrap:anywhere;
+  line-height:1.6;
+  margin-top:4px;
+  overflow-wrap:anywhere
 }
 
+/* Small role badge beside the name */
 .badge{
-  display:inline-block;
-  background:rgba(135,88,255,.17);
-  border:1px solid rgba(135,88,255,.45);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(135,88,255,.14);
+  border:1px solid rgba(135,88,255,.4);
   color:#c8b4ff;
   border-radius:20px;
-  padding:5px 9px;
+  padding:4px 7px;
   font-size:10px;
   font-weight:700;
-  margin-top:9px;
+  line-height:1.2;
+  white-space:nowrap;
+  margin:0
 }
 
+/* Compact Premium badge */
 .premium-badge{
   display:inline-flex;
   align-items:center;
-  gap:4px;
-  background:linear-gradient(135deg,rgba(245,206,117,.17),rgba(168,121,37,.1));
-  border:1px solid rgba(245,206,117,.7);
+  justify-content:center;
+  gap:3px;
+  background:rgba(245,206,117,.09);
+  border:1px solid rgba(245,206,117,.48);
   color:var(--gold);
   border-radius:20px;
-  padding:5px 9px;
-  font-size:10px;
+  padding:3px 6px;
+  font-size:9px;
   font-weight:800;
-  letter-spacing:.5px;
-  margin:9px 0 0 4px;
+  letter-spacing:.25px;
+  line-height:1.2;
+  white-space:nowrap;
+  margin:0
+}
+
+.school{
+  color:#aeb8d7;
+  font-size:12px;
+  line-height:1.6;
+  margin-top:9px;
+  overflow-wrap:anywhere
 }
 
 .bio{
   color:#dce1f7;
-  margin-top:13px;
+  font-size:13px;
+  line-height:1.7;
+  margin-top:9px;
   white-space:pre-wrap;
+  overflow-wrap:anywhere
 }
 
+/* Compact Premium upgrade button */
 .profile-actions{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:flex-end;
-  gap:7px;
-  flex-wrap:wrap;
+  flex-shrink:0;
+  gap:6px;
+  margin-top:8px
 }
 
-/* Smaller Share Profile button */
-.primary-btn{
-  background:linear-gradient(110deg,var(--purple),var(--blue));
-  color:white;
-  border:0;
-  border-radius:8px;
-  padding:8px 10px;
-  font-size:11px;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-/* Compact Premium button */
 .premium-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:5px;
+  gap:4px;
   background:linear-gradient(135deg,#17130d,#282013);
   color:#f5ce75;
-  border:1px solid rgba(245,206,117,.65);
+  border:1px solid rgba(245,206,117,.5);
   border-radius:8px;
-  padding:8px 10px;
+  padding:7px 8px;
   font-size:10px;
   font-weight:800;
   white-space:nowrap;
-  box-shadow:0 2px 12px rgba(0,0,0,.18);
-  transition:background .2s,border-color .2s,transform .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  transition:background .2s,border-color .2s
 }
 
 .premium-btn:hover{
   background:linear-gradient(135deg,#282013,#3b2b14);
-  border-color:#f5ce75;
-  transform:translateY(-1px);
+  border-color:#f5ce75
 }
 
-.premium-symbol{font-size:13px;line-height:1}
+.premium-symbol{
+  font-size:11px;
+  line-height:1
+}
 
 .stats{
   display:flex;
-  gap:23px;
+  gap:25px;
   flex-wrap:wrap;
   border-top:1px solid var(--border);
-  margin-top:19px;
-  padding-top:16px;
+  margin-top:20px;
+  padding-top:18px
 }
 
-.stat strong{display:block;font-size:17px}
-.stat span{color:var(--muted);font-size:11px}
+.stat strong{display:block;font-size:18px}
+.stat span{color:var(--muted);font-size:12px}
 
-.section-title{font-size:18px;margin:26px 0 14px}
+.section-title{font-size:19px;margin:28px 0 15px}
 
-.post-card{padding:17px}
+.post-card{padding:19px}
 
-.post-header{display:flex;align-items:center;gap:10px}
+.post-header{display:flex;align-items:center;gap:11px}
 
 .post-avatar{
-  width:41px;
-  height:41px;
+  width:43px;
+  height:43px;
   border-radius:50%;
   object-fit:cover;
   background:var(--card2);
-  flex-shrink:0;
+  flex-shrink:0
 }
 
 .post-author{
-  font-size:13px;
+  font-size:14px;
   font-weight:700;
-  overflow-wrap:anywhere;
+  overflow-wrap:anywhere
 }
 
-.post-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.post-meta{font-size:11px;color:var(--muted);margin-top:5px}
 
 .post-text{
-  font-size:13px;
+  font-size:14px;
   line-height:1.8;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
-  margin:15px 0;
+  margin:17px 0
 }
 
 .post-image{
@@ -263,9 +284,9 @@ h1{
   max-height:560px;
   object-fit:contain;
   background:#090c18;
-  border-radius:11px;
+  border-radius:12px;
   display:block;
-  margin-bottom:14px;
+  margin-bottom:15px
 }
 
 .post-stats{
@@ -273,64 +294,64 @@ h1{
   justify-content:space-between;
   gap:10px;
   color:var(--muted);
-  font-size:11px;
-  padding:9px 2px;
-  border-bottom:1px solid var(--border);
+  font-size:12px;
+  padding:10px 2px;
+  border-bottom:1px solid var(--border)
 }
 
 .post-actions{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  padding-top:10px;
+  gap:8px;
+  padding-top:11px
 }
 
 .action-btn{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
+  gap:7px;
   border:0;
   background:transparent;
   color:#b8c1df;
-  border-radius:9px;
-  padding:10px 5px;
-  font-size:11px;
+  border-radius:10px;
+  padding:11px 5px;
+  font-size:12px
 }
 
 .action-btn:hover{background:var(--card2);color:white}
-.action-icon{font-size:18px;line-height:1}
+.action-icon{font-size:19px;line-height:1}
 .action-btn.liked,.react-btn.reacted{
   color:#ff6b91;
-  background:rgba(255,99,132,.09);
+  background:rgba(255,99,132,.09)
 }
 
 .comments-area{
   border-top:1px solid var(--border);
-  margin-top:11px;
-  padding-top:14px;
+  margin-top:12px;
+  padding-top:15px
 }
 
 .comment-form{
   display:flex;
   align-items:center;
   gap:8px;
-  margin-bottom:14px;
+  margin-bottom:15px
 }
 
 .comment-input{
   width:100%;
   min-width:0;
   resize:vertical;
-  min-height:40px;
+  min-height:42px;
   max-height:130px;
   color:white;
   background:#0b1020;
   border:1px solid var(--border);
-  border-radius:11px;
-  padding:11px;
+  border-radius:12px;
+  padding:12px;
   outline:none;
-  font-size:12px;
+  font-size:13px
 }
 
 .comment-input:focus{border-color:var(--purple)}
@@ -339,60 +360,60 @@ h1{
   background:var(--purple);
   border:0;
   color:white;
-  border-radius:9px;
-  padding:10px 12px;
-  font-size:11px;
+  border-radius:10px;
+  padding:11px 13px;
+  font-size:12px;
   font-weight:700;
-  flex-shrink:0;
+  flex-shrink:0
 }
 
 .comment{
   display:flex;
-  gap:8px;
-  margin:13px 0;
+  gap:9px;
+  margin:14px 0
 }
 
 .comment-avatar{
-  width:32px;
-  height:32px;
+  width:33px;
+  height:33px;
   object-fit:cover;
   border-radius:50%;
   background:var(--card2);
-  flex-shrink:0;
+  flex-shrink:0
 }
 
 .comment-body{
   flex:1;
   min-width:0;
   background:#0b1020;
-  padding:9px 11px;
-  border-radius:11px;
+  padding:10px 12px;
+  border-radius:12px
 }
 
 .comment-name{
-  font-size:11px;
+  font-size:12px;
   font-weight:700;
-  margin-bottom:5px;
+  margin-bottom:6px;
   color:#c8b4ff;
-  display:inline-block;
+  display:inline-block
 }
 
 .comment-text{
   color:#dce1f7;
-  font-size:12px;
+  font-size:13px;
   line-height:1.6;
   white-space:pre-wrap;
-  overflow-wrap:anywhere;
+  overflow-wrap:anywhere
 }
 
-.comment-time{font-size:10px;color:var(--muted);margin-top:6px}
+.comment-time{font-size:10px;color:var(--muted);margin-top:7px}
 
 .comment-tools{
   display:flex;
   align-items:center;
-  gap:13px;
+  gap:14px;
   flex-wrap:wrap;
-  margin-top:8px;
+  margin-top:9px
 }
 
 .small-action{
@@ -400,58 +421,61 @@ h1{
   background:transparent;
   color:var(--muted);
   padding:3px 0;
-  font-size:10px;
+  font-size:11px
 }
 
 .small-action:hover{color:white}
 
 .replies{
-  margin:8px 0 0 11px;
-  padding-left:11px;
-  border-left:2px solid var(--border);
+  margin:9px 0 0 12px;
+  padding-left:12px;
+  border-left:2px solid var(--border)
 }
 
-.reply-form{display:flex;gap:7px;margin-top:9px}
-.reply-form .comment-input{min-height:36px;padding:8px}
-.reply-form .comment-send{padding:8px 10px}
+.reply-form{display:flex;gap:7px;margin-top:10px}
+.reply-form .comment-input{min-height:38px;padding:9px}
+.reply-form .comment-send{padding:9px 11px}
 
 .empty,.message{
   background:var(--card);
   border:1px solid var(--border);
   color:var(--muted);
-  border-radius:13px;
-  padding:23px;
+  border-radius:14px;
+  padding:25px;
   text-align:center;
   line-height:1.7;
-  font-size:12px;
+  font-size:13px
 }
 
-.message.error{color:#ff9aae;border-color:rgba(255,99,132,.4)}
+.message.error{
+  color:#ff9aae;
+  border-color:rgba(255,99,132,.4)
+}
 
 .hidden{display:none!important}
-.loading{text-align:center;padding:45px 15px;color:var(--muted)}
+.loading{text-align:center;padding:50px 15px;color:var(--muted)}
 
 /* Premium appearance */
 body.premium-active{
   background:
     radial-gradient(ellipse at top left,rgba(101,63,153,.25),transparent 42%),
     radial-gradient(ellipse at top right,rgba(168,121,37,.1),transparent 40%),
-    #08090f;
+    #08090f
 }
 
 body.premium-active .profile-card{
-  border-color:rgba(245,206,117,.55);
-  box-shadow:0 0 28px rgba(168,121,37,.08);
+  border-color:rgba(245,206,117,.45);
+  box-shadow:0 0 22px rgba(168,121,37,.07)
 }
 
 body.premium-active .cover{
   background:
-    radial-gradient(circle at 20% 20%,rgba(245,206,117,.35),transparent 35%),
+    radial-gradient(circle at 20% 20%,rgba(245,206,117,.3),transparent 35%),
     linear-gradient(120deg,#100e18,#35234e,#17120b);
-  border-bottom:1px solid rgba(245,206,117,.3);
+  border-bottom:1px solid rgba(245,206,117,.25)
 }
 
-/* Premium plans modal */
+/* Premium modal */
 .modal-overlay{
   position:fixed;
   inset:0;
@@ -461,7 +485,7 @@ body.premium-active .cover{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:16px;
+  padding:18px
 }
 
 .premium-modal{
@@ -470,10 +494,10 @@ body.premium-active .cover{
   overflow-y:auto;
   background:linear-gradient(160deg,#171522,#0d1020 75%);
   border:1px solid rgba(245,206,117,.4);
-  border-radius:17px;
-  padding:20px;
+  border-radius:19px;
+  padding:22px;
   box-shadow:0 20px 70px rgba(0,0,0,.5);
-  animation:modalIn .2s ease-out;
+  animation:modalIn .2s ease-out
 }
 
 @keyframes modalIn{
@@ -486,80 +510,80 @@ body.premium-active .cover{
   align-items:flex-start;
   justify-content:space-between;
   gap:12px;
-  margin-bottom:8px;
+  margin-bottom:8px
 }
 
 .modal-title{
   margin:0;
-  font-size:18px;
+  font-size:19px;
   line-height:1.4;
-  color:#fff4d9;
+  color:#fff4d9
 }
 
 .modal-subtitle{
   color:var(--muted);
-  font-size:11px;
+  font-size:12px;
   line-height:1.7;
-  margin:8px 0 16px;
+  margin:8px 0 18px
 }
 
 .modal-close{
-  width:29px;
-  height:29px;
+  width:30px;
+  height:30px;
   flex-shrink:0;
   border:1px solid var(--border);
-  border-radius:8px;
+  border-radius:9px;
   background:#171d33;
   color:white;
-  font-size:17px;
+  font-size:17px
 }
 
 .plan-card{
   border:1px solid rgba(245,206,117,.25);
-  border-radius:12px;
+  border-radius:13px;
   background:rgba(255,255,255,.025);
-  padding:13px;
-  margin-top:10px;
-  transition:border-color .2s,background .2s;
+  padding:15px;
+  margin-top:11px;
+  transition:border-color .2s,background .2s
 }
 
 .plan-card:hover{
   border-color:rgba(245,206,117,.7);
-  background:rgba(245,206,117,.045);
+  background:rgba(245,206,117,.045)
 }
 
 .plan-top{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
-  gap:10px;
+  gap:10px
 }
 
 .plan-name{
   color:#f9f4e8;
-  font-size:12px;
-  font-weight:800;
+  font-size:13px;
+  font-weight:800
 }
 
 .plan-description{
   color:var(--muted);
-  font-size:10px;
+  font-size:11px;
   line-height:1.6;
-  margin-top:5px;
+  margin-top:5px
 }
 
 .plan-price{
   color:var(--gold);
-  font-size:18px;
+  font-size:19px;
   font-weight:800;
-  white-space:nowrap;
+  white-space:nowrap
 }
 
 .plan-duration{
   color:#c3b58e;
   font-size:10px;
-  margin-top:3px;
-  text-align:right;
+  margin-top:4px;
+  text-align:right
 }
 
 .plan-continue{
@@ -568,72 +592,84 @@ body.premium-active .cover{
   align-items:center;
   justify-content:center;
   gap:7px;
-  margin-top:12px;
-  padding:10px 11px;
+  margin-top:13px;
+  padding:10px 12px;
   border:1px solid rgba(245,206,117,.55);
   border-radius:9px;
   background:linear-gradient(135deg,#342713,#20190f);
   color:#f5ce75;
-  font-size:11px;
-  font-weight:800;
+  font-size:12px;
+  font-weight:800
 }
 
-.plan-continue:hover{background:linear-gradient(135deg,#4a3618,#2d2110)}
+.plan-continue:hover{
+  background:linear-gradient(135deg,#4a3618,#2d2110)
+}
 
 .plan-card.permanent{border-color:rgba(135,88,255,.45)}
 
 .plan-card.permanent .plan-continue{
   background:linear-gradient(110deg,#6641c8,#3b5ac7);
   border-color:transparent;
-  color:white;
+  color:white
 }
 
 .modal-note{
-  margin:14px 0 0;
+  margin:15px 0 0;
   color:#7f89a8;
   font-size:10px;
   line-height:1.7;
-  text-align:center;
+  text-align:center
 }
 
 .premium-status{
-  padding:12px;
-  margin-top:11px;
+  padding:13px;
+  margin-top:12px;
   background:rgba(245,206,117,.07);
   border:1px solid rgba(245,206,117,.3);
-  border-radius:10px;
+  border-radius:11px;
   color:#f5ce75;
-  font-size:11px;
-  line-height:1.8;
+  font-size:12px;
+  line-height:1.8
 }
 
 .modal-message{
   color:var(--muted);
-  font-size:11px;
+  font-size:12px;
   line-height:1.7;
-  margin-top:12px;
-  overflow-wrap:anywhere;
+  margin-top:13px
 }
 
 @media(max-width:600px){
-  .topbar{padding:0 4%;height:58px}
-  .brand{font-size:18px}
-  .top-btn{padding:7px 8px;font-size:10px}
-  .page{width:94%;margin-top:15px}
-  .cover{height:145px}
-  .profile-content{padding:0 14px 18px}
-  .avatar{width:88px;height:88px}
-  .profile-avatar{margin-top:-44px}
-  h1{font-size:20px}
-  .post-card{padding:13px;border-radius:14px}
-  .action-btn{gap:4px;font-size:10px}
-  .action-icon{font-size:17px}
-  .stats{gap:18px}
+  .topbar{padding:0 4%;height:60px}
+  .brand{font-size:19px}
+  .top-btn{padding:8px 9px;font-size:11px}
+  .page{width:94%;margin-top:16px}
+  .cover{height:150px}
+  .profile-content{padding:0 16px 20px}
+  .avatar{width:90px;height:90px}
+  .profile-avatar{margin-top:-46px}
+  h1{font-size:19px}
+  .name-line{gap:6px}
+  .badge{font-size:9px;padding:4px 6px}
+  .premium-badge{font-size:8px;padding:3px 5px}
+  .school{font-size:11px;margin-top:8px}
+  .bio{font-size:12px;margin-top:8px}
+  .profile-heading{gap:8px}
+  .profile-actions{margin-top:8px}
+  .premium-btn{padding:6px 7px;font-size:9px}
+  .premium-symbol{font-size:10px}
+  .post-card{padding:14px;border-radius:15px}
+  .action-btn{gap:5px;font-size:11px}
+  .action-icon{font-size:18px}
+  .stats{gap:19px}
   .replies{margin-left:5px;padding-left:8px}
-  .profile-actions{width:100%;justify-content:flex-start}
-  .premium-btn{padding:8px 9px;font-size:10px}
-  .primary-btn{padding:8px 9px;font-size:10px}
-  .premium-modal{padding:17px}
+  .premium-modal{padding:18px}
+}
+
+@media(max-width:380px){
+  .profile-heading{display:block}
+  .profile-actions{justify-content:flex-start;margin-top:12px}
 }
 </style>
 </head>
@@ -658,12 +694,16 @@ body.premium-active .cover{
       <img id="profileAvatar" class="avatar profile-avatar" alt="Profile photo">
 
       <div class="profile-heading">
-        <div>
-          <h1 id="profileName">Campusora Member</h1>
-          <div id="profileUsername" class="username"></div>
+        <div class="profile-main">
+          <div class="name-line">
+            <h1 id="profileName">Campusora Member</h1>
+            <span id="profileBadge" class="badge">Member</span>
+            <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
+          </div>
 
-          <span id="profileBadge" class="badge">Member</span>
-          <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
+          <div id="profileUsername" class="username"></div>
+          <div id="profileSchool" class="school"></div>
+          <div id="profileBio" class="bio"></div>
         </div>
 
         <div class="profile-actions">
@@ -671,15 +711,8 @@ body.premium-active .cover{
             <span class="premium-symbol">✦</span>
             <span>Upgrade to Premium</span>
           </button>
-
-          <button id="shareProfileBtn" class="primary-btn" type="button">
-            ↗ Share Profile
-          </button>
         </div>
       </div>
-
-      <div id="profileSchool" class="school"></div>
-      <div id="profileBio" class="bio"></div>
 
       <div class="stats">
         <div class="stat"><strong id="postCount">0</strong><span>Posts</span></div>
@@ -693,6 +726,7 @@ body.premium-active .cover{
   <section id="postsContainer"></section>
 </main>
 
+<!-- Premium plan modal -->
 <div id="premiumModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="premiumModalTitle">
   <div class="premium-modal">
     <div class="modal-top">
@@ -764,20 +798,20 @@ const fallbackAvatar = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" rx="50" fill="#252d48"/><text x="50" y="62" text-anchor="middle" font-size="45" fill="#c8b4ff">👤</text></svg>'
 );
 
-function formatDate(value){
-  if(!value)return '';
-  const date=new Date(value);
-  if(Number.isNaN(date.getTime()))return '';
-  return date.toLocaleString([],{dateStyle:'medium',timeStyle:'short'});
+function formatDate(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
 }
 
-function showMessage(message,error=false){
+function showMessage(message,error=false) {
   $('pageMessage').textContent=message;
   $('pageMessage').classList.remove('hidden');
   $('pageMessage').classList.toggle('error',error);
 }
 
-function makeActionButton(icon,label){
+function makeActionButton(icon,label) {
   const button=document.createElement('button');
   button.type='button';
   button.className='action-btn';
@@ -794,11 +828,11 @@ function makeActionButton(icon,label){
   return button;
 }
 
-function profileLink(userId){
+function profileLink(userId) {
   return './profile.html?id='+encodeURIComponent(userId);
 }
 
-function makeProfileAvatar(person,className='comment-avatar'){
+function makeProfileAvatar(person, className='comment-avatar') {
   const img=document.createElement('img');
   img.className=className;
   img.src=person?.avatar_url||fallbackAvatar;
@@ -808,7 +842,7 @@ function makeProfileAvatar(person,className='comment-avatar'){
   return img;
 }
 
-function makeProfileName(person){
+function makeProfileName(person) {
   const a=document.createElement('a');
   a.className='comment-name';
   a.href=profileLink(person.id);
@@ -818,12 +852,12 @@ function makeProfileName(person){
 
 /* PREMIUM MEMBERSHIP */
 
-function openPremiumModal(){
+function openPremiumModal() {
   $('premiumModal').classList.remove('hidden');
   document.body.style.overflow='hidden';
 }
 
-function closePremiumModal(){
+function closePremiumModal() {
   $('premiumModal').classList.add('hidden');
   document.body.style.overflow='';
 }
@@ -848,7 +882,7 @@ $('premiumButton').addEventListener('click',async()=>{
   }
 
   if(!isOwnProfile){
-    location.href='./profile.html';
+    alert('You can upgrade your own profile from your profile page.');
     return;
   }
 
@@ -856,21 +890,20 @@ $('premiumButton').addEventListener('click',async()=>{
   openPremiumModal();
 });
 
-function showPremiumStatus(membership){
+function showPremiumStatus(membership) {
   activePremium=membership||null;
 
   const badge=$('premiumBadge');
   const status=$('premiumStatus');
   const plans=$('premiumPlans');
-  const button=$('premiumButton');
 
   if(!membership){
     badge.classList.add('hidden');
     document.body.classList.remove('premium-active');
     status.classList.add('hidden');
     plans.classList.remove('hidden');
-    button.classList.remove('hidden');
-    button.querySelector('span:last-child').textContent='Upgrade to Premium';
+    $('premiumButton').classList.remove('hidden');
+    $('premiumButton').querySelector('span:last-child').textContent='Upgrade to Premium';
     return;
   }
 
@@ -878,7 +911,7 @@ function showPremiumStatus(membership){
   document.body.classList.add('premium-active');
   status.classList.remove('hidden');
   plans.classList.add('hidden');
-  button.classList.add('hidden');
+  $('premiumButton').classList.add('hidden');
 
   if(membership.plan_type==='permanent'){
     status.textContent='✦ Your Permanent Premium membership is active. You have no expiry date.';
@@ -888,7 +921,7 @@ function showPremiumStatus(membership){
   }
 }
 
-async function refreshPremiumStatus(){
+async function refreshPremiumStatus() {
   if(!currentUser||!isOwnProfile||!currentProfile)return;
 
   const {data,error}=await supabase
@@ -919,19 +952,19 @@ async function refreshPremiumStatus(){
   showPremiumStatus(membership);
 }
 
-function setPremiumMessage(message,isError=false){
+function setPremiumMessage(message,isError=false) {
   const box=$('premiumModalMessage');
   box.textContent=message;
   box.classList.remove('hidden');
   box.style.color=isError?'#ff9aae':'#d7c99e';
 }
 
-function clearPremiumMessage(){
+function clearPremiumMessage() {
   $('premiumModalMessage').textContent='';
   $('premiumModalMessage').classList.add('hidden');
 }
 
-async function startPremiumCheckout(planType){
+async function startPremiumCheckout(planType) {
   if(premiumBusy)return;
 
   if(!currentUser){
@@ -941,7 +974,7 @@ async function startPremiumCheckout(planType){
   }
 
   if(!isOwnProfile){
-    location.href='./profile.html';
+    setPremiumMessage('Open your own profile to purchase Premium.',true);
     return;
   }
 
@@ -949,8 +982,6 @@ async function startPremiumCheckout(planType){
     setPremiumMessage('This Premium plan is not valid.',true);
     return;
   }
-
-  await refreshPremiumStatus();
 
   if(activePremium){
     setPremiumMessage('You already have an active Premium membership.');
@@ -969,7 +1000,6 @@ async function startPremiumCheckout(planType){
   clearPremiumMessage();
 
   const buttons=[...document.querySelectorAll('[data-plan]')];
-
   buttons.forEach(button=>{
     button.disabled=true;
     button.dataset.originalText=button.textContent;
@@ -999,7 +1029,6 @@ async function startPremiumCheckout(planType){
     setPremiumMessage(error.message||'Payment could not be started. Please try again.',true);
   }finally{
     premiumBusy=false;
-
     buttons.forEach(button=>{
       button.disabled=false;
       button.textContent=button.dataset.originalText||'Continue';
@@ -1013,7 +1042,7 @@ document.querySelectorAll('[data-plan]').forEach(button=>{
   });
 });
 
-async function verifyPremiumPaymentReturn(){
+async function verifyPremiumPaymentReturn() {
   const params=new URLSearchParams(location.search);
   const reference=params.get('reference')||params.get('trxref');
 
@@ -1077,7 +1106,7 @@ async function verifyPremiumPaymentReturn(){
 
 /* PROFILE */
 
-async function loadProfile(){
+async function loadProfile() {
   const {data:sessionData}=await supabase.auth.getSession();
   currentUser=sessionData?.session?.user||null;
 
@@ -1114,7 +1143,10 @@ async function loadProfile(){
   $('profileName').textContent=profile.full_name||profile.username||'Campusora Member';
   $('profileUsername').textContent=profile.username?'@'+profile.username:'';
   $('profileSchool').textContent=profile.school||'';
-  $('profileBio').textContent=profile.bio||'';
+
+  const bio=$('profileBio');
+  bio.textContent=profile.bio||'';
+  bio.classList.toggle('hidden',!profile.bio);
 
   const roles={
     student:'🎓 Student',
@@ -1123,20 +1155,16 @@ async function loadProfile(){
   };
 
   $('profileBadge').textContent=roles[(profile.role||'general').toLowerCase()]||'🌟 Member';
+
   $('profileAvatar').src=profile.avatar_url||fallbackAvatar;
+  $('profileAvatar').onerror=()=>{$('profileAvatar').src=fallbackAvatar};
 
   if(profile.cover_url){
     $('cover').style.backgroundImage=`url("${profile.cover_url.replaceAll('"','%22')}")`;
   }
 
-  $('shareProfileBtn').addEventListener('click',shareProfile);
-
-  /*
-    Show the Premium button whenever a user is logged in.
-    If they are viewing another person's profile, clicking it
-    redirects them to their own profile.
-  */
-  $('premiumButton').classList.toggle('hidden',!currentUser);
+  // The Premium button is only shown on the logged-in user's own profile.
+  $('premiumButton').classList.toggle('hidden',!isOwnProfile);
 
   $('loading').classList.add('hidden');
   $('profileSection').classList.remove('hidden');
@@ -1153,7 +1181,7 @@ async function loadProfile(){
   }
 }
 
-async function loadCounts(profile){
+async function loadCounts(profile) {
   const [p,f,following]=await Promise.all([
     supabase.from('posts').select('id',{count:'exact',head:true}).eq('user_id',profile.id),
     supabase.from('follows').select('follower_id',{count:'exact',head:true}).eq('following_id',profile.id),
@@ -1165,7 +1193,7 @@ async function loadCounts(profile){
   $('followingCount').textContent=following.count??0;
 }
 
-async function loadPosts(profile){
+async function loadPosts(profile) {
   const container=$('postsContainer');
   container.replaceChildren();
 
@@ -1206,7 +1234,7 @@ async function loadPosts(profile){
   }
 }
 
-async function createPostCard(post,author){
+async function createPostCard(post,author) {
   const card=document.createElement('article');
   card.className='post-card';
   card.id='post-'+post.id;
@@ -1360,7 +1388,7 @@ async function createPostCard(post,author){
     }
   });
 
-  async function renderComments(){
+  async function renderComments() {
     area.replaceChildren();
 
     const form=document.createElement('form');
@@ -1456,7 +1484,7 @@ async function createPostCard(post,author){
     }
   }
 
-  async function buildComment(item,person,all,peopleMap,depth){
+  async function buildComment(item,person,all,peopleMap,depth) {
     const wrapper=document.createElement('div');
     const row=document.createElement('div');
     row.className='comment';
@@ -1646,26 +1674,6 @@ async function createPostCard(post,author){
   return card;
 }
 
-async function shareProfile(){
-  const url=new URL('./profile.html',location.href);
-  url.searchParams.set('id',currentProfile.id);
-
-  try{
-    if(navigator.share){
-      await navigator.share({
-        title:currentProfile.full_name||'Campusora profile',
-        text:'Connect with me on Campusora!',
-        url:url.href
-      });
-    }else{
-      await navigator.clipboard.writeText(url.href);
-      alert('Profile link copied!');
-    }
-  }catch(e){
-    if(e.name!=='AbortError')prompt('Copy your profile link:',url.href);
-  }
-}
-
 loadProfile().catch(error=>{
   console.error(error);
   $('loading').classList.add('hidden');
@@ -1673,4 +1681,4 @@ loadProfile().catch(error=>{
 });
 </script>
 </body>
-      </html>
+  </html>
