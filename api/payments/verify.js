@@ -11,7 +11,9 @@ const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !PAYSTACK_SECRET_KEY) {
 console.error("Missing required environment variables");
-return res.status(500).json({ error: "Payment service is not configured." });
+return res.status(500).json({
+error: "Payment service is not configured."
+});
 }
 
 try {
@@ -21,7 +23,9 @@ const accessToken = authHeader.startsWith("Bearer ")
 : "";
 
 if (!accessToken) {
-  return res.status(401).json({ error: "Please log in again." });
+  return res.status(401).json({
+    error: "Please log in again."
+  });
 }
 
 // Confirm the logged-in user with Supabase Auth.
@@ -33,19 +37,26 @@ const userResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
 });
 
 if (!userResponse.ok) {
-  return res.status(401).json({ error: "Your login session is invalid." });
+  return res.status(401).json({
+    error: "Your login session is invalid."
+  });
 }
 
 const user = await userResponse.json();
 const reference = req.body?.reference;
 
-if (typeof reference !== "string" || !/^campusora_[A-Za-z0-9_-]+_\d+$/.test(reference)) {
-  return res.status(400).json({ error: "Invalid payment reference." });
+if (
+  typeof reference !== "string" ||
+  !/^campusora_[A-Za-z0-9_-]+_\d+$/.test(reference)
+) {
+  return res.status(400).json({
+    error: "Invalid payment reference."
+  });
 }
 
-// Find the campaign belonging to this user and matching this reference.
+// Retrieve the campaign belonging to this user.
 const campaignResponse = await fetch(
-  `${SUPABASE_URL}/rest/v1/sponsored_campaigns?user_id=eq.${encodeURIComponent(user.id)}&payment_reference=eq.${encodeURIComponent(reference)}&select=id,user_id,duration_days,amount_kobo,status,payment_verified,payment_reference`,
+  `${SUPABASE_URL}/rest/v1/sponsored_campaigns?user_id=eq.${encodeURIComponent(user.id)}&payment_reference=eq.${encodeURIComponent(reference)}&select=id,user_id,duration_days,amount_kobo,status,payment_verified,payment_reference,published_at,expires_at`,
   {
     headers: {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
@@ -55,22 +66,68 @@ const campaignResponse = await fetch(
 );
 
 if (!campaignResponse.ok) {
-  console.error("Could not retrieve campaign:", await campaignResponse.text());
-  return res.status(500).json({ error: "Could not check your campaign." });
+  console.error(
+    "Could not retrieve campaign:",
+    await campaignResponse.text()
+  );
+
+  return res.status(500).json({
+    error: "Could not check your campaign."
+  });
 }
 
 const campaigns = await campaignResponse.json();
 const campaign = campaigns[0];
 
 if (!campaign) {
-  return res.status(404).json({ error: "No campaign matches this payment reference." });
+  return res.status(404).json({
+    error: "No campaign matches this payment reference."
+  });
 }
 
-// If already verified, return success without changing anything again.
+// Do not reactivate campaigns that have subsequently been paused,
+// rejected, cancelled, or completed.
 if (campaign.payment_verified === true) {
+  if (
+    campaign.status === "active" &&
+    campaign.expires_at &&
+    new Date(campaign.expires_at).getTime() > Date.now()
+  ) {
+    return res.status(200).json({
+      success: true,
+      published: true,
+      message: "Your post has been published!",
+      published_at: campaign.published_at,
+      expires_at: campaign.expires_at
+    });
+  }
+
+  if (
+    campaign.status === "active" &&
+    campaign.expires_at &&
+    new Date(campaign.expires_at).getTime() <= Date.now()
+  ) {
+    // An expired campaign must not be reported as published.
+    return res.status(200).json({
+      success: false,
+      published: false,
+      expired: true,
+      message: "This campaign has expired."
+    });
+  }
+
   return res.status(200).json({
     success: true,
-    message: "Payment was already verified."
+    published: false,
+    message: "Payment was already verified. Your campaign is not currently active.",
+    status: campaign.status
+  });
+}
+
+// Only unpaid campaigns waiting for payment can be published here.
+if (campaign.status !== "pending_payment") {
+  return res.status(409).json({
+    error: "This campaign is not awaiting payment and cannot be published automatically."
   });
 }
 
@@ -82,13 +139,19 @@ const prices = {
   30: 1500000
 };
 
-const expectedAmount = prices[campaign.duration_days];
+const durationDays = Number(campaign.duration_days);
+const expectedAmount = prices[durationDays];
 
-if (!expectedAmount || Number(campaign.amount_kobo) !== expectedAmount) {
-  return res.status(400).json({ error: "The campaign price could not be validated." });
+if (
+  !expectedAmount ||
+  Number(campaign.amount_kobo) !== expectedAmount
+) {
+  return res.status(400).json({
+    error: "The campaign price could not be validated."
+  });
 }
 
-// Ask Paystack directly whether this exact transaction succeeded.
+// Verify the transaction directly with Paystack.
 const paystackResponse = await fetch(
   `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
   {
@@ -114,7 +177,7 @@ if (
   });
 }
 
-// Check transaction metadata when Paystack provides it.
+// Ensure the payment belongs to this exact campaign and user.
 const metadata = paystackData.data.metadata || {};
 
 if (
@@ -127,7 +190,13 @@ if (
   });
 }
 
-// Mark paid campaigns as awaiting admin review, never automatically live.
+// Calculate the publication period using the server's clock.
+const publishedAt = new Date();
+const expiresAt = new Date(
+  publishedAt.getTime() + durationDays * 24 * 60 * 60 * 1000
+);
+
+// Activate only the matching, still-unpaid campaign.
 const updateResponse = await fetch(
   `${SUPABASE_URL}/rest/v1/sponsored_campaigns?id=eq.${encodeURIComponent(campaign.id)}&user_id=eq.${encodeURIComponent(user.id)}&payment_reference=eq.${encodeURIComponent(reference)}&payment_verified=eq.false&status=eq.pending_payment`,
   {
@@ -140,15 +209,22 @@ const updateResponse = await fetch(
     },
     body: JSON.stringify({
       payment_verified: true,
-      status: "pending_review"
+      status: "active",
+      published_at: publishedAt.toISOString(),
+      expires_at: expiresAt.toISOString(),
+      updated_at: publishedAt.toISOString()
     })
   }
 );
 
 if (!updateResponse.ok) {
-  console.error("Campaign update failed:", await updateResponse.text());
+  console.error(
+    "Campaign update failed:",
+    await updateResponse.text()
+  );
+
   return res.status(500).json({
-    error: "Payment was confirmed, but the campaign status could not be updated. Please contact support."
+    error: "Payment was confirmed, but publishing failed. Please contact support before attempting another payment."
   });
 }
 
@@ -156,19 +232,24 @@ const updatedCampaigns = await updateResponse.json();
 
 if (updatedCampaigns.length !== 1) {
   return res.status(409).json({
-    error: "The campaign was not updated. Please refresh and check its status."
+    error: "Payment was confirmed, but the campaign was not published. Please contact support before attempting another payment."
   });
 }
 
 return res.status(200).json({
   success: true,
-  message: "Payment verified. Your campaign is awaiting admin review."
+  published: true,
+  message: "Your post has been published!",
+  published_at: publishedAt.toISOString(),
+  expires_at: expiresAt.toISOString()
 });
 
 } catch (error) {
 console.error("Payment verification error:", error);
+
 return res.status(500).json({
-error: "An unexpected payment verification error occurred."
+  error: "An unexpected payment verification error occurred."
 });
+
 }
-  }
+    }
