@@ -1278,17 +1278,32 @@
       showNotice('Preparing secure Paystack checkout...', 'info');
       submitBtn.textContent = 'Preparing payment...';
 
-      const {
-        data: paymentData,
-        error: paymentError
-      } = await supabase.functions.invoke(
-        'initialize-sponsored-payment',
-        {
-          body: {
-            campaign_id: campaignId
-          }
-        }
-      );
+      console.log('[Campusora Payment] Starting initialization');
+console.log('[Campusora Payment] Campaign ID:', campaignId);
+
+const { data: paymentData, error: paymentError } =
+  await supabase.functions.invoke(
+    'initialize-sponsored-payment',
+    {
+      body: { campaign_id: campaignId }
+    }
+  );
+
+if (paymentError) {
+  console.error('[Campusora Payment] Request failed:', {
+    name: paymentError.name,
+    message: paymentError.message,
+    context: paymentError.context
+  });
+
+  throw new Error(
+    'Payment request failed: ' +
+    paymentError.name + ' — ' +
+    paymentError.message
+  );
+}
+
+console.log('[Campusora Payment] Function response:', paymentData);
 
       if (paymentError) {
         console.error(
