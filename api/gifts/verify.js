@@ -1,5 +1,3 @@
-import { randomBytes } from "node:crypto";
-
 export default async function handler(req, res) {
 res.setHeader("Cache-Control", "no-store");
 
@@ -17,11 +15,12 @@ const PAYSTACK_KEY = process.env.PAYSTACK_SECRET_KEY;
 if (!SUPABASE_URL || !SUPABASE_KEY || !PAYSTACK_KEY) {
 return res.status(500).json({
 success: false,
-error: "Payment service is not configured."
+error: "Gift payment service is not configured."
 });
 }
 
 try {
+// Authenticate the logged-in sender.
 const authHeader = req.headers.authorization || "";
 const token = authHeader.startsWith("Bearer ")
 ? authHeader.slice(7)
@@ -34,7 +33,6 @@ if (!token) {
   });
 }
 
-// Authenticate the logged-in sender.
 const authResponse = await fetch(
   `${SUPABASE_URL}/auth/v1/user`,
   {
@@ -53,6 +51,14 @@ if (!authResponse.ok) {
 }
 
 const user = await authResponse.json();
+
+if (!user.id) {
+  return res.status(401).json({
+    success: false,
+    error: "Could not identify your account."
+  });
+}
+
 const reference = req.body?.reference;
 
 if (
@@ -65,7 +71,7 @@ if (
   });
 }
 
-// Find the payment using the reference.
+// Find the payment belonging to this sender.
 const paymentResponse = await fetch(
   `${SUPABASE_URL}/rest/v1/campusora_gift_payments` +
   `?paystack_reference=eq.${encodeURIComponent(reference)}` +
@@ -97,16 +103,22 @@ const giftPayment = payments[0];
 if (!giftPayment) {
   return res.status(404).json({
     success: false,
-    error: "Gift payment not found."
+    error: "Gift payment not found for this account."
   });
 }
 
-// Confirm that the stored amount matches the active gift catalog.
+if (giftPayment.status === "failed") {
+  return res.status(409).json({
+    success: false,
+    error: "This gift payment has been marked as failed."
+  });
+}
+
+// Validate the gift against the official catalog.
 const catalogResponse = await fetch(
   `${SUPABASE_URL}/rest/v1/campusora_gift_catalog` +
   `?id=eq.${encodeURIComponent(giftPayment.gift_id)}` +
-  `&active=eq.true` +
-  `&select=id,slug,name,price_ngn,amount_kobo`,
+  `&select=id,name,price_ngn,amount_kobo,active`,
   {
     headers: {
       apikey: SUPABASE_KEY,
@@ -116,27 +128,46 @@ const catalogResponse = await fetch(
 );
 
 if (!catalogResponse.ok) {
+  console.error(
+    "Gift catalog lookup failed:",
+    await catalogResponse.text()
+  );
+
   return res.status(500).json({
     success: false,
-    error: "Could not validate the gift price."
+    error: "Could not validate the selected gift."
   });
 }
 
 const catalogItems = await catalogResponse.json();
 const catalogGift = catalogItems[0];
 
+const expectedPrices = {
+  rose: 500,
+  love: 500,
+  golden_star: 1000,
+  diamond: 1500,
+  royal_crown: 2000,
+  premium_heart: 5000
+};
+
+const expectedPrice = expectedPrices[giftPayment.gift_id];
+
 if (
   !catalogGift ||
-  Number(giftPayment.amount_kobo) !== Number(catalogGift.amount_kobo) ||
+  !expectedPrice ||
+  Number(catalogGift.price_ngn) !== expectedPrice ||
+  Number(catalogGift.amount_kobo) !== expectedPrice * 100 ||
+  Number(giftPayment.amount_kobo) !== expectedPrice * 100 ||
   giftPayment.currency !== "NGN"
 ) {
   return res.status(400).json({
     success: false,
-    error: "The gift price could not be validated."
+    error: "The gift price or payment currency could not be validated."
   });
 }
 
-// Ask Paystack to confirm the transaction.
+// Verify the transaction directly with Paystack.
 const paystackResponse = await fetch(
   `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
   {
@@ -163,7 +194,7 @@ if (
   });
 }
 
-// Match Paystack metadata to the database payment.
+// Match the transaction metadata to the stored payment.
 const metadata = transaction.metadata || {};
 
 if (
@@ -175,12 +206,11 @@ if (
 ) {
   return res.status(400).json({
     success: false,
-    error: "The payment details do not match this gift."
+    error: "The verified payment does not match this gift."
   });
 }
 
-// Finalize the gift through the protected database function.
-// The function prevents duplicate gift delivery.
+// Finalize payment and create the received-gift record.
 const finalizeResponse = await fetch(
   `${SUPABASE_URL}/rest/v1/rpc/campusora_finalize_gift_payment`,
   {
@@ -207,29 +237,43 @@ if (!finalizeResponse.ok) {
 
   return res.status(500).json({
     success: false,
-    error: "Payment was confirmed, but gift delivery could not be completed. Please contact support before trying to pay again."
+    error: "Payment was verified, but gift delivery could not be confirmed. Please contact support before paying again."
   });
 }
 
 const finalized = await finalizeResponse.json();
 
+// The database function returns the recorded gift as JSON.
+// Confirm that it matches the payment we just verified.
 if (
-  finalized?.success === false ||
-  finalized?.error
+  !finalized ||
+  typeof finalized !== "object" ||
+  Array.isArray(finalized) ||
+  String(finalized.payment_id || "") !== String(giftPayment.id) ||
+  String(finalized.sender_id || "") !== String(giftPayment.sender_id) ||
+  String(finalized.recipient_id || "") !== String(giftPayment.recipient_id) ||
+  String(finalized.gift_id || "") !== String(giftPayment.gift_id)
 ) {
+  console.error(
+    "Gift finalization returned an unexpected record:",
+    finalized
+  );
+
   return res.status(500).json({
     success: false,
-    error: "Gift delivery could not be confirmed."
+    error: "Payment was verified, but the recorded gift could not be confirmed. Please contact support before paying again."
   });
 }
 
 return res.status(200).json({
   success: true,
-  message: "Gift payment verified successfully.",
+  message: "Gift payment verified and gift recorded successfully.",
   gift: {
     id: catalogGift.id,
     name: catalogGift.name,
-    recipient_id: giftPayment.recipient_id
+    sender_id: giftPayment.sender_id,
+    recipient_id: giftPayment.recipient_id,
+    payment_id: giftPayment.id
   }
 });
 
@@ -242,4 +286,4 @@ return res.status(500).json({
 });
 
 }
-}
+    }
