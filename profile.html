@@ -96,9 +96,7 @@ a{color:inherit;text-decoration:none}
   position:relative
 }
 
-.cover.has-cover{
-  cursor:zoom-in
-}
+.cover.has-cover{cursor:zoom-in}
 
 .profile-content{padding:0 25px 25px}
 
@@ -127,12 +125,8 @@ a{color:inherit;text-decoration:none}
   margin-top:2px
 }
 
-.profile-main{
-  min-width:0;
-  flex:1
-}
+.profile-main{min-width:0;flex:1}
 
-/* Name appears on its own line */
 .name-line{
   display:flex;
   align-items:center;
@@ -149,7 +143,6 @@ h1{
   overflow-wrap:anywhere
 }
 
-/* Username and role badge share one line */
 .username-line{
   display:flex;
   align-items:center;
@@ -166,7 +159,6 @@ h1{
   overflow-wrap:anywhere
 }
 
-/* Small role badge beside username */
 .badge{
   display:inline-flex;
   align-items:center;
@@ -183,7 +175,6 @@ h1{
   margin:0
 }
 
-/* Extra-small Premium badge below username */
 .premium-line{
   display:flex;
   align-items:center;
@@ -228,13 +219,13 @@ h1{
   overflow-wrap:anywhere
 }
 
-/* Compact Premium upgrade button */
 .profile-actions{
   display:flex;
   align-items:flex-start;
   justify-content:flex-end;
   flex-shrink:0;
-  gap:6px;
+  flex-wrap:wrap;
+  gap:7px;
   margin-top:8px
 }
 
@@ -260,10 +251,7 @@ h1{
   border-color:#f5ce75
 }
 
-.premium-symbol{
-  font-size:10px;
-  line-height:1
-}
+.premium-symbol{font-size:10px;line-height:1}
 
 .stats{
   display:flex;
@@ -301,7 +289,6 @@ h1{
 
 .post-meta{font-size:11px;color:var(--muted);margin-top:5px}
 
-/* Small Premium indicator beside a creator's name */
 .inline-premium{
   display:inline-flex;
   align-items:center;
@@ -370,6 +357,7 @@ h1{
 
 .action-btn:hover{background:var(--card2);color:white}
 .action-icon{font-size:19px;line-height:1}
+
 .action-btn.liked,.react-btn.reacted{
   color:#ff6b91;
   background:rgba(255,99,132,.09)
@@ -501,7 +489,8 @@ h1{
 .hidden{display:none!important}
 .loading{text-align:center;padding:50px 15px;color:var(--muted)}
 
-/* Premium appearance */
+/* PREMIUM THEME */
+
 body.premium-active{
   background:
     radial-gradient(ellipse at top left,rgba(101,63,153,.25),transparent 42%),
@@ -521,7 +510,8 @@ body.premium-active .cover{
   border-bottom:1px solid rgba(245,206,117,.25)
 }
 
-/* Full-size photo viewer */
+/* PHOTO VIEWER */
+
 .photo-viewer{
   position:fixed;
   inset:0;
@@ -566,7 +556,8 @@ body.premium-active .cover{
   z-index:2
 }
 
-/* Premium modal */
+/* PREMIUM MODAL */
+
 .modal-overlay{
   position:fixed;
   inset:0;
@@ -650,11 +641,7 @@ body.premium-active .cover{
   gap:10px
 }
 
-.plan-name{
-  color:#f9f4e8;
-  font-size:13px;
-  font-weight:800
-}
+.plan-name{color:#f9f4e8;font-size:13px;font-weight:800}
 
 .plan-description{
   color:var(--muted);
@@ -693,10 +680,7 @@ body.premium-active .cover{
   font-weight:800
 }
 
-.plan-continue:hover{
-  background:linear-gradient(135deg,#4a3618,#2d2110)
-}
-
+.plan-continue:hover{background:linear-gradient(135deg,#4a3618,#2d2110)}
 .plan-card.permanent{border-color:rgba(135,88,255,.45)}
 
 .plan-card.permanent .plan-continue{
@@ -731,6 +715,262 @@ body.premium-active .cover{
   margin-top:13px
 }
 
+/* VIRTUAL GIFTS */
+
+.gift-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:7px 10px;
+  border:1px solid rgba(135,88,255,.65);
+  border-radius:9px;
+  color:#eee8ff;
+  background:linear-gradient(120deg,rgba(135,88,255,.28),rgba(66,217,245,.12));
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+  box-shadow:0 4px 16px rgba(135,88,255,.12);
+  transition:transform .2s,border-color .2s
+}
+
+.gift-button:hover{
+  transform:translateY(-1px);
+  border-color:var(--cyan)
+}
+
+.gift-strip{
+  margin-top:20px;
+  padding:13px 0 3px;
+  border-top:1px solid var(--border)
+}
+
+.gift-strip-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px
+}
+
+.gift-strip-title{
+  color:#e7e5ff;
+  font-size:12px;
+  font-weight:800
+}
+
+.gift-strip-subtitle{
+  color:var(--muted);
+  font-size:10px
+}
+
+.gift-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  overflow-x:auto;
+  padding:2px 0 8px;
+  scrollbar-width:thin;
+  scrollbar-color:#46416b transparent
+}
+
+.gift-chip{
+  flex:0 0 auto;
+  min-width:65px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:7px 9px;
+  border-radius:12px;
+  border:1px solid rgba(135,88,255,.2);
+  background:linear-gradient(145deg,rgba(135,88,255,.11),rgba(66,217,245,.04));
+  color:#e9e8ff
+}
+
+.gift-chip-icon{font-size:19px;line-height:1}
+.gift-chip-count{font-size:11px;font-weight:800}
+
+.gift-chip-name{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:8px;
+  text-align:center;
+  white-space:nowrap
+}
+
+.gift-empty{
+  color:#7782a3;
+  font-size:11px;
+  padding:8px 0
+}
+
+.gift-modal{
+  width:min(510px,100%);
+  max-height:90vh;
+  overflow-y:auto;
+  background:
+    radial-gradient(ellipse at top left,rgba(135,88,255,.18),transparent 50%),
+    linear-gradient(160deg,#151a31,#0b1020 80%);
+  border:1px solid rgba(135,88,255,.5);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 22px 80px rgba(0,0,0,.6);
+  animation:modalIn .2s ease-out
+}
+
+.gift-modal .modal-title{color:#f0eaff}
+
+.gift-modal .modal-subtitle{margin-bottom:14px}
+
+.gift-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px
+}
+
+.gift-option{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  min-height:135px;
+  padding:14px 8px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+  color:white;
+  text-align:center;
+  transition:transform .18s,border-color .18s,background .18s
+}
+
+.gift-option:hover{
+  transform:translateY(-2px);
+  border-color:rgba(66,217,245,.6)
+}
+
+.gift-option.selected{
+  border-color:#a98aff;
+  background:linear-gradient(145deg,rgba(135,88,255,.22),rgba(66,217,245,.07));
+  box-shadow:0 0 0 1px rgba(135,88,255,.2)
+}
+
+.gift-option:disabled{cursor:not-allowed}
+
+.gift-option-icon{
+  font-size:31px;
+  line-height:1.3;
+  margin-bottom:7px
+}
+
+.gift-option-name{
+  font-size:12px;
+  font-weight:800;
+  line-height:1.5
+}
+
+.gift-option-price{
+  color:#c9b5ff;
+  font-size:11px;
+  font-weight:700;
+  margin-top:5px
+}
+
+.gift-option-check{
+  position:absolute;
+  top:7px;
+  right:8px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--purple);
+  font-size:11px;
+  opacity:0
+}
+
+.gift-option.selected .gift-option-check{opacity:1}
+
+.gift-pay-button{
+  width:100%;
+  margin-top:15px;
+  padding:13px;
+  border:0;
+  border-radius:11px;
+  background:linear-gradient(110deg,#8053f7,#3e8fff,#38cce5);
+  color:white;
+  font-size:13px;
+  font-weight:800;
+  box-shadow:0 8px 24px rgba(82,104,255,.2)
+}
+
+.gift-pay-button:hover{filter:brightness(1.08)}
+
+.gift-modal-message{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-top:12px;
+  overflow-wrap:anywhere
+}
+
+.gift-modal-message.error{color:#ff9aae}
+
+.gift-history{
+  margin-top:19px;
+  padding-top:15px;
+  border-top:1px solid var(--border)
+}
+
+.gift-history-title{
+  margin:0 0 10px;
+  font-size:13px;
+  font-weight:800
+}
+
+.gift-history-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+
+.gift-history-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.025);
+  border-radius:11px;
+  min-width:0
+}
+
+.gift-history-icon{font-size:22px;flex-shrink:0}
+
+.gift-history-details{flex:1;min-width:0}
+
+.gift-history-sender{
+  font-size:11px;
+  font-weight:800;
+  overflow-wrap:anywhere
+}
+
+.gift-history-date{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px
+}
+
+.gift-history-empty{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7
+}
+
 @media(max-width:600px){
   .topbar{padding:0 4%;height:60px}
   .brand{font-size:19px}
@@ -750,21 +990,25 @@ body.premium-active .cover{
   .school{font-size:11px;margin-top:8px}
   .bio{font-size:12px;margin-top:8px}
   .profile-heading{gap:8px}
-  .profile-actions{margin-top:8px}
+  .profile-actions{margin-top:8px;justify-content:flex-start}
   .premium-btn{padding:6px 7px;font-size:9px}
-  .premium-symbol{font-size:10px}
+  .gift-button{padding:7px 9px;font-size:10px}
   .post-card{padding:14px;border-radius:15px}
   .action-btn{gap:5px;font-size:11px}
   .action-icon{font-size:18px}
   .stats{gap:19px}
   .replies{margin-left:5px;padding-left:8px}
   .premium-modal{padding:18px}
+  .gift-modal{padding:16px}
+  .gift-option{min-height:125px}
   .photo-viewer{padding:12px}
 }
 
 @media(max-width:380px){
   .profile-heading{display:block}
   .profile-actions{justify-content:flex-start;margin-top:12px}
+  .gift-grid{gap:8px}
+  .gift-option{padding:12px 6px}
 }
 </style>
 </head>
@@ -790,7 +1034,6 @@ body.premium-active .cover{
 
       <div class="profile-heading">
         <div class="profile-main">
-
           <div class="name-line">
             <h1 id="profileName">Campusora Member</h1>
           </div>
@@ -813,8 +1056,23 @@ body.premium-active .cover{
             <span class="premium-symbol">✦</span>
             <span>Upgrade to Premium</span>
           </button>
+
+          <button id="giftButton" class="gift-button" type="button">
+            🎁 Send a Gift
+          </button>
         </div>
       </div>
+
+      <!-- Gift counts appear in one compact horizontal row. -->
+      <section id="giftStrip" class="gift-strip" aria-label="Received gifts">
+        <div class="gift-strip-top">
+          <span class="gift-strip-title">🎁 Gifts received</span>
+          <span id="giftTotal" class="gift-strip-subtitle">0 gifts</span>
+        </div>
+        <div id="giftCounts" class="gift-row">
+          <span class="gift-empty">Loading gifts...</span>
+        </div>
+      </section>
 
       <div class="stats">
         <div class="stat"><strong id="postCount">0</strong><span>Posts</span></div>
@@ -893,6 +1151,39 @@ body.premium-active .cover{
   </div>
 </div>
 
+<!-- Virtual gifts modal -->
+<div id="giftModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="giftModalTitle">
+  <div class="gift-modal">
+    <div class="modal-top">
+      <h2 id="giftModalTitle" class="modal-title">🎁 Send a Gift</h2>
+      <button id="closeGiftModal" class="modal-close" type="button" aria-label="Close gift window">×</button>
+    </div>
+
+    <p id="giftModalSubtitle" class="modal-subtitle">
+      Choose a gift to brighten someone's Campusora profile.
+    </p>
+
+    <div id="giftGrid" class="gift-grid">
+      <div class="gift-empty">Loading the gift collection...</div>
+    </div>
+
+    <button id="giftPayButton" class="gift-pay-button" type="button" disabled>
+      Select a gift to continue
+    </button>
+
+    <div id="giftModalMessage" class="gift-modal-message" role="status"></div>
+
+    <section id="giftHistory" class="gift-history hidden">
+      <h3 class="gift-history-title">🎁 Your gift history</h3>
+      <div id="giftHistoryList" class="gift-history-list"></div>
+    </section>
+
+    <p class="modal-note">
+      Payments are processed through Paystack. Gifts are recorded only after successful payment verification.
+    </p>
+  </div>
+</div>
+
 <script type="module">
 import { supabase } from './supabase.js';
 
@@ -904,17 +1195,88 @@ let isOwnProfile = false;
 let activePremium = null;
 let premiumBusy = false;
 
+let giftCatalogRows = [];
+let selectedGift = null;
+let giftBusy = false;
+let giftCatalogError = '';
+
 const fallbackAvatar = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" rx="50" fill="#252d48"/><text x="50" y="62" text-anchor="middle" font-size="45" fill="#c8b4ff">👤</text></svg>'
 );
+
+/*
+  Campusora's approved gift catalogue.
+
+  Prices are displayed here for a consistent interface. The server must
+  independently validate gift IDs and prices before accepting payment.
+*/
+const GIFT_DEFINITIONS = [
+  {slug:'rose',name:'Rose',icon:'🌹',price:500},
+  {slug:'love',name:'Love',icon:'💖',price:500},
+  {slug:'golden_star',name:'Golden Star',icon:'⭐',price:1000},
+  {slug:'diamond',name:'Diamond',icon:'💎',price:1500},
+  {slug:'royal_crown',name:'Royal Crown',icon:'👑',price:2000},
+  {slug:'premium_heart',name:'Premium Heart',icon:'💝',price:5000}
+];
+
+function giftSlug(value) {
+  return String(value||'')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,'_')
+    .replace(/^_+|_+$/g,'');
+}
+
+function formatNaira(amount) {
+  return '₦'+Number(amount||0).toLocaleString('en-NG');
+}
+
+function giftDefinitionByIdOrSlug(value) {
+  const target=String(value||'');
+  const slug=giftSlug(target);
+
+  return GIFT_DEFINITIONS.find(gift=>
+    gift.slug===target ||
+    gift.slug===slug ||
+    giftSlug(gift.name)===slug
+  )||null;
+}
+
+function getGiftForCatalogRow(row) {
+  if(!row)return null;
+
+  const candidates=[
+    row.slug,
+    row.gift_id,
+    row.name,
+    row.title,
+    row.id
+  ].filter(Boolean);
+
+  for(const value of candidates){
+    const gift=giftDefinitionByIdOrSlug(value);
+    if(gift)return gift;
+  }
+
+  return null;
+}
+
+function findCatalogRowForGift(gift) {
+  if(!gift)return null;
+
+  return giftCatalogRows.find(row=>{
+    const definition=getGiftForCatalogRow(row);
+    return definition?.slug===gift.slug;
+  })||null;
+}
 
 $('homeButton').addEventListener('click',()=>location.href='./index.html');
 $('createPostButton').addEventListener('click',()=>location.href='./create-post.html');
 
 function formatDate(value) {
-  if (!value) return '';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '';
+  if(!value)return '';
+  const date=new Date(value);
+  if(Number.isNaN(date.getTime()))return '';
   return date.toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
 }
 
@@ -986,6 +1348,7 @@ document.addEventListener('keydown',event=>{
   if(event.key==='Escape'){
     if(!$('photoViewer').classList.contains('hidden'))closePhotoViewer();
     else if(!$('premiumModal').classList.contains('hidden'))closePremiumModal();
+    else if(!$('giftModal').classList.contains('hidden'))closeGiftModal();
   }
 });
 
@@ -1025,11 +1388,6 @@ function makeProfileName(person) {
 
   container.append(a);
 
-  /*
-    This indicator is shown when the active Premium status for the
-    profile owner is known on this page. Other members' membership
-    visibility depends on the existing Supabase permissions.
-  */
   if(activePremium&&currentProfile&&person?.id===currentProfile.id){
     const premium=document.createElement('span');
     premium.className='inline-premium';
@@ -1097,7 +1455,7 @@ function showPremiumStatus(membership) {
     document.body.classList.remove('premium-active');
     status.classList.add('hidden');
     plans.classList.remove('hidden');
-    $('premiumButton').classList.remove('hidden');
+    $('premiumButton').classList.toggle('hidden',!isOwnProfile);
     $('premiumButton').querySelector('span:last-child').textContent='Upgrade to Premium';
     return;
   }
@@ -1239,8 +1597,11 @@ document.querySelectorAll('[data-plan]').forEach(button=>{
 
 async function verifyPremiumPaymentReturn() {
   const params=new URLSearchParams(location.search);
-  const reference=params.get('reference')||params.get('trxref');
 
+  /* Do not send gift payments to the Premium verification endpoint. */
+  if(params.get('gift_payment')==='1'||params.has('gift_reference'))return;
+
+  const reference=params.get('reference')||params.get('trxref');
   if(!reference)return;
 
   params.delete('reference');
@@ -1288,8 +1649,6 @@ async function verifyPremiumPaymentReturn() {
 
     showMessage('Payment verified successfully! Your Premium membership is now active.');
     await refreshPremiumStatus();
-
-    /* Refresh posts so the Premium indicators appear immediately. */
     await loadPosts(currentProfile);
     setTimeout(()=>refreshPremiumStatus(),1200);
 
@@ -1297,6 +1656,505 @@ async function verifyPremiumPaymentReturn() {
     console.error('Premium verification error:',error);
     showMessage(
       error.message||'We could not verify your payment. If you were charged, please contact Campusora support.',
+      true
+    );
+  }
+}
+
+/* VIRTUAL GIFTS */
+
+function setGiftMessage(message,isError=false) {
+  const box=$('giftModalMessage');
+  box.textContent=message||'';
+  box.classList.toggle('error',!!isError);
+}
+
+function openGiftModal() {
+  if(!currentProfile)return;
+
+  $('giftModal').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+
+  if(isOwnProfile){
+    $('giftModalTitle').textContent='🎁 Your Gifts';
+    $('giftModalSubtitle').textContent='See the gifts you have received on Campusora.';
+    $('giftGrid').classList.add('hidden');
+    $('giftPayButton').classList.add('hidden');
+    $('giftHistory').classList.remove('hidden');
+    loadGiftHistory();
+  }else{
+    $('giftModalTitle').textContent='🎁 Send a Gift';
+    $('giftModalSubtitle').textContent='Choose a gift to brighten '+(currentProfile.full_name||currentProfile.username||'this member')+"'s profile.";
+    $('giftGrid').classList.remove('hidden');
+    $('giftPayButton').classList.remove('hidden');
+    $('giftHistory').classList.add('hidden');
+    renderGiftOptions();
+  }
+}
+
+function closeGiftModal() {
+  $('giftModal').classList.add('hidden');
+  document.body.style.overflow='';
+}
+
+$('giftButton').addEventListener('click',async()=>{
+  if(!currentProfile)return;
+
+  if(!currentUser&&!isOwnProfile){
+    const shouldLogin=confirm('Please log in to send a gift. Go to login now?');
+    if(shouldLogin)location.href='./auth.html?mode=login';
+    return;
+  }
+
+  openGiftModal();
+});
+
+$('closeGiftModal').addEventListener('click',closeGiftModal);
+
+$('giftModal').addEventListener('click',event=>{
+  if(event.target===$('giftModal'))closeGiftModal();
+});
+
+async function loadGiftCatalog() {
+  giftCatalogError='';
+
+  const {data,error}=await supabase
+    .from('campusora_gift_catalog')
+    .select('*');
+
+  if(error){
+    console.error('Gift catalogue could not be loaded:',error);
+    giftCatalogRows=[];
+    giftCatalogError='The gift catalogue could not be loaded. Please check that the campusora_gift_catalog table exists and is readable.';
+    return;
+  }
+
+  giftCatalogRows=(data||[]).filter(row=>row.active!==false);
+}
+
+function renderGiftOptions() {
+  const grid=$('giftGrid');
+  grid.replaceChildren();
+
+  selectedGift=null;
+  $('giftPayButton').disabled=true;
+  $('giftPayButton').textContent='Select a gift to continue';
+  setGiftMessage('');
+
+  if(giftCatalogError){
+    grid.textContent=giftCatalogError;
+    setGiftMessage(giftCatalogError,true);
+    return;
+  }
+
+  if(!giftCatalogRows.length){
+    grid.textContent='No gifts are available right now.';
+    setGiftMessage('The gift catalogue is empty or has no matching gifts.',true);
+    return;
+  }
+
+  for(const gift of GIFT_DEFINITIONS){
+    const catalogRow=findCatalogRowForGift(gift);
+
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='gift-option';
+    button.disabled=!catalogRow||!catalogRow.id;
+    button.setAttribute('aria-label',gift.name+' '+formatNaira(gift.price));
+
+    const check=document.createElement('span');
+    check.className='gift-option-check';
+    check.textContent='✓';
+
+    const icon=document.createElement('span');
+    icon.className='gift-option-icon';
+    icon.textContent=gift.icon;
+
+    const name=document.createElement('span');
+    name.className='gift-option-name';
+    name.textContent=gift.name;
+
+    const price=document.createElement('span');
+    price.className='gift-option-price';
+    price.textContent=formatNaira(gift.price);
+
+    button.append(check,icon,name,price);
+
+    if(!catalogRow){
+      button.title='This gift is not available in the database catalogue.';
+      button.style.opacity='.45';
+    }
+
+    button.addEventListener('click',()=>{
+      if(!catalogRow)return;
+
+      selectedGift=gift;
+
+      grid.querySelectorAll('.gift-option').forEach(option=>{
+        option.classList.remove('selected');
+      });
+
+      button.classList.add('selected');
+      $('giftPayButton').disabled=false;
+      $('giftPayButton').textContent='Send '+gift.icon+' '+gift.name+' · '+formatNaira(gift.price);
+      setGiftMessage('You selected '+gift.name+'. Continue to Paystack to complete your payment.');
+    });
+
+    grid.append(button);
+  }
+
+  if(GIFT_DEFINITIONS.some(gift=>!findCatalogRowForGift(gift))){
+    setGiftMessage('Some gifts are unavailable because their entries could not be matched in the database catalogue.',true);
+  }
+}
+
+async function loadGiftCounts(profile) {
+  const container=$('giftCounts');
+  container.replaceChildren();
+
+  const {data,error}=await supabase.rpc('campusora_get_gift_counts',{
+    p_recipient_id:profile.id
+  });
+
+  if(error){
+    console.error('Gift counts could not be loaded:',error);
+    const empty=document.createElement('span');
+    empty.className='gift-empty';
+    empty.textContent='Gifts are temporarily unavailable.';
+    container.append(empty);
+    $('giftTotal').textContent='—';
+    return;
+  }
+
+  const counts=Array.isArray(data)?data:[];
+  const total=counts.reduce((sum,item)=>sum+Number(item.gift_count||0),0);
+
+  $('giftTotal').textContent=total+' '+(total===1?'gift':'gifts');
+
+  if(!total){
+    const empty=document.createElement('span');
+    empty.className='gift-empty';
+    empty.textContent='No gifts received yet.';
+    container.append(empty);
+    return;
+  }
+
+  for(const item of counts){
+    const count=Number(item.gift_count||0);
+    if(count<=0)continue;
+
+    let gift=giftDefinitionByIdOrSlug(item.gift_id);
+
+    if(!gift){
+      const row=giftCatalogRows.find(r=>String(r.id)===String(item.gift_id));
+      gift=getGiftForCatalogRow(row);
+    }
+
+    if(!gift){
+      console.warn('Unknown gift ID in gift counts:',item.gift_id);
+      continue;
+    }
+
+    const chip=document.createElement('div');
+    chip.className='gift-chip';
+    chip.title=gift.name+': '+count;
+
+    const icon=document.createElement('span');
+    icon.className='gift-chip-icon';
+    icon.textContent=gift.icon;
+
+    const amount=document.createElement('span');
+    amount.className='gift-chip-count';
+    amount.textContent='×'+count;
+
+    const details=document.createElement('div');
+    details.style.display='flex';
+    details.style.flexDirection='column';
+    details.style.alignItems='center';
+
+    const name=document.createElement('span');
+    name.className='gift-chip-name';
+    name.textContent=gift.name;
+
+    details.append(amount,name);
+    chip.append(icon,details);
+    container.append(chip);
+  }
+
+  if(!container.children.length){
+    const empty=document.createElement('span');
+    empty.className='gift-empty';
+    empty.textContent='Received gifts are being updated.';
+    container.append(empty);
+  }
+}
+
+/*
+  Gift history is fetched only when the signed-in user is viewing their
+  own profile. The received_gifts RLS policy should allow the recipient
+  to read their own records, not other people's records.
+*/
+async function loadGiftHistory() {
+  const list=$('giftHistoryList');
+  list.replaceChildren();
+
+  if(!currentUser||!isOwnProfile||!currentProfile){
+    const empty=document.createElement('div');
+    empty.className='gift-history-empty';
+    empty.textContent='Gift history is visible only to the profile owner.';
+    list.append(empty);
+    return;
+  }
+
+  const loading=document.createElement('div');
+  loading.className='gift-history-empty';
+  loading.textContent='Loading your gift history...';
+  list.append(loading);
+
+  const {data:records,error}=await supabase
+    .from('campusora_received_gifts')
+    .select('sender_id,gift_id,created_at')
+    .eq('recipient_id',currentUser.id)
+    .order('created_at',{ascending:false})
+    .limit(100);
+
+  list.replaceChildren();
+
+  if(error){
+    console.error('Gift history could not be loaded:',error);
+
+    const message=document.createElement('div');
+    message.className='gift-history-empty';
+    message.textContent='Your gift history could not be loaded. Please check the received-gifts table permissions.';
+    list.append(message);
+    return;
+  }
+
+  if(!records?.length){
+    const empty=document.createElement('div');
+    empty.className='gift-history-empty';
+    empty.textContent='You have not received any gifts yet. When someone sends you a gift, it will appear here.';
+    list.append(empty);
+    return;
+  }
+
+  const senderIds=[...new Set(records.map(record=>record.sender_id).filter(Boolean))];
+  let senderMap=new Map();
+
+  if(senderIds.length){
+    const {data:senders,error:senderError}=await supabase
+      .from('profiles')
+      .select('id,username,full_name,avatar_url')
+      .in('id',senderIds);
+
+    if(senderError){
+      console.error('Gift senders could not be loaded:',senderError);
+    }else{
+      senderMap=new Map((senders||[]).map(person=>[person.id,person]));
+    }
+  }
+
+  for(const record of records){
+    const gift=giftDefinitionByIdOrSlug(record.gift_id)||
+      getGiftForCatalogRow(giftCatalogRows.find(row=>String(row.id)===String(record.gift_id)));
+
+    const sender=senderMap.get(record.sender_id);
+    const item=document.createElement('div');
+    item.className='gift-history-item';
+
+    const icon=document.createElement('span');
+    icon.className='gift-history-icon';
+    icon.textContent=gift?.icon||'🎁';
+
+    const details=document.createElement('div');
+    details.className='gift-history-details';
+
+    const senderName=document.createElement('div');
+    senderName.className='gift-history-sender';
+
+    if(sender){
+      const link=document.createElement('a');
+      link.href=profileLink(sender.id);
+      link.textContent=sender.full_name||sender.username||'Campusora member';
+      senderName.append(link);
+    }else{
+      senderName.textContent='Campusora member';
+    }
+
+    const description=document.createElement('div');
+    description.className='gift-history-date';
+    description.textContent='Sent you '+(gift?.name||'a gift')+' · '+formatDate(record.created_at);
+
+    details.append(senderName,description);
+    item.append(icon,details);
+    list.append(item);
+  }
+}
+
+async function startGiftCheckout() {
+  if(giftBusy)return;
+
+  if(!currentUser){
+    setGiftMessage('Please log in to send a gift.',true);
+    return;
+  }
+
+  if(!currentProfile){
+    setGiftMessage('The recipient profile could not be identified.',true);
+    return;
+  }
+
+  if(isOwnProfile||currentUser.id===currentProfile.id){
+    setGiftMessage('You cannot send a gift to yourself. Open another member’s profile to send a gift.',true);
+    return;
+  }
+
+  if(!selectedGift){
+    setGiftMessage('Please select a gift first.',true);
+    return;
+  }
+
+  const catalogRow=findCatalogRowForGift(selectedGift);
+
+  if(!catalogRow?.id){
+    setGiftMessage('This gift is not available in the database catalogue.',true);
+    return;
+  }
+
+  const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
+  const session=sessionData?.session;
+
+  if(sessionError||!session?.access_token){
+    setGiftMessage('Your login session could not be confirmed. Please log in again.',true);
+    return;
+  }
+
+  giftBusy=true;
+  $('giftPayButton').disabled=true;
+  $('giftPayButton').textContent='Connecting to Paystack...';
+  setGiftMessage('Preparing your gift payment...');
+
+  try{
+    const callbackUrl=new URL('./profile.html',location.href);
+    callbackUrl.searchParams.set('id',currentProfile.id);
+    callbackUrl.searchParams.set('gift_payment','1');
+
+    const response=await fetch('/api/gifts/initialize',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+session.access_token
+      },
+      body:JSON.stringify({
+        recipient_id:currentProfile.id,
+        gift_id:catalogRow.id,
+        callback_url:callbackUrl.href
+      })
+    });
+
+    const result=await response.json().catch(()=>({}));
+
+    if(!response.ok||!result.authorization_url){
+      throw new Error(result.error||result.message||'Could not start the gift payment. Please try again.');
+    }
+
+    window.location.assign(result.authorization_url);
+    return;
+
+  }catch(error){
+    console.error('Gift checkout error:',error);
+    setGiftMessage(error.message||'The gift payment could not be started.',true);
+  }finally{
+    giftBusy=false;
+
+    if($('giftModal')&&!$('giftModal').classList.contains('hidden')){
+      $('giftPayButton').disabled=!selectedGift;
+      $('giftPayButton').textContent=selectedGift
+        ?'Send '+selectedGift.icon+' '+selectedGift.name+' · '+formatNaira(selectedGift.price)
+        :'Select a gift to continue';
+    }
+  }
+}
+
+$('giftPayButton').addEventListener('click',startGiftCheckout);
+
+async function verifyGiftPaymentReturn() {
+  const params=new URLSearchParams(location.search);
+  const isGiftReturn=params.get('gift_payment')==='1'||params.has('gift_reference');
+
+  if(!isGiftReturn)return;
+
+  const reference=params.get('gift_reference')||params.get('reference')||params.get('trxref');
+
+  /*
+    Remove gift-specific callback markers and the payment reference from
+    the visible URL before making the verification request.
+  */
+  params.delete('gift_payment');
+  params.delete('gift_reference');
+  params.delete('reference');
+  params.delete('trxref');
+
+  const remaining=params.toString();
+  const cleanUrl=location.pathname+(remaining?'?'+remaining:'')+location.hash;
+  history.replaceState({},'',cleanUrl);
+
+  if(!reference){
+    showMessage('We returned from the gift payment page, but no payment reference was found. If you were charged, contact Campusora support.',true);
+    return;
+  }
+
+  if(!currentUser){
+    showMessage('Please log in again to verify your gift payment.',true);
+    return;
+  }
+
+  const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
+  const session=sessionData?.session;
+
+  if(sessionError||!session?.access_token){
+    showMessage('Your session has expired. Please log in again before verifying the gift payment.',true);
+    return;
+  }
+
+  showMessage('Verifying your gift payment. Please wait...');
+
+  try{
+    const response=await fetch('/api/gifts/verify',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+session.access_token
+      },
+      body:JSON.stringify({reference})
+    });
+
+    const result=await response.json().catch(()=>({}));
+
+    if(!response.ok||!result.success){
+      throw new Error(result.error||result.message||'Gift payment verification was unsuccessful.');
+    }
+
+    showMessage('🎉 Gift payment verified successfully! The gift has been processed.');
+
+    /*
+      The recipient's profile is open after checkout, so refresh the
+      public counts even though the sender is not the profile owner.
+    */
+    await loadGiftCounts(currentProfile);
+
+    if(isOwnProfile){
+      await loadGiftHistory();
+    }
+
+    if(!$('giftModal').classList.contains('hidden')){
+      setGiftMessage('Payment verified successfully. Your gift has been processed.');
+    }
+
+  }catch(error){
+    console.error('Gift verification error:',error);
+    showMessage(
+      error.message||'We could not verify the gift payment. If you were charged, please contact Campusora support.',
       true
     );
   }
@@ -1372,22 +2230,37 @@ async function loadProfile() {
 
   $('premiumButton').classList.toggle('hidden',!isOwnProfile);
 
+  /*
+    On your own profile, the button opens gift history.
+    On another member's profile, it opens the gift shop.
+  */
+  $('giftButton').textContent=isOwnProfile?'🎁 My Gifts':'🎁 Send a Gift';
+
   $('loading').classList.add('hidden');
   $('profileSection').classList.remove('hidden');
   $('postsHeading').classList.remove('hidden');
 
-  /*
-    Load the owner's membership status before loading their posts,
-    so the Premium indicator can be added to their post names.
-  */
   if(isOwnProfile){
     await refreshPremiumStatus();
   }
 
+  /*
+    Load the catalogue first so public gift counts and gift history can
+    resolve database gift IDs to their display names and icons.
+  */
+  await loadGiftCatalog();
+
   await Promise.all([
     loadCounts(profile),
-    loadPosts(profile)
+    loadPosts(profile),
+    loadGiftCounts(profile)
   ]);
+
+  /*
+    Verify gift returns on the recipient's profile even when the
+    currently logged-in user is the sender.
+  */
+  await verifyGiftPaymentReturn();
 
   if(isOwnProfile){
     await verifyPremiumPaymentReturn();
