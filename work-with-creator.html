@@ -1,1 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
 
+  <title>Work With the Creator | Campusora</title>
+
+  <style>
+    :root {
+      --primary: #3157d5;
+      --primary-dark: #2445b5;
+      --background: #f7f8fc;
+      --surface: #ffffff;
+      --text: #182033;
+      --muted: #727b8e;
+      --border: #e4e8f0;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      min-height: 66px;
+      padding: 15px 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.7px;
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    .back-link {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      color: var(--primary);
+    }
+
+    .page {
+      width: min(100% - 32px, 760px);
+      margin: 46px auto 65px;
+    }
+
+    .intro {
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 22px;
+      height: 3px;
+      border-radius: 10px;
+      background: var(--primary);
+    }
+
+    h1 {
+      max-width: 650px;
+      margin: 0;
+      font-size: clamp(34px, 7vw, 54px);
+      line-height: 1.12;
+      letter-spacing: -2px;
+    }
+
+    h1 span {
+      color: var(--primary);
+    }
+
+    .intro p {
+      max-width: 570px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .form-card {
+      padding: 30px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(24, 32, 51, 0.04);
+    }
+
+    .form-heading {
+      margin-bottom: 24px;
+    }
+
+    .form-heading h2 {
+      margin: 0 0 5px;
+      font-size: 21px;
+      letter-spacing: -0.4px;
+    }
+
+    .form-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 16px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .optional {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(49, 87, 213, 0.1);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #a0a7b5;
+    }
+
+    textarea {
+      min-height: 145px;
+      resize: vertical;
+    }
+
+    .field-hint {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .submit-button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 11px;
+      background: var(--primary);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .submit-button:hover {
+      background: var(--primary-dark);
+    }
+
+    .submit-button:active {
+      transform: scale(0.99);
+    }
+
+    .privacy-note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .form-status {
+      display: none;
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .form-status.error {
+      display: block;
+      background: #fff0f0;
+      color: #a32121;
+    }
+
+    .contact-field[hidden] {
+      display: none;
+    }
+
+    footer {
+      padding: 22px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 14px 18px;
+      }
+
+      .page {
+        width: calc(100% - 28px);
+        margin-top: 34px;
+      }
+
+      h1 {
+        letter-spacing: -1.4px;
+      }
+
+      .form-card {
+        padding: 21px 17px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 17px;
+      }
+
+      .full-width {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Campus<span>ora</span></a>
+    <a class="back-link" href="index.html">← Back to Campusora</a>
+  </header>
+
+  <main class="page">
+
+    <section class="intro">
+      <div class="eyebrow">Work With the Creator</div>
+
+      <h1>Let's create something <span>meaningful.</span></h1>
+
+      <p>
+        Have an idea, brand, project, or business you'd like us to work on
+        together? Share the details below. I'd love to hear what you have in mind.
+      </p>
+    </section>
+
+    <section class="form-card">
+      <div class="form-heading">
+        <h2>Tell me about your idea</h2>
+        <p>Fill in the details so we can understand your proposal.</p>
+      </div>
+
+      <form id="creatorInquiryForm">
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="contactName">Full name *</label>
+            <input
+              type="text"
+              id="contactName"
+              name="contactName"
+              placeholder="Your full name"
+              maxlength="100"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="contactEmail">Email address *</label>
+            <input
+              type="email"
+              id="contactEmail"
+              name="contactEmail"
+              placeholder="you@example.com"
+              maxlength="254"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="field full-width">
+            <label for="businessName">
+              Business or brand <span class="optional">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="businessName"
+              name="businessName"
+              placeholder="Your company, brand, or organisation"
+              maxlength="150"
+            >
+          </div>
+
+          <div class="field">
+            <label for="inquiryType">Collaboration type *</label>
+            <select id="inquiryType" name="inquiryType" required>
+              <option value="">Choose an option</option>
+              <option value="business_promotion">Business promotion</option>
+              <option value="brand_collaboration">Brand collaboration</option>
+              <option value="content_creation">Content creation</option>
+              <option value="sponsorship">Sponsorship</option>
+              <option value="other">Other proposal</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="budget">
+              Proposed budget (₦)
+              <span class="optional">(optional)</span>
+            </label>
+            <input
+              type="number"
+              id="budget"
+              name="budget"
+              placeholder="e.g. 50000"
+              min="0"
+              step="0.01"
+              inputmode="decimal"
+            >
+          </div>
+
+          <div class="field full-width">
+            <label for="message">Tell me about your proposal *</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="What would you like us to work on? Include your goals, timeline, or any important details."
+              minlength="10"
+              maxlength="5000"
+              required
+            ></textarea>
+            <p class="field-hint">Please provide at least 10 characters.</p>
+          </div>
+
+          <div class="field">
+            <label for="preferredContact">
+              Preferred contact method
+            </label>
+            <select id="preferredContact" name="preferredContact">
+              <option value="">No preference</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone call</option>
+              <option value="whatsapp">WhatsApp</option>
+            </select>
+          </div>
+
+          <div class="field contact-field" id="contactValueField" hidden>
+            <label for="contactValue" id="contactValueLabel">
+              Contact number
+            </label>
+            <input
+              type="text"
+              id="contactValue"
+              name="contactValue"
+              placeholder="Enter your contact number"
+              maxlength="100"
+            >
+          </div>
+
+        </div>
+
+        <button class="submit-button" type="submit">
+          Send your proposal <span aria-hidden="true">→</span>
+        </button>
+
+        <p class="privacy-note">
+          Your details will be used to respond to your proposal.
+        </p>
+
+        <div
+          class="form-status"
+          id="formStatus"
+          role="alert"
+          aria-live="polite"
+        ></div>
+      </form>
+    </section>
+
+  </main>
+
+  <footer>
+    Campusora · Building connections and opportunities.
+  </footer>
+
+  <script>
+    const preferredContact = document.getElementById("preferredContact");
+    const contactValueField = document.getElementById("contactValueField");
+    const contactValue = document.getElementById("contactValue");
+    const contactValueLabel = document.getElementById("contactValueLabel");
+    const form = document.getElementById("creatorInquiryForm");
+    const formStatus = document.getElementById("formStatus");
+
+    preferredContact.addEventListener("change", function () {
+      const method = preferredContact.value;
+      const needsNumber = method === "phone" || method === "whatsapp";
+
+      contactValueField.hidden = !needsNumber;
+      contactValue.required = needsNumber;
+
+      if (method === "whatsapp") {
+        contactValueLabel.textContent = "WhatsApp number *";
+        contactValue.placeholder = "Include your country code";
+      } else {
+        contactValueLabel.textContent = "Phone number *";
+        contactValue.placeholder = "Include your country code";
+      }
+
+      if (!needsNumber) {
+        contactValue.value = "";
+      }
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      formStatus.className = "form-status error";
+      formStatus.textContent =
+        "The page design is ready, but submissions are not connected yet. Please wait for the database connection step.";
+      formStatus.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    });
+  </script>
+
+</body>
+  </html>
