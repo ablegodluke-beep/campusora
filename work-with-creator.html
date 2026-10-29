@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#f7f8fc">
+  <meta name="description" content="Work with the creator of Campusora. Submit business promotions, brand collaborations, sponsorships, and creative project proposals.">
 
   <title>Work With the Creator | Campusora</title>
 
@@ -23,6 +24,10 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       background: var(--background);
@@ -36,9 +41,16 @@
       text-decoration: none;
     }
 
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
     .topbar {
       min-height: 66px;
-      padding: 15px 6%;
+      padding: 14px 6%;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -175,7 +187,6 @@
       outline: none;
       background: #fff;
       color: var(--text);
-      font: inherit;
       font-size: 14px;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
@@ -229,6 +240,11 @@
       transform: scale(0.99);
     }
 
+    .submit-button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
     .privacy-note {
       margin: 14px 0 0;
       color: var(--muted);
@@ -242,6 +258,13 @@
       padding: 13px;
       border-radius: 10px;
       font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .form-status.success {
+      display: block;
+      background: #eaf8ef;
+      color: #176b36;
     }
 
     .form-status.error {
@@ -320,6 +343,7 @@
       </div>
 
       <form id="creatorInquiryForm">
+
         <div class="form-grid">
 
           <div class="field">
@@ -352,6 +376,7 @@
             <label for="businessName">
               Business or brand <span class="optional">(optional)</span>
             </label>
+
             <input
               type="text"
               id="businessName"
@@ -363,6 +388,7 @@
 
           <div class="field">
             <label for="inquiryType">Collaboration type *</label>
+
             <select id="inquiryType" name="inquiryType" required>
               <option value="">Choose an option</option>
               <option value="business_promotion">Business promotion</option>
@@ -378,12 +404,14 @@
               Proposed budget (₦)
               <span class="optional">(optional)</span>
             </label>
+
             <input
               type="number"
               id="budget"
               name="budget"
               placeholder="e.g. 50000"
               min="0"
+              max="999999999999"
               step="0.01"
               inputmode="decimal"
             >
@@ -391,6 +419,7 @@
 
           <div class="field full-width">
             <label for="message">Tell me about your proposal *</label>
+
             <textarea
               id="message"
               name="message"
@@ -399,13 +428,17 @@
               maxlength="5000"
               required
             ></textarea>
-            <p class="field-hint">Please provide at least 10 characters.</p>
+
+            <p class="field-hint">
+              Please provide at least 10 characters.
+            </p>
           </div>
 
           <div class="field">
             <label for="preferredContact">
               Preferred contact method
             </label>
+
             <select id="preferredContact" name="preferredContact">
               <option value="">No preference</option>
               <option value="email">Email</option>
@@ -416,20 +449,21 @@
 
           <div class="field contact-field" id="contactValueField" hidden>
             <label for="contactValue" id="contactValueLabel">
-              Contact number
+              Contact number *
             </label>
+
             <input
               type="text"
               id="contactValue"
               name="contactValue"
-              placeholder="Enter your contact number"
+              placeholder="Include your country code"
               maxlength="100"
             >
           </div>
 
         </div>
 
-        <button class="submit-button" type="submit">
+        <button class="submit-button" id="submitButton" type="submit">
           Send your proposal <span aria-hidden="true">→</span>
         </button>
 
@@ -440,9 +474,10 @@
         <div
           class="form-status"
           id="formStatus"
-          role="alert"
+          role="status"
           aria-live="polite"
         ></div>
+
       </form>
     </section>
 
@@ -452,45 +487,232 @@
     Campusora · Building connections and opportunities.
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
-    const preferredContact = document.getElementById("preferredContact");
-    const contactValueField = document.getElementById("contactValueField");
-    const contactValue = document.getElementById("contactValue");
-    const contactValueLabel = document.getElementById("contactValueLabel");
-    const form = document.getElementById("creatorInquiryForm");
-    const formStatus = document.getElementById("formStatus");
+    (() => {
+      "use strict";
 
-    preferredContact.addEventListener("change", function () {
-      const method = preferredContact.value;
-      const needsNumber = method === "phone" || method === "whatsapp";
+      const SUPABASE_URL =
+        "https://ssdhygwozbroqjhuecgp.supabase.co";
 
-      contactValueField.hidden = !needsNumber;
-      contactValue.required = needsNumber;
+      const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_gbbFNsXzzJSh8k3aqEl4kg_XO-YRo4N";
 
-      if (method === "whatsapp") {
-        contactValueLabel.textContent = "WhatsApp number *";
-        contactValue.placeholder = "Include your country code";
-      } else {
-        contactValueLabel.textContent = "Phone number *";
-        contactValue.placeholder = "Include your country code";
+      const form = document.getElementById("creatorInquiryForm");
+      const formStatus = document.getElementById("formStatus");
+      const submitButton = document.getElementById("submitButton");
+
+      const preferredContact =
+        document.getElementById("preferredContact");
+
+      const contactValueField =
+        document.getElementById("contactValueField");
+
+      const contactValue =
+        document.getElementById("contactValue");
+
+      const contactValueLabel =
+        document.getElementById("contactValueLabel");
+
+      let db = null;
+
+      function showStatus(message, type) {
+        formStatus.className = "form-status " + type;
+        formStatus.textContent = message;
+        formStatus.style.display = "block";
+
+        formStatus.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
       }
 
-      if (!needsNumber) {
-        contactValue.value = "";
+      function updateContactField() {
+        const method = preferredContact.value;
+
+        const needsNumber =
+          method === "phone" || method === "whatsapp";
+
+        contactValueField.hidden = !needsNumber;
+        contactValue.required = needsNumber;
+
+        if (method === "whatsapp") {
+          contactValueLabel.textContent = "WhatsApp number *";
+          contactValue.placeholder = "Include your country code";
+        } else {
+          contactValueLabel.textContent = "Phone number *";
+          contactValue.placeholder = "Include your country code";
+        }
+
+        if (!needsNumber) {
+          contactValue.value = "";
+        }
       }
-    });
 
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
+      preferredContact.addEventListener(
+        "change",
+        updateContactField
+      );
 
-      formStatus.className = "form-status error";
-      formStatus.textContent =
-        "The page design is ready, but submissions are not connected yet. Please wait for the database connection step.";
-      formStatus.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
+      if (window.supabase) {
+        db = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+      }
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (!form.reportValidity()) {
+          return;
+        }
+
+        if (!db) {
+          showStatus(
+            "The database connection could not load. Please refresh the page and try again.",
+            "error"
+          );
+          return;
+        }
+
+        const name = document
+          .getElementById("contactName")
+          .value.trim();
+
+        const email = document
+          .getElementById("contactEmail")
+          .value.trim();
+
+        const business = document
+          .getElementById("businessName")
+          .value.trim();
+
+        const inquiryType = document
+          .getElementById("inquiryType")
+          .value;
+
+        const message = document
+          .getElementById("message")
+          .value.trim();
+
+        const budgetInput = document
+          .getElementById("budget")
+          .value.trim();
+
+        const method = preferredContact.value;
+        const contact = contactValue.value.trim();
+
+        if (message.length < 10) {
+          showStatus(
+            "Please explain your proposal in at least 10 characters.",
+            "error"
+          );
+          return;
+        }
+
+        if (
+          (method === "phone" || method === "whatsapp") &&
+          !contact
+        ) {
+          showStatus(
+            "Please enter your contact number.",
+            "error"
+          );
+          return;
+        }
+
+        const budget = budgetInput
+          ? Number(budgetInput)
+          : null;
+
+        if (
+          budgetInput &&
+          (!Number.isFinite(budget) || budget < 0)
+        ) {
+          showStatus(
+            "Please enter a valid budget.",
+            "error"
+          );
+          return;
+        }
+
+        const inquiry = {
+          contact_name: name,
+          contact_email: email,
+          business_name: business || null,
+          inquiry_type: inquiryType,
+          message: message,
+          proposed_budget: budget,
+          currency: "NGN",
+          preferred_contact: method || null,
+          contact_value:
+            method === "phone" || method === "whatsapp"
+              ? contact
+              : null,
+          status: "pending"
+        };
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Sending proposal...";
+        formStatus.style.display = "none";
+
+        try {
+          const { error } = await db
+            .from("campusora_creator_inquiries")
+            .insert([inquiry]);
+
+          if (error) {
+            console.error(
+              "Creator inquiry submission failed:",
+              error
+            );
+
+            if (
+              error.code === "42501" ||
+              error.code === "PGRST301"
+            ) {
+              showStatus(
+                "Your submission was blocked by the database's security settings. Please try again later.",
+                "error"
+              );
+            } else {
+              showStatus(
+                "We couldn't submit your proposal right now. Please try again later.",
+                "error"
+              );
+            }
+
+            return;
+          }
+
+          form.reset();
+          updateContactField();
+
+          showStatus(
+            "Your proposal has been submitted successfully! Thank you for reaching out.",
+            "success"
+          );
+
+        } catch (error) {
+          console.error(
+            "Creator inquiry connection error:",
+            error
+          );
+
+          showStatus(
+            "A connection error occurred. Please check your internet and try again.",
+            "error"
+          );
+
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML =
+            'Send your proposal <span aria-hidden="true">→</span>';
+        }
       });
-    });
+    })();
   </script>
 
 </body>
