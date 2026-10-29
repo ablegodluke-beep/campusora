@@ -3,24 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f8fc">
-  <meta name="description" content="Work with the creator of Campusora. Submit business promotions, brand collaborations, sponsorships, and creative project proposals.">
+  <meta name="theme-color" content="#101827">
 
   <title>Work With the Creator | Campusora</title>
 
+  <meta name="description" content="Partner with Campusora for business promotions, brand collaborations, sponsorships and creative projects.">
+
   <style>
     :root {
-      --primary: #3157d5;
-      --primary-dark: #2445b5;
-      --background: #f7f8fc;
-      --surface: #ffffff;
-      --text: #182033;
-      --muted: #727b8e;
-      --border: #e4e8f0;
-      --radius: 16px;
+      --bg: #101827;
+      --surface: #182335;
+      --surface-light: #202e43;
+      --text: #f4f7fc;
+      --muted: #a7b3c6;
+      --accent: #a9f36b;
+      --accent-dark: #1c3215;
+      --border: rgba(255,255,255,.11);
     }
 
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
@@ -29,10 +32,11 @@
     }
 
     body {
-      margin: 0;
-      background: var(--background);
+      font-family: Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: var(--bg);
       color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
       line-height: 1.6;
     }
 
@@ -41,679 +45,592 @@
       text-decoration: none;
     }
 
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
+    button, a {
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .topbar {
-      min-height: 66px;
-      padding: 14px 6%;
+    .page {
+      max-width: 1050px;
+      margin: auto;
+      padding: 0 24px;
+    }
+
+    /* NAVIGATION */
+
+    .nav {
+      min-height: 78px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
-      background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
 
     .brand {
-      font-size: 21px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
       font-weight: 800;
-      letter-spacing: -0.7px;
+      letter-spacing: -.7px;
     }
 
-    .brand span {
-      color: var(--primary);
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: #14200e;
+      border-radius: 12px;
+      font-weight: 900;
+      font-size: 19px;
     }
 
     .back-link {
+      font-size: 13px;
       color: var(--muted);
-      font-size: 14px;
-      font-weight: 600;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      transition: .2s;
     }
 
     .back-link:hover {
-      color: var(--primary);
+      color: var(--accent);
+      border-color: var(--accent);
     }
 
-    .page {
-      width: min(100% - 32px, 760px);
-      margin: 46px auto 65px;
-    }
+    /* INTRODUCTION */
 
     .intro {
-      margin-bottom: 30px;
+      padding: 75px 0 50px;
+      max-width: 760px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      color: var(--primary);
-      font-size: 12px;
+      gap: 9px;
+      color: var(--accent);
+      font-size: 11px;
       font-weight: 800;
-      letter-spacing: 1.3px;
       text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
     }
 
     .eyebrow::before {
       content: "";
-      width: 22px;
-      height: 3px;
-      border-radius: 10px;
-      background: var(--primary);
+      width: 25px;
+      height: 2px;
+      background: var(--accent);
     }
 
     h1 {
-      max-width: 650px;
-      margin: 0;
-      font-size: clamp(34px, 7vw, 54px);
-      line-height: 1.12;
-      letter-spacing: -2px;
+      font-size: clamp(43px, 8vw, 76px);
+      line-height: 1.04;
+      letter-spacing: -4px;
+      font-weight: 850;
+      max-width: 720px;
     }
 
     h1 span {
-      color: var(--primary);
+      color: var(--accent);
     }
 
-    .intro p {
-      max-width: 570px;
-      margin: 16px 0 0;
+    .intro-text {
       color: var(--muted);
-      font-size: 15px;
+      font-size: 16px;
+      max-width: 520px;
+      margin-top: 24px;
+      line-height: 1.9;
     }
 
-    .form-card {
-      padding: 30px;
+    .intro-note {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 27px;
+      font-size: 12px;
+      color: #d0d9e6;
+    }
+
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(169,243,107,.45);
+      flex-shrink: 0;
+    }
+
+    /* MAIN CONTENT */
+
+    .section-heading {
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-size: 23px;
+      letter-spacing: -.7px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .contact-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 26px;
+      min-height: 230px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: 0 8px 30px rgba(24, 32, 51, 0.04);
+      border-radius: 22px;
+      overflow: hidden;
+      transition: transform .22s, border-color .22s;
     }
 
-    .form-heading {
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(169,243,107,.5);
+    }
+
+    .contact-card.whatsapp {
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          rgba(169,243,107,.10),
+          transparent 45%
+        ),
+        var(--surface);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 24px;
     }
 
-    .form-heading h2 {
-      margin: 0 0 5px;
-      font-size: 21px;
-      letter-spacing: -0.4px;
-    }
-
-    .form-heading p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .form-grid {
+    .icon-box {
+      width: 49px;
+      height: 49px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px 16px;
+      place-items: center;
+      border-radius: 15px;
+      background: var(--surface-light);
+      color: var(--accent);
     }
 
-    .field {
-      min-width: 0;
+    .icon-box svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .full-width {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 13px;
+    .card-label {
+      color: var(--muted);
+      font-size: 11px;
       font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
     }
 
-    .optional {
+    .contact-card h3 {
+      font-size: 21px;
+      margin-bottom: 5px;
+      letter-spacing: -.5px;
+    }
+
+    .contact-card .description {
       color: var(--muted);
-      font-weight: 400;
+      font-size: 13px;
+      margin-bottom: 20px;
     }
 
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      outline: none;
-      background: #fff;
-      color: var(--text);
-      font-size: 14px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(49, 87, 213, 0.1);
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #a0a7b5;
-    }
-
-    textarea {
-      min-height: 145px;
-      resize: vertical;
-    }
-
-    .field-hint {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .submit-button {
-      width: 100%;
-      margin-top: 24px;
-      padding: 15px 20px;
+    .contact-action {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border: 0;
-      border-radius: 11px;
-      background: var(--primary);
-      color: white;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    .submit-button:hover {
-      background: var(--primary-dark);
-    }
-
-    .submit-button:active {
-      transform: scale(0.99);
-    }
-
-    .submit-button:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    .privacy-note {
-      margin: 14px 0 0;
-      color: var(--muted);
-      text-align: center;
-      font-size: 12px;
-    }
-
-    .form-status {
-      display: none;
-      margin-top: 18px;
-      padding: 13px;
-      border-radius: 10px;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
       font-size: 13px;
+      font-weight: 700;
       overflow-wrap: anywhere;
     }
 
-    .form-status.success {
-      display: block;
-      background: #eaf8ef;
-      color: #176b36;
+    .contact-action .arrow {
+      color: var(--accent);
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: transform .2s;
     }
 
-    .form-status.error {
-      display: block;
-      background: #fff0f0;
-      color: #a32121;
+    .contact-card:hover .arrow {
+      transform: translateX(4px);
     }
 
-    .contact-field[hidden] {
-      display: none;
+    /* WHAT WE CAN DISCUSS */
+
+    .opportunities {
+      margin-top: 75px;
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
     }
+
+    .opportunities h2 {
+      font-size: 23px;
+      letter-spacing: -.7px;
+    }
+
+    .opportunities > p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+      max-width: 500px;
+    }
+
+    .topic-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .topic {
+      padding: 10px 14px;
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      font-size: 12px;
+      color: #e1e8f1;
+    }
+
+    .topic span {
+      color: var(--accent);
+      margin-right: 5px;
+    }
+
+    /* CLOSING */
+
+    .closing {
+      margin: 65px 0 50px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .closing h2 {
+      font-size: clamp(24px, 4vw, 34px);
+      letter-spacing: -1.2px;
+      line-height: 1.25;
+    }
+
+    .closing p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 9px;
+    }
+
+    .closing-mark {
+      width: 65px;
+      height: 65px;
+      border-radius: 21px;
+      background: var(--accent);
+      color: #14200e;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      font-weight: 900;
+      flex-shrink: 0;
+      transform: rotate(-7deg);
+    }
+
+    /* FOOTER */
 
     footer {
-      padding: 22px 16px;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
+      padding: 25px 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
       color: var(--muted);
-      text-align: center;
-      font-size: 12px;
+      font-size: 11px;
     }
 
+    .footer-brand {
+      color: var(--text);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* MOBILE */
+
     @media (max-width: 600px) {
-      .topbar {
-        padding: 14px 18px;
+      .page {
+        padding: 0 18px;
       }
 
-      .page {
-        width: calc(100% - 28px);
-        margin-top: 34px;
+      .nav {
+        min-height: 70px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .back-link {
+        font-size: 12px;
+        padding: 8px 11px;
+      }
+
+      .intro {
+        padding: 58px 0 40px;
       }
 
       h1 {
-        letter-spacing: -1.4px;
+        font-size: clamp(42px, 12vw, 62px);
+        letter-spacing: -2.8px;
       }
 
-      .form-card {
-        padding: 21px 17px;
+      .intro-text {
+        font-size: 14px;
       }
 
-      .form-grid {
+      .contact-grid {
         grid-template-columns: 1fr;
-        gap: 17px;
+        gap: 13px;
       }
 
-      .full-width {
-        grid-column: auto;
+      .contact-card {
+        min-height: 205px;
+        padding: 22px;
+        border-radius: 19px;
+      }
+
+      .opportunities {
+        margin-top: 55px;
+        padding: 24px 20px;
+        border-radius: 20px;
+      }
+
+      .topic-list {
+        gap: 8px;
+      }
+
+      .topic {
+        font-size: 11px;
+        padding: 9px 11px;
+      }
+
+      .closing {
+        margin: 50px 0 35px;
+      }
+
+      .closing-mark {
+        width: 49px;
+        height: 49px;
+        font-size: 25px;
+        border-radius: 15px;
+      }
+
+      footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="page">
 
-  <header class="topbar">
-    <a class="brand" href="index.html">Campus<span>ora</span></a>
-    <a class="back-link" href="index.html">← Back to Campusora</a>
-  </header>
+    <header class="nav">
+      <a class="brand" href="index.html" aria-label="Campusora home">
+        <span class="brand-icon">C.</span>
+        <span>campusora</span>
+      </a>
 
-  <main class="page">
+      <a class="back-link" href="index.html">
+        ← Back to Campusora
+      </a>
+    </header>
 
-    <section class="intro">
-      <div class="eyebrow">Work With the Creator</div>
+    <main>
+      <section class="intro">
+        <div class="eyebrow">Work With the Creator</div>
 
-      <h1>Let's create something <span>meaningful.</span></h1>
+        <h1>
+          Good ideas<br>
+          deserve to <span>happen.</span>
+        </h1>
 
-      <p>
-        Have an idea, brand, project, or business you'd like us to work on
-        together? Share the details below. I'd love to hear what you have in mind.
-      </p>
-    </section>
-
-    <section class="form-card">
-      <div class="form-heading">
-        <h2>Tell me about your idea</h2>
-        <p>Fill in the details so we can understand your proposal.</p>
-      </div>
-
-      <form id="creatorInquiryForm">
-
-        <div class="form-grid">
-
-          <div class="field">
-            <label for="contactName">Full name *</label>
-            <input
-              type="text"
-              id="contactName"
-              name="contactName"
-              placeholder="Your full name"
-              maxlength="100"
-              autocomplete="name"
-              required
-            >
-          </div>
-
-          <div class="field">
-            <label for="contactEmail">Email address *</label>
-            <input
-              type="email"
-              id="contactEmail"
-              name="contactEmail"
-              placeholder="you@example.com"
-              maxlength="254"
-              autocomplete="email"
-              required
-            >
-          </div>
-
-          <div class="field full-width">
-            <label for="businessName">
-              Business or brand <span class="optional">(optional)</span>
-            </label>
-
-            <input
-              type="text"
-              id="businessName"
-              name="businessName"
-              placeholder="Your company, brand, or organisation"
-              maxlength="150"
-            >
-          </div>
-
-          <div class="field">
-            <label for="inquiryType">Collaboration type *</label>
-
-            <select id="inquiryType" name="inquiryType" required>
-              <option value="">Choose an option</option>
-              <option value="business_promotion">Business promotion</option>
-              <option value="brand_collaboration">Brand collaboration</option>
-              <option value="content_creation">Content creation</option>
-              <option value="sponsorship">Sponsorship</option>
-              <option value="other">Other proposal</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="budget">
-              Proposed budget (₦)
-              <span class="optional">(optional)</span>
-            </label>
-
-            <input
-              type="number"
-              id="budget"
-              name="budget"
-              placeholder="e.g. 50000"
-              min="0"
-              max="999999999999"
-              step="0.01"
-              inputmode="decimal"
-            >
-          </div>
-
-          <div class="field full-width">
-            <label for="message">Tell me about your proposal *</label>
-
-            <textarea
-              id="message"
-              name="message"
-              placeholder="What would you like us to work on? Include your goals, timeline, or any important details."
-              minlength="10"
-              maxlength="5000"
-              required
-            ></textarea>
-
-            <p class="field-hint">
-              Please provide at least 10 characters.
-            </p>
-          </div>
-
-          <div class="field">
-            <label for="preferredContact">
-              Preferred contact method
-            </label>
-
-            <select id="preferredContact" name="preferredContact">
-              <option value="">No preference</option>
-              <option value="email">Email</option>
-              <option value="phone">Phone call</option>
-              <option value="whatsapp">WhatsApp</option>
-            </select>
-          </div>
-
-          <div class="field contact-field" id="contactValueField" hidden>
-            <label for="contactValue" id="contactValueLabel">
-              Contact number *
-            </label>
-
-            <input
-              type="text"
-              id="contactValue"
-              name="contactValue"
-              placeholder="Include your country code"
-              maxlength="100"
-            >
-          </div>
-
-        </div>
-
-        <button class="submit-button" id="submitButton" type="submit">
-          Send your proposal <span aria-hidden="true">→</span>
-        </button>
-
-        <p class="privacy-note">
-          Your details will be used to respond to your proposal.
+        <p class="intro-text">
+          Have a brand, a business, or a creative idea you'd like
+          to bring to life? Let's talk about what we can build
+          together through Campusora.
         </p>
 
-        <div
-          class="form-status"
-          id="formStatus"
-          role="status"
-          aria-live="polite"
-        ></div>
+        <div class="intro-note">
+          <span class="online-dot"></span>
+          <span>Open to business enquiries and collaborations</span>
+        </div>
+      </section>
 
-      </form>
-    </section>
+      <section aria-labelledby="contact-heading">
+        <div class="section-heading">
+          <h2 id="contact-heading">Let's talk directly.</h2>
+          <p>Choose your preferred way to get in touch.</p>
+        </div>
 
-  </main>
+        <div class="contact-grid">
 
-  <footer>
-    Campusora · Building connections and opportunities.
-  </footer>
+          <!-- EMAIL CONTACT -->
+          <a
+            class="contact-card"
+            href="mailto:ablegodluke@gmail.com?subject=Campusora%20Collaboration%20Enquiry"
+            aria-label="Send an email to AbleGod about a Campusora collaboration"
+          >
+            <div class="card-top">
+              <div class="icon-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+                  <path d="m4 7 8 6 8-6"></path>
+                </svg>
+              </div>
+              <span class="card-label">Contact 01</span>
+            </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+            <h3>Send an email</h3>
 
-  <script>
-    (() => {
-      "use strict";
+            <p class="description">
+              For detailed proposals, business enquiries and
+              formal collaborations.
+            </p>
 
-      const SUPABASE_URL =
-        "https://ssdhygwozbroqjhuecgp.supabase.co";
+            <div class="contact-action">
+              <span>ablegodluke@gmail.com</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </div>
+          </a>
 
-      const SUPABASE_PUBLISHABLE_KEY =
-        "sb_publishable_gbbFNsXzzJSh8k3aqEl4kg_XO-YRo4N";
+          <!-- WHATSAPP CONTACT -->
+          <a
+            class="contact-card whatsapp"
+            href="https://wa.me/2349017579718?text=Hello%2C%20I%20found%20your%20contact%20on%20Campusora.%20I%27d%20like%20to%20discuss%20a%20collaboration."
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Message the Campusora creator on WhatsApp"
+          >
+            <div class="card-top">
+              <div class="icon-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.6A8.5 8.5 0 1 1 20.5 11.5Z"></path>
+                  <path d="M8.5 8.2c.3-.6.6-.6 1-.6.2 0 .4 0 .6.5l.8 1.8c.1.3.1.5-.1.7l-.6.7c-.2.2-.2.4 0 .7.6 1 1.4 1.8 2.4 2.3.3.2.5.2.7-.1l.8-.9c.2-.2.4-.2.7-.1l1.7.8c.3.2.5.3.5.5 0 .4-.2 1-.7 1.4-.5.4-1.2.7-2 .6-1.1-.1-2.5-.7-4-2-1.2-1.1-2.1-2.5-2.4-3.5-.3-1.1 0-2 .6-2.8Z"></path>
+                </svg>
+              </div>
+              <span class="card-label">Contact 02</span>
+            </div>
 
-      const form = document.getElementById("creatorInquiryForm");
-      const formStatus = document.getElementById("formStatus");
-      const submitButton = document.getElementById("submitButton");
+            <h3>Chat on WhatsApp</h3>
 
-      const preferredContact =
-        document.getElementById("preferredContact");
+            <p class="description">
+              For a quick conversation about promotions,
+              partnerships or your next idea.
+            </p>
 
-      const contactValueField =
-        document.getElementById("contactValueField");
+            <div class="contact-action">
+              <span>+234 901 757 9718</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </div>
+          </a>
 
-      const contactValue =
-        document.getElementById("contactValue");
+        </div>
+      </section>
 
-      const contactValueLabel =
-        document.getElementById("contactValueLabel");
+      <section class="opportunities">
+        <h2>What can we work on?</h2>
 
-      let db = null;
+        <p>
+          If you have an idea that fits Campusora and its community,
+          reach out and tell me about it.
+        </p>
 
-      function showStatus(message, type) {
-        formStatus.className = "form-status " + type;
-        formStatus.textContent = message;
-        formStatus.style.display = "block";
+        <div class="topic-list">
+          <div class="topic"><span>↗</span> Business promotions</div>
+          <div class="topic"><span>↗</span> Brand collaborations</div>
+          <div class="topic"><span>↗</span> Content creation</div>
+          <div class="topic"><span>↗</span> Sponsorships</div>
+          <div class="topic"><span>↗</span> Creative projects</div>
+          <div class="topic"><span>↗</span> Other partnerships</div>
+        </div>
+      </section>
 
-        formStatus.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest"
-        });
-      }
+      <section class="closing">
+        <div>
+          <h2>Let's build something<br>worth talking about.</h2>
+          <p>One conversation could be the start of something great.</p>
+        </div>
 
-      function updateContactField() {
-        const method = preferredContact.value;
+        <div class="closing-mark" aria-hidden="true">↗</div>
+      </section>
+    </main>
 
-        const needsNumber =
-          method === "phone" || method === "whatsapp";
+    <footer>
+      <a class="footer-brand" href="index.html">Campusora.</a>
 
-        contactValueField.hidden = !needsNumber;
-        contactValue.required = needsNumber;
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="mailto:ablegodluke@gmail.com">Email</a>
+        <a
+          href="https://wa.me/2349017579718"
+          target="_blank"
+          rel="noopener noreferrer"
+        >WhatsApp</a>
+      </div>
 
-        if (method === "whatsapp") {
-          contactValueLabel.textContent = "WhatsApp number *";
-          contactValue.placeholder = "Include your country code";
-        } else {
-          contactValueLabel.textContent = "Phone number *";
-          contactValue.placeholder = "Include your country code";
-        }
+      <span>Connecting people. Creating opportunities.</span>
+    </footer>
 
-        if (!needsNumber) {
-          contactValue.value = "";
-        }
-      }
-
-      preferredContact.addEventListener(
-        "change",
-        updateContactField
-      );
-
-      if (window.supabase) {
-        db = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
-      }
-
-      form.addEventListener("submit", async function (event) {
-        event.preventDefault();
-
-        if (!form.reportValidity()) {
-          return;
-        }
-
-        if (!db) {
-          showStatus(
-            "The database connection could not load. Please refresh the page and try again.",
-            "error"
-          );
-          return;
-        }
-
-        const name = document
-          .getElementById("contactName")
-          .value.trim();
-
-        const email = document
-          .getElementById("contactEmail")
-          .value.trim();
-
-        const business = document
-          .getElementById("businessName")
-          .value.trim();
-
-        const inquiryType = document
-          .getElementById("inquiryType")
-          .value;
-
-        const message = document
-          .getElementById("message")
-          .value.trim();
-
-        const budgetInput = document
-          .getElementById("budget")
-          .value.trim();
-
-        const method = preferredContact.value;
-        const contact = contactValue.value.trim();
-
-        if (message.length < 10) {
-          showStatus(
-            "Please explain your proposal in at least 10 characters.",
-            "error"
-          );
-          return;
-        }
-
-        if (
-          (method === "phone" || method === "whatsapp") &&
-          !contact
-        ) {
-          showStatus(
-            "Please enter your contact number.",
-            "error"
-          );
-          return;
-        }
-
-        const budget = budgetInput
-          ? Number(budgetInput)
-          : null;
-
-        if (
-          budgetInput &&
-          (!Number.isFinite(budget) || budget < 0)
-        ) {
-          showStatus(
-            "Please enter a valid budget.",
-            "error"
-          );
-          return;
-        }
-
-        const inquiry = {
-          contact_name: name,
-          contact_email: email,
-          business_name: business || null,
-          inquiry_type: inquiryType,
-          message: message,
-          proposed_budget: budget,
-          currency: "NGN",
-          preferred_contact: method || null,
-          contact_value:
-            method === "phone" || method === "whatsapp"
-              ? contact
-              : null,
-          status: "pending"
-        };
-
-        submitButton.disabled = true;
-        submitButton.textContent = "Sending proposal...";
-        formStatus.style.display = "none";
-
-        try {
-          const { error } = await db
-            .from("campusora_creator_inquiries")
-            .insert([inquiry]);
-
-          if (error) {
-            console.error(
-              "Creator inquiry submission failed:",
-              error
-            );
-
-            if (
-              error.code === "42501" ||
-              error.code === "PGRST301"
-            ) {
-              showStatus(
-                "Your submission was blocked by the database's security settings. Please try again later.",
-                "error"
-              );
-            } else {
-              showStatus(
-                "We couldn't submit your proposal right now. Please try again later.",
-                "error"
-              );
-            }
-
-            return;
-          }
-
-          form.reset();
-          updateContactField();
-
-          showStatus(
-            "Your proposal has been submitted successfully! Thank you for reaching out.",
-            "success"
-          );
-
-        } catch (error) {
-          console.error(
-            "Creator inquiry connection error:",
-            error
-          );
-
-          showStatus(
-            "A connection error occurred. Please check your internet and try again.",
-            "error"
-          );
-
-        } finally {
-          submitButton.disabled = false;
-          submitButton.innerHTML =
-            'Send your proposal <span aria-hidden="true">→</span>';
-        }
-      });
-    })();
-  </script>
-
+  </div>
 </body>
   </html>
