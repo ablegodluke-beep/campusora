@@ -1,1 +1,212 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d1c">
+  <title>Profile Ranks | Campusora</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:radial-gradient(circle at top,#202044 0,#0b1020 48%,#070a13 100%);
+      color:#f5f6ff;
+      font-family:Inter,Arial,sans-serif;
+    }
+    button{font:inherit}
+    .page{width:min(100% - 28px,760px);margin:auto;padding:24px 0 48px}
+    .topbar{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+    .back{
+      width:42px;height:42px;border-radius:14px;
+      border:1px solid #30354f;background:#151a30;color:#fff;
+      font-size:21px;cursor:pointer
+    }
+    .brand{font-size:19px;font-weight:900;letter-spacing:-.5px}
+    .brand span{color:#a99bff}
+    .intro{text-align:center;margin:20px 0 28px}
+    .crown{font-size:43px;margin-bottom:8px}
+    h1{font-size:clamp(27px,7vw,39px);margin:0 0 12px;letter-spacing:-1.2px}
+    .intro p{color:#aeb6d0;line-height:1.7;font-size:14px;max-width:470px;margin:auto}
+    .rank-list{display:grid;gap:16px}
+    .rank-card{
+      position:relative;overflow:hidden;padding:21px;
+      border-radius:22px;background:linear-gradient(145deg,#171c32,#101426);
+      border:1px solid #303650;box-shadow:0 12px 30px #0002
+    }
+    .rank-card:before{
+      content:"";position:absolute;width:150px;height:150px;
+      border-radius:50%;right:-65px;top:-75px;background:var(--glow);opacity:.13
+    }
+    .queen{--accent:#e5bd66;--glow:#e5bd66}
+    .king{--accent:#78c8ff;--glow:#78c8ff}
+    .master{--accent:#d0a0ff;--glow:#d0a0ff}
+    .card-top{display:flex;align-items:center;gap:14px;position:relative}
+    .rank-icon{
+      width:58px;height:58px;flex-shrink:0;display:grid;place-items:center;
+      border-radius:18px;background:#ffffff0b;border:1px solid var(--accent);
+      font-size:29px
+    }
+    .rank-name{font-size:21px;font-weight:900;margin:0 0 6px}
+    .rank-description{font-size:12px;line-height:1.6;color:#aeb6d0}
+    .price-row{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:10px;margin-top:21px;padding-top:17px;border-top:1px solid #ffffff12
+    }
+    .price{font-size:25px;font-weight:900;color:var(--accent)}
+    .permanent{font-size:11px;color:#aeb6d0;margin-top:4px}
+    .buy{
+      border:0;border-radius:13px;padding:12px 16px;
+      background:var(--accent);color:#111321;font-size:12px;font-weight:900;
+      cursor:pointer;min-width:112px
+    }
+    .buy:disabled{opacity:.55;cursor:wait}
+    .note{
+      margin-top:23px;padding:15px;border-radius:15px;
+      border:1px solid #303650;background:#12172a;
+      color:#aeb6d0;font-size:12px;line-height:1.7;text-align:center
+    }
+    #message{
+      display:none;margin:0 0 18px;padding:13px;border-radius:12px;
+      font-size:13px;line-height:1.6;background:#1d2940;color:#fff
+    }
+    .back-profile{
+      display:block;text-align:center;margin-top:22px;color:#c5c8e9;
+      text-decoration:none;font-size:13px
+    }
+    @media(min-width:620px){.rank-list{grid-template-columns:1fr 1fr}.master{grid-column:1/-1}}
+  </style></head><body>
+  <main class="page">
+    <header class="topbar">
+      <button class="back" type="button" onclick="history.back()" aria-label="Go back">‹</button>
+      <div class="brand">Campus<span>ora</span></div>
+    </header><section class="intro">
+  <div class="crown">👑</div>
+  <h1>Choose Your Rank</h1>
+  <p>Stand out on Campusora with a special rank displayed beside your profile name. Your rank purchase is permanent.</p>
+</section>
 
+<div id="message" role="status" aria-live="polite"></div>
+
+<section class="rank-list">
+  <article class="rank-card queen">
+    <div class="card-top">
+      <div class="rank-icon">👑</div>
+      <div>
+        <h2 class="rank-name">Queen</h2>
+        <div class="rank-description">A golden profile rank for members who want to stand out.</div>
+      </div>
+    </div>
+    <div class="price-row">
+      <div><div class="price">₦2,000</div><div class="permanent">One-time payment</div></div>
+      <button class="buy" data-rank="queen">Get Queen</button>
+    </div>
+  </article>
+
+  <article class="rank-card king">
+    <div class="card-top">
+      <div class="rank-icon">👑</div>
+      <div>
+        <h2 class="rank-name">King</h2>
+        <div class="rank-description">A premium blue rank displayed beside your name.</div>
+      </div>
+    </div>
+    <div class="price-row">
+      <div><div class="price">₦3,000</div><div class="permanent">One-time payment</div></div>
+      <button class="buy" data-rank="king">Get King</button>
+    </div>
+  </article>
+
+  <article class="rank-card master">
+    <div class="card-top">
+      <div class="rank-icon">💎</div>
+      <div>
+        <h2 class="rank-name">Grand Master</h2>
+        <div class="rank-description">A distinctive purple rank for members who want the highest rank title.</div>
+      </div>
+    </div>
+    <div class="price-row">
+      <div><div class="price">₦5,000</div><div class="permanent">One-time payment</div></div>
+      <button class="buy" data-rank="grand_master">Get Grand Master</button>
+    </div>
+  </article>
+</section>
+
+<div class="note">
+  Rank purchases are separate from Premium membership and virtual gifts.
+  Only one profile rank can be active at a time. If you buy a different rank,
+  your existing rank will be replaced after the new payment is successfully verified.
+</div>
+
+<a class="back-profile" href="./profile.html">← Return to profile</a>
+
+  </main>  <script>
+    const messageBox = document.getElementById('message');
+    const buttons = document.querySelectorAll('.buy');
+
+    function showMessage(message) {
+      messageBox.textContent = message;
+      messageBox.style.display = 'block';
+    }
+
+    async function getAccessToken() {
+      /*
+        This reads the existing Supabase session from browser storage.
+        It does not create a new session or change account settings.
+      */
+      const keys = Object.keys(localStorage);
+      const storageKey = keys.find(key =>
+        key.startsWith('sb-') && key.endsWith('-auth-token')
+      );
+
+      if (!storageKey) return null;
+
+      try {
+        const sessionData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        return sessionData.access_token || null;
+      } catch {
+        return null;
+      }
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', async () => {
+        const rank = button.dataset.rank;
+        const token = await getAccessToken();
+
+        if (!token) {
+          showMessage('Please log in to Campusora first, then return here to choose your rank.');
+          return;
+        }
+
+        buttons.forEach(item => item.disabled = true);
+        button.textContent = 'Please wait…';
+        messageBox.style.display = 'none';
+
+        try {
+          const response = await fetch('/api/profile-ranks/initialize', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ rank_type: rank })
+          });
+
+          const result = await response.json();
+
+          if (!response.ok || !result.authorization_url) {
+            throw new Error(result.error || 'Could not start payment. Please try again.');
+          }
+
+          window.location.href = result.authorization_url;
+        } catch (error) {
+          showMessage(error.message || 'Something went wrong. Please try again.');
+          buttons.forEach(item => item.disabled = false);
+          button.textContent =
+            rank === 'grand_master' ? 'Get Grand Master' :
+            rank === 'queen' ? 'Get Queen' : 'Get King';
+        }
+      });
+    });
+  </script></body>
+                                            </html>
