@@ -2385,6 +2385,60 @@ async function loadCounts(profile) {
   $('followerCount').textContent=f.count??0;
   $('followingCount').textContent=following.count??0;
 }
+  async function loadProfileRank(profile) {
+const rankButton = $('getRanksButton');
+const rankBadge = $('profileRankBadge');
+
+if (!rankButton || !rankBadge) return;
+
+rankButton.classList.toggle('hidden', !isOwnProfile);
+rankBadge.classList.add('hidden');
+rankBadge.textContent = '';
+rankBadge.classList.remove(
+'rank-queen',
+'rank-king',
+'rank-grand-master'
+);
+
+const { data, error } = await supabase
+.from('profile_ranks')
+.select('rank_type')
+.eq('user_id', profile.id)
+.eq('status', 'active')
+.eq('payment_verified', true)
+.maybeSingle();
+
+if (error) {
+console.error('Could not load profile rank:', error);
+return;
+}
+
+if (!data) return;
+
+const rankDetails = {
+queen: {
+label: '👑 QUEEN',
+css: 'rank-queen'
+},
+king: {
+label: '👑 KING',
+css: 'rank-king'
+},
+grand_master: {
+label: '💎 GRAND MASTER',
+css: 'rank-grand-master'
+}
+};
+
+const rank = rankDetails[data.rank_type];
+
+if (!rank) return;
+
+rankBadge.textContent = rank.label;
+rankBadge.classList.add(rank.css);
+rankBadge.classList.remove('hidden');
+rankButton.classList.add('hidden');
+                  }
 
 async function loadPosts(profile) {
   const container=$('postsContainer');
