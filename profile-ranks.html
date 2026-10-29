@@ -6,6 +6,7 @@
   <title>Profile Ranks | Campusora</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">  <style>
     *{box-sizing:border-box}
+
     body{
       margin:0;
       min-height:100vh;
@@ -13,67 +14,220 @@
       color:#f5f6ff;
       font-family:Inter,Arial,sans-serif;
     }
+
     button{font:inherit}
-    .page{width:min(100% - 28px,760px);margin:auto;padding:24px 0 48px}
-    .topbar{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+
+    .page{
+      width:min(100% - 28px,760px);
+      margin:auto;
+      padding:24px 0 48px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:30px;
+    }
+
     .back{
-      width:42px;height:42px;border-radius:14px;
-      border:1px solid #30354f;background:#151a30;color:#fff;
-      font-size:21px;cursor:pointer
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      border:1px solid #30354f;
+      background:#151a30;
+      color:#fff;
+      font-size:21px;
+      cursor:pointer;
     }
-    .brand{font-size:19px;font-weight:900;letter-spacing:-.5px}
+
+    .brand{
+      font-size:19px;
+      font-weight:900;
+      letter-spacing:-.5px;
+    }
+
     .brand span{color:#a99bff}
-    .intro{text-align:center;margin:20px 0 28px}
-    .crown{font-size:43px;margin-bottom:8px}
-    h1{font-size:clamp(27px,7vw,39px);margin:0 0 12px;letter-spacing:-1.2px}
-    .intro p{color:#aeb6d0;line-height:1.7;font-size:14px;max-width:470px;margin:auto}
-    .rank-list{display:grid;gap:16px}
+
+    .intro{
+      text-align:center;
+      margin:20px 0 28px;
+    }
+
+    .crown{
+      font-size:43px;
+      margin-bottom:8px;
+    }
+
+    h1{
+      font-size:clamp(27px,7vw,39px);
+      margin:0 0 12px;
+      letter-spacing:-1.2px;
+    }
+
+    .intro p{
+      color:#aeb6d0;
+      line-height:1.7;
+      font-size:14px;
+      max-width:470px;
+      margin:auto;
+    }
+
+    .rank-list{
+      display:grid;
+      gap:16px;
+    }
+
     .rank-card{
-      position:relative;overflow:hidden;padding:21px;
-      border-radius:22px;background:linear-gradient(145deg,#171c32,#101426);
-      border:1px solid #303650;box-shadow:0 12px 30px #0002
+      position:relative;
+      overflow:hidden;
+      padding:21px;
+      border-radius:22px;
+      background:linear-gradient(145deg,#171c32,#101426);
+      border:1px solid #303650;
+      box-shadow:0 12px 30px #0002;
     }
+
     .rank-card:before{
-      content:"";position:absolute;width:150px;height:150px;
-      border-radius:50%;right:-65px;top:-75px;background:var(--glow);opacity:.13
+      content:"";
+      position:absolute;
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      right:-65px;
+      top:-75px;
+      background:var(--glow);
+      opacity:.13;
+      pointer-events:none;
     }
+
     .queen{--accent:#e5bd66;--glow:#e5bd66}
     .king{--accent:#78c8ff;--glow:#78c8ff}
     .master{--accent:#d0a0ff;--glow:#d0a0ff}
-    .card-top{display:flex;align-items:center;gap:14px;position:relative}
+
+    .card-top{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      position:relative;
+    }
+
     .rank-icon{
-      width:58px;height:58px;flex-shrink:0;display:grid;place-items:center;
-      border-radius:18px;background:#ffffff0b;border:1px solid var(--accent);
-      font-size:29px
+      width:58px;
+      height:58px;
+      flex-shrink:0;
+      display:grid;
+      place-items:center;
+      border-radius:18px;
+      background:#ffffff0b;
+      border:1px solid var(--accent);
+      font-size:29px;
     }
-    .rank-name{font-size:21px;font-weight:900;margin:0 0 6px}
-    .rank-description{font-size:12px;line-height:1.6;color:#aeb6d0}
+
+    .rank-name{
+      font-size:21px;
+      font-weight:900;
+      margin:0 0 6px;
+    }
+
+    .rank-description{
+      font-size:12px;
+      line-height:1.6;
+      color:#aeb6d0;
+    }
+
     .price-row{
-      display:flex;align-items:center;justify-content:space-between;
-      gap:10px;margin-top:21px;padding-top:17px;border-top:1px solid #ffffff12
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:21px;
+      padding-top:17px;
+      border-top:1px solid #ffffff12;
     }
-    .price{font-size:25px;font-weight:900;color:var(--accent)}
-    .permanent{font-size:11px;color:#aeb6d0;margin-top:4px}
+
+    .price{
+      font-size:25px;
+      font-weight:900;
+      color:var(--accent);
+    }
+
+    .permanent{
+      font-size:11px;
+      color:#aeb6d0;
+      margin-top:4px;
+    }
+
     .buy{
-      border:0;border-radius:13px;padding:12px 16px;
-      background:var(--accent);color:#111321;font-size:12px;font-weight:900;
-      cursor:pointer;min-width:112px
+      border:0;
+      border-radius:13px;
+      padding:12px 16px;
+      background:var(--accent);
+      color:#111321;
+      font-size:12px;
+      font-weight:900;
+      cursor:pointer;
+      min-width:112px;
     }
-    .buy:disabled{opacity:.55;cursor:wait}
+
+    .buy:disabled{
+      opacity:.55;
+      cursor:wait;
+    }
+
     .note{
-      margin-top:23px;padding:15px;border-radius:15px;
-      border:1px solid #303650;background:#12172a;
-      color:#aeb6d0;font-size:12px;line-height:1.7;text-align:center
+      margin-top:23px;
+      padding:15px;
+      border-radius:15px;
+      border:1px solid #303650;
+      background:#12172a;
+      color:#aeb6d0;
+      font-size:12px;
+      line-height:1.7;
+      text-align:center;
     }
+
     #message{
-      display:none;margin:0 0 18px;padding:13px;border-radius:12px;
-      font-size:13px;line-height:1.6;background:#1d2940;color:#fff
+      display:none;
+      margin:0 0 18px;
+      padding:13px;
+      border-radius:12px;
+      font-size:13px;
+      line-height:1.6;
+      background:#1d2940;
+      color:#fff;
+      overflow-wrap:anywhere;
     }
+
+    #message.success{
+      background:#12372b;
+      border:1px solid #277653;
+    }
+
+    #message.error{
+      background:#3a1b29;
+      border:1px solid #81334c;
+    }
+
     .back-profile{
-      display:block;text-align:center;margin-top:22px;color:#c5c8e9;
-      text-decoration:none;font-size:13px
+      display:block;
+      text-align:center;
+      margin-top:22px;
+      color:#c5c8e9;
+      text-decoration:none;
+      font-size:13px;
     }
-    @media(min-width:620px){.rank-list{grid-template-columns:1fr 1fr}.master{grid-column:1/-1}}
+
+    @media(min-width:620px){
+      .rank-list{grid-template-columns:1fr 1fr}
+      .master{grid-column:1/-1}
+    }
+
+    @media(max-width:380px){
+      .rank-card{padding:15px}
+      .price{font-size:22px}
+      .buy{min-width:100px;padding:11px 10px}
+    }
   </style></head><body>
   <main class="page">
     <header class="topbar">
@@ -97,7 +251,10 @@
       </div>
     </div>
     <div class="price-row">
-      <div><div class="price">₦2,000</div><div class="permanent">One-time payment</div></div>
+      <div>
+        <div class="price">₦2,000</div>
+        <div class="permanent">One-time payment</div>
+      </div>
       <button class="buy" data-rank="queen">Get Queen</button>
     </div>
   </article>
@@ -111,7 +268,10 @@
       </div>
     </div>
     <div class="price-row">
-      <div><div class="price">₦3,000</div><div class="permanent">One-time payment</div></div>
+      <div>
+        <div class="price">₦3,000</div>
+        <div class="permanent">One-time payment</div>
+      </div>
       <button class="buy" data-rank="king">Get King</button>
     </div>
   </article>
@@ -125,7 +285,10 @@
       </div>
     </div>
     <div class="price-row">
-      <div><div class="price">₦5,000</div><div class="permanent">One-time payment</div></div>
+      <div>
+        <div class="price">₦5,000</div>
+        <div class="permanent">One-time payment</div>
+      </div>
       <button class="buy" data-rank="grand_master">Get Grand Master</button>
     </div>
   </article>
@@ -134,26 +297,36 @@
 <div class="note">
   Rank purchases are separate from Premium membership and virtual gifts.
   Only one profile rank can be active at a time. If you buy a different rank,
-  your existing rank will be replaced after the new payment is successfully verified.
+  your existing rank should be replaced only after the new payment is successfully verified.
 </div>
 
 <a class="back-profile" href="./profile.html">← Return to profile</a>
 
   </main>  <script>
     const messageBox = document.getElementById('message');
-    const buttons = document.querySelectorAll('.buy');
+    const buttons = Array.from(document.querySelectorAll('.buy'));
 
-    function showMessage(message) {
+    const rankButtonLabels = {
+      queen: 'Get Queen',
+      king: 'Get King',
+      grand_master: 'Get Grand Master'
+    };
+
+    function showMessage(message, type = '') {
       messageBox.textContent = message;
+      messageBox.className = type;
       messageBox.style.display = 'block';
     }
 
+    function setButtonsDisabled(disabled) {
+      buttons.forEach(button => {
+        button.disabled = disabled;
+      });
+    }
+
     async function getAccessToken() {
-      /*
-        This reads the existing Supabase session from browser storage.
-        It does not create a new session or change account settings.
-      */
       const keys = Object.keys(localStorage);
+
       const storageKey = keys.find(key =>
         key.startsWith('sb-') && key.endsWith('-auth-token')
       );
@@ -161,24 +334,101 @@
       if (!storageKey) return null;
 
       try {
-        const sessionData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const sessionData = JSON.parse(
+          localStorage.getItem(storageKey) || '{}'
+        );
+
         return sessionData.access_token || null;
       } catch {
         return null;
       }
     }
 
-    buttons.forEach(button => {
-      button.addEventListener('click', async () => {
-        const rank = button.dataset.rank;
+    async function readResponse(response) {
+      try {
+        return await response.json();
+      } catch {
+        throw new Error('The server returned an unreadable response. Please try again.');
+      }
+    }
+
+    async function verifyReturnedPayment() {
+      const url = new URL(window.location.href);
+      const reference =
+        url.searchParams.get('reference') ||
+        url.searchParams.get('trxref');
+
+      if (!reference) return;
+
+      showMessage('Checking your payment securely. Please wait…');
+      setButtonsDisabled(true);
+
+      try {
         const token = await getAccessToken();
 
         if (!token) {
-          showMessage('Please log in to Campusora first, then return here to choose your rank.');
+          throw new Error(
+            'Your payment return was detected, but your login session was not found. Log in again, then reopen this page with your payment reference.'
+          );
+        }
+
+        const response = await fetch('/api/profile-ranks/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ reference })
+        });
+
+        const result = await readResponse(response);
+
+        if (!response.ok || result.active !== true) {
+          throw new Error(
+            result.error || 'Payment verification was not completed. Please contact Campusora support before paying again.'
+          );
+        }
+
+        showMessage(
+          'Payment verified successfully! Your rank is now active. Return to your profile to see your badge.',
+          'success'
+        );
+
+        // Remove the payment reference from the address bar after verification.
+        url.searchParams.delete('reference');
+        url.searchParams.delete('trxref');
+        window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+
+      } catch (error) {
+        showMessage(
+          error.message || 'We could not verify the payment. Please do not pay again yet.',
+          'error'
+        );
+      } finally {
+        setButtonsDisabled(false);
+      }
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', async () => {
+        const rank = button.dataset.rank;
+        let token;
+
+        try {
+          token = await getAccessToken();
+        } catch {
+          token = null;
+        }
+
+        if (!token) {
+          showMessage(
+            'Please log in to Campusora first, then return here to choose your rank.',
+            'error'
+          );
           return;
         }
 
-        buttons.forEach(item => item.disabled = true);
+        setButtonsDisabled(true);
         button.textContent = 'Please wait…';
         messageBox.style.display = 'none';
 
@@ -192,21 +442,28 @@
             body: JSON.stringify({ rank_type: rank })
           });
 
-          const result = await response.json();
+          const result = await readResponse(response);
 
           if (!response.ok || !result.authorization_url) {
-            throw new Error(result.error || 'Could not start payment. Please try again.');
+            throw new Error(
+              result.error || 'Could not start payment. Please try again.'
+            );
           }
 
           window.location.href = result.authorization_url;
         } catch (error) {
-          showMessage(error.message || 'Something went wrong. Please try again.');
-          buttons.forEach(item => item.disabled = false);
-          button.textContent =
-            rank === 'grand_master' ? 'Get Grand Master' :
-            rank === 'queen' ? 'Get Queen' : 'Get King';
+          showMessage(
+            error.message || 'Something went wrong. Please try again.',
+            'error'
+          );
+
+          setButtonsDisabled(false);
+        } finally {
+          button.textContent = rankButtonLabels[rank];
         }
       });
     });
+
+    verifyReturnedPayment();
   </script></body>
-                                            </html>
+  </html>
