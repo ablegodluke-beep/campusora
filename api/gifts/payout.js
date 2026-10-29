@@ -1,344 +1,151 @@
-export default async function handler(req, res) {
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_KEY =
+  process.env.SUPABASE_PUBLISHABLE_KEY ||
+  process.env.SUPABASE_ANON_KEY;
+
+module.exports = async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
-
     return res.status(405).json({
       success: false,
-      error: "Method not allowed."
+      message: "Method not allowed."
     });
   }
 
-  const SUPABASE_URL = process.env.SUPABASE_URL;
-
-  const SUPABASE_SERVICE_ROLE_KEY =
-    process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  const SUPABASE_PUBLIC_KEY =
-    process.env.SUPABASE_PUBLISHABLE_KEY ||
-    process.env.SUPABASE_ANON_KEY;
-
-  if (
-    !SUPABASE_URL ||
-    !SUPABASE_SERVICE_ROLE_KEY ||
-    !SUPABASE_PUBLIC_KEY
-  ) {
+  if (!SUPABASE_URL || !SERVICE_ROLE_KEY || !SUPABASE_KEY) {
     return res.status(500).json({
       success: false,
-      error: "The payout API environment variables are incomplete."
+      message: "Server configuration is incomplete."
     });
-  }
-
-  const baseUrl = SUPABASE_URL.replace(/\/+$/, "");
-
-  const serviceHeaders = {
-    apikey: SUPABASE_SERVICE_ROLE_KEY,
-    Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-    "Content-Type": "application/json"
-  };
-
-  async function supabaseRequest(path, options = {}) {
-    const response = await fetch(`${baseUrl}${path}`, {
-      ...options,
-      headers: {
-        ...serviceHeaders,
-        ...(options.headers || {})
-      }
-    });
-
-    const text = await response.text();
-
-    let data;
-
-    try {
-      data = text ? JSON.parse(text) : null;
-    } catch {
-      data = text;
-    }
-
-    if (!response.ok) {
-      const message =
-        data?.message ||
-        data?.error_description ||
-        data?.error ||
-        "A database request failed.";
-
-      throw new Error(message);
-    }
-
-    return data;
   }
 
   try {
-    /*
-      1. Verify the user's login token.
-    */
+    const authHeader = req.headers.authorization || "";
+    const token = authHeader.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : "";
 
-    const authorization = req.headers.authorization || "";
-    const tokenMatch = authorization.match(/^Bearer\s+(.+)$/i);
-
-    if (!tokenMatch) {
+    if (!token) {
       return res.status(401).json({
         success: false,
-        error: "Please log in before requesting a payout."
+        message: "Please log in again."
       });
     }
 
-    const accessToken = tokenMatch[1];
-
-    const authResponse = await fetch(
-      `${baseUrl}/auth/v1/user`,
+    // Verify the signed-in user.
+    const userResponse = await fetch(
+      `${SUPABASE_URL}/auth/v1/user`,
       {
-        method: "GET",
         headers: {
-          apikey: SUPABASE_PUBLIC_KEY,
-          Authorization: `Bearer ${accessToken}`
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${token}`
         }
       }
     );
 
-    if (!authResponse.ok) {
+    const user = await userResponse.json().catch(() => ({}));
+
+    if (!userResponse.ok || !user.id) {
       return res.status(401).json({
         success: false,
-        error: "Your session is invalid or expired. Please log in again."
+        message: "Your session is invalid. Please log in again."
       });
     }
 
-    const user = await authResponse.json();
-
-    if (!user?.id) {
-      return res.status(401).json({
-        success: false,
-        error: "Unable to verify your account."
-      });
-    }
-
-    const creatorId = user.id;
-
-    /*
-      2. Validate the requested amount and bank details.
-    */
-
-    const body = req.body || {};
+    const body =
+      typeof req.body === "string"
+        ? JSON.parse(req.body || "{}")
+        : req.body || {};
 
     const amount = Number(body.amount);
+    const accountName = String(body.account_name || "").trim();
+    const bankName = String(body.bank_name || "").trim();
+    const accountNumber = String(body.account_number || "").trim();
 
-    const accountName = String(
-      body.account_name || ""
-    ).trim();
-
-    const bankName = String(
-      body.bank_name || ""
-    ).trim();
-
-    const accountNumber = String(
-      body.account_number || ""
-    ).trim();
-
-    if (
-      !Number.isSafeInteger(amount) ||
-      amount < 5000
-    ) {
+    if (!Number.isSafeInteger(amount) || amount < 5000) {
       return res.status(400).json({
         success: false,
-        error: "The minimum payout request is ₦5,000."
+        message: "The minimum payout is ₦5,000."
       });
     }
 
     if (
-      accountName.length < 2 ||
-      accountName.length > 100
+      !accountName ||
+      !bankName ||
+      !/^\d{10}$/.test(accountNumber)
     ) {
       return res.status(400).json({
         success: false,
-        error: "Enter a valid account name."
+        message: "Enter your account name, bank name and valid 10-digit account number."
       });
     }
 
-    if (
-      bankName.length < 2 ||
-      bankName.length > 100
-    ) {
-      return res.status(400).json({
-        success: false,
-        error: "Enter a valid bank name."
-      });
-    }
-
-    if (!/^\d{10}$/.test(accountNumber)) {
-      return res.status(400).json({
-        success: false,
-        error: "Enter a valid 10-digit Nigerian bank account number."
-      });
-    }
-
-    /*
-      3. Refresh eligibility using the logged-in user's token.
-
-      The database function checks follower count and Premium status.
-    */
-
-    const eligibilityResponse = await fetch(
-      `${baseUrl}/rest/v1/rpc/campusora_refresh_gift_earnings_eligibility`,
+    // Call the secure database function using the user's token.
+    // The function verifies identity, eligibility, balance and reservations.
+    const rpcResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/campusora_request_gift_payout`,
       {
         method: "POST",
         headers: {
-          apikey: SUPABASE_PUBLIC_KEY,
-          Authorization: `Bearer ${accessToken}`,
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({})
-      }
-    );
-
-    if (!eligibilityResponse.ok) {
-      const errorText = await eligibilityResponse.text();
-
-      console.error(
-        "Payout eligibility check failed:",
-        errorText
-      );
-
-      return res.status(400).json({
-        success: false,
-        error: "We could not verify your eligibility. Please try again."
-      });
-    }
-
-    const eligibility = await supabaseRequest(
-      "/rest/v1/campusora_gift_earnings_eligibility" +
-      "?select=creator_id,follower_count,premium_active,eligible" +
-      "&creator_id=eq." + encodeURIComponent(creatorId) +
-      "&limit=1"
-    );
-
-    if (
-      !eligibility ||
-      !eligibility.length ||
-      eligibility[0].eligible !== true
-    ) {
-      return res.status(403).json({
-        success: false,
-        error: "You need at least 500 followers and active Premium membership to request Gift Earnings payouts."
-      });
-    }
-
-    /*
-      4. Prevent another active payout request.
-
-      A creator must wait until the previous request is paid
-      or rejected before submitting another request.
-    */
-
-    const existingRequests = await supabaseRequest(
-      "/rest/v1/campusora_gift_payout_requests" +
-      "?select=id,status" +
-      "&creator_id=eq." + encodeURIComponent(creatorId) +
-      "&status=in.(pending,approved,processing)" +
-      "&limit=1"
-    );
-
-    if (existingRequests && existingRequests.length > 0) {
-      return res.status(409).json({
-        success: false,
-        error: "You already have a payout request awaiting processing."
-      });
-    }
-
-    /*
-      5. Read available creator earnings.
-    */
-
-    const earnings = await supabaseRequest(
-      "/rest/v1/campusora_gift_earnings" +
-      "?select=creator_earning,status" +
-      "&creator_id=eq." + encodeURIComponent(creatorId) +
-      "&status=eq.available"
-    );
-
-    const availableBalance = (earnings || []).reduce(
-      (sum, row) => {
-        const value = Number(row.creator_earning || 0);
-
-        return sum + (
-          Number.isFinite(value) && value > 0
-            ? value
-            : 0
-        );
-      },
-      0
-    );
-
-    if (availableBalance < 5000) {
-      return res.status(400).json({
-        success: false,
-        error: "You need at least ₦5,000 in available earnings before requesting a payout."
-      });
-    }
-
-    if (amount > availableBalance) {
-      return res.status(400).json({
-        success: false,
-        error: "Your requested amount exceeds your available earnings.",
-        available_balance: availableBalance
-      });
-    }
-
-    /*
-      6. Create the payout request.
-
-      The request remains pending for admin review.
-      This endpoint does not initiate a bank transfer.
-    */
-
-    const inserted = await supabaseRequest(
-      "/rest/v1/campusora_gift_payout_requests",
-      {
-        method: "POST",
-        headers: {
-          Prefer: "return=representation"
-        },
         body: JSON.stringify({
-          creator_id: creatorId,
-          amount,
-          payout_method: "bank_transfer",
-          account_name: accountName,
-          bank_name: bankName,
-          account_number: accountNumber,
-          currency: "NGN",
-          status: "pending",
-          requested_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          p_creator_id: user.id,
+          p_amount: amount,
+          p_account_name: accountName,
+          p_bank_name: bankName,
+          p_account_number: accountNumber
         })
       }
     );
 
-    const payout = Array.isArray(inserted)
-      ? inserted[0]
-      : inserted;
+    const result = await rpcResponse.json().catch(() => ({}));
 
-    return res.status(201).json({
-      success: true,
-      message: "Your payout request has been submitted for review.",
-      payout: {
-        id: payout?.id,
-        amount,
-        currency: "NGN",
-        status: "pending",
-        requested_at: payout?.requested_at
+    if (!rpcResponse.ok) {
+      const databaseMessage =
+        result.message || result.details || result.hint || "";
+
+      let message = "Unable to submit your payout request. Please try again.";
+
+      if (databaseMessage.includes("eligible")) {
+        message = "You are not yet eligible for Gift Earnings.";
+      } else if (databaseMessage.includes("active payout")) {
+        message = "You already have a payout request being processed.";
+      } else if (databaseMessage.includes("Insufficient available earnings")) {
+        message = "Your available earnings are not enough for this payout.";
+      } else if (databaseMessage.includes("Minimum payout")) {
+        message = "The minimum payout is ₦5,000.";
+      } else if (
+        databaseMessage.includes("account details") ||
+        databaseMessage.includes("10-digit")
+      ) {
+        message = "Please check your bank account details.";
       }
-    });
 
+      return res.status(400).json({
+        success: false,
+        message
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: result.message || "Payout request submitted successfully.",
+      payout_request_id: result.payout_request_id,
+      amount: result.amount,
+      status: result.status
+    });
   } catch (error) {
-    console.error(
-      "Campusora payout API error:",
-      error.message
-    );
+    console.error("Gift payout API error:", error);
 
     return res.status(500).json({
       success: false,
-      error: "We could not submit your payout request. Please try again later."
+      message: "A server error occurred. Please try again later."
     });
   }
-          }
+};
