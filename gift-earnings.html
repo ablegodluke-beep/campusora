@@ -1,1 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
 
+<title>Gift Earnings | Campusora</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --bg: #080b18;
+  --panel: #101528;
+  --panel2: #141a30;
+  --border: rgba(255,255,255,.075);
+  --text: #f4f6ff;
+  --muted: #929bb7;
+  --purple: #9666ff;
+  --blue: #528bff;
+  --cyan: #41d9e8;
+  --green: #42dfa0;
+  --yellow: #ffc86b;
+  --red: #ff7188;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app {
+  max-width: 1100px;
+  margin: auto;
+  min-height: 100vh;
+}
+
+/* TOP BAR */
+
+.topbar {
+  height: 68px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,11,24,.95);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(15px);
+}
+
+.back {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--panel);
+  color: white;
+  font-size: 19px;
+}
+
+.brand {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -.4px;
+}
+
+.brand span {
+  color: var(--purple);
+}
+
+.top-title {
+  margin-left: 12px;
+  padding-left: 18px;
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.refresh {
+  margin-left: auto;
+  padding: 9px 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+}
+
+/* CONTENT */
+
+.content {
+  padding: 27px 24px 50px;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+}
+
+.subtitle {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: rgba(150,102,255,.12);
+  color: #c7b0ff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* BALANCE */
+
+.balance-card {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid rgba(150,102,255,.22);
+  border-radius: 19px;
+  background:
+    radial-gradient(ellipse at 95% 0%, rgba(82,139,255,.18), transparent 45%),
+    linear-gradient(135deg, #15152e, #101528 70%);
+  margin-bottom: 17px;
+}
+
+.balance-label {
+  color: #b5bdd7;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.balance-amount {
+  margin-top: 7px;
+  font-size: clamp(30px, 5vw, 39px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  overflow-wrap: anywhere;
+}
+
+.balance-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+  padding-top: 17px;
+  border-top: 1px solid var(--border);
+}
+
+.balance-note {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.primary-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  background: linear-gradient(110deg, var(--purple), #6657ff);
+}
+
+/* SUMMARY CARDS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 25px;
+}
+
+.stat {
+  min-width: 0;
+  padding: 17px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.stat-value {
+  margin-top: 9px;
+  font-size: clamp(17px, 2.8vw, 23px);
+  font-weight: 800;
+  letter-spacing: -.5px;
+  overflow-wrap: anywhere;
+}
+
+.stat-sub {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.green {
+  color: var(--green);
+}
+
+.purple {
+  color: #b99bff;
+}
+
+.cyan {
+  color: var(--cyan);
+}
+
+/* TWO COLUMN LAYOUT */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(260px, 1fr);
+  gap: 17px;
+  align-items: start;
+}
+
+.column {
+  display: grid;
+  gap: 17px;
+  min-width: 0;
+}
+
+.panel {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.panel-head {
+  padding: 17px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.panel-action {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #b99bff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.panel-body {
+  padding: 17px 18px;
+}
+
+.empty {
+  padding: 28px 12px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.empty-icon {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 25px;
+}
+
+/* ACTIVITY */
+
+.activity-list {
+  display: grid;
+}
+
+.activity {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.activity:last-child {
+  border-bottom: 0;
+}
+
+.gift-icon {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--panel2);
+  font-size: 20px;
+}
+
+.activity-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.activity-name {
+  font-size: 12px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.activity-date {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.activity-amount {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.activity-amount strong {
+  display: block;
+  font-size: 12px;
+}
+
+.activity-amount small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+/* ELIGIBILITY */
+
+.eligibility-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 16px;
+}
+
+.status-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(150,102,255,.13);
+  font-size: 19px;
+}
+
+.status-title {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.status-subtitle {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.requirement {
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.requirement-label {
+  color: #b7bfd6;
+  font-size: 11px;
+}
+
+.requirement-value {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.progress {
+  width: 100%;
+  height: 5px;
+  margin-top: 9px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #252b43;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  transition: width .3s ease;
+}
+
+.eligibility-note {
+  margin-top: 13px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(150,102,255,.08);
+  color: #bfc7df;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* PAYOUTS */
+
+.payout-row {
+  padding: 13px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.payout-row:last-child {
+  border-bottom: 0;
+}
+
+.payout-amount {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.payout-date {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 7px;
+  background: rgba(255,200,107,.1);
+  color: var(--yellow);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.pill.paid {
+  background: rgba(66,223,160,.1);
+  color: var(--green);
+}
+
+.pill.rejected {
+  background: rgba(255,113,136,.1);
+  color: var(--red);
+}
+
+/* MESSAGES */
+
+.notice {
+  display: none;
+  padding: 12px 14px;
+  margin-bottom: 17px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.notice.show {
+  display: block;
+}
+
+.notice.error {
+  background: rgba(255,113,136,.1);
+  border: 1px solid rgba(255,113,136,.22);
+  color: #ffabb8;
+}
+
+.notice.info {
+  background: rgba(82,139,255,.1);
+  border: 1px solid rgba(82,139,255,.2);
+  color: #b5ccff;
+}
+
+.notice.success {
+  background: rgba(66,223,160,.1);
+  border: 1px solid rgba(66,223,160,.2);
+  color: #9cf2ce;
+}
+
+.loading {
+  color: var(--muted);
+  font-size: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-note {
+  padding: 23px 0 0;
+  color: #66708e;
+  font-size: 10px;
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+  .topbar {
+    height: 59px;
+    padding: 0 14px;
+    gap: 10px;
+  }
+
+  .brand {
+    font-size: 14px;
+  }
+
+  .top-title {
+    margin-left: 2px;
+    padding-left: 10px;
+    font-size: 11px;
+  }
+
+  .refresh {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .content {
+    padding: 21px 13px 35px;
+  }
+
+  h1 {
+    font-size: 19px;
+  }
+
+  .page-heading {
+    margin-bottom: 17px;
+  }
+
+  .balance-card {
+    padding: 19px;
+    border-radius: 15px;
+  }
+
+  .balance-foot {
+    align-items: flex-start;
+  }
+
+  .balance-note {
+    max-width: 170px;
+    line-height: 1.7;
+  }
+
+  .stats {
+    gap: 8px;
+    margin-bottom: 19px;
+  }
+
+  .stat {
+    padding: 12px 10px;
+    border-radius: 12px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .stat-value {
+    font-size: 16px;
+  }
+
+  .stat-sub {
+    font-size: 9px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .column {
+    gap: 15px;
+  }
+
+  .panel-head {
+    padding: 15px;
+  }
+
+  .panel-body {
+    padding: 15px;
+  }
+
+  .activity {
+    padding: 13px 12px;
+    gap: 9px;
+  }
+
+  .activity-name {
+    font-size: 11px;
+  }
+
+  .gift-icon {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 360px) {
+  .top-title {
+    display: none;
+  }
+
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats .stat:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .balance-amount {
+    font-size: 29px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <button class="back" id="backButton" aria-label="Go back">‹</button>
+
+    <a href="index.html" class="brand">
+      campus<span>ora</span>
+    </a>
+
+    <div class="top-title">Gift Earnings</div>
+
+    <button class="refresh" id="refreshButton">↻ Refresh</button>
+  </header>
+
+  <main class="content">
+
+    <div class="page-heading">
+      <div>
+        <h1>Gift Earnings</h1>
+        <p class="subtitle">Track your gifts and creator earnings.</p>
+      </div>
+
+      <span class="badge" id="accountBadge">
+        <span class="dot"></span>
+        <span id="accountStatus">Checking</span>
+      </span>
+    </div>
+
+    <div id="notice" class="notice" role="status"></div>
+
+    <!-- MAIN BALANCE -->
+
+    <section class="balance-card">
+      <div class="balance-label">Total Creator Earnings</div>
+
+      <div class="balance-amount" id="totalEarnings">₦0.00</div>
+
+      <div class="balance-foot">
+        <div class="balance-note">
+          Your 40% share of eligible gifts.
+          <br>
+          Minimum payout: ₦5,000.
+        </div>
+
+        <button
+          class="primary-btn"
+          id="payoutButton"
+          type="button"
+          disabled
+          title="Payout requests are not connected yet."
+        >
+          Request payout
+        </button>
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+
+    <section class="stats">
+
+      <div class="stat">
+        <div class="stat-label">Available</div>
+        <div class="stat-value green" id="availableBalance">₦0.00</div>
+        <div class="stat-sub">Available earnings</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value purple" id="pendingBalance">₦0.00</div>
+        <div class="stat-sub">Awaiting processing</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Already Paid</div>
+        <div class="stat-value cyan" id="paidBalance">₦0.00</div>
+        <div class="stat-sub">Recorded payouts</div>
+      </div>
+
+    </section>
+
+    <div class="grid">
+
+      <!-- LEFT COLUMN -->
+
+      <div class="column">
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div class="panel-title">Recent Gift Activity</div>
+            <button class="panel-action" id="activityRefresh">Refresh</button>
+          </div>
+
+          <div id="activityList" class="activity-list">
+            <div class="loading">Loading gift activity...</div>
+          </div>
+
+        </section>
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div class="panel-title">Payout History</div>
+          </div>
+
+          <div class="panel-body" id="payoutHistory">
+            <div class="loading">Loading payout history...</div>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+
+      <div class="column">
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div class="panel-title">Monetization Eligibility</div>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="eligibility-top">
+              <div class="status-icon">🎁</div>
+
+              <div>
+                <div class="status-title" id="eligibilityTitle">
+                  Checking eligibility
+                </div>
+
+                <div class="status-subtitle" id="eligibilitySubtitle">
+                  Loading your account status...
+                </div>
+              </div>
+            </div>
+
+            <div class="requirement">
+              <div class="requirement-label">Followers</div>
+
+              <div class="requirement-value" id="followerCount">
+                Checking...
+              </div>
+            </div>
+
+            <div class="progress">
+              <div class="progress-fill" id="followerProgress"></div>
+            </div>
+
+            <div class="requirement">
+              <div class="requirement-label">Premium membership</div>
+              <div class="requirement-value" id="premiumStatus">
+                Checking...
+              </div>
+            </div>
+
+            <div class="requirement">
+              <div class="requirement-label">Gift Earnings</div>
+              <div class="requirement-value" id="eligibilityStatus">
+                Checking...
+              </div>
+            </div>
+
+            <div class="eligibility-note" id="eligibilityNote">
+              Eligibility requires at least 500 followers and active
+              Premium membership.
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div class="panel-title">How Gift Earnings Work</div>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="requirement">
+              <div class="requirement-label">Creator share</div>
+              <div class="requirement-value green">40%</div>
+            </div>
+
+            <div class="requirement">
+              <div class="requirement-label">Campusora share</div>
+              <div class="requirement-value purple">60%</div>
+            </div>
+
+            <div class="requirement">
+              <div class="requirement-label">Minimum followers</div>
+              <div class="requirement-value">500</div>
+            </div>
+
+            <div class="requirement">
+              <div class="requirement-label">Minimum payout</div>
+              <div class="requirement-value">₦5,000</div>
+            </div>
+
+            <div class="requirement">
+              <div class="requirement-label">Payout schedule</div>
+              <div class="requirement-value">Weekly</div>
+            </div>
+
+            <div class="eligibility-note">
+              Only gifts received after you become eligible count
+              toward creator earnings. Gifts received before eligibility
+              do not earn money retroactively.
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+    <div class="footer-note">
+      Campusora Gift Earnings · Earnings are calculated from verified gifts.
+    </div>
+
+  </main>
+</div>
+
+<script>
+"use strict";
+
+/*
+  CAMPUSORA GIFT EARNINGS
+
+  This page reads the existing Supabase tables.
+
+  It does not:
+  - verify Paystack payments;
+  - modify gift earnings;
+  - mark payouts as paid;
+  - expose the Supabase service-role key.
+
+  Payout submission requires a secure server endpoint and
+  is intentionally not enabled in this version.
+*/
+
+const SUPABASE_URL =
+  "https://ssdhygwozbroqjhuecgp.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_gbbFNsXzzJSh8k3aqEl4kg_XO-YRo4N";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const $ = (id) => document.getElementById(id);
+
+const naira = (value) => {
+  const amount = Number(value || 0);
+
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(Number.isFinite(amount) ? amount : 0);
+};
+
+const safeText = (value) => {
+  if (value === null || value === undefined || value === "") {
+    return "—";
+  }
+
+  return String(value);
+};
+
+const giftIcons = {
+  rose: "🌹",
+  love: "❤️",
+  golden_star: "⭐",
+  diamond: "💎",
+  royal_crown: "👑",
+  premium_heart: "💖"
+};
+
+function giftIcon(name) {
+  const key = String(name || "").toLowerCase().replace(/\s+/g, "_");
+
+  return giftIcons[key] || "🎁";
+}
+
+function formatDate(value) {
+  if (!value) return "Date unavailable";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Date unavailable";
+  }
+
+  return date.toLocaleDateString("en-NG", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function showNotice(message, type = "info") {
+  const box = $("notice");
+
+  box.textContent = message;
+  box.className = "notice show " + type;
+}
+
+function clearNotice() {
+  $("notice").textContent = "";
+  $("notice").className = "notice";
+}
+
+function setAccountStatus(text, eligible = false) {
+  $("accountStatus").textContent = text;
+
+  $("accountBadge").style.color = eligible
+    ? "var(--green)"
+    : "#c7b0ff";
+}
+
+function setEmpty(container, message, icon = "📭") {
+  container.replaceChildren();
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "empty";
+
+  const iconElement = document.createElement("span");
+  iconElement.className = "empty-icon";
+  iconElement.textContent = icon;
+
+  const text = document.createElement("div");
+  text.textContent = message;
+
+  wrapper.append(iconElement, text);
+  container.appendChild(wrapper);
+}
+
+function setLoading(container, message) {
+  container.replaceChildren();
+
+  const element = document.createElement("div");
+  element.className = "loading";
+  element.textContent = message;
+
+  container.appendChild(element);
+}
+
+function setStatusPill(status) {
+  const normalized = String(status || "unknown").toLowerCase();
+
+  const span = document.createElement("span");
+  span.className = "pill";
+
+  if (normalized === "paid") {
+    span.classList.add("paid");
+  } else if (normalized === "rejected" || normalized === "reversed") {
+    span.classList.add("rejected");
+  }
+
+  span.textContent =
+    normalized.charAt(0).toUpperCase() + normalized.slice(1);
+
+  return span;
+}
+
+function makeActivityRow(row) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "activity";
+
+  const icon = document.createElement("div");
+  icon.className = "gift-icon";
+  icon.textContent = giftIcon(row.gift_name);
+
+  const info = document.createElement("div");
+  info.className = "activity-info";
+
+  const name = document.createElement("div");
+  name.className = "activity-name";
+  name.textContent = safeText(row.gift_name) + " gift";
+
+  const date = document.createElement("div");
+  date.className = "activity-date";
+  date.textContent = formatDate(row.created_at);
+
+  info.append(name, date);
+
+  const amount = document.createElement("div");
+  amount.className = "activity-amount";
+
+  const value = document.createElement("strong");
+  value.className = "green";
+  value.textContent = "+" + naira(row.creator_earning);
+
+  const status = document.createElement("small");
+  status.textContent =
+    String(row.status || "pending").toUpperCase();
+
+  amount.append(value, status);
+
+  wrapper.append(icon, info, amount);
+
+  return wrapper;
+}
+
+function makePayoutRow(row) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "payout-row";
+
+  const info = document.createElement("div");
+
+  const amount = document.createElement("div");
+  amount.className = "payout-amount";
+  amount.textContent = naira(row.amount);
+
+  const date = document.createElement("div");
+  date.className = "payout-date";
+  date.textContent = formatDate(row.requested_at);
+
+  info.append(amount, date);
+
+  wrapper.append(info, setStatusPill(row.status));
+
+  return wrapper;
+}
+
+async function loadDashboard() {
+  clearNotice();
+
+  $("refreshButton").disabled = true;
+  $("activityRefresh").disabled = true;
+
+  setLoading($("activityList"), "Loading gift activity...");
+  setLoading($("payoutHistory"), "Loading payout history...");
+
+  try {
+    /*
+      1. Check the current authenticated session.
+    */
+
+    const {
+      data: { session },
+      error: sessionError
+    } = await db.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (!session || !session.user) {
+      setAccountStatus("Not logged in");
+
+      showNotice(
+        "Please log in to Campusora first. Then reopen Gift Earnings.",
+        "error"
+      );
+
+      $("eligibilityTitle").textContent = "Login required";
+      $("eligibilitySubtitle").textContent =
+        "Your account eligibility cannot be checked yet.";
+
+      setEmpty(
+        $("activityList"),
+        "Log in to view your gift activity."
+      );
+
+      setEmpty(
+        $("payoutHistory"),
+        "Log in to view your payout history."
+      );
+
+      $("refreshButton").disabled = false;
+      $("activityRefresh").disabled = false;
+
+      return;
+    }
+
+    const userId = session.user.id;
+
+    /*
+      2. Read the user's earnings records.
+
+      RLS should restrict results to the logged-in creator.
+    */
+
+    const earningsResult = await db
+      .from("campusora_gift_earnings")
+      .select(
+        "id,creator_id,gift_id,gift_value,creator_share_percent,creator_earning,platform_share,status,payment_reference,created_at,available_at"
+      )
+      .eq("creator_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (earningsResult.error) {
+      throw new Error(
+        "Could not load gift earnings: " +
+        earningsResult.error.message
+      );
+    }
+
+    const earnings = earningsResult.data || [];
+
+    /*
+      3. Calculate the balance using the recorded status.
+
+      Pending earnings are not available for payout.
+      Reversed earnings are excluded from total earnings.
+    */
+
+    let total = 0;
+    let available = 0;
+    let pending = 0;
+    let paid = 0;
+
+    for (const row of earnings) {
+      const amount = Math.max(
+        0,
+        Number(row.creator_earning || 0)
+      );
+
+      const status = String(row.status || "").toLowerCase();
+
+      if (status !== "reversed") {
+        total += amount;
+      }
+
+      if (status === "available") {
+        available += amount;
+      } else if (status === "pending") {
+        pending += amount;
+      } else if (status === "paid") {
+        paid += amount;
+      }
+    }
+
+    $("totalEarnings").textContent = naira(total);
+    $("availableBalance").textContent = naira(available);
+    $("pendingBalance").textContent = naira(pending);
+    $("paidBalance").textContent = naira(paid);
+
+    /*
+      4. Read the gift catalog so activity can show gift names.
+    */
+
+    let catalogById = {};
+
+    const catalogResult = await db
+      .from("campusora_gift_catalog")
+      .select("id,name,price_ngn")
+      .limit(100);
+
+    if (!catalogResult.error) {
+      for (const gift of catalogResult.data || []) {
+        catalogById[gift.id] = gift;
+      }
+    }
+
+    const activityList = $("activityList");
+
+    activityList.replaceChildren();
+
+    if (!earnings.length) {
+      setEmpty(
+        activityList,
+        "No creator earnings yet. Eligible gifts will appear here.",
+        "🎁"
+      );
+    } else {
+      for (const row of earnings.slice(0, 10)) {
+        const catalogGift = catalogById[row.gift_id];
+
+        row.gift_name = catalogGift
+          ? catalogGift.name
+          : "Campusora";
+
+        activityList.appendChild(makeActivityRow(row));
+      }
+    }
+
+    /*
+      5. Read eligibility information.
+    */
+
+    const eligibilityResult = await db
+      .from("campusora_gift_earnings_eligibility")
+      .select(
+        "creator_id,follower_count,premium_active,eligible,eligibility_checked_at"
+      )
+      .eq("creator_id", userId)
+      .maybeSingle();
+
+    if (eligibilityResult.error) {
+      throw new Error(
+        "Could not load eligibility: " +
+        eligibilityResult.error.message
+      );
+    }
+
+    const eligibility = eligibilityResult.data;
+
+    if (!eligibility) {
+      $("eligibilityTitle").textContent = "Not yet checked";
+      $("eligibilitySubtitle").textContent =
+        "Your eligibility record has not been created.";
+
+      $("followerCount").textContent = "Not available";
+      $("premiumStatus").textContent = "Not checked";
+      $("eligibilityStatus").textContent = "Not checked";
+      $("followerProgress").style.width = "0%";
+
+      $("eligibilityNote").textContent =
+        "Your eligibility record has not been created yet. " +
+        "The system must check your follower count and active Premium membership.";
+
+      setAccountStatus("Not checked");
+    } else {
+      const followers = Number(eligibility.follower_count || 0);
+      const premiumActive = eligibility.premium_active === true;
+      const isEligible = eligibility.eligible === true;
+
+      $("followerCount").textContent =
+        followers.toLocaleString("en-NG") + " / 500";
+
+      $("premiumStatus").textContent =
+        premiumActive ? "Active" : "Inactive";
+
+      $("premiumStatus").style.color =
+        premiumActive ? "var(--green)" : "var(--yellow)";
+
+      $("eligibilityStatus").textContent =
+        isEligible ? "Eligible" : "Not eligible";
+
+      $("eligibilityStatus").style.color =
+        isEligible ? "var(--green)" : "var(--yellow)";
+
+      $("followerProgress").style.width =
+        Math.min(100, Math.max(0, followers / 500 * 100)) + "%";
+
+      if (isEligible) {
+        $("eligibilityTitle").textContent = "You're eligible";
+        $("eligibilitySubtitle").textContent =
+          "Eligible gifts can earn you 40%.";
+
+        $("eligibilityNote").textContent =
+          "You meet the recorded requirements. Only gifts received " +
+          "after eligibility begins count toward creator earnings.";
+
+        setAccountStatus("Eligible", true);
+      } else {
+        $("eligibilityTitle").textContent = "Requirements not met";
+        $("eligibilitySubtitle").textContent =
+          "Complete both requirements to qualify.";
+
+        const missing = [];
+
+        if (followers < 500) {
+          missing.push("reach 500 followers");
+        }
+
+        if (!premiumActive) {
+          missing.push("activate Premium membership");
+        }
+
+        $("eligibilityNote").textContent =
+          "To qualify, you need to " + missing.join(" and ") +
+          ". Gifts received before you qualify do not earn creator money.";
+
+        setAccountStatus("Not eligible");
+      }
+    }
+
+    /*
+      6. Read payout history.
+
+      Bank account details are deliberately not requested.
+    */
+
+    const payoutsResult = await db
+      .from("campusora_gift_payout_requests")
+      .select("id,amount,status,requested_at")
+      .eq("creator_id", userId)
+      .order("requested_at", { ascending: false })
+      .limit(20);
+
+    if (payoutsResult.error) {
+      throw new Error(
+        "Could not load payout history: " +
+        payoutsResult.error.message
+      );
+    }
+
+    const payoutHistory = $("payoutHistory");
+    payoutHistory.replaceChildren();
+
+    const payouts = payoutsResult.data || [];
+
+    if (!payouts.length) {
+      setEmpty(
+        payoutHistory,
+        "Your payout requests will appear here.",
+        "💳"
+      );
+    } else {
+      for (const payout of payouts) {
+        payoutHistory.appendChild(makePayoutRow(payout));
+      }
+    }
+
+    /*
+      Payout requests are intentionally disabled until a secure
+      server-side payout endpoint is implemented.
+
+      The button must not insert payout records directly from
+      the browser or claim that money has been transferred.
+    */
+
+    $("payoutButton").disabled = true;
+    $("payoutButton").title =
+      "Payout submission will be enabled after the secure payout API is connected.";
+
+  } catch (error) {
+    console.error("Gift Earnings dashboard error:", error);
+
+    showNotice(
+      error.message ||
+      "Something went wrong while loading Gift Earnings.",
+      "error"
+    );
+
+    setEmpty(
+      $("activityList"),
+      "Unable to load gift activity."
+    );
+
+    setEmpty(
+      $("payoutHistory"),
+      "Unable to load payout history."
+    );
+
+  } finally {
+    $("refreshButton").disabled = false;
+    $("activityRefresh").disabled = false;
+  }
+}
+
+/*
+  Navigation
+*/
+
+$("backButton").addEventListener("click", () => {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = "index.html";
+  }
+});
+
+$("refreshButton").addEventListener("click", loadDashboard);
+$("activityRefresh").addEventListener("click", loadDashboard);
+
+$("payoutButton").addEventListener("click", () => {
+  showNotice(
+    "Payout requests are not connected yet. Your balance is read-only until the secure payout process is implemented.",
+    "info"
+  );
+});
+
+/*
+  Refresh when the browser returns to this page.
+*/
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    // Refresh only when the page has already loaded.
+    if (!$("refreshButton").disabled) {
+      loadDashboard();
+    }
+  }
+});
+
+loadDashboard();
+</script>
+
+</body>
+</html>
