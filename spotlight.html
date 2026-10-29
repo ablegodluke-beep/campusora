@@ -1446,26 +1446,42 @@ function setupVideoObserver() {
 }
 
 async function recordView(videoId, counter) {
-  if (viewedThisSession.has(videoId) || !currentUser) return;
+if (viewedThisSession.has(videoId) || !currentUser) return;
 
-  viewedThisSession.add(videoId);
+viewedThisSession.add(videoId);
 
-  try {
-    const { data, error } = await supabase.rpc(
-      'campusora_increment_spotlight_view',
-      { target_video_id: videoId }
-    );
+try {
+// Keep Campusora's existing public video counter working.
+const { data, error } = await supabase.rpc(
+'campusora_increment_spotlight_view',
+{ target_video_id: videoId }
+);
 
-    if (error) throw error;
+if (error) throw error;
 
-    if (counter && data !== null) {
-      counter.textContent = shortNumber(data);
-    }
+if (counter && data !== null) {
+  counter.textContent = shortNumber(data);
+}
 
-  } catch (error) {
-    viewedThisSession.delete(videoId);
-    console.warn('View count was not updated:', error.message);
+// Record this view separately for Creator Rewards.
+// The database rejects views by the video's own creator.
+const { error: rewardViewError } = await supabase.rpc(
+  'record_spotlight_video_view',
+  {
+    p_video_id: videoId
   }
+);
+
+if (rewardViewError) {
+  console.warn(
+    'Creator Rewards tracking failed:',
+    rewardViewError.message
+  );
+}
+
+} catch (error) {
+console.warn('Spotlight view update failed:', error.message);
+}
 }
 
 /* LIKE / UNLIKE VIDEO */
