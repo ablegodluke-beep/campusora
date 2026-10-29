@@ -4,1375 +4,459 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-
 <title>Gift Earnings | Campusora</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
-  --bg: #080b18;
-  --panel: #101528;
-  --panel2: #141a30;
-  --border: rgba(255,255,255,.075);
-  --text: #f4f6ff;
-  --muted: #929bb7;
-  --purple: #9666ff;
-  --blue: #528bff;
-  --cyan: #41d9e8;
-  --green: #42dfa0;
-  --yellow: #ffc86b;
-  --red: #ff7188;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: "DM Sans", sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-button {
-  font: inherit;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: .55;
-  cursor: not-allowed;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.app {
-  max-width: 1100px;
-  margin: auto;
-  min-height: 100vh;
-}
-
-/* TOP BAR */
-
-.topbar {
-  height: 64px;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(8,11,24,.96);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(15px);
-}
-
-.back {
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--panel);
-  color: white;
-  font-size: 21px;
-}
-
-.brand {
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: -.4px;
-}
-
-.brand span {
-  color: var(--purple);
-}
-
-.top-title {
-  margin-left: 8px;
-  padding-left: 15px;
-  border-left: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.refresh {
-  margin-left: auto;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--panel);
-  color: var(--text);
-  font-size: 12px;
-}
-
-/* MAIN */
-
-.content {
-  padding: 25px 24px 45px;
-}
-
-.page-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 19px;
-}
-
-h1 {
-  margin: 0;
-  font-size: 21px;
-  font-weight: 800;
-  letter-spacing: -.5px;
-}
-
-.subtitle {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 9px;
-  border-radius: 20px;
-  background: rgba(150,102,255,.12);
-  color: #c7b0ff;
-  font-size: 10px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-/* BALANCE */
-
-.balance-card {
-  padding: 22px;
-  border: 1px solid rgba(150,102,255,.2);
-  border-radius: 16px;
-  background:
-    radial-gradient(ellipse at 95% 0%, rgba(82,139,255,.16), transparent 45%),
-    linear-gradient(135deg, #15152e, #101528 75%);
-  margin-bottom: 15px;
-}
-
-.balance-label {
-  color: #b5bdd7;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.balance-amount {
-  margin-top: 7px;
-  font-size: clamp(29px, 5vw, 38px);
-  font-weight: 800;
-  letter-spacing: -1.3px;
-  overflow-wrap: anywhere;
-}
-
-.balance-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-top: 19px;
-  padding-top: 15px;
-  border-top: 1px solid var(--border);
-}
-
-.balance-note {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.8;
-}
-
-.primary-btn {
-  border: 0;
-  border-radius: 9px;
-  padding: 10px 14px;
-  color: white;
-  font-size: 11px;
-  font-weight: 800;
-  background: linear-gradient(110deg, var(--purple), #6657ff);
-  white-space: nowrap;
-}
-
-/* STATS */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 23px;
-}
-
-.stat {
-  min-width: 0;
-  padding: 16px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-}
-
-.stat-label {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.stat-value {
-  margin-top: 8px;
-  font-size: clamp(16px, 2.8vw, 22px);
-  font-weight: 800;
-  letter-spacing: -.4px;
-  overflow-wrap: anywhere;
-}
-
-.stat-sub {
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.green {
-  color: var(--green);
-}
-
-.purple {
-  color: #b99bff;
-}
-
-.cyan {
-  color: var(--cyan);
-}
-
-/* CONTENT GRID */
-
-.grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(260px, 1fr);
-  gap: 16px;
-  align-items: start;
-}
-
-.column {
-  display: grid;
-  gap: 16px;
-  min-width: 0;
-}
-
-.panel {
-  min-width: 0;
-  overflow: hidden;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-}
-
-.panel-head {
-  padding: 16px 17px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-.panel-title {
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.panel-action {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: #b99bff;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.panel-body {
-  padding: 16px 17px;
-}
-
-.empty {
-  padding: 26px 12px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.empty-icon {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 24px;
-}
-
-/* GIFT ACTIVITY */
-
-.activity-list {
-  display: grid;
-}
-
-.activity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 13px 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.activity:last-child {
-  border-bottom: 0;
-}
-
-.gift-icon {
-  width: 37px;
-  height: 37px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 11px;
-  background: var(--panel2);
-  font-size: 19px;
-}
-
-.activity-info {
-  min-width: 0;
-  flex: 1;
-}
-
-.activity-name {
-  font-size: 11px;
-  font-weight: 800;
-  overflow-wrap: anywhere;
-}
-
-.activity-date {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.activity-amount {
-  text-align: right;
-  flex-shrink: 0;
-}
-
-.activity-amount strong {
-  display: block;
-  font-size: 11px;
-}
-
-.activity-amount small {
-  display: block;
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 9px;
-}
-
-/* ELIGIBILITY */
-
-.eligibility-top {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  margin-bottom: 15px;
-}
-
-.status-icon {
-  width: 39px;
-  height: 39px;
-  display: grid;
-  place-items: center;
-  border-radius: 11px;
-  background: rgba(150,102,255,.13);
-  font-size: 19px;
-}
-
-.status-title {
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.status-subtitle {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.requirement {
-  padding: 12px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  border-top: 1px solid var(--border);
-}
-
-.requirement-label {
-  color: #b7bfd6;
-  font-size: 11px;
-}
-
-.requirement-value {
-  text-align: right;
-  font-size: 11px;
-  font-weight: 800;
-  overflow-wrap: anywhere;
-}
-
-.progress {
-  width: 100%;
-  height: 5px;
-  margin-top: 8px;
-  overflow: hidden;
-  border-radius: 10px;
-  background: #252b43;
-}
-
-.progress-fill {
-  width: 0;
-  height: 100%;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--purple), var(--cyan));
-  transition: width .3s ease;
-}
-
-/* PAYOUT HISTORY */
-
-.payout-row {
-  padding: 13px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.payout-row:last-child {
-  border-bottom: 0;
-}
-
-.payout-amount {
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.payout-date {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.pill {
-  display: inline-block;
-  padding: 5px 8px;
-  border-radius: 7px;
-  background: rgba(255,200,107,.1);
-  color: var(--yellow);
-  font-size: 10px;
-  font-weight: 800;
-}
-
-.pill.paid {
-  background: rgba(66,223,160,.1);
-  color: var(--green);
-}
-
-.pill.rejected {
-  background: rgba(255,113,136,.1);
-  color: var(--red);
-}
-
-/* NOTICES */
-
-.notice {
-  display: none;
-  padding: 12px 14px;
-  margin-bottom: 16px;
-  border-radius: 9px;
-  font-size: 12px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-
-.notice.show {
-  display: block;
-}
-
-.notice.error {
-  background: rgba(255,113,136,.1);
-  border: 1px solid rgba(255,113,136,.22);
-  color: #ffabb8;
-}
-
-.notice.info {
-  background: rgba(82,139,255,.1);
-  border: 1px solid rgba(82,139,255,.2);
-  color: #b5ccff;
-}
-
-.notice.success {
-  background: rgba(66,223,160,.1);
-  border: 1px solid rgba(66,223,160,.2);
-  color: #9cf2ce;
-}
-
-.loading {
-  color: var(--muted);
-  font-size: 12px;
-  padding: 20px;
-  text-align: center;
-}
-
-.footer-note {
-  padding-top: 22px;
-  color: #66708e;
-  font-size: 10px;
-  text-align: center;
-}
-
-/* MOBILE */
-
-@media (max-width: 760px) {
-  .topbar {
-    height: 57px;
-    padding: 0 13px;
-    gap: 9px;
-  }
-
-  .brand {
-    font-size: 14px;
-  }
-
-  .top-title {
-    margin-left: 2px;
-    padding-left: 9px;
-    font-size: 10px;
-  }
-
-  .refresh {
-    padding: 7px 9px;
-    font-size: 10px;
-  }
-
-  .content {
-    padding: 20px 13px 32px;
-  }
-
-  h1 {
-    font-size: 19px;
-  }
-
-  .balance-card {
-    padding: 18px;
-  }
-
-  .stats {
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-
-  .stat {
-    padding: 12px 10px;
-  }
-
-  .stat-label {
-    font-size: 10px;
-  }
-
-  .stat-value {
-    font-size: 15px;
-  }
-
-  .stat-sub {
-    font-size: 9px;
-  }
-
-  .grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
-  }
-
-  .column {
-    gap: 14px;
-  }
-
-  .panel-head {
-    padding: 14px;
-  }
-
-  .panel-body {
-    padding: 14px;
-  }
-
-  .activity {
-    padding: 12px 11px;
-    gap: 9px;
-  }
-
-  .gift-icon {
-    width: 34px;
-    height: 34px;
-  }
-}
-
-@media (max-width: 360px) {
-  .top-title {
-    display: none;
-  }
-
-  .stats {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .stats .stat:last-child {
-    grid-column: 1 / -1;
-  }
-
-  .balance-amount {
-    font-size: 28px;
-  }
-
-  .balance-foot {
-    align-items: flex-start;
-  }
+  --bg:#080b18;--panel:#101528;--panel2:#141a30;
+  --border:rgba(255,255,255,.075);--text:#f4f6ff;
+  --muted:#929bb7;--purple:#9666ff;--blue:#528bff;
+  --cyan:#41d9e8;--green:#42dfa0;--yellow:#ffc86b;--red:#ff7188;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.5}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+a{color:inherit;text-decoration:none}
+.app{max-width:1100px;margin:auto;min-height:100vh}
+.topbar{height:64px;padding:0 24px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);background:rgba(8,11,24,.96);position:sticky;top:0;z-index:10;backdrop-filter:blur(15px)}
+.back{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--border);border-radius:10px;background:var(--panel);color:white;font-size:21px}
+.brand{font-size:16px;font-weight:800;letter-spacing:-.4px}
+.brand span{color:var(--purple)}
+.top-title{margin-left:8px;padding-left:15px;border-left:1px solid var(--border);color:var(--muted);font-size:12px}
+.refresh{margin-left:auto;padding:8px 12px;border:1px solid var(--border);border-radius:9px;background:var(--panel);color:var(--text);font-size:12px}
+.content{padding:25px 24px 45px}
+.page-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:19px}
+h1{margin:0;font-size:21px;font-weight:800;letter-spacing:-.5px}
+.subtitle{margin:4px 0 0;color:var(--muted);font-size:12px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:20px;background:rgba(150,102,255,.12);color:#c7b0ff;font-size:10px;font-weight:700;white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.balance-card{padding:22px;border:1px solid rgba(150,102,255,.2);border-radius:16px;background:radial-gradient(ellipse at 95% 0%,rgba(82,139,255,.16),transparent 45%),linear-gradient(135deg,#15152e,#101528 75%);margin-bottom:15px}
+.balance-label{color:#b5bdd7;font-size:12px;font-weight:600}
+.balance-amount{margin-top:7px;font-size:clamp(29px,5vw,38px);font-weight:800;letter-spacing:-1.3px;overflow-wrap:anywhere}
+.balance-foot{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:19px;padding-top:15px;border-top:1px solid var(--border)}
+.balance-note{color:var(--muted);font-size:11px;line-height:1.8}
+.primary-btn{border:0;border-radius:9px;padding:10px 14px;color:white;font-size:11px;font-weight:800;background:linear-gradient(110deg,var(--purple),#6657ff);white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:23px}
+.stat{min-width:0;padding:16px;background:var(--panel);border:1px solid var(--border);border-radius:13px}
+.stat-label{color:var(--muted);font-size:11px;font-weight:600}
+.stat-value{margin-top:8px;font-size:clamp(16px,2.8vw,22px);font-weight:800;letter-spacing:-.4px;overflow-wrap:anywhere}
+.stat-sub{margin-top:5px;color:var(--muted);font-size:10px}
+.green{color:var(--green)}.purple{color:#b99bff}.cyan{color:var(--cyan)}
+.grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,1fr);gap:16px;align-items:start}
+.column{display:grid;gap:16px;min-width:0}
+.panel{min-width:0;overflow:hidden;background:var(--panel);border:1px solid var(--border);border-radius:14px}
+.panel-head{padding:16px 17px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.panel-title{font-size:12px;font-weight:800}
+.panel-action{border:0;padding:0;background:transparent;color:#b99bff;font-size:11px;font-weight:700}
+.panel-body{padding:16px 17px}
+.empty{padding:26px 12px;text-align:center;color:var(--muted);font-size:12px}
+.empty-icon{display:block;margin-bottom:7px;font-size:24px}
+.activity-list{display:grid}
+.activity{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border)}
+.activity:last-child{border-bottom:0}
+.gift-icon{width:37px;height:37px;flex-shrink:0;display:grid;place-items:center;border-radius:11px;background:var(--panel2);font-size:19px}
+.activity-info{min-width:0;flex:1}
+.activity-name{font-size:11px;font-weight:800;overflow-wrap:anywhere}
+.activity-date{margin-top:3px;color:var(--muted);font-size:10px}
+.activity-amount{text-align:right;flex-shrink:0}
+.activity-amount strong{display:block;font-size:11px}
+.activity-amount small{display:block;margin-top:4px;color:var(--muted);font-size:9px}
+.eligibility-top{display:flex;align-items:center;gap:11px;margin-bottom:15px}
+.status-icon{width:39px;height:39px;display:grid;place-items:center;border-radius:11px;background:rgba(150,102,255,.13);font-size:19px}
+.status-title{font-size:12px;font-weight:800}
+.status-subtitle{margin-top:3px;color:var(--muted);font-size:10px}
+.requirement{padding:12px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--border)}
+.requirement-label{color:#b7bfd6;font-size:11px}
+.requirement-value{text-align:right;font-size:11px;font-weight:800;overflow-wrap:anywhere}
+.progress{width:100%;height:5px;margin-top:8px;overflow:hidden;border-radius:10px;background:#252b43}
+.progress-fill{width:0;height:100%;border-radius:10px;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .3s ease}
+.payout-row{padding:13px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.payout-row:last-child{border-bottom:0}
+.payout-amount{font-size:12px;font-weight:800}
+.payout-date{margin-top:4px;color:var(--muted);font-size:10px}
+.pill{display:inline-block;padding:5px 8px;border-radius:7px;background:rgba(255,200,107,.1);color:var(--yellow);font-size:10px;font-weight:800}
+.pill.paid{background:rgba(66,223,160,.1);color:var(--green)}
+.pill.rejected{background:rgba(255,113,136,.1);color:var(--red)}
+.notice{display:none;padding:12px 14px;margin-bottom:16px;border-radius:9px;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.notice.show{display:block}
+.notice.error{background:rgba(255,113,136,.1);border:1px solid rgba(255,113,136,.22);color:#ffabb8}
+.notice.info{background:rgba(82,139,255,.1);border:1px solid rgba(82,139,255,.2);color:#b5ccff}
+.notice.success{background:rgba(66,223,160,.1);border:1px solid rgba(66,223,160,.2);color:#9cf2ce}
+.loading{color:var(--muted);font-size:12px;padding:20px;text-align:center}
+.footer-note{padding-top:22px;color:#66708e;font-size:10px;text-align:center}
+
+/* PAYOUT FORM */
+.payout-form{display:none;margin-top:17px;padding:16px;border:1px solid var(--border);border-radius:12px;background:rgba(8,11,24,.55)}
+.payout-form.open{display:block}
+.form-title{font-size:13px;font-weight:800;margin-bottom:4px}
+.form-subtitle{font-size:11px;color:var(--muted);margin-bottom:15px}
+.field{margin-bottom:12px}
+.field label{display:block;margin-bottom:6px;font-size:11px;color:#c4cbe0;font-weight:700}
+.field input{width:100%;min-height:42px;border:1px solid #2b3350;border-radius:8px;background:#0b1021;color:white;padding:10px 12px;outline:none}
+.field input:focus{border-color:var(--purple)}
+.field input::placeholder{color:#68728e}
+.form-actions{display:flex;gap:9px;margin-top:14px}
+.secondary-btn{border:1px solid var(--border);border-radius:9px;padding:10px 14px;background:var(--panel2);color:var(--text);font-size:11px;font-weight:700}
+.form-actions button{flex:1}
+.form-message{font-size:11px;margin-top:12px;line-height:1.6;overflow-wrap:anywhere}
+@media(max-width:760px){
+.topbar{height:57px;padding:0 13px;gap:9px}.brand{font-size:14px}.top-title{margin-left:2px;padding-left:9px;font-size:10px}.refresh{padding:7px 9px;font-size:10px}
+.content{padding:20px 13px 32px}h1{font-size:19px}.balance-card{padding:18px}
+.stats{gap:8px;margin-bottom:18px}.stat{padding:12px 10px}.stat-label{font-size:10px}.stat-value{font-size:15px}.stat-sub{font-size:9px}
+.grid{grid-template-columns:minmax(0,1fr);gap:14px}.column{gap:14px}.panel-head{padding:14px}.panel-body{padding:14px}.activity{padding:12px 11px;gap:9px}.gift-icon{width:34px;height:34px}
+}
+@media(max-width:360px){
+.top-title{display:none}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}.balance-amount{font-size:28px}.balance-foot{align-items:flex-start}
 }
 </style>
 </head>
-
 <body>
-
 <div class="app">
+<header class="topbar">
+  <button class="back" id="backButton" aria-label="Go back">‹</button>
+  <a href="index.html" class="brand">campus<span>ora</span></a>
+  <div class="top-title">Gift Earnings</div>
+  <button class="refresh" id="refreshButton">↻ Refresh</button>
+</header>
 
-  <header class="topbar">
-    <button class="back" id="backButton" aria-label="Go back">‹</button>
+<main class="content">
+  <div class="page-heading">
+    <div><h1>Gift Earnings</h1><p class="subtitle">Your creator earnings and payouts.</p></div>
+    <span class="badge"><span class="dot"></span><span id="accountStatus">Checking</span></span>
+  </div>
 
-    <a href="index.html" class="brand">
-      campus<span>ora</span>
-    </a>
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
 
-    <div class="top-title">Gift Earnings</div>
-
-    <button class="refresh" id="refreshButton">↻ Refresh</button>
-  </header>
-
-  <main class="content">
-
-    <div class="page-heading">
-      <div>
-        <h1>Gift Earnings</h1>
-        <p class="subtitle">Your creator earnings and payouts.</p>
-      </div>
-
-      <span class="badge" id="accountBadge">
-        <span class="dot"></span>
-        <span id="accountStatus">Checking</span>
-      </span>
+  <section class="balance-card">
+    <div class="balance-label">Total Creator Earnings</div>
+    <div class="balance-amount" id="totalEarnings">₦0.00</div>
+    <div class="balance-foot">
+      <div class="balance-note">Your recorded creator earnings.<br>Available payout starts at ₦5,000.</div>
+      <button class="primary-btn" id="payoutButton" type="button" disabled>Request payout</button>
     </div>
 
-    <div id="notice" class="notice" role="status"></div>
+    <form id="payoutForm" class="payout-form">
+      <div class="form-title">Request a payout</div>
+      <div class="form-subtitle">Minimum payout: ₦5,000. Your request will be sent for review.</div>
 
-    <!-- BALANCE -->
+      <div class="field">
+        <label for="payoutAmount">Amount (₦)</label>
+        <input id="payoutAmount" name="amount" type="number" min="5000" step="1" inputmode="numeric" placeholder="e.g. 5000" required>
+      </div>
+      <div class="field">
+        <label for="accountName">Account name</label>
+        <input id="accountName" name="account_name" type="text" maxlength="120" autocomplete="name" placeholder="Name on your bank account" required>
+      </div>
+      <div class="field">
+        <label for="bankName">Bank name</label>
+        <input id="bankName" name="bank_name" type="text" maxlength="100" autocomplete="off" placeholder="Your bank name" required>
+      </div>
+      <div class="field">
+        <label for="accountNumber">10-digit account number</label>
+        <input id="accountNumber" name="account_number" type="text" inputmode="numeric" autocomplete="off" maxlength="10" pattern="[0-9]{10}" placeholder="0123456789" required>
+      </div>
 
-    <section class="balance-card">
-      <div class="balance-label">Total Creator Earnings</div>
+      <div class="form-actions">
+        <button class="secondary-btn" id="cancelPayout" type="button">Cancel</button>
+        <button class="primary-btn" id="submitPayout" type="submit">Submit request</button>
+      </div>
+      <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
+    </form>
+  </section>
 
-      <div class="balance-amount" id="totalEarnings">₦0.00</div>
+  <section class="stats">
+    <div class="stat"><div class="stat-label">Available</div><div class="stat-value green" id="availableBalance">₦0.00</div><div class="stat-sub">After reserved payouts</div></div>
+    <div class="stat"><div class="stat-label">Pending</div><div class="stat-value purple" id="pendingBalance">₦0.00</div><div class="stat-sub">Awaiting processing</div></div>
+    <div class="stat"><div class="stat-label">Already Paid</div><div class="stat-value cyan" id="paidBalance">₦0.00</div><div class="stat-sub">Recorded earnings</div></div>
+  </section>
 
-      <div class="balance-foot">
-        <div class="balance-note">
-          Your recorded creator earnings.
-          <br>
-          Available payout starts at ₦5,000.
+  <div class="grid">
+    <div class="column">
+      <section class="panel">
+        <div class="panel-head"><div class="panel-title">Recent Gift Activity</div><button class="panel-action" id="activityRefresh">Refresh</button></div>
+        <div id="activityList" class="activity-list"><div class="loading">Loading gift activity...</div></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><div class="panel-title">Payout History</div></div>
+        <div class="panel-body" id="payoutHistory"><div class="loading">Loading payout history...</div></div>
+      </section>
+    </div>
+
+    <div class="column">
+      <section class="panel">
+        <div class="panel-head"><div class="panel-title">Monetization Eligibility</div></div>
+        <div class="panel-body">
+          <div class="eligibility-top">
+            <div class="status-icon">🎁</div>
+            <div><div class="status-title" id="eligibilityTitle">Checking eligibility</div><div class="status-subtitle" id="eligibilitySubtitle">Checking your account...</div></div>
+          </div>
+          <div class="requirement"><div class="requirement-label">Followers</div><div class="requirement-value" id="followerCount">Checking...</div></div>
+          <div class="progress"><div class="progress-fill" id="followerProgress"></div></div>
+          <div class="requirement"><div class="requirement-label">Premium membership</div><div class="requirement-value" id="premiumStatus">Checking...</div></div>
+          <div class="requirement"><div class="requirement-label">Gift Earnings</div><div class="requirement-value" id="eligibilityStatus">Checking...</div></div>
         </div>
-
-        <button
-          class="primary-btn"
-          id="payoutButton"
-          type="button"
-          disabled
-          title="Secure payout requests are not connected yet."
-        >
-          Request payout
-        </button>
-      </div>
-    </section>
-
-    <!-- SUMMARY -->
-
-    <section class="stats">
-
-      <div class="stat">
-        <div class="stat-label">Available</div>
-        <div class="stat-value green" id="availableBalance">₦0.00</div>
-        <div class="stat-sub">Available balance</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-label">Pending</div>
-        <div class="stat-value purple" id="pendingBalance">₦0.00</div>
-        <div class="stat-sub">Awaiting processing</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-label">Already Paid</div>
-        <div class="stat-value cyan" id="paidBalance">₦0.00</div>
-        <div class="stat-sub">Recorded earnings</div>
-      </div>
-
-    </section>
-
-    <div class="grid">
-
-      <!-- GIFT ACTIVITY -->
-
-      <div class="column">
-
-        <section class="panel">
-          <div class="panel-head">
-            <div class="panel-title">Recent Gift Activity</div>
-            <button class="panel-action" id="activityRefresh">Refresh</button>
-          </div>
-
-          <div id="activityList" class="activity-list">
-            <div class="loading">Loading gift activity...</div>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div class="panel-title">Payout History</div>
-          </div>
-
-          <div class="panel-body" id="payoutHistory">
-            <div class="loading">Loading payout history...</div>
-          </div>
-        </section>
-
-      </div>
-
-      <!-- ELIGIBILITY -->
-
-      <div class="column">
-
-        <section class="panel">
-          <div class="panel-head">
-            <div class="panel-title">Monetization Eligibility</div>
-          </div>
-
-          <div class="panel-body">
-
-            <div class="eligibility-top">
-              <div class="status-icon">🎁</div>
-
-              <div>
-                <div class="status-title" id="eligibilityTitle">
-                  Checking eligibility
-                </div>
-
-                <div class="status-subtitle" id="eligibilitySubtitle">
-                  Checking your account...
-                </div>
-              </div>
-            </div>
-
-            <div class="requirement">
-              <div class="requirement-label">Followers</div>
-              <div class="requirement-value" id="followerCount">
-                Checking...
-              </div>
-            </div>
-
-            <div class="progress">
-              <div class="progress-fill" id="followerProgress"></div>
-            </div>
-
-            <div class="requirement">
-              <div class="requirement-label">Premium membership</div>
-              <div class="requirement-value" id="premiumStatus">
-                Checking...
-              </div>
-            </div>
-
-            <div class="requirement">
-              <div class="requirement-label">Gift Earnings</div>
-              <div class="requirement-value" id="eligibilityStatus">
-                Checking...
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-      </div>
-
+      </section>
     </div>
+  </div>
 
-    <div class="footer-note">
-      Campusora · Gift Earnings
-    </div>
-
-  </main>
+  <div class="footer-note">Campusora · Gift Earnings</div>
+</main>
 </div>
 
 <script>
 "use strict";
 
-/*
-  CAMPUSORA GIFT EARNINGS DASHBOARD
+const SUPABASE_URL = "https://ssdhygwozbroqjhuecgp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_gbbFNsXzzJSh8k3aqEl4kg_XO-YRo4N";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $ = id => document.getElementById(id);
+const MIN_PAYOUT = 5000;
 
-  This page:
-  - Checks the current user's login session.
-  - Automatically refreshes eligibility through a database RPC.
-  - Reads the user's creator earnings.
-  - Reads the user's payout history.
-
-  Payout submission is intentionally disabled until a secure
-  server-side payout endpoint is connected.
-
-  Never place the Supabase service-role key in this file.
-*/
-
-const SUPABASE_URL =
-  "https://ssdhygwozbroqjhuecgp.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_gbbFNsXzzJSh8k3aqEl4kg_XO-YRo4N";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-const $ = (id) => document.getElementById(id);
-
-const naira = (value) => {
-  const amount = Number(value || 0);
-
-  return new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(Number.isFinite(amount) ? amount : 0);
-};
+const naira = value => new Intl.NumberFormat("en-NG", {
+  style:"currency", currency:"NGN", minimumFractionDigits:2, maximumFractionDigits:2
+}).format(Number.isFinite(Number(value)) ? Number(value) : 0);
 
 function formatDate(value) {
   if (!value) return "Date unavailable";
-
   const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Date unavailable";
-  }
-
-  return date.toLocaleDateString("en-NG", {
-    day: "numeric",
-    month: "short",
-    year: "numeric"
+  return Number.isNaN(date.getTime()) ? "Date unavailable" : date.toLocaleDateString("en-NG", {
+    day:"numeric", month:"short", year:"numeric"
   });
 }
 
-function showNotice(message, type = "info") {
-  const box = $("notice");
-
-  box.textContent = message;
-  box.className = "notice show " + type;
+function showNotice(message, type="info") {
+  $("notice").textContent = message;
+  $("notice").className = "notice show " + type;
 }
-
 function clearNotice() {
   $("notice").textContent = "";
   $("notice").className = "notice";
 }
-
-function setAccountStatus(text, eligible = false) {
-  $("accountStatus").textContent = text;
-
-  $("accountBadge").style.color = eligible
-    ? "var(--green)"
-    : "#c7b0ff";
-}
-
 function setLoading(container, message) {
   container.replaceChildren();
-
-  const element = document.createElement("div");
-  element.className = "loading";
-  element.textContent = message;
-
-  container.appendChild(element);
+  const el = document.createElement("div");
+  el.className = "loading";
+  el.textContent = message;
+  container.appendChild(el);
 }
-
-function setEmpty(container, message, icon = "📭") {
+function setEmpty(container, message, icon="📭") {
   container.replaceChildren();
-
   const wrapper = document.createElement("div");
   wrapper.className = "empty";
-
-  const iconElement = document.createElement("span");
-  iconElement.className = "empty-icon";
-  iconElement.textContent = icon;
-
+  const symbol = document.createElement("span");
+  symbol.className = "empty-icon";
+  symbol.textContent = icon;
   const text = document.createElement("div");
   text.textContent = message;
-
-  wrapper.append(iconElement, text);
+  wrapper.append(symbol, text);
   container.appendChild(wrapper);
 }
-
 const giftIcons = {
-  rose: "🌹",
-  love: "❤️",
-  golden_star: "⭐",
-  diamond: "💎",
-  royal_crown: "👑",
-  premium_heart: "💖"
+  rose:"🌹", love:"❤️", golden_star:"⭐", diamond:"💎",
+  royal_crown:"👑", premium_heart:"💖"
 };
-
 function getGiftIcon(name) {
-  const key = String(name || "")
-    .toLowerCase()
-    .replace(/\s+/g, "_");
-
-  return giftIcons[key] || "🎁";
+  return giftIcons[String(name || "").toLowerCase().replace(/\s+/g, "_")] || "🎁";
 }
-
 function makeActivityRow(row, giftName) {
   const wrapper = document.createElement("div");
   wrapper.className = "activity";
-
   const icon = document.createElement("div");
   icon.className = "gift-icon";
   icon.textContent = getGiftIcon(giftName);
-
   const info = document.createElement("div");
   info.className = "activity-info";
-
   const name = document.createElement("div");
   name.className = "activity-name";
   name.textContent = giftName + " gift";
-
   const date = document.createElement("div");
   date.className = "activity-date";
   date.textContent = formatDate(row.created_at);
-
   info.append(name, date);
-
   const amount = document.createElement("div");
   amount.className = "activity-amount";
-
   const value = document.createElement("strong");
   value.className = "green";
   value.textContent = "+" + naira(row.creator_earning);
-
   const status = document.createElement("small");
-  status.textContent =
-    String(row.status || "pending").toUpperCase();
-
+  status.textContent = String(row.status || "pending").toUpperCase();
   amount.append(value, status);
   wrapper.append(icon, info, amount);
-
   return wrapper;
 }
-
 function makePayoutRow(row) {
   const wrapper = document.createElement("div");
   wrapper.className = "payout-row";
-
   const info = document.createElement("div");
-
   const amount = document.createElement("div");
   amount.className = "payout-amount";
   amount.textContent = naira(row.amount);
-
   const date = document.createElement("div");
   date.className = "payout-date";
   date.textContent = formatDate(row.requested_at);
-
   info.append(amount, date);
-
   const status = String(row.status || "pending").toLowerCase();
   const pill = document.createElement("span");
-
   pill.className = "pill";
-
-  if (status === "paid") {
-    pill.classList.add("paid");
-  } else if (status === "rejected") {
-    pill.classList.add("rejected");
-  }
-
-  pill.textContent =
-    status.charAt(0).toUpperCase() + status.slice(1);
-
+  if (status === "paid") pill.classList.add("paid");
+  if (status === "rejected") pill.classList.add("rejected");
+  pill.textContent = status.charAt(0).toUpperCase() + status.slice(1);
   wrapper.append(info, pill);
-
   return wrapper;
 }
 
-/* LOAD DASHBOARD */
-
 let isLoading = false;
+let currentUserId = null;
+let currentSession = null;
+let displayedAvailable = 0;
+let isEligible = false;
 
 async function loadDashboard() {
   if (isLoading) return;
-
   isLoading = true;
   clearNotice();
-
   $("refreshButton").disabled = true;
   $("activityRefresh").disabled = true;
-
+  $("payoutButton").disabled = true;
   setLoading($("activityList"), "Loading gift activity...");
   setLoading($("payoutHistory"), "Loading payout history...");
 
   try {
-    /*
-      1. Verify login session.
-    */
-
-    const {
-      data: { session },
-      error: sessionError
-    } = await db.auth.getSession();
-
-    if (sessionError) {
-      throw sessionError;
-    }
+    const {data:{session}, error:sessionError} = await db.auth.getSession();
+    if (sessionError) throw sessionError;
 
     if (!session || !session.user) {
-      setAccountStatus("Not logged in");
-
+      currentUserId = null;
+      currentSession = null;
+      $("accountStatus").textContent = "Not logged in";
       $("eligibilityTitle").textContent = "Login required";
-      $("eligibilitySubtitle").textContent =
-        "Log in to check your eligibility.";
-
+      $("eligibilitySubtitle").textContent = "Log in to check your eligibility.";
       $("followerCount").textContent = "—";
       $("premiumStatus").textContent = "—";
       $("eligibilityStatus").textContent = "—";
       $("followerProgress").style.width = "0%";
-
       $("totalEarnings").textContent = "—";
       $("availableBalance").textContent = "—";
       $("pendingBalance").textContent = "—";
       $("paidBalance").textContent = "—";
-
-      setEmpty(
-        $("activityList"),
-        "Log in to view your gift activity."
-      );
-
-      setEmpty(
-        $("payoutHistory"),
-        "Log in to view your payout history."
-      );
-
-      showNotice(
-        "Please log in to Campusora, then reopen this dashboard.",
-        "error"
-      );
-
+      setEmpty($("activityList"), "Log in to view your gift activity.");
+      setEmpty($("payoutHistory"), "Log in to view your payout history.");
+      showNotice("Please log in to Campusora, then reopen this dashboard.", "error");
       return;
     }
 
-    const userId = session.user.id;
+    currentUserId = session.user.id;
+    currentSession = session;
 
-    /*
-      2. Automatically check and save eligibility.
+    const refreshEligibility = await db.rpc("campusora_refresh_gift_earnings_eligibility");
+    if (refreshEligibility.error) throw new Error("Eligibility check failed: " + refreshEligibility.error.message);
 
-      This calls the SQL function created in Supabase.
-      The function checks followers and active Premium membership
-      and inserts or updates the eligibility record.
-    */
-
-    $("eligibilityTitle").textContent = "Checking eligibility";
-    $("eligibilitySubtitle").textContent =
-      "Updating your account status...";
-
-    const refreshEligibility = await db.rpc(
-      "campusora_refresh_gift_earnings_eligibility"
-    );
-
-    if (refreshEligibility.error) {
-      throw new Error(
-        "Eligibility check failed: " +
-        refreshEligibility.error.message
-      );
-    }
-
-    /*
-      3. Read creator earnings.
-    */
-
-    const earningsResult = await db
-      .from("campusora_gift_earnings")
-      .select(
-        "id,creator_id,gift_id,gift_value,creator_share_percent,creator_earning,platform_share,status,payment_reference,created_at,available_at"
-      )
-      .eq("creator_id", userId)
-      .order("created_at", { ascending: false })
+    const earningsResult = await db.from("campusora_gift_earnings")
+      .select("id,creator_id,gift_id,gift_value,creator_share_percent,creator_earning,platform_share,status,created_at,available_at,reserved_amount")
+      .eq("creator_id", currentUserId)
+      .order("created_at", {ascending:false})
       .limit(100);
 
-    if (earningsResult.error) {
-      throw new Error(
-        "Could not load earnings: " +
-        earningsResult.error.message
-      );
-    }
-
+    if (earningsResult.error) throw new Error("Could not load earnings: " + earningsResult.error.message);
     const earnings = earningsResult.data || [];
 
-    /*
-      4. Calculate the displayed balances.
-
-      Available = rows with status available.
-      Pending = rows with status pending.
-      Paid = rows with status paid.
-      Reversed records are excluded from total earnings.
-
-      These totals only cover the records returned by this query.
-    */
-
-    let total = 0;
-    let available = 0;
-    let pending = 0;
-    let paid = 0;
-
+    let total = 0, available = 0, pending = 0, paid = 0;
     for (const row of earnings) {
-      const amount = Math.max(
-        0,
-        Number(row.creator_earning || 0)
-      );
-
+      const amount = Math.max(0, Number(row.creator_earning || 0));
+      const reserved = Math.max(0, Number(row.reserved_amount || 0));
       const status = String(row.status || "").toLowerCase();
 
-      if (status !== "reversed") {
-        total += amount;
-      }
-
-      if (status === "available") {
-        available += amount;
-      } else if (status === "pending") {
-        pending += amount;
-      } else if (status === "paid") {
-        paid += amount;
-      }
+      if (status !== "reversed") total += amount;
+      if (status === "available") available += Math.max(0, amount - reserved);
+      else if (status === "pending") pending += amount;
+      else if (status === "paid") paid += amount;
     }
 
+    displayedAvailable = available;
     $("totalEarnings").textContent = naira(total);
     $("availableBalance").textContent = naira(available);
     $("pendingBalance").textContent = naira(pending);
     $("paidBalance").textContent = naira(paid);
 
-    /*
-      5. Read gift catalog names.
-    */
-
-    const catalogResult = await db
-      .from("campusora_gift_catalog")
-      .select("id,name")
-      .limit(100);
-
+    const catalogResult = await db.from("campusora_gift_catalog").select("id,name").limit(100);
     const catalogById = {};
-
     if (!catalogResult.error) {
-      for (const gift of catalogResult.data || []) {
-        catalogById[gift.id] = gift.name;
-      }
+      for (const gift of catalogResult.data || []) catalogById[gift.id] = gift.name;
     }
-
-    /*
-      6. Display recent gift activity.
-    */
 
     const activityList = $("activityList");
     activityList.replaceChildren();
-
-    if (!earnings.length) {
-      setEmpty(
-        activityList,
-        "No creator earnings yet.",
-        "🎁"
-      );
-    } else {
+    if (!earnings.length) setEmpty(activityList, "No creator earnings yet.", "🎁");
+    else {
       for (const row of earnings.slice(0, 10)) {
-        const giftName = catalogById[row.gift_id] || "Gift";
-
-        activityList.appendChild(
-          makeActivityRow(row, giftName)
-        );
+        activityList.appendChild(makeActivityRow(row, catalogById[row.gift_id] || "Gift"));
       }
     }
 
-    /*
-      7. Read the newly checked eligibility record.
-    */
-
-    const eligibilityResult = await db
-      .from("campusora_gift_earnings_eligibility")
-      .select(
-        "creator_id,follower_count,premium_active,eligible,eligibility_checked_at"
-      )
-      .eq("creator_id", userId)
+    const eligibilityResult = await db.from("campusora_gift_earnings_eligibility")
+      .select("creator_id,follower_count,premium_active,eligible,eligibility_checked_at")
+      .eq("creator_id", currentUserId)
       .maybeSingle();
 
-    if (eligibilityResult.error) {
-      throw new Error(
-        "Could not load eligibility: " +
-        eligibilityResult.error.message
-      );
-    }
-
+    if (eligibilityResult.error) throw new Error("Could not load eligibility: " + eligibilityResult.error.message);
     const eligibility = eligibilityResult.data;
-
-    if (!eligibility) {
-      throw new Error(
-        "The eligibility check finished, but no eligibility record was found."
-      );
-    }
+    if (!eligibility) throw new Error("No eligibility record was found.");
 
     const followers = Number(eligibility.follower_count || 0);
     const premiumActive = eligibility.premium_active === true;
-    const eligible = eligibility.eligible === true;
+    isEligible = eligibility.eligible === true;
 
-    $("followerCount").textContent =
-      followers.toLocaleString("en-NG") + " / 500";
+    $("followerCount").textContent = followers.toLocaleString("en-NG") + " / 500";
+    $("followerProgress").style.width = Math.min(100, Math.max(0, followers / 500 * 100)) + "%";
+    $("premiumStatus").textContent = premiumActive ? "Active" : "Inactive";
+    $("premiumStatus").style.color = premiumActive ? "var(--green)" : "var(--yellow)";
+    $("eligibilityStatus").textContent = isEligible ? "Eligible" : "Not eligible";
+    $("eligibilityStatus").style.color = isEligible ? "var(--green)" : "var(--yellow)";
 
-    $("followerProgress").style.width =
-      Math.min(100, Math.max(0, followers / 500 * 100)) + "%";
-
-    $("premiumStatus").textContent =
-      premiumActive ? "Active" : "Inactive";
-
-    $("premiumStatus").style.color =
-      premiumActive ? "var(--green)" : "var(--yellow)";
-
-    $("eligibilityStatus").textContent =
-      eligible ? "Eligible" : "Not eligible";
-
-    $("eligibilityStatus").style.color =
-      eligible ? "var(--green)" : "var(--yellow)";
-
-    if (eligible) {
+    if (isEligible) {
       $("eligibilityTitle").textContent = "You're eligible";
-      $("eligibilitySubtitle").textContent =
-        "Your account meets the current requirements.";
-
-      setAccountStatus("Eligible", true);
+      $("eligibilitySubtitle").textContent = "Your account meets the current requirements.";
+      $("accountStatus").textContent = "Eligible";
     } else {
       $("eligibilityTitle").textContent = "Not yet eligible";
-      $("eligibilitySubtitle").textContent =
-        "Your account has been checked.";
-
-      setAccountStatus("Checked");
-
+      $("eligibilitySubtitle").textContent = "Your account has been checked.";
+      $("accountStatus").textContent = "Checked";
       const missing = [];
-
-      if (followers < 500) {
-        missing.push("500 followers");
-      }
-
-      if (!premiumActive) {
-        missing.push("active Premium membership");
-      }
-
-      showNotice(
-        "Your eligibility has been checked. You still need " +
-        missing.join(" and ") + ".",
-        "info"
-      );
+      if (followers < 500) missing.push("500 followers");
+      if (!premiumActive) missing.push("active Premium membership");
+      showNotice("Your eligibility has been checked. You still need " + missing.join(" and ") + ".", "info");
     }
 
-    /*
-      8. Read payout history.
-
-      No bank account information is requested or displayed.
-    */
-
-    const payoutsResult = await db
-      .from("campusora_gift_payout_requests")
+    const payoutsResult = await db.from("campusora_gift_payout_requests")
       .select("id,amount,status,requested_at")
-      .eq("creator_id", userId)
-      .order("requested_at", { ascending: false })
+      .eq("creator_id", currentUserId)
+      .order("requested_at", {ascending:false})
       .limit(20);
 
-    if (payoutsResult.error) {
-      throw new Error(
-        "Could not load payout history: " +
-        payoutsResult.error.message
-      );
-    }
-
+    if (payoutsResult.error) throw new Error("Could not load payout history: " + payoutsResult.error.message);
     const payoutHistory = $("payoutHistory");
     payoutHistory.replaceChildren();
-
     const payouts = payoutsResult.data || [];
+    if (!payouts.length) setEmpty(payoutHistory, "No payout requests yet.", "💳");
+    else for (const payout of payouts) payoutHistory.appendChild(makePayoutRow(payout));
 
-    if (!payouts.length) {
-      setEmpty(
-        payoutHistory,
-        "No payout requests yet.",
-        "💳"
-      );
-    } else {
-      for (const payout of payouts) {
-        payoutHistory.appendChild(makePayoutRow(payout));
-      }
-    }
-
-    /*
-      Payout requests remain disabled until the secure
-      server-side payout API is implemented.
-    */
-
-    $("payoutButton").disabled = true;
-    $("payoutButton").title =
-      "Payout requests are not connected yet.";
+    $("payoutButton").disabled = !(isEligible && displayedAvailable >= MIN_PAYOUT);
+    $("payoutButton").title = $("payoutButton").disabled
+      ? (isEligible ? "You need at least ₦5,000 available." : "You must be eligible for Gift Earnings.")
+      : "Request a payout";
 
   } catch (error) {
-    console.error("Gift Earnings error:", error);
-
-    showNotice(
-      error.message ||
-      "Something went wrong while loading your dashboard.",
-      "error"
-    );
-
-    setEmpty(
-      $("activityList"),
-      "Unable to load gift activity."
-    );
-
-    setEmpty(
-      $("payoutHistory"),
-      "Unable to load payout history."
-    );
-
+    console.error("Gift Earnings dashboard error:", error);
+    showNotice(error.message || "Unable to load your dashboard.", "error");
+    setEmpty($("activityList"), "Unable to load gift activity.");
+    setEmpty($("payoutHistory"), "Unable to load payout history.");
+    $("payoutButton").disabled = true;
   } finally {
     isLoading = false;
     $("refreshButton").disabled = false;
@@ -1380,36 +464,126 @@ async function loadDashboard() {
   }
 }
 
-/* NAVIGATION */
+$("payoutButton").addEventListener("click", () => {
+  if (!currentUserId || !currentSession) {
+    showNotice("Please log in before requesting a payout.", "error");
+    return;
+  }
+  if (!isEligible) {
+    showNotice("You are not eligible for Gift Earnings yet.", "error");
+    return;
+  }
+  if (displayedAvailable < MIN_PAYOUT) {
+    showNotice("You need at least ₦5,000 in available earnings.", "error");
+    return;
+  }
+
+  $("payoutAmount").max = String(Math.floor(displayedAvailable));
+  $("payoutAmount").value = String(Math.floor(displayedAvailable));
+  $("formMessage").textContent = "";
+  $("payoutForm").classList.add("open");
+  $("payoutForm").scrollIntoView({behavior:"smooth", block:"nearest"});
+});
+
+$("cancelPayout").addEventListener("click", () => {
+  $("payoutForm").classList.remove("open");
+  $("formMessage").textContent = "";
+});
+
+$("accountNumber").addEventListener("input", event => {
+  event.target.value = event.target.value.replace(/\D/g, "").slice(0, 10);
+});
+
+$("payoutForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const submitButton = $("submitPayout");
+  const formMessage = $("formMessage");
+  formMessage.textContent = "";
+
+  if (!currentSession || !currentUserId) {
+    formMessage.textContent = "Your session has expired. Log in again.";
+    formMessage.style.color = "var(--red)";
+    return;
+  }
+
+  const amount = Number($("payoutAmount").value);
+  const accountName = $("accountName").value.trim();
+  const bankName = $("bankName").value.trim();
+  const accountNumber = $("accountNumber").value.trim();
+
+  if (!Number.isSafeInteger(amount) || amount < MIN_PAYOUT) {
+    formMessage.textContent = "The minimum payout is ₦5,000.";
+    formMessage.style.color = "var(--red)";
+    return;
+  }
+  if (amount > displayedAvailable) {
+    formMessage.textContent = "That amount is higher than your displayed available balance. Refresh and try again.";
+    formMessage.style.color = "var(--red)";
+    return;
+  }
+  if (!accountName || !bankName || !/^\d{10}$/.test(accountNumber)) {
+    formMessage.textContent = "Enter your account name, bank name and valid 10-digit account number.";
+    formMessage.style.color = "var(--red)";
+    return;
+  }
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting...";
+  formMessage.style.color = "var(--muted)";
+  formMessage.textContent = "Submitting your request securely...";
+
+  try {
+    const {data:{session}, error:sessionError} = await db.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (!session) throw new Error("Your session has expired. Please log in again.");
+
+    const response = await fetch("/api/gifts/payout", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + session.access_token
+      },
+      body:JSON.stringify({
+        amount,
+        account_name:accountName,
+        bank_name:bankName,
+        account_number:accountNumber
+      })
+    });
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.success !== true) {
+      throw new Error(result.message || "The payout request could not be submitted.");
+    }
+
+    formMessage.style.color = "var(--green)";
+    formMessage.textContent = "Request submitted successfully. Status: Pending review.";
+    showNotice("Your payout request has been submitted and is awaiting review.", "success");
+    $("payoutForm").classList.remove("open");
+    $("payoutForm").reset();
+
+    await loadDashboard();
+  } catch (error) {
+    console.error("Payout submission error:", error);
+    formMessage.style.color = "var(--red)";
+    formMessage.textContent = error.message || "Unable to submit your request. Please try again.";
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit request";
+  }
+});
 
 $("backButton").addEventListener("click", () => {
-  if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    window.location.href = "index.html";
-  }
+  if (window.history.length > 1) window.history.back();
+  else window.location.href = "index.html";
 });
-
 $("refreshButton").addEventListener("click", loadDashboard);
 $("activityRefresh").addEventListener("click", loadDashboard);
-
-$("payoutButton").addEventListener("click", () => {
-  showNotice(
-    "Payout requests are not connected yet.",
-    "info"
-  );
-});
-
-/* REFRESH AFTER RETURNING TO THE PAGE */
-
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden && !isLoading) {
-    loadDashboard();
-  }
+  if (!document.hidden && !isLoading) loadDashboard();
 });
 
 loadDashboard();
 </script>
-
 </body>
-  </html>
+        </html>
