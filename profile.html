@@ -2337,6 +2337,8 @@ async function loadProfile() {
 
   $('premiumButton').classList.toggle('hidden',!isOwnProfile);
 
+  await loadProfileRank(profile);
+
   /*
     On your own profile, the button opens gift history.
     On another member's profile, it opens the gift shop.
