@@ -1,1 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101124">
+<title>Creator Rewards | Campusora</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --bg: #101124;
+  --card: #191b35;
+  --card2: #202343;
+  --purple: #8b7cff;
+  --blue: #5bc0ff;
+  --text: #f5f5ff;
+  --muted: #a9accb;
+  --green: #5be0a0;
+  --red: #ff858f;
+  --border: rgba(255,255,255,.09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 5%;
+  border-bottom: 1px solid var(--border);
+  background: #13142a;
+}
+
+.brand {
+  font-size: 21px;
+  font-weight: 800;
+  color: white;
+  text-decoration: none;
+}
+
+.brand span {
+  color: var(--purple);
+}
+
+.back-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.container {
+  width: min(1050px, 92%);
+  margin: 30px auto 60px;
+}
+
+.hero {
+  padding: 30px 24px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #292653, #182a4a);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(139,124,255,.17);
+  color: #c6bdff;
+  padding: 5px 11px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: clamp(27px, 5vw, 39px);
+  line-height: 1.2;
+  margin: 15px 0 10px;
+}
+
+h2 {
+  font-size: 21px;
+  margin-top: 0;
+}
+
+p {
+  color: var(--muted);
+}
+
+.hero p {
+  max-width: 650px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px;
+  min-width: 0;
+  margin-bottom: 20px;
+}
+
+.grid .card {
+  margin-bottom: 0;
+}
+
+.requirement {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.requirement:last-child {
+  border-bottom: 0;
+}
+
+.requirement strong {
+  display: block;
+  font-size: 14px;
+}
+
+.requirement small {
+  color: var(--muted);
+  display: block;
+  margin-top: 3px;
+}
+
+.status {
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 30px;
+  background: #30314c;
+  white-space: nowrap;
+}
+
+.status.pass {
+  color: var(--green);
+  background: rgba(91,224,160,.12);
+}
+
+.status.fail {
+  color: var(--red);
+  background: rgba(255,133,143,.12);
+}
+
+.status.wait {
+  color: #ffe09a;
+  background: rgba(255,224,154,.10);
+}
+
+.progress-track {
+  width: 100%;
+  height: 9px;
+  background: #30314c;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--purple), var(--blue));
+  transition: width .3s ease;
+}
+
+button, .button {
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--purple), #6657e8);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 13px 17px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.secondary {
+  background: var(--card2);
+  border: 1px solid var(--border);
+}
+
+form label {
+  display: block;
+  font-size: 13px;
+  margin: 15px 0 6px;
+  color: #d7d8f1;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #383a60;
+  background: #111329;
+  color: white;
+  outline: none;
+  font: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--purple);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 10px;
+  display: none;
+  margin: 15px 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.message.show {
+  display: block;
+}
+
+.message.error {
+  background: rgba(255,133,143,.12);
+  color: var(--red);
+}
+
+.message.success {
+  background: rgba(91,224,160,.12);
+  color: var(--green);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat {
+  background: var(--card2);
+  border-radius: 12px;
+  padding: 14px 10px;
+  min-width: 0;
+}
+
+.stat strong {
+  display: block;
+  font-size: 21px;
+  overflow-wrap: anywhere;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.record {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+.record:last-child {
+  border-bottom: 0;
+}
+
+.record strong {
+  display: block;
+}
+
+.record small {
+  color: var(--muted);
+}
+
+.notice {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+footer {
+  text-align: center;
+  border-top: 1px solid var(--border);
+  padding: 22px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 650px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 23px 18px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    padding: 15px 4%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a class="brand" href="index.html">Campus<span>ora</span></a>
+  <a class="back-link" href="profile.html">← Back to Profile</a>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <span class="tag">CAMPUSORA CREATOR PROGRAM</span>
+    <h1>Create. Share. Grow. Earn.</h1>
+    <p>
+      Build your audience, connect with your supporters, and check
+      your progress toward joining the Campusora Creator Rewards Program.
+    </p>
+    <button type="button" id="refreshButton">Refresh My Progress</button>
+  </section>
+
+  <div id="pageMessage" class="message" role="status"></div>
+
+  <section id="loginCard" class="card hidden">
+    <h2>Sign in required</h2>
+    <p>Please sign in to your Campusora account to check eligibility
+       and access your Creator Rewards information.</p>
+    <a class="button" href="login.html">Sign In</a>
+    <p class="notice">
+      If your sign-in page uses a different filename, open it using
+      your website's existing login link.
+    </p>
+  </section>
+
+  <div id="rewardsContent" class="hidden">
+
+    <section class="card">
+      <h2>Your Eligibility</h2>
+      <p id="eligibilitySummary">Checking your progress...</p>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <p id="progressText" class="notice">Checking requirements...</p>
+
+      <div id="requirementsList"></div>
+
+      <div id="eligibilityError" class="message error"></div>
+
+      <button id="applyButton" type="button" class="hidden">
+        Apply for Creator Rewards
+      </button>
+
+      <p id="notEligibleMessage" class="notice">
+        Complete all five requirements to unlock the application.
+      </p>
+    </section>
+
+    <section id="applicationCard" class="card hidden">
+      <h2>Creator Rewards Application</h2>
+      <p>Complete the form below. Your application will be reviewed
+         before any rewards are approved.</p>
+
+      <form id="applicationForm">
+        <label for="fullName">Full name</label>
+        <input id="fullName" maxlength="120" required>
+
+        <label for="email">Email address</label>
+        <input id="email" type="email" maxlength="254" required>
+
+        <label for="country">Country</label>
+        <select id="country" required>
+          <option value="Nigeria">Nigeria</option>
+          <option value="Ghana">Ghana</option>
+          <option value="Kenya">Kenya</option>
+          <option value="South Africa">South Africa</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="payoutMethod">Preferred payout method</label>
+        <select id="payoutMethod" required>
+          <option value="">Choose a method</option>
+          <option value="bank_transfer">Bank transfer</option>
+          <option value="other">Other (explain below)</option>
+        </select>
+
+        <label for="payoutDetails">
+          Payout details
+        </label>
+        <textarea id="payoutDetails" maxlength="2000" required
+          placeholder="For bank transfer, provide the account holder name, bank name, and account number."></textarea>
+
+        <p class="notice">
+          Only submit payout information you are comfortable sharing
+          with Campusora administrators. Never enter your bank PIN,
+          card PIN, password, or one-time verification code.
+        </p>
+
+        <div id="applicationMessage" class="message" role="status"></div>
+
+        <button id="submitApplication" type="submit">
+          Submit Application
+        </button>
+      </form>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>My Earnings</h2>
+        <div class="stat-grid">
+          <div class="stat">
+            <strong id="totalEarnings">₦0</strong>
+            <span>Total recorded earnings</span>
+          </div>
+          <div class="stat">
+            <strong id="pendingEarnings">₦0</strong>
+            <span>Awaiting payment</span>
+          </div>
+          <div class="stat">
+            <strong id="paidEarnings">₦0</strong>
+            <span>Marked as paid</span>
+          </div>
+        </div>
+        <div id="earningsList">
+          <p>No earnings records to display yet.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>My Payouts</h2>
+        <div id="payoutsList">
+          <p>No payout records to display yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>My Application</h2>
+      <div id="applicationStatus">
+        <p>No application status available yet.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  Campusora — Connecting campuses, creating opportunities.
+</footer>
+
+<script>
+"use strict";
+
+/*
+  Use Campusora's existing public Supabase key.
+  Never put a service-role key in browser code.
+*/
+const SUPABASE_URL = "https://izjrazugqbnijzhlxegp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wOVNCGI_o5XwCISbgUK9Sw_r8iMXn7R";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let eligibility = null;
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[ch]);
+}
+
+function moneyFromKobo(value) {
+  return "₦" + (Number(value || 0) / 100).toLocaleString(
+    "en-NG",
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  );
+}
+
+function showMessage(id, text, type = "error") {
+  const el = $(id);
+  el.textContent = text;
+  el.className = "message show " + type;
+}
+
+function hideMessage(id) {
+  $(id).className = "message";
+}
+
+function setRequirement(title, description, passed) {
+  return `
+    <div class="requirement">
+      <div>
+        <strong>${escapeHTML(title)}</strong>
+        <small>${escapeHTML(description)}</small>
+      </div>
+      <span class="status ${passed ? "pass" : "fail"}">
+        ${passed ? "Completed" : "Not met"}
+      </span>
+    </div>
+  `;
+}
+
+function renderEligibility(data) {
+  eligibility = data;
+
+  const checks = [
+    {
+      title: "1,000 followers",
+      description:
+        `${Number(data.followers || 0).toLocaleString()} / ` +
+        `${Number(data.minimum_followers || 1000).toLocaleString()} followers`,
+      passed: data.followers_met === true
+    },
+    {
+      title: "Five of every active gift type",
+      description: "You must receive at least five of each active gift.",
+      passed: data.all_gifts_met === true
+    },
+    {
+      title: "Active Premium membership",
+      description: "Your verified Premium membership must be active.",
+      passed: data.premium_active === true
+    },
+    {
+      title: "Eligible profile rank",
+      description: "Active Queen, King, or Grand Master rank.",
+      passed: data.eligible_rank_active === true
+    },
+    {
+      title: "10,000 views in the last 30 days",
+      description:
+        `${Number(data.total_views || 0).toLocaleString()} / ` +
+        `${Number(data.minimum_views || 10000).toLocaleString()} views`,
+      passed: data.views_met === true
+    }
+  ];
+
+  $("requirementsList").innerHTML = checks.map(c =>
+    setRequirement(c.title, c.description, c.passed)
+  ).join("");
+
+  const completed = checks.filter(c => c.passed).length;
+
+  $("progressFill").style.width = (completed / checks.length * 100) + "%";
+  $("progressText").textContent =
+    `${completed} of ${checks.length} requirements completed`;
+
+  $("eligibilitySummary").textContent = data.eligible
+    ? "You meet the current requirements. You can apply for review."
+    : "Keep going! Complete the remaining requirements to unlock your application.";
+
+  $("applyButton").classList.toggle("hidden", !data.eligible);
+  $("notEligibleMessage").classList.toggle("hidden", data.eligible);
+
+  if (data.eligible) {
+    $("applyButton").textContent = "Apply for Creator Rewards";
+  }
+
+  $("eligibilityError").className = "message error";
+}
+
+async function loadEligibility() {
+  hideMessage("pageMessage");
+  $("eligibilityError").className = "message error";
+  $("eligibilitySummary").textContent = "Checking your progress...";
+  $("requirementsList").innerHTML = "";
+  $("applyButton").classList.add("hidden");
+
+  const { data, error } = await db.rpc(
+    "check_creator_reward_eligibility",
+    { p_user_id: currentUser.id }
+  );
+
+  if (error) {
+    console.error("Eligibility error:", error);
+
+    $("eligibilitySummary").textContent =
+      "We couldn't check your eligibility yet.";
+
+    showMessage(
+      "eligibilityError",
+      "Eligibility check failed: " + error.message
+    );
+
+    return;
+  }
+
+  renderEligibility(data);
+}
+
+async function loadApplications() {
+  const { data, error } = await db
+    .from("creator_reward_applications")
+    .select("id,application_status,created_at,review_notes,reviewed_at")
+    .eq("user_id", currentUser.id)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (error) {
+    console.error("Application status error:", error);
+    $("applicationStatus").innerHTML =
+      "<p>Unable to load your application status right now.</p>";
+    return;
+  }
+
+  const application = data?.[0];
+
+  if (!application) {
+    $("applicationStatus").innerHTML =
+      "<p>You haven't submitted an application yet.</p>";
+    return;
+  }
+
+  const status = String(application.application_status || "pending");
+
+  $("applicationStatus").innerHTML = `
+    <div class="record">
+      <strong>Status: ${escapeHTML(status.toUpperCase())}</strong>
+      <small>Submitted: ${escapeHTML(
+        new Date(application.created_at).toLocaleString()
+      )}</small>
+      ${
+        application.review_notes
+          ? `<p>${escapeHTML(application.review_notes)}</p>`
+          : ""
+      }
+    </div>
+  `;
+
+  if (status === "pending" || status === "approved") {
+    $("applyButton").classList.add("hidden");
+  }
+}
+
+async function loadEarnings() {
+  const { data, error } = await db
+    .from("creator_reward_earnings")
+    .select("*")
+    .eq("creator_id", currentUser.id)
+    .order("period_start", { ascending: false });
+
+  if (error) {
+    console.error("Earnings error:", error);
+    $("earningsList").innerHTML =
+      "<p>Unable to load earnings right now.</p>";
+    return;
+  }
+
+  const rows = data || [];
+
+  const total = rows.reduce(
+    (sum, row) => sum + Number(row.amount_kobo || 0), 0
+  );
+
+  const paid = rows
+    .filter(row => row.payout_status === "paid")
+    .reduce((sum, row) => sum + Number(row.amount_kobo || 0), 0);
+
+  const pending = rows
+    .filter(row => ["pending", "approved"].includes(row.payout_status))
+    .reduce((sum, row) => sum + Number(row.amount_kobo || 0), 0);
+
+  $("totalEarnings").textContent = moneyFromKobo(total);
+  $("pendingEarnings").textContent = moneyFromKobo(pending);
+  $("paidEarnings").textContent = moneyFromKobo(paid);
+
+  if (!rows.length) {
+    $("earningsList").innerHTML =
+      "<p>No earnings have been recorded yet.</p>";
+    return;
+  }
+
+  $("earningsList").innerHTML = rows.map(row => `
+    <div class="record">
+      <strong>${moneyFromKobo(row.amount_kobo)}</strong>
+      <small>
+        ${escapeHTML(row.period_start)} – ${escapeHTML(row.period_end)}
+        · ${escapeHTML(row.payout_status)}
+      </small>
+    </div>
+  `).join("");
+}
+
+async function loadPayouts() {
+  const { data, error } = await db
+    .from("creator_reward_payouts")
+    .select("amount_kobo,payout_status,created_at,paid_at,payout_reference")
+    .eq("creator_id", currentUser.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Payout history error:", error);
+    $("payoutsList").innerHTML =
+      "<p>Unable to load payout history right now.</p>";
+    return;
+  }
+
+  if (!data?.length) {
+    $("payoutsList").innerHTML =
+      "<p>No payout records yet. Payments will appear here when recorded.</p>";
+    return;
+  }
+
+  $("payoutsList").innerHTML = data.map(row => `
+    <div class="record">
+      <strong>${moneyFromKobo(row.amount_kobo)}</strong>
+      <small>
+        Status: ${escapeHTML(row.payout_status)}
+        · ${escapeHTML(new Date(row.created_at).toLocaleDateString())}
+      </small>
+      ${
+        row.paid_at
+          ? `<small>Paid: ${escapeHTML(new Date(row.paid_at).toLocaleDateString())}</small>`
+          : ""
+      }
+    </div>
+  `).join("");
+}
+
+async function loadAllData() {
+  $("refreshButton").disabled = true;
+
+  try {
+    await loadEligibility();
+
+    await Promise.all([
+      loadApplications(),
+      loadEarnings(),
+      loadPayouts()
+    ]);
+  } catch (err) {
+    console.error(err);
+    showMessage(
+      "pageMessage",
+      "Some information could not be loaded. Please refresh and try again."
+    );
+  } finally {
+    $("refreshButton").disabled = false;
+  }
+}
+
+$("applyButton").addEventListener("click", () => {
+  $("applicationCard").classList.remove("hidden");
+  $("applicationCard").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+$("applicationForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  hideMessage("applicationMessage");
+
+  if (!currentUser || !eligibility?.eligible) {
+    showMessage(
+      "applicationMessage",
+      "Your eligibility must be confirmed before applying."
+    );
+    return;
+  }
+
+  $("submitApplication").disabled = true;
+  $("submitApplication").textContent = "Submitting...";
+
+  try {
+    /*
+      Recheck eligibility immediately before submission.
+      This reduces the chance of submitting with outdated progress.
+    */
+    const { data: latest, error: checkError } = await db.rpc(
+      "check_creator_reward_eligibility",
+      { p_user_id: currentUser.id }
+    );
+
+    if (checkError) throw checkError;
+
+    if (!latest?.eligible) {
+      renderEligibility(latest);
+      throw new Error(
+        "You no longer meet all the eligibility requirements. Refresh your progress."
+      );
+    }
+
+    const { data: existing, error: existingError } = await db
+      .from("creator_reward_applications")
+      .select("id,application_status")
+      .eq("user_id", currentUser.id)
+      .in("application_status", ["pending", "approved"])
+      .limit(1);
+
+    if (existingError) throw existingError;
+
+    if (existing?.length) {
+      throw new Error(
+        "You already have a pending or approved application."
+      );
+    }
+
+    const application = {
+      user_id: currentUser.id,
+      full_name: $("fullName").value.trim(),
+      email: $("email").value.trim(),
+      country: $("country").value,
+      payout_method: $("payoutMethod").value,
+      payout_details: {
+        details: $("payoutDetails").value.trim()
+      },
+      application_status: "pending"
+    };
+
+    const { error: insertError } = await db
+      .from("creator_reward_applications")
+      .insert(application);
+
+    if (insertError) throw insertError;
+
+    showMessage(
+      "applicationMessage",
+      "Your application was submitted successfully. It is awaiting review.",
+      "success"
+    );
+
+    $("applicationForm").reset();
+    $("applicationCard").classList.add("hidden");
+
+    await loadApplications();
+
+  } catch (err) {
+    console.error("Application submission error:", err);
+    showMessage("applicationMessage", err.message || "Unable to submit application.");
+  } finally {
+    $("submitApplication").disabled = false;
+    $("submitApplication").textContent = "Submit Application";
+  }
+});
+
+$("refreshButton").addEventListener("click", loadAllData);
+
+async function initialisePage() {
+  try {
+    const { data, error } = await db.auth.getUser();
+
+    if (error || !data?.user) {
+      $("loginCard").classList.remove("hidden");
+      return;
+    }
+
+    currentUser = data.user;
+
+    $("loginCard").classList.add("hidden");
+    $("rewardsContent").classList.remove("hidden");
+
+    if (currentUser.email) {
+      $("email").value = currentUser.email;
+    }
+
+    await loadAllData();
+
+  } catch (err) {
+    console.error("Page initialization error:", err);
+    showMessage(
+      "pageMessage",
+      "Unable to connect to Campusora. Check your internet connection and try again."
+    );
+  }
+}
+
+initialisePage();
+</script>
+
+</body>
+  </html>
