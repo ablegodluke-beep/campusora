@@ -1015,6 +1015,87 @@ body.premium-active .cover{
   .gift-grid{gap:8px}
   .gift-option{padding:12px 6px}
 }
+  /* Campusora Get Ranks button */
+.get-ranks-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border: 1px solid rgba(232, 190, 95, 0.55);
+  border-radius: 20px;
+  background: linear-gradient(135deg, #29213f, #171426);
+  color: #f7d98b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(190, 145, 48, 0.13);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.get-ranks-btn:active {
+  transform: scale(0.96);
+}
+
+.get-ranks-btn:hover {
+  box-shadow: 0 4px 16px rgba(232, 190, 95, 0.25);
+}
+
+/* Purchased rank badge beside the name */
+.profile-rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.profile-rank-badge.hidden {
+  display: none;
+}
+
+/* Queen rank */
+.profile-rank-badge.rank-queen {
+  color: #ffe6a1;
+  background: linear-gradient(135deg, #6f4210, #2d1c0b);
+  border: 1px solid #d9ad55;
+  box-shadow: 0 0 10px rgba(217, 173, 85, 0.18);
+}
+
+/* King rank */
+.profile-rank-badge.rank-king {
+  color: #d9f2ff;
+  background: linear-gradient(135deg, #174a78, #10233f);
+  border: 1px solid #66b9f0;
+  box-shadow: 0 0 10px rgba(102, 185, 240, 0.18);
+}
+
+/* Grand Master rank */
+.profile-rank-badge.rank-grand-master {
+  color: #f4e7ff;
+  background: linear-gradient(135deg, #55218a, #211039);
+  border: 1px solid #c28bff;
+  box-shadow: 0 0 12px rgba(194, 139, 255, 0.2);
+}
+
+/* Keep the name and rank neatly aligned */
+.name-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.name-line h1 {
+  margin: 0;
+  }
 </style>
 </head>
 
@@ -1039,9 +1120,20 @@ body.premium-active .cover{
       alt="View profile photo"
     ><div class="profile-heading">
   <div class="profile-main">
-    <div class="name-line">
-      <h1 id="profileName">Campusora Member</h1>
-    </div>
+   <div class="name-line">
+  <h1 id="profileName">Campusora Member</h1>
+
+  <button
+    id="getRanksButton"
+    class="get-ranks-btn"
+    type="button"
+    onclick="window.location.href='./profile-ranks.html'"
+  >
+    👑 Get Ranks
+  </button>
+
+  <span id="profileRankBadge" class="profile-rank-badge hidden"></span>
+   </div>
 
     <div class="username-line">
       <span id="profileUsername" class="username"></span>
