@@ -1446,9 +1446,9 @@ function setupVideoObserver() {
 }
 
 async function recordView(videoId, counter) {
-if (!currentUser) return;
+if (!currentUser || !videoId) return;
 
-// Update the public video counter.
+// Count the public view once per session.
 if (!viewedThisSession.has(videoId)) {
 viewedThisSession.add(videoId);
 
@@ -1470,27 +1470,25 @@ try {
 
 }
 
-// Record a view for Creator Rewards independently.
+// Record the Creator Rewards view once per session.
+const rewardViewKey = "reward_view_${videoId}";
+
+if (sessionStorage.getItem(rewardViewKey)) return;
+
 try {
-const { error } = await supabase.rpc(
+const { data, error } = await supabase.rpc(
 'record_spotlight_video_view',
 { p_video_id: videoId }
 );
 
-if (error) {
-  console.warn('Creator Rewards tracking failed:', error.message);
-}
+if (error) throw error;
+
+sessionStorage.setItem(rewardViewKey, 'true');
 
 } catch (error) {
 console.warn('Creator Rewards tracking failed:', error.message);
 }
-  }
-
-} catch (error) {
-console.warn('Spotlight view update failed:', error.message);
-}
-}
-
+                          }
 /* LIKE / UNLIKE VIDEO */
 
 async function toggleLike(videoId, button) {
