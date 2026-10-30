@@ -23,239 +23,125 @@
   --green:#61e6b2;
   --red:#ff8294;
 }
-
 *{box-sizing:border-box}
-
 body{
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at top left,#211640,transparent 35%),
-    var(--bg);
-  color:var(--text);
-  font-family:'DM Sans',sans-serif;
+  margin:0;min-height:100vh;
+  background:radial-gradient(circle at top left,#211640,transparent 35%),var(--bg);
+  color:var(--text);font-family:'DM Sans',sans-serif;
 }
-
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
-
 .topbar{
-  height:65px;
-  padding:0 5%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:rgba(8,11,24,.94);
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:10;
-  backdrop-filter:blur(15px);
+  height:65px;padding:0 5%;display:flex;align-items:center;
+  justify-content:space-between;background:rgba(8,11,24,.94);
+  border-bottom:1px solid var(--border);position:sticky;top:0;
+  z-index:10;backdrop-filter:blur(15px);
 }
-
 .brand{
-  font-size:22px;
-  font-weight:800;
+  font-size:22px;font-weight:800;
   background:linear-gradient(90deg,#b18aff,#45dafa);
-  color:transparent;
-  background-clip:text;
-  -webkit-background-clip:text;
+  color:transparent;background-clip:text;-webkit-background-clip:text;
 }
-
-.back-link{
-  font-size:13px;
-  color:var(--muted);
-}
-
+.back-link{font-size:13px;color:var(--muted)}
 .back-link:hover{color:var(--cyan)}
-
-.container{
-  width:min(760px,94%);
-  margin:32px auto 60px;
-}
-
+.container{width:min(760px,94%);margin:32px auto 60px}
 .page-heading{margin-bottom:23px}
-
-.page-heading h1{
-  font-size:25px;
-  margin:0;
-}
-
-.page-heading p{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-  margin-top:7px;
-}
-
+.page-heading h1{font-size:25px;margin:0}
+.page-heading p{color:var(--muted);font-size:13px;line-height:1.6;margin-top:7px}
 .card{
-  background:rgba(17,22,41,.96);
-  border:1px solid var(--border);
-  border-radius:17px;
-  padding:23px;
-  margin-bottom:17px;
+  background:rgba(17,22,41,.96);border:1px solid var(--border);
+  border-radius:17px;padding:23px;margin-bottom:17px;
 }
-
-.card h2{
-  font-size:16px;
-  margin:0 0 6px;
-}
-
-.card-description{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-  margin:0 0 21px;
-}
-
+.card h2{font-size:16px;margin:0 0 6px}
+.card-description{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 21px}
 .field{margin-bottom:17px}
-
-label{
-  display:block;
-  font-size:12px;
-  font-weight:700;
-  margin-bottom:8px;
-  color:#dce0f5;
-}
-
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#dce0f5}
 input,textarea,select{
-  width:100%;
-  padding:13px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:var(--card2);
-  color:white;
-  outline:none;
-  font-size:13px;
+  width:100%;padding:13px;border-radius:10px;
+  border:1px solid var(--border);background:var(--card2);
+  color:white;outline:none;font-size:13px;
 }
-
 input:focus,textarea:focus,select:focus{
-  border-color:var(--purple);
-  box-shadow:0 0 0 3px rgba(146,91,255,.12);
+  border-color:var(--purple);box-shadow:0 0 0 3px rgba(146,91,255,.12);
 }
-
-input::placeholder,textarea::placeholder{
-  color:#737d9c;
-}
-
-textarea{
-  min-height:95px;
-  resize:vertical;
-}
-
-select option{
-  background:var(--card);
-}
-
+input::placeholder,textarea::placeholder{color:#737d9c}
+textarea{min-height:95px;resize:vertical}
+select option{background:var(--card)}
 .primary-btn{
-  width:100%;
-  padding:13px;
-  border:0;
-  border-radius:10px;
-  color:white;
-  font-size:13px;
-  font-weight:800;
+  width:100%;padding:13px;border:0;border-radius:10px;
+  color:white;font-size:13px;font-weight:800;
   background:linear-gradient(110deg,var(--purple),var(--blue));
 }
-
-.primary-btn:disabled{
-  opacity:.6;
-  cursor:wait;
-}
-
+.primary-btn:disabled{opacity:.6;cursor:wait}
 .secondary-btn{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:var(--card2);
-  color:white;
-  font-size:13px;
-  font-weight:700;
+  width:100%;padding:12px;border:1px solid var(--border);
+  border-radius:10px;background:var(--card2);color:white;
+  font-size:13px;font-weight:700;
 }
-
 .danger-btn{
-  width:100%;
-  padding:12px;
-  border:1px solid rgba(255,100,120,.3);
-  border-radius:10px;
-  background:rgba(255,100,120,.08);
-  color:#ff9baa;
-  font-size:13px;
-  font-weight:700;
+  width:100%;padding:12px;border:1px solid rgba(255,100,120,.3);
+  border-radius:10px;background:rgba(255,100,120,.08);
+  color:#ff9baa;font-size:13px;font-weight:700;
 }
-
 .message{
-  display:none;
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:17px;
-  font-size:12px;
-  line-height:1.6;
-  overflow-wrap:anywhere;
+  display:none;padding:12px;border-radius:10px;margin-bottom:17px;
+  font-size:12px;line-height:1.6;overflow-wrap:anywhere;
 }
-
 .message.success{
-  display:block;
-  color:var(--green);
+  display:block;color:var(--green);
   background:rgba(97,230,178,.08);
   border:1px solid rgba(97,230,178,.25);
 }
-
 .message.error{
-  display:block;
-  color:var(--red);
+  display:block;color:var(--red);
   background:rgba(255,100,120,.08);
   border:1px solid rgba(255,100,120,.25);
 }
-
 .account-info{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:13px;
-  background:var(--card2);
-  border:1px solid var(--border);
-  border-radius:11px;
-  margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;padding:13px;
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:11px;margin-bottom:18px;
 }
-
 .account-icon{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(135deg,var(--purple),var(--blue));
+  width:40px;height:40px;border-radius:12px;display:grid;
+  place-items:center;background:linear-gradient(135deg,var(--purple),var(--blue));
   font-size:18px;
 }
-
-.account-info strong{
-  display:block;
-  font-size:12px;
-  overflow-wrap:anywhere;
-}
-
+.account-info strong{display:block;font-size:12px;overflow-wrap:anywhere}
 .account-info span{
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-  overflow-wrap:anywhere;
+  display:block;color:var(--muted);font-size:11px;
+  margin-top:4px;overflow-wrap:anywhere;
 }
+.small-note{color:var(--muted);font-size:11px;line-height:1.6;margin-top:12px}
 
-.small-note{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
-  margin-top:12px;
+/* PHOTO UPLOAD DESIGN */
+.cover-preview{
+  width:100%;height:155px;border-radius:12px;overflow:hidden;
+  border:1px solid var(--border);
+  background:linear-gradient(120deg,#211640,#172d49);
+  margin-bottom:12px;display:flex;align-items:center;
+  justify-content:center;color:var(--muted);font-size:12px;
 }
-
-.button-space{margin-top:12px}
-
-.hidden{display:none!important}
-
+.cover-preview img{width:100%;height:100%;object-fit:cover;display:none}
+.avatar-row{display:flex;align-items:center;gap:15px;margin:14px 0 20px}
+.avatar-preview{
+  width:88px;height:88px;flex:0 0 88px;border-radius:50%;
+  overflow:hidden;border:3px solid rgba(146,91,255,.7);
+  background:var(--card2);display:grid;place-items:center;font-size:30px;
+}
+.avatar-preview img{width:100%;height:100%;object-fit:cover;display:none}
+.upload-label{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:10px 13px;border:1px solid rgba(146,91,255,.45);
+  border-radius:9px;background:var(--card2);color:white;
+  font-size:12px;font-weight:700;cursor:pointer;
+}
+.upload-label input{display:none}
+.file-name{
+  display:block;color:var(--muted);font-size:11px;
+  margin-top:7px;overflow-wrap:anywhere;
+}
 @media(max-width:500px){
   .container{margin-top:23px}
   .card{padding:18px}
@@ -281,11 +167,8 @@ select option{
   <div id="pageMessage" class="message" role="status" aria-live="polite"></div>
 
   <section class="card">
-
     <h2>Your account</h2>
-    <p class="card-description">
-      Your currently signed-in Campusora account.
-    </p>
+    <p class="card-description">Your currently signed-in Campusora account.</p>
 
     <div class="account-info">
       <div class="account-icon">👤</div>
@@ -299,18 +182,58 @@ select option{
        style="display:block;text-align:center;">
       View my public profile
     </a>
+  </section>
 
+  <!-- PROFILE AND COVER PICTURES -->
+  <section class="card">
+    <h2>Profile pictures 📸</h2>
+    <p class="card-description">
+      Change your profile picture and cover picture.
+    </p>
+
+    <div class="field">
+      <label>Cover picture</label>
+      <div class="cover-preview" id="coverBox">
+        <span id="coverPlaceholder">Your cover picture will appear here</span>
+        <img id="coverPreview" alt="Cover picture preview">
+      </div>
+      <label class="upload-label">
+        Choose cover picture
+        <input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
+      </label>
+      <span class="file-name" id="coverFileName">No new cover picture selected</span>
+    </div>
+
+    <div class="field">
+      <label>Profile picture</label>
+      <div class="avatar-row">
+        <div class="avatar-preview">
+          <span id="avatarPlaceholder">👤</span>
+          <img id="avatarPreview" alt="Profile picture preview">
+        </div>
+        <div>
+          <label class="upload-label">
+            Choose profile picture
+            <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp">
+          </label>
+          <span class="file-name" id="avatarFileName">No new profile picture selected</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="small-note">JPG, PNG or WebP only. Maximum file size: 5 MB per image.</p>
+    <button type="button" class="primary-btn" id="savePhotosBtn">
+      Save picture changes
+    </button>
   </section>
 
   <section class="card">
-
     <h2>Profile information</h2>
     <p class="card-description">
       Update the information people see when they visit your profile.
     </p>
 
     <form id="profileForm">
-
       <div class="field">
         <label for="fullName">Full name</label>
         <input id="fullName" type="text" maxlength="80"
@@ -348,53 +271,40 @@ select option{
       <button type="submit" class="primary-btn" id="saveProfileBtn">
         Save profile changes
       </button>
-
     </form>
-
   </section>
 
   <section class="card">
-
     <h2>Change password 🔐</h2>
-    <p class="card-description">
-      Choose a new password for your Campusora account.
-    </p>
+    <p class="card-description">Choose a new password for your Campusora account.</p>
 
     <form id="passwordForm">
-
       <div class="field">
         <label for="newPassword">New password</label>
-        <input id="newPassword" type="password"
-               minlength="8" autocomplete="new-password"
+        <input id="newPassword" type="password" minlength="8"
+               autocomplete="new-password"
                placeholder="At least 8 characters" required>
       </div>
 
       <div class="field">
         <label for="confirmPassword">Confirm new password</label>
-        <input id="confirmPassword" type="password"
-               minlength="8" autocomplete="new-password"
+        <input id="confirmPassword" type="password" minlength="8"
+               autocomplete="new-password"
                placeholder="Enter the password again" required>
       </div>
 
       <button type="submit" class="primary-btn" id="changePasswordBtn">
         Update password
       </button>
-
     </form>
-
   </section>
 
   <section class="card">
-
     <h2>Sign out</h2>
-    <p class="card-description">
-      Sign out of your Campusora account on this device.
-    </p>
-
+    <p class="card-description">Sign out of your Campusora account on this device.</p>
     <button type="button" class="danger-btn" id="logoutBtn">
       Log out of Campusora
     </button>
-
   </section>
 
 </main>
@@ -410,7 +320,19 @@ const saveProfileBtn = document.getElementById('saveProfileBtn');
 const changePasswordBtn = document.getElementById('changePasswordBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
+const avatarFile = document.getElementById('avatarFile');
+const coverFile = document.getElementById('coverFile');
+const avatarPreview = document.getElementById('avatarPreview');
+const coverPreview = document.getElementById('coverPreview');
+const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+const coverPlaceholder = document.getElementById('coverPlaceholder');
+const savePhotosBtn = document.getElementById('savePhotosBtn');
+
 let currentUser = null;
+let existingAvatarUrl = '';
+let existingCoverUrl = '';
+let avatarObjectUrl = null;
+let coverObjectUrl = null;
 
 function showMessage(message, type = 'success') {
   pageMessage.textContent = message;
@@ -421,6 +343,62 @@ function showMessage(message, type = 'success') {
 function clearMessage() {
   pageMessage.textContent = '';
   pageMessage.className = 'message';
+}
+
+function setAvatarPreview(url) {
+  if (!url) {
+    avatarPreview.removeAttribute('src');
+    avatarPreview.style.display = 'none';
+    avatarPlaceholder.style.display = 'block';
+    return;
+  }
+
+  avatarPreview.onload = () => {
+    avatarPreview.style.display = 'block';
+    avatarPlaceholder.style.display = 'none';
+  };
+
+  avatarPreview.onerror = () => {
+    avatarPreview.style.display = 'none';
+    avatarPlaceholder.style.display = 'block';
+  };
+
+  avatarPreview.src = url;
+}
+
+function setCoverPreview(url) {
+  if (!url) {
+    coverPreview.removeAttribute('src');
+    coverPreview.style.display = 'none';
+    coverPlaceholder.style.display = 'block';
+    return;
+  }
+
+  coverPreview.onload = () => {
+    coverPreview.style.display = 'block';
+    coverPlaceholder.style.display = 'none';
+  };
+
+  coverPreview.onerror = () => {
+    coverPreview.style.display = 'none';
+    coverPlaceholder.style.display = 'block';
+  };
+
+  coverPreview.src = url;
+}
+
+function validatePhoto(file) {
+  if (!file) return null;
+
+  if (!['image/jpeg','image/png','image/webp'].includes(file.type)) {
+    return 'Choose a JPG, PNG or WebP image.';
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    return 'Each image must be 5 MB or smaller.';
+  }
+
+  return null;
 }
 
 async function initialise() {
@@ -438,7 +416,7 @@ async function initialise() {
 
   const {data:profile,error:profileError} = await supabase
     .from('profiles')
-    .select('id,full_name,username,school,role,bio')
+    .select('id,full_name,username,school,role,bio,avatar_url,cover_url')
     .eq('id',currentUser.id)
     .maybeSingle();
 
@@ -461,10 +439,164 @@ async function initialise() {
   document.getElementById('role').value = profile.role || 'student';
   document.getElementById('bio').value = profile.bio || '';
 
+  existingAvatarUrl = profile.avatar_url || '';
+  existingCoverUrl = profile.cover_url || '';
+
+  setAvatarPreview(existingAvatarUrl);
+  setCoverPreview(existingCoverUrl);
+
   document.getElementById('profileLink').href =
     './profile.html?id=' + encodeURIComponent(currentUser.id);
 }
 
+/* PREVIEW SELECTED PROFILE PICTURE */
+avatarFile.addEventListener('change', () => {
+  const file = avatarFile.files[0];
+  if (!file) return;
+
+  const error = validatePhoto(file);
+
+  if (error) {
+    avatarFile.value = '';
+    showMessage(error, 'error');
+    return;
+  }
+
+  if (avatarObjectUrl) URL.revokeObjectURL(avatarObjectUrl);
+
+  avatarObjectUrl = URL.createObjectURL(file);
+  document.getElementById('avatarFileName').textContent = file.name;
+  setAvatarPreview(avatarObjectUrl);
+});
+
+/* PREVIEW SELECTED COVER PICTURE */
+coverFile.addEventListener('change', () => {
+  const file = coverFile.files[0];
+  if (!file) return;
+
+  const error = validatePhoto(file);
+
+  if (error) {
+    coverFile.value = '';
+    showMessage(error, 'error');
+    return;
+  }
+
+  if (coverObjectUrl) URL.revokeObjectURL(coverObjectUrl);
+
+  coverObjectUrl = URL.createObjectURL(file);
+  document.getElementById('coverFileName').textContent = file.name;
+  setCoverPreview(coverObjectUrl);
+});
+
+/* UPLOAD IMAGE TO EXISTING SUPABASE STORAGE BUCKET */
+async function uploadProfilePhoto(file, imageType) {
+  const extension = file.type === 'image/jpeg' ? 'jpg' :
+    file.type === 'image/png' ? 'png' : 'webp';
+
+  const filePath = currentUser.id + '/' + imageType + '-' +
+    Date.now() + '.' + extension;
+
+  const {error:uploadError} = await supabase.storage
+    .from('campusora-images')
+    .upload(filePath, file, {
+      cacheControl:'3600',
+      contentType:file.type,
+      upsert:false
+    });
+
+  if (uploadError) throw uploadError;
+
+  const {data} = supabase.storage
+    .from('campusora-images')
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+}
+
+/* SAVE PROFILE AND COVER PICTURES */
+savePhotosBtn.addEventListener('click', async () => {
+  clearMessage();
+
+  if (!currentUser) {
+    showMessage('Your session has expired. Please log in again.', 'error');
+    return;
+  }
+
+  const avatar = avatarFile.files[0];
+  const cover = coverFile.files[0];
+
+  if (!avatar && !cover) {
+    showMessage('Choose a new profile picture or cover picture first.', 'error');
+    return;
+  }
+
+  const validationError = validatePhoto(avatar) || validatePhoto(cover);
+
+  if (validationError) {
+    showMessage(validationError, 'error');
+    return;
+  }
+
+  savePhotosBtn.disabled = true;
+  savePhotosBtn.textContent = 'Uploading pictures...';
+
+  try {
+    let newAvatarUrl = existingAvatarUrl;
+    let newCoverUrl = existingCoverUrl;
+
+    if (avatar) {
+      newAvatarUrl = await uploadProfilePhoto(avatar, 'avatar');
+    }
+
+    if (cover) {
+      newCoverUrl = await uploadProfilePhoto(cover, 'cover');
+    }
+
+    const {error:updateError} = await supabase
+      .from('profiles')
+      .update({
+        avatar_url:newAvatarUrl || null,
+        cover_url:newCoverUrl || null
+      })
+      .eq('id', currentUser.id);
+
+    if (updateError) throw updateError;
+
+    existingAvatarUrl = newAvatarUrl;
+    existingCoverUrl = newCoverUrl;
+
+    avatarFile.value = '';
+    coverFile.value = '';
+
+    document.getElementById('avatarFileName').textContent =
+      'No new profile picture selected';
+
+    document.getElementById('coverFileName').textContent =
+      'No new cover picture selected';
+
+    if (avatarObjectUrl) URL.revokeObjectURL(avatarObjectUrl);
+    if (coverObjectUrl) URL.revokeObjectURL(coverObjectUrl);
+
+    avatarObjectUrl = null;
+    coverObjectUrl = null;
+
+    setAvatarPreview(existingAvatarUrl);
+    setCoverPreview(existingCoverUrl);
+
+    showMessage('Your profile and cover pictures have been updated successfully.');
+
+  } catch(error) {
+    console.error('Picture upload error:', error);
+    showMessage(error.message || 'Could not save your pictures. Please try again.', 'error');
+
+  } finally {
+    savePhotosBtn.disabled = false;
+    savePhotosBtn.textContent = 'Save picture changes';
+  }
+});
+
+/* UPDATE PROFILE INFORMATION */
 profileForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   clearMessage();
@@ -491,7 +623,6 @@ profileForm.addEventListener('submit', async (event) => {
   saveProfileBtn.textContent = 'Saving changes...';
 
   try {
-    // Check whether another account already uses this username.
     const {data:existing,error:checkError} = await supabase
       .from('profiles')
       .select('id')
@@ -539,6 +670,7 @@ profileForm.addEventListener('submit', async (event) => {
   }
 });
 
+/* CHANGE PASSWORD */
 passwordForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   clearMessage();
@@ -579,6 +711,7 @@ passwordForm.addEventListener('submit', async (event) => {
   }
 });
 
+/* LOG OUT */
 logoutBtn.addEventListener('click', async () => {
   const confirmed = window.confirm('Are you sure you want to log out of Campusora?');
 
@@ -603,4 +736,4 @@ initialise();
 </script>
 
 </body>
-  </html>
+          </html>
