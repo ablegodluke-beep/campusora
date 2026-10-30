@@ -324,6 +324,16 @@ a {
   margin-bottom: 13px;
 }
 
+ .feed-spotlight-video {
+  display: block;
+  width: 100%;
+  max-height: 620px;
+  background: #000;
+  object-fit: contain;
+  border-radius: 13px;
+  margin: 12px 0;
+}
+
 .post-stats {
   display: flex;
   justify-content: space-between;
@@ -616,11 +626,9 @@ footer {
 
 <main>
 
-  <div class="feed-header">
-    <div>
-      <h1 class="main-heading">Home Feed</h1>
-      <div class="subtitle">See what's happening across Campusora.</div>
-    </div>
+  <div class="feed-tabs">
+    <button class="feed-tab active" data-feed="discover">🌍 Discover</button>
+    <button class="feed-tab" data-feed="campus">🎓 My Campus</button>
   </div>
 
   <div class="panel create-card">
@@ -635,39 +643,6 @@ footer {
     </div>
   </div>
 
-  <div class="gradient-banner">
-    <h2>🌍 Your campus. Your people. Your world.</h2>
-    <p>
-      Share your thoughts, connect with people, and discover what's happening
-      across different campuses.
-    </p>
-  </div>
-
-  <!-- THE TWO HOME FEED TABS -->
-
-  <div class="feed-tabs">
-
-    <button class="feed-tab active" data-feed="discover">
-      🌍 Discover
-    </button>
-
-    <button class="feed-tab" data-feed="campus">
-      🎓 My Campus
-    </button>
-
-  </div>
-
-  <div class="feed-header">
-    <div>
-      <h2 id="feedTitle" style="font-size:16px;margin:0">
-        Discover
-      </h2>
-
-      <div class="subtitle" id="feedSubtitle">
-        Explore posts from across Campusora.
-      </div>
-    </div>
-  </div>
 
   <div id="feed">
     <div class="panel status">
@@ -725,8 +700,6 @@ const refreshBtn = document.getElementById('refreshBtn');
 const currentAvatar = document.getElementById('currentAvatar');
 
 const feedTabs = document.querySelectorAll('.feed-tab');
-const feedTitle = document.getElementById('feedTitle');
-const feedSubtitle = document.getElementById('feedSubtitle');
 
 let currentUser = null;
 let currentProfile = null;
@@ -737,7 +710,7 @@ const fallbackAvatar =
   'data:image/svg+xml;charset=UTF-8,' +
   encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
-      <rect width="100" height="100" rx="50" fill="#252c46"/>
+        <rect width="100" height="100" rx="50" fill="#252c46"/>
       <circle cx="50" cy="36" r="18" fill="#9ca8ca"/>
       <path d="M15 95 Q15 62 50 62 Q85 62 85 95" fill="#9ca8ca"/>
     </svg>
@@ -889,6 +862,30 @@ async function getSelectedPosts() {
   return data || [];
 }
 
+/* GET SPOTLIGHT VIDEOS FOR THE SELECTED FEED */
+async function getSelectedSpotlightVideos() {
+  const { data, error } = await supabase
+    .from('spotlight_videos')
+    .select('id,user_id,caption,video_url,thumbnail_url,view_count,created_at')
+    .order('created_at', { ascending: false })
+    .limit(40);
+
+  if (error) throw error;
+  let videos = data || [];
+
+  if (activeFeed === 'campus') {
+    if (!currentUser || !currentProfile?.school) return [];
+    const { data: campusMembers, error: campusError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('school', currentProfile.school);
+    if (campusError) throw campusError;
+    const campusIds = new Set((campusMembers || []).map(member => member.id));
+    videos = videos.filter(video => campusIds.has(video.user_id));
+  }
+  return videos;
+}
+
 /* LOAD THE FEED */
 
 async function loadFeed() {
@@ -914,30 +911,31 @@ async function loadFeed() {
     await getMyProfile();
 
     const posts = await getSelectedPosts();
-
     if (posts === null) return;
 
-    if (!posts.length) {
+    const videos = await getSelectedSpotlightVideos();
 
+    if (!posts.length && !videos.length) {
       if (activeFeed === 'campus') {
-        showMessage(
-          'No campus posts yet 🌱',
-          'There are no posts from members of your selected campus yet. Check back later!'
-        );
+        showMessage('No campus posts yet 🌱',
+          'There are no posts or Spotlight videos from members of your selected campus yet.');
       } else {
-        showMessage(
-          'Your feed is waiting for its first post! 🌱',
-          'Be the first to share something with the Campusora community.'
-        );
+        showMessage('Your feed is waiting for its first post! 🌱',
+          'Be the first to share something with the Campusora community.');
       }
-
       return;
     }
 
-    const userIds = [
-      ...new Set(posts.map(post => post.user_id).filter(Boolean))
-    ];
+    const feedItems = [
+      ...posts.map(post => ({ kind: 'post', data: post })),
+      ...videos.map(video => ({ kind: 'video', data: video }))
+    ].sort((a, b) =>
+      new Date(b.data.created_at).getTime() - new Date(a.data.created_at).getTime()
+    );
 
+    const userIds = [
+      ...new Set(feedItems.map(item => item.data.user_id).filter(Boolean))
+    ];
     const postIds = posts.map(post => post.id);
 
     let profiles = [];
@@ -1013,8 +1011,38 @@ async function loadFeed() {
       );
     });
 
-    feed.innerHTML = posts.map(post => {
+    feed.innerHTML = feedItems.map(item => {
+      if (item.kind === 'video') {
+        const video = item.data;
+        const author = profileMap.get(video.user_id) || {};
+        const name = author.full_name || author.username || 'Campusora Member';
+        const username = author.username ? '@' + author.username : '';
+        return `
+          <article class="panel post spotlight-feed-post" data-video-id="${escapeHTML(video.id)}">
+            <div class="post-author">
+              <a href="${profileLink(video.user_id)}">
+                <img class="avatar" src="${escapeHTML(avatarURL(author.avatar_url))}" alt=""
+                  onerror="this.onerror=null;this.src='${fallbackAvatar}'">
+              </a>
+              <div class="author-info">
+                <a class="author-name" href="${profileLink(video.user_id)}">${escapeHTML(name)}</a>
+                <div class="username">${escapeHTML(username)} · ✦ Spotlight</div>
+                <div class="post-time">${escapeHTML(timeAgo(video.created_at))}</div>
+              </div>
+            </div>
+            ${video.caption ? `<div class="post-content">${escapeHTML(video.caption)}</div>` : ''}
+            <video class="post-image feed-spotlight-video" controls playsinline preload="metadata"
+              ${video.thumbnail_url ? `poster="${escapeHTML(video.thumbnail_url)}"` : ''}
+              src="${escapeHTML(video.video_url)}"></video>
+            <div class="post-actions">
+              <a class="action-btn" href="spotlight.html#${encodeURIComponent(video.id)}">▶ Watch in Spotlight</a>
+              <button class="action-btn" data-action="share-video">↗ Share</button>
+            </div>
+          </article>
+        `;
+      }
 
+      const post = item.data;
       const author = profileMap.get(post.user_id) || {};
 
       const name =
@@ -1111,7 +1139,7 @@ async function loadFeed() {
 
           </div>
 
-          <section class="comments-area"
+                    <section class="comments-area"
                    id="comments-${escapeHTML(post.id)}">
 
             <form class="comment-form"
@@ -1610,6 +1638,26 @@ async function sharePost(postId) {
 
 feed.addEventListener('click', async event => {
 
+  const videoShareButton = event.target.closest('[data-action="share-video"]');
+  if (videoShareButton) {
+    const card = videoShareButton.closest('[data-video-id]');
+    const shareURL = new URL('spotlight.html', window.location.href);
+    shareURL.hash = card.dataset.videoId;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Campusora Spotlight', text: 'Watch this video on Campusora!', url: shareURL.href });
+      } else if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(shareURL.href);
+        alert('Video link copied!');
+      } else {
+        window.prompt('Copy this video link:', shareURL.href);
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') alert('Could not share this video.');
+    }
+    return;
+  }
+
   const likeButton = event.target.closest('[data-action="like"]');
 
   if (likeButton) {
@@ -1735,21 +1783,6 @@ feedTabs.forEach(button => {
 
     });
 
-    if (activeFeed === 'campus') {
-
-      feedTitle.textContent = 'My Campus';
-
-      feedSubtitle.textContent =
-        'Posts from members of your selected campus.';
-
-    } else {
-
-      feedTitle.textContent = 'Discover';
-
-      feedSubtitle.textContent =
-        'Explore posts from across Campusora.';
-    }
-
     loadFeed();
 
   });
@@ -1768,3 +1801,4 @@ await loadFeed();
 
 </body>
 </html>
+          
