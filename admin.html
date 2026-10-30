@@ -2,412 +2,387 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b18">
-
-<title>Admin Dashboard | Campusora</title>
+<title>Campusora Admin Dashboard</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg: #080b18;
-  --panel: #101528;
-  --panel2: #151b32;
-  --border: #252c46;
-  --text: #f4f6ff;
-  --muted: #929bb8;
-  --purple: #8b5cf6;
-  --blue: #4f8cff;
-  --cyan: #36d9ff;
-  --danger: #ff6685;
-  --green: #42d6a4;
+  --bg:#080b18;
+  --panel:#101528;
+  --panel2:#151b32;
+  --border:#252c46;
+  --text:#f4f6ff;
+  --muted:#929bb8;
+  --purple:#8b5cf6;
+  --blue:#4f8cff;
+  --cyan:#36d9ff;
+  --green:#42d6a4;
+  --red:#ff6685;
 }
 
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
-body {
-  margin: 0;
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+button{font:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+.topbar{
+  height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:50;
 }
 
-button {
-  font: inherit;
-  cursor: pointer;
+.brand{
+  font-size:21px;
+  font-weight:800;
+  background:linear-gradient(90deg,#a78bfa,#36d9ff);
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.top-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.topbar {
-  height: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 22px;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 20;
+.admin-label{
+  color:var(--cyan);
+  font-size:10px;
+  font-weight:800;
+  background:rgba(54,217,255,.08);
+  border:1px solid rgba(54,217,255,.2);
+  padding:7px 10px;
+  border-radius:20px;
 }
 
-.brand {
-  font-size: 22px;
-  font-weight: 800;
-  background: linear-gradient(90deg, #a78bfa, #36d9ff);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+.logout,.refresh,.mobile-menu{
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:white;
+  border-radius:9px;
+  padding:9px 12px;
+  font-size:11px;
+  font-weight:700;
 }
 
-.top-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.layout{
+  display:grid;
+  grid-template-columns:245px minmax(0,1fr);
+  min-height:calc(100vh - 65px);
 }
 
-.admin-label {
-  color: var(--cyan);
-  font-size: 11px;
-  font-weight: 800;
-  background: rgba(54,217,255,.08);
-  border: 1px solid rgba(54,217,255,.2);
-  padding: 7px 11px;
-  border-radius: 20px;
+.sidebar{
+  background:#0c1020;
+  border-right:1px solid var(--border);
+  padding:18px 12px;
+  height:calc(100vh - 65px);
+  overflow-y:auto;
+  position:sticky;
+  top:65px;
 }
 
-.logout {
-  border: 1px solid var(--border);
-  background: var(--panel2);
-  color: white;
-  border-radius: 9px;
-  padding: 9px 12px;
-  font-size: 11px;
-  font-weight: 700;
+.side-heading{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:13px 11px 8px;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 245px minmax(0, 1fr);
-  min-height: calc(100vh - 65px);
+.nav-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px;
+  margin:3px 0;
+  color:#aeb8d3;
+  background:transparent;
+  border:0;
+  border-radius:10px;
+  text-align:left;
+  font-size:12px;
+  font-weight:600;
 }
 
-.sidebar {
-  background: #0c1020;
-  border-right: 1px solid var(--border);
-  padding: 20px 13px;
-  height: calc(100vh - 65px);
-  overflow-y: auto;
-  position: sticky;
-  top: 65px;
+.nav-btn:hover,.nav-btn.active{
+  color:white;
+  background:linear-gradient(100deg,rgba(139,92,246,.23),rgba(79,140,255,.12));
 }
 
-.side-heading {
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  padding: 10px 12px;
+.nav-icon{
+  width:20px;
+  text-align:center;
+  font-size:16px;
 }
 
-.nav-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin: 3px 0;
-  color: #aeb8d3;
-  background: transparent;
-  border: 0;
-  border-radius: 10px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
+.main{
+  min-width:0;
+  width:100%;
+  max-width:1450px;
+  padding:27px;
 }
 
-.nav-btn:hover,
-.nav-btn.active {
-  color: white;
-  background: linear-gradient(
-    100deg,
-    rgba(139,92,246,.23),
-    rgba(79,140,255,.12)
-  );
+.page-title{
+  font-size:24px;
+  font-weight:800;
+  margin:0 0 6px;
 }
 
-.nav-icon {
-  width: 20px;
-  text-align: center;
-  font-size: 16px;
+.page-subtitle{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:23px;
 }
 
-.main {
-  min-width: 0;
-  padding: 28px;
-  max-width: 1450px;
-  width: 100%;
+.welcome{
+  padding:22px;
+  border-radius:16px;
+  border:1px solid #38315e;
+  background:linear-gradient(115deg,rgba(139,92,246,.24),rgba(54,217,255,.07));
+  margin-bottom:22px;
 }
 
-.page-title {
-  font-size: 24px;
-  font-weight: 800;
-  margin: 0 0 6px;
+.welcome h2{
+  font-size:18px;
+  margin:0 0 8px;
 }
 
-.page-subtitle {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
-  margin-bottom: 25px;
+.welcome p{
+  font-size:12px;
+  line-height:1.8;
+  color:#c3cbe2;
+  margin:0;
 }
 
-.welcome {
-  padding: 23px;
-  border-radius: 17px;
-  border: 1px solid #38315e;
-  background: linear-gradient(
-    115deg,
-    rgba(139,92,246,.24),
-    rgba(54,217,255,.07)
-  );
-  margin-bottom: 22px;
+.section-label{
+  font-size:13px;
+  font-weight:800;
+  margin:23px 0 13px;
 }
 
-.welcome h2 {
-  font-size: 19px;
-  margin: 0 0 8px;
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:13px;
 }
 
-.welcome p {
-  font-size: 12px;
-  line-height: 1.8;
-  color: #c3cbe2;
-  margin: 0;
+.stat-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  min-width:0;
 }
 
-.section-label {
-  font-size: 13px;
-  font-weight: 800;
-  margin: 25px 0 13px;
+.stat-icon{
+  font-size:19px;
+  margin-bottom:11px;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 13px;
+.stat-title{
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:8px;
 }
 
-.stat-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 17px;
-  min-width: 0;
+.stat-value{
+  font-size:22px;
+  font-weight:800;
+  overflow-wrap:anywhere;
 }
 
-.stat-icon {
-  font-size: 19px;
-  margin-bottom: 12px;
+.stat-note{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:7px;
+  line-height:1.6;
 }
 
-.stat-title {
-  color: var(--muted);
-  font-size: 11px;
-  margin-bottom: 8px;
+.quick-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+  margin-top:20px;
 }
 
-.stat-value {
-  font-size: 22px;
-  font-weight: 800;
+.quick-card h3{
+  font-size:13px;
+  margin:0 0 8px;
 }
 
-.stat-note {
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 7px;
+.quick-card p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
+  margin:0;
 }
 
-.quick-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px;
-  margin-top: 20px;
+.notice{
+  padding:12px;
+  background:rgba(54,217,255,.07);
+  border:1px solid rgba(54,217,255,.2);
+  color:#a9eaff;
+  border-radius:10px;
+  font-size:11px;
+  line-height:1.7;
+  margin-top:15px;
 }
 
-.quick-card h3 {
-  font-size: 13px;
-  margin: 0 0 8px;
+.status-message{
+  display:none;
+  padding:11px 13px;
+  border-radius:9px;
+  margin:15px 0;
+  font-size:11px;
+  line-height:1.6;
 }
 
-.quick-card p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.8;
-  margin: 0;
+.status-message.error{
+  display:block;
+  color:#ff9baa;
+  background:rgba(255,102,133,.08);
+  border:1px solid rgba(255,102,133,.2);
 }
 
-.notice {
-  padding: 12px;
-  background: rgba(54,217,255,.07);
-  border: 1px solid rgba(54,217,255,.2);
-  color: #a9eaff;
-  border-radius: 10px;
-  font-size: 11px;
-  line-height: 1.7;
-  margin-top: 18px;
+.status-message.success{
+  display:block;
+  color:#8df0c8;
+  background:rgba(66,214,164,.08);
+  border:1px solid rgba(66,214,164,.2);
 }
 
-.page-placeholder {
-  display: none;
-  padding: 35px 20px;
-  text-align: center;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+.placeholder{
+  display:none;
+  padding:30px 20px;
+  text-align:center;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
 }
 
-.page-placeholder .big-icon {
-  font-size: 35px;
-  margin-bottom: 13px;
+.placeholder .big-icon{
+  font-size:35px;
+  margin-bottom:12px;
 }
 
-.page-placeholder h2 {
-  font-size: 17px;
+.placeholder h2{
+  font-size:17px;
 }
 
-.page-placeholder p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.8;
+.placeholder p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.8;
 }
 
-.loading {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 25px;
+.loading{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:25px;
 }
 
-.loading-box {
-  max-width: 350px;
-  width: 100%;
+.loading-box{
+  max-width:350px;
+  width:100%;
 }
 
-.loader {
-  width: 35px;
-  height: 35px;
-  border: 3px solid var(--border);
-  border-top-color: var(--purple);
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-  margin: 0 auto 17px;
+.loader{
+  width:35px;
+  height:35px;
+  border:3px solid var(--border);
+  border-top-color:var(--purple);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 17px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes spin{
+  to{transform:rotate(360deg)}
 }
 
-.error-message {
-  color: #ff9baa;
-  font-size: 13px;
-  line-height: 1.8;
+.error-message{
+  color:#ff9baa;
+  font-size:12px;
+  line-height:1.8;
 }
 
-.mobile-menu {
-  display: none;
-  border: 1px solid var(--border);
-  background: var(--panel2);
-  color: white;
-  padding: 8px 11px;
-  border-radius: 9px;
+.mobile-menu{display:none}
+
+@media(max-width:1000px){
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
-@media(max-width: 1000px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media(max-width: 700px) {
-  .topbar {
-    height: 59px;
-    padding: 0 13px;
+@media(max-width:700px){
+  .topbar{
+    height:59px;
+    padding:0 12px;
   }
 
-  .brand {
-    font-size: 20px;
+  .brand{font-size:19px}
+
+  .admin-label{
+    font-size:9px;
+    padding:6px 8px;
   }
 
-  .admin-label {
-    font-size: 9px;
-    padding: 6px 8px;
+  .layout{display:block}
+
+  .sidebar{
+    display:none;
+    position:fixed;
+    top:59px;
+    left:0;
+    width:265px;
+    height:calc(100vh - 59px);
+    z-index:40;
+    box-shadow:15px 0 35px rgba(0,0,0,.35);
   }
 
-  .layout {
-    display: block;
-  }
+  .sidebar.open{display:block}
 
-  .sidebar {
-    display: none;
-    position: fixed;
-    top: 59px;
-    left: 0;
-    width: 265px;
-    height: calc(100vh - 59px);
-    z-index: 30;
-    box-shadow: 15px 0 35px rgba(0,0,0,.35);
-  }
+  .main{padding:20px 13px}
 
-  .sidebar.open {
-    display: block;
-  }
+  .page-title{font-size:21px}
 
-  .main {
-    padding: 20px 13px;
-  }
+  .mobile-menu{display:block}
 
-  .page-title {
-    font-size: 21px;
-  }
+  .stat-card{padding:13px}
 
-  .mobile-menu {
-    display: block;
-  }
+  .stat-value{font-size:19px}
 
-  .stats-grid {
-    gap: 9px;
-  }
+  .stats-grid{gap:9px}
 
-  .stat-card {
-    padding: 13px;
-  }
-
-  .stat-value {
-    font-size: 19px;
-  }
-
-  .top-right {
-    gap: 7px;
-  }
+  .top-right{gap:6px}
 }
 
-@media(max-width: 350px) {
-  .admin-label {
-    display: none;
-  }
+@media(max-width:350px){
+  .admin-label{display:none}
 }
 </style>
 </head>
@@ -430,7 +405,7 @@ a {
   </div>
 
   <div class="top-right">
-    <span class="admin-label">SUPER ADMIN</span>
+    <span class="admin-label" id="adminLabel">SUPER ADMIN</span>
     <button class="logout" id="logoutBtn">Log out</button>
   </div>
 </header>
@@ -512,103 +487,108 @@ a {
   <h1 class="page-title">Dashboard Overview</h1>
 
   <p class="page-subtitle">
-    Welcome to your Campusora administration centre.
+    Monitor Campusora activity, users and platform revenue.
   </p>
 
   <div class="welcome">
-    <h2>Welcome, Super Admin 👋</h2>
+    <h2>Welcome, Administrator 👋</h2>
     <p>
-      Manage Campusora, monitor platform activity, oversee payments
-      and keep the campus community safe.
+      Your Campusora administration centre.
+      Monitor platform activity and manage the campus community.
     </p>
   </div>
 
-  <div class="section-label">Platform Overview</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+    <div class="section-label">Platform Overview</div>
+    <button class="refresh" id="refreshBtn">↻ Refresh</button>
+  </div>
+
+  <div id="statsMessage" class="status-message"></div>
 
   <div class="stats-grid">
 
     <div class="stat-card">
       <div class="stat-icon">👥</div>
       <div class="stat-title">Registered Users</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-value" id="statUsers">—</div>
+      <div class="stat-note">Total registered profiles</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">📝</div>
       <div class="stat-title">Total Posts</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-value" id="statPosts">—</div>
+      <div class="stat-note">Posts on Campusora</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">🎬</div>
       <div class="stat-title">Spotlight Videos</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-value" id="statVideos">—</div>
+      <div class="stat-note">Uploaded Spotlight videos</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">🏫</div>
       <div class="stat-title">Communities</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-value" id="statCommunities">—</div>
+      <div class="stat-note">Campus communities</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">💳</div>
       <div class="stat-title">Successful Payments</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-value" id="statPayments">—</div>
+      <div class="stat-note">Premium, ranks and campaigns</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">💰</div>
-      <div class="stat-title">Campusora Revenue</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-title">Tracked Revenue</div>
+      <div class="stat-value" id="statRevenue">—</div>
+      <div class="stat-note">Verified payments counted so far</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">📢</div>
       <div class="stat-title">Active Campaigns</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-value" id="statCampaigns">—</div>
+      <div class="stat-note">Paid campaigns currently active</div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">⚠️</div>
       <div class="stat-title">Pending Reports</div>
-      <div class="stat-value">—</div>
-      <div class="stat-note">Awaiting database connection</div>
+      <div class="stat-value" id="statReports">—</div>
+      <div class="stat-note">Reports awaiting review</div>
     </div>
 
   </div>
 
   <div class="quick-card">
-    <h3>Admin Dashboard Foundation</h3>
-    <p>
-      Your administrator access has been verified.
-      The dashboard sections are being prepared for connection
-      to Campusora's existing database and services.
+    <h3>Dashboard Connection</h3>
+    <p id="connectionText">
+      Checking Campusora database connection...
     </p>
 
     <div class="notice">
-      Statistics are not connected yet. No invented figures are displayed.
-      Existing payment and creator systems will be connected during
-      the next development stage.
+      Figures are retrieved from the database. Revenue shown here does
+      not yet include gift payments, and unavailable report data will
+      not be presented as zero.
     </div>
   </div>
 
 </section>
 
-<section id="otherPage" class="page-placeholder">
+<section id="otherPage" class="placeholder">
   <div class="big-icon" id="sectionIcon">⚙️</div>
   <h2 id="sectionTitle">Management</h2>
-  <p id="sectionDescription">
-    This section is part of the Campusora Admin Dashboard.
-  </p>
-  <p>Its database connection and management tools will be added next.</p>
+  <p id="sectionDescription"></p>
+  <div class="notice">
+    This section is listed in the admin dashboard.
+    Its secure database connection and management actions
+    will be connected in its development stage.
+  </div>
 </section>
 
 </main>
@@ -616,24 +596,47 @@ a {
 </div>
 
 <script type="module">
+
 import { supabase } from './supabase.js';
 
 const loading = document.getElementById('loading');
 const app = document.getElementById('app');
+
+let accessToken = null;
+
+const numberFormat = new Intl.NumberFormat('en-NG');
+
+function showLoadingError(message) {
+  loading.innerHTML = `
+    <div class="loading-box">
+      <h2>Could not open dashboard</h2>
+      <p class="error-message"></p>
+      <button class="logout" id="tryAgain">Try again</button>
+    </div>
+  `;
+
+  loading.querySelector('.error-message').textContent = message;
+
+  document.getElementById('tryAgain').onclick = () => {
+    location.reload();
+  };
+}
 
 async function startDashboard() {
   try {
     const { data, error } = await supabase.auth.getSession();
 
     if (error || !data.session) {
-      window.location.replace('./auth.html?mode=login');
+      location.replace('./auth.html?mode=login');
       return;
     }
+
+    accessToken = data.session.access_token;
 
     const response = await fetch('/api/admin/check', {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${data.session.access_token}`
+        Authorization: `Bearer ${accessToken}`
       },
       cache: 'no-store'
     });
@@ -642,66 +645,192 @@ async function startDashboard() {
 
     if (response.status === 401) {
       await supabase.auth.signOut();
-      window.location.replace('./auth.html?mode=login');
+      location.replace('./auth.html?mode=login');
       return;
     }
 
     if (response.status === 403) {
-      loading.innerHTML = `
-        <div class="loading-box">
-          <div style="font-size:35px">🔒</div>
-          <h2>Access Denied</h2>
-          <p class="error-message">
-            Your account does not have Campusora administrator permissions.
-          </p>
-          <a href="./index.html">Return to Campusora</a>
-        </div>
-      `;
+      showLoadingError(
+        'Access denied. Your account is not an administrator.'
+      );
       return;
     }
 
     if (!response.ok || !result.success) {
-      throw new Error(result.message || 'Could not verify admin access.');
+      throw new Error(result.message || 'Admin verification failed.');
     }
 
     if (result.admin_role !== 'super_admin') {
-      document.querySelector('.admin-label').textContent = 'ADMIN';
+      document.getElementById('adminLabel').textContent = 'ADMIN';
     }
 
     loading.style.display = 'none';
     app.style.display = 'block';
 
+    await loadDashboardStats();
+
   } catch (error) {
-    loading.innerHTML = `
-      <div class="loading-box">
-        <h2>Could not open dashboard</h2>
-        <p class="error-message">${error.message}</p>
-        <button class="logout" onclick="location.reload()">
-          Try again
-        </button>
-      </div>
-    `;
+    showLoadingError(error.message || 'Something went wrong.');
   }
 }
 
+async function loadDashboardStats() {
+  const message = document.getElementById('statsMessage');
+  const connection = document.getElementById('connectionText');
+  const button = document.getElementById('refreshBtn');
+
+  button.disabled = true;
+  button.textContent = 'Loading...';
+
+  message.className = 'status-message';
+  message.textContent = '';
+
+  try {
+    const response = await fetch('/api/admin/stats', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      },
+      cache: 'no-store'
+    });
+
+    const result = await response.json();
+
+    if (response.status === 401) {
+      await supabase.auth.signOut();
+      location.replace('./auth.html?mode=login');
+      return;
+    }
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Could not load statistics.');
+    }
+
+    const stats = result.statistics;
+
+    document.getElementById('statUsers').textContent =
+      displayNumber(stats.users);
+
+    document.getElementById('statPosts').textContent =
+      displayNumber(stats.posts);
+
+    document.getElementById('statVideos').textContent =
+      displayNumber(stats.videos);
+
+    document.getElementById('statCommunities').textContent =
+      displayNumber(stats.communities);
+
+    document.getElementById('statPayments').textContent =
+      displayNumber(stats.payments);
+
+    document.getElementById('statRevenue').textContent =
+      stats.revenue == null
+        ? '—'
+        : '₦' + numberFormat.format(stats.revenue);
+
+    document.getElementById('statCampaigns').textContent =
+      displayNumber(stats.campaigns);
+
+    document.getElementById('statReports').textContent =
+      stats.pendingReports == null
+        ? 'Unavailable'
+        : numberFormat.format(stats.pendingReports);
+
+    connection.textContent =
+      'Dashboard connected. Statistics were successfully retrieved.';
+
+    message.className = 'status-message success';
+    message.textContent = 'Dashboard statistics updated successfully.';
+
+  } catch (error) {
+    connection.textContent =
+      'The statistics connection could not be completed.';
+
+    message.className = 'status-message error';
+    message.textContent = error.message;
+
+  } finally {
+    button.disabled = false;
+    button.textContent = '↻ Refresh';
+  }
+}
+
+function displayNumber(value) {
+  return value == null ? '—' : numberFormat.format(value);
+}
+
 const sections = {
-  users: ['👥', 'User Management', 'View and manage Campusora accounts, profiles and user activity.'],
-  moderation: ['🛡️', 'Reports & Moderation', 'Review reports and moderate inappropriate content.'],
-  deletions: ['🗑️', 'Account Deletion Management', 'Review account deletion requests and their deadlines.'],
-  creators: ['🌟', 'Creator Rewards & Earnings', 'Manage creator eligibility, gifts and earnings.'],
-  withdrawals: ['🏦', 'Withdrawal Management', 'Review payout requests and record completed transfers.'],
-  payments: ['💳', 'Payments & Platform Revenue', 'Monitor Paystack payments and Campusora revenue.'],
-  campaigns: ['📢', 'Sponsored Campaigns', 'Monitor paid campaigns, publication and campaign status.'],
-  promotions: ['🏪', 'Business Promotions', 'Manage business promotions displayed across Campusora.'],
-  communities: ['🏫', 'Community Management', 'Review and manage campus communities.'],
-  events: ['📅', 'Events Management', 'Review and manage campus events.'],
-  marketplace: ['🛍️', 'Marketplace Management', 'Manage marketplace listings and reports.'],
-  safety: ['🚨', 'Platform Safety & Support', 'Review safety issues and user complaints.'],
-  security: ['🔐', 'Admin Security & Activity', 'Manage administrator access and review admin activity.']
+  users: [
+    '👥',
+    'User Management',
+    'View users, search profiles, review account information and manage account restrictions.'
+  ],
+  moderation: [
+    '🛡️',
+    'Reports & Moderation',
+    'Review reports involving users, posts, comments and Spotlight videos.'
+  ],
+  deletions: [
+    '🗑️',
+    'Account Deletion Management',
+    'Review account deletion requests and their 30-day grace periods.'
+  ],
+  creators: [
+    '🌟',
+    'Creator Rewards & Earnings',
+    'Review creator eligibility, gifts, earnings and platform revenue shares.'
+  ],
+  withdrawals: [
+    '🏦',
+    'Withdrawal Management',
+    'Review withdrawal requests and record actual bank transfers.'
+  ],
+  payments: [
+    '💳',
+    'Payments & Platform Revenue',
+    'Monitor verified payments, Paystack references and platform revenue.'
+  ],
+  campaigns: [
+    '📢',
+    'Sponsored Campaigns',
+    'Monitor paid campaigns, expiry dates and campaign status.'
+  ],
+  promotions: [
+    '🏪',
+    'Business Promotions',
+    'Create and manage business promotions displayed across Campusora.'
+  ],
+  communities: [
+    '🏫',
+    'Community Management',
+    'Review and manage campus communities.'
+  ],
+  events: [
+    '📅',
+    'Events Management',
+    'Manage campus events and submitted event information.'
+  ],
+  marketplace: [
+    '🛍️',
+    'Marketplace Management',
+    'Review marketplace listings, sellers and reported items.'
+  ],
+  safety: [
+    '🚨',
+    'Platform Safety & Support',
+    'Review safety issues, complaints and user support requests.'
+  ],
+  security: [
+    '🔐',
+    'Admin Security & Activity',
+    'Review administrator activity and access permissions.'
+  ]
 };
 
 document.querySelectorAll('.nav-btn').forEach(button => {
+
   button.addEventListener('click', () => {
+
     document.querySelectorAll('.nav-btn').forEach(item => {
       item.classList.remove('active');
     });
@@ -718,9 +847,14 @@ document.querySelectorAll('.nav-btn').forEach(button => {
     } else {
       const section = sections[page];
 
-      document.getElementById('sectionIcon').textContent = section[0];
-      document.getElementById('sectionTitle').textContent = section[1];
-      document.getElementById('sectionDescription').textContent = section[2];
+      document.getElementById('sectionIcon').textContent =
+        section[0];
+
+      document.getElementById('sectionTitle').textContent =
+        section[1];
+
+      document.getElementById('sectionDescription').textContent =
+        section[2];
 
       overview.style.display = 'none';
       other.style.display = 'block';
@@ -728,18 +862,28 @@ document.querySelectorAll('.nav-btn').forEach(button => {
 
     document.getElementById('sidebar').classList.remove('open');
   });
+
 });
 
 document.getElementById('menuBtn').addEventListener('click', () => {
   document.getElementById('sidebar').classList.toggle('open');
 });
 
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  window.location.replace('./auth.html?mode=login');
-});
+document.getElementById('refreshBtn').addEventListener(
+  'click',
+  loadDashboardStats
+);
+
+document.getElementById('logoutBtn').addEventListener(
+  'click',
+  async () => {
+    await supabase.auth.signOut();
+    location.replace('./auth.html?mode=login');
+  }
+);
 
 startDashboard();
+
 </script>
 
 </body>
