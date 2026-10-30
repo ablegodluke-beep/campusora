@@ -1,1 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Account Settings | Campusora</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#080b18;
+  --card:#111629;
+  --card2:#171d33;
+  --border:rgba(255,255,255,.09);
+  --text:#f4f5ff;
+  --muted:#9ca6c5;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
+  --green:#61e6b2;
+  --red:#ff8294;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left,#211640,transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+}
+
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+.topbar{
+  height:65px;
+  padding:0 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(8,11,24,.94);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(15px);
+}
+
+.brand{
+  font-size:22px;
+  font-weight:800;
+  background:linear-gradient(90deg,#b18aff,#45dafa);
+  color:transparent;
+  background-clip:text;
+  -webkit-background-clip:text;
+}
+
+.back-link{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.back-link:hover{color:var(--cyan)}
+
+.container{
+  width:min(760px,94%);
+  margin:32px auto 60px;
+}
+
+.page-heading{margin-bottom:23px}
+
+.page-heading h1{
+  font-size:25px;
+  margin:0;
+}
+
+.page-heading p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-top:7px;
+}
+
+.card{
+  background:rgba(17,22,41,.96);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:23px;
+  margin-bottom:17px;
+}
+
+.card h2{
+  font-size:16px;
+  margin:0 0 6px;
+}
+
+.card-description{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  margin:0 0 21px;
+}
+
+.field{margin-bottom:17px}
+
+label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:8px;
+  color:#dce0f5;
+}
+
+input,textarea,select{
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:white;
+  outline:none;
+  font-size:13px;
+}
+
+input:focus,textarea:focus,select:focus{
+  border-color:var(--purple);
+  box-shadow:0 0 0 3px rgba(146,91,255,.12);
+}
+
+input::placeholder,textarea::placeholder{
+  color:#737d9c;
+}
+
+textarea{
+  min-height:95px;
+  resize:vertical;
+}
+
+select option{
+  background:var(--card);
+}
+
+.primary-btn{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:10px;
+  color:white;
+  font-size:13px;
+  font-weight:800;
+  background:linear-gradient(110deg,var(--purple),var(--blue));
+}
+
+.primary-btn:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.secondary-btn{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--card2);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+}
+
+.danger-btn{
+  width:100%;
+  padding:12px;
+  border:1px solid rgba(255,100,120,.3);
+  border-radius:10px;
+  background:rgba(255,100,120,.08);
+  color:#ff9baa;
+  font-size:13px;
+  font-weight:700;
+}
+
+.message{
+  display:none;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:17px;
+  font-size:12px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+
+.message.success{
+  display:block;
+  color:var(--green);
+  background:rgba(97,230,178,.08);
+  border:1px solid rgba(97,230,178,.25);
+}
+
+.message.error{
+  display:block;
+  color:var(--red);
+  background:rgba(255,100,120,.08);
+  border:1px solid rgba(255,100,120,.25);
+}
+
+.account-info{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:11px;
+  margin-bottom:18px;
+}
+
+.account-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  font-size:18px;
+}
+
+.account-info strong{
+  display:block;
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+
+.account-info span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+  overflow-wrap:anywhere;
+}
+
+.small-note{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+  margin-top:12px;
+}
+
+.button-space{margin-top:12px}
+
+.hidden{display:none!important}
+
+@media(max-width:500px){
+  .container{margin-top:23px}
+  .card{padding:18px}
+  .page-heading h1{font-size:22px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="./index.html" class="brand">Campusora</a>
+  <a href="./index.html" class="back-link">← Back to feed</a>
+</header>
+
+<main class="container">
+
+  <div class="page-heading">
+    <h1>Account Settings ⚙️</h1>
+    <p>Manage your Campusora profile and account information.</p>
+  </div>
+
+  <div id="pageMessage" class="message" role="status" aria-live="polite"></div>
+
+  <section class="card">
+
+    <h2>Your account</h2>
+    <p class="card-description">
+      Your currently signed-in Campusora account.
+    </p>
+
+    <div class="account-info">
+      <div class="account-icon">👤</div>
+      <div>
+        <strong id="accountName">Loading account...</strong>
+        <span id="accountEmail">Please wait</span>
+      </div>
+    </div>
+
+    <a id="profileLink" href="./profile.html" class="secondary-btn"
+       style="display:block;text-align:center;">
+      View my public profile
+    </a>
+
+  </section>
+
+  <section class="card">
+
+    <h2>Profile information</h2>
+    <p class="card-description">
+      Update the information people see when they visit your profile.
+    </p>
+
+    <form id="profileForm">
+
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input id="fullName" type="text" maxlength="80"
+               placeholder="Your full name" required>
+      </div>
+
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" minlength="3" maxlength="24"
+               pattern="[A-Za-z0-9_]+" placeholder="your_username" required>
+        <p class="small-note">Use 3–24 letters, numbers or underscores.</p>
+      </div>
+
+      <div class="field">
+        <label for="school">School or institution</label>
+        <input id="school" type="text" maxlength="120"
+               placeholder="Your school" required>
+      </div>
+
+      <div class="field">
+        <label for="role">Membership type</label>
+        <select id="role" required>
+          <option value="student">Student</option>
+          <option value="alumni">Alumni</option>
+          <option value="general">General Member</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="bio">About you</label>
+        <textarea id="bio" maxlength="300"
+                  placeholder="Tell people something about yourself..."></textarea>
+      </div>
+
+      <button type="submit" class="primary-btn" id="saveProfileBtn">
+        Save profile changes
+      </button>
+
+    </form>
+
+  </section>
+
+  <section class="card">
+
+    <h2>Change password 🔐</h2>
+    <p class="card-description">
+      Choose a new password for your Campusora account.
+    </p>
+
+    <form id="passwordForm">
+
+      <div class="field">
+        <label for="newPassword">New password</label>
+        <input id="newPassword" type="password"
+               minlength="8" autocomplete="new-password"
+               placeholder="At least 8 characters" required>
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm new password</label>
+        <input id="confirmPassword" type="password"
+               minlength="8" autocomplete="new-password"
+               placeholder="Enter the password again" required>
+      </div>
+
+      <button type="submit" class="primary-btn" id="changePasswordBtn">
+        Update password
+      </button>
+
+    </form>
+
+  </section>
+
+  <section class="card">
+
+    <h2>Sign out</h2>
+    <p class="card-description">
+      Sign out of your Campusora account on this device.
+    </p>
+
+    <button type="button" class="danger-btn" id="logoutBtn">
+      Log out of Campusora
+    </button>
+
+  </section>
+
+</main>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const pageMessage = document.getElementById('pageMessage');
+const profileForm = document.getElementById('profileForm');
+const passwordForm = document.getElementById('passwordForm');
+
+const saveProfileBtn = document.getElementById('saveProfileBtn');
+const changePasswordBtn = document.getElementById('changePasswordBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+
+let currentUser = null;
+
+function showMessage(message, type = 'success') {
+  pageMessage.textContent = message;
+  pageMessage.className = 'message ' + type;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function clearMessage() {
+  pageMessage.textContent = '';
+  pageMessage.className = 'message';
+}
+
+async function initialise() {
+  const {data,error} = await supabase.auth.getSession();
+
+  if (error || !data.session) {
+    window.location.replace('./auth.html?mode=login');
+    return;
+  }
+
+  currentUser = data.session.user;
+
+  document.getElementById('accountEmail').textContent =
+    currentUser.email || 'Email unavailable';
+
+  const {data:profile,error:profileError} = await supabase
+    .from('profiles')
+    .select('id,full_name,username,school,role,bio')
+    .eq('id',currentUser.id)
+    .maybeSingle();
+
+  if (profileError) {
+    showMessage('We could not load your profile information. Please refresh the page.','error');
+    return;
+  }
+
+  if (!profile) {
+    showMessage('Your profile has not been created yet. Please complete profile setup first.','error');
+    return;
+  }
+
+  document.getElementById('accountName').textContent =
+    profile.full_name || 'Campusora member';
+
+  document.getElementById('fullName').value = profile.full_name || '';
+  document.getElementById('username').value = profile.username || '';
+  document.getElementById('school').value = profile.school || '';
+  document.getElementById('role').value = profile.role || 'student';
+  document.getElementById('bio').value = profile.bio || '';
+
+  document.getElementById('profileLink').href =
+    './profile.html?id=' + encodeURIComponent(currentUser.id);
+}
+
+profileForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  clearMessage();
+
+  if (!currentUser) return;
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const username = document.getElementById('username').value.trim().toLowerCase();
+  const school = document.getElementById('school').value.trim();
+  const role = document.getElementById('role').value;
+  const bio = document.getElementById('bio').value.trim();
+
+  if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+    showMessage('Your username must be 3–24 characters using letters, numbers or underscores.','error');
+    return;
+  }
+
+  if (!['student','alumni','general'].includes(role)) {
+    showMessage('Please select a valid membership type.','error');
+    return;
+  }
+
+  saveProfileBtn.disabled = true;
+  saveProfileBtn.textContent = 'Saving changes...';
+
+  try {
+    // Check whether another account already uses this username.
+    const {data:existing,error:checkError} = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('username',username)
+      .neq('id',currentUser.id)
+      .maybeSingle();
+
+    if (checkError) throw checkError;
+
+    if (existing) {
+      throw new Error('That username is already taken. Please choose another one.');
+    }
+
+    const {error:updateError} = await supabase
+      .from('profiles')
+      .update({
+        full_name:fullName,
+        username,
+        school,
+        role,
+        bio
+      })
+      .eq('id',currentUser.id);
+
+    if (updateError) throw updateError;
+
+    document.getElementById('accountName').textContent = fullName;
+
+    showMessage('Your profile information has been updated successfully.');
+
+  } catch(error) {
+    console.error('Profile update error:',error);
+
+    let message = error.message || 'Could not update your profile. Please try again.';
+
+    if (error.code === '23505') {
+      message = 'That username is already taken. Please choose another one.';
+    }
+
+    showMessage(message,'error');
+
+  } finally {
+    saveProfileBtn.disabled = false;
+    saveProfileBtn.textContent = 'Save profile changes';
+  }
+});
+
+passwordForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  clearMessage();
+
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+
+  if (newPassword.length < 8) {
+    showMessage('Your password must contain at least 8 characters.','error');
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    showMessage('The two passwords do not match.','error');
+    return;
+  }
+
+  changePasswordBtn.disabled = true;
+  changePasswordBtn.textContent = 'Updating password...';
+
+  try {
+    const {error} = await supabase.auth.updateUser({
+      password:newPassword
+    });
+
+    if (error) throw error;
+
+    passwordForm.reset();
+    showMessage('Your password has been changed successfully.');
+
+  } catch(error) {
+    console.error('Password update error:',error);
+    showMessage(error.message || 'Could not update your password. Please try again.','error');
+
+  } finally {
+    changePasswordBtn.disabled = false;
+    changePasswordBtn.textContent = 'Update password';
+  }
+});
+
+logoutBtn.addEventListener('click', async () => {
+  const confirmed = window.confirm('Are you sure you want to log out of Campusora?');
+
+  if (!confirmed) return;
+
+  logoutBtn.disabled = true;
+  logoutBtn.textContent = 'Logging out...';
+
+  const {error} = await supabase.auth.signOut();
+
+  if (error) {
+    showMessage(error.message || 'Could not log out. Please try again.','error');
+    logoutBtn.disabled = false;
+    logoutBtn.textContent = 'Log out of Campusora';
+    return;
+  }
+
+  window.location.replace('./auth.html?mode=login');
+});
+
+initialise();
+</script>
+
+</body>
+  </html>
