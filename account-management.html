@@ -1,1 +1,476 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Account Management | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root{
+  --bg:#080b18;
+  --card:#111629;
+  --card2:#171d33;
+  --border:rgba(255,255,255,.09);
+  --text:#f4f5ff;
+  --muted:#9ca6c5;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
+  --green:#61e6b2;
+  --red:#ff8294;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(circle at top left,#211640,transparent 35%),var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+}
+button{font:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.topbar{
+  height:65px;
+  padding:0 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(8,11,24,.94);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(15px);
+}
+.brand{
+  font-size:21px;
+  font-weight:800;
+  background:linear-gradient(90deg,#b18aff,#45dafa);
+  color:transparent;
+  background-clip:text;
+  -webkit-background-clip:text;
+}
+.back-link{font-size:13px;color:var(--muted)}
+.back-link:hover{color:var(--cyan)}
+.container{width:min(720px,94%);margin:32px auto 60px}
+.heading{margin-bottom:24px}
+.heading h1{font-size:25px;margin:0}
+.heading p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  margin-top:8px;
+}
+.card{
+  background:rgba(17,22,41,.96);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:22px;
+  margin-bottom:17px;
+}
+.card h2{font-size:16px;margin:0 0 8px}
+.description{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin:0 0 18px;
+}
+.status-box{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px;
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+.status-icon{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:rgba(97,230,178,.1);
+  font-size:19px;
+}
+.status-text strong{display:block;font-size:13px}
+.status-text span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+.status-active{color:var(--green)}
+.status-deactivated{color:#ffc46b}
+.status-pending{color:var(--red)}
+.action-btn{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:10px;
+  color:white;
+  font-size:13px;
+  font-weight:800;
+}
+.purple-btn{background:linear-gradient(110deg,var(--purple),var(--blue))}
+.green-btn{background:linear-gradient(110deg,#159c75,#35c99a)}
+.red-btn{
+  background:rgba(255,100,120,.09);
+  border:1px solid rgba(255,100,120,.35);
+  color:#ff9baa;
+}
+.secondary-btn{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--card2);
+  color:white;
+  font-size:12px;
+  font-weight:700;
+}
+.action-btn:disabled,.secondary-btn:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+.notice{
+  padding:12px;
+  border-radius:10px;
+  font-size:11px;
+  line-height:1.7;
+  margin-top:14px;
+  background:rgba(82,109,255,.08);
+  border:1px solid rgba(82,109,255,.2);
+  color:#c5ceff;
+}
+.danger-notice{
+  background:rgba(255,100,120,.07);
+  border-color:rgba(255,100,120,.2);
+  color:#ffb3bd;
+}
+.message{
+  display:none;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:17px;
+  font-size:12px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+.message.success{
+  display:block;
+  color:var(--green);
+  background:rgba(97,230,178,.08);
+  border:1px solid rgba(97,230,178,.25);
+}
+.message.error{
+  display:block;
+  color:var(--red);
+  background:rgba(255,100,120,.08);
+  border:1px solid rgba(255,100,120,.25);
+}
+.countdown{
+  color:var(--red);
+  font-size:13px;
+  font-weight:800;
+  margin-top:12px;
+}
+.hidden{display:none!important}
+@media(max-width:500px){
+  .container{margin-top:23px}
+  .card{padding:18px}
+  .heading h1{font-size:22px}
+}
+</style></head><body><header class="topbar">
+  <a href="./index.html" class="brand">Campusora</a>
+  <a href="./settings.html" class="back-link">← Settings</a>
+</header><main class="container">  <div class="heading">
+    <h1>Account Management ⚙️</h1>
+    <p>Manage your Campusora account activity, temporarily deactivate your account or request permanent deletion.</p>
+  </div>  <div id="message" class="message" role="status" aria-live="polite"></div>  <section class="card">
+    <h2>Account status</h2>
+    <p class="description">Your current account status on Campusora.</p><div class="status-box">
+  <div class="status-icon" id="statusIcon">⏳</div>
+  <div class="status-text">
+    <strong id="statusTitle">Checking account...</strong>
+    <span id="statusDescription">Please wait while we check your account.</span>
+  </div>
+</div>
 
+<div id="countdown" class="countdown hidden"></div>
+
+<div id="cancelArea" class="hidden" style="margin-top:17px">
+  <button class="action-btn green-btn" id="cancelBtn">
+    Cancel Deletion Request
+  </button>
+  <p class="notice">
+    Cancelling your request before the deadline restores your account to active status.
+  </p>
+</div>
+
+<div id="reactivateArea" class="hidden" style="margin-top:17px">
+  <button class="action-btn green-btn" id="reactivateBtn">
+    Reactivate My Account
+  </button>
+  <p class="notice">
+    Reactivation changes your account status back to active. Full access restoration will be enforced during platform integration.
+  </p>
+</div>
+
+  </section>  <section class="card" id="deactivateCard">
+    <h2>Temporarily deactivate account</h2>
+    <p class="description">
+      Take a break from Campusora. Your account information will be preserved, and you can reactivate it later.
+    </p><button class="action-btn purple-btn" id="deactivateBtn">
+  Deactivate My Account
+</button>
+
+<p class="notice">
+  Deactivation records your account status. Hiding your profile and restricting interactions across Campusora will be completed during platform integration.
+</p>
+
+  </section>  <section class="card" id="deleteCard">
+    <h2>Delete account permanently</h2>
+    <p class="description">
+      If you no longer want to use Campusora, you can request permanent deletion of your account.
+    </p><button class="action-btn red-btn" id="deleteBtn">
+  Request Account Deletion
+</button>
+
+<p class="notice danger-notice">
+  Your deletion request starts a 30-day grace period. You can cancel during this period. After the deadline, your account will become eligible for permanent deletion.
+</p>
+
+  </section></main><script type="module">
+import { supabase } from './supabase.js';
+
+const $ = id => document.getElementById(id);
+
+let currentStatus = null;
+let deleteAfter = null;
+
+function showMessage(message,type='success'){
+  $('message').textContent = message;
+  $('message').className = 'message ' + type;
+  $('message').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function hideMessage(){
+  $('message').className = 'message';
+  $('message').textContent = '';
+}
+
+function setBusy(button,busy,text){
+  button.disabled = busy;
+  if(busy){
+    button.dataset.originalText = button.textContent;
+    button.textContent = text || 'Please wait...';
+  }else{
+    button.textContent = button.dataset.originalText || button.textContent;
+  }
+}
+
+async function getSession(){
+  const {data,error} = await supabase.auth.getSession();
+
+  if(error) throw error;
+
+  if(!data.session){
+    window.location.href = './auth.html';
+    return null;
+  }
+
+  return data.session;
+}
+
+function updateCountdown(){
+  if(!deleteAfter) return;
+
+  const remaining = new Date(deleteAfter).getTime() - Date.now();
+
+  if(remaining <= 0){
+    $('countdown').textContent =
+      'Your deletion deadline has passed. Your account is awaiting the deletion process.';
+    return;
+  }
+
+  const days = Math.floor(remaining / 86400000);
+  const hours = Math.floor((remaining % 86400000) / 3600000);
+  const minutes = Math.floor((remaining % 3600000) / 60000);
+
+  $('countdown').textContent =
+    `${days} days, ${hours} hours and ${minutes} minutes remaining`;
+}
+
+function renderStatus(row){
+  currentStatus = row.status;
+  deleteAfter = row.delete_after;
+
+  $('statusIcon').textContent =
+    row.status === 'active' ? '✓' :
+    row.status === 'deactivated' ? '⏸' : '⚠';
+
+  $('statusTitle').textContent =
+    row.status === 'active' ? 'Account Active' :
+    row.status === 'deactivated' ? 'Account Deactivated' :
+    'Deletion Requested';
+
+  $('statusTitle').className =
+    row.status === 'active' ? 'status-active' :
+    row.status === 'deactivated' ? 'status-deactivated' :
+    'status-pending';
+
+  $('statusDescription').textContent =
+    row.status === 'active'
+      ? 'Your account is currently active.'
+      : row.status === 'deactivated'
+      ? 'Your account has been temporarily deactivated.'
+      : 'Your account is scheduled for deletion after the grace period.';
+
+  $('deactivateCard').classList.toggle('hidden',row.status !== 'active');
+  $('deleteCard').classList.toggle('hidden',row.status === 'deletion_pending');
+
+  $('reactivateArea').classList.toggle('hidden',row.status !== 'deactivated');
+  $('cancelArea').classList.toggle('hidden',row.status !== 'deletion_pending');
+
+  $('countdown').classList.toggle('hidden',row.status !== 'deletion_pending');
+
+  if(row.status === 'deletion_pending'){
+    updateCountdown();
+  }
+}
+
+async function loadStatus(){
+  hideMessage();
+
+  try{
+    const session = await getSession();
+    if(!session) return;
+
+    const {data,error} = await supabase.rpc('get_my_account_status');
+
+    if(error) throw error;
+
+    if(!data || !data.length){
+      throw new Error('Could not retrieve your account status.');
+    }
+
+    renderStatus(data[0]);
+
+  }catch(error){
+    showMessage(error.message || 'Could not load account status.','error');
+    $('statusTitle').textContent = 'Unable to load status';
+    $('statusDescription').textContent = 'Please refresh the page and try again.';
+  }
+}
+
+$('deactivateBtn').addEventListener('click',async()=>{
+  const confirmed = confirm(
+    'Are you sure you want to temporarily deactivate your Campusora account?'
+  );
+
+  if(!confirmed) return;
+
+  const button = $('deactivateBtn');
+  setBusy(button,true,'Deactivating...');
+
+  try{
+    const {error} = await supabase.rpc('deactivate_my_account');
+    if(error) throw error;
+
+    showMessage('Your account has been marked as deactivated.');
+    await loadStatus();
+
+  }catch(error){
+    showMessage(error.message || 'Could not deactivate your account.','error');
+  }finally{
+    setBusy(button,false);
+  }
+});
+
+$('reactivateBtn').addEventListener('click',async()=>{
+  const confirmed = confirm(
+    'Reactivate your Campusora account?'
+  );
+
+  if(!confirmed) return;
+
+  const button = $('reactivateBtn');
+  setBusy(button,true,'Reactivating...');
+
+  try{
+    const {error} = await supabase.rpc('reactivate_my_account');
+    if(error) throw error;
+
+    showMessage('Your account has been reactivated.');
+    await loadStatus();
+
+  }catch(error){
+    showMessage(error.message || 'Could not reactivate your account.','error');
+  }finally{
+    setBusy(button,false);
+  }
+});
+
+$('deleteBtn').addEventListener('click',async()=>{
+  const confirmed = confirm(
+    'IMPORTANT: You are requesting permanent deletion of your Campusora account. You will have 30 days to cancel this request. Continue?'
+  );
+
+  if(!confirmed) return;
+
+  const button = $('deleteBtn');
+  setBusy(button,true,'Submitting request...');
+
+  try{
+    const {data,error} = await supabase.rpc('request_my_account_deletion');
+
+    if(error) throw error;
+
+    showMessage(
+      'Your deletion request has been submitted. You can cancel it within the next 30 days.'
+    );
+
+    await loadStatus();
+
+  }catch(error){
+    showMessage(error.message || 'Could not submit your deletion request.','error');
+  }finally{
+    setBusy(button,false);
+  }
+});
+
+$('cancelBtn').addEventListener('click',async()=>{
+  const confirmed = confirm(
+    'Cancel your account deletion request and restore your account to active status?'
+  );
+
+  if(!confirmed) return;
+
+  const button = $('cancelBtn');
+  setBusy(button,true,'Cancelling...');
+
+  try{
+    const {error} = await supabase.rpc('cancel_my_account_deletion');
+
+    if(error) throw error;
+
+    showMessage('Your deletion request has been cancelled.');
+    await loadStatus();
+
+  }catch(error){
+    showMessage(error.message || 'Could not cancel your deletion request.','error');
+  }finally{
+    setBusy(button,false);
+  }
+});
+
+await loadStatus();
+
+setInterval(()=>{
+  if(currentStatus === 'deletion_pending'){
+    updateCountdown();
+  }
+},60000);
+
+</script></body>
+  </html>
