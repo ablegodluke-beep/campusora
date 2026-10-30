@@ -362,12 +362,56 @@ a { color:inherit;text-decoration:none; }
   white-space:nowrap;
 }
 
+/* CAPTION */
+
 .caption {
   font-size:12px;
-  line-height:1.45;
+  line-height:1.5;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
   text-shadow:0 2px 5px #000;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+}
+
+.caption-toggle {
+  display:none;
+  margin-top:5px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--cyan);
+  font-size:11px;
+  font-weight:800;
+  text-shadow:0 2px 5px #000;
+}
+
+.video-info.expanded {
+  max-height:65dvh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  pointer-events:auto;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;
+  background:rgba(8,11,24,.92);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.video-info.expanded .caption {
+  display:block;
+  overflow:visible;
+  -webkit-line-clamp:unset;
+}
+
+.video-info.expanded .caption-toggle {
+  position:sticky;
+  bottom:0;
+  padding:7px 0 2px;
+  background:rgba(8,11,24,.96);
 }
 
 .post-time {
@@ -998,7 +1042,7 @@ function shortNumber(value=0) {
   if(n>=1000000)return (n/1000000).toFixed(1)+'M';
   if(n>=1000)return (n/1000).toFixed(1)+'K';
   return String(n);
-}
+  }
 
 function timeAgo(date) {
   const difference=Date.now()-new Date(date).getTime();
@@ -1233,15 +1277,50 @@ function renderVideos() {
               : ''}
           </div>
 
-          ${video.caption?`<div class="caption">${escapeHTML(video.caption)}</div>`:''}
+          ${video.caption?`
+            <div class="caption">${escapeHTML(video.caption)}</div>
+            <button class="caption-toggle" type="button" data-caption-toggle>See more</button>
+          `:''}
+
           <div class="post-time">♫ Original video · ${timeAgo(video.created_at)}</div>
         </div>
       </article>`;
   }).join('');
 
   setupVideoObserver();
+  setupCaptionButtons();
   loadCommentCounts();
 }
+
+/* CAPTION EXPANSION */
+
+function setupCaptionButtons() {
+  feed.querySelectorAll('.video-card').forEach(card=>{
+    const caption=card.querySelector('.caption');
+    const button=card.querySelector('[data-caption-toggle]');
+
+    if(!caption||!button)return;
+
+    requestAnimationFrame(()=>{
+      if(caption.scrollHeight>caption.clientHeight+2) {
+        button.style.display='block';
+      } else {
+        button.style.display='none';
+      }
+    });
+  });
+}
+
+feed.addEventListener('click',event=>{
+  const button=event.target.closest('[data-caption-toggle]');
+  if(!button)return;
+
+  const info=button.closest('.video-info');
+  if(!info)return;
+
+  const expanded=info.classList.toggle('expanded');
+  button.textContent=expanded?'See less':'See more';
+});
 
 /* COMMENT COUNTS */
 
@@ -1982,4 +2061,4 @@ init();
 </script>
 
 </body>
-  </html>
+</html>
