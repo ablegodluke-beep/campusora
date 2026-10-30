@@ -2,387 +2,338 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b18">
-<title>Campusora Admin Dashboard</title>
-
+<title>Campusora Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg:#080b18;
-  --panel:#101528;
-  --panel2:#151b32;
-  --border:#252c46;
-  --text:#f4f6ff;
-  --muted:#929bb8;
-  --purple:#8b5cf6;
-  --blue:#4f8cff;
-  --cyan:#36d9ff;
-  --green:#42d6a4;
-  --red:#ff6685;
+:root{
+ --bg:#080b18;
+ --panel:#101528;
+ --panel2:#151b32;
+ --border:#252c46;
+ --text:#f4f6ff;
+ --muted:#929bb8;
+ --purple:#8b5cf6;
+ --blue:#4f8cff;
+ --cyan:#36d9ff;
+ --green:#42d6a4;
+ --red:#ff6685
 }
-
 *{box-sizing:border-box}
-
 body{
-  margin:0;
-  font-family:'DM Sans',sans-serif;
-  background:var(--bg);
-  color:var(--text);
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font-family:'DM Sans',sans-serif
 }
-
-button{font:inherit;cursor:pointer}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
 a{color:inherit;text-decoration:none}
 
 .topbar{
-  height:65px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 20px;
-  background:var(--panel);
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:50;
+ height:62px;
+ position:sticky;
+ top:0;
+ z-index:50;
+ background:var(--panel);
+ border-bottom:1px solid var(--border);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 18px
 }
-
 .brand{
-  font-size:21px;
-  font-weight:800;
-  background:linear-gradient(90deg,#a78bfa,#36d9ff);
-  background-clip:text;
-  -webkit-background-clip:text;
-  color:transparent;
+ font-weight:800;
+ font-size:20px;
+ background:linear-gradient(90deg,#a78bfa,#36d9ff);
+ color:transparent;
+ background-clip:text
 }
-
-.top-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.topright{display:flex;align-items:center;gap:9px}
+.tag{
+ font-size:10px;
+ color:var(--cyan);
+ border:1px solid #24516a;
+ background:#102335;
+ border-radius:20px;
+ padding:7px 10px;
+ font-weight:800
 }
-
-.admin-label{
-  color:var(--cyan);
-  font-size:10px;
-  font-weight:800;
-  background:rgba(54,217,255,.08);
-  border:1px solid rgba(54,217,255,.2);
-  padding:7px 10px;
-  border-radius:20px;
+.btn{
+ border:1px solid var(--border);
+ background:var(--panel2);
+ color:#fff;
+ border-radius:9px;
+ padding:9px 12px;
+ font-size:11px;
+ font-weight:700
 }
-
-.logout,.refresh,.mobile-menu{
-  border:1px solid var(--border);
-  background:var(--panel2);
-  color:white;
-  border-radius:9px;
-  padding:9px 12px;
-  font-size:11px;
-  font-weight:700;
+.btn.primary{
+ background:linear-gradient(100deg,#7046d8,#347fe2);
+ border:0
 }
+.btn.danger{color:#ff9baa;border-color:#693344}
+.btn:disabled{opacity:.55;cursor:wait}
 
 .layout{
-  display:grid;
-  grid-template-columns:245px minmax(0,1fr);
-  min-height:calc(100vh - 65px);
+ display:grid;
+ grid-template-columns:240px minmax(0,1fr);
+ min-height:calc(100vh - 62px)
 }
-
 .sidebar{
-  background:#0c1020;
-  border-right:1px solid var(--border);
-  padding:18px 12px;
-  height:calc(100vh - 65px);
-  overflow-y:auto;
-  position:sticky;
-  top:65px;
+ position:sticky;
+ top:62px;
+ height:calc(100vh - 62px);
+ overflow:auto;
+ background:#0c1020;
+ border-right:1px solid var(--border);
+ padding:15px 11px
+}
+.sidehead{
+ padding:14px 10px 7px;
+ color:var(--muted);
+ font-size:9px;
+ font-weight:800;
+ letter-spacing:1px;
+ text-transform:uppercase
+}
+.nav{
+ width:100%;
+ border:0;
+ background:transparent;
+ color:#aeb8d3;
+ text-align:left;
+ padding:11px;
+ border-radius:9px;
+ margin:2px 0;
+ font-size:11px;
+ font-weight:650
+}
+.nav:hover,.nav.active{
+ color:#fff;
+ background:linear-gradient(100deg,rgba(139,92,246,.24),rgba(79,140,255,.13))
 }
 
-.side-heading{
-  color:var(--muted);
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  padding:13px 11px 8px;
+main{
+ min-width:0;
+ padding:25px;
+ max-width:1500px;
+ width:100%
 }
-
-.nav-btn{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:12px;
-  margin:3px 0;
-  color:#aeb8d3;
-  background:transparent;
-  border:0;
-  border-radius:10px;
-  text-align:left;
-  font-size:12px;
-  font-weight:600;
+.title{font-size:23px;font-weight:800;margin:0 0 5px}
+.sub{
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.7;
+ margin:0 0 20px
 }
-
-.nav-btn:hover,.nav-btn.active{
-  color:white;
-  background:linear-gradient(100deg,rgba(139,92,246,.23),rgba(79,140,255,.12));
+.welcome,.card{
+ background:var(--panel);
+ border:1px solid var(--border);
+ border-radius:14px;
+ padding:17px;
+ margin-bottom:15px
 }
-
-.nav-icon{
-  width:20px;
-  text-align:center;
-  font-size:16px;
-}
-
-.main{
-  min-width:0;
-  width:100%;
-  max-width:1450px;
-  padding:27px;
-}
-
-.page-title{
-  font-size:24px;
-  font-weight:800;
-  margin:0 0 6px;
-}
-
-.page-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-  margin-bottom:23px;
-}
-
 .welcome{
-  padding:22px;
-  border-radius:16px;
-  border:1px solid #38315e;
-  background:linear-gradient(115deg,rgba(139,92,246,.24),rgba(54,217,255,.07));
-  margin-bottom:22px;
+ background:linear-gradient(115deg,rgba(139,92,246,.22),rgba(54,217,255,.06));
+ border-color:#38315e
+}
+.welcome h2{font-size:16px;margin:0 0 6px}
+.welcome p,.muted{
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.7;
+ margin:0
 }
 
-.welcome h2{
-  font-size:18px;
-  margin:0 0 8px;
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:11px;
+ margin:14px 0
+}
+.stat{
+ background:var(--panel);
+ border:1px solid var(--border);
+ border-radius:12px;
+ padding:14px;
+ min-width:0
+}
+.stat small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-bottom:8px
+}
+.stat strong{
+ font-size:21px;
+ overflow-wrap:anywhere
+}
+.stat em{
+ display:block;
+ color:var(--muted);
+ font-style:normal;
+ font-size:9px;
+ margin-top:5px
 }
 
-.welcome p{
-  font-size:12px;
-  line-height:1.8;
-  color:#c3cbe2;
-  margin:0;
+.toolbar{
+ display:flex;
+ gap:8px;
+ align-items:center;
+ flex-wrap:wrap;
+ margin:14px 0
 }
-
-.section-label{
-  font-size:13px;
-  font-weight:800;
-  margin:23px 0 13px;
+.search{
+ flex:1;
+ min-width:170px;
+ background:#0b1020;
+ border:1px solid var(--border);
+ color:#fff;
+ border-radius:9px;
+ padding:10px 12px;
+ font-size:11px;
+ outline:none
 }
-
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:13px;
-}
-
-.stat-card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:16px;
-  min-width:0;
-}
-
-.stat-icon{
-  font-size:19px;
-  margin-bottom:11px;
-}
-
-.stat-title{
-  color:var(--muted);
-  font-size:11px;
-  margin-bottom:8px;
-}
-
-.stat-value{
-  font-size:22px;
-  font-weight:800;
-  overflow-wrap:anywhere;
-}
-
-.stat-note{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:7px;
-  line-height:1.6;
-}
-
-.quick-card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:18px;
-  margin-top:20px;
-}
-
-.quick-card h3{
-  font-size:13px;
-  margin:0 0 8px;
-}
-
-.quick-card p{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.8;
-  margin:0;
+.select{
+ background:#0b1020;
+ border:1px solid var(--border);
+ color:#fff;
+ border-radius:9px;
+ padding:9px;
+ font-size:11px
 }
 
 .notice{
-  padding:12px;
-  background:rgba(54,217,255,.07);
-  border:1px solid rgba(54,217,255,.2);
-  color:#a9eaff;
-  border-radius:10px;
-  font-size:11px;
-  line-height:1.7;
-  margin-top:15px;
+ border:1px solid rgba(54,217,255,.2);
+ background:rgba(54,217,255,.06);
+ color:#a9eaff;
+ padding:11px;
+ border-radius:9px;
+ font-size:10px;
+ line-height:1.7;
+ margin:12px 0
+}
+.message{
+ display:none;
+ padding:10px 12px;
+ border-radius:9px;
+ margin:12px 0;
+ font-size:11px;
+ line-height:1.6
+}
+.message.show{display:block}
+.message.ok{
+ background:#10271f;
+ color:#8df0c8;
+ border:1px solid #235b49
+}
+.message.err{
+ background:#2a1420;
+ color:#ff9baa;
+ border:1px solid #693344
 }
 
-.status-message{
-  display:none;
-  padding:11px 13px;
-  border-radius:9px;
-  margin:15px 0;
-  font-size:11px;
-  line-height:1.6;
+.tablewrap{
+ overflow:auto;
+ border:1px solid var(--border);
+ border-radius:12px;
+ background:var(--panel)
 }
-
-.status-message.error{
-  display:block;
-  color:#ff9baa;
-  background:rgba(255,102,133,.08);
-  border:1px solid rgba(255,102,133,.2);
+table{
+ border-collapse:collapse;
+ width:100%;
+ min-width:760px;
+ font-size:10px
 }
-
-.status-message.success{
-  display:block;
-  color:#8df0c8;
-  background:rgba(66,214,164,.08);
-  border:1px solid rgba(66,214,164,.2);
+th,td{
+ padding:11px 10px;
+ border-bottom:1px solid var(--border);
+ text-align:left;
+ vertical-align:top;
+ max-width:260px;
+ overflow-wrap:anywhere
 }
-
-.placeholder{
-  display:none;
-  padding:30px 20px;
-  text-align:center;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
+th{
+ position:sticky;
+ top:0;
+ background:#151b32;
+ color:#b9c4e0;
+ font-size:9px;
+ text-transform:uppercase;
+ letter-spacing:.5px
 }
+td{color:#e2e7f6}
+tr:last-child td{border-bottom:0}
+.cellmuted{color:var(--muted)}
+.rowactions{display:flex;gap:5px;flex-wrap:wrap}
+.tiny{padding:6px 8px;font-size:9px}
 
-.placeholder .big-icon{
-  font-size:35px;
-  margin-bottom:12px;
+.empty{
+ padding:30px;
+ text-align:center;
+ color:var(--muted);
+ font-size:11px
 }
-
-.placeholder h2{
-  font-size:17px;
+.sectionhead{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-start;
+ gap:12px;
+ flex-wrap:wrap
 }
-
-.placeholder p{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.8;
-}
-
+.sectionhead h1{margin:0;font-size:22px}
 .loading{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:25px;
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ color:var(--muted);
+ font-size:12px
 }
-
-.loading-box{
-  max-width:350px;
-  width:100%;
+.spin{
+ width:30px;
+ height:30px;
+ border:3px solid var(--border);
+ border-top-color:var(--purple);
+ border-radius:50%;
+ animation:rot .8s linear infinite;
+ margin:0 auto 13px
 }
+@keyframes rot{to{transform:rotate(360deg)}}
+.hidden{display:none!important}
 
-.loader{
-  width:35px;
-  height:35px;
-  border:3px solid var(--border);
-  border-top-color:var(--purple);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-  margin:0 auto 17px;
+@media(max-width:950px){
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-.error-message{
-  color:#ff9baa;
-  font-size:12px;
-  line-height:1.8;
-}
-
-.mobile-menu{display:none}
-
-@media(max-width:1000px){
-  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
 @media(max-width:700px){
-  .topbar{
-    height:59px;
-    padding:0 12px;
-  }
-
-  .brand{font-size:19px}
-
-  .admin-label{
-    font-size:9px;
-    padding:6px 8px;
-  }
-
-  .layout{display:block}
-
-  .sidebar{
-    display:none;
-    position:fixed;
-    top:59px;
-    left:0;
-    width:265px;
-    height:calc(100vh - 59px);
-    z-index:40;
-    box-shadow:15px 0 35px rgba(0,0,0,.35);
-  }
-
-  .sidebar.open{display:block}
-
-  .main{padding:20px 13px}
-
-  .page-title{font-size:21px}
-
-  .mobile-menu{display:block}
-
-  .stat-card{padding:13px}
-
-  .stat-value{font-size:19px}
-
-  .stats-grid{gap:9px}
-
-  .top-right{gap:6px}
+ .topbar{height:57px;padding:0 11px}
+ .layout{display:block}
+ .sidebar{
+  display:none;
+  position:fixed;
+  z-index:45;
+  top:57px;
+  left:0;
+  width:260px;
+  height:calc(100vh - 57px);
+  box-shadow:15px 0 35px #0008
+ }
+ .sidebar.open{display:block}
+ main{padding:19px 12px}
+ .title,.sectionhead h1{font-size:20px}
+ .menu{display:inline-block}
+ .tag{font-size:9px;padding:6px 7px}
+ .stats{gap:8px}
+ .stat{padding:11px}
+ .stat strong{font-size:18px}
 }
-
-@media(max-width:350px){
-  .admin-label{display:none}
+@media(min-width:701px){
+ .menu{display:none}
 }
 </style>
 </head>
@@ -390,205 +341,182 @@ a{color:inherit;text-decoration:none}
 <body>
 
 <div id="loading" class="loading">
-  <div class="loading-box">
-    <div class="loader"></div>
-    <p>Verifying administrator access...</p>
-  </div>
+ <div>
+  <div class="spin"></div>
+  Verifying administrator access...
+ </div>
 </div>
 
-<div id="app" style="display:none">
+<div id="app" class="hidden">
 
 <header class="topbar">
-  <div style="display:flex;align-items:center;gap:12px">
-    <button class="mobile-menu" id="menuBtn">☰</button>
-    <a href="index.html" class="brand">Campusora</a>
-  </div>
+ <div style="display:flex;align-items:center;gap:10px">
+  <button class="btn menu" id="menuBtn">☰</button>
+  <a class="brand" href="index.html">Campusora</a>
+ </div>
 
-  <div class="top-right">
-    <span class="admin-label" id="adminLabel">SUPER ADMIN</span>
-    <button class="logout" id="logoutBtn">Log out</button>
-  </div>
+ <div class="topright">
+  <span class="tag" id="roleTag">ADMIN</span>
+  <button class="btn" id="logoutBtn">Log out</button>
+ </div>
 </header>
 
 <div class="layout">
 
 <aside class="sidebar" id="sidebar">
 
-  <div class="side-heading">Administration</div>
+ <div class="sidehead">Overview</div>
+ <button class="nav active" data-page="overview">📊 Dashboard Overview</button>
 
-  <button class="nav-btn active" data-page="overview">
-    <span class="nav-icon">📊</span> Dashboard Overview
-  </button>
+ <div class="sidehead">Platform Management</div>
+ <button class="nav" data-page="users">👥 User Management</button>
+ <button class="nav" data-page="moderation">🛡️ Reports & Moderation</button>
+ <button class="nav" data-page="deletions">🗑️ Account Deletions</button>
 
-  <button class="nav-btn" data-page="users">
-    <span class="nav-icon">👥</span> User Management
-  </button>
+ <div class="sidehead">Creator & Finance</div>
+ <button class="nav" data-page="creators">🌟 Creator Rewards</button>
+ <button class="nav" data-page="withdrawals">🏦 Withdrawals</button>
+ <button class="nav" data-page="payments">💳 Payments & Revenue</button>
+ <button class="nav" data-page="campaigns">📢 Sponsored Campaigns</button>
 
-  <button class="nav-btn" data-page="moderation">
-    <span class="nav-icon">🛡️</span> Reports & Moderation
-  </button>
+ <div class="sidehead">Campusora Community</div>
+ <button class="nav" data-page="promotions">🏪 Business Promotions</button>
+ <button class="nav" data-page="communities">🏫 Communities</button>
+ <button class="nav" data-page="events">📅 Events</button>
+ <button class="nav" data-page="marketplace">🛍️ Marketplace</button>
+ <button class="nav" data-page="safety">🚨 Safety & Support</button>
 
-  <button class="nav-btn" data-page="deletions">
-    <span class="nav-icon">🗑️</span> Account Deletions
-  </button>
-
-  <div class="side-heading">Creator & Finance</div>
-
-  <button class="nav-btn" data-page="creators">
-    <span class="nav-icon">🌟</span> Creator Rewards
-  </button>
-
-  <button class="nav-btn" data-page="withdrawals">
-    <span class="nav-icon">🏦</span> Withdrawals
-  </button>
-
-  <button class="nav-btn" data-page="payments">
-    <span class="nav-icon">💳</span> Payments & Revenue
-  </button>
-
-  <button class="nav-btn" data-page="campaigns">
-    <span class="nav-icon">📢</span> Sponsored Campaigns
-  </button>
-
-  <button class="nav-btn" data-page="promotions">
-    <span class="nav-icon">🏪</span> Business Promotions
-  </button>
-
-  <div class="side-heading">Campusora Community</div>
-
-  <button class="nav-btn" data-page="communities">
-    <span class="nav-icon">🏫</span> Communities
-  </button>
-
-  <button class="nav-btn" data-page="events">
-    <span class="nav-icon">📅</span> Events
-  </button>
-
-  <button class="nav-btn" data-page="marketplace">
-    <span class="nav-icon">🛍️</span> Marketplace
-  </button>
-
-  <button class="nav-btn" data-page="safety">
-    <span class="nav-icon">🚨</span> Safety & Support
-  </button>
-
-  <div class="side-heading">Settings</div>
-
-  <button class="nav-btn" data-page="security">
-    <span class="nav-icon">🔐</span> Admin Security & Activity
-  </button>
+ <div class="sidehead">Settings</div>
+ <button class="nav" data-page="security">🔐 Admin Security & Activity</button>
 
 </aside>
 
-<main class="main">
+<main>
 
-<section id="overviewPage">
+<section id="overview">
 
-  <h1 class="page-title">Dashboard Overview</h1>
+ <h1 class="title">Dashboard Overview</h1>
+ <p class="sub">Monitor Campusora activity, finance and administration.</p>
 
-  <p class="page-subtitle">
-    Monitor Campusora activity, users and platform revenue.
-  </p>
+ <div class="welcome">
+  <h2>Welcome, Administrator 👋</h2>
+  <p>Manage users, content, creator earnings, payments and campus activity from one place.</p>
+ </div>
 
-  <div class="welcome">
-    <h2>Welcome, Administrator 👋</h2>
-    <p>
-      Your Campusora administration centre.
-      Monitor platform activity and manage the campus community.
-    </p>
+ <div class="sectionhead">
+  <div class="muted">Live figures retrieved from the Campusora database.</div>
+  <button class="btn" id="refreshStats">↻ Refresh</button>
+ </div>
+
+ <div id="statsMessage" class="message"></div>
+
+ <div class="stats">
+
+  <div class="stat">
+   <small>Registered users</small>
+   <strong id="sUsers">—</strong>
+   <em>Total profiles</em>
   </div>
 
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-    <div class="section-label">Platform Overview</div>
-    <button class="refresh" id="refreshBtn">↻ Refresh</button>
+  <div class="stat">
+   <small>Posts</small>
+   <strong id="sPosts">—</strong>
+   <em>Platform posts</em>
   </div>
 
-  <div id="statsMessage" class="status-message"></div>
-
-  <div class="stats-grid">
-
-    <div class="stat-card">
-      <div class="stat-icon">👥</div>
-      <div class="stat-title">Registered Users</div>
-      <div class="stat-value" id="statUsers">—</div>
-      <div class="stat-note">Total registered profiles</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">📝</div>
-      <div class="stat-title">Total Posts</div>
-      <div class="stat-value" id="statPosts">—</div>
-      <div class="stat-note">Posts on Campusora</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">🎬</div>
-      <div class="stat-title">Spotlight Videos</div>
-      <div class="stat-value" id="statVideos">—</div>
-      <div class="stat-note">Uploaded Spotlight videos</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">🏫</div>
-      <div class="stat-title">Communities</div>
-      <div class="stat-value" id="statCommunities">—</div>
-      <div class="stat-note">Campus communities</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">💳</div>
-      <div class="stat-title">Successful Payments</div>
-      <div class="stat-value" id="statPayments">—</div>
-      <div class="stat-note">Premium, ranks and campaigns</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">💰</div>
-      <div class="stat-title">Tracked Revenue</div>
-      <div class="stat-value" id="statRevenue">—</div>
-      <div class="stat-note">Verified payments counted so far</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">📢</div>
-      <div class="stat-title">Active Campaigns</div>
-      <div class="stat-value" id="statCampaigns">—</div>
-      <div class="stat-note">Paid campaigns currently active</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">⚠️</div>
-      <div class="stat-title">Pending Reports</div>
-      <div class="stat-value" id="statReports">—</div>
-      <div class="stat-note">Reports awaiting review</div>
-    </div>
-
+  <div class="stat">
+   <small>Spotlight videos</small>
+   <strong id="sVideos">—</strong>
+   <em>Uploaded videos</em>
   </div>
 
-  <div class="quick-card">
-    <h3>Dashboard Connection</h3>
-    <p id="connectionText">
-      Checking Campusora database connection...
-    </p>
-
-    <div class="notice">
-      Figures are retrieved from the database. Revenue shown here does
-      not yet include gift payments, and unavailable report data will
-      not be presented as zero.
-    </div>
+  <div class="stat">
+   <small>Communities</small>
+   <strong id="sCommunities">—</strong>
+   <em>Campus communities</em>
   </div>
+
+  <div class="stat">
+   <small>Events</small>
+   <strong id="sEvents">—</strong>
+   <em>Campus events</em>
+  </div>
+
+  <div class="stat">
+   <small>Verified live payments</small>
+   <strong id="sPayments">—</strong>
+   <em>Live verified transactions</em>
+  </div>
+
+  <div class="stat">
+   <small>Tracked revenue</small>
+   <strong id="sRevenue">—</strong>
+   <em>Live verified payments + gift platform share</em>
+  </div>
+
+  <div class="stat">
+   <small>Active campaigns</small>
+   <strong id="sCampaigns">—</strong>
+   <em>Paid campaigns currently active</em>
+  </div>
+
+  <div class="stat">
+   <small>Pending reports</small>
+   <strong id="sReports">—</strong>
+   <em>Awaiting moderation</em>
+  </div>
+
+ </div>
+
+ <div class="card">
+  <b style="font-size:12px">Database connection</b>
+  <p class="muted" id="connection">Checking connection...</p>
+
+  <div class="notice">
+   Revenue counts verified LIVE payment records only.
+   Gift revenue includes Campusora's platform share when the gift
+   payment and revenue ledger reconcile. Test and unknown payment
+   modes are excluded.
+  </div>
+ </div>
 
 </section>
 
-<section id="otherPage" class="placeholder">
-  <div class="big-icon" id="sectionIcon">⚙️</div>
-  <h2 id="sectionTitle">Management</h2>
-  <p id="sectionDescription"></p>
-  <div class="notice">
-    This section is listed in the admin dashboard.
-    Its secure database connection and management actions
-    will be connected in its development stage.
+<section id="manager" class="hidden">
+
+ <div class="sectionhead">
+  <div>
+   <h1 id="sectionTitle"></h1>
+   <p class="sub" id="sectionSub"></p>
   </div>
+  <button class="btn" id="reloadSection">↻ Reload</button>
+ </div>
+
+ <div id="sectionNotice" class="notice"></div>
+ <div id="sectionMessage" class="message"></div>
+
+ <div class="toolbar">
+  <input
+   id="searchInput"
+   class="search"
+   placeholder="Search records in this loaded page..."
+  >
+
+  <select id="pageSize" class="select">
+   <option value="50">50 records</option>
+   <option value="100">100 records</option>
+  </select>
+ </div>
+
+ <div id="tableArea" class="tablewrap">
+  <div class="empty">Choose a section.</div>
+ </div>
+
+ <div class="toolbar">
+  <button class="btn" id="loadMore">Load next 100</button>
+  <span class="muted" id="recordCount"></span>
+ </div>
+
 </section>
 
 </main>
@@ -597,292 +525,790 @@ a{color:inherit;text-decoration:none}
 
 <script type="module">
 
-import { supabase } from './supabase.js';
+import {supabase} from './supabase.js';
 
-const loading = document.getElementById('loading');
-const app = document.getElementById('app');
+const $ = id => document.getElementById(id);
 
-let accessToken = null;
+let token = null;
+let currentPage = 'overview';
+let currentRows = [];
+let offset = 0;
+let limit = 50;
+let adminRole = 'admin';
 
-const numberFormat = new Intl.NumberFormat('en-NG');
+const rowCache = new Map();
+const fmt = new Intl.NumberFormat('en-NG');
 
-function showLoadingError(message) {
-  loading.innerHTML = `
-    <div class="loading-box">
-      <h2>Could not open dashboard</h2>
-      <p class="error-message"></p>
-      <button class="logout" id="tryAgain">Try again</button>
-    </div>
-  `;
+const config = {
 
-  loading.querySelector('.error-message').textContent = message;
+ users:{
+  api:'users',
+  title:'User Management',
+  sub:'Search profiles and record account restrictions.',
+  notice:'Restrictions are recorded in the restrictions table. They do not automatically block login, posting or messaging until enforcement is integrated into those platform features.',
+  fields:['id','full_name','username','school','role','created_at'],
+  actions:['restrict']
+ },
 
-  document.getElementById('tryAgain').onclick = () => {
-    location.reload();
-  };
-}
+ moderation:{
+  api:'reports',
+  title:'Reports & Moderation',
+  sub:'Review user, post, comment and Spotlight reports.',
+  notice:'Review a report by editing its status and admin note. Allowed status values depend on the database constraint.',
+  fields:['id','content_type','content_id','reported_user_id','reason','details','status','admin_note','created_at'],
+  actions:['edit']
+ },
 
-async function startDashboard() {
-  try {
-    const { data, error } = await supabase.auth.getSession();
+ deletions:{
+  api:'deletions',
+  title:'Account Deletion Requests',
+  sub:'Review requests and their grace-period deadlines.',
+  notice:'This page currently displays lifecycle records. Permanent deletion/retention actions require a dedicated secure backend workflow; no destructive action is exposed here.',
+  fields:['user_id','status','deletion_requested_at','delete_after','updated_at'],
+  actions:[]
+ },
 
-    if (error || !data.session) {
-      location.replace('./auth.html?mode=login');
-      return;
-    }
-
-    accessToken = data.session.access_token;
-
-    const response = await fetch('/api/admin/check', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      },
-      cache: 'no-store'
-    });
-
-    const result = await response.json();
-
-    if (response.status === 401) {
-      await supabase.auth.signOut();
-      location.replace('./auth.html?mode=login');
-      return;
-    }
-
-    if (response.status === 403) {
-      showLoadingError(
-        'Access denied. Your account is not an administrator.'
-      );
-      return;
-    }
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || 'Admin verification failed.');
-    }
-
-    if (result.admin_role !== 'super_admin') {
-      document.getElementById('adminLabel').textContent = 'ADMIN';
-    }
-
-    loading.style.display = 'none';
-    app.style.display = 'block';
-
-    await loadDashboardStats();
-
-  } catch (error) {
-    showLoadingError(error.message || 'Something went wrong.');
-  }
-}
-
-async function loadDashboardStats() {
-  const message = document.getElementById('statsMessage');
-  const connection = document.getElementById('connectionText');
-  const button = document.getElementById('refreshBtn');
-
-  button.disabled = true;
-  button.textContent = 'Loading...';
-
-  message.className = 'status-message';
-  message.textContent = '';
-
-  try {
-    const response = await fetch('/api/admin/stats', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      },
-      cache: 'no-store'
-    });
-
-    const result = await response.json();
-
-    if (response.status === 401) {
-      await supabase.auth.signOut();
-      location.replace('./auth.html?mode=login');
-      return;
-    }
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || 'Could not load statistics.');
-    }
-
-    const stats = result.statistics;
-
-    document.getElementById('statUsers').textContent =
-      displayNumber(stats.users);
-
-    document.getElementById('statPosts').textContent =
-      displayNumber(stats.posts);
-
-    document.getElementById('statVideos').textContent =
-      displayNumber(stats.videos);
-
-    document.getElementById('statCommunities').textContent =
-      displayNumber(stats.communities);
-
-    document.getElementById('statPayments').textContent =
-      displayNumber(stats.payments);
-
-    document.getElementById('statRevenue').textContent =
-      stats.revenue == null
-        ? '—'
-        : '₦' + numberFormat.format(stats.revenue);
-
-    document.getElementById('statCampaigns').textContent =
-      displayNumber(stats.campaigns);
-
-    document.getElementById('statReports').textContent =
-      stats.pendingReports == null
-        ? 'Unavailable'
-        : numberFormat.format(stats.pendingReports);
-
-    connection.textContent =
-      'Dashboard connected. Statistics were successfully retrieved.';
-
-    message.className = 'status-message success';
-    message.textContent = 'Dashboard statistics updated successfully.';
-
-  } catch (error) {
-    connection.textContent =
-      'The statistics connection could not be completed.';
-
-    message.className = 'status-message error';
-    message.textContent = error.message;
-
-  } finally {
-    button.disabled = false;
-    button.textContent = '↻ Refresh';
-  }
-}
-
-function displayNumber(value) {
-  return value == null ? '—' : numberFormat.format(value);
-}
-
-const sections = {
-  users: [
-    '👥',
-    'User Management',
-    'View users, search profiles, review account information and manage account restrictions.'
-  ],
-  moderation: [
-    '🛡️',
-    'Reports & Moderation',
-    'Review reports involving users, posts, comments and Spotlight videos.'
-  ],
-  deletions: [
-    '🗑️',
-    'Account Deletion Management',
-    'Review account deletion requests and their 30-day grace periods.'
-  ],
-  creators: [
-    '🌟',
-    'Creator Rewards & Earnings',
-    'Review creator eligibility, gifts, earnings and platform revenue shares.'
-  ],
-  withdrawals: [
-    '🏦',
-    'Withdrawal Management',
-    'Review withdrawal requests and record actual bank transfers.'
-  ],
-  payments: [
-    '💳',
-    'Payments & Platform Revenue',
-    'Monitor verified payments, Paystack references and platform revenue.'
-  ],
-  campaigns: [
-    '📢',
-    'Sponsored Campaigns',
-    'Monitor paid campaigns, expiry dates and campaign status.'
-  ],
-  promotions: [
-    '🏪',
-    'Business Promotions',
-    'Create and manage business promotions displayed across Campusora.'
-  ],
-  communities: [
-    '🏫',
-    'Community Management',
-    'Review and manage campus communities.'
-  ],
-  events: [
-    '📅',
-    'Events Management',
-    'Manage campus events and submitted event information.'
-  ],
-  marketplace: [
-    '🛍️',
-    'Marketplace Management',
-    'Review marketplace listings, sellers and reported items.'
-  ],
-  safety: [
-    '🚨',
-    'Platform Safety & Support',
-    'Review safety issues, complaints and user support requests.'
-  ],
-  security: [
-    '🔐',
-    'Admin Security & Activity',
-    'Review administrator activity and access permissions.'
+ creators:{
+  api:'applications',
+  title:'Creator Rewards',
+  sub:'Review creator applications and reward records.',
+  notice:'Applications can be reviewed here. Earnings are read-only. Do not approve a creator unless eligibility and payout details have been checked.',
+  fields:['id','user_id','full_name','email','country','application_status','review_notes','created_at'],
+  actions:['edit'],
+  extras:[
+   {
+    api:'creatorEarnings',
+    title:'Creator earnings',
+    fields:['id','creator_id','period_start','period_end','post_views','video_views','qualifying_views','amount_kobo','payout_status','payout_reference','paid_at'],
+    actions:[]
+   },
+   {
+    api:'creatorPayouts',
+    title:'Creator reward payouts',
+    fields:['id','creator_id','amount_kobo','payout_method','payout_reference','payout_status','admin_notes','created_at','paid_at'],
+    actions:['edit']
+   }
   ]
+ },
+
+ withdrawals:{
+  api:'giftPayouts',
+  title:'Withdrawal Management',
+  sub:'Review gift payout requests.',
+  notice:'Bank account numbers are intentionally hidden. A request must only be marked paid after the real bank transfer has succeeded. The current API allows updating request fields but does not implement a full reserved-earnings release/rejection workflow.',
+  fields:['id','creator_id','amount','currency','payout_method','account_name','bank_name','status','admin_note','payment_reference','external_transfer_reference','requested_at','processed_at'],
+  actions:['edit'],
+  extras:[
+   {
+    api:'creatorPayouts',
+    title:'Creator reward payout requests',
+    fields:['id','creator_id','amount_kobo','payout_method','payout_reference','payout_status','admin_notes','created_at','paid_at'],
+    actions:['edit']
+   }
+  ]
+ },
+
+ payments:{
+  api:'premium',
+  title:'Payments & Platform Revenue',
+  sub:'Inspect Premium and rank payment records.',
+  notice:'This view is read-only. The overview revenue card also includes sponsored campaigns and reconciled Campusora gift platform share. Payment references are displayed for reconciliation.',
+  fields:['id','user_id','plan_type','amount_kobo','payment_reference','payment_verified','payment_mode','status','created_at'],
+  actions:[],
+  extras:[
+   {
+    api:'ranks',
+    title:'Profile rank payments',
+    fields:['id','user_id','rank_type','amount_kobo','payment_reference','payment_verified','payment_mode','status','created_at'],
+    actions:[]
+   },
+   {
+    api:'giftPayments',
+    title:'Gift payments',
+    fields:['id','user_id','amount_kobo','status','paid_at','payment_reference','payment_mode','created_at'],
+    actions:[]
+   }
+  ]
+ },
+
+ campaigns:{
+  api:'campaigns',
+  title:'Sponsored Campaigns',
+  sub:'Monitor paid campaigns and manage campaign status.',
+  notice:'Payment-confirmed campaigns are designed to go live automatically. Admin controls here are for monitoring and pausing/reactivating campaigns, not pre-payment approval.',
+  fields:['id','user_id','post_content','duration_days','amount_kobo','status','payment_verified','payment_mode','payment_reference','starts_at','ends_at','expires_at','actual_impressions','clicks'],
+  actions:['edit']
+ },
+
+ promotions:{
+  api:'promotions',
+  title:'Business Promotions',
+  sub:'View and manage existing promotions.',
+  notice:'Existing promotion status, dates and priority can be edited. Creating a new promotion and uploading its media is not available through the current admin API yet.',
+  fields:['id','business_name','promotion_title','media_type','placement','status','start_at','end_at','priority','created_at'],
+  actions:['edit']
+ },
+
+ communities:{
+  api:'communities',
+  title:'Community Management',
+  sub:'Review campus communities.',
+  notice:'Community name, description and school can be edited.',
+  fields:['id','name','description','school','created_by','created_at'],
+  actions:['edit']
+ },
+
+ events:{
+  api:'events',
+  title:'Events Management',
+  sub:'Review submitted campus events.',
+  notice:'Event status can be updated. Use the status values already accepted by your events table.',
+  fields:['id','title','category','institution','organizer_id','start_time','end_time','visibility','status','created_at'],
+  actions:['edit']
+ },
+
+ marketplace:{
+  api:'products',
+  title:'Marketplace Management',
+  sub:'Review product listings and marketplace reports.',
+  notice:'Products and marketplace listings are shown separately below. Status changes are supported by the current management API.',
+  fields:['id','seller_id','name','category','price','condition','location','status','created_at'],
+  actions:['edit'],
+  extras:[
+   {
+    api:'listings',
+    title:'Marketplace listings',
+    fields:['id','seller_id','title','category','price','listing_type','condition','location','status','created_at'],
+    actions:['edit']
+   },
+   {
+    api:'marketplaceReports',
+    title:'Marketplace reports',
+    fields:['id','reporter_id','listing_id','reason','details','status','created_at'],
+    actions:['edit']
+   }
+  ]
+ },
+
+ safety:{
+  api:'reports',
+  title:'Safety & Support',
+  sub:'Review platform safety reports.',
+  notice:'Safety reports use the content_reports table. General support tickets are not connected to this API unless they are recorded as content reports.',
+  fields:['id','content_type','content_id','reported_user_id','reason','details','status','admin_note','created_at'],
+  actions:['edit']
+ },
+
+ security:{
+  api:'activity',
+  title:'Admin Security & Activity',
+  sub:'Review administrator activity logs and active restrictions.',
+  notice:'Activity logs are read-only here. Restrictions can be lifted; this records the change but does not itself enforce restrictions throughout the platform.',
+  fields:['id','admin_id','action','target_type','target_id','details','created_at'],
+  actions:[],
+  secondary:{
+   api:'restrictions',
+   title:'Account restrictions',
+   fields:['id','user_id','restriction_type','reason','starts_at','ends_at','is_active','created_by','lifted_at','created_at'],
+   actions:['lift']
+  }
+ }
+
 };
 
-document.querySelectorAll('.nav-btn').forEach(button => {
+function msg(el,text,type='ok'){
+ el.textContent = text;
+ el.className = 'message show ' + (type==='err'?'err':'ok');
+}
 
-  button.addEventListener('click', () => {
+function val(v){
+ if(v===null || v===undefined || v==='') return '—';
+ if(typeof v==='object') return JSON.stringify(v);
+ return String(v);
+}
 
-    document.querySelectorAll('.nav-btn').forEach(item => {
-      item.classList.remove('active');
-    });
+function safe(s){
+ return String(s??'').replace(/[&<>"']/g,c=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+ }[c]));
+}
 
-    button.classList.add('active');
+async function api(url,options={}){
 
-    const page = button.dataset.page;
-    const overview = document.getElementById('overviewPage');
-    const other = document.getElementById('otherPage');
+ const r = await fetch(url,{
+  ...options,
+  headers:{
+   Authorization:'Bearer '+token,
+   'Content-Type':'application/json',
+   ...(options.headers||{})
+  },
+  cache:'no-store'
+ });
 
-    if (page === 'overview') {
-      overview.style.display = 'block';
-      other.style.display = 'none';
-    } else {
-      const section = sections[page];
+ const data = await r.json().catch(()=>({}));
 
-      document.getElementById('sectionIcon').textContent =
-        section[0];
+ if(r.status===401){
+  await supabase.auth.signOut();
+  location.replace('./auth.html?mode=login');
+  throw Error('Session expired. Please log in again.');
+ }
 
-      document.getElementById('sectionTitle').textContent =
-        section[1];
+ if(!r.ok || !data.success){
+  throw Error(data.message || 'Request failed.');
+ }
 
-      document.getElementById('sectionDescription').textContent =
-        section[2];
+ return data;
+}
 
-      overview.style.display = 'none';
-      other.style.display = 'block';
-    }
+async function start(){
 
-    document.getElementById('sidebar').classList.remove('open');
+ try{
+
+  const {data,error} = await supabase.auth.getSession();
+
+  if(error || !data.session){
+   location.replace('./auth.html?mode=login');
+   return;
+  }
+
+  token = data.session.access_token;
+
+  const check = await api('/api/admin/check');
+
+  adminRole = check.admin_role || 'admin';
+
+  $('roleTag').textContent = adminRole.replace('_',' ').toUpperCase();
+
+  $('loading').classList.add('hidden');
+  $('app').classList.remove('hidden');
+
+  await loadStats();
+
+ }catch(e){
+
+  $('loading').innerHTML =
+   '<div style="max-width:330px;padding:20px">'+
+   '<h3>Could not open dashboard</h3>'+
+   '<p>'+safe(e.message)+'</p>'+
+   '<button class="btn" onclick="location.reload()">Try again</button>'+
+   '</div>';
+
+ }
+}
+
+async function loadStats(){
+
+ $('refreshStats').disabled = true;
+ $('connection').textContent = 'Loading live statistics...';
+
+ try{
+
+  const d = await api('/api/admin/stats');
+  const s = d.statistics || {};
+
+  const map = {
+   sUsers:s.users,
+   sPosts:s.posts,
+   sVideos:s.videos,
+   sCommunities:s.communities,
+   sEvents:s.events,
+   sPayments:s.payments,
+   sRevenue:s.revenue==null?null:'₦'+fmt.format(s.revenue),
+   sCampaigns:s.campaigns,
+   sReports:s.pendingReports
+  };
+
+  for(const [id,v] of Object.entries(map)){
+   $(id).textContent = v==null?'—':v;
+  }
+
+  $('connection').textContent =
+   'Connected. Dashboard statistics loaded successfully.';
+
+  msg($('statsMessage'),'Statistics refreshed.','ok');
+
+ }catch(e){
+
+  $('connection').textContent = 'Statistics could not be loaded.';
+  msg($('statsMessage'),e.message,'err');
+
+ }finally{
+
+  $('refreshStats').disabled = false;
+
+ }
+}
+
+async function fetchSection(apiName,off=0,lim=50){
+
+ const d = await api(
+  '/api/admin/manage?section='+
+  encodeURIComponent(apiName)+
+  '&limit='+lim+
+  '&offset='+off
+ );
+
+ return Array.isArray(d.data)?d.data:[];
+}
+
+function tableHTML(rows,fields,actions,apiName){
+
+ rows.forEach(row=>{
+  rowCache.set(apiName+':'+String(row.id),row);
+ });
+
+ if(!rows.length){
+  return '<div class="empty">No records were returned for this section.</div>';
+ }
+
+ const headers = fields.map(f=>
+  '<th>'+safe(f.replaceAll('_',' '))+'</th>'
+ ).join('');
+
+ const body = rows.map(row=>
+
+  '<tr>'+
+   fields.map(f=>
+    '<td>'+safe(val(row[f]))+'</td>'
+   ).join('')+
+
+   '<td><div class="rowactions">'+
+
+    (actions.includes('edit')
+     ?'<button class="btn tiny edit" data-id="'+safe(row.id)+'" data-api="'+apiName+'">Edit</button>'
+     :'')+
+
+    (actions.includes('restrict')
+     ?'<button class="btn tiny restrict" data-id="'+safe(row.id)+'">Restrict</button>'
+     :'')+
+
+    (actions.includes('lift')
+     ?'<button class="btn tiny danger lift" data-id="'+safe(row.id)+'">Lift restriction</button>'
+     :'')+
+
+   '</div></td>'+
+
+  '</tr>'
+
+ ).join('');
+
+ return (
+  '<table>'+
+   '<thead><tr>'+headers+'<th>Actions</th></tr></thead>'+
+   '<tbody>'+body+'</tbody>'+
+  '</table>'
+ );
+}
+
+async function loadPanel(page,append=false){
+
+ currentPage = page;
+
+ const c = config[page];
+
+ if(!c) return;
+
+ limit = Number($('pageSize').value)||50;
+
+ if(!append) offset = 0;
+
+ $('sectionTitle').textContent = c.title;
+ $('sectionSub').textContent = c.sub;
+ $('sectionNotice').textContent = c.notice;
+ $('sectionMessage').className = 'message';
+
+ $('tableArea').innerHTML =
+  '<div class="empty"><div class="spin"></div>Loading records...</div>';
+
+ try{
+
+  const rows = await fetchSection(c.api,offset,limit);
+
+  currentRows = append
+   ?currentRows.concat(rows)
+   :rows;
+
+  renderCurrent();
+
+  for(const extraConfig of (c.extras||[])){
+
+   const extra = await fetchSection(extraConfig.api,0,100);
+
+   $('tableArea').insertAdjacentHTML(
+    'beforeend',
+    '<div style="padding:15px;border-top:1px solid var(--border)">'+
+     '<h3 style="font-size:13px">'+safe(extraConfig.title)+'</h3>'+
+     tableHTML(
+      extra,
+      extraConfig.fields,
+      extraConfig.actions,
+      extraConfig.api
+     )+
+    '</div>'
+   );
+
+  }
+
+  if(c.secondary){
+
+   const extra = await fetchSection(c.secondary.api,0,100);
+
+   $('tableArea').insertAdjacentHTML(
+    'beforeend',
+    '<div style="padding:15px;border-top:1px solid var(--border)">'+
+     '<h3 style="font-size:13px">'+safe(c.secondary.title)+'</h3>'+
+     tableHTML(
+      extra,
+      c.secondary.fields,
+      c.secondary.actions,
+      c.secondary.api
+     )+
+    '</div>'
+   );
+
+  }
+
+  $('recordCount').textContent =
+   currentRows.length+' records loaded';
+
+  $('loadMore').classList.toggle(
+   'hidden',
+   rows.length<limit
+  );
+
+ }catch(e){
+
+  $('tableArea').innerHTML =
+   '<div class="empty">'+safe(e.message)+'</div>';
+
+  $('loadMore').classList.add('hidden');
+
+ }
+}
+
+function renderCurrent(){
+
+ const c = config[currentPage];
+
+ const q = $('searchInput').value.trim().toLowerCase();
+
+ const rows = currentRows.filter(r=>
+  !q || JSON.stringify(r).toLowerCase().includes(q)
+ );
+
+ $('tableArea').innerHTML =
+  tableHTML(rows,c.fields,c.actions,c.api);
+
+ $('recordCount').textContent =
+  rows.length+' shown / '+currentRows.length+' loaded';
+}
+
+async function updateRecord(section,id,changes){
+
+ return api('/api/admin/manage',{
+  method:'POST',
+  body:JSON.stringify({
+   section,
+   operation:'update',
+   id,
+   changes
+  })
+ });
+
+}
+
+async function editRecord(section,id){
+
+ const row =
+  rowCache.get(section+':'+String(id)) ||
+  currentRows.find(r=>String(r.id)===String(id));
+
+ if(!row){
+  alert('Reload the section and try again.');
+  return;
+ }
+
+ let changes = {};
+
+ const choices = {
+
+  reports:['status','admin_note'],
+
+  applications:['application_status','review_notes'],
+
+  creatorPayouts:[
+   'payout_status',
+   'admin_notes',
+   'payout_reference',
+   'paid_at'
+  ],
+
+  giftPayouts:[
+   'status',
+   'admin_note',
+   'payment_reference',
+   'processed_at',
+   'reviewed_at',
+   'rejection_reason',
+   'external_transfer_reference'
+  ],
+
+  campaigns:[
+   'status',
+   'admin_note',
+   'moderation_note',
+   'starts_at',
+   'ends_at',
+   'expires_at'
+  ],
+
+  promotions:[
+   'status',
+   'start_at',
+   'end_at',
+   'priority'
+  ],
+
+  communities:[
+   'name',
+   'description',
+   'school'
+  ],
+
+  events:['status'],
+
+  products:['status'],
+
+  listings:['status'],
+
+  marketplaceReports:['status']
+
+ };
+
+ const fields = choices[section] || [];
+
+ if(!fields.length){
+  alert('No editable fields are configured for this section.');
+  return;
+ }
+
+ for(const f of fields){
+
+  const current = row[f] ?? '';
+
+  const next = prompt(
+   'New value for '+f.replaceAll('_',' ')+':',
+   String(current)
+  );
+
+  if(next===null) return;
+
+  if(next!==String(current)){
+   changes[f] = next===''?null:next;
+  }
+
+ }
+
+ if(!Object.keys(changes).length) return;
+
+ if(
+  section==='giftPayouts' &&
+  changes.status &&
+  /paid/i.test(changes.status)
+ ){
+
+  if(!confirm(
+   'Only continue if the actual bank transfer has already succeeded. Have you transferred the money?'
+  )){
+   return;
+  }
+
+ }
+
+ try{
+
+  const d = await updateRecord(section,id,changes);
+
+  msg(
+   $('sectionMessage'),
+   d.message || 'Record updated.'
+  );
+
+  await loadPanel(currentPage);
+
+ }catch(e){
+
+  msg($('sectionMessage'),e.message,'err');
+
+ }
+
+}
+
+async function restrictUser(id){
+
+ const type = prompt(
+  'Restriction type: warning, temporary, or permanent',
+  'warning'
+ );
+
+ if(!type) return;
+
+ const reason = prompt('Reason for this restriction:');
+
+ if(!reason) return;
+
+ let ends_at = null;
+
+ if(type==='temporary'){
+
+  ends_at = prompt(
+   'End date/time in ISO format (example: 2026-11-01T12:00:00Z):'
+  );
+
+  if(!ends_at) return;
+
+ }
+
+ if(!confirm('Record this restriction for the selected account?')){
+  return;
+ }
+
+ try{
+
+  const d = await api('/api/admin/manage',{
+   method:'POST',
+   body:JSON.stringify({
+    section:'users',
+    operation:'restrict_user',
+    id,
+    restriction_type:type,
+    reason,
+    ends_at
+   })
   });
 
-});
+  msg(
+   $('sectionMessage'),
+   d.message || 'Restriction recorded.'
+  );
 
-document.getElementById('menuBtn').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.toggle('open');
-});
+  await loadPanel('users');
 
-document.getElementById('refreshBtn').addEventListener(
-  'click',
-  loadDashboardStats
-);
+ }catch(e){
 
-document.getElementById('logoutBtn').addEventListener(
-  'click',
-  async () => {
-    await supabase.auth.signOut();
-    location.replace('./auth.html?mode=login');
+  msg($('sectionMessage'),e.message,'err');
+
+ }
+
+}
+
+async function liftRestriction(id){
+
+ if(!confirm('Lift this restriction?')) return;
+
+ try{
+
+  const d = await api('/api/admin/manage',{
+   method:'POST',
+   body:JSON.stringify({
+    section:'restrictions',
+    operation:'lift_restriction',
+    id
+   })
+  });
+
+  msg(
+   $('sectionMessage'),
+   d.message || 'Restriction lifted.'
+  );
+
+  await loadPanel('security');
+
+ }catch(e){
+
+  msg($('sectionMessage'),e.message,'err');
+
+ }
+
+}
+
+document.querySelectorAll('.nav').forEach(b=>{
+
+ b.addEventListener('click',async()=>{
+
+  document.querySelectorAll('.nav').forEach(x=>
+   x.classList.remove('active')
+  );
+
+  b.classList.add('active');
+
+  $('sidebar').classList.remove('open');
+
+  const p = b.dataset.page;
+
+  $('overview').classList.toggle('hidden',p!=='overview');
+  $('manager').classList.toggle('hidden',p==='overview');
+
+  if(p!=='overview'){
+
+   $('searchInput').value = '';
+
+   await loadPanel(p);
+
   }
-);
 
-startDashboard();
+ });
+
+});
+
+$('refreshStats').onclick = loadStats;
+
+$('reloadSection').onclick = ()=>loadPanel(currentPage);
+
+$('loadMore').onclick = async()=>{
+ offset += limit;
+ await loadPanel(currentPage,true);
+};
+
+$('searchInput').oninput = renderCurrent;
+
+$('pageSize').onchange = ()=>loadPanel(currentPage);
+
+$('menuBtn').onclick = ()=>
+ $('sidebar').classList.toggle('open');
+
+$('logoutBtn').onclick = async()=>{
+ await supabase.auth.signOut();
+ location.replace('./auth.html?mode=login');
+};
+
+$('tableArea').addEventListener('click',e=>{
+
+ const b = e.target.closest('button');
+
+ if(!b) return;
+
+ const id = b.dataset.id;
+
+ if(b.classList.contains('edit')){
+  editRecord(b.dataset.api,id);
+ }
+
+ if(b.classList.contains('restrict')){
+  restrictUser(id);
+ }
+
+ if(b.classList.contains('lift')){
+  liftRestriction(id);
+ }
+
+});
+
+start();
 
 </script>
 
