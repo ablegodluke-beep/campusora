@@ -1,112 +1,154 @@
-const URL = process.env.SUPABASE_URL;
-const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const PUBLIC_KEY =
+process.env.SUPABASE_PUBLISHABLE_KEY ||
+process.env.SUPABASE_ANON_KEY ||
+SERVICE_KEY;
 
 const TABLES = {
 users: {
 table: "profiles",
+key: "id",
 select: "id,username,full_name,bio,school,role,avatar_url,created_at",
-filter: "created_at"
+order: "created_at"
 },
 reports: {
 table: "content_reports",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 deletions: {
 table: "account_lifecycle",
+key: "user_id",
 select: "",
-filter: "updated_at"
+order: "updated_at"
 },
 applications: {
 table: "creator_reward_applications",
-select: "",
-filter: "created_at"
+key: "id",
+select: "id,user_id,full_name,email,country,application_status,review_notes,reviewed_by,reviewed_at,created_at,updated_at",
+order: "created_at"
 },
 creatorEarnings: {
 table: "creator_reward_earnings",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 creatorPayouts: {
 table: "creator_reward_payouts",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 giftPayouts: {
 table: "campusora_gift_payout_requests",
-select: "",
-filter: "requested_at"
+key: "id",
+select: "id,creator_id,amount,payout_method,account_name,bank_name,status,admin_note,payment_reference,requested_at,processed_at,updated_at,currency,rejection_reason,external_transfer_reference,reviewed_at,reviewed_by,payout_period_id",
+order: "requested_at"
 },
 premium: {
 table: "premium_memberships",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 ranks: {
 table: "profile_ranks",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 campaigns: {
 table: "sponsored_campaigns",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 promotions: {
 table: "campusora_business_promotions",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 communities: {
 table: "communities",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 events: {
 table: "events",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 products: {
 table: "products",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 listings: {
 table: "marketplace_listings",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 marketplaceReports: {
 table: "marketplace_reports",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 activity: {
 table: "campusora_admin_activity",
+key: "id",
 select: "",
-filter: "created_at"
+order: "created_at"
 },
 restrictions: {
 table: "campusora_account_restrictions",
+key: "id",
 select: "*",
-filter: "created_at"
+order: "created_at"
 }
 };
 
 const EDITABLE = {
 reports: ["status", "admin_note", "reviewed_by", "reviewed_at"],
-applications: ["application_status", "review_notes", "reviewed_by", "reviewed_at"],
-creatorPayouts: ["payout_status", "admin_notes", "payout_reference", "paid_at"],
+applications: [
+"application_status",
+"review_notes",
+"reviewed_by",
+"reviewed_at"
+],
+creatorPayouts: [
+"payout_status",
+"admin_notes",
+"payout_reference",
+"paid_at"
+],
 giftPayouts: [
-"status", "admin_note", "payment_reference",
-"processed_at", "reviewed_at", "reviewed_by",
-"rejection_reason", "external_transfer_reference"
+"status",
+"admin_note",
+"payment_reference",
+"processed_at",
+"reviewed_at",
+"reviewed_by",
+"rejection_reason",
+"external_transfer_reference"
 ],
 campaigns: [
-"status", "admin_note", "moderation_note",
-"moderated_at", "moderated_by", "starts_at",
-"ends_at", "expires_at"
+"status",
+"admin_note",
+"moderation_note",
+"moderated_at",
+"moderated_by",
+"starts_at",
+"ends_at",
+"expires_at"
 ],
 promotions: ["status", "start_at", "end_at", "priority"],
 communities: ["name", "description", "school"],
@@ -114,33 +156,45 @@ events: ["status"],
 products: ["status"],
 listings: ["status"],
 marketplaceReports: ["status"],
-restrictions: ["is_active", "ends_at", "lifted_by", "lifted_at"],
-deletions: ["status", "delete_after"]
+restrictions: ["is_active", "ends_at", "lifted_by", "lifted_at"]
 };
 
-async function rest(path, options = {}) {
-const response = await fetch("${URL}/rest/v1/${path}", {
+function sendError(res, status, message) {
+return res.status(status).json({
+success: false,
+message
+});
+}
+
+async function supabaseRequest(path, options = {}) {
+const response = await fetch(
+SUPABASE_URL + "/rest/v1/" + path,
+{
 ...options,
 headers: {
-apikey: KEY,
-Authorization: "Bearer ${KEY}",
+apikey: SERVICE_KEY,
+Authorization: "Bearer " + SERVICE_KEY,
 "Content-Type": "application/json",
 ...(options.headers || {})
 }
-});
+}
+);
 
 const body = await response.text();
 
 if (!response.ok) {
-throw new Error(body || "Database request failed.");
+console.error("Supabase request failed:", body);
+throw new Error("Database request failed.");
 }
 
 return body ? JSON.parse(body) : [];
 }
 
 async function verifyAdmin(req) {
-const auth = req.headers.authorization || "";
-const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+const authorization = req.headers.authorization || "";
+const token = authorization.startsWith("Bearer ")
+? authorization.slice(7)
+: "";
 
 if (!token) {
 const error = new Error("Please log in.");
@@ -148,26 +202,34 @@ error.status = 401;
 throw error;
 }
 
-const response = await fetch("${URL}/auth/v1/user", {
+const response = await fetch(
+SUPABASE_URL + "/auth/v1/user",
+{
 headers: {
-apikey: KEY,
-Authorization: "Bearer ${token}"
+apikey: PUBLIC_KEY,
+Authorization: "Bearer " + token
 }
-});
+}
+);
 
 const user = await response.json().catch(() => ({}));
 
 if (!response.ok || !user.id) {
-const error = new Error("Your session is invalid.");
+const error = new Error("Your login session is invalid.");
 error.status = 401;
 throw error;
 }
 
-const admins = await rest(
-"campusora_admins?user_id=eq.${encodeURIComponent(user.id)}&select=user_id,admin_role"
+const admins = await supabaseRequest(
+"campusora_admins?user_id=eq." +
+encodeURIComponent(user.id) +
+"&select=user_id,admin_role"
 );
 
-if (!admins.length || !["admin", "super_admin"].includes(admins[0].admin_role)) {
+if (
+!admins.length ||
+!["admin", "super_admin"].includes(admins[0].admin_role)
+) {
 const error = new Error("Administrator access required.");
 error.status = 403;
 throw error;
@@ -176,32 +238,31 @@ throw error;
 return user;
 }
 
-async function audit(userId, action, table, id, details = {}) {
+async function recordActivity(adminId, action, table, targetId, details = {}) {
 try {
-await rest("campusora_admin_activity", {
+await supabaseRequest("campusora_admin_activity", {
 method: "POST",
-headers: { Prefer: "return=minimal" },
+headers: {
+Prefer: "return=minimal"
+},
 body: JSON.stringify({
-admin_id: userId,
+admin_id: adminId,
 action,
 target_type: table,
-target_id: String(id || ""),
+target_id: String(targetId || ""),
 details
 })
 });
 } catch (error) {
-console.error("Admin audit log error:", error.message);
+console.error("Could not record admin activity:", error.message);
 }
 }
 
 module.exports = async function handler(req, res) {
 res.setHeader("Cache-Control", "no-store");
 
-if (!URL || !KEY) {
-return res.status(500).json({
-success: false,
-message: "Admin service is not configured."
-});
+if (!SUPABASE_URL || !SERVICE_KEY || !PUBLIC_KEY) {
+return sendError(res, 500, "Admin service is not configured.");
 }
 
 try {
@@ -212,10 +273,7 @@ if (req.method === "GET") {
   const config = TABLES[section];
 
   if (!config) {
-    return res.status(400).json({
-      success: false,
-      message: "Unknown management section."
-    });
+    return sendError(res, 400, "Unknown management section.");
   }
 
   const limit = Math.min(
@@ -223,11 +281,19 @@ if (req.method === "GET") {
     Math.max(1, Number(req.query.limit) || 50)
   );
 
-  const offset = Math.max(0, Number(req.query.offset) || 0);
-
-  const rows = await rest(
-    `${config.table}?select=${encodeURIComponent(config.select)}&order=${config.filter}.desc&limit=${limit}&offset=${offset}`
+  const offset = Math.max(
+    0,
+    Number(req.query.offset) || 0
   );
+
+  const path =
+    config.table +
+    "?select=" + encodeURIComponent(config.select) +
+    "&order=" + config.order + ".desc" +
+    "&limit=" + limit +
+    "&offset=" + offset;
+
+  const rows = await supabaseRequest(path);
 
   return res.status(200).json({
     success: true,
@@ -248,54 +314,68 @@ if (req.method === "POST") {
   const config = TABLES[section];
 
   if (!config) {
-    return res.status(400).json({
-      success: false,
-      message: "Unknown management section."
-    });
+    return sendError(res, 400, "Unknown management section.");
   }
 
   if (operation === "update") {
     const allowed = EDITABLE[section];
 
-    if (!allowed || !id || !body.changes || typeof body.changes !== "object") {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid update request."
-      });
+    if (
+      !allowed ||
+      !id ||
+      !body.changes ||
+      typeof body.changes !== "object" ||
+      Array.isArray(body.changes)
+    ) {
+      return sendError(res, 400, "Invalid update request.");
     }
 
     const changes = {};
 
-    for (const key of allowed) {
-      if (Object.prototype.hasOwnProperty.call(body.changes, key)) {
-        changes[key] = body.changes[key];
+    for (const field of allowed) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          body.changes,
+          field
+        )
+      ) {
+        changes[field] = body.changes[field];
       }
     }
 
     if (!Object.keys(changes).length) {
-      return res.status(400).json({
-        success: false,
-        message: "No permitted fields were supplied."
-      });
+      return sendError(
+        res,
+        400,
+        "No permitted fields were supplied."
+      );
     }
 
-    const rows = await rest(
-      `${config.table}?id=eq.${encodeURIComponent(id)}&select=*`,
+    const rows = await supabaseRequest(
+      config.table +
+      "?" + config.key + "=eq." +
+      encodeURIComponent(id) +
+      "&select=*",
       {
         method: "PATCH",
-        headers: { Prefer: "return=representation" },
+        headers: {
+          Prefer: "return=representation"
+        },
         body: JSON.stringify(changes)
       }
     );
 
     if (!rows.length) {
-      return res.status(404).json({
-        success: false,
-        message: "Record not found."
-      });
+      return sendError(res, 404, "Record not found.");
     }
 
-    await audit(admin.id, "update", config.table, id, changes);
+    await recordActivity(
+      admin.id,
+      "update",
+      config.table,
+      id,
+      changes
+    );
 
     return res.status(200).json({
       success: true,
@@ -305,36 +385,56 @@ if (req.method === "POST") {
   }
 
   if (operation === "restrict_user" && section === "users") {
-    const userId = id;
-    const restrictionType = String(body.restriction_type || "");
+    const restrictionType = String(
+      body.restriction_type || ""
+    );
+
     const reason = String(body.reason || "").trim();
     const endsAt = body.ends_at || null;
 
-    if (!userId || !["warning", "temporary", "permanent"].includes(restrictionType) || !reason) {
-      return res.status(400).json({
-        success: false,
-        message: "Provide a valid restriction type and reason."
-      });
+    if (
+      !id ||
+      !["warning", "temporary", "permanent"].includes(
+        restrictionType
+      ) ||
+      !reason
+    ) {
+      return sendError(
+        res,
+        400,
+        "Provide a valid restriction type and reason."
+      );
     }
 
-    const rows = await rest("campusora_account_restrictions", {
-      method: "POST",
-      headers: { Prefer: "return=representation" },
-      body: JSON.stringify({
-        user_id: userId,
-        restriction_type: restrictionType,
-        reason,
-        starts_at: new Date().toISOString(),
-        ends_at: endsAt,
-        is_active: true,
-        created_by: admin.id
-      })
-    });
+    const rows = await supabaseRequest(
+      "campusora_account_restrictions",
+      {
+        method: "POST",
+        headers: {
+          Prefer: "return=representation"
+        },
+        body: JSON.stringify({
+          user_id: id,
+          restriction_type: restrictionType,
+          reason,
+          starts_at: new Date().toISOString(),
+          ends_at: endsAt,
+          is_active: true,
+          created_by: admin.id
+        })
+      }
+    );
 
-    await audit(admin.id, "restrict_user", "profiles", userId, {
-      restriction_type: restrictionType,
-      reason
-    });
+    await recordActivity(
+      admin.id,
+      "restrict_user",
+      "profiles",
+      id,
+      {
+        restriction_type: restrictionType,
+        reason
+      }
+    );
 
     return res.status(200).json({
       success: true,
@@ -343,19 +443,27 @@ if (req.method === "POST") {
     });
   }
 
-  if (operation === "lift_restriction" && section === "restrictions") {
+  if (
+    operation === "lift_restriction" &&
+    section === "restrictions"
+  ) {
     if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "Restriction ID is required."
-      });
+      return sendError(
+        res,
+        400,
+        "Restriction ID is required."
+      );
     }
 
-    const rows = await rest(
-      `campusora_account_restrictions?id=eq.${encodeURIComponent(id)}&select=*`,
+    const rows = await supabaseRequest(
+      "campusora_account_restrictions?id=eq." +
+      encodeURIComponent(id) +
+      "&select=*",
       {
         method: "PATCH",
-        headers: { Prefer: "return=representation" },
+        headers: {
+          Prefer: "return=representation"
+        },
         body: JSON.stringify({
           is_active: false,
           lifted_by: admin.id,
@@ -365,13 +473,19 @@ if (req.method === "POST") {
     );
 
     if (!rows.length) {
-      return res.status(404).json({
-        success: false,
-        message: "Restriction not found."
-      });
+      return sendError(
+        res,
+        404,
+        "Restriction not found."
+      );
     }
 
-    await audit(admin.id, "lift_restriction", "campusora_account_restrictions", id);
+    await recordActivity(
+      admin.id,
+      "lift_restriction",
+      "campusora_account_restrictions",
+      id
+    );
 
     return res.status(200).json({
       success: true,
@@ -379,26 +493,27 @@ if (req.method === "POST") {
     });
   }
 
-  return res.status(400).json({
-    success: false,
-    message: "Unsupported management operation."
-  });
+  return sendError(
+    res,
+    400,
+    "Unsupported management operation."
+  );
 }
 
 res.setHeader("Allow", "GET, POST");
 
-return res.status(405).json({
-  success: false,
-  message: "Method not allowed."
-});
+return sendError(res, 405, "Method not allowed.");
 
 } catch (error) {
-console.error("Admin management API error:", error);
+console.error("Admin management error:", error);
 
-return res.status(error.status || 500).json({
-  success: false,
-  message: error.status ? error.message : "Admin request failed."
-});
+return sendError(
+  res,
+  error.status || 500,
+  error.status
+    ? error.message
+    : "Admin request failed."
+);
 
 }
 };
