@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+
+<title>Admin Dashboard | Campusora</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #080b18;
+  --panel: #101528;
+  --panel2: #151b32;
+  --border: #252c46;
+  --text: #f4f6ff;
+  --muted: #929bb8;
+  --purple: #8b5cf6;
+  --blue: #4f8cff;
+  --cyan: #36d9ff;
+  --danger: #ff6685;
+  --green: #42d6a4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.topbar {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #a78bfa, #36d9ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-label {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(54,217,255,.08);
+  border: 1px solid rgba(54,217,255,.2);
+  padding: 7px 11px;
+  border-radius: 20px;
+}
+
+.logout {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: white;
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr);
+  min-height: calc(100vh - 65px);
+}
+
+.sidebar {
+  background: #0c1020;
+  border-right: 1px solid var(--border);
+  padding: 20px 13px;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+  position: sticky;
+  top: 65px;
+}
+
+.side-heading {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 10px 12px;
+}
+
+.nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin: 3px 0;
+  color: #aeb8d3;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  color: white;
+  background: linear-gradient(
+    100deg,
+    rgba(139,92,246,.23),
+    rgba(79,140,255,.12)
+  );
+}
+
+.nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.main {
+  min-width: 0;
+  padding: 28px;
+  max-width: 1450px;
+  width: 100%;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+
+.page-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.welcome {
+  padding: 23px;
+  border-radius: 17px;
+  border: 1px solid #38315e;
+  background: linear-gradient(
+    115deg,
+    rgba(139,92,246,.24),
+    rgba(54,217,255,.07)
+  );
+  margin-bottom: 22px;
+}
+
+.welcome h2 {
+  font-size: 19px;
+  margin: 0 0 8px;
+}
+
+.welcome p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #c3cbe2;
+  margin: 0;
+}
+
+.section-label {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 25px 0 13px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 17px;
+  min-width: 0;
+}
+
+.stat-icon {
+  font-size: 19px;
+  margin-bottom: 12px;
+}
+
+.stat-title {
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.stat-note {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 7px;
+}
+
+.quick-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 20px;
+}
+
+.quick-card h3 {
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.quick-card p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.notice {
+  padding: 12px;
+  background: rgba(54,217,255,.07);
+  border: 1px solid rgba(54,217,255,.2);
+  color: #a9eaff;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.7;
+  margin-top: 18px;
+}
+
+.page-placeholder {
+  display: none;
+  padding: 35px 20px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.page-placeholder .big-icon {
+  font-size: 35px;
+  margin-bottom: 13px;
+}
+
+.page-placeholder h2 {
+  font-size: 17px;
+}
+
+.page-placeholder p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 25px;
+}
+
+.loading-box {
+  max-width: 350px;
+  width: 100%;
+}
+
+.loader {
+  width: 35px;
+  height: 35px;
+  border: 3px solid var(--border);
+  border-top-color: var(--purple);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 17px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #ff9baa;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.mobile-menu {
+  display: none;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: white;
+  padding: 8px 11px;
+  border-radius: 9px;
+}
+
+@media(max-width: 1000px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width: 700px) {
+  .topbar {
+    height: 59px;
+    padding: 0 13px;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .admin-label {
+    font-size: 9px;
+    padding: 6px 8px;
+  }
+
+  .layout {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 59px;
+    left: 0;
+    width: 265px;
+    height: calc(100vh - 59px);
+    z-index: 30;
+    box-shadow: 15px 0 35px rgba(0,0,0,.35);
+  }
+
+  .sidebar.open {
+    display: block;
+  }
+
+  .main {
+    padding: 20px 13px;
+  }
+
+  .page-title {
+    font-size: 21px;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .stats-grid {
+    gap: 9px;
+  }
+
+  .stat-card {
+    padding: 13px;
+  }
+
+  .stat-value {
+    font-size: 19px;
+  }
+
+  .top-right {
+    gap: 7px;
+  }
+}
+
+@media(max-width: 350px) {
+  .admin-label {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading" class="loading">
+  <div class="loading-box">
+    <div class="loader"></div>
+    <p>Verifying administrator access...</p>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="mobile-menu" id="menuBtn">☰</button>
+    <a href="index.html" class="brand">Campusora</a>
+  </div>
+
+  <div class="top-right">
+    <span class="admin-label">SUPER ADMIN</span>
+    <button class="logout" id="logoutBtn">Log out</button>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="side-heading">Administration</div>
+
+  <button class="nav-btn active" data-page="overview">
+    <span class="nav-icon">📊</span> Dashboard Overview
+  </button>
+
+  <button class="nav-btn" data-page="users">
+    <span class="nav-icon">👥</span> User Management
+  </button>
+
+  <button class="nav-btn" data-page="moderation">
+    <span class="nav-icon">🛡️</span> Reports & Moderation
+  </button>
+
+  <button class="nav-btn" data-page="deletions">
+    <span class="nav-icon">🗑️</span> Account Deletions
+  </button>
+
+  <div class="side-heading">Creator & Finance</div>
+
+  <button class="nav-btn" data-page="creators">
+    <span class="nav-icon">🌟</span> Creator Rewards
+  </button>
+
+  <button class="nav-btn" data-page="withdrawals">
+    <span class="nav-icon">🏦</span> Withdrawals
+  </button>
+
+  <button class="nav-btn" data-page="payments">
+    <span class="nav-icon">💳</span> Payments & Revenue
+  </button>
+
+  <button class="nav-btn" data-page="campaigns">
+    <span class="nav-icon">📢</span> Sponsored Campaigns
+  </button>
+
+  <button class="nav-btn" data-page="promotions">
+    <span class="nav-icon">🏪</span> Business Promotions
+  </button>
+
+  <div class="side-heading">Campusora Community</div>
+
+  <button class="nav-btn" data-page="communities">
+    <span class="nav-icon">🏫</span> Communities
+  </button>
+
+  <button class="nav-btn" data-page="events">
+    <span class="nav-icon">📅</span> Events
+  </button>
+
+  <button class="nav-btn" data-page="marketplace">
+    <span class="nav-icon">🛍️</span> Marketplace
+  </button>
+
+  <button class="nav-btn" data-page="safety">
+    <span class="nav-icon">🚨</span> Safety & Support
+  </button>
+
+  <div class="side-heading">Settings</div>
+
+  <button class="nav-btn" data-page="security">
+    <span class="nav-icon">🔐</span> Admin Security & Activity
+  </button>
+
+</aside>
+
+<main class="main">
+
+<section id="overviewPage">
+
+  <h1 class="page-title">Dashboard Overview</h1>
+
+  <p class="page-subtitle">
+    Welcome to your Campusora administration centre.
+  </p>
+
+  <div class="welcome">
+    <h2>Welcome, Super Admin 👋</h2>
+    <p>
+      Manage Campusora, monitor platform activity, oversee payments
+      and keep the campus community safe.
+    </p>
+  </div>
+
+  <div class="section-label">Platform Overview</div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-title">Registered Users</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📝</div>
+      <div class="stat-title">Total Posts</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🎬</div>
+      <div class="stat-title">Spotlight Videos</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🏫</div>
+      <div class="stat-title">Communities</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💳</div>
+      <div class="stat-title">Successful Payments</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-title">Campusora Revenue</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📢</div>
+      <div class="stat-title">Active Campaigns</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-title">Pending Reports</div>
+      <div class="stat-value">—</div>
+      <div class="stat-note">Awaiting database connection</div>
+    </div>
+
+  </div>
+
+  <div class="quick-card">
+    <h3>Admin Dashboard Foundation</h3>
+    <p>
+      Your administrator access has been verified.
+      The dashboard sections are being prepared for connection
+      to Campusora's existing database and services.
+    </p>
+
+    <div class="notice">
+      Statistics are not connected yet. No invented figures are displayed.
+      Existing payment and creator systems will be connected during
+      the next development stage.
+    </div>
+  </div>
+
+</section>
+
+<section id="otherPage" class="page-placeholder">
+  <div class="big-icon" id="sectionIcon">⚙️</div>
+  <h2 id="sectionTitle">Management</h2>
+  <p id="sectionDescription">
+    This section is part of the Campusora Admin Dashboard.
+  </p>
+  <p>Its database connection and management tools will be added next.</p>
+</section>
+
+</main>
+</div>
+</div>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const loading = document.getElementById('loading');
+const app = document.getElementById('app');
+
+async function startDashboard() {
+  try {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.replace('./auth.html?mode=login');
+      return;
+    }
+
+    const response = await fetch('/api/admin/check', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${data.session.access_token}`
+      },
+      cache: 'no-store'
+    });
+
+    const result = await response.json();
+
+    if (response.status === 401) {
+      await supabase.auth.signOut();
+      window.location.replace('./auth.html?mode=login');
+      return;
+    }
+
+    if (response.status === 403) {
+      loading.innerHTML = `
+        <div class="loading-box">
+          <div style="font-size:35px">🔒</div>
+          <h2>Access Denied</h2>
+          <p class="error-message">
+            Your account does not have Campusora administrator permissions.
+          </p>
+          <a href="./index.html">Return to Campusora</a>
+        </div>
+      `;
+      return;
+    }
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Could not verify admin access.');
+    }
+
+    if (result.admin_role !== 'super_admin') {
+      document.querySelector('.admin-label').textContent = 'ADMIN';
+    }
+
+    loading.style.display = 'none';
+    app.style.display = 'block';
+
+  } catch (error) {
+    loading.innerHTML = `
+      <div class="loading-box">
+        <h2>Could not open dashboard</h2>
+        <p class="error-message">${error.message}</p>
+        <button class="logout" onclick="location.reload()">
+          Try again
+        </button>
+      </div>
+    `;
+  }
+}
+
+const sections = {
+  users: ['👥', 'User Management', 'View and manage Campusora accounts, profiles and user activity.'],
+  moderation: ['🛡️', 'Reports & Moderation', 'Review reports and moderate inappropriate content.'],
+  deletions: ['🗑️', 'Account Deletion Management', 'Review account deletion requests and their deadlines.'],
+  creators: ['🌟', 'Creator Rewards & Earnings', 'Manage creator eligibility, gifts and earnings.'],
+  withdrawals: ['🏦', 'Withdrawal Management', 'Review payout requests and record completed transfers.'],
+  payments: ['💳', 'Payments & Platform Revenue', 'Monitor Paystack payments and Campusora revenue.'],
+  campaigns: ['📢', 'Sponsored Campaigns', 'Monitor paid campaigns, publication and campaign status.'],
+  promotions: ['🏪', 'Business Promotions', 'Manage business promotions displayed across Campusora.'],
+  communities: ['🏫', 'Community Management', 'Review and manage campus communities.'],
+  events: ['📅', 'Events Management', 'Review and manage campus events.'],
+  marketplace: ['🛍️', 'Marketplace Management', 'Manage marketplace listings and reports.'],
+  safety: ['🚨', 'Platform Safety & Support', 'Review safety issues and user complaints.'],
+  security: ['🔐', 'Admin Security & Activity', 'Manage administrator access and review admin activity.']
+};
+
+document.querySelectorAll('.nav-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(item => {
+      item.classList.remove('active');
+    });
+
+    button.classList.add('active');
+
+    const page = button.dataset.page;
+    const overview = document.getElementById('overviewPage');
+    const other = document.getElementById('otherPage');
+
+    if (page === 'overview') {
+      overview.style.display = 'block';
+      other.style.display = 'none';
+    } else {
+      const section = sections[page];
+
+      document.getElementById('sectionIcon').textContent = section[0];
+      document.getElementById('sectionTitle').textContent = section[1];
+      document.getElementById('sectionDescription').textContent = section[2];
+
+      overview.style.display = 'none';
+      other.style.display = 'block';
+    }
+
+    document.getElementById('sidebar').classList.remove('open');
+  });
+});
+
+document.getElementById('menuBtn').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.replace('./auth.html?mode=login');
+});
+
+startDashboard();
+</script>
+
+</body>
+  </html>
