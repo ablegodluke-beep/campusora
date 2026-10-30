@@ -1,1 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safety Centre | Campusora</title>
 
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #080b18;
+    --card: #111629;
+    --card2: #151c32;
+    --border: rgba(255,255,255,.08);
+    --text: #f4f5ff;
+    --muted: #929bb5;
+    --purple: #8b5cf6;
+    --blue: #4385ff;
+    --cyan: #36d5ed;
+    --green: #35d49a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.topbar {
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,11,24,.95);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.7px;
+}
+
+.logo span {
+    color: var(--purple);
+}
+
+.back-btn {
+    color: #d7d9ed;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 9px 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background: var(--card2);
+}
+
+.container {
+    width: min(850px, 92%);
+    margin: 35px auto 60px;
+}
+
+.heading {
+    margin-bottom: 25px;
+}
+
+.heading .tag {
+    display: inline-block;
+    color: #c4adff;
+    background: rgba(139,92,246,.13);
+    border: 1px solid rgba(139,92,246,.2);
+    padding: 6px 11px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 13px;
+}
+
+.heading h1 {
+    font-size: clamp(27px, 5vw, 38px);
+    letter-spacing: -1.2px;
+    margin-bottom: 10px;
+}
+
+.heading p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    max-width: 650px;
+}
+
+.hero {
+    background: linear-gradient(120deg, rgba(104,65,210,.22), rgba(35,126,210,.12));
+    border: 1px solid rgba(139,92,246,.22);
+    border-radius: 18px;
+    padding: 23px;
+    margin-bottom: 22px;
+}
+
+.hero-icon {
+    width: 47px;
+    height: 47px;
+    display: grid;
+    place-items: center;
+    background: rgba(139,92,246,.2);
+    border-radius: 14px;
+    font-size: 23px;
+    margin-bottom: 15px;
+}
+
+.hero h2 {
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.hero p {
+    color: #c0c7dd;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.section-title {
+    font-size: 16px;
+    margin: 28px 0 13px;
+}
+
+.safety-card {
+    display: flex;
+    gap: 15px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 18px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+}
+
+.icon {
+    width: 41px;
+    height: 41px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(67,133,255,.12);
+    font-size: 19px;
+}
+
+.safety-card h3 {
+    font-size: 14px;
+    margin: 2px 0 6px;
+}
+
+.safety-card p {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.8;
+}
+
+.link-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 13px;
+    margin-bottom: 10px;
+    transition: .2s;
+}
+
+.link-card:hover {
+    border-color: rgba(139,92,246,.5);
+    background: var(--card2);
+}
+
+.link-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.link-icon {
+    font-size: 19px;
+}
+
+.link-card strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.link-card small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.arrow {
+    color: #a78bfa;
+    font-size: 19px;
+}
+
+.notice {
+    background: rgba(54,213,237,.07);
+    border: 1px solid rgba(54,213,237,.16);
+    padding: 17px;
+    border-radius: 13px;
+    margin-top: 22px;
+}
+
+.notice strong {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 7px;
+    color: #7ee7f5;
+}
+
+.notice p {
+    color: #b9c5d8;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.support-box {
+    background: linear-gradient(120deg, rgba(139,92,246,.14), rgba(67,133,255,.1));
+    border: 1px solid rgba(139,92,246,.2);
+    padding: 21px;
+    border-radius: 16px;
+    margin-top: 25px;
+}
+
+.support-box h2 {
+    font-size: 17px;
+    margin-bottom: 7px;
+}
+
+.support-box p {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.support-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.support-links a {
+    background: rgba(255,255,255,.08);
+    border: 1px solid var(--border);
+    padding: 10px 13px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.support-links a:hover {
+    background: rgba(255,255,255,.14);
+}
+
+.footer {
+    text-align: center;
+    color: #68718b;
+    font-size: 11px;
+    padding: 30px 10px;
+}
+
+@media(max-width:600px) {
+    .topbar {
+        padding: 0 4%;
+        height: 60px;
+    }
+
+    .logo {
+        font-size: 19px;
+    }
+
+    .container {
+        margin-top: 25px;
+    }
+
+    .hero {
+        padding: 19px;
+    }
+
+    .safety-card {
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="index.html" class="logo">Campus<span>ora</span></a>
+    <a href="settings.html" class="back-btn">← Settings</a>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <span class="tag">CAMPUSORA SAFETY</span>
+        <h1>Safety Centre 🛡️</h1>
+        <p>
+            Your safety matters. Campusora is built to help students,
+            alumni and general members connect in a respectful and
+            welcoming environment.
+        </p>
+    </section>
+
+    <section class="hero">
+        <div class="hero-icon">🛡️</div>
+        <h2>A safer community starts with everyone</h2>
+        <p>
+            Treat other members with respect, protect your personal
+            information and report suspicious activities when you
+            encounter them. Help us make Campusora a better place
+            for everyone.
+        </p>
+    </section>
+
+    <h2 class="section-title">Protect your account</h2>
+
+    <div class="safety-card">
+        <div class="icon">🔐</div>
+        <div>
+            <h3>Keep your password private</h3>
+            <p>
+                Never share your password with another member.
+                Campusora support will never need your password
+                to assist you.
+            </p>
+        </div>
+    </div>
+
+    <div class="safety-card">
+        <div class="icon">📧</div>
+        <div>
+            <h3>Protect your personal information</h3>
+            <p>
+                Be careful about sharing your home address, financial
+                details, passwords, verification codes or other
+                sensitive information with strangers.
+            </p>
+        </div>
+    </div>
+
+    <div class="safety-card">
+        <div class="icon">⚠️</div>
+        <div>
+            <h3>Watch out for suspicious offers</h3>
+            <p>
+                Be cautious of people requesting money, promising
+                unrealistic rewards or asking you to visit suspicious
+                websites.
+            </p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Community safety</h2>
+
+    <div class="safety-card">
+        <div class="icon">🤝</div>
+        <div>
+            <h3>Respect other members</h3>
+            <p>
+                Harassment, threats, bullying, impersonation and
+                abusive behaviour have no place in the Campusora
+                community.
+            </p>
+        </div>
+    </div>
+
+    <div class="safety-card">
+        <div class="icon">🚫</div>
+        <div>
+            <h3>Avoid harmful activities</h3>
+            <p>
+                Do not use Campusora to scam people, spread harmful
+                content, threaten members or share another person's
+                private information without permission.
+            </p>
+        </div>
+    </div>
+
+    <div class="safety-card">
+        <div class="icon">🔎</div>
+        <div>
+            <h3>Check before you trust</h3>
+            <p>
+                Take time to verify people, organisations, opportunities
+                and business offers before sharing information or
+                making payments.
+            </p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Your account and privacy</h2>
+
+    <a href="privacy.html" class="link-card">
+        <div class="link-left">
+            <span class="link-icon">🔒</span>
+            <div>
+                <strong>Privacy Settings</strong>
+                <small>Manage your privacy preferences.</small>
+            </div>
+        </div>
+        <span class="arrow">›</span>
+    </a>
+
+    <a href="account-management.html" class="link-card">
+        <div class="link-left">
+            <span class="link-icon">⚙️</span>
+            <div>
+                <strong>Account Management</strong>
+                <small>Manage your account status and requests.</small>
+            </div>
+        </div>
+        <span class="arrow">›</span>
+    </a>
+
+    <div class="notice">
+        <strong>About reporting and blocking</strong>
+        <p>
+            Campusora's reporting and member-blocking controls are
+            part of its platform safety system. These controls will
+            be connected to the relevant profile and content menus
+            during the platform's safety review.
+        </p>
+    </div>
+
+    <section class="support-box">
+        <h2>Need help with a safety concern?</h2>
+        <p>
+            If you experience harassment, suspicious activity,
+            account problems or another safety concern, contact
+            the Campusora support team.
+        </p>
+
+        <div class="support-links">
+            <a href="mailto:ablegodluke@gmail.com">✉ Email Support</a>
+            <a href="https://wa.me/2349017579718" target="_blank" rel="noopener noreferrer">💬 WhatsApp Support</a>
+        </div>
+    </section>
+
+    <div class="footer">
+        Campusora Safety Centre · Connect, Learn, Grow, Together.
+    </div>
+
+</main>
+
+</body>
+  </html>
