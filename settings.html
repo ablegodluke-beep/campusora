@@ -1,20 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Settings | Campusora</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-:root{
+<title>Settings | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root {
   --bg:#080b18;
   --card:#111629;
   --card2:#171d33;
-  --border:rgba(255,255,255,.09);
+  --border:rgba(255,255,255,.08);
   --text:#f4f5ff;
   --muted:#9ca6c5;
   --purple:#925bff;
@@ -23,600 +18,664 @@
   --green:#61e6b2;
   --red:#ff8294;
 }
-*{box-sizing:border-box}
-body{
+
+* {box-sizing:border-box}
+
+body {
   margin:0;
   min-height:100vh;
-  background:radial-gradient(circle at top left,#211640,transparent 35%),var(--bg);
+  background:var(--bg);
   color:var(--text);
   font-family:'DM Sans',sans-serif;
 }
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-a{color:inherit;text-decoration:none}
 
-.topbar{
-  height:65px;
-  padding:0 5%;
+button,input,textarea,select {font:inherit}
+button {cursor:pointer}
+a {color:inherit;text-decoration:none}
+
+.topbar {
+  height:60px;
+  padding:0 4%;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(8,11,24,.94);
+  background:rgba(8,11,24,.96);
   border-bottom:1px solid var(--border);
   position:sticky;
   top:0;
   z-index:10;
   backdrop-filter:blur(15px);
 }
-.brand{
-  font-size:22px;
+
+.brand {
+  font-size:21px;
   font-weight:800;
   background:linear-gradient(90deg,#b18aff,#45dafa);
   color:transparent;
   background-clip:text;
   -webkit-background-clip:text;
 }
-.back-link{
-  font-size:13px;
-  color:var(--muted);
-}
-.back-link:hover{color:var(--cyan)}
 
-.container{
-  width:min(850px,94%);
-  margin:30px auto 60px;
-}
-.page-heading{margin-bottom:23px}
-.page-heading h1{font-size:25px;margin:0}
-.page-heading p{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-  margin-top:7px;
-}
-
-/* SETTINGS NAVIGATION */
-.settings-navigation{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:11px;
-  margin-bottom:24px;
-}
-.nav-item{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:15px;
-  min-width:0;
-  background:rgba(17,22,41,.96);
-  border:1px solid var(--border);
-  border-radius:13px;
-  transition:.2s;
-}
-.nav-item:hover{
-  border-color:rgba(146,91,255,.6);
-  transform:translateY(-2px);
-  background:#171d33;
-}
-.nav-icon{
-  width:39px;
-  height:39px;
-  flex:0 0 39px;
-  display:grid;
-  place-items:center;
-  border-radius:11px;
-  background:linear-gradient(135deg,rgba(146,91,255,.25),rgba(57,215,245,.13));
-  font-size:18px;
-}
-.nav-text{min-width:0}
-.nav-text strong{
-  display:block;
+.back-link {
   font-size:12px;
-  font-weight:800;
-}
-.nav-text span{
-  display:block;
-  font-size:10px;
   color:var(--muted);
-  margin-top:4px;
-  line-height:1.4;
-}
-.nav-arrow{
-  margin-left:auto;
-  color:var(--muted);
-  font-size:17px;
-}
-.nav-item.disabled{
-  opacity:.58;
-  cursor:default;
-}
-.nav-item.disabled:hover{
-  transform:none;
-  border-color:var(--border);
-  background:rgba(17,22,41,.96);
-}
-.coming-soon{
-  display:inline-block;
-  margin-top:5px;
-  color:var(--cyan);
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:.4px;
 }
 
-/* CONTENT CARDS */
-.section-heading{
-  font-size:15px;
-  font-weight:800;
-  margin:27px 0 12px;
+.back-link:hover {color:var(--cyan)}
+
+.container {
+  width:min(700px,94%);
+  margin:25px auto 55px;
 }
-.card{
-  background:rgba(17,22,41,.96);
-  border:1px solid var(--border);
-  border-radius:17px;
-  padding:23px;
-  margin-bottom:17px;
-  scroll-margin-top:85px;
+
+.page-heading {
+  margin-bottom:20px;
 }
-.card h2{font-size:16px;margin:0 0 6px}
-.card-description{
+
+.page-heading h1 {
+  font-size:22px;
+  margin:0;
+  letter-spacing:-.5px;
+}
+
+.page-heading p {
   color:var(--muted);
   font-size:12px;
   line-height:1.6;
-  margin:0 0 21px;
-}
-.field{margin-bottom:17px}
-label{
-  display:block;
-  font-size:12px;
-  font-weight:700;
-  margin-bottom:8px;
-  color:#dce0f5;
-}
-input,textarea,select{
-  width:100%;
-  padding:13px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:var(--card2);
-  color:white;
-  outline:none;
-  font-size:13px;
-}
-input:focus,textarea:focus,select:focus{
-  border-color:var(--purple);
-  box-shadow:0 0 0 3px rgba(146,91,255,.12);
-}
-input::placeholder,textarea::placeholder{color:#737d9c}
-textarea{min-height:95px;resize:vertical}
-select option{background:var(--card)}
-
-.primary-btn{
-  width:100%;
-  padding:13px;
-  border:0;
-  border-radius:10px;
-  color:white;
-  font-size:13px;
-  font-weight:800;
-  background:linear-gradient(110deg,var(--purple),var(--blue));
-}
-.primary-btn:disabled{opacity:.6;cursor:wait}
-
-.secondary-btn{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:var(--card2);
-  color:white;
-  font-size:13px;
-  font-weight:700;
-}
-.danger-btn{
-  width:100%;
-  padding:12px;
-  border:1px solid rgba(255,100,120,.3);
-  border-radius:10px;
-  background:rgba(255,100,120,.08);
-  color:#ff9baa;
-  font-size:13px;
-  font-weight:700;
+  margin-top:6px;
 }
 
-.message{
+/* MESSAGE */
+
+.message {
   display:none;
   padding:12px;
   border-radius:10px;
-  margin-bottom:17px;
+  margin-bottom:15px;
   font-size:12px;
   line-height:1.6;
   overflow-wrap:anywhere;
 }
-.message.success{
+
+.message.success {
   display:block;
   color:var(--green);
   background:rgba(97,230,178,.08);
   border:1px solid rgba(97,230,178,.25);
 }
-.message.error{
+
+.message.error {
   display:block;
   color:var(--red);
   background:rgba(255,100,120,.08);
   border:1px solid rgba(255,100,120,.25);
 }
 
-.account-info{
+/* SETTINGS MENU */
+
+.menu-label {
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin:23px 0 10px;
+  text-transform:uppercase;
+}
+
+.settings-menu {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+  overflow:hidden;
+}
+
+.menu-row {
+  width:100%;
+  min-height:65px;
   display:flex;
   align-items:center;
   gap:12px;
-  padding:13px;
+  padding:12px 15px;
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--border);
+  color:var(--text);
+  text-align:left;
+  transition:.18s;
+}
+
+.menu-row:last-child {border-bottom:0}
+
+.menu-row:hover {
+  background:var(--card2);
+}
+
+.menu-icon {
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:linear-gradient(135deg,rgba(146,91,255,.22),rgba(57,215,245,.12));
+  font-size:17px;
+}
+
+.menu-text {
+  min-width:0;
+  flex:1;
+}
+
+.menu-text strong {
+  display:block;
+  font-size:12px;
+  font-weight:700;
+}
+
+.menu-text small {
+  display:block;
+  font-size:10px;
+  color:var(--muted);
+  margin-top:4px;
+  line-height:1.4;
+}
+
+.menu-arrow {
+  color:var(--muted);
+  font-size:19px;
+  transition:transform .2s;
+}
+
+.menu-row[aria-expanded="true"] .menu-arrow {
+  transform:rotate(90deg);
+  color:var(--cyan);
+}
+
+/* CLICK-TO-OPEN PANELS */
+
+.settings-panel {
+  display:none;
+  margin-top:10px;
+  margin-bottom:14px;
+}
+
+.settings-panel.open {
+  display:block;
+  animation:panelIn .2s ease;
+}
+
+@keyframes panelIn {
+  from {opacity:0;transform:translateY(-5px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+.card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:19px;
+  margin-bottom:12px;
+}
+
+.card h2 {
+  font-size:14px;
+  margin:0 0 6px;
+}
+
+.card-description {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+  margin:0 0 17px;
+}
+
+.account-info {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
   background:var(--card2);
   border:1px solid var(--border);
   border-radius:11px;
-  margin-bottom:18px;
+  margin-bottom:13px;
 }
-.account-icon{
-  width:40px;
-  height:40px;
-  border-radius:12px;
+
+.account-icon {
+  width:38px;
+  height:38px;
+  border-radius:11px;
   display:grid;
   place-items:center;
   background:linear-gradient(135deg,var(--purple),var(--blue));
-  font-size:18px;
+  font-size:17px;
 }
-.account-info strong{
+
+.account-info strong {
   display:block;
   font-size:12px;
   overflow-wrap:anywhere;
 }
-.account-info span{
+
+.account-info span {
   display:block;
   color:var(--muted);
-  font-size:11px;
+  font-size:10px;
   margin-top:4px;
   overflow-wrap:anywhere;
 }
-.small-note{
-  color:var(--muted);
+
+.field {margin-bottom:15px}
+
+label {
+  display:block;
   font-size:11px;
-  line-height:1.6;
-  margin-top:12px;
+  font-weight:700;
+  margin-bottom:7px;
+  color:#dce0f5;
 }
 
-.cover-preview{
+input,textarea,select {
   width:100%;
-  height:155px;
-  border-radius:12px;
-  overflow:hidden;
+  padding:12px;
+  border-radius:9px;
   border:1px solid var(--border);
-  background:linear-gradient(120deg,#211640,#172d49);
-  margin-bottom:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--muted);
+  background:var(--card2);
+  color:white;
+  outline:none;
   font-size:12px;
 }
-.cover-preview img{
+
+input:focus,textarea:focus,select:focus {
+  border-color:var(--purple);
+  box-shadow:0 0 0 3px rgba(146,91,255,.12);
+}
+
+input::placeholder,textarea::placeholder {color:#737d9c}
+textarea {min-height:85px;resize:vertical}
+select option {background:var(--card)}
+
+.primary-btn {
   width:100%;
-  height:100%;
-  object-fit:cover;
-  display:none;
+  padding:12px;
+  border:0;
+  border-radius:9px;
+  color:white;
+  font-size:12px;
+  font-weight:800;
+  background:linear-gradient(110deg,var(--purple),var(--blue));
 }
-.avatar-row{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  margin:14px 0 20px;
+
+.primary-btn:disabled {
+  opacity:.6;
+  cursor:wait;
 }
-.avatar-preview{
-  width:88px;
-  height:88px;
-  flex:0 0 88px;
-  border-radius:50%;
-  overflow:hidden;
-  border:3px solid rgba(146,91,255,.7);
-  background:var(--card2);
-  display:grid;
-  place-items:center;
-  font-size:30px;
-}
-.avatar-preview img{
+
+.secondary-btn {
   width:100%;
-  height:100%;
-  object-fit:cover;
-  display:none;
-}
-.upload-label{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:10px 13px;
-  border:1px solid rgba(146,91,255,.45);
+  display:block;
+  text-align:center;
+  padding:11px;
+  border:1px solid var(--border);
   border-radius:9px;
   background:var(--card2);
   color:white;
   font-size:12px;
   font-weight:700;
-  cursor:pointer;
 }
-.upload-label input{display:none}
-.file-name{
-  display:block;
+
+.danger-btn {
+  width:100%;
+  padding:11px;
+  border:1px solid rgba(255,100,120,.3);
+  border-radius:9px;
+  background:rgba(255,100,120,.08);
+  color:#ff9baa;
+  font-size:12px;
+  font-weight:700;
+}
+
+.small-note {
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+  margin-top:9px;
+}
+
+/* PROFILE PHOTOS */
+
+.cover-preview {
+  width:100%;
+  height:130px;
+  border-radius:11px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:linear-gradient(120deg,#211640,#172d49);
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   color:var(--muted);
   font-size:11px;
-  margin-top:7px;
+}
+
+.cover-preview img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.avatar-row {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin:12px 0 17px;
+}
+
+.avatar-preview {
+  width:75px;
+  height:75px;
+  flex:0 0 75px;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid rgba(146,91,255,.7);
+  background:var(--card2);
+  display:grid;
+  place-items:center;
+  font-size:26px;
+}
+
+.avatar-preview img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.upload-label {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:9px 12px;
+  border:1px solid rgba(146,91,255,.45);
+  border-radius:8px;
+  background:var(--card2);
+  color:white;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.upload-label input {display:none}
+
+.file-name {
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:6px;
   overflow-wrap:anywhere;
 }
 
-@media(max-width:550px){
-  .container{margin-top:23px}
-  .settings-navigation{grid-template-columns:1fr}
-  .card{padding:18px}
-  .page-heading h1{font-size:22px}
+/* BOTTOM */
+
+.footer {
+  text-align:center;
+  color:#68718b;
+  font-size:10px;
+  padding:25px 5px;
 }
-</style>
-</head>
 
-<body>
-
-<header class="topbar">
+@media(max-width:450px) {
+  .container {margin-top:20px}
+  .menu-row {min-height:62px;padding:11px 12px}
+  .card {padding:15px}
+  .page-heading h1 {font-size:21px}
+}
+</style></head><body><header class="topbar">
   <a href="./index.html" class="brand">Campusora</a>
   <a href="./index.html" class="back-link">← Back to feed</a>
-</header>
-
-<main class="container">
-
-  <div class="page-heading">
+</header><main class="container">  <div class="page-heading">
     <h1>Settings ⚙️</h1>
-    <p>Manage your account, profile, privacy and Campusora preferences.</p>
+    <p>Manage your Campusora account and preferences.</p>
+  </div>  <div id="pageMessage" class="message" role="status" aria-live="polite"></div>  <div class="menu-label">Account</div>  <div class="settings-menu"><button type="button" class="menu-row toggle-panel"
+  data-panel="accountPanel" aria-expanded="false">
+  <span class="menu-icon">👤</span>
+  <span class="menu-text">
+    <strong>Account Settings</strong>
+    <small>Account information, password and logout</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</button>
+
+<button type="button" class="menu-row toggle-panel"
+  data-panel="profilePanel" aria-expanded="false">
+  <span class="menu-icon">🖼️</span>
+  <span class="menu-text">
+    <strong>Profile Settings</strong>
+    <small>Profile pictures and personal information</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</button>
+
+<a href="./privacy.html" class="menu-row">
+  <span class="menu-icon">🔒</span>
+  <span class="menu-text">
+    <strong>Privacy Settings</strong>
+    <small>Manage your privacy preferences</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</a>
+
+<a href="./account-management.html" class="menu-row">
+  <span class="menu-icon">⚙️</span>
+  <span class="menu-text">
+    <strong>Account Management</strong>
+    <small>Manage your account status and requests</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</a>
+
+  </div>  <!-- ACCOUNT PANEL: CLOSED UNTIL CLICKED -->  <section class="settings-panel" id="accountPanel"><div class="card">
+  <h2>Your account</h2>
+  <p class="card-description">Your currently signed-in Campusora account.</p>
+
+  <div class="account-info">
+    <div class="account-icon">👤</div>
+    <div>
+      <strong id="accountName">Loading account...</strong>
+      <span id="accountEmail">Please wait</span>
+    </div>
   </div>
 
-  <div id="pageMessage" class="message" role="status" aria-live="polite"></div>
+  <a id="profileLink" href="./profile.html" class="secondary-btn">
+    View my public profile
+  </a>
+</div>
 
-  <h2 class="section-heading">Your Settings</h2>
+<div class="card">
+  <h2>Change password 🔐</h2>
+  <p class="card-description">Choose a new password for your Campusora account.</p>
 
-  <nav class="settings-navigation">
+  <form id="passwordForm">
 
-    <a href="#accountSettings" class="nav-item">
-      <div class="nav-icon">👤</div>
-      <div class="nav-text">
-        <strong>Account Settings</strong>
-        <span>Account information and password</span>
-      </div>
-      <span class="nav-arrow">›</span>
-    </a>
-
-    <a href="#profileSettings" class="nav-item">
-      <div class="nav-icon">🖼️</div>
-      <div class="nav-text">
-        <strong>Profile Settings</strong>
-        <span>Pictures and personal information</span>
-      </div>
-      <span class="nav-arrow">›</span>
-    </a>
-
-    <a href="./privacy.html" class="nav-item">
-      <div class="nav-icon">🔒</div>
-      <div class="nav-text">
-        <strong>Privacy Settings</strong>
-        <span>Manage your privacy preferences</span>
-      </div>
-      <span class="nav-arrow">›</span>
-    </a>
-
-    <a href="./account-management.html" class="nav-item">
-      <div class="nav-icon">⚙️</div>
-      <div class="nav-text">
-        <strong>Account Management</strong>
-        <span>Manage your account status</span>
-      </div>
-      <span class="nav-arrow">›</span>
-    </a>
-
-    <div class="nav-item disabled">
-      <div class="nav-icon">🚫</div>
-      <div class="nav-text">
-        <strong>Blocked Accounts</strong>
-        <span>Manage people you have blocked</span>
-        <small class="coming-soon">COMING SOON</small>
-      </div>
+    <div class="field">
+      <label for="newPassword">New password</label>
+      <input id="newPassword" type="password" minlength="8"
+        autocomplete="new-password"
+        placeholder="At least 8 characters" required>
     </div>
 
-    <div class="nav-item disabled">
-      <div class="nav-icon">🛡️</div>
-      <div class="nav-text">
-        <strong>Safety Centre</strong>
-        <span>Reporting and safety tools</span>
-        <small class="coming-soon">COMING SOON</small>
-      </div>
+    <div class="field">
+      <label for="confirmPassword">Confirm new password</label>
+      <input id="confirmPassword" type="password" minlength="8"
+        autocomplete="new-password"
+        placeholder="Enter the password again" required>
     </div>
 
-    <div class="nav-item disabled">
-      <div class="nav-icon">💬</div>
-      <div class="nav-text">
-        <strong>Help & Support</strong>
-        <span>Get assistance with Campusora</span>
-        <small class="coming-soon">COMING SOON</small>
-      </div>
+    <button type="submit" class="primary-btn" id="changePasswordBtn">
+      Update password
+    </button>
+
+  </form>
+</div>
+
+<div class="card">
+  <h2>Sign out</h2>
+  <p class="card-description">Sign out of your Campusora account on this device.</p>
+
+  <button type="button" class="danger-btn" id="logoutBtn">
+    Log out of Campusora
+  </button>
+</div>
+
+  </section>  <div class="menu-label">Profile & Preferences</div>  <div class="settings-menu"><a href="./safety-centre.html" class="menu-row">
+  <span class="menu-icon">🛡️</span>
+  <span class="menu-text">
+    <strong>Safety Centre</strong>
+    <small>Account safety and community guidelines</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</a>
+
+<a href="./help-support.html" class="menu-row">
+  <span class="menu-icon">💬</span>
+  <span class="menu-text">
+    <strong>Help & Support</strong>
+    <small>Get assistance with Campusora</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</a>
+
+<a href="./legal.html" class="menu-row">
+  <span class="menu-icon">📄</span>
+  <span class="menu-text">
+    <strong>Legal & Policies</strong>
+    <small>Terms and platform policies</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</a>
+
+<a href="./about.html" class="menu-row">
+  <span class="menu-icon">ℹ️</span>
+  <span class="menu-text">
+    <strong>About Campusora</strong>
+    <small>Learn about our community</small>
+  </span>
+  <span class="menu-arrow">›</span>
+</a>
+
+  </div>  <!-- PROFILE PANEL: CLOSED UNTIL CLICKED -->  <section class="settings-panel" id="profilePanel"><div class="card">
+  <h2>Profile pictures 📸</h2>
+  <p class="card-description">
+    Change your profile picture and cover picture.
+  </p>
+
+  <div class="field">
+    <label>Cover picture</label>
+
+    <div class="cover-preview">
+      <span id="coverPlaceholder">Your cover picture will appear here</span>
+      <img id="coverPreview" alt="Cover picture preview">
     </div>
 
-    <div class="nav-item disabled">
-      <div class="nav-icon">📄</div>
-      <div class="nav-text">
-        <strong>Legal & Policies</strong>
-        <span>Terms and platform policies</span>
-        <small class="coming-soon">COMING SOON</small>
+    <label class="upload-label">
+      Choose cover picture
+      <input id="coverFile" type="file"
+        accept="image/jpeg,image/png,image/webp">
+    </label>
+
+    <span class="file-name" id="coverFileName">
+      No new cover picture selected
+    </span>
+  </div>
+
+  <div class="field">
+    <label>Profile picture</label>
+
+    <div class="avatar-row">
+      <div class="avatar-preview">
+        <span id="avatarPlaceholder">👤</span>
+        <img id="avatarPreview" alt="Profile picture preview">
       </div>
-    </div>
 
-    <div class="nav-item disabled">
-      <div class="nav-icon">ℹ️</div>
-      <div class="nav-text">
-        <strong>About Campusora</strong>
-        <span>Learn more about our platform</span>
-        <small class="coming-soon">COMING SOON</small>
-      </div>
-    </div>
-
-  </nav>
-
-  <h2 class="section-heading">Account & Profile</h2>
-
-  <section class="card" id="accountSettings">
-    <h2>Your account</h2>
-    <p class="card-description">Your currently signed-in Campusora account.</p>
-
-    <div class="account-info">
-      <div class="account-icon">👤</div>
       <div>
-        <strong id="accountName">Loading account...</strong>
-        <span id="accountEmail">Please wait</span>
+        <label class="upload-label">
+          Choose profile picture
+          <input id="avatarFile" type="file"
+            accept="image/jpeg,image/png,image/webp">
+        </label>
+
+        <span class="file-name" id="avatarFileName">
+          No new profile picture selected
+        </span>
       </div>
     </div>
+  </div>
 
-    <a id="profileLink" href="./profile.html" class="secondary-btn"
-       style="display:block;text-align:center;">
-      View my public profile
-    </a>
-  </section>
+  <p class="small-note">
+    JPG, PNG or WebP only. Maximum file size: 5 MB per image.
+  </p>
 
-  <section class="card" id="profileSettings">
-    <h2>Profile pictures 📸</h2>
-    <p class="card-description">Change your profile picture and cover picture.</p>
+  <button type="button" class="primary-btn" id="savePhotosBtn">
+    Save picture changes
+  </button>
+</div>
+
+<div class="card">
+  <h2>Profile information</h2>
+  <p class="card-description">
+    Update the information people see when they visit your profile.
+  </p>
+
+  <form id="profileForm">
 
     <div class="field">
-      <label>Cover picture</label>
-
-      <div class="cover-preview">
-        <span id="coverPlaceholder">Your cover picture will appear here</span>
-        <img id="coverPreview" alt="Cover picture preview">
-      </div>
-
-      <label class="upload-label">
-        Choose cover picture
-        <input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
-      </label>
-
-      <span class="file-name" id="coverFileName">No new cover picture selected</span>
+      <label for="fullName">Full name</label>
+      <input id="fullName" type="text" maxlength="80"
+        placeholder="Your full name" required>
     </div>
 
     <div class="field">
-      <label>Profile picture</label>
-
-      <div class="avatar-row">
-        <div class="avatar-preview">
-          <span id="avatarPlaceholder">👤</span>
-          <img id="avatarPreview" alt="Profile picture preview">
-        </div>
-
-        <div>
-          <label class="upload-label">
-            Choose profile picture
-            <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp">
-          </label>
-
-          <span class="file-name" id="avatarFileName">No new profile picture selected</span>
-        </div>
-      </div>
+      <label for="username">Username</label>
+      <input id="username" type="text" minlength="3" maxlength="24"
+        pattern="[A-Za-z0-9_]+"
+        placeholder="your_username" required>
+      <p class="small-note">
+        Use 3–24 letters, numbers or underscores.
+      </p>
     </div>
 
-    <p class="small-note">JPG, PNG or WebP only. Maximum file size: 5 MB per image.</p>
+    <div class="field">
+      <label for="school">School or institution</label>
+      <input id="school" type="text" maxlength="120"
+        placeholder="Your school" required>
+    </div>
 
-    <button type="button" class="primary-btn" id="savePhotosBtn">
-      Save picture changes
+    <div class="field">
+      <label for="role">Membership type</label>
+      <select id="role" required>
+        <option value="student">Student</option>
+        <option value="alumni">Alumni</option>
+        <option value="general">General Member</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="bio">About you</label>
+      <textarea id="bio" maxlength="300"
+        placeholder="Tell people something about yourself..."></textarea>
+    </div>
+
+    <button type="submit" class="primary-btn" id="saveProfileBtn">
+      Save profile changes
     </button>
-  </section>
 
-  <section class="card">
-    <h2>Profile information</h2>
-    <p class="card-description">
-      Update the information people see when they visit your profile.
-    </p>
+  </form>
+</div>
 
-    <form id="profileForm">
-
-      <div class="field">
-        <label for="fullName">Full name</label>
-        <input id="fullName" type="text" maxlength="80"
-               placeholder="Your full name" required>
-      </div>
-
-      <div class="field">
-        <label for="username">Username</label>
-        <input id="username" type="text" minlength="3" maxlength="24"
-               pattern="[A-Za-z0-9_]+" placeholder="your_username" required>
-        <p class="small-note">Use 3–24 letters, numbers or underscores.</p>
-      </div>
-
-      <div class="field">
-        <label for="school">School or institution</label>
-        <input id="school" type="text" maxlength="120"
-               placeholder="Your school" required>
-      </div>
-
-      <div class="field">
-        <label for="role">Membership type</label>
-        <select id="role" required>
-          <option value="student">Student</option>
-          <option value="alumni">Alumni</option>
-          <option value="general">General Member</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="bio">About you</label>
-        <textarea id="bio" maxlength="300"
-                  placeholder="Tell people something about yourself..."></textarea>
-      </div>
-
-      <button type="submit" class="primary-btn" id="saveProfileBtn">
-        Save profile changes
-      </button>
-
-    </form>
-  </section>
-
-  <section class="card">
-    <h2>Change password 🔐</h2>
-    <p class="card-description">Choose a new password for your Campusora account.</p>
-
-    <form id="passwordForm">
-
-      <div class="field">
-        <label for="newPassword">New password</label>
-        <input id="newPassword" type="password" minlength="8"
-               autocomplete="new-password"
-               placeholder="At least 8 characters" required>
-      </div>
-
-      <div class="field">
-        <label for="confirmPassword">Confirm new password</label>
-        <input id="confirmPassword" type="password" minlength="8"
-               autocomplete="new-password"
-               placeholder="Enter the password again" required>
-      </div>
-
-      <button type="submit" class="primary-btn" id="changePasswordBtn">
-        Update password
-      </button>
-
-    </form>
-  </section>
-
-  <section class="card">
-    <h2>Sign out</h2>
-    <p class="card-description">Sign out of your Campusora account on this device.</p>
-
-    <button type="button" class="danger-btn" id="logoutBtn">
-      Log out of Campusora
-    </button>
-  </section>
-
-</main>
-
-<script type="module">
+  </section>  <div class="footer">
+    Campusora · Connect, Learn, Grow, Together.
+  </div></main><script type="module">
 import { supabase } from './supabase.js';
 
 const pageMessage = document.getElementById('pageMessage');
@@ -644,7 +703,35 @@ let existingCoverUrl = '';
 let avatarObjectUrl = null;
 let coverObjectUrl = null;
 
-function showMessage(message, type = 'success') {
+/* OPEN SETTINGS SECTIONS ONLY WHEN CLICKED */
+document.querySelectorAll('.toggle-panel').forEach(button => {
+  button.addEventListener('click', () => {
+    const panel = document.getElementById(button.dataset.panel);
+    const isOpen = panel.classList.contains('open');
+
+    document.querySelectorAll('.settings-panel').forEach(item => {
+      item.classList.remove('open');
+    });
+
+    document.querySelectorAll('.toggle-panel').forEach(item => {
+      item.setAttribute('aria-expanded','false');
+    });
+
+    if (!isOpen) {
+      panel.classList.add('open');
+      button.setAttribute('aria-expanded','true');
+
+      setTimeout(() => {
+        panel.scrollIntoView({
+          behavior:'smooth',
+          block:'nearest'
+        });
+      },50);
+    }
+  });
+});
+
+function showMessage(message,type='success') {
   pageMessage.textContent = message;
   pageMessage.className = 'message ' + type;
   window.scrollTo({top:0,behavior:'smooth'});
@@ -711,6 +798,7 @@ function validatePhoto(file) {
   return null;
 }
 
+/* LOAD ACCOUNT AND PROFILE */
 async function initialise() {
   const {data,error} = await supabase.auth.getSession();
 
@@ -731,12 +819,18 @@ async function initialise() {
     .maybeSingle();
 
   if (profileError) {
-    showMessage('We could not load your profile information. Please refresh the page.','error');
+    showMessage(
+      'We could not load your profile information. Please refresh the page.',
+      'error'
+    );
     return;
   }
 
   if (!profile) {
-    showMessage('Your profile has not been created yet. Please complete profile setup first.','error');
+    showMessage(
+      'Your profile has not been created yet. Please complete profile setup first.',
+      'error'
+    );
     return;
   }
 
@@ -760,7 +854,7 @@ async function initialise() {
 }
 
 /* PROFILE PICTURE PREVIEW */
-avatarFile.addEventListener('change', () => {
+avatarFile.addEventListener('change',() => {
   const file = avatarFile.files[0];
   if (!file) return;
 
@@ -768,7 +862,7 @@ avatarFile.addEventListener('change', () => {
 
   if (error) {
     avatarFile.value = '';
-    showMessage(error, 'error');
+    showMessage(error,'error');
     return;
   }
 
@@ -780,7 +874,7 @@ avatarFile.addEventListener('change', () => {
 });
 
 /* COVER PICTURE PREVIEW */
-coverFile.addEventListener('change', () => {
+coverFile.addEventListener('change',() => {
   const file = coverFile.files[0];
   if (!file) return;
 
@@ -788,7 +882,7 @@ coverFile.addEventListener('change', () => {
 
   if (error) {
     coverFile.value = '';
-    showMessage(error, 'error');
+    showMessage(error,'error');
     return;
   }
 
@@ -799,8 +893,8 @@ coverFile.addEventListener('change', () => {
   setCoverPreview(coverObjectUrl);
 });
 
-/* UPLOAD TO SUPABASE */
-async function uploadProfilePhoto(file, imageType) {
+/* UPLOAD PHOTO */
+async function uploadProfilePhoto(file,imageType) {
   const extension = file.type === 'image/jpeg' ? 'jpg' :
     file.type === 'image/png' ? 'png' : 'webp';
 
@@ -810,7 +904,7 @@ async function uploadProfilePhoto(file, imageType) {
 
   const {error:uploadError} = await supabase.storage
     .from('campusora-images')
-    .upload(filePath, file, {
+    .upload(filePath,file,{
       cacheControl:'3600',
       contentType:file.type,
       upsert:false
@@ -825,12 +919,12 @@ async function uploadProfilePhoto(file, imageType) {
   return data.publicUrl;
 }
 
-/* SAVE SELECTED PICTURES */
-savePhotosBtn.addEventListener('click', async () => {
+/* SAVE PICTURES */
+savePhotosBtn.addEventListener('click',async () => {
   clearMessage();
 
   if (!currentUser) {
-    showMessage('Your session has expired. Please log in again.', 'error');
+    showMessage('Your session has expired. Please log in again.','error');
     return;
   }
 
@@ -838,14 +932,14 @@ savePhotosBtn.addEventListener('click', async () => {
   const cover = coverFile.files[0];
 
   if (!avatar && !cover) {
-    showMessage('Choose a new profile picture or cover picture first.', 'error');
+    showMessage('Choose a new profile picture or cover picture first.','error');
     return;
   }
 
   const validationError = validatePhoto(avatar) || validatePhoto(cover);
 
   if (validationError) {
-    showMessage(validationError, 'error');
+    showMessage(validationError,'error');
     return;
   }
 
@@ -858,7 +952,7 @@ savePhotosBtn.addEventListener('click', async () => {
 
     if (avatar) {
       uploads.push(
-        uploadProfilePhoto(avatar, 'avatar').then(url => {
+        uploadProfilePhoto(avatar,'avatar').then(url => {
           updates.avatar_url = url;
         })
       );
@@ -866,7 +960,7 @@ savePhotosBtn.addEventListener('click', async () => {
 
     if (cover) {
       uploads.push(
-        uploadProfilePhoto(cover, 'cover').then(url => {
+        uploadProfilePhoto(cover,'cover').then(url => {
           updates.cover_url = url;
         })
       );
@@ -877,17 +971,12 @@ savePhotosBtn.addEventListener('click', async () => {
     const {error:updateError} = await supabase
       .from('profiles')
       .update(updates)
-      .eq('id', currentUser.id);
+      .eq('id',currentUser.id);
 
     if (updateError) throw updateError;
 
-    if (updates.avatar_url) {
-      existingAvatarUrl = updates.avatar_url;
-    }
-
-    if (updates.cover_url) {
-      existingCoverUrl = updates.cover_url;
-    }
+    if (updates.avatar_url) existingAvatarUrl = updates.avatar_url;
+    if (updates.cover_url) existingCoverUrl = updates.cover_url;
 
     avatarFile.value = '';
     coverFile.value = '';
@@ -916,7 +1005,7 @@ savePhotosBtn.addEventListener('click', async () => {
     }
 
   } catch(error) {
-    console.error('Picture upload error:', error);
+    console.error('Picture upload error:',error);
 
     showMessage(
       error.message || 'Could not save your pictures. Please try again.',
@@ -930,7 +1019,7 @@ savePhotosBtn.addEventListener('click', async () => {
 });
 
 /* UPDATE PROFILE INFORMATION */
-profileForm.addEventListener('submit', async (event) => {
+profileForm.addEventListener('submit',async event => {
   event.preventDefault();
   clearMessage();
 
@@ -943,7 +1032,10 @@ profileForm.addEventListener('submit', async (event) => {
   const bio = document.getElementById('bio').value.trim();
 
   if (!/^[a-z0-9_]{3,24}$/.test(username)) {
-    showMessage('Your username must be 3–24 characters using letters, numbers or underscores.','error');
+    showMessage(
+      'Your username must be 3–24 characters using letters, numbers or underscores.',
+      'error'
+    );
     return;
   }
 
@@ -989,7 +1081,8 @@ profileForm.addEventListener('submit', async (event) => {
   } catch(error) {
     console.error('Profile update error:',error);
 
-    let message = error.message || 'Could not update your profile. Please try again.';
+    let message = error.message ||
+      'Could not update your profile. Please try again.';
 
     if (error.code === '23505') {
       message = 'That username is already taken. Please choose another one.';
@@ -1004,7 +1097,7 @@ profileForm.addEventListener('submit', async (event) => {
 });
 
 /* CHANGE PASSWORD */
-passwordForm.addEventListener('submit', async (event) => {
+passwordForm.addEventListener('submit',async event => {
   event.preventDefault();
   clearMessage();
 
@@ -1036,7 +1129,11 @@ passwordForm.addEventListener('submit', async (event) => {
 
   } catch(error) {
     console.error('Password update error:',error);
-    showMessage(error.message || 'Could not update your password. Please try again.','error');
+
+    showMessage(
+      error.message || 'Could not update your password. Please try again.',
+      'error'
+    );
 
   } finally {
     changePasswordBtn.disabled = false;
@@ -1045,8 +1142,10 @@ passwordForm.addEventListener('submit', async (event) => {
 });
 
 /* LOG OUT */
-logoutBtn.addEventListener('click', async () => {
-  const confirmed = window.confirm('Are you sure you want to log out of Campusora?');
+logoutBtn.addEventListener('click',async () => {
+  const confirmed = window.confirm(
+    'Are you sure you want to log out of Campusora?'
+  );
 
   if (!confirmed) return;
 
@@ -1056,7 +1155,11 @@ logoutBtn.addEventListener('click', async () => {
   const {error} = await supabase.auth.signOut();
 
   if (error) {
-    showMessage(error.message || 'Could not log out. Please try again.','error');
+    showMessage(
+      error.message || 'Could not log out. Please try again.',
+      'error'
+    );
+
     logoutBtn.disabled = false;
     logoutBtn.textContent = 'Log out of Campusora';
     return;
@@ -1066,7 +1169,5 @@ logoutBtn.addEventListener('click', async () => {
 });
 
 initialise();
-</script>
-
-</body>
-        </html>
+</script></body>
+  </html>
