@@ -1,0 +1,472 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Campusora</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root {
+    --bg: #080b18;
+    --card: #111629;
+    --card2: #171e34;
+    --border: rgba(255,255,255,.08);
+    --text: #f4f5ff;
+    --muted: #929bb5;
+    --purple: #8b5cf6;
+    --blue: #4385ff;
+    --cyan: #36d5ed;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.topbar {
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,11,24,.96);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.7px;
+}
+
+.logo span {
+    color: var(--purple);
+}
+
+.back-btn {
+    color: #d7d9ed;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 9px 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.container {
+    width: min(850px, 92%);
+    margin: 35px auto 60px;
+}
+
+.tag {
+    display: inline-block;
+    color: #c4adff;
+    background: rgba(139,92,246,.13);
+    border: 1px solid rgba(139,92,246,.2);
+    padding: 6px 11px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 13px;
+}
+
+.heading {
+    margin-bottom: 25px;
+}
+
+.heading h1 {
+    font-size: clamp(29px, 5vw, 42px);
+    letter-spacing: -1.2px;
+    margin-bottom: 12px;
+}
+
+.heading p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.9;
+    max-width: 680px;
+}
+
+.hero {
+    background: linear-gradient(120deg, rgba(104,65,210,.25), rgba(35,126,210,.14));
+    border: 1px solid rgba(139,92,246,.22);
+    border-radius: 20px;
+    padding: 30px 25px;
+    margin-bottom: 25px;
+}
+
+.hero-logo {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 12px;
+}
+
+.hero-logo span {
+    color: #a78bfa;
+}
+
+.hero h2 {
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #c0c7dd;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.section-title {
+    font-size: 17px;
+    margin: 30px 0 13px;
+}
+
+.info-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 12px;
+}
+
+.info-card h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.info-card p {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.9;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 17px;
+}
+
+.feature-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    background: rgba(139,92,246,.14);
+    border-radius: 12px;
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.feature h3 {
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.feature p {
+    color: var(--muted);
+    font-size: 11.5px;
+    line-height: 1.8;
+}
+
+.audience {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.audience span {
+    background: rgba(139,92,246,.12);
+    border: 1px solid rgba(139,92,246,.2);
+    padding: 10px 14px;
+    border-radius: 30px;
+    color: #d2c3ff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.mission {
+    background: linear-gradient(120deg, rgba(54,213,237,.08), rgba(67,133,255,.1));
+    border: 1px solid rgba(54,213,237,.16);
+    border-radius: 16px;
+    padding: 22px;
+    margin-top: 25px;
+}
+
+.mission h2 {
+    font-size: 17px;
+    margin-bottom: 9px;
+}
+
+.mission p {
+    color: #b9c5d8;
+    font-size: 12.5px;
+    line-height: 1.9;
+}
+
+.contact {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 22px;
+}
+
+.contact h2 {
+    font-size: 16px;
+    margin-bottom: 7px;
+}
+
+.contact p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.contact-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.contact-links a {
+    background: linear-gradient(110deg, var(--purple), var(--blue));
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.footer {
+    text-align: center;
+    color: #68718b;
+    font-size: 11px;
+    padding: 30px 10px;
+}
+
+@media(max-width:600px) {
+    .topbar {
+        padding: 0 4%;
+        height: 60px;
+    }
+
+    .logo {
+        font-size: 19px;
+    }
+
+    .container {
+        margin-top: 25px;
+    }
+
+    .hero {
+        padding: 23px 19px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+    }
+
+    .feature {
+        padding: 14px;
+    }
+}
+
+@media(max-width:350px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style></head><body><header class="topbar">
+    <a href="index.html" class="logo">Campus<span>ora</span></a>
+    <a href="settings.html" class="back-btn">← Settings</a>
+</header><main class="container"><section class="heading">
+    <span class="tag">GET TO KNOW US</span>
+    <h1>About Campusora 🌍</h1>
+    <p>
+        A digital community bringing students, alumni and
+        people together through campus conversations,
+        creativity, connections and opportunities.
+    </p>
+</section>
+
+<section class="hero">
+    <div class="hero-logo">Campus<span>ora</span></div>
+    <h2>Connect, Learn, Grow, Together.</h2>
+    <p>
+        Campusora is a campus-focused social platform designed
+        to connect people across Nigerian universities,
+        polytechnics, colleges and other higher institutions.
+        It creates a space where campus life, ideas, talents,
+        friendships and opportunities can come together.
+    </p>
+</section>
+
+<h2 class="section-title">Our Story</h2>
+
+<div class="info-card">
+    <h3>Why Campusora?</h3>
+    <p>
+        Campus communities are full of creativity, knowledge,
+        talent and opportunities. However, connecting with
+        people beyond your immediate environment can be
+        difficult.
+        <br><br>
+        Campusora aims to bring these communities closer
+        through one shared social platform where people
+        can discover one another, express themselves,
+        share experiences and explore opportunities.
+    </p>
+</div>
+
+<h2 class="section-title">Our Mission</h2>
+
+<div class="info-card">
+    <h3>Connecting campuses and creating possibilities</h3>
+    <p>
+        Our mission is to build a welcoming digital community
+        that makes it easier for students, alumni and general
+        members to connect, share knowledge, discover talent
+        and access meaningful opportunities.
+    </p>
+</div>
+
+<h2 class="section-title">Who Is Campusora For?</h2>
+
+<div class="audience">
+    <span>🎓 Students</span>
+    <span>🏅 Alumni</span>
+    <span>🌍 General Members</span>
+</div>
+
+<h2 class="section-title">Explore Campusora</h2>
+
+<div class="feature-grid">
+
+    <div class="feature">
+        <div class="feature-icon">📰</div>
+        <h3>Campus Feed</h3>
+        <p>
+            Share thoughts, experiences, pictures and
+            conversations with the community.
+        </p>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">🎬</div>
+        <h3>Spotlight</h3>
+        <p>
+            Discover short videos, creativity and
+            interesting campus content.
+        </p>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">👥</div>
+        <h3>Communities</h3>
+        <p>
+            Connect with people around institutions
+            and shared interests.
+        </p>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">💬</div>
+        <h3>Messaging</h3>
+        <p>
+            Connect and communicate with other
+            members of the platform.
+        </p>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">📅</div>
+        <h3>Campus Events</h3>
+        <p>
+            Discover and share activities,
+            gatherings and campus events.
+        </p>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">🛍️</div>
+        <h3>Marketplace</h3>
+        <p>
+            Explore products and services
+            shared within the community.
+        </p>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">🔎</div>
+        <h3>Discover People</h3>
+        <p>
+            Find members, explore profiles
+            and follow creators.
+        </p>
+    </div>
+
+    <div class="feature">
+        <div class="feature-icon">🚀</div>
+        <h3>Opportunities</h3>
+        <p>
+            Explore opportunities, useful
+            resources and new connections.
+        </p>
+    </div>
+
+</div>
+
+<section class="mission">
+    <h2>Our Vision ✨</h2>
+    <p>
+        We envision a connected campus community where
+        students, graduates and people from different
+        institutions can share ideas, discover opportunities,
+        showcase their talents and build meaningful
+        relationships beyond geographical boundaries.
+    </p>
+</section>
+
+<section class="contact">
+    <h2>Connect With Campusora</h2>
+    <p>
+        Have a question, suggestion or collaboration idea?
+        We'd love to hear from you.
+    </p>
+
+    <div class="contact-links">
+        <a href="mailto:ablegodluke@gmail.com">✉ Email Us</a>
+        <a href="https://wa.me/2349017579718"
+           target="_blank"
+           rel="noopener noreferrer">💬 WhatsApp</a>
+    </div>
+</section>
+
+<div class="footer">
+    Campusora · Connect, Learn, Grow, Together.
+</div>
+
+</main></body>
+  </html>
