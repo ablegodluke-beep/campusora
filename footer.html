@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Campusora Footer Preview</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #080b18;
+  --surface: #10162a;
+  --text: #f4f6ff;
+  --muted: #929bb3;
+  --border: rgba(255,255,255,.09);
+  --purple: #8B5CF6;
+  --blue: #3B82F6;
+  --cyan: #06B6D4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.preview {
+  min-height: 350px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  padding: 30px;
+  text-align: center;
+}
+
+/* FOOTER */
+
+.campusora-footer {
+  background:
+    radial-gradient(
+      circle at 12% 0%,
+      rgba(139,92,246,.10),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(6,182,212,.07),
+      transparent 30%
+    ),
+    #080b18;
+
+  border-top: 1px solid var(--border);
+  padding: 65px 24px 24px;
+}
+
+.footer-container {
+  max-width: 1180px;
+  margin: auto;
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+/* BRAND */
+
+.footer-brand {
+  max-width: 260px;
+}
+
+.logo-placeholder {
+  width: 65px;
+  height: 65px;
+  border: 1px dashed rgba(139,92,246,.6);
+  border-radius: 19px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 17px;
+  color: var(--purple);
+  font-size: 10px;
+  text-align: center;
+  padding: 5px;
+}
+
+.brand-name {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.brand-name span {
+  background: linear-gradient(
+    100deg,
+    var(--purple),
+    var(--blue),
+    var(--cyan)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-tagline {
+  color: #b7c0d7;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-top: 8px;
+}
+
+.brand-description {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 17px;
+}
+
+/* LINK GROUPS */
+
+.footer-column h3 {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  color: #f5f6ff;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.footer-links a,
+.coming-soon {
+  color: var(--muted);
+  font-size: 12px;
+  transition: color .2s;
+}
+
+.footer-links a:hover {
+  color: var(--cyan);
+}
+
+.coming-soon {
+  opacity: .55;
+  cursor: default;
+}
+
+/* SOCIAL */
+
+.footer-social {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.social-link {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.social-link:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+/* SOCIAL AREA */
+
+.footer-social-section {
+  padding: 25px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-social-section h3 {
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+.footer-social-section p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* BOTTOM */
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-top: 23px;
+}
+
+.copyright {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.bottom-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.bottom-links a {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.bottom-links a:hover {
+  color: var(--cyan);
+}
+
+.back-top {
+  color: var(--cyan) !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+  .footer-main {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px 25px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .campusora-footer {
+    padding: 45px 19px 22px;
+  }
+
+  .footer-main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 18px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer-column h3 {
+    font-size: 11px;
+    margin-bottom: 16px;
+  }
+
+  .footer-links {
+    gap: 12px;
+  }
+
+  .footer-links a,
+  .coming-soon {
+    font-size: 11px;
+  }
+
+  .footer-social-section {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bottom-links {
+    gap: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="preview">
+  <p>Campusora footer preview<br>Scroll down to see the footer.</p>
+</div>
+
+<footer class="campusora-footer">
+  <div class="footer-container">
+
+    <div class="footer-main">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+
+        <!-- Official standalone logo will be placed here -->
+
+        <div class="logo-placeholder">
+          OFFICIAL<br>LOGO
+        </div>
+
+        <div class="brand-name">
+          <span>Campusora</span>
+        </div>
+
+        <div class="brand-tagline">
+          CONNECT • SHARE • GROW
+        </div>
+
+        <p class="brand-description">
+          Connecting students, alumni and communities
+          across campuses.
+        </p>
+
+      </div>
+
+      <!-- EXPLORE -->
+      <div class="footer-column">
+        <h3>Explore</h3>
+
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="explore.html">Discover</a>
+          <a href="communities.html">Communities</a>
+          <a href="spotlight.html">Spotlight</a>
+          <a href="events.html">Events</a>
+          <a href="marketplace.html">Marketplace</a>
+        </div>
+      </div>
+
+      <!-- COMMUNITY -->
+      <div class="footer-column">
+        <h3>Community</h3>
+
+        <div class="footer-links">
+          <a href="search.html">Find People</a>
+          <a href="explore.html">Find Creators</a>
+          <a href="home-feed.html">My Campus</a>
+          <span class="coming-soon">Games & Challenges · Coming soon</span>
+        </div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="footer-column">
+        <h3>Support</h3>
+
+        <div class="footer-links">
+          <span class="coming-soon">Help Centre · Coming soon</span>
+          <a href="mailto:ablegodluke@gmail.com">Contact Us</a>
+          <a href="mailto:ablegodluke@gmail.com?subject=Campusora%20Problem%20Report">Report a Problem</a>
+          <span class="coming-soon">Safety Guidelines · Coming soon</span>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="footer-column">
+        <h3>About</h3>
+
+        <div class="footer-links">
+          <span class="coming-soon">About Campusora · Coming soon</span>
+          <a href="work-with-creator.html">Work With the Creator</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <span class="coming-soon">Terms of Service · Coming soon</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SOCIAL MEDIA -->
+    <div class="footer-social-section">
+
+      <div>
+        <h3>Follow Campusora</h3>
+        <p>Stay connected with the Campusora community.</p>
+      </div>
+
+      <div class="footer-social">
+        <span class="social-link">FB</span>
+        <span class="social-link">IG</span>
+        <span class="social-link">TK</span>
+        <span class="social-link">YT</span>
+        <span class="social-link">X</span>
+      </div>
+
+    </div>
+
+    <!-- COPYRIGHT -->
+    <div class="footer-bottom">
+
+      <p class="copyright">
+        © 2026 Campusora. All rights reserved.
+      </p>
+
+      <div class="bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <span class="coming-soon">Terms</span>
+        <a href="#top" class="back-top">Back to Top ↑</a>
+      </div>
+
+    </div>
+
+  </div>
+</footer>
+
+</body>
+                           </html>
