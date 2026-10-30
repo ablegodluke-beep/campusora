@@ -1,1 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search | Campusora</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #080b18;
+  --panel: #101629;
+  --panel2: #151d34;
+  --border: rgba(255,255,255,.08);
+  --text: #f5f7ff;
+  --muted: #929bb5;
+  --purple: #8558ff;
+  --blue: #398bff;
+  --cyan: #28d5e8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+button, input {
+  font: inherit;
+}
+
+.topbar {
+  height: 64px;
+  padding: 0 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,11,24,.96);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: 800;
+  background: linear-gradient(90deg,var(--purple),var(--cyan));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.back {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.container {
+  width: min(760px, 94%);
+  margin: 28px auto;
+}
+
+.heading {
+  margin-bottom: 20px;
+}
+
+.heading h1 {
+  font-size: 23px;
+  margin-bottom: 5px;
+}
+
+.heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0 15px;
+  height: 53px;
+  margin-bottom: 22px;
+}
+
+.search-box span {
+  color: var(--muted);
+  font-size: 19px;
+}
+
+.search-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 14px;
+}
+
+.search-box input::placeholder {
+  color: #77819d;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 22px 0 12px;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  text-decoration: none;
+  color: white;
+  transition: .2s;
+}
+
+.user-card:hover {
+  background: var(--panel2);
+  border-color: rgba(133,88,255,.5);
+}
+
+.avatar {
+  width: 49px;
+  height: 49px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--panel2);
+  flex-shrink: 0;
+}
+
+.user-info {
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.username {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.user-extra {
+  color: #8793b2;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.profile-arrow {
+  margin-left: auto;
+  color: var(--muted);
+}
+
+.message {
+  text-align: center;
+  padding: 28px 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.creator {
+  display: none;
+  margin-top: 25px;
+}
+
+.creator-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 15px;
+  margin-bottom: 17px;
+}
+
+.creator-header .avatar {
+  width: 58px;
+  height: 58px;
+}
+
+.creator-header a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  padding: 11px 17px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tab.active {
+  color: white;
+  border-bottom-color: var(--purple);
+}
+
+.content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.content-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.content-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.content-top .avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.content-top strong {
+  font-size: 12px;
+}
+
+.content-top small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.post-text {
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin-bottom: 10px;
+}
+
+.post-image {
+  display: block;
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  background: #050711;
+  border-radius: 10px;
+}
+
+.video-player {
+  width: 100%;
+  max-height: 460px;
+  background: black;
+  border-radius: 10px;
+}
+
+.content-label {
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 9px;
+  text-transform: uppercase;
+}
+
+.load-more {
+  display: none;
+  width: 100%;
+  margin-top: 17px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.load-more:disabled {
+  opacity: .5;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media(max-width:600px) {
+  .container {
+    margin-top: 22px;
+  }
+
+  .heading h1 {
+    font-size: 21px;
+  }
+
+  .user-card {
+    padding: 11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">Campusora</div>
+  <a class="back" href="index.html">← Back to Campusora</a>
+</header>
+
+<main class="container">
+
+  <div class="heading">
+    <h1>Discover people and content</h1>
+    <p>Find students, alumni, creators, posts and videos across campuses.</p>
+  </div>
+
+  <div class="search-box">
+    <span>⌕</span>
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="Search by name or username..."
+      autocomplete="off"
+    >
+  </div>
+
+  <section id="searchSection">
+    <div class="section-title">People</div>
+    <div class="results" id="userResults">
+      <div class="message">Start typing to discover people.</div>
+    </div>
+  </section>
+
+  <section class="creator" id="creatorSection">
+
+    <div class="creator-header">
+      <img class="avatar" id="creatorAvatar" src="" alt="">
+      <div>
+        <div class="user-name" id="creatorName"></div>
+        <div class="username" id="creatorUsername"></div>
+        <div class="user-extra" id="creatorSchool"></div>
+        <a id="creatorProfileLink" href="#">View full profile →</a>
+      </div>
+    </div>
+
+    <div class="section-title">Creator's content</div>
+
+    <div class="tabs">
+      <button class="tab active" data-type="all">All</button>
+      <button class="tab" data-type="posts">Posts</button>
+      <button class="tab" data-type="videos">Videos</button>
+    </div>
+
+    <div class="content-grid" id="contentResults"></div>
+
+    <div class="message hidden" id="contentMessage"></div>
+
+    <button class="load-more" id="loadMoreBtn">
+      Load more
+    </button>
+
+  </section>
+
+</main>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const searchInput = document.getElementById('searchInput');
+const userResults = document.getElementById('userResults');
+const creatorSection = document.getElementById('creatorSection');
+const searchSection = document.getElementById('searchSection');
+const contentResults = document.getElementById('contentResults');
+const contentMessage = document.getElementById('contentMessage');
+const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+let searchTimer;
+let selectedCreator = null;
+let activeTab = 'all';
+
+const PAGE_SIZE = 12;
+
+const state = {
+  posts: [],
+  videos: [],
+  postOffset: 0,
+  videoOffset: 0,
+  hasMorePosts: true,
+  hasMoreVideos: true,
+  buffer: [],
+  loading: false
+};
+
+function escapeHTML(value = '') {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  })[char]);
+}
+
+function avatarURL(url) {
+  return url || 'https://placehold.co/100x100/151d34/ffffff?text=C';
+}
+
+function profileURL(id) {
+  return 'profile.html?id=' + encodeURIComponent(id);
+}
+
+function showMessage(element, message) {
+  element.textContent = message;
+  element.classList.remove('hidden');
+}
+
+function hideMessage(element) {
+  element.classList.add('hidden');
+}
+
+/* SEARCH PEOPLE */
+
+async function searchPeople(term) {
+  userResults.innerHTML = '<div class="message">Searching...</div>';
+
+  const pattern = `%${term}%`;
+
+  try {
+    const [nameResult, usernameResult] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('id,username,full_name,school,role,avatar_url')
+        .ilike('full_name', pattern)
+        .limit(20),
+
+      supabase
+        .from('profiles')
+        .select('id,username,full_name,school,role,avatar_url')
+        .ilike('username', pattern)
+        .limit(20)
+    ]);
+
+    if (nameResult.error) throw nameResult.error;
+    if (usernameResult.error) throw usernameResult.error;
+
+    const combined = [
+      ...(nameResult.data || []),
+      ...(usernameResult.data || [])
+    ];
+
+    const unique = [
+      ...new Map(combined.map(user => [user.id, user])).values()
+    ];
+
+    unique.sort((a, b) =>
+      (a.full_name || '').localeCompare(b.full_name || '')
+    );
+
+    renderPeople(unique);
+
+  } catch (error) {
+    console.error('People search error:', error);
+    userResults.innerHTML =
+      '<div class="message">Could not search right now. Please try again.</div>';
+  }
+}
+
+function renderPeople(users) {
+  userResults.innerHTML = '';
+
+  if (!users.length) {
+    userResults.innerHTML =
+      '<div class="message">No matching accounts found.</div>';
+    return;
+  }
+
+  users.forEach(user => {
+    const card = document.createElement('a');
+
+    card.className = 'user-card';
+    card.href = profileURL(user.id);
+
+    const name = escapeHTML(user.full_name || 'Campusora member');
+    const username = escapeHTML(user.username || '');
+    const school = escapeHTML(user.school || '');
+    const role = escapeHTML(user.role || '');
+    const avatar = escapeHTML(avatarURL(user.avatar_url));
+
+    card.innerHTML = `
+      <img class="avatar" src="${avatar}" alt="">
+      <div class="user-info">
+        <div class="user-name">${name}</div>
+        <div class="username">@${username}</div>
+        <div class="user-extra">${school}${school && role ? ' · ' : ''}${role}</div>
+      </div>
+      <span class="profile-arrow">›</span>
+    `;
+
+    userResults.appendChild(card);
+  });
+}
+
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimer);
+
+  const term = searchInput.value.trim();
+
+  creatorSection.style.display = 'none';
+  searchSection.style.display = 'block';
+
+  if (term.length < 2) {
+    userResults.innerHTML =
+      '<div class="message">Type at least 2 characters to search.</div>';
+    return;
+  }
+
+  searchTimer = setTimeout(() => {
+    searchPeople(term);
+  }, 300);
+});
+
+/* OPEN CREATOR CONTENT */
+
+async function openCreator(user) {
+  selectedCreator = user;
+
+  searchSection.style.display = 'none';
+  creatorSection.style.display = 'block';
+
+  document.getElementById('creatorAvatar').src =
+    avatarURL(user.avatar_url);
+
+  document.getElementById('creatorName').textContent =
+    user.full_name || 'Campusora member';
+
+  document.getElementById('creatorUsername').textContent =
+    '@' + (user.username || '');
+
+  document.getElementById('creatorSchool').textContent =
+    [user.school, user.role].filter(Boolean).join(' · ');
+
+  document.getElementById('creatorProfileLink').href =
+    profileURL(user.id);
+
+  activeTab = 'all';
+  updateTabs();
+
+  await resetContent();
+}
+
+/* CONTENT TABS */
+
+document.querySelectorAll('.tab').forEach(button => {
+  button.addEventListener('click', async () => {
+    activeTab = button.dataset.type;
+    updateTabs();
+    await resetContent();
+  });
+});
+
+function updateTabs() {
+  document.querySelectorAll('.tab').forEach(button => {
+    button.classList.toggle(
+      'active',
+      button.dataset.type === activeTab
+    );
+  });
+}
+
+async function resetContent() {
+  state.posts = [];
+  state.videos = [];
+  state.postOffset = 0;
+  state.videoOffset = 0;
+  state.hasMorePosts = true;
+  state.hasMoreVideos = true;
+  state.buffer = [];
+  state.loading = false;
+
+  contentResults.innerHTML = '';
+  hideMessage(contentMessage);
+
+  loadMoreBtn.style.display = 'none';
+
+  await loadMoreContent();
+}
+
+/* FETCH CONTENT IN SMALL BATCHES */
+
+async function fetchNextBatch() {
+  const requests = [];
+
+  if (
+    (activeTab === 'all' || activeTab === 'posts') &&
+    state.hasMorePosts
+  ) {
+    requests.push(
+      supabase
+        .from('posts')
+        .select('id,user_id,content,image_url,created_at')
+        .eq('user_id', selectedCreator.id)
+        .order('created_at', { ascending: false })
+        .range(state.postOffset, state.postOffset + PAGE_SIZE - 1)
+        .then(result => ({ type: 'posts', result }))
+    );
+  }
+
+  if (
+    (activeTab === 'all' || activeTab === 'videos') &&
+    state.hasMoreVideos
+  ) {
+    requests.push(
+      supabase
+        .from('spotlight_videos')
+        .select('id,user_id,caption,video_url,thumbnail_url,view_count,created_at')
+        .eq('user_id', selectedCreator.id)
+        .order('created_at', { ascending: false })
+        .range(state.videoOffset, state.videoOffset + PAGE_SIZE - 1)
+        .then(result => ({ type: 'videos', result }))
+    );
+  }
+
+  const responses = await Promise.all(requests);
+
+  for (const item of responses) {
+    if (item.result.error) throw item.result.error;
+
+    const rows = item.result.data || [];
+
+    if (item.type === 'posts') {
+      state.posts = rows;
+      state.postOffset += rows.length;
+      state.hasMorePosts = rows.length === PAGE_SIZE;
+    }
+
+    if (item.type === 'videos') {
+      state.videos = rows;
+      state.videoOffset += rows.length;
+      state.hasMoreVideos = rows.length === PAGE_SIZE;
+    }
+  }
+
+  const batch = [
+    ...state.posts.map(item => ({ ...item, contentType: 'post' })),
+    ...state.videos.map(item => ({ ...item, contentType: 'video' }))
+  ];
+
+  batch.sort((a, b) =>
+    new Date(b.created_at) - new Date(a.created_at)
+  );
+
+  state.buffer.push(...batch);
+}
+
+/* LOAD MORE CONTENT */
+
+async function loadMoreContent() {
+  if (state.loading) return;
+
+  state.loading = true;
+  loadMoreBtn.disabled = true;
+  loadMoreBtn.textContent = 'Loading...';
+
+  try {
+    let displayed = 0;
+
+    while (displayed < 10) {
+      if (!state.buffer.length) {
+        const hasMore =
+          (activeTab === 'all' || activeTab === 'posts') &&
+          state.hasMorePosts ||
+          (activeTab === 'all' || activeTab === 'videos') &&
+          state.hasMoreVideos;
+
+        if (!hasMore) break;
+
+        await fetchNextBatch();
+
+        if (!state.buffer.length) break;
+      }
+
+      const item = state.buffer.shift();
+
+      renderContent(item);
+      displayed++;
+    }
+
+    if (!contentResults.children.length) {
+      showMessage(contentMessage, 'No content found for this creator yet.');
+    } else {
+      hideMessage(contentMessage);
+    }
+
+    const moreAvailable =
+      state.buffer.length > 0 ||
+      ((activeTab === 'all' || activeTab === 'posts') && state.hasMorePosts) ||
+      ((activeTab === 'all' || activeTab === 'videos') && state.hasMoreVideos);
+
+    loadMoreBtn.style.display = moreAvailable ? 'block' : 'none';
+
+  } catch (error) {
+    console.error('Content loading error:', error);
+    showMessage(contentMessage, 'Could not load content. Please try again.');
+  }
+
+  state.loading = false;
+  loadMoreBtn.disabled = false;
+  loadMoreBtn.textContent = 'Load more';
+}
+
+loadMoreBtn.addEventListener('click', loadMoreContent);
+
+/* DISPLAY POSTS AND VIDEOS */
+
+function renderContent(item) {
+  const card = document.createElement('article');
+  card.className = 'content-card';
+
+  const creatorName = escapeHTML(
+    selectedCreator.full_name || 'Campusora member'
+  );
+
+  const creatorAvatar = escapeHTML(
+    avatarURL(selectedCreator.avatar_url)
+  );
+
+  const date = item.created_at
+    ? new Date(item.created_at).toLocaleDateString()
+    : '';
+
+  const header = `
+    <div class="content-top">
+      <img class="avatar" src="${creatorAvatar}" alt="">
+      <div>
+        <strong>${creatorName}</strong>
+        <small>${escapeHTML(date)}</small>
+      </div>
+    </div>
+  `;
+
+  if (item.contentType === 'post') {
+    card.innerHTML = `
+      ${header}
+      <div class="content-label">Post</div>
+      ${item.content ? `
+        <div class="post-text">${escapeHTML(item.content)}</div>
+      ` : ''}
+      ${item.image_url ? `
+        <img
+          class="post-image"
+          src="${escapeHTML(item.image_url)}"
+          alt="Post image"
+          loading="lazy"
+        >
+      ` : ''}
+    `;
+  }
+
+  if (item.contentType === 'video') {
+    card.innerHTML = `
+      ${header}
+      <div class="content-label">Spotlight video</div>
+      ${item.caption ? `
+        <div class="post-text">${escapeHTML(item.caption)}</div>
+      ` : ''}
+      <video
+        class="video-player"
+        controls
+        playsinline
+        preload="metadata"
+        ${item.thumbnail_url ? `poster="${escapeHTML(item.thumbnail_url)}"` : ''}
+        src="${escapeHTML(item.video_url || '')}"
+      ></video>
+    `;
+  }
+
+  contentResults.appendChild(card);
+}
+
+/* BACK BUTTON */
+
+document.querySelector('.back').addEventListener('click', () => {
+  sessionStorage.removeItem('campusora-search-creator');
+});
+
+/* OPTIONAL: OPEN A CREATOR FROM A PROFILE SEARCH RESULT */
+
+window.openCampusoraCreator = openCreator;
+
+</script>
+
+</body>
+  </html>
