@@ -115,7 +115,6 @@ select option{background:var(--card)}
 }
 .small-note{color:var(--muted);font-size:11px;line-height:1.6;margin-top:12px}
 
-/* PHOTO UPLOAD DESIGN */
 .cover-preview{
   width:100%;height:155px;border-radius:12px;overflow:hidden;
   border:1px solid var(--border);
@@ -184,23 +183,22 @@ select option{background:var(--card)}
     </a>
   </section>
 
-  <!-- PROFILE AND COVER PICTURES -->
   <section class="card">
     <h2>Profile pictures 📸</h2>
-    <p class="card-description">
-      Change your profile picture and cover picture.
-    </p>
+    <p class="card-description">Change your profile picture and cover picture.</p>
 
     <div class="field">
       <label>Cover picture</label>
-      <div class="cover-preview" id="coverBox">
+      <div class="cover-preview">
         <span id="coverPlaceholder">Your cover picture will appear here</span>
         <img id="coverPreview" alt="Cover picture preview">
       </div>
+
       <label class="upload-label">
         Choose cover picture
         <input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
       </label>
+
       <span class="file-name" id="coverFileName">No new cover picture selected</span>
     </div>
 
@@ -211,17 +209,20 @@ select option{background:var(--card)}
           <span id="avatarPlaceholder">👤</span>
           <img id="avatarPreview" alt="Profile picture preview">
         </div>
+
         <div>
           <label class="upload-label">
             Choose profile picture
             <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp">
           </label>
+
           <span class="file-name" id="avatarFileName">No new profile picture selected</span>
         </div>
       </div>
     </div>
 
     <p class="small-note">JPG, PNG or WebP only. Maximum file size: 5 MB per image.</p>
+
     <button type="button" class="primary-btn" id="savePhotosBtn">
       Save picture changes
     </button>
@@ -322,10 +323,13 @@ const logoutBtn = document.getElementById('logoutBtn');
 
 const avatarFile = document.getElementById('avatarFile');
 const coverFile = document.getElementById('coverFile');
+
 const avatarPreview = document.getElementById('avatarPreview');
 const coverPreview = document.getElementById('coverPreview');
+
 const avatarPlaceholder = document.getElementById('avatarPlaceholder');
 const coverPlaceholder = document.getElementById('coverPlaceholder');
+
 const savePhotosBtn = document.getElementById('savePhotosBtn');
 
 let currentUser = null;
@@ -449,7 +453,7 @@ async function initialise() {
     './profile.html?id=' + encodeURIComponent(currentUser.id);
 }
 
-/* PREVIEW SELECTED PROFILE PICTURE */
+/* PROFILE PICTURE PREVIEW */
 avatarFile.addEventListener('change', () => {
   const file = avatarFile.files[0];
   if (!file) return;
@@ -469,7 +473,7 @@ avatarFile.addEventListener('change', () => {
   setAvatarPreview(avatarObjectUrl);
 });
 
-/* PREVIEW SELECTED COVER PICTURE */
+/* COVER PICTURE PREVIEW */
 coverFile.addEventListener('change', () => {
   const file = coverFile.files[0];
   if (!file) return;
@@ -489,13 +493,14 @@ coverFile.addEventListener('change', () => {
   setCoverPreview(coverObjectUrl);
 });
 
-/* UPLOAD IMAGE TO EXISTING SUPABASE STORAGE BUCKET */
+/* UPLOAD TO SUPABASE */
 async function uploadProfilePhoto(file, imageType) {
   const extension = file.type === 'image/jpeg' ? 'jpg' :
     file.type === 'image/png' ? 'png' : 'webp';
 
   const filePath = currentUser.id + '/' + imageType + '-' +
-    Date.now() + '.' + extension;
+    Date.now() + '-' + Math.random().toString(36).slice(2,8) +
+    '.' + extension;
 
   const {error:uploadError} = await supabase.storage
     .from('campusora-images')
@@ -514,7 +519,7 @@ async function uploadProfilePhoto(file, imageType) {
   return data.publicUrl;
 }
 
-/* SAVE PROFILE AND COVER PICTURES */
+/* SAVE SELECTED PICTURES */
 savePhotosBtn.addEventListener('click', async () => {
   clearMessage();
 
@@ -539,32 +544,51 @@ savePhotosBtn.addEventListener('click', async () => {
   }
 
   savePhotosBtn.disabled = true;
-  savePhotosBtn.textContent = 'Uploading pictures...';
+  savePhotosBtn.textContent = 'Uploading...';
 
   try {
-    let newAvatarUrl = existingAvatarUrl;
-    let newCoverUrl = existingCoverUrl;
+    const updates = {};
+
+    /*
+      When both pictures are selected, upload them together.
+      When only one is selected, upload only that picture.
+    */
+
+    const uploads = [];
 
     if (avatar) {
-      newAvatarUrl = await uploadProfilePhoto(avatar, 'avatar');
+      uploads.push(
+        uploadProfilePhoto(avatar, 'avatar').then(url => {
+          updates.avatar_url = url;
+        })
+      );
     }
 
     if (cover) {
-      newCoverUrl = await uploadProfilePhoto(cover, 'cover');
+      uploads.push(
+        uploadProfilePhoto(cover, 'cover').then(url => {
+          updates.cover_url = url;
+        })
+      );
     }
 
+    await Promise.all(uploads);
+
+    /* Update only the selected picture column(s). */
     const {error:updateError} = await supabase
       .from('profiles')
-      .update({
-        avatar_url:newAvatarUrl || null,
-        cover_url:newCoverUrl || null
-      })
+      .update(updates)
       .eq('id', currentUser.id);
 
     if (updateError) throw updateError;
 
-    existingAvatarUrl = newAvatarUrl;
-    existingCoverUrl = newCoverUrl;
+    if (updates.avatar_url) {
+      existingAvatarUrl = updates.avatar_url;
+    }
+
+    if (updates.cover_url) {
+      existingCoverUrl = updates.cover_url;
+    }
 
     avatarFile.value = '';
     coverFile.value = '';
@@ -584,11 +608,22 @@ savePhotosBtn.addEventListener('click', async () => {
     setAvatarPreview(existingAvatarUrl);
     setCoverPreview(existingCoverUrl);
 
-    showMessage('Your profile and cover pictures have been updated successfully.');
+    /* Show the correct message for what was uploaded. */
+    if (avatar && cover) {
+      showMessage('Profile picture and cover picture updated successfully!');
+    } else if (avatar) {
+      showMessage('Profile picture updated successfully!');
+    } else {
+      showMessage('Cover picture updated successfully!');
+    }
 
   } catch(error) {
     console.error('Picture upload error:', error);
-    showMessage(error.message || 'Could not save your pictures. Please try again.', 'error');
+
+    showMessage(
+      error.message || 'Could not save your pictures. Please try again.',
+      'error'
+    );
 
   } finally {
     savePhotosBtn.disabled = false;
@@ -736,4 +771,4 @@ initialise();
 </script>
 
 </body>
-          </html>
+  </html>
