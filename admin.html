@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b18">
 <title>Campusora Admin</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -20,14 +21,14 @@
  --blue:#4f8cff;
  --cyan:#36d9ff;
  --green:#42d6a4;
- --red:#ff6685
+ --red:#ff6685;
 }
 *{box-sizing:border-box}
 body{
  margin:0;
  background:var(--bg);
  color:var(--text);
- font-family:'DM Sans',sans-serif
+ font-family:'DM Sans',sans-serif;
 }
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
@@ -43,14 +44,14 @@ a{color:inherit;text-decoration:none}
  display:flex;
  align-items:center;
  justify-content:space-between;
- padding:0 18px
+ padding:0 18px;
 }
 .brand{
  font-weight:800;
  font-size:20px;
  background:linear-gradient(90deg,#a78bfa,#36d9ff);
  color:transparent;
- background-clip:text
+ background-clip:text;
 }
 .topright{display:flex;align-items:center;gap:9px}
 .tag{
@@ -60,7 +61,7 @@ a{color:inherit;text-decoration:none}
  background:#102335;
  border-radius:20px;
  padding:7px 10px;
- font-weight:800
+ font-weight:800;
 }
 .btn{
  border:1px solid var(--border);
@@ -69,19 +70,20 @@ a{color:inherit;text-decoration:none}
  border-radius:9px;
  padding:9px 12px;
  font-size:11px;
- font-weight:700
+ font-weight:700;
 }
 .btn.primary{
  background:linear-gradient(100deg,#7046d8,#347fe2);
- border:0
+ border:0;
 }
 .btn.danger{color:#ff9baa;border-color:#693344}
+.btn.success{color:#8df0c8;border-color:#235b49}
 .btn:disabled{opacity:.55;cursor:wait}
 
 .layout{
  display:grid;
  grid-template-columns:240px minmax(0,1fr);
- min-height:calc(100vh - 62px)
+ min-height:calc(100vh - 62px);
 }
 .sidebar{
  position:sticky;
@@ -90,7 +92,7 @@ a{color:inherit;text-decoration:none}
  overflow:auto;
  background:#0c1020;
  border-right:1px solid var(--border);
- padding:15px 11px
+ padding:15px 11px;
 }
 .sidehead{
  padding:14px 10px 7px;
@@ -98,7 +100,7 @@ a{color:inherit;text-decoration:none}
  font-size:9px;
  font-weight:800;
  letter-spacing:1px;
- text-transform:uppercase
+ text-transform:uppercase;
 }
 .nav{
  width:100%;
@@ -110,74 +112,74 @@ a{color:inherit;text-decoration:none}
  border-radius:9px;
  margin:2px 0;
  font-size:11px;
- font-weight:650
+ font-weight:650;
 }
 .nav:hover,.nav.active{
  color:#fff;
- background:linear-gradient(100deg,rgba(139,92,246,.24),rgba(79,140,255,.13))
+ background:linear-gradient(100deg,rgba(139,92,246,.24),rgba(79,140,255,.13));
 }
 
 main{
  min-width:0;
  padding:25px;
  max-width:1500px;
- width:100%
+ width:100%;
 }
 .title{font-size:23px;font-weight:800;margin:0 0 5px}
 .sub{
  color:var(--muted);
  font-size:11px;
  line-height:1.7;
- margin:0 0 20px
+ margin:0 0 20px;
 }
 .welcome,.card{
  background:var(--panel);
  border:1px solid var(--border);
  border-radius:14px;
  padding:17px;
- margin-bottom:15px
+ margin-bottom:15px;
 }
 .welcome{
  background:linear-gradient(115deg,rgba(139,92,246,.22),rgba(54,217,255,.06));
- border-color:#38315e
+ border-color:#38315e;
 }
 .welcome h2{font-size:16px;margin:0 0 6px}
 .welcome p,.muted{
  color:var(--muted);
  font-size:11px;
  line-height:1.7;
- margin:0
+ margin:0;
 }
 
 .stats{
  display:grid;
  grid-template-columns:repeat(4,minmax(0,1fr));
  gap:11px;
- margin:14px 0
+ margin:14px 0;
 }
 .stat{
  background:var(--panel);
  border:1px solid var(--border);
  border-radius:12px;
  padding:14px;
- min-width:0
+ min-width:0;
 }
 .stat small{
  display:block;
  color:var(--muted);
  font-size:10px;
- margin-bottom:8px
+ margin-bottom:8px;
 }
 .stat strong{
  font-size:21px;
- overflow-wrap:anywhere
+ overflow-wrap:anywhere;
 }
 .stat em{
  display:block;
  color:var(--muted);
  font-style:normal;
  font-size:9px;
- margin-top:5px
+ margin-top:5px;
 }
 
 .toolbar{
@@ -185,7 +187,7 @@ main{
  gap:8px;
  align-items:center;
  flex-wrap:wrap;
- margin:14px 0
+ margin:14px 0;
 }
 .search{
  flex:1;
@@ -196,16 +198,40 @@ main{
  border-radius:9px;
  padding:10px 12px;
  font-size:11px;
- outline:none
+ outline:none;
 }
-.select{
+.select,.field input,.field select,.field textarea{
+ width:100%;
  background:#0b1020;
  border:1px solid var(--border);
  color:#fff;
  border-radius:9px;
- padding:9px;
- font-size:11px
+ padding:10px 12px;
+ font-size:11px;
+ outline:none;
 }
+.field textarea{min-height:90px;resize:vertical}
+.field label{
+ display:block;
+ font-size:10px;
+ color:#b9c4e0;
+ font-weight:700;
+ margin-bottom:7px;
+}
+.field{min-width:0}
+.field small{
+ display:block;
+ color:var(--muted);
+ font-size:9px;
+ margin-top:5px;
+ line-height:1.5;
+}
+.formgrid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;
+}
+.full{grid-column:1/-1}
 
 .notice{
  border:1px solid rgba(54,217,255,.2);
@@ -215,7 +241,7 @@ main{
  border-radius:9px;
  font-size:10px;
  line-height:1.7;
- margin:12px 0
+ margin:12px 0;
 }
 .message{
  display:none;
@@ -223,31 +249,31 @@ main{
  border-radius:9px;
  margin:12px 0;
  font-size:11px;
- line-height:1.6
+ line-height:1.6;
 }
 .message.show{display:block}
 .message.ok{
  background:#10271f;
  color:#8df0c8;
- border:1px solid #235b49
+ border:1px solid #235b49;
 }
 .message.err{
  background:#2a1420;
  color:#ff9baa;
- border:1px solid #693344
+ border:1px solid #693344;
 }
 
 .tablewrap{
  overflow:auto;
  border:1px solid var(--border);
  border-radius:12px;
- background:var(--panel)
+ background:var(--panel);
 }
 table{
  border-collapse:collapse;
  width:100%;
  min-width:760px;
- font-size:10px
+ font-size:10px;
 }
 th,td{
  padding:11px 10px;
@@ -255,7 +281,7 @@ th,td{
  text-align:left;
  vertical-align:top;
  max-width:260px;
- overflow-wrap:anywhere
+ overflow-wrap:anywhere;
 }
 th{
  position:sticky;
@@ -264,11 +290,10 @@ th{
  color:#b9c4e0;
  font-size:9px;
  text-transform:uppercase;
- letter-spacing:.5px
+ letter-spacing:.5px;
 }
 td{color:#e2e7f6}
 tr:last-child td{border-bottom:0}
-.cellmuted{color:var(--muted)}
 .rowactions{display:flex;gap:5px;flex-wrap:wrap}
 .tiny{padding:6px 8px;font-size:9px}
 
@@ -276,14 +301,14 @@ tr:last-child td{border-bottom:0}
  padding:30px;
  text-align:center;
  color:var(--muted);
- font-size:11px
+ font-size:11px;
 }
 .sectionhead{
  display:flex;
  justify-content:space-between;
  align-items:flex-start;
  gap:12px;
- flex-wrap:wrap
+ flex-wrap:wrap;
 }
 .sectionhead h1{margin:0;font-size:22px}
 .loading{
@@ -293,7 +318,7 @@ tr:last-child td{border-bottom:0}
  justify-content:center;
  text-align:center;
  color:var(--muted);
- font-size:12px
+ font-size:12px;
 }
 .spin{
  width:30px;
@@ -302,10 +327,56 @@ tr:last-child td{border-bottom:0}
  border-top-color:var(--purple);
  border-radius:50%;
  animation:rot .8s linear infinite;
- margin:0 auto 13px
+ margin:0 auto 13px;
 }
 @keyframes rot{to{transform:rotate(360deg)}}
 .hidden{display:none!important}
+
+.panel-title{
+ font-size:13px;
+ font-weight:800;
+ margin:0 0 12px;
+}
+.formcard{
+ background:var(--panel);
+ border:1px solid var(--border);
+ border-radius:13px;
+ padding:16px;
+ margin:14px 0;
+}
+.progress{
+ height:5px;
+ background:#252c46;
+ border-radius:10px;
+ overflow:hidden;
+ margin-top:10px;
+}
+.progress span{
+ display:block;
+ height:100%;
+ width:0;
+ background:linear-gradient(90deg,var(--purple),var(--cyan));
+ transition:width .2s;
+}
+.preview{
+ max-width:100%;
+ max-height:220px;
+ border-radius:10px;
+ margin-top:10px;
+ display:none;
+}
+.badge{
+ display:inline-block;
+ padding:5px 8px;
+ border-radius:20px;
+ font-size:9px;
+ background:#18223a;
+ color:#b9c4e0;
+}
+.section-divider{
+ border-top:1px solid var(--border);
+ margin:18px 0;
+}
 
 @media(max-width:950px){
  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -321,7 +392,7 @@ tr:last-child td{border-bottom:0}
   left:0;
   width:260px;
   height:calc(100vh - 57px);
-  box-shadow:15px 0 35px #0008
+  box-shadow:15px 0 35px #0008;
  }
  .sidebar.open{display:block}
  main{padding:19px 12px}
@@ -331,6 +402,8 @@ tr:last-child td{border-bottom:0}
  .stats{gap:8px}
  .stat{padding:11px}
  .stat strong{font-size:18px}
+ .formgrid{grid-template-columns:1fr}
+ .full{grid-column:auto}
 }
 @media(min-width:701px){
  .menu{display:none}
@@ -354,7 +427,6 @@ tr:last-child td{border-bottom:0}
   <button class="btn menu" id="menuBtn">☰</button>
   <a class="brand" href="index.html">Campusora</a>
  </div>
-
  <div class="topright">
   <span class="tag" id="roleTag">ADMIN</span>
   <button class="btn" id="logoutBtn">Log out</button>
@@ -411,72 +483,22 @@ tr:last-child td{border-bottom:0}
  <div id="statsMessage" class="message"></div>
 
  <div class="stats">
-
-  <div class="stat">
-   <small>Registered users</small>
-   <strong id="sUsers">—</strong>
-   <em>Total profiles</em>
-  </div>
-
-  <div class="stat">
-   <small>Posts</small>
-   <strong id="sPosts">—</strong>
-   <em>Platform posts</em>
-  </div>
-
-  <div class="stat">
-   <small>Spotlight videos</small>
-   <strong id="sVideos">—</strong>
-   <em>Uploaded videos</em>
-  </div>
-
-  <div class="stat">
-   <small>Communities</small>
-   <strong id="sCommunities">—</strong>
-   <em>Campus communities</em>
-  </div>
-
-  <div class="stat">
-   <small>Events</small>
-   <strong id="sEvents">—</strong>
-   <em>Campus events</em>
-  </div>
-
-  <div class="stat">
-   <small>Verified live payments</small>
-   <strong id="sPayments">—</strong>
-   <em>Live verified transactions</em>
-  </div>
-
-  <div class="stat">
-   <small>Tracked revenue</small>
-   <strong id="sRevenue">—</strong>
-   <em>Live verified payments + gift platform share</em>
-  </div>
-
-  <div class="stat">
-   <small>Active campaigns</small>
-   <strong id="sCampaigns">—</strong>
-   <em>Paid campaigns currently active</em>
-  </div>
-
-  <div class="stat">
-   <small>Pending reports</small>
-   <strong id="sReports">—</strong>
-   <em>Awaiting moderation</em>
-  </div>
-
+  <div class="stat"><small>Registered users</small><strong id="sUsers">—</strong><em>Total profiles</em></div>
+  <div class="stat"><small>Posts</small><strong id="sPosts">—</strong><em>Platform posts</em></div>
+  <div class="stat"><small>Spotlight videos</small><strong id="sVideos">—</strong><em>Uploaded videos</em></div>
+  <div class="stat"><small>Communities</small><strong id="sCommunities">—</strong><em>Campus communities</em></div>
+  <div class="stat"><small>Events</small><strong id="sEvents">—</strong><em>Campus events</em></div>
+  <div class="stat"><small>Verified live payments</small><strong id="sPayments">—</strong><em>Live verified transactions</em></div>
+  <div class="stat"><small>Tracked revenue</small><strong id="sRevenue">—</strong><em>Live verified payments + gift platform share</em></div>
+  <div class="stat"><small>Active campaigns</small><strong id="sCampaigns">—</strong><em>Paid campaigns currently active</em></div>
+  <div class="stat"><small>Pending reports</small><strong id="sReports">—</strong><em>Awaiting moderation</em></div>
  </div>
 
  <div class="card">
   <b style="font-size:12px">Database connection</b>
   <p class="muted" id="connection">Checking connection...</p>
-
   <div class="notice">
-   Revenue counts verified LIVE payment records only.
-   Gift revenue includes Campusora's platform share when the gift
-   payment and revenue ledger reconcile. Test and unknown payment
-   modes are excluded.
+   Revenue counts verified LIVE payment records only. Gift revenue includes Campusora's platform share when the gift payment and revenue ledger reconcile. Test and unknown payment modes are excluded.
   </div>
  </div>
 
@@ -495,13 +517,10 @@ tr:last-child td{border-bottom:0}
  <div id="sectionNotice" class="notice"></div>
  <div id="sectionMessage" class="message"></div>
 
- <div class="toolbar">
-  <input
-   id="searchInput"
-   class="search"
-   placeholder="Search records in this loaded page..."
-  >
+ <div id="specialArea"></div>
 
+ <div class="toolbar">
+  <input id="searchInput" class="search" placeholder="Search records in this loaded page...">
   <select id="pageSize" class="select">
    <option value="50">50 records</option>
    <option value="100">100 records</option>
@@ -513,7 +532,7 @@ tr:last-child td{border-bottom:0}
  </div>
 
  <div class="toolbar">
-  <button class="btn" id="loadMore">Load next 100</button>
+  <button class="btn" id="loadMore">Load next page</button>
   <span class="muted" id="recordCount"></span>
  </div>
 
@@ -535,6 +554,7 @@ let currentRows = [];
 let offset = 0;
 let limit = 50;
 let adminRole = 'admin';
+let currentExtraConfigs = [];
 
 const rowCache = new Map();
 const fmt = new Intl.NumberFormat('en-NG');
@@ -545,7 +565,7 @@ const config = {
   api:'users',
   title:'User Management',
   sub:'Search profiles and record account restrictions.',
-  notice:'Restrictions are recorded in the restrictions table. They do not automatically block login, posting or messaging until enforcement is integrated into those platform features.',
+  notice:'Restrictions are recorded in the database. They do not automatically block login, posting or messaging until enforcement is integrated into those platform features.',
   fields:['id','full_name','username','school','role','created_at'],
   actions:['restrict']
  },
@@ -553,8 +573,8 @@ const config = {
  moderation:{
   api:'reports',
   title:'Reports & Moderation',
-  sub:'Review user, post, comment and Spotlight reports.',
-  notice:'Review a report by editing its status and admin note. Allowed status values depend on the database constraint.',
+  sub:'Review reports submitted by Campusora members.',
+  notice:'Report status options: pending, reviewing, resolved or dismissed. Review each report before taking action.',
   fields:['id','content_type','content_id','reported_user_id','reason','details','status','admin_note','created_at'],
   actions:['edit']
  },
@@ -562,17 +582,17 @@ const config = {
  deletions:{
   api:'deletions',
   title:'Account Deletion Requests',
-  sub:'Review requests and their grace-period deadlines.',
-  notice:'This page currently displays lifecycle records. Permanent deletion/retention actions require a dedicated secure backend workflow; no destructive action is exposed here.',
+  sub:'Review account deletion requests and grace-period deadlines.',
+  notice:'You can cancel a deletion request and keep the account. Permanent deletion is intentionally not available here until a secure deletion workflow is built.',
   fields:['user_id','status','deletion_requested_at','delete_after','updated_at'],
-  actions:[]
+  actions:['keep']
  },
 
  creators:{
   api:'applications',
   title:'Creator Rewards',
   sub:'Review creator applications and reward records.',
-  notice:'Applications can be reviewed here. Earnings are read-only. Do not approve a creator unless eligibility and payout details have been checked.',
+  notice:'Check the creator eligibility requirements before approving an application. Earnings are displayed separately and are read-only.',
   fields:['id','user_id','full_name','email','country','application_status','review_notes','created_at'],
   actions:['edit'],
   extras:[
@@ -595,9 +615,9 @@ const config = {
   api:'giftPayouts',
   title:'Withdrawal Management',
   sub:'Review gift payout requests.',
-  notice:'Bank account numbers are intentionally hidden. A request must only be marked paid after the real bank transfer has succeeded. The current API allows updating request fields but does not implement a full reserved-earnings release/rejection workflow.',
+  notice:'Bank account numbers are hidden. Gift payout settlement is read-only for now because rejection, reserved-earnings release and transfer confirmation need a dedicated verified workflow. Never mark a transfer paid unless the bank transfer actually succeeded.',
   fields:['id','creator_id','amount','currency','payout_method','account_name','bank_name','status','admin_note','payment_reference','external_transfer_reference','requested_at','processed_at'],
-  actions:['edit'],
+  actions:[],
   extras:[
    {
     api:'creatorPayouts',
@@ -611,8 +631,8 @@ const config = {
  payments:{
   api:'premium',
   title:'Payments & Platform Revenue',
-  sub:'Inspect Premium and rank payment records.',
-  notice:'This view is read-only. The overview revenue card also includes sponsored campaigns and reconciled Campusora gift platform share. Payment references are displayed for reconciliation.',
+  sub:'Inspect Premium, rank and gift payment records.',
+  notice:'This section is read-only. The overview revenue card includes verified LIVE payments and reconciled Campusora gift platform share.',
   fields:['id','user_id','plan_type','amount_kobo','payment_reference','payment_verified','payment_mode','status','created_at'],
   actions:[],
   extras:[
@@ -634,8 +654,8 @@ const config = {
  campaigns:{
   api:'campaigns',
   title:'Sponsored Campaigns',
-  sub:'Monitor paid campaigns and manage campaign status.',
-  notice:'Payment-confirmed campaigns are designed to go live automatically. Admin controls here are for monitoring and pausing/reactivating campaigns, not pre-payment approval.',
+  sub:'Monitor paid campaigns and manage their status.',
+  notice:'Only payment-confirmed LIVE campaigns are displayed. Campaigns are designed to go live automatically after confirmed payment. Admin controls are for monitoring and pausing/reactivating.',
   fields:['id','user_id','post_content','duration_days','amount_kobo','status','payment_verified','payment_mode','payment_reference','starts_at','ends_at','expires_at','actual_impressions','clicks'],
   actions:['edit']
  },
@@ -643,16 +663,16 @@ const config = {
  promotions:{
   api:'promotions',
   title:'Business Promotions',
-  sub:'View and manage existing promotions.',
-  notice:'Existing promotion status, dates and priority can be edited. Creating a new promotion and uploading its media is not available through the current admin API yet.',
-  fields:['id','business_name','promotion_title','media_type','placement','status','start_at','end_at','priority','created_at'],
-  actions:['edit']
+  sub:'Create and manage business promotions across Campusora.',
+  notice:'Create promotions, upload an image or video, choose placement and schedule when the promotion should run. Promotions are separate from paid Sponsored Campaigns.',
+  fields:['id','business_name','promotion_title','media_type','media_path','placement','status','start_at','end_at','priority','created_at'],
+  actions:['edit','archive']
  },
 
  communities:{
   api:'communities',
   title:'Community Management',
-  sub:'Review campus communities.',
+  sub:'Review and manage campus communities.',
   notice:'Community name, description and school can be edited.',
   fields:['id','name','description','school','created_by','created_at'],
   actions:['edit']
@@ -662,7 +682,7 @@ const config = {
   api:'events',
   title:'Events Management',
   sub:'Review submitted campus events.',
-  notice:'Event status can be updated. Use the status values already accepted by your events table.',
+  notice:'Event status can be updated. The database must accept the status value you choose.',
   fields:['id','title','category','institution','organizer_id','start_time','end_time','visibility','status','created_at'],
   actions:['edit']
  },
@@ -670,8 +690,8 @@ const config = {
  marketplace:{
   api:'products',
   title:'Marketplace Management',
-  sub:'Review product listings and marketplace reports.',
-  notice:'Products and marketplace listings are shown separately below. Status changes are supported by the current management API.',
+  sub:'Review product listings, marketplace listings and reports.',
+  notice:'Products, marketplace listings and marketplace reports are displayed separately.',
   fields:['id','seller_id','name','category','price','condition','location','status','created_at'],
   actions:['edit'],
   extras:[
@@ -694,7 +714,7 @@ const config = {
   api:'reports',
   title:'Safety & Support',
   sub:'Review platform safety reports.',
-  notice:'Safety reports use the content_reports table. General support tickets are not connected to this API unless they are recorded as content reports.',
+  notice:'Safety reports are loaded from content_reports. General support tickets are not connected to this API unless they are recorded as content reports.',
   fields:['id','content_type','content_id','reported_user_id','reason','details','status','admin_note','created_at'],
   actions:['edit']
  },
@@ -702,8 +722,8 @@ const config = {
  security:{
   api:'activity',
   title:'Admin Security & Activity',
-  sub:'Review administrator activity logs and active restrictions.',
-  notice:'Activity logs are read-only here. Restrictions can be lifted; this records the change but does not itself enforce restrictions throughout the platform.',
+  sub:'Review administrator activity, restrictions and helper administrators.',
+  notice:'Activity logs are read-only. Lifting a restriction records the change but does not itself enforce restrictions throughout the platform.',
   fields:['id','admin_id','action','target_type','target_id','details','created_at'],
   actions:[],
   secondary:{
@@ -711,19 +731,25 @@ const config = {
    title:'Account restrictions',
    fields:['id','user_id','restriction_type','reason','starts_at','ends_at','is_active','created_by','lifted_at','created_at'],
    actions:['lift']
+  },
+  tertiary:{
+   api:'admins',
+   title:'Administrator accounts',
+   fields:['user_id','email','admin_role','permissions','created_at'],
+   actions:['removeAdmin']
   }
  }
 
 };
 
 function msg(el,text,type='ok'){
- el.textContent = text;
- el.className = 'message show ' + (type==='err'?'err':'ok');
+ el.textContent=text;
+ el.className='message show '+(type==='err'?'err':'ok');
 }
 
 function val(v){
- if(v===null || v===undefined || v==='') return '—';
- if(typeof v==='object') return JSON.stringify(v);
+ if(v===null||v===undefined||v==='')return '—';
+ if(typeof v==='object')return JSON.stringify(v);
  return String(v);
 }
 
@@ -738,8 +764,7 @@ function safe(s){
 }
 
 async function api(url,options={}){
-
- const r = await fetch(url,{
+ const r=await fetch(url,{
   ...options,
   headers:{
    Authorization:'Bearer '+token,
@@ -749,7 +774,7 @@ async function api(url,options={}){
   cache:'no-store'
  });
 
- const data = await r.json().catch(()=>({}));
+ const data=await r.json().catch(()=>({}));
 
  if(r.status===401){
   await supabase.auth.signOut();
@@ -757,31 +782,29 @@ async function api(url,options={}){
   throw Error('Session expired. Please log in again.');
  }
 
- if(!r.ok || !data.success){
-  throw Error(data.message || 'Request failed.');
+ if(!r.ok||!data.success){
+  throw Error(data.message||'Request failed.');
  }
 
  return data;
 }
 
 async function start(){
-
  try{
+  const {data,error}=await supabase.auth.getSession();
 
-  const {data,error} = await supabase.auth.getSession();
-
-  if(error || !data.session){
+  if(error||!data.session){
    location.replace('./auth.html?mode=login');
    return;
   }
 
-  token = data.session.access_token;
+  token=data.session.access_token;
 
-  const check = await api('/api/admin/check');
+  const check=await api('/api/admin/check');
 
-  adminRole = check.admin_role || 'admin';
+  adminRole=check.admin_role||'admin';
 
-  $('roleTag').textContent = adminRole.replace('_',' ').toUpperCase();
+  $('roleTag').textContent=adminRole.replace('_',' ').toUpperCase();
 
   $('loading').classList.add('hidden');
   $('app').classList.remove('hidden');
@@ -789,28 +812,24 @@ async function start(){
   await loadStats();
 
  }catch(e){
-
-  $('loading').innerHTML =
+  $('loading').innerHTML=
    '<div style="max-width:330px;padding:20px">'+
    '<h3>Could not open dashboard</h3>'+
    '<p>'+safe(e.message)+'</p>'+
    '<button class="btn" onclick="location.reload()">Try again</button>'+
    '</div>';
-
  }
 }
 
 async function loadStats(){
-
- $('refreshStats').disabled = true;
- $('connection').textContent = 'Loading live statistics...';
+ $('refreshStats').disabled=true;
+ $('connection').textContent='Loading live statistics...';
 
  try{
+  const d=await api('/api/admin/stats');
+  const s=d.statistics||{};
 
-  const d = await api('/api/admin/stats');
-  const s = d.statistics || {};
-
-  const map = {
+  const map={
    sUsers:s.users,
    sPosts:s.posts,
    sVideos:s.videos,
@@ -823,363 +842,272 @@ async function loadStats(){
   };
 
   for(const [id,v] of Object.entries(map)){
-   $(id).textContent = v==null?'—':v;
+   $(id).textContent=v==null?'—':v;
   }
 
-  $('connection').textContent =
-   'Connected. Dashboard statistics loaded successfully.';
-
-  msg($('statsMessage'),'Statistics refreshed.','ok');
+  $('connection').textContent='Connected. Dashboard statistics loaded successfully.';
+  msg($('statsMessage'),'Statistics refreshed.');
 
  }catch(e){
-
-  $('connection').textContent = 'Statistics could not be loaded.';
+  $('connection').textContent='Statistics could not be loaded.';
   msg($('statsMessage'),e.message,'err');
-
  }finally{
-
-  $('refreshStats').disabled = false;
-
+  $('refreshStats').disabled=false;
  }
 }
 
 async function fetchSection(apiName,off=0,lim=50){
-
- const d = await api(
+ const d=await api(
   '/api/admin/manage?section='+
   encodeURIComponent(apiName)+
   '&limit='+lim+
   '&offset='+off
  );
-
  return Array.isArray(d.data)?d.data:[];
 }
 
 function tableHTML(rows,fields,actions,apiName){
-
  rows.forEach(row=>{
-  rowCache.set(apiName+':'+String(row.id),row);
+  const key=row.id??row.user_id;
+  rowCache.set(apiName+':'+String(key),row);
  });
 
  if(!rows.length){
   return '<div class="empty">No records were returned for this section.</div>';
  }
 
- const headers = fields.map(f=>
+ const headers=fields.map(f=>
   '<th>'+safe(f.replaceAll('_',' '))+'</th>'
  ).join('');
 
- const body = rows.map(row=>
+ const body=rows.map(row=>{
+  const id=row.id??row.user_id;
+  let buttons='';
 
-  '<tr>'+
-   fields.map(f=>
-    '<td>'+safe(val(row[f]))+'</td>'
-   ).join('')+
+  if(actions.includes('edit')){
+   buttons+='<button class="btn tiny edit" data-id="'+safe(id)+'" data-api="'+apiName+'">Edit</button>';
+  }
+  if(actions.includes('restrict')){
+   buttons+='<button class="btn tiny restrict" data-id="'+safe(id)+'">Restrict</button>';
+  }
+  if(actions.includes('lift')){
+   buttons+='<button class="btn tiny danger lift" data-id="'+safe(id)+'">Lift restriction</button>';
+  }
+  if(actions.includes('keep')){
+   buttons+='<button class="btn tiny success keep" data-id="'+safe(id)+'">Keep account</button>';
+  }
+  if(actions.includes('archive')){
+   buttons+='<button class="btn tiny danger archive" data-id="'+safe(id)+'">Archive</button>';
+  }
+  if(actions.includes('removeAdmin')){
+   buttons+='<button class="btn tiny danger remove-admin" data-id="'+safe(id)+'">Remove admin</button>';
+  }
 
-   '<td><div class="rowactions">'+
+  return '<tr>'+
+   fields.map(f=>'<td>'+safe(val(row[f]))+'</td>').join('')+
+   '<td><div class="rowactions">'+buttons+'</div></td>'+
+   '</tr>';
+ }).join('');
 
-    (actions.includes('edit')
-     ?'<button class="btn tiny edit" data-id="'+safe(row.id)+'" data-api="'+apiName+'">Edit</button>'
-     :'')+
-
-    (actions.includes('restrict')
-     ?'<button class="btn tiny restrict" data-id="'+safe(row.id)+'">Restrict</button>'
-     :'')+
-
-    (actions.includes('lift')
-     ?'<button class="btn tiny danger lift" data-id="'+safe(row.id)+'">Lift restriction</button>'
-     :'')+
-
-   '</div></td>'+
-
-  '</tr>'
-
- ).join('');
-
- return (
-  '<table>'+
-   '<thead><tr>'+headers+'<th>Actions</th></tr></thead>'+
-   '<tbody>'+body+'</tbody>'+
-  '</table>'
- );
+ return '<table><thead><tr>'+headers+'<th>Actions</th></tr></thead><tbody>'+body+'</tbody></table>';
 }
 
 async function loadPanel(page,append=false){
+ currentPage=page;
+ const c=config[page];
+ if(!c)return;
 
- currentPage = page;
+ limit=Number($('pageSize').value)||50;
+ if(!append)offset=0;
 
- const c = config[page];
+ $('sectionTitle').textContent=c.title;
+ $('sectionSub').textContent=c.sub;
+ $('sectionNotice').textContent=c.notice;
+ $('sectionMessage').className='message';
+ $('specialArea').innerHTML='';
 
- if(!c) return;
+ if(page==='promotions'){
+  renderPromotionForm();
+ }
+ if(page==='security'){
+  renderAdminForm();
+ }
 
- limit = Number($('pageSize').value)||50;
-
- if(!append) offset = 0;
-
- $('sectionTitle').textContent = c.title;
- $('sectionSub').textContent = c.sub;
- $('sectionNotice').textContent = c.notice;
- $('sectionMessage').className = 'message';
-
- $('tableArea').innerHTML =
-  '<div class="empty"><div class="spin"></div>Loading records...</div>';
+ $('tableArea').innerHTML='<div class="empty"><div class="spin"></div>Loading records...</div>';
 
  try{
+  const rows=await fetchSection(c.api,offset,limit);
 
-  const rows = await fetchSection(c.api,offset,limit);
-
-  currentRows = append
-   ?currentRows.concat(rows)
-   :rows;
-
+  currentRows=append?currentRows.concat(rows):rows;
   renderCurrent();
 
+  currentExtraConfigs=[];
+
   for(const extraConfig of (c.extras||[])){
-
-   const extra = await fetchSection(extraConfig.api,0,100);
-
-   $('tableArea').insertAdjacentHTML(
-    'beforeend',
-    '<div style="padding:15px;border-top:1px solid var(--border)">'+
-     '<h3 style="font-size:13px">'+safe(extraConfig.title)+'</h3>'+
-     tableHTML(
-      extra,
-      extraConfig.fields,
-      extraConfig.actions,
-      extraConfig.api
-     )+
-    '</div>'
-   );
-
-  }
-
-  if(c.secondary){
-
-   const extra = await fetchSection(c.secondary.api,0,100);
+   currentExtraConfigs.push(extraConfig);
+   const extra=await fetchSection(extraConfig.api,0,100);
 
    $('tableArea').insertAdjacentHTML(
     'beforeend',
     '<div style="padding:15px;border-top:1px solid var(--border)">'+
-     '<h3 style="font-size:13px">'+safe(c.secondary.title)+'</h3>'+
-     tableHTML(
-      extra,
-      c.secondary.fields,
-      c.secondary.actions,
-      c.secondary.api
-     )+
+    '<h3 class="panel-title">'+safe(extraConfig.title)+'</h3>'+
+    tableHTML(extra,extraConfig.fields,extraConfig.actions,extraConfig.api)+
     '</div>'
    );
-
   }
 
-  $('recordCount').textContent =
-   currentRows.length+' records loaded';
+  for(const name of ['secondary','tertiary']){
+   const extraConfig=c[name];
+   if(!extraConfig)continue;
 
-  $('loadMore').classList.toggle(
-   'hidden',
-   rows.length<limit
-  );
+   currentExtraConfigs.push(extraConfig);
+   const extra=await fetchSection(extraConfig.api,0,100);
+
+   $('tableArea').insertAdjacentHTML(
+    'beforeend',
+    '<div style="padding:15px;border-top:1px solid var(--border)">'+
+    '<h3 class="panel-title">'+safe(extraConfig.title)+'</h3>'+
+    tableHTML(extra,extraConfig.fields,extraConfig.actions,extraConfig.api)+
+    '</div>'
+   );
+  }
+
+  $('recordCount').textContent=currentRows.length+' records loaded';
+  $('loadMore').classList.toggle('hidden',rows.length<limit);
 
  }catch(e){
-
-  $('tableArea').innerHTML =
-   '<div class="empty">'+safe(e.message)+'</div>';
-
+  $('tableArea').innerHTML='<div class="empty">'+safe(e.message)+'</div>';
   $('loadMore').classList.add('hidden');
-
  }
 }
 
 function renderCurrent(){
+ const c=config[currentPage];
+ const q=$('searchInput').value.trim().toLowerCase();
 
- const c = config[currentPage];
-
- const q = $('searchInput').value.trim().toLowerCase();
-
- const rows = currentRows.filter(r=>
-  !q || JSON.stringify(r).toLowerCase().includes(q)
+ const rows=currentRows.filter(r=>
+  !q||JSON.stringify(r).toLowerCase().includes(q)
  );
 
- $('tableArea').innerHTML =
-  tableHTML(rows,c.fields,c.actions,c.api);
-
- $('recordCount').textContent =
-  rows.length+' shown / '+currentRows.length+' loaded';
+ $('tableArea').innerHTML=tableHTML(rows,c.fields,c.actions,c.api);
+ $('recordCount').textContent=rows.length+' shown / '+currentRows.length+' loaded';
 }
 
-async function updateRecord(section,id,changes){
-
+async function updateRecord(section,id,changes,extra={}){
  return api('/api/admin/manage',{
   method:'POST',
   body:JSON.stringify({
    section,
    operation:'update',
    id,
-   changes
+   changes,
+   ...extra
   })
  });
-
 }
 
 async function editRecord(section,id){
-
- const row =
-  rowCache.get(section+':'+String(id)) ||
-  currentRows.find(r=>String(r.id)===String(id));
+ const row=rowCache.get(section+':'+String(id));
 
  if(!row){
   alert('Reload the section and try again.');
   return;
  }
 
- let changes = {};
-
- const choices = {
-
+ const choices={
   reports:['status','admin_note'],
-
   applications:['application_status','review_notes'],
-
-  creatorPayouts:[
-   'payout_status',
-   'admin_notes',
-   'payout_reference',
-   'paid_at'
-  ],
-
-  giftPayouts:[
-   'status',
-   'admin_note',
-   'payment_reference',
-   'processed_at',
-   'reviewed_at',
-   'rejection_reason',
-   'external_transfer_reference'
-  ],
-
-  campaigns:[
-   'status',
-   'admin_note',
-   'moderation_note',
-   'starts_at',
-   'ends_at',
-   'expires_at'
-  ],
-
-  promotions:[
-   'status',
-   'start_at',
-   'end_at',
-   'priority'
-  ],
-
-  communities:[
-   'name',
-   'description',
-   'school'
-  ],
-
+  creatorPayouts:['payout_status','admin_notes','payout_reference','paid_at'],
+  campaigns:['status','admin_note','starts_at','ends_at','expires_at'],
+  promotions:['business_name','promotion_title','description','media_type','placement','status','start_at','end_at','priority','phone_number','whatsapp_url','website_url','social_media_url','call_to_action'],
+  communities:['name','description','school'],
   events:['status'],
-
   products:['status'],
-
   listings:['status'],
-
   marketplaceReports:['status']
-
  };
 
- const fields = choices[section] || [];
-
+ const fields=choices[section]||[];
  if(!fields.length){
   alert('No editable fields are configured for this section.');
   return;
  }
 
+ const changes={};
+
  for(const f of fields){
+  const current=row[f]??'';
+  const next=prompt('New value for '+f.replaceAll('_',' ')+':',String(current));
 
-  const current = row[f] ?? '';
-
-  const next = prompt(
-   'New value for '+f.replaceAll('_',' ')+':',
-   String(current)
-  );
-
-  if(next===null) return;
-
+  if(next===null)return;
   if(next!==String(current)){
-   changes[f] = next===''?null:next;
+   changes[f]=next===''?null:next;
   }
-
  }
 
- if(!Object.keys(changes).length) return;
+ if(!Object.keys(changes).length)return;
 
- if(
-  section==='giftPayouts' &&
-  changes.status &&
-  /paid/i.test(changes.status)
- ){
-
-  if(!confirm(
-   'Only continue if the actual bank transfer has already succeeded. Have you transferred the money?'
-  )){
+ if(section==='creatorPayouts'&&changes.payout_status==='paid'){
+  if(!confirm('Only continue if the actual bank transfer has succeeded. Have you transferred the money?')){
    return;
   }
-
  }
 
  try{
+  const d=await updateRecord(section,id,changes,{
+   confirm_actual_transfer:section==='creatorPayouts'&&changes.payout_status==='paid'
+  });
 
-  const d = await updateRecord(section,id,changes);
-
-  msg(
-   $('sectionMessage'),
-   d.message || 'Record updated.'
-  );
-
+  msg($('sectionMessage'),d.message||'Record updated.');
   await loadPanel(currentPage);
 
  }catch(e){
-
   msg($('sectionMessage'),e.message,'err');
-
  }
-
 }
 
 async function restrictUser(id){
-
- const type = prompt(
-  'Restriction type: warning, temporary, or permanent',
+ const type=prompt(
+  'Choose one exact restriction type:\n\nwarning\ntemporary_restriction\ntemporary_suspension\npermanent_suspension',
   'warning'
  );
 
- if(!type) return;
+ if(!type)return;
 
- const reason = prompt('Reason for this restriction:');
+ const allowed=[
+  'warning',
+  'temporary_restriction',
+  'temporary_suspension',
+  'permanent_suspension'
+ ];
 
- if(!reason) return;
-
- let ends_at = null;
-
- if(type==='temporary'){
-
-  ends_at = prompt(
-   'End date/time in ISO format (example: 2026-11-01T12:00:00Z):'
-  );
-
-  if(!ends_at) return;
-
- }
-
- if(!confirm('Record this restriction for the selected account?')){
+ if(!allowed.includes(type)){
+  alert('Invalid restriction type.');
   return;
  }
 
- try{
+ const reason=prompt('Reason for this restriction:');
+ if(!reason)return;
 
-  const d = await api('/api/admin/manage',{
+ let ends_at=null;
+
+ if(type==='temporary_restriction'||type==='temporary_suspension'){
+  const value=prompt('Enter the future end date and time in ISO format. Example: 2026-11-01T12:00:00Z');
+  if(!value)return;
+
+  const date=new Date(value);
+  if(Number.isNaN(date.getTime())||date.getTime()<=Date.now()){
+   alert('Please enter a valid future date and time.');
+   return;
+  }
+
+  ends_at=date.toISOString();
+ }
+
+ if(!confirm('Record this restriction for the selected account?'))return;
+
+ try{
+  const d=await api('/api/admin/manage',{
    method:'POST',
    body:JSON.stringify({
     section:'users',
@@ -1191,28 +1119,40 @@ async function restrictUser(id){
    })
   });
 
-  msg(
-   $('sectionMessage'),
-   d.message || 'Restriction recorded.'
-  );
-
+  msg($('sectionMessage'),d.message||'Restriction recorded.');
   await loadPanel('users');
 
  }catch(e){
-
   msg($('sectionMessage'),e.message,'err');
-
  }
+}
 
+async function keepAccount(id){
+ if(!confirm('Cancel this account deletion request and keep the account?'))return;
+
+ try{
+  const d=await api('/api/admin/manage',{
+   method:'POST',
+   body:JSON.stringify({
+    section:'deletions',
+    operation:'keep_account',
+    id
+   })
+  });
+
+  msg($('sectionMessage'),d.message||'Account kept.');
+  await loadPanel('deletions');
+
+ }catch(e){
+  msg($('sectionMessage'),e.message,'err');
+ }
 }
 
 async function liftRestriction(id){
-
- if(!confirm('Lift this restriction?')) return;
+ if(!confirm('Lift this restriction?'))return;
 
  try{
-
-  const d = await api('/api/admin/manage',{
+  const d=await api('/api/admin/manage',{
    method:'POST',
    body:JSON.stringify({
     section:'restrictions',
@@ -1221,96 +1161,464 @@ async function liftRestriction(id){
    })
   });
 
-  msg(
-   $('sectionMessage'),
-   d.message || 'Restriction lifted.'
-  );
-
+  msg($('sectionMessage'),d.message||'Restriction lifted.');
   await loadPanel('security');
 
  }catch(e){
-
   msg($('sectionMessage'),e.message,'err');
-
  }
-
 }
 
-document.querySelectorAll('.nav').forEach(b=>{
+async function archivePromotion(id){
+ if(!confirm('Archive this promotion? It will no longer be treated as an active promotion.'))return;
 
- b.addEventListener('click',async()=>{
+ try{
+  const d=await api('/api/admin/manage',{
+   method:'POST',
+   body:JSON.stringify({
+    section:'promotions',
+    operation:'archive_promotion',
+    id
+   })
+  });
 
-  document.querySelectorAll('.nav').forEach(x=>
-   x.classList.remove('active')
-  );
+  msg($('sectionMessage'),d.message||'Promotion archived.');
+  await loadPanel('promotions');
 
-  b.classList.add('active');
+ }catch(e){
+  msg($('sectionMessage'),e.message,'err');
+ }
+}
+
+function renderPromotionForm(){
+ $('specialArea').innerHTML=`
+ <div class="formcard">
+  <h3 class="panel-title">Create a Business Promotion</h3>
+  <p class="muted">Add a business promotion that can appear in the Campusora promotional placements.</p>
+
+  <form id="promotionForm">
+   <div class="formgrid">
+
+    <div class="field">
+     <label>Business name *</label>
+     <input name="business_name" maxlength="200" required placeholder="Business name">
+    </div>
+
+    <div class="field">
+     <label>Promotion title *</label>
+     <input name="promotion_title" maxlength="200" required placeholder="What is being promoted?">
+    </div>
+
+    <div class="field full">
+     <label>Description *</label>
+     <textarea name="description" maxlength="5000" required placeholder="Describe the business or promotion"></textarea>
+    </div>
+
+    <div class="field">
+     <label>Media type *</label>
+     <select name="media_type" id="promotionMediaType">
+      <option value="image">Image</option>
+      <option value="video">Video</option>
+     </select>
+    </div>
+
+    <div class="field">
+     <label>Upload image or video</label>
+     <input type="file" id="promotionFile" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime">
+     <small>Maximum file size: 50 MB. Supported: JPG, PNG, WEBP, GIF, MP4, WEBM and MOV.</small>
+     <img id="promotionPreview" class="preview" alt="Media preview">
+     <video id="promotionVideoPreview" class="preview" controls></video>
+     <div class="progress"><span id="uploadProgress"></span></div>
+     <small id="uploadStatus">No file uploaded.</small>
+    </div>
+
+    <div class="field">
+     <label>Placement *</label>
+     <select name="placement">
+      <option value="feed">Feed</option>
+      <option value="top">Top placement</option>
+      <option value="both">Top and feed</option>
+     </select>
+    </div>
+
+    <div class="field">
+     <label>Status *</label>
+     <select name="status">
+      <option value="draft">Draft</option>
+      <option value="scheduled">Scheduled</option>
+      <option value="active">Active</option>
+      <option value="paused">Paused</option>
+     </select>
+    </div>
+
+    <div class="field">
+     <label>Start date and time</label>
+     <input type="datetime-local" name="start_at">
+    </div>
+
+    <div class="field">
+     <label>End date and time</label>
+     <input type="datetime-local" name="end_at">
+    </div>
+
+    <div class="field">
+     <label>Priority</label>
+     <input type="number" name="priority" value="0" min="0" step="1">
+    </div>
+
+    <div class="field">
+     <label>Phone number</label>
+     <input name="phone_number" maxlength="50" placeholder="Optional">
+    </div>
+
+    <div class="field">
+     <label>WhatsApp link</label>
+     <input name="whatsapp_url" type="url" placeholder="https://wa.me/...">
+    </div>
+
+    <div class="field">
+     <label>Website link</label>
+     <input name="website_url" type="url" placeholder="https://...">
+    </div>
+
+    <div class="field">
+     <label>Social media link</label>
+     <input name="social_media_url" type="url" placeholder="https://...">
+    </div>
+
+    <div class="field">
+     <label>Call-to-action text</label>
+     <input name="call_to_action" maxlength="100" value="Contact Business">
+    </div>
+
+   </div>
+
+   <div id="promotionFormMessage" class="message"></div>
+
+   <div class="toolbar">
+    <button class="btn primary" type="submit" id="createPromotionBtn">Create promotion</button>
+    <button class="btn" type="reset" id="resetPromotionBtn">Clear form</button>
+   </div>
+  </form>
+ </div>`;
+ setupPromotionForm();
+}
+
+function setupPromotionForm(){
+ const form=$('promotionForm');
+ const fileInput=$('promotionFile');
+ const mediaType=$('promotionMediaType');
+ const imagePreview=$('promotionPreview');
+ const videoPreview=$('promotionVideoPreview');
+ let uploadedPath=null;
+ let uploadedType=null;
+
+ mediaType.addEventListener('change',()=>{
+  fileInput.value='';
+  uploadedPath=null;
+  uploadedType=null;
+  imagePreview.style.display='none';
+  videoPreview.style.display='none';
+  $('uploadStatus').textContent='No file uploaded.';
+  $('uploadProgress').style.width='0%';
+ });
+
+ fileInput.addEventListener('change',()=>{
+  const file=fileInput.files[0];
+  if(!file)return;
+
+  const isImage=file.type.startsWith('image/');
+  const isVideo=file.type.startsWith('video/');
+
+  if((mediaType.value==='image'&&!isImage)||(mediaType.value==='video'&&!isVideo)){
+   alert('The selected file does not match the media type.');
+   fileInput.value='';
+   return;
+  }
+
+  if(file.size>50*1024*1024){
+   alert('The file is larger than 50 MB.');
+   fileInput.value='';
+   return;
+  }
+
+  const objectUrl=URL.createObjectURL(file);
+
+  if(isImage){
+   imagePreview.src=objectUrl;
+   imagePreview.style.display='block';
+   videoPreview.style.display='none';
+  }else{
+   videoPreview.src=objectUrl;
+   videoPreview.style.display='block';
+   imagePreview.style.display='none';
+  }
+
+  uploadedPath=null;
+  uploadedType=null;
+  $('uploadStatus').textContent='File selected. It will upload when you create the promotion.';
+ });
+
+ $('resetPromotionBtn').addEventListener('click',()=>{
+  setTimeout(()=>{
+   uploadedPath=null;
+   uploadedType=null;
+   imagePreview.style.display='none';
+   videoPreview.style.display='none';
+   $('uploadProgress').style.width='0%';
+   $('uploadStatus').textContent='No file uploaded.';
+   $('promotionFormMessage').className='message';
+  },0);
+ });
+
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();
+
+  const button=$('createPromotionBtn');
+  const message=$('promotionFormMessage');
+  const fd=new FormData(form);
+  const file=fileInput.files[0];
+
+  button.disabled=true;
+  button.textContent='Processing...';
+  message.className='message';
+
+  try{
+   let mediaPath=null;
+
+   if(file){
+    $('uploadStatus').textContent='Preparing secure upload...';
+
+    const prepared=await api('/api/admin/upload',{
+     method:'POST',
+     body:JSON.stringify({
+      contentType:file.type,
+      fileSize:file.size
+     })
+    });
+
+    const uploadUrl=
+     'https://ssdhygwozbroqjhuecgp.supabase.co/storage/v1/object/upload/sign/'+
+     prepared.path.split('/').map(encodeURIComponent).join('/')+
+     '?token='+encodeURIComponent(prepared.token);
+
+    $('uploadStatus').textContent='Uploading media...';
+
+    const uploadResponse=await fetch(uploadUrl,{
+     method:'PUT',
+     headers:{
+      'Content-Type':file.type,
+      'x-upsert':'false'
+     },
+     body:file
+    });
+
+    if(!uploadResponse.ok){
+     const uploadError=await uploadResponse.text();
+     console.error('Promotion media upload failed:',uploadError);
+     throw Error('Media upload failed. Please try again.');
+    }
+
+    mediaPath=prepared.path;
+    uploadedPath=mediaPath;
+    uploadedType=file.type;
+
+    $('uploadProgress').style.width='100%';
+    $('uploadStatus').textContent='Media uploaded successfully.';
+   }
+
+   const startValue=fd.get('start_at');
+   const endValue=fd.get('end_at');
+
+   const payload={
+    section:'promotions',
+    operation:'create_promotion',
+    business_name:fd.get('business_name'),
+    promotion_title:fd.get('promotion_title'),
+    description:fd.get('description'),
+    media_type:fd.get('media_type'),
+    media_path:mediaPath,
+    placement:fd.get('placement'),
+    status:fd.get('status'),
+    start_at:startValue?new Date(startValue).toISOString():null,
+    end_at:endValue?new Date(endValue).toISOString():null,
+    priority:Number(fd.get('priority')||0),
+    phone_number:fd.get('phone_number'),
+    whatsapp_url:fd.get('whatsapp_url'),
+    website_url:fd.get('website_url'),
+    social_media_url:fd.get('social_media_url'),
+    call_to_action:fd.get('call_to_action')
+   };
+
+   const result=await api('/api/admin/manage',{
+    method:'POST',
+    body:JSON.stringify(payload)
+   });
+
+   msg(message,result.message||'Promotion created.');
+   form.reset();
+   fileInput.value='';
+   uploadedPath=null;
+   uploadedType=null;
+   imagePreview.style.display='none';
+   videoPreview.style.display='none';
+   $('uploadProgress').style.width='0%';
+   $('uploadStatus').textContent='No file uploaded.';
+
+   await loadPanel('promotions');
+
+  }catch(error){
+   msg(message,error.message,'err');
+  }finally{
+   button.disabled=false;
+   button.textContent='Create promotion';
+  }
+ });
+}
+
+function renderAdminForm(){
+ if(adminRole!=='super_admin'){
+  $('specialArea').innerHTML=
+   '<div class="notice">Only the super administrator can add or remove helper administrators.</div>';
+  return;
+ }
+
+ $('specialArea').innerHTML=`
+ <div class="formcard">
+  <h3 class="panel-title">Add Helper Administrator</h3>
+  <p class="muted">Enter the email address of an existing Campusora account. This does not create a new user account.</p>
+  <form id="adminForm">
+   <div class="toolbar">
+    <input class="search" id="helperAdminEmail" type="email" required placeholder="Existing user's email address">
+    <button class="btn primary" type="submit" id="addAdminBtn">Add helper admin</button>
+   </div>
+   <div id="adminFormMessage" class="message"></div>
+  </form>
+ </div>`;
+ 
+ $('adminForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+
+  const button=$('addAdminBtn');
+  const email=$('helperAdminEmail').value.trim();
+
+  button.disabled=true;
+
+  try{
+   const d=await api('/api/admin/manage',{
+    method:'POST',
+    body:JSON.stringify({
+     operation:'add_admin',
+     email
+    })
+   });
+
+   msg($('adminFormMessage'),d.message||'Helper administrator added.');
+   $('helperAdminEmail').value='';
+   await loadPanel('security');
+
+  }catch(error){
+   msg($('adminFormMessage'),error.message,'err');
+  }finally{
+   button.disabled=false;
+  }
+ });
+}
+
+async function removeAdmin(id){
+ if(adminRole!=='super_admin'){
+  alert('Only the super administrator can remove helper admins.');
+  return;
+ }
+
+ if(!confirm('Remove this helper administrator from Campusora admin access?'))return;
+
+ try{
+  const d=await api('/api/admin/manage',{
+   method:'POST',
+   body:JSON.stringify({
+    operation:'remove_admin',
+    id
+   })
+  });
+
+  msg($('sectionMessage'),d.message||'Administrator removed.');
+  await loadPanel('security');
+
+ }catch(error){
+  msg($('sectionMessage'),error.message,'err');
+ }
+}
+
+document.querySelectorAll('.nav').forEach(button=>{
+ button.addEventListener('click',async()=>{
+  document.querySelectorAll('.nav').forEach(item=>item.classList.remove('active'));
+  button.classList.add('active');
 
   $('sidebar').classList.remove('open');
 
-  const p = b.dataset.page;
+  const page=button.dataset.page;
 
-  $('overview').classList.toggle('hidden',p!=='overview');
-  $('manager').classList.toggle('hidden',p==='overview');
+  $('overview').classList.toggle('hidden',page!=='overview');
+  $('manager').classList.toggle('hidden',page==='overview');
 
-  if(p!=='overview'){
-
-   $('searchInput').value = '';
-
-   await loadPanel(p);
-
+  if(page!=='overview'){
+   $('searchInput').value='';
+   await loadPanel(page);
   }
-
  });
-
 });
 
-$('refreshStats').onclick = loadStats;
+$('refreshStats').onclick=loadStats;
+$('reloadSection').onclick=()=>loadPanel(currentPage);
 
-$('reloadSection').onclick = ()=>loadPanel(currentPage);
-
-$('loadMore').onclick = async()=>{
- offset += limit;
+$('loadMore').onclick=async()=>{
+ offset+=limit;
  await loadPanel(currentPage,true);
 };
 
-$('searchInput').oninput = renderCurrent;
+$('searchInput').oninput=()=>{
+ if(currentPage==='overview')return;
+ renderCurrent();
+};
 
-$('pageSize').onchange = ()=>loadPanel(currentPage);
+$('pageSize').onchange=()=>loadPanel(currentPage);
 
-$('menuBtn').onclick = ()=>
- $('sidebar').classList.toggle('open');
+$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open');
 
-$('logoutBtn').onclick = async()=>{
+$('logoutBtn').onclick=async()=>{
  await supabase.auth.signOut();
  location.replace('./auth.html?mode=login');
 };
 
 $('tableArea').addEventListener('click',e=>{
+ const button=e.target.closest('button');
+ if(!button)return;
 
- const b = e.target.closest('button');
+ const id=button.dataset.id;
 
- if(!b) return;
-
- const id = b.dataset.id;
-
- if(b.classList.contains('edit')){
-  editRecord(b.dataset.api,id);
+ if(button.classList.contains('edit')){
+  editRecord(button.dataset.api,id);
  }
-
- if(b.classList.contains('restrict')){
+ if(button.classList.contains('restrict')){
   restrictUser(id);
  }
-
- if(b.classList.contains('lift')){
+ if(button.classList.contains('lift')){
   liftRestriction(id);
  }
-
+ if(button.classList.contains('keep')){
+  keepAccount(id);
+ }
+ if(button.classList.contains('archive')){
+  archivePromotion(id);
+ }
+ if(button.classList.contains('remove-admin')){
+  removeAdmin(id);
+ }
 });
 
 start();
 
 </script>
-
 </body>
   </html>
