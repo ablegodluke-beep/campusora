@@ -540,9 +540,9 @@ tr:last-child td{border-bottom:0}
 
 </main>
 </div>
-</div>
+ </div>
 
-<script type="module">
+ <script type="module">
 
 import {supabase} from './supabase.js';
 
@@ -800,7 +800,7 @@ async function start(){
 
   token=data.session.access_token;
 
-  const check=await api('/api/admin/check');
+  const check=await api('/api/admin?action=check');
 
   adminRole=check.admin_role||'admin';
 
@@ -826,7 +826,7 @@ async function loadStats(){
  $('connection').textContent='Loading live statistics...';
 
  try{
-  const d=await api('/api/admin/stats');
+  const d=await api('/api/admin?action=stats');
   const s=d.statistics||{};
 
   const map={
@@ -858,7 +858,7 @@ async function loadStats(){
 
 async function fetchSection(apiName,off=0,lim=50){
  const d=await api(
-  '/api/admin/manage?section='+
+  '/api/admin?action=manage&section='+
   encodeURIComponent(apiName)+
   '&limit='+lim+
   '&offset='+off
@@ -994,7 +994,7 @@ function renderCurrent(){
 }
 
 async function updateRecord(section,id,changes,extra={}){
- return api('/api/admin/manage',{
+ return api('/api/admin?action=manage',{
   method:'POST',
   body:JSON.stringify({
    section,
@@ -1082,7 +1082,8 @@ async function restrictUser(id){
  ];
 
  if(!allowed.includes(type)){
-  alert('Invalid restriction type.');
+
+   alert('Invalid restriction type.');
   return;
  }
 
@@ -1107,7 +1108,7 @@ async function restrictUser(id){
  if(!confirm('Record this restriction for the selected account?'))return;
 
  try{
-  const d=await api('/api/admin/manage',{
+  const d=await api('/api/admin?action=manage',{
    method:'POST',
    body:JSON.stringify({
     section:'users',
@@ -1131,7 +1132,7 @@ async function keepAccount(id){
  if(!confirm('Cancel this account deletion request and keep the account?'))return;
 
  try{
-  const d=await api('/api/admin/manage',{
+  const d=await api('/api/admin?action=manage',{
    method:'POST',
    body:JSON.stringify({
     section:'deletions',
@@ -1152,7 +1153,7 @@ async function liftRestriction(id){
  if(!confirm('Lift this restriction?'))return;
 
  try{
-  const d=await api('/api/admin/manage',{
+  const d=await api('/api/admin?action=manage',{
    method:'POST',
    body:JSON.stringify({
     section:'restrictions',
@@ -1173,7 +1174,7 @@ async function archivePromotion(id){
  if(!confirm('Archive this promotion? It will no longer be treated as an active promotion.'))return;
 
  try{
-  const d=await api('/api/admin/manage',{
+  const d=await api('/api/admin?action=manage',{
    method:'POST',
    body:JSON.stringify({
     section:'promotions',
@@ -1389,7 +1390,7 @@ function setupPromotionForm(){
    if(file){
     $('uploadStatus').textContent='Preparing secure upload...';
 
-    const prepared=await api('/api/admin/upload',{
+    const prepared=await api('/api/admin?action=upload',{
      method:'POST',
      body:JSON.stringify({
       contentType:file.type,
@@ -1450,7 +1451,7 @@ function setupPromotionForm(){
     call_to_action:fd.get('call_to_action')
    };
 
-   const result=await api('/api/admin/manage',{
+   const result=await api('/api/admin?action=manage',{
     method:'POST',
     body:JSON.stringify(payload)
    });
@@ -1505,7 +1506,7 @@ function renderAdminForm(){
   button.disabled=true;
 
   try{
-   const d=await api('/api/admin/manage',{
+   const d=await api('/api/admin?action=manage',{
     method:'POST',
     body:JSON.stringify({
      operation:'add_admin',
@@ -1534,7 +1535,7 @@ async function removeAdmin(id){
  if(!confirm('Remove this helper administrator from Campusora admin access?'))return;
 
  try{
-  const d=await api('/api/admin/manage',{
+  const d=await api('/api/admin?action=manage',{
    method:'POST',
    body:JSON.stringify({
     operation:'remove_admin',
