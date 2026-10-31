@@ -1398,9 +1398,9 @@ function setupPromotionForm(){
     });
 
     const uploadUrl=
-     'https://ssdhygwozbroqjhuecgp.supabase.co/storage/v1/object/upload/sign/'+
-     prepared.path.split('/').map(encodeURIComponent).join('/')+
-     '?token='+encodeURIComponent(prepared.token);
+ 'https://ssdhygwozbroqjhuecgp.supabase.co/storage/v1/object/upload/sign/campusora-business-promotions/'+
+ prepared.path.split('/').map(encodeURIComponent).join('/')+
+ '?token='+encodeURIComponent(prepared.token);
 
     $('uploadStatus').textContent='Uploading media...';
 
