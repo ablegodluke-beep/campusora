@@ -1,6 +1,6 @@
 /* =========================================
 CAMPUSORA — SHARED NAVIGATION
-Compact Official Campusora Design
+Official Compact Design + Live Search
 ========================================= */
 
 :root {
@@ -45,7 +45,7 @@ min-height: 42px;
 display: flex;
 align-items: center;
 justify-content: space-between;
-gap: 8px;
+gap: 10px;
 padding: 2px 14px;
 border: none;
 }
@@ -76,6 +76,158 @@ letter-spacing: -.7px;
 white-space: nowrap;
 }
 
+/* SEARCH AREA */
+
+.campusora-header-search {
+position: relative;
+flex: 1;
+min-width: 100px;
+max-width: 390px;
+margin: 0 auto;
+}
+
+.campusora-header-search-form {
+width: 100%;
+height: 31px;
+display: flex;
+align-items: center;
+gap: 7px;
+padding: 0 11px;
+border: 1px solid rgba(255,255,255,.09);
+border-radius: 20px;
+background: #151b30;
+transition: border-color .2s ease, background .2s ease;
+}
+
+.campusora-header-search-form:focus-within {
+border-color: rgba(146,91,255,.75);
+background: #1a2038;
+}
+
+.campusora-header-search-icon {
+width: 16px;
+height: 16px;
+flex-shrink: 0;
+color: var(--nav-muted);
+}
+
+.campusora-header-search-input {
+width: 100%;
+min-width: 0;
+padding: 0;
+border: none;
+outline: none;
+background: transparent;
+color: var(--nav-text);
+font-family: "DM Sans", sans-serif;
+font-size: 11px;
+}
+
+.campusora-header-search-input::placeholder {
+color: #8992ad;
+opacity: 1;
+}
+
+/* SEARCH RESULTS DROPDOWN */
+
+.campusora-header-search-results {
+position: absolute;
+top: calc(100% + 8px);
+left: 0;
+right: 0;
+z-index: 10010;
+display: none;
+max-height: 360px;
+overflow-y: auto;
+padding: 7px;
+border: 1px solid var(--nav-border);
+border-radius: 13px;
+background: #101629;
+box-shadow: 0 12px 35px rgba(0,0,0,.45);
+}
+
+.campusora-header-search-results.show {
+display: block;
+}
+
+.campusora-search-message {
+padding: 13px 10px;
+color: var(--nav-muted);
+font-size: 12px;
+text-align: center;
+}
+
+.campusora-search-result {
+width: 100%;
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 9px;
+border: none;
+border-radius: 9px;
+background: transparent;
+color: var(--nav-text);
+text-align: left;
+text-decoration: none;
+cursor: pointer;
+}
+
+.campusora-search-result:hover {
+background: rgba(146,91,255,.13);
+}
+
+.campusora-search-avatar {
+width: 37px;
+height: 37px;
+flex-shrink: 0;
+border-radius: 50%;
+object-fit: cover;
+background: #202943;
+}
+
+.campusora-search-result-info {
+min-width: 0;
+flex: 1;
+}
+
+.campusora-search-result-info strong {
+display: block;
+overflow: hidden;
+color: #fff;
+font-size: 12px;
+font-weight: 750;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.campusora-search-result-info small {
+display: block;
+margin-top: 3px;
+overflow: hidden;
+color: var(--nav-muted);
+font-size: 10px;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.campusora-search-see-all {
+width: 100%;
+margin-top: 5px;
+padding: 10px 8px;
+border: none;
+border-top: 1px solid var(--nav-border);
+border-radius: 0 0 8px 8px;
+background: transparent;
+color: var(--nav-cyan);
+font-size: 11px;
+font-weight: 750;
+cursor: pointer;
+}
+
+.campusora-search-see-all:hover {
+background: rgba(57,215,245,.08);
+}
+
 /* TAGLINE */
 
 .campusora-tagline {
@@ -86,6 +238,7 @@ font-size: 11px;
 font-weight: 500;
 text-align: right;
 line-height: 1.3;
+flex-shrink: 0;
 }
 
 /* MAIN NAVIGATION */
@@ -356,6 +509,14 @@ height: 33px;
 font-size: 20px;
 }
 
+.campusora-header-search {
+max-width: 420px;
+}
+
+.campusora-header-search-form {
+height: 33px;
+}
+
 .campusora-mainnav {
 padding-left: 20px;
 padding-right: 20px;
@@ -388,7 +549,7 @@ padding-bottom: 15px !important;
 height: 40px;
 min-height: 40px;
 padding: 2px 9px;
-gap: 5px;
+gap: 6px;
 }
 
 .campusora-brand {
@@ -405,9 +566,32 @@ font-size: 16px;
 letter-spacing: -.5px;
 }
 
+.campusora-header-search {
+min-width: 75px;
+max-width: none;
+}
+
+.campusora-header-search-form {
+height: 29px;
+gap: 5px;
+padding: 0 8px;
+}
+
+.campusora-header-search-input {
+font-size: 10px;
+}
+
+.campusora-header-search-input::placeholder {
+font-size: 10px;
+}
+
+.campusora-header-search-results {
+max-height: 300px;
+}
+
 .campusora-tagline {
 font-size: 9px;
-max-width: 145px;
+max-width: 105px;
 }
 
 .campusora-mainnav {
@@ -475,15 +659,39 @@ padding-top: 74px !important;
 .campusora-topnav-brandrow {
 padding-left: 6px;
 padding-right: 6px;
+gap: 4px;
 }
 
 .campusora-brand-name {
-font-size: 15px;
+font-size: 14px;
+}
+
+.campusora-brand img {
+width: 26px;
+height: 26px;
+}
+
+.campusora-header-search {
+min-width: 65px;
+}
+
+.campusora-header-search-form {
+padding: 0 6px;
+}
+
+.campusora-header-search-icon {
+width: 14px;
+height: 14px;
+}
+
+.campusora-header-search-input,
+.campusora-header-search-input::placeholder {
+font-size: 9px;
 }
 
 .campusora-tagline {
-font-size: 8px;
-max-width: 120px;
+font-size: 7px;
+max-width: 82px;
 }
 
 .campusora-nav-item svg {
