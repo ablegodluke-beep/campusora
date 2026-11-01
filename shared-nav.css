@@ -1,494 +1,498 @@
 /* =========================================
-   CAMPUSORA — SHARED NAVIGATION
-   Official Campusora Design
+CAMPUSORA — SHARED NAVIGATION
+Compact Official Campusora Design
 ========================================= */
 
 :root {
-  --nav-bg: #080b18;
-  --nav-surface: #101426;
-  --nav-border: rgba(255,255,255,.09);
-  --nav-text: #f5f6ff;
-  --nav-muted: #aab2cc;
-  --nav-purple: #925bff;
-  --nav-blue: #526dff;
-  --nav-cyan: #39d7f5;
-  --nav-gradient: linear-gradient(120deg,#925bff,#526dff,#39d7f5);
+--nav-bg: #080b18;
+--nav-surface: #101426;
+--nav-border: rgba(255,255,255,.09);
+--nav-text: #f5f6ff;
+--nav-muted: #aab2cc;
+--nav-purple: #925bff;
+--nav-blue: #526dff;
+--nav-cyan: #39d7f5;
+--nav-gradient: linear-gradient(120deg,#925bff,#526dff,#39d7f5);
 }
 
 /* PAGE SPACING */
 
 body.has-shared-nav {
-  padding-top: 96px !important;
-  padding-bottom: 20px !important;
+padding-top: 79px !important;
+padding-bottom: 20px !important;
 }
 
 /* FIXED HEADER */
 
 .campusora-topnav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9990;
-  width: 100%;
-  background: rgba(8,11,24,.97);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 5px 25px rgba(0,0,0,.18);
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+z-index: 9990;
+width: 100%;
+background: rgba(8,11,24,.97);
+backdrop-filter: blur(18px);
+-webkit-backdrop-filter: blur(18px);
+box-shadow: 0 5px 25px rgba(0,0,0,.18);
 }
 
 /* BRANDING ROW */
 
 .campusora-topnav-brandrow {
-  min-height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 4px 14px;
-  border: none;
+height: 42px;
+min-height: 42px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+padding: 2px 14px;
+border: none;
 }
 
 /* LOGO AND NAME */
 
 .campusora-brand {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
-  flex-shrink: 0;
-  text-decoration: none;
-  color: var(--nav-text);
+display: flex;
+align-items: center;
+gap: 4px;
+min-width: 0;
+flex-shrink: 0;
+text-decoration: none;
+color: var(--nav-text);
 }
 
 .campusora-brand img {
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  display: block;
+width: 31px;
+height: 31px;
+object-fit: contain;
+display: block;
 }
 
 .campusora-brand-name {
-  font-size: 19px;
-  font-weight: 850;
-  letter-spacing: -.7px;
-  white-space: nowrap;
+font-size: 19px;
+font-weight: 850;
+letter-spacing: -.7px;
+white-space: nowrap;
 }
 
 /* TAGLINE */
 
 .campusora-tagline {
-  margin-left: auto;
-  color: var(--nav-muted);
-  font-family: "DM Sans", sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  text-align: right;
-  line-height: 1.4;
+margin-left: auto;
+color: var(--nav-muted);
+font-family: "DM Sans", sans-serif;
+font-size: 11px;
+font-weight: 500;
+text-align: right;
+line-height: 1.3;
 }
 
 /* MAIN NAVIGATION */
 
 .campusora-mainnav {
-  width: 100%;
-  min-height: 43px;
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0,1fr));
-  align-items: center;
-  padding: 0 10px 4px;
-  gap: 3px;
-  border-bottom: 1px solid var(--nav-border);
+width: 100%;
+height: 36px;
+min-height: 36px;
+display: grid;
+grid-template-columns: repeat(7, minmax(0,1fr));
+align-items: center;
+padding: 0 10px 2px;
+gap: 3px;
+border-bottom: 1px solid var(--nav-border);
 }
 
 /* NAVIGATION ICON BUTTONS */
 
 .campusora-nav-item {
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  height: 39px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--nav-muted);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background .2s ease, color .2s ease, transform .2s ease;
-  -webkit-tap-highlight-color: transparent;
+position: relative;
+width: 100%;
+min-width: 0;
+height: 33px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0;
+margin: 0;
+border: 1px solid transparent;
+border-radius: 9px;
+background: transparent;
+color: var(--nav-muted);
+text-decoration: none;
+cursor: pointer;
+transition: background .2s ease, color .2s ease, transform .2s ease;
+-webkit-tap-highlight-color: transparent;
 }
 
 .campusora-nav-item svg {
-  width: 23px;
-  height: 23px;
-  flex-shrink: 0;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform .2s ease, filter .2s ease;
+width: 23px;
+height: 23px;
+flex-shrink: 0;
+fill: none;
+stroke: currentColor;
+stroke-width: 2.7;
+stroke-linecap: round;
+stroke-linejoin: round;
+transition: transform .2s ease, filter .2s ease;
 }
 
 /* HOVER */
 
 .campusora-nav-item:hover {
-  color: #fff;
-  background: rgba(146,91,255,.13);
+color: #fff;
+background: rgba(146,91,255,.13);
 }
 
 .campusora-nav-item:hover svg {
-  transform: scale(1.08);
+transform: scale(1.08);
 }
 
 /* ACTIVE PAGE */
 
 .campusora-nav-item.active {
-  color: #fff;
-  background: rgba(146,91,255,.18);
-  border-color: rgba(146,91,255,.30);
+color: #fff;
+background: rgba(146,91,255,.18);
+border-color: rgba(146,91,255,.30);
 }
 
 .campusora-nav-item.active svg {
-  color: var(--nav-cyan);
-  filter: drop-shadow(0 0 6px rgba(57,215,245,.45));
+color: var(--nav-cyan);
+filter: drop-shadow(0 0 6px rgba(57,215,245,.45));
 }
 
 /* FOCUS */
 
 .campusora-nav-item:focus-visible {
-  outline: 2px solid var(--nav-cyan);
-  outline-offset: 2px;
+outline: 2px solid var(--nav-cyan);
+outline-offset: 2px;
 }
 
 /* NOTIFICATION BADGE */
 
 .campusora-nav-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 16px;
-  height: 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  border-radius: 20px;
-  background: #ff456b;
-  color: #fff;
-  font-size: 9px;
-  font-weight: 800;
+position: absolute;
+top: 0;
+right: 0;
+min-width: 16px;
+height: 16px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+padding: 0 4px;
+border-radius: 20px;
+background: #ff456b;
+color: #fff;
+font-size: 9px;
+font-weight: 800;
 }
 
 /* =========================================
-   CAMPUSORA MENU PAGE
+CAMPUSORA MENU PAGE
 ========================================= */
 
 .campusora-menu-page {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px 16px 45px;
-  color: var(--nav-text);
+width: 100%;
+max-width: 900px;
+margin: 0 auto;
+padding: 20px 16px 45px;
+color: var(--nav-text);
 }
 
 .campusora-menu-title {
-  margin: 0 0 18px;
-  font-size: 23px;
-  font-weight: 850;
-  letter-spacing: -.6px;
+margin: 0 0 18px;
+font-size: 23px;
+font-weight: 850;
+letter-spacing: -.6px;
 }
 
 .campusora-menu-profile {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  padding: 15px;
-  margin-bottom: 24px;
-  border: 1px solid var(--nav-border);
-  border-radius: 15px;
-  background: var(--nav-surface);
-  text-decoration: none;
-  color: var(--nav-text);
+display: flex;
+align-items: center;
+gap: 13px;
+padding: 15px;
+margin-bottom: 24px;
+border: 1px solid var(--nav-border);
+border-radius: 15px;
+background: var(--nav-surface);
+text-decoration: none;
+color: var(--nav-text);
 }
 
 .campusora-menu-avatar {
-  width: 49px;
-  height: 49px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #202943;
+width: 49px;
+height: 49px;
+flex-shrink: 0;
+border-radius: 50%;
+object-fit: cover;
+background: #202943;
 }
 
 .campusora-menu-profile-info {
-  flex: 1;
-  min-width: 0;
+flex: 1;
+min-width: 0;
 }
 
 .campusora-menu-profile-name {
-  display: block;
-  font-size: 15px;
-  font-weight: 750;
-  overflow-wrap: anywhere;
+display: block;
+font-size: 15px;
+font-weight: 750;
+overflow-wrap: anywhere;
 }
 
 .campusora-menu-profile-action {
-  display: block;
-  margin-top: 4px;
-  color: var(--nav-cyan);
-  font-size: 12px;
-  font-weight: 600;
+display: block;
+margin-top: 4px;
+color: var(--nav-cyan);
+font-size: 12px;
+font-weight: 600;
 }
 
 .campusora-menu-section {
-  margin: 0 0 25px;
+margin: 0 0 25px;
 }
 
 .campusora-menu-section-title {
-  margin: 0 0 11px;
-  color: var(--nav-muted);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .8px;
-  text-transform: uppercase;
+margin: 0 0 11px;
+color: var(--nav-muted);
+font-size: 12px;
+font-weight: 800;
+letter-spacing: .8px;
+text-transform: uppercase;
 }
 
 .campusora-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 10px;
+display: grid;
+grid-template-columns: repeat(2, minmax(0,1fr));
+gap: 10px;
 }
 
 .campusora-menu-card {
-  min-width: 0;
-  min-height: 66px;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 12px;
-  border: 1px solid var(--nav-border);
-  border-radius: 13px;
-  background: var(--nav-surface);
-  color: var(--nav-text);
-  text-decoration: none;
-  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+min-width: 0;
+min-height: 66px;
+display: flex;
+align-items: center;
+gap: 11px;
+padding: 12px;
+border: 1px solid var(--nav-border);
+border-radius: 13px;
+background: var(--nav-surface);
+color: var(--nav-text);
+text-decoration: none;
+transition: background .2s ease, border-color .2s ease, transform .2s ease;
 }
 
 .campusora-menu-card:hover {
-  background: rgba(146,91,255,.13);
-  border-color: rgba(146,91,255,.35);
-  transform: translateY(-2px);
+background: rgba(146,91,255,.13);
+border-color: rgba(146,91,255,.35);
+transform: translateY(-2px);
 }
 
 .campusora-menu-card-icon {
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 11px;
-  background: rgba(146,91,255,.13);
-  color: var(--nav-cyan);
+width: 38px;
+height: 38px;
+flex-shrink: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 11px;
+background: rgba(146,91,255,.13);
+color: var(--nav-cyan);
 }
 
 .campusora-menu-card-icon svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+width: 21px;
+height: 21px;
+fill: none;
+stroke: currentColor;
+stroke-width: 2.2;
+stroke-linecap: round;
+stroke-linejoin: round;
 }
 
 .campusora-menu-card-name {
-  min-width: 0;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
+min-width: 0;
+font-size: 13px;
+font-weight: 700;
+line-height: 1.35;
+overflow-wrap: anywhere;
 }
 
 .campusora-menu-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  padding-top: 18px;
-  border-top: 1px solid var(--nav-border);
+display: flex;
+flex-wrap: wrap;
+gap: 15px;
+padding-top: 18px;
+border-top: 1px solid var(--nav-border);
 }
 
 .campusora-menu-footer a {
-  color: var(--nav-muted);
-  font-size: 12px;
-  text-decoration: none;
+color: var(--nav-muted);
+font-size: 12px;
+text-decoration: none;
 }
 
 .campusora-menu-footer a:hover {
-  color: var(--nav-cyan);
+color: var(--nav-cyan);
 }
 
 /* DESKTOP */
 
 @media (min-width: 900px) {
-  body.has-shared-nav {
-    padding-top: 99px !important;
-  }
+body.has-shared-nav {
+padding-top: 81px !important;
+}
 
-  .campusora-topnav-brandrow {
-    padding-left: 25px;
-    padding-right: 25px;
-  }
+.campusora-topnav-brandrow {
+padding-left: 25px;
+padding-right: 25px;
+}
 
-  .campusora-brand img {
-    width: 36px;
-    height: 36px;
-  }
+.campusora-brand img {
+width: 33px;
+height: 33px;
+}
 
-  .campusora-brand-name {
-    font-size: 20px;
-  }
+.campusora-brand-name {
+font-size: 20px;
+}
 
-  .campusora-mainnav {
-    padding-left: 20px;
-    padding-right: 20px;
-    gap: 5px;
-  }
+.campusora-mainnav {
+padding-left: 20px;
+padding-right: 20px;
+gap: 5px;
+}
 
-  .campusora-nav-item {
-    height: 40px;
-  }
+.campusora-nav-item {
+height: 34px;
+}
 
-  .campusora-nav-item svg {
-    width: 24px;
-    height: 24px;
-  }
+.campusora-nav-item svg {
+width: 24px;
+height: 24px;
+}
 
-  .campusora-menu-grid {
-    grid-template-columns: repeat(3, minmax(0,1fr));
-  }
+.campusora-menu-grid {
+grid-template-columns: repeat(3, minmax(0,1fr));
+}
 }
 
 /* MOBILE */
 
 @media (max-width: 600px) {
-  body.has-shared-nav {
-    padding-top: 91px !important;
-    padding-bottom: 15px !important;
-  }
+body.has-shared-nav {
+padding-top: 76px !important;
+padding-bottom: 15px !important;
+}
 
-  .campusora-topnav-brandrow {
-    min-height: 49px;
-    padding: 3px 9px;
-    gap: 5px;
-  }
+.campusora-topnav-brandrow {
+height: 40px;
+min-height: 40px;
+padding: 2px 9px;
+gap: 5px;
+}
 
-  .campusora-brand {
-    gap: 3px;
-  }
+.campusora-brand {
+gap: 3px;
+}
 
-  .campusora-brand img {
-    width: 29px;
-    height: 29px;
-  }
+.campusora-brand img {
+width: 28px;
+height: 28px;
+}
 
-  .campusora-brand-name {
-    font-size: 16px;
-    letter-spacing: -.5px;
-  }
+.campusora-brand-name {
+font-size: 16px;
+letter-spacing: -.5px;
+}
 
-  .campusora-tagline {
-    font-size: 9px;
-    max-width: 145px;
-  }
+.campusora-tagline {
+font-size: 9px;
+max-width: 145px;
+}
 
-  .campusora-mainnav {
-    min-height: 42px;
-    padding: 0 4px 3px;
-    gap: 2px;
-  }
+.campusora-mainnav {
+height: 36px;
+min-height: 36px;
+padding: 0 4px 2px;
+gap: 2px;
+}
 
-  .campusora-nav-item {
-    height: 37px;
-    border-radius: 8px;
-  }
+.campusora-nav-item {
+height: 33px;
+border-radius: 8px;
+}
 
-  .campusora-nav-item svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 2.7;
-  }
+.campusora-nav-item svg {
+width: 22px;
+height: 22px;
+stroke-width: 2.7;
+}
 
-  .campusora-nav-item span {
-    display: none !important;
-  }
+.campusora-nav-item span {
+display: none !important;
+}
 
-  .campusora-menu-page {
-    padding: 17px 12px 35px;
-  }
+.campusora-menu-page {
+padding: 17px 12px 35px;
+}
 
-  .campusora-menu-title {
-    font-size: 21px;
-  }
+.campusora-menu-title {
+font-size: 21px;
+}
 
-  .campusora-menu-grid {
-    gap: 8px;
-  }
+.campusora-menu-grid {
+gap: 8px;
+}
 
-  .campusora-menu-card {
-    min-height: 61px;
-    gap: 8px;
-    padding: 9px;
-  }
+.campusora-menu-card {
+min-height: 61px;
+gap: 8px;
+padding: 9px;
+}
 
-  .campusora-menu-card-icon {
-    width: 34px;
-    height: 34px;
-  }
+.campusora-menu-card-icon {
+width: 34px;
+height: 34px;
+}
 
-  .campusora-menu-card-icon svg {
-    width: 19px;
-    height: 19px;
-  }
+.campusora-menu-card-icon svg {
+width: 19px;
+height: 19px;
+}
 
-  .campusora-menu-card-name {
-    font-size: 12px;
-  }
+.campusora-menu-card-name {
+font-size: 12px;
+}
 }
 
 /* VERY SMALL PHONES */
 
 @media (max-width: 360px) {
-  body.has-shared-nav {
-    padding-top: 89px !important;
-  }
-
-  .campusora-topnav-brandrow {
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-
-  .campusora-brand-name {
-    font-size: 15px;
-  }
-
-  .campusora-tagline {
-    font-size: 8px;
-    max-width: 120px;
-  }
-
-  .campusora-nav-item svg {
-    width: 21px;
-    height: 21px;
-  }
-
-  .campusora-menu-card {
-    gap: 6px;
-    padding: 8px 7px;
-  }
+body.has-shared-nav {
+padding-top: 74px !important;
 }
+
+.campusora-topnav-brandrow {
+padding-left: 6px;
+padding-right: 6px;
+}
+
+.campusora-brand-name {
+font-size: 15px;
+}
+
+.campusora-tagline {
+font-size: 8px;
+max-width: 120px;
+}
+
+.campusora-nav-item svg {
+width: 21px;
+height: 21px;
+}
+
+.campusora-menu-card {
+gap: 6px;
+padding: 8px 7px;
+}
+   }
