@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Menu | Campusora</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="shared-nav.css">
+
+<style>
+:root {
+  --bg:#080b18;
+  --card:#111629;
+  --card-hover:#191f38;
+  --border:rgba(255,255,255,.09);
+  --text:#f5f6ff;
+  --muted:#9ca6c5;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  background:
+    radial-gradient(ellipse at top left,rgba(111,66,211,.12),transparent 40%),
+    var(--bg);
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
+  min-height:100vh;
+}
+
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+button {
+  font:inherit;
+}
+
+/* MAIN PAGE */
+
+.menu-container {
+  width:min(100%,1050px);
+  margin:0 auto;
+  padding:23px 18px 50px;
+}
+
+/* HEADING */
+
+.menu-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:19px;
+}
+
+.menu-heading h1 {
+  margin:0;
+  font-size:27px;
+  font-weight:850;
+  letter-spacing:-.8px;
+}
+
+.menu-heading p {
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* PROFILE AREA */
+
+.menu-profile {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:15px;
+  margin-bottom:22px;
+  background:linear-gradient(120deg,rgba(146,91,255,.13),rgba(57,215,245,.055));
+  border:1px solid rgba(146,91,255,.24);
+  border-radius:16px;
+  transition:.2s ease;
+}
+
+.menu-profile:hover {
+  border-color:rgba(57,215,245,.4);
+  background:linear-gradient(120deg,rgba(146,91,255,.18),rgba(57,215,245,.08));
+}
+
+.profile-picture {
+  width:58px;
+  height:58px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#202943;
+  border:2px solid rgba(57,215,245,.55);
+}
+
+.profile-details {
+  flex:1;
+  min-width:0;
+}
+
+.profile-name {
+  display:block;
+  font-size:16px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
+.profile-username {
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.profile-action {
+  display:inline-block;
+  margin-top:6px;
+  color:var(--cyan);
+  font-size:11px;
+  font-weight:700;
+}
+
+.profile-arrow {
+  color:var(--muted);
+  font-size:24px;
+  padding:0 5px;
+}
+
+/* SEARCH */
+
+.menu-search {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 14px;
+  margin-bottom:25px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--card);
+}
+
+.menu-search svg {
+  width:19px;
+  height:19px;
+  flex-shrink:0;
+  stroke:var(--muted);
+  fill:none;
+  stroke-width:2;
+}
+
+.menu-search input {
+  width:100%;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:white;
+  font-size:13px;
+  font-family:inherit;
+}
+
+.menu-search input::placeholder {
+  color:#77819f;
+}
+
+/* CATEGORY */
+
+.menu-category {
+  margin-bottom:25px;
+}
+
+.category-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.category-heading h2 {
+  margin:0;
+  font-size:15px;
+  font-weight:800;
+  letter-spacing:-.2px;
+}
+
+.category-heading span {
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* SHORTCUT GRID */
+
+.menu-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+/* SHORTCUT CARD */
+
+.menu-card {
+  min-width:0;
+  min-height:67px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--card);
+  transition:background .2s,border-color .2s,transform .2s;
+}
+
+.menu-card:hover {
+  background:var(--card-hover);
+  border-color:rgba(146,91,255,.45);
+  transform:translateY(-2px);
+}
+
+.menu-icon {
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:rgba(146,91,255,.13);
+  color:var(--cyan);
+}
+
+.menu-icon svg {
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.menu-card-name {
+  min-width:0;
+  font-size:12px;
+  font-weight:750;
+  line-height:1.4;
+  overflow-wrap:anywhere;
+}
+
+.menu-card-arrow {
+  margin-left:auto;
+  color:#65708f;
+  font-size:18px;
+  flex-shrink:0;
+}
+
+/* SEARCH EMPTY STATE */
+
+.no-results {
+  display:none;
+  padding:24px 15px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* FOOTER */
+
+.menu-footer {
+  padding:19px 5px 10px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  text-align:center;
+  font-size:11px;
+  line-height:1.9;
+}
+
+.menu-footer a {
+  color:#aab2cc;
+  margin:0 5px;
+}
+
+.menu-footer a:hover {
+  color:var(--cyan);
+}
+
+/* RESPONSIVE */
+
+@media(min-width:850px) {
+  .menu-container {
+    padding:28px 25px 55px;
+  }
+
+  .menu-grid {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media(max-width:600px) {
+  .menu-container {
+    padding:17px 12px 35px;
+  }
+
+  .menu-heading h1 {
+    font-size:24px;
+  }
+
+  .menu-profile {
+    padding:13px;
+    margin-bottom:19px;
+  }
+
+  .profile-picture {
+    width:53px;
+    height:53px;
+  }
+
+  .menu-grid {
+    gap:8px;
+  }
+
+  .menu-card {
+    min-height:62px;
+    gap:8px;
+    padding:9px;
+  }
+
+  .menu-icon {
+    width:35px;
+    height:35px;
+    border-radius:10px;
+  }
+
+  .menu-icon svg {
+    width:20px;
+    height:20px;
+  }
+
+  .menu-card-name {
+    font-size:11px;
+  }
+
+  .menu-category {
+    margin-bottom:22px;
+  }
+}
+
+@media(max-width:350px) {
+  .menu-grid {
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="menu-container">
+
+  <!-- HEADING -->
+
+  <div class="menu-heading">
+    <div>
+      <h1>Menu</h1>
+      <p>Everything happening across Campusora.</p>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+
+  <a href="profile.html" class="menu-profile" id="profileCard">
+
+    <img
+      src=""
+      alt="Profile picture"
+      class="profile-picture"
+      id="menuAvatar"
+    >
+
+    <div class="profile-details">
+      <span class="profile-name" id="menuName">Loading profile...</span>
+      <span class="profile-username" id="menuUsername"></span>
+      <span class="profile-action">View your profile</span>
+    </div>
+
+    <span class="profile-arrow">›</span>
+
+  </a>
+
+  <!-- SEARCH -->
+
+  <div class="menu-search">
+
+    <svg viewBox="0 0 24 24">
+      <circle cx="10.8" cy="10.8" r="7.3"></circle>
+      <path d="m16.2 16.2 4.3 4.3"></path>
+    </svg>
+
+    <input
+      type="search"
+      id="menuSearch"
+      placeholder="Search menu..."
+      autocomplete="off"
+    >
+
+  </div>
+
+  <!-- DISCOVER -->
+
+  <section class="menu-category">
+
+    <div class="category-heading">
+      <h2>Discover & Connect</h2>
+      <span>Explore Campusora</span>
+    </div>
+
+    <div class="menu-grid">
+
+      <a href="explore.html" class="menu-card" data-search="explore discover">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Explore</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="suggestions.html" class="menu-card" data-search="suggestions people friends">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9" cy="8" r="3"></circle>
+            <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path>
+            <path d="M17 8h5M19.5 5.5v5"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Suggestions</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="search.html" class="menu-card" data-search="search people posts">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="10.8" cy="10.8" r="7.3"></circle>
+            <path d="m16.2 16.2 4.3 4.3"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Search</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="communities.html" class="menu-card" data-search="communities campus groups">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9" cy="8" r="3"></circle>
+            <circle cx="17" cy="9" r="2.5"></circle>
+            <path d="M2.5 20c0-3.4 2.8-6 6.5-6s6.5 2.6 6.5 6"></path>
+            <path d="M15 14c3.5-.4 6 1.8 6 4.5"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Communities</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="messages.html" class="menu-card" data-search="messages chat inbox">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9.5 9.5 0 0 1-4-.9L3 21l1.9-4.3A8 8 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Messages</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="notifications.html" class="menu-card" data-search="notifications alerts">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M10 21h4"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Notifications</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CAMPUS LIFE -->
+
+  <section class="menu-category">
+
+    <div class="category-heading">
+      <h2>Campus Life</h2>
+      <span>What's happening?</span>
+    </div>
+
+    <div class="menu-grid">
+
+      <a href="campus-moments.html" class="menu-card" data-search="campus moments stories">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M17.5 6.5h.01"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Campus Moments</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="spotlight.html" class="menu-card" data-search="spotlight videos watch">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <path d="m10 8 6 4-6 4V8Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Spotlight</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="events.html" class="menu-card" data-search="events activities programs">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="5" width="18" height="16" rx="3"></rect>
+            <path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h6"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Events</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="marketplace.html" class="menu-card" data-search="marketplace buy sell products">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 9h18l-2-6H5L3 9Z"></path>
+            <path d="M5 9v12h14V9M9 21v-7h6v7"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Marketplace</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CREATOR AND EARNINGS -->
+
+  <section class="menu-category">
+
+    <div class="category-heading">
+      <h2>Creator & Earnings</h2>
+      <span>Build and earn</span>
+    </div>
+
+    <div class="menu-grid">
+
+      <a href="creator-rewards.html" class="menu-card" data-search="creator rewards monetization">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Creator Rewards</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="gift-earnings.html" class="menu-card" data-search="gift earnings gifts">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="9" width="18" height="12" rx="2"></rect>
+            <path d="M12 9v12M3 13h18M12 9H7a2.5 2.5 0 1 1 2.5-2.5L12 9ZM12 9h5a2.5 2.5 0 1 0-2.5-2.5L12 9Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Gift Earnings</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="work-with-creator.html" class="menu-card" data-search="work with creator collaborations">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="7" width="18" height="14" rx="2"></rect>
+            <path d="M8 7V4h8v3M3 12h18M10 12v2h4v-2"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Work With Creator</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="advertise.html" class="menu-card" data-search="advertise promote sponsored posts">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="m3 11 18-6v14L3 13v-2Z"></path>
+            <path d="m7 14 2 7h4l-2-6M21 9v6"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Promote Your Content</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="profile-ranks.html" class="menu-card" data-search="profile ranks badges status">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Profile Ranks</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ACCOUNT -->
+
+  <section class="menu-category">
+
+    <div class="category-heading">
+      <h2>Account & Settings</h2>
+      <span>Your account</span>
+    </div>
+
+    <div class="menu-grid">
+
+      <a href="settings.html" class="menu-card" data-search="settings preferences">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Settings</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="account-management.html" class="menu-card" data-search="account management">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Account Management</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="privacy.html" class="menu-card" data-search="privacy security">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="4" y="10" width="16" height="11" rx="2"></rect>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Privacy</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- HELP AND SAFETY -->
+
+  <section class="menu-category">
+
+    <div class="category-heading">
+      <h2>Help & Safety</h2>
+      <span>We're here to help</span>
+    </div>
+
+    <div class="menu-grid">
+
+      <a href="safety-centre.html" class="menu-card" data-search="safety centre security protection">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Safety Centre</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="help-support.html" class="menu-card" data-search="help support contact">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-1.2 1.1-1.8 1.5-1.8 3.3M12 17.5h.01"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Help & Support</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="about.html" class="menu-card" data-search="about campusora">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 11v5M12 8h.01"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">About Campusora</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="legal.html" class="menu-card" data-search="legal policies terms">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 3h9l4 4v14H6z"></path>
+            <path d="M14 3v5h5M9 13h7M9 17h7"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Legal & Policies</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="no-results" id="noResults">
+    No matching menu items found.
+  </div>
+
+  <!-- FOOTER -->
+
+  <footer class="menu-footer">
+    <div>
+      <a href="about.html">About</a>
+      ·
+      <a href="legal.html">Terms</a>
+      ·
+      <a href="privacy.html">Privacy</a>
+      ·
+      <a href="help-support.html">Help</a>
+    </div>
+
+    <div>Campusora · Connect, Learn, Grow, Together.</div>
+  </footer>
+
+</main>
+
+<script src="shared-nav.js"></script>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const avatar = document.getElementById('menuAvatar');
+const name = document.getElementById('menuName');
+const username = document.getElementById('menuUsername');
+const profileCard = document.getElementById('profileCard');
+
+/* DEFAULT PROFILE IMAGE */
+
+function showDefaultAvatar() {
+  avatar.src =
+    'data:image/svg+xml;charset=UTF-8,' +
+    encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+        <rect width="100" height="100" fill="#202943"/>
+        <circle cx="50" cy="37" r="19" fill="#7785a8"/>
+        <path d="M15 100c2-24 16-36 35-36s33 12 35 36" fill="#7785a8"/>
+      </svg>
+    `);
+}
+
+/* LOAD REAL PROFILE */
+
+async function loadMenuProfile() {
+  try {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.replace('./auth.html?mode=login');
+      return;
+    }
+
+    const user = data.session.user;
+
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id,full_name,username,avatar_url')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (profileError) throw profileError;
+
+    if (!profile) {
+      window.location.replace('./profile-setup.html');
+      return;
+    }
+
+    name.textContent = profile.full_name || 'Campusora Member';
+
+    username.textContent = profile.username
+      ? '@' + profile.username
+      : '';
+
+    profileCard.href =
+      './profile.html?id=' + encodeURIComponent(user.id);
+
+    if (profile.avatar_url) {
+      avatar.src = profile.avatar_url;
+      avatar.onerror = showDefaultAvatar;
+    } else {
+      showDefaultAvatar();
+    }
+
+  } catch (error) {
+    console.error('Menu profile loading error:', error);
+    name.textContent = 'Campusora Member';
+    username.textContent = 'Profile unavailable';
+    showDefaultAvatar();
+  }
+}
+
+loadMenuProfile();
+
+/* MENU SEARCH */
+
+const searchInput = document.getElementById('menuSearch');
+const menuCards = [...document.querySelectorAll('.menu-card')];
+const categories = [...document.querySelectorAll('.menu-category')];
+const noResults = document.getElementById('noResults');
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.trim().toLowerCase();
+  let totalVisible = 0;
+
+  menuCards.forEach(card => {
+    const searchable =
+      (card.textContent + ' ' + (card.dataset.search || '')).toLowerCase();
+
+    const match = searchable.includes(query);
+
+    card.style.display = match ? 'flex' : 'none';
+
+    if (match) totalVisible++;
+  });
+
+  categories.forEach(category => {
+    const visibleCards = [...category.querySelectorAll('.menu-card')]
+      .some(card => card.style.display !== 'none');
+
+    category.style.display = visibleCards ? 'block' : 'none';
+  });
+
+  noResults.style.display =
+    totalVisible === 0 ? 'block' : 'none';
+});
+</script>
+
+</body>
+  </html>
