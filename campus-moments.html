@@ -1359,19 +1359,18 @@ async function uploadMoment(event){
 }
 
 /* VIEWER */
-
 function openViewer(userIndex){
   if(!momentGroups[userIndex])return;
 
   activeUserIndex=userIndex;
   activeMomentIndex=0;
 
-  $('viewer').classL
-  ist.add('open');
+  $('viewer').classList.add('open');
   document.body.style.overflow='hidden';
 
   showCurrentMoment();
-}
+  }
+
 
 function closeViewer(){
   stopProgress();
