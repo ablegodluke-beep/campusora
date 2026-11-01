@@ -1,1 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
 
+<title>Suggestions | Campusora</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="shared-nav.css">
+
+<style>
+:root {
+  --bg: #080b18;
+  --surface: #101426;
+  --surface2: #171c32;
+  --border: rgba(255,255,255,.085);
+  --text: #f5f6ff;
+  --muted: #929bb6;
+  --purple: #925bff;
+  --blue: #526dff;
+  --cyan: #39d7f5;
+  --green: #42dfa2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 15% 0%, #21164a 0, transparent 38%),
+    var(--bg);
+  color: var(--text);
+  font-family: "DM Sans", sans-serif;
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.page {
+  width: min(100%, 1050px);
+  margin: 0 auto;
+  padding: 24px 18px 35px;
+}
+
+.intro {
+  padding: 23px;
+  border: 1px solid rgba(146,91,255,.22);
+  border-radius: 19px;
+  background:
+    radial-gradient(circle at 90% 10%, #283c78 0, transparent 38%),
+    linear-gradient(125deg, #21163e, #11182b 75%);
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(23px, 4vw, 31px);
+  letter-spacing: -.8px;
+}
+
+.intro p {
+  max-width: 620px;
+  margin: 0;
+  color: #b9c3dc;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.refresh-btn:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.refresh-icon {
+  font-size: 16px;
+}
+
+.search-box {
+  position: relative;
+  margin-bottom: 17px;
+}
+
+.search-box input {
+  width: 100%;
+  height: 46px;
+  padding: 0 15px 0 43px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  background: var(--surface);
+  color: white;
+  font-size: 13px;
+}
+
+.search-box input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(146,91,255,.12);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.message-box {
+  display: none;
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  border-radius: 11px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.message-box.success {
+  display: block;
+  color: #9af1d0;
+  background: #10352d;
+  border: 1px solid #216b56;
+}
+
+.message-box.error {
+  display: block;
+  color: #ffb2c0;
+  background: #391b29;
+  border: 1px solid #79344b;
+}
+
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.person-card {
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #171d33, #101426);
+  transition: border-color .2s, transform .2s;
+  animation: appear .25s ease both;
+}
+
+.person-card:hover {
+  border-color: rgba(146,91,255,.5);
+  transform: translateY(-2px);
+}
+
+.person-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.avatar-link {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
+  color: white;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.person-info {
+  min-width: 0;
+}
+
+.person-name {
+  display: block;
+  overflow-wrap: anywhere;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.person-name:hover {
+  color: var(--cyan);
+}
+
+.username {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.role-badge {
+  display: inline-block;
+  margin-top: 7px;
+  padding: 4px 8px;
+  border-radius: 7px;
+  background: #34265e;
+  color: #c9b9ff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.role-badge.alumni {
+  background: #16473e;
+  color: #7df0c6;
+}
+
+.role-badge.general {
+  background: #203951;
+  color: #8dd7ff;
+}
+
+.school {
+  min-height: 35px;
+  margin: 17px 0 14px;
+  color: #aab5cc;
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.school-icon {
+  margin-right: 5px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.action-btn {
+  min-width: 0;
+  padding: 10px 8px;
+  border: 1px solid #373f56;
+  border-radius: 10px;
+  background: #1b2234;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition: .2s;
+}
+
+.action-btn.follow {
+  border-color: transparent;
+  background: linear-gradient(110deg, var(--purple), var(--blue));
+}
+
+.action-btn.following {
+  background: #172e36;
+  border-color: #286477;
+  color: #8ce8f3;
+}
+
+.action-btn.message {
+  background: transparent;
+  border-color: rgba(57,215,245,.35);
+  color: var(--cyan);
+}
+
+.action-btn:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.status {
+  grid-column: 1 / -1;
+  padding: 45px 15px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.status-icon {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--cyan);
+  font-size: 27px;
+}
+
+.login-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--cyan);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media(max-width: 650px) {
+  .page {
+    padding: 17px 12px 25px;
+  }
+
+  .intro {
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  .intro p {
+    font-size: 12px;
+  }
+
+  .people-grid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
+
+  .person-card {
+    padding: 15px;
+  }
+
+  .section-head h2 {
+    font-size: 15px;
+  }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body data-page-title="Suggestions">
+
+<main class="page">
+
+  <section class="intro">
+    <div class="eyebrow">Discover your Campusora community</div>
+
+    <h1>Meet people across campuses.</h1>
+
+    <p>
+      Discover students, alumni and members from different institutions.
+      Follow interesting people, make connections and see what's happening
+      across the Campusora community.
+    </p>
+  </section>
+
+  <div class="section-head">
+    <h2>People you may know</h2>
+
+    <button class="refresh-btn" id="refreshBtn" type="button">
+      <span class="refresh-icon">↻</span>
+      <span id="refreshText">Refresh</span>
+    </button>
+  </div>
+
+  <div class="search-box">
+    <span class="search-icon">⌕</span>
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Search name, username or school..."
+      autocomplete="off"
+    >
+  </div>
+
+  <div id="messageBox" class="message-box"></div>
+
+  <section class="people-grid" id="peopleList">
+    <div class="status">
+      <span class="status-icon">✦</span>
+      Loading Campusora members...
+    </div>
+  </section>
+
+</main>
+
+<script defer src="shared-nav.js"></script>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+const peopleList = document.getElementById('peopleList');
+const searchInput = document.getElementById('searchInput');
+const refreshBtn = document.getElementById('refreshBtn');
+const refreshText = document.getElementById('refreshText');
+const messageBox = document.getElementById('messageBox');
+
+let currentUser = null;
+let profiles = [];
+let followingIds = new Set();
+let busyIds = new Set();
+let seenIds = new Set();
+
+function escapeHTML(value = '') {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+function getName(profile) {
+  return profile.full_name || profile.username || 'Campusora Member';
+}
+
+function getInitial(profile) {
+  return getName(profile).trim().charAt(0).toUpperCase() || 'C';
+}
+
+function profileURL(profile) {
+  return 'profile.html?id=' + encodeURIComponent(profile.id);
+}
+
+function roleBadge(role) {
+  const safeRole = ['student', 'alumni', 'general'].includes(
+    String(role || '').toLowerCase()
+  ) ? String(role).toLowerCase() : 'general';
+
+  const labels = {
+    student: 'Student',
+    alumni: 'Alumni',
+    general: 'General Member'
+  };
+
+  return `
+    <span class="role-badge ${safeRole}">
+      ${labels[safeRole]}
+    </span>
+  `;
+}
+
+function avatarHTML(profile) {
+  const initial = escapeHTML(getInitial(profile));
+
+  if (!profile.avatar_url) {
+    return `<div class="avatar">${initial}</div>`;
+  }
+
+  return `
+    <div class="avatar">
+      <img
+        src="${escapeHTML(profile.avatar_url)}"
+        alt=""
+        loading="lazy"
+        onerror="this.style.display='none';this.parentElement.textContent='${initial}'"
+      >
+    </div>
+  `;
+}
+
+function showMessage(message, type = 'success') {
+  messageBox.textContent = message;
+  messageBox.className = 'message-box ' + type;
+
+  clearTimeout(showMessage.timer);
+
+  showMessage.timer = setTimeout(() => {
+    messageBox.className = 'message-box';
+  }, 4500);
+}
+
+function setLoading(loading) {
+  refreshBtn.disabled = loading;
+  refreshText.textContent = loading ? 'Loading...' : 'Refresh';
+}
+
+function renderPeople() {
+  const search = searchInput.value.trim().toLowerCase();
+
+  let results = profiles.filter(profile => {
+    if (!search) return true;
+
+    const searchable = [
+      profile.full_name,
+      profile.username,
+      profile.school,
+      profile.role
+    ].filter(Boolean).join(' ').toLowerCase();
+
+    return searchable.includes(search);
+  });
+
+  if (!results.length) {
+    peopleList.innerHTML = `
+      <div class="status">
+        <span class="status-icon">◎</span>
+        No matching suggestions found.<br>
+        Try another search or refresh your suggestions.
+      </div>
+    `;
+    return;
+  }
+
+  peopleList.innerHTML = results.map(profile => {
+    const isFollowing = followingIds.has(profile.id);
+    const isBusy = busyIds.has(profile.id);
+
+    return `
+      <article class="person-card">
+
+        <div class="person-top">
+
+          <a class="avatar-link" href="${profileURL(profile)}">
+            ${avatarHTML(profile)}
+          </a>
+
+          <div class="person-info">
+
+            <a
+              class="person-name"
+              href="${profileURL(profile)}"
+            >
+              ${escapeHTML(getName(profile))}
+            </a>
+
+            <div class="username">
+              ${profile.username
+                ? '@' + escapeHTML(profile.username)
+                : 'Campusora member'}
+            </div>
+
+            ${roleBadge(profile.role)}
+
+          </div>
+
+        </div>
+
+        <div class="school">
+          <span class="school-icon">⌖</span>
+          ${escapeHTML(profile.school || 'School not added')}
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn ${isFollowing ? 'following' : 'follow'}"
+            data-follow="${escapeHTML(profile.id)}"
+            ${isBusy ? 'disabled' : ''}
+          >
+            ${isBusy
+              ? 'Please wait...'
+              : isFollowing
+                ? '✓ Following'
+                : '+ Follow'}
+          </button>
+
+          <a
+            class="action-btn message"
+            href="messages.html?user=${encodeURIComponent(profile.id)}"
+          >
+            Message
+          </a>
+
+        </div>
+
+      </article>
+    `;
+  }).join('');
+}
+
+async function loadSuggestions(isRefresh = false) {
+  if (!currentUser) return;
+
+  setLoading(true);
+
+  if (!isRefresh) {
+    peopleList.innerHTML = `
+      <div class="status">
+        <span class="status-icon">✦</span>
+        Finding people across Campusora...
+      </div>
+    `;
+  }
+
+  try {
+    let newProfiles = [];
+    let freshProfiles = [];
+
+    // Try a few times to avoid showing accounts already
+    // displayed during this page session.
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { data, error } = await supabase.rpc(
+        'get_suggested_profiles'
+      );
+
+      if (error) throw error;
+
+      newProfiles = data || [];
+
+      freshProfiles = newProfiles.filter(profile =>
+        !seenIds.has(profile.id)
+      );
+
+      if (freshProfiles.length >= 10 || !isRefresh) {
+        break;
+      }
+    }
+
+    // If there are no unseen accounts left, allow the
+    // database's latest random results to appear again.
+    if (isRefresh && freshProfiles.length === 0) {
+      freshProfiles = newProfiles;
+    }
+
+    profiles = freshProfiles;
+
+    profiles.forEach(profile => seenIds.add(profile.id));
+
+    renderPeople();
+
+    if (isRefresh && profiles.length) {
+      showMessage('Your suggestions have been refreshed.');
+    }
+
+  } catch (error) {
+    console.error('Suggestions loading error:', error);
+
+    peopleList.innerHTML = `
+      <div class="status">
+        <span class="status-icon">!</span>
+        We couldn't load suggestions right now.<br>
+        Please try again.
+      </div>
+    `;
+
+    showMessage(
+      error.message || 'Unable to load suggestions.',
+      'error'
+    );
+
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function toggleFollow(profileId) {
+  if (!currentUser || busyIds.has(profileId)) return;
+
+  const wasFollowing = followingIds.has(profileId);
+
+  busyIds.add(profileId);
+  renderPeople();
+
+  try {
+    if (wasFollowing) {
+      const { error } = await supabase
+        .from('follows')
+        .delete()
+        .eq('follower_id', currentUser.id)
+        .eq('following_id', profileId);
+
+      if (error) throw error;
+
+      followingIds.delete(profileId);
+
+      showMessage('You unfollowed this member.');
+
+    } else {
+      const { error } = await supabase
+        .from('follows')
+        .insert({
+          follower_id: currentUser.id,
+          following_id: profileId
+        });
+
+      if (error) throw error;
+
+      followingIds.add(profileId);
+
+      showMessage('You are now following this member.');
+    }
+
+  } catch (error) {
+    console.error('Follow action error:', error);
+
+    showMessage(
+      error.message || 'Could not update your follow.',
+      'error'
+    );
+
+  } finally {
+    busyIds.delete(profileId);
+    renderPeople();
+  }
+}
+
+peopleList.addEventListener('click', event => {
+  const button = event.target.closest('[data-follow]');
+
+  if (!button) return;
+
+  const profileId = button.dataset.follow;
+
+  if (profileId) {
+    toggleFollow(profileId);
+  }
+});
+
+searchInput.addEventListener('input', renderPeople);
+
+refreshBtn.addEventListener('click', () => {
+  loadSuggestions(true);
+});
+
+async function initializeSuggestions() {
+  try {
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) throw error;
+
+    currentUser = data.user;
+
+    if (!currentUser) {
+      peopleList.innerHTML = `
+        <div class="status">
+          <span class="status-icon">◎</span>
+          Please log in to discover Campusora members.
+          <br>
+          <a class="login-link" href="auth.html">Log in to Campusora →</a>
+        </div>
+      `;
+
+      refreshBtn.disabled = true;
+      return;
+    }
+
+    // Load accounts the current user already follows.
+    const { data: follows, error: followError } = await supabase
+      .from('follows')
+      .select('following_id')
+      .eq('follower_id', currentUser.id);
+
+    if (followError) throw followError;
+
+    followingIds = new Set(
+      (follows || []).map(row => row.following_id)
+    );
+
+    await loadSuggestions(false);
+
+  } catch (error) {
+    console.error('Suggestions initialization error:', error);
+
+    peopleList.innerHTML = `
+      <div class="status">
+        <span class="status-icon">!</span>
+        Something went wrong while opening Suggestions.<br>
+        Please refresh and try again.
+      </div>
+    `;
+
+    showMessage(
+      error.message || 'Could not initialize Suggestions.',
+      'error'
+    );
+  }
+}
+
+initializeSuggestions();
+</script>
+
+</body>
+  </html>
