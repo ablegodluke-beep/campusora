@@ -656,6 +656,19 @@ a{color:inherit;text-decoration:none}
     transition-duration:.01ms!important;
   }
 }
+  /* PREVENT ANDROID LONG-PRESS MENU */
+.viewer,
+.viewer * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.viewer img,
+.viewer video {
+  -webkit-user-drag: none;
+  user-drag: none;
+  }
 </style>
 </head>
 
@@ -1556,6 +1569,18 @@ function moveToNextUser(){
     toast('You have caught up with all available moments.');
   }
 }
+  /* DISABLE BROWSER LONG-PRESS MENU */
+$('viewer').addEventListener('contextmenu', event => {
+  event.preventDefault();
+});
+
+$('viewer').addEventListener('dragstart', event => {
+  event.preventDefault();
+});
+
+$('viewer').addEventListener('selectstart', event => {
+  event.preventDefault();
+});
 
 /* PRESS AND HOLD TO PAUSE */
 
