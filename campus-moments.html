@@ -1,1 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b18">
+<title>Campus Moments | Campusora</title>
 
+<style>
+:root{
+  --bg:#080b18;
+  --panel:#111528;
+  --panel2:#191e35;
+  --border:#252c48;
+  --text:#f0efff;
+  --muted:#929bb9;
+  --purple:#9065ff;
+  --blue:#548bff;
+  --cyan:#38d9ff;
+  --gradient:linear-gradient(135deg,#a45cff,#557cff,#38d9ff);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  font-size:12px;
+}
+
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+.topbar{
+  height:54px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  background:#0b0e1c;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:15px;
+  font-weight:800;
+}
+
+.brand-icon{
+  width:29px;
+  height:29px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:var(--gradient);
+}
+
+.back-link{
+  color:#b9a6ff;
+  font-size:12px;
+}
+
+.page{
+  max-width:850px;
+  margin:25px auto;
+  padding:0 14px 60px;
+}
+
+.moments-panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:17px 14px 13px;
+}
+
+.heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+}
+
+.heading h1{
+  font-size:15px;
+  font-weight:800;
+}
+
+.heading small{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.moment-list{
+  display:flex;
+  gap:17px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding:2px 1px 5px;
+}
+
+.moment-list::-webkit-scrollbar{display:none}
+
+.moment{
+  flex:0 0 65px;
+  min-width:0;
+  text-align:center;
+  border:0;
+  background:none;
+  color:inherit;
+}
+
+.moment-ring{
+  width:61px;
+  height:61px;
+  padding:3px;
+  border-radius:50%;
+  background:var(--gradient);
+  margin:0 auto 8px;
+}
+
+.moment-ring img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:2px solid var(--panel);
+  object-fit:cover;
+}
+
+.moment.add .moment-ring{
+  background:#222940;
+  border:1px dashed #65709c;
+  display:grid;
+  place-items:center;
+  color:#b49cff;
+  font-size:27px;
+}
+
+.moment-name{
+  display:block;
+  font-size:10px;
+  color:#c5cbe0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.moment-campus{
+  display:block;
+  color:#7883a4;
+  font-size:8px;
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.empty-state{
+  padding:30px 12px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.empty-state strong{
+  display:block;
+  color:#e5e1ff;
+  font-size:13px;
+  margin-bottom:5px;
+}
+
+.primary-btn{
+  border:0;
+  border-radius:9px;
+  padding:10px 15px;
+  background:var(--gradient);
+  color:white;
+  font-weight:700;
+}
+
+.secondary-btn{
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:9px 13px;
+  background:var(--panel2);
+  color:white;
+}
+
+.status{
+  margin-top:12px;
+  padding:10px;
+  border-radius:9px;
+  display:none;
+  line-height:1.5;
+}
+
+.status.error{
+  display:block;
+  background:#401d2b;
+  color:#ffb7c5;
+}
+
+.status.success{
+  display:block;
+  background:#153b32;
+  color:#8ef0c9;
+}
+
+/* UPLOAD DIALOG */
+
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:80;
+  background:#000b;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal{
+  width:min(430px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#12172a;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:18px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:17px;
+}
+
+.modal-head h2{font-size:15px}
+
+.close-btn{
+  width:29px;
+  height:29px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#202640;
+  color:white;
+  font-size:18px;
+}
+
+.field{margin-bottom:13px}
+
+.field label{
+  display:block;
+  color:#c6cbe0;
+  margin-bottom:6px;
+  font-size:11px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid var(--border);
+  background:#0b1020;
+  color:white;
+  border-radius:9px;
+  padding:11px;
+  outline:none;
+}
+
+.field textarea{
+  min-height:65px;
+  resize:vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:var(--purple);
+}
+
+.field input[type=file]{padding:9px}
+
+.hint{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+  margin-top:5px;
+}
+
+.upload-actions{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.upload-actions button{flex:1}
+
+.progress{
+  height:5px;
+  background:#252b43;
+  border-radius:9px;
+  overflow:hidden;
+  margin-top:12px;
+  display:none;
+}
+
+.progress-bar{
+  width:0;
+  height:100%;
+  background:var(--gradient);
+  transition:width .2s;
+}
+
+/* MOMENT VIEWER */
+
+.viewer{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#050711;
+  align-items:center;
+  justify-content:center;
+}
+
+.viewer.open{display:flex}
+
+.viewer-card{
+  position:relative;
+  width:min(470px,100%);
+  height:min(850px,100dvh);
+  background:#080b18;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.viewer-media{
+  position:absolute;
+  inset:0;
+  background:#080b18;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.viewer-media img,
+.viewer-media video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.viewer-shade{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,.65),
+    transparent 23%,
+    transparent 65%,
+    rgba(0,0,0,.8)
+  );
+  pointer-events:none;
+}
+
+.progress-lines{
+  position:absolute;
+  top:12px;
+  left:12px;
+  right:12px;
+  display:flex;
+  gap:4px;
+  z-index:5;
+}
+
+.progress-segment{
+  height:3px;
+  background:#ffffff55;
+  border-radius:5px;
+  flex:1;
+  overflow:hidden;
+}
+
+.progress-segment span{
+  display:block;
+  width:0;
+  height:100%;
+  background:white;
+}
+
+.progress-segment.done span{width:100%}
+
+.progress-segment.active span{
+  animation:storyProgress linear forwards;
+}
+
+@keyframes storyProgress{
+  to{width:100%}
+}
+
+.viewer-top{
+  position:absolute;
+  top:25px;
+  left:12px;
+  right:12px;
+  z-index:6;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding-top:8px;
+}
+
+.viewer-avatar{
+  width:37px;
+  height:37px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid #ffffff88;
+  background:#35395a;
+}
+
+.viewer-person{
+  flex:1;
+  min-width:0;
+}
+
+.viewer-person strong{
+  display:block;
+  font-size:12px;
+  text-shadow:0 1px 4px #000;
+}
+
+.viewer-person small{
+  display:block;
+  color:#deddf0;
+  font-size:10px;
+  margin-top:3px;
+}
+
+.viewer-person a{display:block}
+
+.viewer-time{
+  color:#ddd;
+  font-size:9px;
+  margin-top:3px;
+}
+
+.viewer-close{
+  width:31px;
+  height:31px;
+  border:0;
+  background:#0007;
+  color:white;
+  border-radius:50%;
+  font-size:20px;
+}
+
+.viewer-caption{
+  position:absolute;
+  bottom:105px;
+  left:18px;
+  right:18px;
+  z-index:5;
+  color:white;
+  text-align:center;
+  font-size:13px;
+  line-height:1.5;
+  text-shadow:0 1px 5px #000;
+  pointer-events:none;
+}
+
+.viewer-touch{
+  position:absolute;
+  inset:75px 0 95px;
+  z-index:3;
+  display:flex;
+}
+
+.touch-half{
+  width:50%;
+  height:100%;
+}
+
+.viewer-bottom{
+  position:absolute;
+  left:10px;
+  right:10px;
+  bottom:12px;
+  z-index:7;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  align-items:center;
+}
+
+.reply-form{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.reply-form input{
+  width:100%;
+  min-width:0;
+  height:39px;
+  border:1px solid #ffffff77;
+  border-radius:22px;
+  background:#0006;
+  color:white;
+  padding:0 12px;
+  outline:none;
+  font-size:11px;
+}
+
+.reply-form input::placeholder{color:#ddd}
+
+.reply-form button{
+  width:35px;
+  height:35px;
+  flex-shrink:0;
+  border:0;
+  border-radius:50%;
+  color:white;
+  background:var(--gradient);
+}
+
+.viewer-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+}
+
+.viewer-action{
+  width:35px;
+  height:35px;
+  border:1px solid #ffffff55;
+  border-radius:50%;
+  background:#0007;
+  color:white;
+  font-size:16px;
+}
+
+.viewer-action.active{
+  background:#6546a9;
+  border-color:#b9a0ff;
+}
+
+.viewer-action.gift{
+  background:linear-gradient(135deg,#8d55ef,#376de5);
+  border:0;
+}
+
+.viewer-counter{
+  position:absolute;
+  right:14px;
+  bottom:58px;
+  color:#ddd;
+  font-size:9px;
+  z-index:5;
+}
+
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:200;
+  background:#25223a;
+  border:1px solid #51417e;
+  border-radius:10px;
+  padding:10px 14px;
+  color:white;
+  font-size:11px;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  max-width:calc(100% - 25px);
+  text-align:center;
+}
+
+.toast.show{opacity:1}
+
+@media(max-width:600px){
+  .topbar{height:49px;padding:0 12px}
+  .page{margin:14px auto;padding:0 9px 50px}
+  .moments-panel{border-radius:12px}
+  .viewer-card{width:100%;height:100dvh}
+  .viewer-bottom{bottom:max(12px,env(safe-area-inset-bottom))}
+  .toast{bottom:75px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">C</span>
+    <span>campusora</span>
+  </a>
+  <a href="index.html" class="back-link">← Home Feed</a>
+</header>
+
+<main class="page">
+
+  <section class="moments-panel">
+    <div class="heading">
+      <h1>Campus Moments <span style="color:#9c7cff">✦</span></h1>
+      <small>Stories from your campus world</small>
+    </div>
+
+    <div class="moment-list" id="momentList">
+      <button class="moment add" id="addMomentBtn">
+        <div class="moment-ring">＋</div>
+        <span class="moment-name">Your moment</span>
+      </button>
+    </div>
+
+    <div class="status" id="pageStatus"></div>
+  </section>
+
+</main>
+
+<!-- UPLOAD MODAL -->
+
+<div class="overlay" id="uploadOverlay">
+  <div class="modal">
+
+    <div class="modal-head">
+      <h2>＋ Create a Moment</h2>
+      <button class="close-btn" data-close="uploadOverlay">×</button>
+    </div>
+
+    <form id="uploadForm">
+
+      <div class="field">
+        <label for="momentFile">Choose a photo or video</label>
+        <input
+          type="file"
+          id="momentFile"
+          accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+          required
+        >
+        <div class="hint">
+          Photos: JPG, PNG, WebP or GIF. Videos: MP4, WebM or MOV.
+          Photos up to 15 MB. Videos up to 50 MB.
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="momentCaption">Caption (optional)</label>
+        <textarea id="momentCaption" maxlength="300" placeholder="What's happening?"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="momentAudience">Who can see this moment?</label>
+        <select id="momentAudience">
+          <option value="public">Everyone</option>
+          <option value="campus">My campus</option>
+          <option value="followers">My followers</option>
+          <option value="private">Only me</option>
+        </select>
+      </div>
+
+      <div class="progress" id="uploadProgress">
+        <div class="progress-bar" id="uploadProgressBar"></div>
+      </div>
+
+      <div class="hint" id="uploadStatus">Your moment disappears after 24 hours.</div>
+
+      <div class="upload-actions">
+        <button type="button" class="secondary-btn" data-close="uploadOverlay">Cancel</button>
+        <button type="submit" class="primary-btn" id="publishMomentBtn">Share moment</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- MOMENT VIEWER -->
+
+<div class="viewer" id="viewer">
+
+  <div class="viewer-card">
+
+    <div class="viewer-media" id="viewerMedia"></div>
+    <div class="viewer-shade"></div>
+
+    <div class="progress-lines" id="progressLines"></div>
+
+    <div class="viewer-top">
+
+      <a id="viewerProfileLink" href="profile.html">
+        <img class="viewer-avatar" id="viewerAvatar" alt="">
+      </a>
+
+      <div class="viewer-person">
+        <a id="viewerNameLink" href="profile.html">
+          <strong id="viewerName">Campusora member</strong>
+        </a>
+        <small id="viewerCampus"></small>
+        <div class="viewer-time" id="viewerTime"></div>
+      </div>
+
+      <button class="viewer-close" id="closeViewer">×</button>
+
+    </div>
+
+    <div class="viewer-caption" id="viewerCaption"></div>
+
+    <div class="viewer-touch">
+      <div class="touch-half" id="previousMoment"></div>
+      <div class="touch-half" id="nextMoment"></div>
+    </div>
+
+    <div class="viewer-counter" id="viewerCounter"></div>
+
+    <div class="viewer-bottom">
+
+      <form class="reply-form" id="replyForm">
+        <input
+          type="text"
+          id="replyInput"
+          maxlength="1000"
+          placeholder="Reply to moment..."
+          autocomplete="off"
+        >
+        <button type="submit" aria-label="Send reply">➤</button>
+      </form>
+
+      <div class="viewer-actions">
+        <button class="viewer-action" data-reaction="❤️" aria-label="Love">❤️</button>
+        <button class="viewer-action" data-reaction="😂" aria-label="Funny">😂</button>
+        <button class="viewer-action" data-reaction="🔥" aria-label="Fire">🔥</button>
+        <button class="viewer-action" data-reaction="👏" aria-label="Clap">👏</button>
+        <button class="viewer-action gift" id="giftMomentBtn" aria-label="Send gift">🎁</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import {supabase} from './supabase.js';
+
+const $=id=>document.getElementById(id);
+
+let currentUser=null;
+let currentProfile=null;
+let momentGroups=[];
+let activeUserIndex=0;
+let activeMomentIndex=0;
+let progressTimer=null;
+let currentVideo=null;
+let sendingReply=false;
+let uploading=false;
+let currentReaction=null;
+
+const GIFTS=[
+  {id:'rose',name:'Rose',price:500,emoji:'🌹'},
+  {id:'love',name:'Love',price:500,emoji:'❤️'},
+  {id:'golden_star',name:'Golden Star',price:1000,emoji:'⭐'},
+  {id:'diamond',name:'Diamond',price:1500,emoji:'💎'},
+  {id:'royal_crown',name:'Royal Crown',price:2000,emoji:'👑'},
+  {id:'premium_heart',name:'Premium Heart',price:5000,emoji:'💖'}
+];
+
+function esc(value=''){
+  return String(value).replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
+
+function initials(name='C'){
+  return name.trim().split(/\s+/).filter(Boolean)
+    .slice(0,2).map(x=>x[0]).join('').toUpperCase()||'C';
+}
+
+function toast(message){
+  const el=$('toast');
+  el.textContent=message;
+  el.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+function showStatus(message,type='error'){
+  const el=$('pageStatus');
+  el.textContent=message;
+  el.className='status '+type;
+}
+
+function hideStatus(){
+  $('pageStatus').className='status';
+}
+
+function profileURL(id){
+  return 'profile.html?id='+encodeURIComponent(id);
+}
+
+function displayName(profile){
+  return profile?.full_name||
+    (profile?.username?'@'+profile.username:'Campusora member');
+}
+
+function timeAgo(date){
+  const seconds=Math.max(0,Math.floor((Date.now()-new Date(date).getTime())/1000));
+  if(seconds<60)return 'Just now';
+  if(seconds<3600)return Math.floor(seconds/60)+'m ago';
+  if(seconds<86400)return Math.floor(seconds/3600)+'h ago';
+  return Math.floor(seconds/86400)+'d ago';
+}
+
+function stopProgress(){
+  clearTimeout(progressTimer);
+  progressTimer=null;
+
+  if(currentVideo){
+    currentVideo.pause();
+    currentVideo=null;
+  }
+}
+
+function currentGroup(){
+  return momentGroups[activeUserIndex]||null;
+}
+
+function currentMoment(){
+  return currentGroup()?.moments[activeMomentIndex]||null;
+}
+
+/* LOAD MOMENTS */
+
+async function loadMoments(){
+  hideStatus();
+
+  $('momentList').innerHTML=`
+    <button class="moment add" id="addMomentBtn">
+      <div class="moment-ring">＋</div>
+      <span class="moment-name">Your moment</span>
+    </button>`;
+
+  $('addMomentBtn').addEventListener('click',openUpload);
+
+  const {data,error}=await supabase
+    .from('campusora_moments')
+    .select('id,user_id,media_type,media_path,caption,audience,created_at,expires_at')
+    .gt('expires_at',new Date().toISOString())
+    .order('created_at',{ascending:true})
+    .limit(500);
+
+  if(error){
+    console.error('Moment loading error:',error);
+    showStatus(error.message||'Could not load moments.');
+    return;
+  }
+
+  const rows=data||[];
+  const ids=[...new Set(rows.map(x=>x.user_id))];
+
+  let profiles=[];
+
+  if(ids.length){
+    const result=await supabase
+      .from('profiles')
+      .select('id,username,full_name,avatar_url,school,institution_id')
+      .in('id',ids);
+
+    if(result.error){
+      console.error('Moment profile error:',result.error);
+      showStatus('Moments loaded, but member profiles could not be loaded.');
+      return;
+    }
+
+    profiles=result.data||[];
+  }
+
+  const profileMap=new Map(profiles.map(p=>[p.id,p]));
+
+  const grouped=new Map();
+
+  rows.forEach(moment=>{
+    const profile=profileMap.get(moment.user_id);
+    if(!profile)return;
+
+    if(!grouped.has(moment.user_id)){
+      grouped.set(moment.user_id,{
+        userId:moment.user_id,
+        profile,
+        moments:[]
+      });
+    }
+
+    grouped.get(moment.user_id).moments.push(moment);
+  });
+
+  momentGroups=[...grouped.values()];
+
+  renderMomentList();
+}
+
+function renderMomentList(){
+  const list=$('momentList');
+
+  const addButton=`
+    <button class="moment add" id="addMomentBtn">
+      <div class="moment-ring">＋</div>
+      <span class="moment-name">Your moment</span>
+    </button>`;
+
+  const groups=momentGroups.map((group,index)=>{
+    const p=group.profile;
+    const name=p.full_name||p.username||'Member';
+    const avatar=p.avatar_url
+      ? `<img src="${esc(p.avatar_url)}" alt="">`
+      : `<div style="
+          width:100%;height:100%;border-radius:50%;
+          display:grid;place-items:center;
+          background:#30395d;color:white;
+          border:2px solid var(--panel)
+        ">${esc(initials(name))}</div>`;
+
+    return `
+      <button class="moment" data-open-user="${index}">
+        <div class="moment-ring">${avatar}</div>
+        <span class="moment-name">${esc(name)}</span>
+        <span class="moment-campus">${esc(p.school||'Campusora')}</span>
+      </button>`;
+  }).join('');
+
+  list.innerHTML=addButton+groups;
+
+  $('addMomentBtn').addEventListener('click',openUpload);
+
+  list.querySelectorAll('[data-open-user]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      openViewer(Number(button.dataset.openUser));
+    });
+  });
+}
+
+/* UPLOAD */
+
+function openUpload(){
+  if(!currentUser){
+    toast('Please log in to share a moment.');
+    return;
+  }
+
+  $('uploadForm').reset();
+  $('uploadStatus').textContent='Your moment disappears after 24 hours.';
+  $('uploadProgress').style.display='none';
+  $('uploadProgressBar').style.width='0%';
+  $('uploadOverlay').style.display='flex';
+}
+
+function closeOverlay(id){
+  $(id).style.display='none';
+}
+
+async function uploadMoment(event){
+  event.preventDefault();
+
+  if(uploading||!currentUser)return;
+
+  const file=$('momentFile').files[0];
+  const caption=$('momentCaption').value.trim();
+  const audience=$('momentAudience').value;
+
+  if(!file){
+    toast('Choose a photo or video first.');
+    return;
+  }
+
+  const imageTypes={
+    'image/jpeg':'jpg',
+    'image/png':'png',
+    'image/webp':'webp',
+    'image/gif':'gif'
+  };
+
+  const videoTypes={
+    'video/mp4':'mp4',
+    'video/webm':'webm',
+    'video/quicktime':'mov'
+  };
+
+  const isImage=Boolean(imageTypes[file.type]);
+  const isVideo=Boolean(videoTypes[file.type]);
+
+  if(!isImage&&!isVideo){
+    toast('Choose a supported photo or video.');
+    return;
+  }
+
+  if(isImage&&file.size>15*1024*1024){
+    toast('Photos must be 15 MB or smaller.');
+    return;
+  }
+
+  if(isVideo&&file.size>50*1024*1024){
+    toast('Videos must be 50 MB or smaller.');
+    return;
+  }
+
+  uploading=true;
+
+  const button=$('publishMomentBtn');
+  button.disabled=true;
+  button.textContent='Uploading...';
+
+  $('uploadProgress').style.display='block';
+  $('uploadProgressBar').style.width='10%';
+  $('uploadStatus').textContent='Uploading your media...';
+
+  const bucket=isImage?'campusora-images':'campusora-videos';
+  const extension=isImage?imageTypes[file.type]:videoTypes[file.type];
+
+  const path=
+    `${currentUser.id}/moments/${crypto.randomUUID()}.${extension}`;
+
+  let uploaded=false;
+
+  try{
+    const {data:uploadData,error:uploadError}=await supabase.storage
+      .from(bucket)
+      .upload(path,file,{
+        cacheControl:'3600',
+        upsert:false,
+        contentType:file.type
+      });
+
+    if(uploadError)throw uploadError;
+
+    uploaded=true;
+
+    $('uploadProgressBar').style.width='70%';
+    $('uploadStatus').textContent='Saving your moment...';
+
+    const {data:publicData}=supabase.storage
+      .from(bucket)
+      .getPublicUrl(uploadData.path);
+
+    const mediaURL=publicData.publicUrl;
+
+    const {error:insertError}=await supabase
+      .from('campusora_moments')
+      .insert({
+        user_id:currentUser.id,
+        media_type:isImage?'image':'video',
+        media_path:mediaURL,
+        caption,
+        audience
+      });
+
+    if(insertError)throw insertError;
+
+    $('uploadProgressBar').style.width='100%';
+    $('uploadStatus').textContent='Your moment is live!';
+
+    closeOverlay('uploadOverlay');
+    toast('Your moment has been shared!');
+
+    await loadMoments();
+
+  }catch(error){
+    console.error('Moment upload error:',error);
+
+    if(uploaded){
+      try{
+        await supabase.storage.from(bucket).remove([path]);
+      }catch(cleanupError){
+        console.warn('Moment cleanup failed:',cleanupError);
+      }
+    }
+
+    $('uploadStatus').textContent=error.message||'Upload failed.';
+    toast(error.message||'Could not share your moment.');
+
+  }finally{
+    uploading=false;
+    button.disabled=false;
+    button.textContent='Share moment';
+  }
+}
+
+/* VIEWER */
+
+function openViewer(userIndex){
+  if(!momentGroups[userIndex])return;
+
+  activeUserIndex=userIndex;
+  activeMomentIndex=0;
+
+  $('viewer').classList.add('open');
+  document.body.style.overflow='hidden';
+
+  showCurrentMoment();
+}
+
+function closeViewer(){
+  stopProgress();
+  $('viewer').classList.remove('open');
+  document.body.style.overflow='';
+  $('viewerMedia').innerHTML='';
+}
+
+function renderProgress(){
+  const group=currentGroup();
+  if(!group)return;
+
+  $('progressLines').innerHTML=group.moments.map((moment,index)=>`
+    <div class="progress-segment ${
+      index<activeMomentIndex?'done':
+      index===activeMomentIndex?'active':''
+    }" ${index===activeMomentIndex?'id="activeProgress"':''}>
+      <span></span>
+    </div>
+  `).join('');
+}
+
+async function recordMomentView(moment){
+  if(!currentUser||!moment)return;
+
+  try{
+    await supabase
+      .from('campusora_moment_views')
+      .upsert({
+        moment_id:moment.id,
+        viewer_id:currentUser.id
+      },{
+        onConflict:'moment_id,viewer_id',
+        ignoreDuplicates:true
+      });
+  }catch(error){
+    console.warn('Moment view tracking:',error);
+  }
+}
+
+function showCurrentMoment(){
+  stopProgress();
+
+  const group=currentGroup();
+  const moment=currentMoment();
+
+  if(!group||!moment){
+    moveToNextUser();
+    return;
+  }
+
+  const profile=group.profile;
+  const name=displayName(profile);
+
+  $('viewerName').textContent=name;
+  $('viewerCampus').textContent=profile.school||'Campusora member';
+  $('viewerAvatar').src=profile.avatar_url||'';
+  $('viewerProfileLink').href=profileURL(profile.id);
+  $('viewerNameLink').href=profileURL(profile.id);
+  $('viewerTime').textContent=timeAgo(moment.created_at);
+  $('viewerCaption').textContent=moment.caption||'';
+
+  $('viewerCounter').textContent=
+    `${activeMomentIndex+1} of ${group.moments.length}`;
+
+  $('viewerMedia').innerHTML='';
+
+  renderProgress();
+
+  const mediaURL=moment.media_path;
+
+  if(moment.media_type==='video'){
+    const video=document.createElement('video');
+    video.src=mediaURL;
+    video.playsInline=true;
+    video.autoplay=true;
+    video.muted=false;
+    video.controls=false;
+
+    video.addEventListener('ended',nextMoment);
+    video.addEventListener('loadedmetadata',()=>{
+      if(video.duration&&Number.isFinite(video.duration)){
+        startProgress(video.duration*1000);
+      }
+    });
+
+    video.addEventListener('error',()=>{
+      toast('This video could not be played.');
+    });
+
+    $('viewerMedia').appendChild(video);
+    currentVideo=video;
+
+    video.play().catch(()=>{
+      video.muted=true;
+      video.play().catch(()=>{});
+    });
+
+    setTimeout(()=>{
+      if(currentVideo===video&&!progressTimer){
+        startProgress(15000);
+      }
+    },1200);
+
+  }else{
+    const image=document.createElement('img');
+    image.src=mediaURL;
+    image.alt='Campus moment';
+    $('viewerMedia').appendChild(image);
+    startProgress(6000);
+  }
+
+  $('replyInput').value='';
+  currentReaction=null;
+
+  document.querySelectorAll('[data-reaction]').forEach(button=>{
+    button.classList.remove('active');
+  });
+
+  if(moment.user_id!==currentUser?.id){
+    recordMomentView(moment);
+  }
+}
+
+function startProgress(duration){
+  clearTimeout(progressTimer);
+
+  const bar=$('activeProgress')?.querySelector('span');
+  if(!bar)return;
+
+  bar.style.animation='none';
+  bar.style.width='0%';
+  void bar.offsetWidth;
+  bar.style.animation=`storyProgress ${duration}ms linear forwards`;
+
+  progressTimer=setTimeout(nextMoment,duration);
+}
+
+function nextMoment(){
+  const group=currentGroup();
+  if(!group)return;
+
+  if(activeMomentIndex<group.moments.length-1){
+    activeMomentIndex++;
+    showCurrentMoment();
+  }else{
+    moveToNextUser();
+  }
+}
+
+function previousMoment(){
+  if(activeMomentIndex>0){
+    activeMomentIndex--;
+    showCurrentMoment();
+  }else if(activeUserIndex>0){
+    activeUserIndex--;
+    activeMomentIndex=momentGroups[activeUserIndex].moments.length-1;
+    showCurrentMoment();
+  }
+}
+
+function moveToNextUser(){
+  if(activeUserIndex<momentGroups.length-1){
+    activeUserIndex++;
+    activeMomentIndex=0;
+    showCurrentMoment();
+  }else{
+    closeViewer();
+    toast('You have caught up with all available moments.');
+  }
+}
+
+/* TAP NAVIGATION */
+
+$('nextMoment').addEventListener('click',nextMoment);
+$('previousMoment').addEventListener('click',previousMoment);
+
+let touchStartX=0;
+let touchStartY=0;
+
+$('viewer').addEventListener('touchstart',event=>{
+  if(event.touches.length!==1)return;
+  touchStartX=event.touches[0].clientX;
+  touchStartY=event.touches[0].clientY;
+},{passive:true});
+
+$('viewer').addEventListener('touchend',event=>{
+  if(event.changedTouches.length!==1)return;
+
+  const dx=event.changedTouches[0].clientX-touchStartX;
+  const dy=event.changedTouches[0].clientY-touchStartY;
+
+  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)){
+    if(dx<0){
+      moveToNextUser();
+    }else if(activeUserIndex>0){
+      activeUserIndex--;
+      activeMomentIndex=0;
+      showCurrentMoment();
+    }
+  }
+},{passive:true});
+
+/* REPLIES THROUGH EXISTING MESSAGES */
+
+async function sendReply(event){
+  event.preventDefault();
+
+  if(sendingReply)return;
+
+  if(!currentUser){
+    toast('Please log in to reply.');
+    return;
+  }
+
+  const group=currentGroup();
+  const moment=currentMoment();
+
+  if(!group||!moment)return;
+
+  if(group.userId===currentUser.id){
+    toast('You cannot reply to your own moment.');
+    return;
+  }
+
+  const content=$('replyInput').value.trim();
+  if(!content)return;
+
+  sendingReply=true;
+
+  const input=$('replyInput');
+  input.disabled=true;
+
+  try{
+    const {data:conversationId,error:conversationError}=await supabase.rpc(
+      'start_direct_conversation',
+      {target_user_id:group.userId}
+    );
+
+    if(conversationError)throw conversationError;
+    if(!conversationId)throw new Error('Could not open the conversation.');
+
+    const {error:messageError}=await supabase
+      .from('messages')
+      .insert({
+        conversation_id:conversationId,
+        sender_id:currentUser.id,
+        content
+      });
+
+    if(messageError)throw messageError;
+
+    input.value='';
+    toast('Reply sent to Messages!');
+
+  }catch(error){
+    console.error('Moment reply error:',error);
+    toast(error.message||'Could not send your reply.');
+  }finally{
+    sendingReply=false;
+    input.disabled=false;
+    input.focus();
+  }
+}
+
+/* REACTIONS */
+
+async function reactToMoment(reaction){
+  if(!currentUser){
+    toast('Please log in to react.');
+    return;
+  }
+
+  const moment=currentMoment();
+  if(!moment)return;
+
+  if(moment.user_id===currentUser.id){
+    toast('You cannot react to your own moment.');
+    return;
+  }
+
+  const buttons=[...document.querySelectorAll('[data-reaction]')];
+
+  buttons.forEach(button=>{
+    button.classList.toggle(
+      'active',
+      button.dataset.reaction===reaction
+    );
+  });
+
+  try{
+    const {error}=await supabase
+      .from('campusora_moment_reactions')
+      .upsert({
+        moment_id:moment.id,
+        user_id:currentUser.id,
+        reaction
+      },{
+        onConflict:'moment_id,user_id'
+      });
+
+    if(error)throw error;
+
+    currentReaction=reaction;
+    toast('Reaction sent '+reaction);
+
+  }catch(error){
+    console.error('Moment reaction error:',error);
+    toast(error.message||'Could not send reaction.');
+  }
+}
+
+/* GIFTS THROUGH EXISTING PAYSTACK API */
+
+async function sendMomentGift(){
+  if(!currentUser){
+    toast('Please log in to send gifts.');
+    return;
+  }
+
+  const group=currentGroup();
+  if(!group)return;
+
+  if(group.userId===currentUser.id){
+    toast('You cannot send a gift to yourself.');
+    return;
+  }
+
+  const options=GIFTS.map((gift,index)=>
+    `${index+1}. ${gift.emoji} ${gift.name} — ₦${gift.price.toLocaleString('en-NG')}`
+  ).join('\n');
+
+  const choice=prompt(
+    'Choose a gift by entering its number:\n\n'+options
+  );
+
+  if(choice===null)return;
+
+  const selected=GIFTS[Number(choice)-1];
+
+  if(!selected){
+    toast('Please select a valid gift.');
+    return;
+  }
+
+  const button=$('giftMomentBtn');
+  button.disabled=true;
+  button.textContent='…';
+
+  try{
+    const {data,error}=await supabase.auth.getSession();
+    if(error)throw error;
+
+    const token=data.session?.access_token;
+    if(!token)throw new Error('Your login session has expired.');
+
+    const response=await fetch('/api/gifts/initialize',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':`Bearer ${token}`
+      },
+      body:JSON.stringify({
+        recipient_id:group.userId,
+        gift_id:selected.id
+      })
+    });
+
+    const result=await response.json();
+
+    if(!response.ok||!result.success||!result.authorization_url){
+      throw new Error(result.error||'Could not start gift payment.');
+    }
+
+    toast('Opening secure Paystack checkout...');
+    location.href=result.authorization_url;
+
+  }catch(error){
+    console.error('Moment gift error:',error);
+    toast(error.message||'Could not start gift payment.');
+  }finally{
+    button.disabled=false;
+    button.textContent='🎁';
+  }
+}
+
+/* EVENTS */
+
+$('addMomentBtn').addEventListener('click',openUpload);
+$('uploadForm').addEventListener('submit',uploadMoment);
+$('replyForm').addEventListener('submit',sendReply);
+$('closeViewer').addEventListener('click',closeViewer);
+$('giftMomentBtn').addEventListener('click',sendMomentGift);
+
+document.querySelectorAll('[data-reaction]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    reactToMoment(button.dataset.reaction);
+  });
+});
+
+document.querySelectorAll('[data-close]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    closeOverlay(button.dataset.close);
+  });
+});
+
+document.querySelectorAll('.overlay').forEach(overlay=>{
+  overlay.addEventListener('click',event=>{
+    if(event.target===overlay){
+      overlay.style.display='none';
+    }
+  });
+});
+
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){
+    closeOverlay('uploadOverlay');
+    closeViewer();
+  }
+
+  if(!$('viewer').classList.contains('open'))return;
+
+  if(event.key==='ArrowRight')nextMoment();
+  if(event.key==='ArrowLeft')previousMoment();
+});
+
+/* START */
+
+async function init(){
+  const {data,error}=await supabase.auth.getUser();
+
+  if(error){
+    console.warn('Session lookup:',error);
+  }
+
+  currentUser=data?.user||null;
+
+  if(currentUser){
+    const result=await supabase
+      .from('profiles')
+      .select('id,username,full_name,avatar_url,school,institution_id')
+      .eq('id',currentUser.id)
+      .maybeSingle();
+
+    if(result.error){
+      console.warn('Your profile could not be loaded:',result.error);
+    }
+
+    currentProfile=result.data||null;
+  }
+
+  await loadMoments();
+}
+
+init();
+</script>
+
+</body>
+  </html>
