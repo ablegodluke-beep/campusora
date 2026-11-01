@@ -656,7 +656,8 @@ a{color:inherit;text-decoration:none}
     transition-duration:.01ms!important;
   }
 }
-  /* PREVENT ANDROID LONG-PRESS MENU */
+
+/* PREVENT ANDROID LONG-PRESS MENU */
 .viewer,
 .viewer * {
   -webkit-user-select: none;
@@ -668,7 +669,22 @@ a{color:inherit;text-decoration:none}
 .viewer video {
   -webkit-user-drag: none;
   user-drag: none;
-  }
+}
+
+/* CAMPUSORA CUSTOM DIALOG */
+.dialog-overlay{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(2,5,18,.78);backdrop-filter:blur(9px)}
+.dialog-overlay.open{display:flex;animation:dialogFade .18s ease}
+.dialog-card{width:min(100%,390px);padding:25px 22px 20px;border:1px solid rgba(139,92,246,.35);border-radius:24px;background:linear-gradient(145deg,#111a35,#090e20);box-shadow:0 25px 80px rgba(0,0,0,.55);animation:dialogPop .22s ease}
+.dialog-icon{width:52px;height:52px;display:grid;place-items:center;margin:0 auto 14px;border-radius:17px;background:linear-gradient(135deg,#7c3aed,#2563eb);font-size:25px}
+.dialog-title{text-align:center;font-size:19px;font-weight:800;color:#fff;margin:0 0 8px}
+.dialog-message{text-align:center;color:#aab6d0;font-size:13px;line-height:1.6;margin:0 0 20px}
+.dialog-select{width:100%;padding:13px;border:1px solid #344264;border-radius:13px;background:#0b142b;color:#fff;margin:0 0 16px;outline:none}
+.dialog-actions{display:flex;gap:10px}
+.dialog-actions button{flex:1;border:0;border-radius:13px;padding:13px 10px;font-weight:800;font-size:13px}
+.dialog-cancel{background:#202b45;color:#cbd5e1}
+.dialog-confirm{background:linear-gradient(110deg,#7c3aed,#2563eb);color:#fff}
+@keyframes dialogFade{from{opacity:0}to{opacity:1}}
+@keyframes dialogPop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 </style>
 </head>
 
@@ -805,9 +821,9 @@ a{color:inherit;text-decoration:none}
 
       <button class="viewer-close" id="closeViewer">×</button>
 
-    </div>
+  </div>
 
-    <div class="viewer-caption" id="viewerCaption"></div>
+        <div class="viewer-caption" id="viewerCaption"></div>
 
     <div class="viewer-touch">
       <div class="touch-half" id="previousMoment"></div>
@@ -842,6 +858,8 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
+
+<div class="dialog-overlay" id="campusoraDialogOverlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog-card"><div class="dialog-icon" id="dialogIcon">✦</div><h3 class="dialog-title" id="dialogTitle">Confirm action</h3><p class="dialog-message" id="dialogMessage">Are you sure?</p><select class="dialog-select" id="dialogSelect" style="display:none"></select><div class="dialog-actions"><button class="dialog-cancel" id="dialogCancel" type="button">Cancel</button><button class="dialog-confirm" id="dialogConfirm" type="button">Continue</button></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -893,6 +911,8 @@ function toast(message){
   clearTimeout(toast.timer);
   toast.timer=setTimeout(()=>el.classList.remove('show'),2800);
 }
+function showCampusoraDialog({icon='✦',title='Confirm action',message='Are you sure?',confirmText='Continue',cancelText='Cancel',choices=null}={}){return new Promise(resolve=>{const overlay=$('campusoraDialogOverlay'),select=$('dialogSelect'),confirmButton=$('dialogConfirm'),cancelButton=$('dialogCancel');$('dialogIcon').textContent=icon;$('dialogTitle').textContent=title;$('dialogMessage').textContent=message;confirmButton.textContent=confirmText;cancelButton.textContent=cancelText;select.innerHTML='';select.style.display=choices?'block':'none';if(choices)choices.forEach(choice=>{const option=document.createElement('option');option.value=choice.value;option.textContent=choice.label;select.appendChild(option)});overlay.classList.add('open');const previousFocus=document.activeElement;function cleanup(result){overlay.classList.remove('open');confirmButton.removeEventListener('click',onConfirm);cancelButton.removeEventListener('click',onCancel);overlay.removeEventListener('click',onBackdrop);document.removeEventListener('keydown',onKeydown);if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();resolve(result)}function onConfirm(){cleanup(choices?select.value:true)}function onCancel(){cleanup(null)}function onBackdrop(event){if(event.target===overlay)onCancel()}function onKeydown(event){if(event.key==='Escape'){event.preventDefault();onCancel()}}confirmButton.addEventListener('click',onConfirm);cancelButton.addEventListener('click',onCancel);overlay.addEventListener('click',onBackdrop);document.addEventListener('keydown',onKeydown);if(choices)select.focus();else confirmButton.focus()})}
+
 
 function showStatus(message,type='error'){
   const el=$('pageStatus');
@@ -1346,7 +1366,8 @@ function openViewer(userIndex){
   activeUserIndex=userIndex;
   activeMomentIndex=0;
 
-  $('viewer').classList.add('open');
+  $('viewer').classL
+  ist.add('open');
   document.body.style.overflow='hidden';
 
   showCurrentMoment();
@@ -1569,7 +1590,8 @@ function moveToNextUser(){
     toast('You have caught up with all available moments.');
   }
 }
-  /* DISABLE BROWSER LONG-PRESS MENU */
+
+/* DISABLE BROWSER LONG-PRESS MENU */
 $('viewer').addEventListener('contextmenu', event => {
   event.preventDefault();
 });
@@ -1759,17 +1781,9 @@ async function sendMomentGift(){
     return;
   }
 
-  const options=GIFTS.map((gift,index)=>
-    `${index+1}. ${gift.emoji} ${gift.name} — ₦${gift.price.toLocaleString('en-NG')}`
-  ).join('\n');
-
-  const choice=prompt(
-    'Choose a gift by entering its number:\n\n'+options
-  );
-
-  if(choice===null)return;
-
-  const selected=GIFTS[Number(choice)-1];
+  const choice=await showCampusoraDialog({icon:'🎁',title:'Send a Gift',message:'Choose a beautiful gift to send. Payment will be processed securely through Paystack.',confirmText:'Continue to Payment',choices:GIFTS.map(gift=>({value:gift.id,label:`${gift.emoji} ${gift.name} — ₦${gift.price.toLocaleString('en-NG')}`}))});
+  if(!choice)return;
+  const selected=GIFTS.find(gift=>gift.id===choice);
 
   if(!selected){
     toast('Please select a valid gift.');
@@ -1826,7 +1840,8 @@ async function deleteCurrentMoment(){
 
   $('viewerMenu').classList.remove('open');
 
-  if(!confirm('Delete this moment now? It will disappear for everyone and cannot be restored.'))return;
+  const confirmed=await showCampusoraDialog({icon:'🗑️',title:'Delete this Moment?',message:'This moment will disappear for everyone. You cannot recover it after deletion.',confirmText:'Delete Moment',cancelText:'Keep Moment'});
+  if(!confirmed)return;
 
   deletingMoment=true;
   $('deleteMomentBtn').textContent='Deleting…';
