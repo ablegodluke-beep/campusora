@@ -214,6 +214,11 @@ a{color:inherit;text-decoration:none}
   color:#8ef0c9;
 }
 
+@keyframes pulse{
+  0%,100%{opacity:.55}
+  50%{opacity:1}
+}
+
 /* UPLOAD DIALOG */
 
 .overlay{
@@ -347,7 +352,7 @@ a{color:inherit;text-decoration:none}
 
 .viewer-media{
   position:absolute;
-  inset:0;
+  inset:0 0 148px;
   background:#080b18;
   display:flex;
   align-items:center;
@@ -456,6 +461,44 @@ a{color:inherit;text-decoration:none}
   margin-top:3px;
 }
 
+.viewer-menu-wrap{position:relative}
+
+.viewer-menu-btn{
+  width:32px;
+  height:32px;
+  border:1px solid #ffffff66;
+  border-radius:50%;
+  background:#0008;
+  color:#fff;
+  font-size:21px;
+}
+
+.viewer-menu{
+  display:none;
+  position:absolute;
+  right:0;
+  top:38px;
+  min-width:150px;
+  padding:6px;
+  background:#151a2d;
+  border:1px solid var(--border);
+  border-radius:10px;
+  z-index:20;
+  box-shadow:0 8px 24px #0008;
+}
+
+.viewer-menu.open{display:block}
+
+.viewer-menu button{
+  width:100%;
+  padding:10px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#ff9cac;
+  text-align:left;
+}
+
 .viewer-close{
   width:31px;
   height:31px;
@@ -468,7 +511,7 @@ a{color:inherit;text-decoration:none}
 
 .viewer-caption{
   position:absolute;
-  bottom:105px;
+  bottom:78px;
   left:18px;
   right:18px;
   z-index:5;
@@ -478,6 +521,9 @@ a{color:inherit;text-decoration:none}
   line-height:1.5;
   text-shadow:0 1px 5px #000;
   pointer-events:none;
+  max-height:100px;
+  overflow-y:auto;
+  padding:0 5px;
 }
 
 .viewer-touch{
@@ -598,6 +644,8 @@ a{color:inherit;text-decoration:none}
   .page{margin:14px auto;padding:0 9px 50px}
   .moments-panel{border-radius:12px}
   .viewer-card{width:100%;height:100dvh}
+  .viewer-media{bottom:155px}
+  .viewer-caption{bottom:88px;max-height:88px;font-size:12px}
   .viewer-bottom{bottom:max(12px,env(safe-area-inset-bottom))}
   .toast{bottom:75px}
 }
@@ -626,7 +674,10 @@ a{color:inherit;text-decoration:none}
   <section class="moments-panel">
     <div class="heading">
       <h1>Campus Moments <span style="color:#9c7cff">✦</span></h1>
-      <small>Stories from your campus world</small>
+      <div style="display:flex;align-items:center;gap:9px">
+        <small id="momentLoadLabel">Stories from your campus world</small>
+        <button type="button" class="secondary-btn" id="refreshMomentsBtn" style="padding:6px 9px;font-size:10px">↻ Refresh</button>
+      </div>
     </div>
 
     <div class="moment-list" id="momentList">
@@ -670,6 +721,16 @@ a{color:inherit;text-decoration:none}
       <div class="field">
         <label for="momentCaption">Caption (optional)</label>
         <textarea id="momentCaption" maxlength="300" placeholder="What's happening?"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="momentMusic">Add music from Campusora</label>
+        <select id="momentMusic"><option value="">No music</option></select>
+        <div style="display:flex;gap:7px;margin-top:7px">
+          <button type="button" class="secondary-btn" id="previewMusicBtn">▶ Preview</button>
+          <button type="button" class="secondary-btn" id="stopPreviewMusicBtn">■ Stop</button>
+        </div>
+        <div class="hint">Choose a track from Campusora's music library.</div>
       </div>
 
       <div class="field">
@@ -720,6 +781,13 @@ a{color:inherit;text-decoration:none}
         </a>
         <small id="viewerCampus"></small>
         <div class="viewer-time" id="viewerTime"></div>
+      </div>
+
+      <div class="viewer-menu-wrap" id="viewerMenuWrap" style="display:none">
+        <button class="viewer-menu-btn" id="viewerMenuBtn" aria-label="Moment options">⋮</button>
+        <div class="viewer-menu" id="viewerMenu">
+          <button type="button" id="deleteMomentBtn">Delete moment</button>
+        </div>
       </div>
 
       <button class="viewer-close" id="closeViewer">×</button>
@@ -774,7 +842,9 @@ let momentGroups=[];
 let activeUserIndex=0;
 let activeMomentIndex=0;
 let progressTimer=null;
-let currentVideo=null;
+let currentVideo=null,currentAudio=null,previewAudio=null,musicTracks=[];
+let progressStartedAt=0,progressRemaining=0,progressPaused=false,deletingMoment=false;
+let momentsChannel=null,loadingMoments=false;
 let sendingReply=false;
 let uploading=false;
 let currentReaction=null;
@@ -841,11 +911,136 @@ function timeAgo(date){
 function stopProgress(){
   clearTimeout(progressTimer);
   progressTimer=null;
+  progressRemaining=0;
+  progressPaused=false;
 
   if(currentVideo){
     currentVideo.pause();
     currentVideo=null;
   }
+
+  if(currentAudio){
+    currentAudio.pause();
+    currentAudio=null;
+  }
+}
+
+function pauseMoment(){
+  if(progressPaused)return;
+  progressPaused=true;
+
+  if(progressTimer){
+    clearTimeout(progressTimer);
+    progressTimer=null;
+    progressRemaining=Math.max(
+      0,
+      progressRemaining-(Date.now()-progressStartedAt)
+    );
+  }
+
+  const bar=$('activeProgress')?.querySelector('span');
+  if(bar)bar.style.animationPlayState='paused';
+
+  if(currentVideo)currentVideo.pause();
+  if(currentAudio)currentAudio.pause();
+}
+
+function resumeMoment(){
+  if(!progressPaused)return;
+  progressPaused=false;
+
+  const bar=$('activeProgress')?.querySelector('span');
+  if(bar)bar.style.animationPlayState='running';
+
+  if(currentVideo)currentVideo.play().catch(()=>{});
+  if(currentAudio)currentAudio.play().catch(()=>{});
+
+  if(progressRemaining>0){
+    progressStartedAt=Date.now();
+    progressTimer=setTimeout(nextMoment,progressRemaining);
+  }
+}
+
+function stopMusicPreview(){
+  if(previewAudio){
+    previewAudio.pause();
+    previewAudio=null;
+  }
+}
+
+async function loadMusicTracks(){
+  const select=$('momentMusic');
+
+  const {data,error}=await supabase
+    .from('campusora_moment_tracks')
+    .select('id,title,artist,category,file_path')
+    .eq('is_active',true)
+    .eq('license_status','approved')
+    .order('sort_order',{ascending:true})
+    .order('title',{ascending:true});
+
+  if(error){
+    console.warn('Music library:',error);
+    return;
+  }
+
+  musicTracks=data||[];
+  select.innerHTML='<option value="">No music</option>';
+
+  musicTracks.forEach(track=>{
+    const option=document.createElement('option');
+    option.value=track.id;
+    option.textContent=
+      track.title+
+      (track.artist&&track.artist!=='Unknown'?' — '+track.artist:'')+
+      ' · '+track.category;
+    select.appendChild(option);
+  });
+}
+
+async function previewSelectedMusic(){
+  const track=musicTracks.find(
+    item=>item.id===$('momentMusic').value
+  );
+
+  if(!track)return toast('Choose a music track first.');
+
+  stopMusicPreview();
+
+  try{
+    const {data,error}=await supabase.storage
+      .from('campusora-music')
+      .createSignedUrl(track.file_path,3600);
+
+    if(error)throw error;
+
+    previewAudio=new Audio(data.signedUrl);
+    previewAudio.volume=.65;
+
+    previewAudio.play().catch(()=>{
+      toast('Could not start music preview.');
+    });
+
+  }catch(error){
+    console.warn(error);
+    toast('Could not load music preview.');
+  }
+}
+
+function showMomentSkeleton(){
+  const list=$('momentList');
+
+  list.innerHTML=
+    '<button class="moment add" id="addMomentBtn">'+
+    '<div class="moment-ring">＋</div>'+
+    '<span class="moment-name">Your moment</span></button>'+
+    Array.from({length:5},()=>(
+      '<div class="moment" aria-hidden="true">'+
+      '<div class="moment-ring" style="background:linear-gradient(90deg,#202640,#343b5a,#202640);animation:pulse 1.2s infinite"></div>'+
+      '<span class="moment-name">Loading...</span></div>'
+    )).join('');
+
+  $('addMomentBtn').addEventListener('click',openUpload);
 }
 
 function currentGroup(){
@@ -861,24 +1056,24 @@ function currentMoment(){
 async function loadMoments(){
   hideStatus();
 
-  $('momentList').innerHTML=`
-    <button class="moment add" id="addMomentBtn">
-      <div class="moment-ring">＋</div>
-      <span class="moment-name">Your moment</span>
-    </button>`;
+  if(loadingMoments)return;
 
-  $('addMomentBtn').addEventListener('click',openUpload);
+  loadingMoments=true;
+  showMomentSkeleton();
+  $('momentLoadLabel').textContent='Loading moments…';
 
   const {data,error}=await supabase
     .from('campusora_moments')
-    .select('id,user_id,media_type,media_path,caption,audience,created_at,expires_at')
+    .select('id,user_id,media_type,media_path,caption,audience,created_at,expires_at,music_track_id,music_start_seconds,music_volume')
     .gt('expires_at',new Date().toISOString())
     .order('created_at',{ascending:true})
     .limit(500);
 
   if(error){
+    loadingMoments=false;
     console.error('Moment loading error:',error);
     showStatus(error.message||'Could not load moments.');
+    $('momentLoadLabel').textContent='Could not load moments';
     return;
   }
 
@@ -894,8 +1089,10 @@ async function loadMoments(){
       .in('id',ids);
 
     if(result.error){
+      loadingMoments=false;
       console.error('Moment profile error:',result.error);
       showStatus('Moments loaded, but member profiles could not be loaded.');
+      $('momentLoadLabel').textContent='Profile loading failed';
       return;
     }
 
@@ -923,6 +1120,12 @@ async function loadMoments(){
 
   momentGroups=[...grouped.values()];
 
+  loadingMoments=false;
+
+  $('momentLoadLabel').textContent=momentGroups.length
+    ?`${momentGroups.length} active stories`
+    :'Stories from your campus world';
+
   renderMomentList();
 }
 
@@ -938,6 +1141,7 @@ function renderMomentList(){
   const groups=momentGroups.map((group,index)=>{
     const p=group.profile;
     const name=p.full_name||p.username||'Member';
+
     const avatar=p.avatar_url
       ? `<img src="${esc(p.avatar_url)}" alt="">`
       : `<div style="
@@ -975,7 +1179,11 @@ function openUpload(){
   }
 
   $('uploadForm').reset();
-  $('uploadStatus').textContent='Your moment disappears after 24 hours.';
+  stopMusicPreview();
+
+  $('uploadStatus').textContent=
+    'Your moment disappears after 24 hours. You can delete it anytime.';
+
   $('uploadProgress').style.display='none';
   $('uploadProgressBar').style.width='0%';
   $('uploadOverlay').style.display='flex';
@@ -993,6 +1201,7 @@ async function uploadMoment(event){
   const file=$('momentFile').files[0];
   const caption=$('momentCaption').value.trim();
   const audience=$('momentAudience').value;
+  const musicTrackId=$('momentMusic').value||null;
 
   if(!file){
     toast('Choose a photo or video first.');
@@ -1077,7 +1286,10 @@ async function uploadMoment(event){
         media_type:isImage?'image':'video',
         media_path:mediaURL,
         caption,
-        audience
+        audience,
+        music_track_id:musicTrackId,
+        music_start_seconds:0,
+        music_volume:0.65
       });
 
     if(insertError)throw insertError;
@@ -1085,7 +1297,9 @@ async function uploadMoment(event){
     $('uploadProgressBar').style.width='100%';
     $('uploadStatus').textContent='Your moment is live!';
 
+    stopMusicPreview();
     closeOverlay('uploadOverlay');
+
     toast('Your moment has been shared!');
 
     await loadMoments();
@@ -1186,10 +1400,20 @@ function showCurrentMoment(){
   $('viewerTime').textContent=timeAgo(moment.created_at);
   $('viewerCaption').textContent=moment.caption||'';
 
+  $('viewerMenuWrap').style.display=
+    moment.user_id===currentUser?.id?'block':'none';
+
+  $('viewerMenu').classList.remove('open');
+
   $('viewerCounter').textContent=
     `${activeMomentIndex+1} of ${group.moments.length}`;
 
   $('viewerMedia').innerHTML='';
+
+  if(currentAudio){
+    currentAudio.pause();
+    currentAudio=null;
+  }
 
   renderProgress();
 
@@ -1197,13 +1421,17 @@ function showCurrentMoment(){
 
   if(moment.media_type==='video'){
     const video=document.createElement('video');
+
     video.src=mediaURL;
     video.playsInline=true;
     video.autoplay=true;
     video.muted=false;
     video.controls=false;
 
-    video.addEventListener('ended',nextMoment);
+    video.addEventListener('ended',()=>{
+      if(!progressPaused)nextMoment();
+    });
+
     video.addEventListener('loadedmetadata',()=>{
       if(video.duration&&Number.isFinite(video.duration)){
         startProgress(video.duration*1000);
@@ -1232,8 +1460,34 @@ function showCurrentMoment(){
     const image=document.createElement('img');
     image.src=mediaURL;
     image.alt='Campus moment';
+
     $('viewerMedia').appendChild(image);
     startProgress(6000);
+  }
+
+  if(moment.music_track_id){
+    const track=musicTracks.find(
+      item=>item.id===moment.music_track_id
+    );
+
+    if(track){
+      supabase.storage
+        .from('campusora-music')
+        .createSignedUrl(track.file_path,3600)
+        .then(({data,error})=>{
+          if(error)throw error;
+          if(currentMoment()?.id!==moment.id)return;
+
+          currentAudio=new Audio(data.signedUrl);
+          currentAudio.volume=Number(moment.music_volume??.65);
+          currentAudio.currentTime=Number(moment.music_start_seconds||0);
+
+          currentAudio.play().catch(()=>{});
+        })
+        .catch(error=>{
+          console.warn('Moment music playback:',error);
+        });
+    }
   }
 
   $('replyInput').value='';
@@ -1254,11 +1508,18 @@ function startProgress(duration){
   const bar=$('activeProgress')?.querySelector('span');
   if(!bar)return;
 
+  progressRemaining=duration;
+  progressPaused=false;
+
   bar.style.animation='none';
   bar.style.width='0%';
+  bar.style.animationPlayState='running';
+
   void bar.offsetWidth;
+
   bar.style.animation=`storyProgress ${duration}ms linear forwards`;
 
+  progressStartedAt=Date.now();
   progressTimer=setTimeout(nextMoment,duration);
 }
 
@@ -1296,6 +1557,26 @@ function moveToNextUser(){
   }
 }
 
+/* PRESS AND HOLD TO PAUSE */
+
+let holdingMoment=false;
+
+$('viewer').addEventListener('pointerdown',event=>{
+  if(event.target.closest('button,a,input,form,.viewer-actions,.viewer-menu'))return;
+
+  holdingMoment=true;
+  pauseMoment();
+});
+
+['pointerup','pointercancel','pointerleave'].forEach(type=>{
+  $('viewer').addEventListener(type,()=>{
+    if(holdingMoment){
+      holdingMoment=false;
+      resumeMoment();
+    }
+  });
+});
+
 /* TAP NAVIGATION */
 
 $('nextMoment').addEventListener('click',nextMoment);
@@ -1306,6 +1587,7 @@ let touchStartY=0;
 
 $('viewer').addEventListener('touchstart',event=>{
   if(event.touches.length!==1)return;
+
   touchStartX=event.touches[0].clientX;
   touchStartY=event.touches[0].clientY;
 },{passive:true});
@@ -1510,6 +1792,81 @@ async function sendMomentGift(){
   }
 }
 
+/* DELETE MOMENT */
+
+async function deleteCurrentMoment(){
+  const moment=currentMoment();
+
+  if(!moment||moment.user_id!==currentUser?.id||deletingMoment)return;
+
+  $('viewerMenu').classList.remove('open');
+
+  if(!confirm('Delete this moment now? It will disappear for everyone and cannot be restored.'))return;
+
+  deletingMoment=true;
+  $('deleteMomentBtn').textContent='Deleting…';
+
+  try{
+    const {error}=await supabase
+      .from('campusora_moments')
+      .delete()
+      .eq('id',moment.id)
+      .eq('user_id',currentUser.id);
+
+    if(error)throw error;
+
+    const match=String(moment.media_path||'').match(
+      /\/storage\/v1\/object\/public\/(campusora-images|campusora-videos)\/(.+)$/
+    );
+
+    if(match){
+      const path=decodeURIComponent(match[2].split('?')[0]);
+
+      const {error:storageError}=await supabase
+        .storage.from(match[1]).remove([path]);
+
+      if(storageError)console.warn('Media cleanup:',storageError);
+    }
+
+    const group=currentGroup();
+
+    group.moments=group.moments.filter(
+      item=>item.id!==moment.id
+    );
+
+    if(!group.moments.length){
+      momentGroups.splice(activeUserIndex,1);
+    }
+
+    if(!momentGroups.length){
+      closeViewer();
+    }else{
+      activeUserIndex=Math.min(
+        activeUserIndex,
+        momentGroups.length-1
+      );
+
+      activeMomentIndex=Math.min(
+        activeMomentIndex,
+        (currentGroup()?.moments.length||1)-1
+      );
+
+      showCurrentMoment();
+    }
+
+    renderMomentList();
+    toast('Moment deleted.');
+
+  }catch(error){
+    console.error('Delete moment:',error);
+    toast(error.message||'Could not delete moment.');
+
+  }finally{
+    deletingMoment=false;
+    $('deleteMomentBtn').textContent='Delete moment';
+  }
+}
+
 /* EVENTS */
 
 $('addMomentBtn').addEventListener('click',openUpload);
@@ -1517,6 +1874,16 @@ $('uploadForm').addEventListener('submit',uploadMoment);
 $('replyForm').addEventListener('submit',sendReply);
 $('closeViewer').addEventListener('click',closeViewer);
 $('giftMomentBtn').addEventListener('click',sendMomentGift);
+
+$('viewerMenuBtn').addEventListener('click',event=>{
+  event.stopPropagation();
+  $('viewerMenu').classList.toggle('open');
+});
+
+$('deleteMomentBtn').addEventListener('click',deleteCurrentMoment);
+$('previewMusicBtn').addEventListener('click',previewSelectedMusic);
+$('stopPreviewMusicBtn').addEventListener('click',stopMusicPreview);
+$('refreshMomentsBtn').addEventListener('click',loadMoments);
 
 document.querySelectorAll('[data-reaction]').forEach(button=>{
   button.addEventListener('click',()=>{
@@ -1575,8 +1942,45 @@ async function init(){
     currentProfile=result.data||null;
   }
 
+  await loadMusicTracks();
   await loadMoments();
+
+  if(momentsChannel){
+    supabase.removeChannel(momentsChannel);
+  }
+
+  momentsChannel=supabase.channel('campusora-moments-live')
+    .on(
+      'postgres_changes',
+      {event:'*',schema:'public',table:'campusora_moments'},
+      ()=>loadMoments()
+    )
+    .subscribe();
 }
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'){
+    loadMoments();
+  }
+});
+
+let pullStartY=0;
+
+window.addEventListener('touchstart',event=>{
+  if(window.scrollY===0){
+    pullStartY=event.touches[0].clientY;
+  }
+},{passive:true});
+
+window.addEventListener('touchend',event=>{
+  const delta=event.changedTouches[0].clientY-pullStartY;
+
+  if(pullStartY&&delta>95&&window.scrollY===0){
+    loadMoments();
+  }
+
+  pullStartY=0;
+},{passive:true});
 
 init();
 </script>
