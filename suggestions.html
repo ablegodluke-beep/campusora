@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-
 <title>Suggestions | Campusora</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,388 +14,385 @@
 
 <style>
 :root {
-  --bg: #080b18;
-  --surface: #101426;
-  --surface2: #171c32;
-  --border: rgba(255,255,255,.085);
-  --text: #f5f6ff;
-  --muted: #929bb6;
-  --purple: #925bff;
-  --blue: #526dff;
-  --cyan: #39d7f5;
-  --green: #42dfa2;
+  --bg:#080b18;
+  --surface:#101426;
+  --surface2:#171d32;
+  --border:rgba(255,255,255,.09);
+  --text:#f5f6ff;
+  --muted:#929bb6;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
 }
 
 * {
-  box-sizing: border-box;
+  box-sizing:border-box;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
+  margin:0;
+  min-height:100vh;
   background:
-    radial-gradient(ellipse at 15% 0%, #21164a 0, transparent 38%),
+    radial-gradient(ellipse at 15% 0%,#21164a 0,transparent 38%),
     var(--bg);
-  color: var(--text);
-  font-family: "DM Sans", sans-serif;
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
 }
 
-button, input {
-  font: inherit;
+button,input {
+  font:inherit;
 }
 
 button {
-  cursor: pointer;
+  cursor:pointer;
 }
 
 .page {
-  width: min(100%, 1050px);
-  margin: 0 auto;
-  padding: 24px 18px 35px;
+  width:min(100%,1100px);
+  margin:auto;
+  padding:12px 16px 35px;
 }
 
-.intro {
-  padding: 23px;
-  border: 1px solid rgba(146,91,255,.22);
-  border-radius: 19px;
-  background:
-    radial-gradient(circle at 90% 10%, #283c78 0, transparent 38%),
-    linear-gradient(125deg, #21163e, #11182b 75%);
-  margin-bottom: 22px;
+/* SMALL TOP AREA */
+
+.top-line {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+  margin-bottom:13px;
+  min-height:36px;
 }
 
-.eyebrow {
-  color: var(--cyan);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+.tagline {
+  color:#aeb9d4;
+  font-size:11px;
+  font-style:italic;
+  font-weight:500;
+  text-align:right;
+  line-height:1.4;
 }
 
-.intro h1 {
-  margin: 10px 0 8px;
-  font-size: clamp(23px, 4vw, 31px);
-  letter-spacing: -.8px;
+.search-toggle {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:8px 12px;
+  border:1px solid rgba(146,91,255,.4);
+  border-radius:10px;
+  background:#17172e;
+  color:white;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
 }
 
-.intro p {
-  max-width: 620px;
-  margin: 0;
-  color: #b9c3dc;
-  font-size: 13px;
-  line-height: 1.7;
+.search-toggle span {
+  color:var(--cyan);
+  font-size:16px;
 }
 
-.section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 15px;
+.search-panel {
+  display:none;
+  margin-bottom:14px;
 }
 
-.section-head h2 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 800;
+.search-panel.open {
+  display:block;
 }
 
-.refresh-btn {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 13px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 700;
+.search-panel input {
+  width:100%;
+  height:43px;
+  padding:0 14px;
+  border:1px solid rgba(146,91,255,.4);
+  border-radius:11px;
+  outline:none;
+  background:var(--surface);
+  color:white;
+  font-size:13px;
 }
 
-.refresh-btn:disabled {
-  opacity: .55;
-  cursor: wait;
+.search-panel input:focus {
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(57,215,245,.09);
 }
 
-.refresh-icon {
-  font-size: 16px;
-}
-
-.search-box {
-  position: relative;
-  margin-bottom: 17px;
-}
-
-.search-box input {
-  width: 100%;
-  height: 46px;
-  padding: 0 15px 0 43px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  outline: none;
-  background: var(--surface);
-  color: white;
-  font-size: 13px;
-}
-
-.search-box input:focus {
-  border-color: var(--purple);
-  box-shadow: 0 0 0 3px rgba(146,91,255,.12);
-}
-
-.search-icon {
-  position: absolute;
-  left: 15px;
-  top: 12px;
-  color: var(--muted);
-  font-size: 17px;
-}
-
-.message-box {
-  display: none;
-  padding: 12px 14px;
-  margin-bottom: 15px;
-  border-radius: 11px;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.message-box.success {
-  display: block;
-  color: #9af1d0;
-  background: #10352d;
-  border: 1px solid #216b56;
-}
-
-.message-box.error {
-  display: block;
-  color: #ffb2c0;
-  background: #391b29;
-  border: 1px solid #79344b;
-}
+/* PEOPLE */
 
 .people-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
 }
 
 .person-card {
-  min-width: 0;
-  padding: 17px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: linear-gradient(145deg, #171d33, #101426);
-  transition: border-color .2s, transform .2s;
-  animation: appear .25s ease both;
-}
-
-.person-card:hover {
-  border-color: rgba(146,91,255,.5);
-  transform: translateY(-2px);
+  min-width:0;
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:linear-gradient(145deg,#171d33,#101426);
+  animation:appear .25s ease both;
 }
 
 .person-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
 }
 
 .avatar-link {
-  flex-shrink: 0;
+  flex-shrink:0;
+  text-decoration:none;
 }
 
 .avatar {
-  width: 54px;
-  height: 54px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
-  color: white;
-  font-size: 19px;
-  font-weight: 800;
+  width:53px;
+  height:53px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--blue),var(--cyan));
+  color:white;
+  font-size:19px;
+  font-weight:800;
 }
 
 .avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 .person-info {
-  min-width: 0;
+  min-width:0;
 }
 
 .person-name {
-  display: block;
-  overflow-wrap: anywhere;
-  color: white;
-  font-size: 14px;
-  font-weight: 800;
-  text-decoration: none;
+  display:block;
+  overflow-wrap:anywhere;
+  color:white;
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
 }
 
 .person-name:hover {
-  color: var(--cyan);
+  color:var(--cyan);
 }
 
 .username {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 11px;
-  overflow-wrap: anywhere;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+  overflow-wrap:anywhere;
 }
 
 .role-badge {
-  display: inline-block;
-  margin-top: 7px;
-  padding: 4px 8px;
-  border-radius: 7px;
-  background: #34265e;
-  color: #c9b9ff;
-  font-size: 10px;
-  font-weight: 700;
+  display:inline-block;
+  margin-top:7px;
+  padding:4px 8px;
+  border-radius:7px;
+  background:#34265e;
+  color:#c9b9ff;
+  font-size:10px;
+  font-weight:700;
 }
 
 .role-badge.alumni {
-  background: #16473e;
-  color: #7df0c6;
+  background:#16473e;
+  color:#7df0c6;
 }
 
 .role-badge.general {
-  background: #203951;
-  color: #8dd7ff;
+  background:#203951;
+  color:#8dd7ff;
 }
 
+/* SCHOOL */
+
 .school {
-  min-height: 35px;
-  margin: 17px 0 14px;
-  color: #aab5cc;
-  font-size: 11px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
+  display:flex;
+  align-items:flex-start;
+  gap:7px;
+  min-height:35px;
+  margin:15px 0 13px;
+  padding:8px 10px;
+  border:1px solid rgba(57,215,245,.14);
+  border-radius:9px;
+  background:rgba(57,215,245,.045);
+  color:#b8c6e0;
+  font-size:11px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
 }
 
 .school-icon {
-  margin-right: 5px;
+  flex-shrink:0;
+  color:var(--cyan);
+  font-size:14px;
 }
 
+/* ACTIONS */
+
 .actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
 }
 
 .action-btn {
-  min-width: 0;
-  padding: 10px 8px;
-  border: 1px solid #373f56;
-  border-radius: 10px;
-  background: #1b2234;
-  color: white;
-  font-size: 11px;
-  font-weight: 800;
-  text-align: center;
-  text-decoration: none;
-  transition: .2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  padding:10px 6px;
+  border:1px solid #373f56;
+  border-radius:9px;
+  background:#1b2234;
+  color:white;
+  font-size:11px;
+  font-weight:800;
+  text-align:center;
+  text-decoration:none;
 }
 
 .action-btn.follow {
-  border-color: transparent;
-  background: linear-gradient(110deg, var(--purple), var(--blue));
+  border-color:transparent;
+  background:linear-gradient(110deg,var(--purple),var(--blue));
 }
 
 .action-btn.following {
-  background: #172e36;
-  border-color: #286477;
-  color: #8ce8f3;
+  background:#172e36;
+  border-color:#286477;
+  color:#8ce8f3;
 }
 
 .action-btn.message {
-  background: transparent;
-  border-color: rgba(57,215,245,.35);
-  color: var(--cyan);
+  background:transparent;
+  border-color:rgba(57,215,245,.35);
+  color:var(--cyan);
 }
 
 .action-btn:disabled {
-  opacity: .6;
-  cursor: wait;
+  opacity:.6;
+  cursor:wait;
 }
 
+/* STATUS */
+
 .status {
-  grid-column: 1 / -1;
-  padding: 45px 15px;
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  background: var(--surface);
-  color: var(--muted);
-  text-align: center;
-  font-size: 13px;
-  line-height: 1.8;
+  grid-column:1/-1;
+  padding:35px 15px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--surface);
+  color:var(--muted);
+  text-align:center;
+  font-size:12px;
+  line-height:1.8;
 }
 
 .status-icon {
-  display: block;
-  margin-bottom: 10px;
-  color: var(--cyan);
-  font-size: 27px;
+  display:block;
+  margin-bottom:9px;
+  color:var(--cyan);
+  font-size:25px;
+}
+
+.progress-text {
+  margin-top:9px;
+  color:#9eacd0;
+  font-size:11px;
+}
+
+.message-box {
+  display:none;
+  padding:11px 13px;
+  margin-bottom:12px;
+  border-radius:10px;
+  font-size:12px;
+}
+
+.message-box.success {
+  display:block;
+  color:#9af1d0;
+  background:#10352d;
+  border:1px solid #216b56;
+}
+
+.message-box.error {
+  display:block;
+  color:#ffb2c0;
+  background:#391b29;
+  border:1px solid #79344b;
+}
+
+.refresh-area {
+  display:flex;
+  justify-content:center;
+  margin:18px 0;
+}
+
+.refresh-btn {
+  padding:9px 15px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--surface);
+  color:white;
+  font-size:11px;
+  font-weight:700;
+}
+
+.refresh-btn:disabled {
+  opacity:.5;
 }
 
 .login-link {
-  display: inline-block;
-  margin-top: 12px;
-  color: var(--cyan);
-  text-decoration: none;
-  font-weight: 700;
+  display:inline-block;
+  margin-top:10px;
+  color:var(--cyan);
+  text-decoration:none;
+  font-weight:700;
 }
 
 @keyframes appear {
   from {
-    opacity: 0;
-    transform: translateY(7px);
+    opacity:0;
+    transform:translateY(6px);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    opacity:1;
+    transform:translateY(0);
   }
 }
 
-@media(max-width: 650px) {
+@media(max-width:650px) {
   .page {
-    padding: 17px 12px 25px;
-  }
-
-  .intro {
-    padding: 18px;
-    border-radius: 15px;
-  }
-
-  .intro p {
-    font-size: 12px;
+    padding:10px 11px 25px;
   }
 
   .people-grid {
-    grid-template-columns: 1fr;
-    gap: 11px;
+    grid-template-columns:1fr;
+    gap:10px;
   }
 
   .person-card {
-    padding: 15px;
+    padding:14px;
   }
 
-  .section-head h2 {
-    font-size: 15px;
+  .tagline {
+    font-size:10px;
   }
 }
 
-@media(prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
   }
 }
 </style>
@@ -406,33 +402,22 @@ button {
 
 <main class="page">
 
-  <section class="intro">
-    <div class="eyebrow">Discover your Campusora community</div>
+  <div class="top-line">
+    <div class="tagline">
+      Connect with students, alumni and friends
+    </div>
 
-    <h1>Meet people across campuses.</h1>
-
-    <p>
-      Discover students, alumni and members from different institutions.
-      Follow interesting people, make connections and see what's happening
-      across the Campusora community.
-    </p>
-  </section>
-
-  <div class="section-head">
-    <h2>People you may know</h2>
-
-    <button class="refresh-btn" id="refreshBtn" type="button">
-      <span class="refresh-icon">↻</span>
-      <span id="refreshText">Refresh</span>
+    <button class="search-toggle" id="searchToggle" type="button">
+      <span>⌕</span>
+      Search Users
     </button>
   </div>
 
-  <div class="search-box">
-    <span class="search-icon">⌕</span>
+  <div class="search-panel" id="searchPanel">
     <input
       id="searchInput"
       type="search"
-      placeholder="Search name, username or school..."
+      placeholder="Search by name, username or school..."
       autocomplete="off"
     >
   </div>
@@ -446,6 +431,12 @@ button {
     </div>
   </section>
 
+  <div class="refresh-area">
+    <button class="refresh-btn" id="refreshBtn" type="button">
+      ↻ Refresh suggestions
+    </button>
+  </div>
+
 </main>
 
 <script defer src="shared-nav.js"></script>
@@ -455,23 +446,26 @@ import { supabase } from './supabase.js';
 
 const peopleList = document.getElementById('peopleList');
 const searchInput = document.getElementById('searchInput');
+const searchToggle = document.getElementById('searchToggle');
+const searchPanel = document.getElementById('searchPanel');
 const refreshBtn = document.getElementById('refreshBtn');
-const refreshText = document.getElementById('refreshText');
 const messageBox = document.getElementById('messageBox');
+
+const PAGE_SIZE = 50;
 
 let currentUser = null;
 let profiles = [];
 let followingIds = new Set();
 let busyIds = new Set();
-let seenIds = new Set();
+let loading = false;
 
 function escapeHTML(value = '') {
   return String(value).replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
   })[char]);
 }
 
@@ -488,14 +482,14 @@ function profileURL(profile) {
 }
 
 function roleBadge(role) {
-  const safeRole = ['student', 'alumni', 'general'].includes(
+  const safeRole = ['student','alumni','general'].includes(
     String(role || '').toLowerCase()
   ) ? String(role).toLowerCase() : 'general';
 
   const labels = {
-    student: 'Student',
-    alumni: 'Alumni',
-    general: 'General Member'
+    student:'Student',
+    alumni:'Alumni',
+    general:'General Member'
   };
 
   return `
@@ -524,7 +518,7 @@ function avatarHTML(profile) {
   `;
 }
 
-function showMessage(message, type = 'success') {
+function showMessage(message,type='success') {
   messageBox.textContent = message;
   messageBox.className = 'message-box ' + type;
 
@@ -532,18 +526,13 @@ function showMessage(message, type = 'success') {
 
   showMessage.timer = setTimeout(() => {
     messageBox.className = 'message-box';
-  }, 4500);
-}
-
-function setLoading(loading) {
-  refreshBtn.disabled = loading;
-  refreshText.textContent = loading ? 'Loading...' : 'Refresh';
+  },4000);
 }
 
 function renderPeople() {
   const search = searchInput.value.trim().toLowerCase();
 
-  let results = profiles.filter(profile => {
+  const results = profiles.filter(profile => {
     if (!search) return true;
 
     const searchable = [
@@ -560,8 +549,7 @@ function renderPeople() {
     peopleList.innerHTML = `
       <div class="status">
         <span class="status-icon">◎</span>
-        No matching suggestions found.<br>
-        Try another search or refresh your suggestions.
+        No matching users found.
       </div>
     `;
     return;
@@ -582,10 +570,7 @@ function renderPeople() {
 
           <div class="person-info">
 
-            <a
-              class="person-name"
-              href="${profileURL(profile)}"
-            >
+            <a class="person-name" href="${profileURL(profile)}">
               ${escapeHTML(getName(profile))}
             </a>
 
@@ -598,12 +583,11 @@ function renderPeople() {
             ${roleBadge(profile.role)}
 
           </div>
-
         </div>
 
         <div class="school">
-          <span class="school-icon">⌖</span>
-          ${escapeHTML(profile.school || 'School not added')}
+          <span class="school-icon">◆</span>
+          <span>${escapeHTML(profile.school || 'School not added')}</span>
         </div>
 
         <div class="actions">
@@ -634,80 +618,98 @@ function renderPeople() {
   }).join('');
 }
 
-async function loadSuggestions(isRefresh = false) {
-  if (!currentUser) return;
+/* LOAD ALL USERS IN BATCHES */
 
-  setLoading(true);
+async function loadAllUsers() {
+  if (!currentUser || loading) return;
 
-  if (!isRefresh) {
-    peopleList.innerHTML = `
-      <div class="status">
-        <span class="status-icon">✦</span>
-        Finding people across Campusora...
-      </div>
-    `;
-  }
+  loading = true;
+  refreshBtn.disabled = true;
+
+  profiles = [];
+  peopleList.innerHTML = `
+    <div class="status">
+      <span class="status-icon">✦</span>
+      Finding people across Campusora...
+      <div class="progress-text">Loading profiles...</div>
+    </div>
+  `;
 
   try {
-    let newProfiles = [];
-    let freshProfiles = [];
+    let offset = 0;
+    let loadedCount = 0;
 
-    // Try a few times to avoid showing accounts already
-    // displayed during this page session.
-    for (let attempt = 0; attempt < 3; attempt++) {
-      const { data, error } = await supabase.rpc(
-        'get_suggested_profiles'
-      );
+    while (true) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, username, school, role, avatar_url')
+        .neq('id', currentUser.id)
+        .order('id', { ascending:true })
+        .range(offset, offset + PAGE_SIZE - 1);
 
       if (error) throw error;
 
-      newProfiles = data || [];
+      const batch = data || [];
 
-      freshProfiles = newProfiles.filter(profile =>
-        !seenIds.has(profile.id)
+      if (batch.length === 0) break;
+
+      const eligibleUsers = batch.filter(profile =>
+        !followingIds.has(profile.id)
       );
 
-      if (freshProfiles.length >= 10 || !isRefresh) {
-        break;
-      }
+      profiles.push(...eligibleUsers);
+
+      loadedCount += batch.length;
+      offset += batch.length;
+
+      renderPeople();
+
+      if (batch.length < PAGE_SIZE) break;
+
+      // Brief pause between batches.
+      await new Promise(resolve => setTimeout(resolve,30));
     }
 
-    // If there are no unseen accounts left, allow the
-    // database's latest random results to appear again.
-    if (isRefresh && freshProfiles.length === 0) {
-      freshProfiles = newProfiles;
+    if (profiles.length === 0) {
+      peopleList.innerHTML = `
+        <div class="status">
+          <span class="status-icon">◎</span>
+          No new members to suggest right now.
+        </div>
+      `;
     }
 
-    profiles = freshProfiles;
-
-    profiles.forEach(profile => seenIds.add(profile.id));
-
-    renderPeople();
-
-    if (isRefresh && profiles.length) {
-      showMessage('Your suggestions have been refreshed.');
+    if (loadedCount > 0) {
+      showMessage(
+        'Loaded ' + profiles.length + ' people you can discover.'
+      );
     }
 
   } catch (error) {
-    console.error('Suggestions loading error:', error);
+    console.error('Suggestions loading error:',error);
 
-    peopleList.innerHTML = `
-      <div class="status">
-        <span class="status-icon">!</span>
-        We couldn't load suggestions right now.<br>
-        Please try again.
-      </div>
-    `;
+    if (profiles.length === 0) {
+      peopleList.innerHTML = `
+        <div class="status">
+          <span class="status-icon">!</span>
+          We couldn't load Campusora members.<br>
+          Please try again.
+        </div>
+      `;
+    }
 
     showMessage(
-      error.message || 'Unable to load suggestions.',
+      error.message || 'Unable to load users.',
       'error'
     );
 
   } finally {
-    setLoading(false);
+    loading = false;
+    refreshBtn.disabled = false;
   }
 }
+
+/* FOLLOW AND UNFOLLOW */
 
 async function toggleFollow(profileId) {
   if (!currentUser || busyIds.has(profileId)) return;
@@ -722,8 +724,8 @@ async function toggleFollow(profileId) {
       const { error } = await supabase
         .from('follows')
         .delete()
-        .eq('follower_id', currentUser.id)
-        .eq('following_id', profileId);
+        .eq('follower_id',currentUser.id)
+        .eq('following_id',profileId);
 
       if (error) throw error;
 
@@ -735,19 +737,23 @@ async function toggleFollow(profileId) {
       const { error } = await supabase
         .from('follows')
         .insert({
-          follower_id: currentUser.id,
-          following_id: profileId
+          follower_id:currentUser.id,
+          following_id:profileId
         });
 
       if (error) throw error;
 
       followingIds.add(profileId);
 
+      profiles = profiles.filter(profile =>
+        profile.id !== profileId
+      );
+
       showMessage('You are now following this member.');
     }
 
   } catch (error) {
-    console.error('Follow action error:', error);
+    console.error('Follow error:',error);
 
     showMessage(
       error.message || 'Could not update your follow.',
@@ -760,27 +766,38 @@ async function toggleFollow(profileId) {
   }
 }
 
-peopleList.addEventListener('click', event => {
+peopleList.addEventListener('click',event => {
   const button = event.target.closest('[data-follow]');
 
-  if (!button) return;
-
-  const profileId = button.dataset.follow;
-
-  if (profileId) {
-    toggleFollow(profileId);
+  if (button) {
+    toggleFollow(button.dataset.follow);
   }
 });
 
-searchInput.addEventListener('input', renderPeople);
+/* SEARCH */
 
-refreshBtn.addEventListener('click', () => {
-  loadSuggestions(true);
+searchToggle.addEventListener('click',() => {
+  searchPanel.classList.toggle('open');
+
+  if (searchPanel.classList.contains('open')) {
+    searchInput.focus();
+  } else {
+    searchInput.value = '';
+    renderPeople();
+  }
 });
+
+searchInput.addEventListener('input',renderPeople);
+
+/* REFRESH */
+
+refreshBtn.addEventListener('click',loadAllUsers);
+
+/* INITIALIZE */
 
 async function initializeSuggestions() {
   try {
-    const { data, error } = await supabase.auth.getUser();
+    const { data,error } = await supabase.auth.getUser();
 
     if (error) throw error;
 
@@ -792,7 +809,9 @@ async function initializeSuggestions() {
           <span class="status-icon">◎</span>
           Please log in to discover Campusora members.
           <br>
-          <a class="login-link" href="auth.html">Log in to Campusora →</a>
+          <a class="login-link" href="auth.html?mode=login">
+            Log in to Campusora →
+          </a>
         </div>
       `;
 
@@ -800,11 +819,10 @@ async function initializeSuggestions() {
       return;
     }
 
-    // Load accounts the current user already follows.
-    const { data: follows, error: followError } = await supabase
+    const { data:follows,error:followError } = await supabase
       .from('follows')
       .select('following_id')
-      .eq('follower_id', currentUser.id);
+      .eq('follower_id',currentUser.id);
 
     if (followError) throw followError;
 
@@ -812,21 +830,20 @@ async function initializeSuggestions() {
       (follows || []).map(row => row.following_id)
     );
 
-    await loadSuggestions(false);
+    await loadAllUsers();
 
   } catch (error) {
-    console.error('Suggestions initialization error:', error);
+    console.error('Suggestions initialization error:',error);
 
     peopleList.innerHTML = `
       <div class="status">
         <span class="status-icon">!</span>
-        Something went wrong while opening Suggestions.<br>
-        Please refresh and try again.
+        Something went wrong while opening Suggestions.
       </div>
     `;
 
     showMessage(
-      error.message || 'Could not initialize Suggestions.',
+      error.message || 'Could not open Suggestions.',
       'error'
     );
   }
