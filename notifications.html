@@ -1,668 +1,408 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b0b14">
-<title>Notifications | Campusora</title><style>
+<meta name="theme-color" content="#080b18">
+<title>Notifications | Campusora</title>
+
+<link rel="stylesheet" href="shared-nav.css">
+
+<style>
 :root {
-  --bg: #0b0b14;
-  --panel: #11111d;
-  --panel2: #171729;
-  --border: #26263b;
-  --text: #f0efff;
-  --muted: #9292ae;
-  --purple: #9065ff;
-  --blue: #548bff;
-  --cyan: #38d9ff;
-  --green: #40e0a0;
+  --bg:#080b18;
+  --panel:#101426;
+  --panel2:#171d33;
+  --border:#252d48;
+  --text:#fff;
+  --muted:#929bb7;
+  --purple:#9065ff;
+  --blue:#548bff;
+  --cyan:#38d9ff;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:13px;
+  min-height:100vh;
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Inter, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  font-size: 13px;
-  line-height: 1.45;
-  min-height: 100vh;
+button{font:inherit;cursor:pointer}
+
+.page{
+  max-width:850px;
+  margin:0 auto;
+  padding:25px 14px 50px;
 }
 
-button, input { font: inherit; }
-button { cursor: pointer; }
-a { color: inherit; text-decoration: none; }
-
-.topbar {
-  height: 54px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(11,11,20,.96);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 max(16px, calc((100% - 1080px)/2));
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  backdrop-filter: blur(14px);
+.page-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:20px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 800;
-  font-size: 16px;
-  letter-spacing: -.5px;
+.page-title{
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:-.5px;
 }
 
-.brand-icon {
-  width: 29px;
-  height: 29px;
-  border-radius: 9px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
-  color: white;
-  font-size: 15px;
+.page-subtitle{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
 }
 
-.top-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.mark-all-btn{
+  background:transparent;
+  border:1px solid #51417e;
+  color:#c4adff;
+  padding:9px 12px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
 }
 
-.icon-btn {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  color: var(--text);
-  width: 33px;
-  height: 33px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  font-size: 15px;
+.mark-all-btn:hover{
+  background:#292044;
+  border-color:var(--purple);
 }
 
-.avatar {
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #7952ee, #2689ee);
-  display: grid;
-  place-items: center;
-  color: white;
-  font-weight: 700;
-  overflow: hidden;
-  border: 1px solid #51417e;
+.mark-all-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
 }
 
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.tabs{
+  display:flex;
+  gap:20px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:12px;
 }
 
-.layout {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 18px 16px 80px;
-  display: grid;
-  grid-template-columns: 205px minmax(0, 1fr) 220px;
-  gap: 16px;
+.tab{
+  background:none;
+  border:0;
+  color:var(--muted);
+  padding:10px 2px;
+  font-size:12px;
+  font-weight:700;
+  position:relative;
 }
 
-.sidebar {
-  position: sticky;
-  top: 70px;
-  align-self: start;
+.tab.active{color:#c8b7ff}
+
+.tab.active::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-1px;
+  height:2px;
+  border-radius:5px;
+  background:linear-gradient(90deg,var(--purple),var(--blue));
 }
 
-.side-card, .right-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 10px;
+.notification-list{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  overflow:hidden;
 }
 
-.side-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 9px;
-  color: #b8b7d0;
-  margin-bottom: 2px;
-  font-size: 12px;
-  transition: .18s;
+.section-label{
+  padding:12px 14px 7px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.7px;
 }
 
-.side-link:hover {
-  background: var(--panel2);
-  color: white;
+.notification{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  padding:14px;
+  position:relative;
+  border-bottom:1px solid #222a40;
+  cursor:pointer;
+  transition:background .18s;
 }
 
-.side-link.active {
-  color: white;
-  background: linear-gradient(100deg, #4d2c8c66, #243e7d55);
-  border: 1px solid #57418b;
+.notification:last-child{border-bottom:0}
+.notification:hover{background:#171d32}
+
+.notification.unread{
+  background:linear-gradient(90deg,#49327624,#101426);
 }
 
-.side-emoji {
-  width: 19px;
-  text-align: center;
-  font-size: 15px;
+.notification.unread::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:10px;
+  bottom:10px;
+  width:3px;
+  border-radius:0 4px 4px 0;
+  background:var(--purple);
 }
 
-.page { min-width: 0; }
-
-.page-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 13px;
+.notification-avatar{
+  position:relative;
+  flex-shrink:0;
 }
 
-.page-title {
-  font-size: 18px;
-  font-weight: 750;
-  letter-spacing: -.4px;
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#7952ee,#2689ee);
+  border:1px solid #51417e;
+  color:white;
+  font-weight:800;
 }
 
-.page-subtitle {
-  color: var(--muted);
-  font-size: 11px;
-  margin-top: 2px;
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-.text-btn {
-  background: transparent;
-  border: 0;
-  color: #a995ff;
-  font-size: 11px;
-  font-weight: 650;
-  padding: 6px;
+.type-icon{
+  position:absolute;
+  right:-3px;
+  bottom:-3px;
+  width:19px;
+  height:19px;
+  border-radius:50%;
+  border:2px solid var(--panel);
+  display:grid;
+  place-items:center;
+  font-size:10px;
+  color:white;
 }
 
-.text-btn:hover { color: var(--cyan); }
+.type-like{background:#e84d84}
+.type-comment{background:#588cff}
+.type-reply{background:#9065ff}
+.type-follow{background:#22b78c}
+.type-community_join{background:#d99b32}
+.type-gift{background:linear-gradient(135deg,#9065ff,#e84d84)}
 
-.tabs {
-  display: flex;
-  gap: 5px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  margin-bottom: 10px;
-  padding-bottom: 2px;
+.notification-body{
+  flex:1;
+  min-width:0;
 }
 
-.tabs::-webkit-scrollbar { display: none; }
-
-.tab {
-  flex-shrink: 0;
-  padding: 7px 12px;
-  border-radius: 8px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: #a5a4bd;
-  font-size: 11px;
-  transition: .2s;
+.notification-text{
+  font-size:12px;
+  line-height:1.6;
+  color:#d0d6e8;
+  overflow-wrap:anywhere;
 }
 
-.tab.active {
-  background: #332253;
-  border-color: #7653b9;
-  color: white;
+.notification-text strong{
+  color:white;
+  font-weight:800;
 }
 
-.notification-list {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  overflow: hidden;
+.notification-time{
+  color:#818ba8;
+  font-size:10px;
+  margin-top:5px;
 }
 
-.section-label {
-  padding: 10px 12px 6px;
-  color: #9292ae;
-  font-size: 10px;
-  font-weight: 750;
-  text-transform: uppercase;
-  letter-spacing: .8px;
+.notification-dot{
+  width:7px;
+  height:7px;
+  flex-shrink:0;
+  margin-top:7px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 9px #38d9ff66;
 }
 
-.notification {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px;
-  position: relative;
-  border-bottom: 1px solid #222236;
-  cursor: pointer;
-  transition: background .2s;
-  animation: enter .3s ease both;
+.notification-preview{
+  color:#aab3ce;
+  font-size:11px;
+  margin-top:6px;
+  padding:7px 9px;
+  background:#171d33;
+  border-radius:7px;
+  border-left:2px solid #6552a0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
-.notification:last-child { border-bottom: 0; }
-.notification:hover { background: #1a192b; }
-
-.notification.unread {
-  background: linear-gradient(90deg, #49327624, #11111d);
+.empty-state{
+  padding:55px 16px;
+  text-align:center;
+  color:var(--muted);
 }
 
-.notification.unread::before {
-  content: "";
-  width: 3px;
-  position: absolute;
-  left: 0;
-  top: 10px;
-  bottom: 10px;
-  border-radius: 0 4px 4px 0;
-  background: var(--purple);
+.empty-icon{
+  width:49px;
+  height:49px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 13px;
+  border:1px solid #393151;
+  border-radius:15px;
+  background:#201a35;
+  color:#c4adff;
+  font-size:22px;
 }
 
-.notification-avatar {
-  position: relative;
-  flex-shrink: 0;
+.empty-state h3{
+  color:#e7e4ff;
+  font-size:14px;
+  margin-bottom:6px;
 }
 
-.notification-avatar .avatar {
-  width: 38px;
-  height: 38px;
+.empty-state p{
+  font-size:11px;
+  line-height:1.7;
 }
 
-.type-icon {
-  position: absolute;
-  right: -3px;
-  bottom: -3px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid var(--panel);
-  display: grid;
-  place-items: center;
-  font-size: 9px;
-  color: white;
+.loading{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:9px;
+  padding:45px 10px;
+  color:var(--muted);
+  font-size:11px;
 }
 
-.type-like { background: #e84d84; }
-.type-comment { background: #588cff; }
-.type-reply { background: #9065ff; }
-.type-follow { background: #22b78c; }
-.type-community_join { background: #d99b32; }
-.type-gift { background: linear-gradient(135deg, #9065ff, #e84d84); }
-
-.notification-body {
-  flex: 1;
-  min-width: 0;
+.spinner{
+  width:16px;
+  height:16px;
+  border:2px solid #36314f;
+  border-top-color:var(--purple);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
 }
 
-.notification-text {
-  font-size: 12px;
-  line-height: 1.55;
-  color: #d0cfe3;
-  overflow-wrap: anywhere;
+.toast{
+  position:fixed;
+  bottom:25px;
+  left:50%;
+  transform:translate(-50%,12px);
+  background:#25223a;
+  border:1px solid #51417e;
+  color:white;
+  padding:11px 15px;
+  border-radius:10px;
+  font-size:11px;
+  z-index:999;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  max-width:calc(100% - 30px);
+  text-align:center;
 }
 
-.notification-text strong {
-  color: white;
-  font-weight: 700;
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
 }
 
-.notification-time {
-  color: #81819f;
-  font-size: 10px;
-  margin-top: 4px;
+@keyframes spin{
+  to{transform:rotate(360deg)}
 }
 
-.notification-dot {
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  margin-top: 7px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 9px #38d9ff66;
-}
+@media(max-width:600px){
+  .page{padding:19px 0 35px}
 
-.notification-preview {
-  color: #9393b0;
-  font-size: 11px;
-  margin-top: 5px;
-  padding: 6px 8px;
-  background: #171729;
-  border-radius: 7px;
-  border-left: 2px solid #6552a0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .page-head{padding:0 13px}
 
-.empty-state {
-  padding: 45px 16px;
-  text-align: center;
-  color: var(--muted);
-}
+  .page-title{font-size:19px}
 
-.empty-icon {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  margin: 0 auto 12px;
-  border: 1px solid #393151;
-  border-radius: 15px;
-  background: #201a35;
-  font-size: 21px;
-  animation: float 2.5s ease-in-out infinite;
-}
+  .page-subtitle{font-size:10px}
 
-.empty-state h3 {
-  color: #e7e4ff;
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-.empty-state p {
-  font-size: 11px;
-  line-height: 1.6;
-}
-
-.right-card { margin-bottom: 12px; }
-
-.card-title {
-  font-size: 12px;
-  font-weight: 750;
-  margin-bottom: 10px;
-}
-
-.status-line {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: #aaa9c4;
-  padding: 5px 0;
-}
-
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px #40e0a055;
-}
-
-.tip {
-  font-size: 11px;
-  color: #aaa9c4;
-  line-height: 1.7;
-}
-
-.footer-links {
-  font-size: 10px;
-  line-height: 2;
-  color: #777790;
-  padding: 4px;
-}
-
-.toast {
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translate(-50%, 15px);
-  background: #25223a;
-  color: white;
-  border: 1px solid #51417e;
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-size: 12px;
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: .25s;
-  max-width: calc(100% - 30px);
-  text-align: center;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-.bottom-nav { display: none; }
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 40px 10px;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #36314f;
-  border-top-color: var(--purple);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes enter {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@media (max-width: 850px) {
-  .layout {
-    grid-template-columns: 175px minmax(0, 1fr);
-    max-width: 740px;
+  .mark-all-btn{
+    padding:8px 9px;
+    font-size:10px;
   }
 
-  .right-sidebar { display: none; }
+  .tabs{padding:0 14px}
+
+  .notification-list{
+    border-radius:0;
+    border-left:0;
+    border-right:0;
+  }
+
+  .notification{padding:13px}
+
+  .avatar{
+    width:39px;
+    height:39px;
+  }
+
+  .notification-text{font-size:12px}
+  .section-label{padding-left:13px}
+
+  .toast{bottom:20px}
 }
 
-@media (max-width: 580px) {
-  body { font-size: 12px; }
-
-  .topbar {
-    height: 49px;
-    padding: 0 13px;
-  }
-
-  .brand { font-size: 15px; }
-
-  .layout {
-    display: block;
-    padding: 15px 0 76px;
-    max-width: 100%;
-  }
-
-  .sidebar, .right-sidebar { display: none; }
-  .page { width: 100%; }
-
-  .page-head {
-    padding: 0 13px;
-    margin-bottom: 12px;
-  }
-
-  .page-title { font-size: 17px; }
-
-  .tabs { padding: 0 13px 3px; }
-
-  .notification-list {
-    border-radius: 0;
-    border-left: 0;
-    border-right: 0;
-  }
-
-  .notification {
-    padding: 12px 13px;
-    gap: 9px;
-  }
-
-  .notification-avatar .avatar {
-    width: 36px;
-    height: 36px;
-  }
-
-  .notification-text { font-size: 12px; }
-  .section-label { padding-left: 13px; }
-
-  .bottom-nav {
-    position: fixed;
-    z-index: 50;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 59px;
-    padding-bottom: env(safe-area-inset-bottom);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: rgba(15,15,27,.97);
-    border-top: 1px solid var(--border);
-    backdrop-filter: blur(16px);
-  }
-
-  .bottom-link {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    color: #82829f;
-    font-size: 9px;
-    position: relative;
-  }
-
-  .bottom-link span:first-child {
-    font-size: 17px;
-    line-height: 1.1;
-  }
-
-  .bottom-link.active { color: #c5aaff; }
-
-  .bottom-link.active::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 25px;
-    height: 2px;
-    background: var(--purple);
-    border-radius: 0 0 4px 4px;
-  }
-
-  .toast { bottom: 72px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
   }
 }
-</style></head><body>
-<header class="topbar">
-  <a href="index.html" class="brand">
-    <span class="brand-icon">C</span>
-    <span>campusora</span>
-  </a>  <div class="top-actions">
-    <button class="icon-btn" onclick="location.href='explore.html'"
-      aria-label="Explore">⌕</button>
-    <a href="profile.html" class="avatar" id="topAvatar"
-      aria-label="My profile">C</a>
-  </div>
-</header><div class="layout">
-  <aside class="sidebar">
-    <div class="side-card">
-      <a class="side-link" href="index.html"><span class="side-emoji">⌂</span> Home Feed</a>
-      <a class="side-link" href="explore.html"><span class="side-emoji">⌕</span> Explore</a>
-      <a class="side-link" href="follow-system.html"><span class="side-emoji">♧</span> Following</a>
-      <a class="side-link" href="communities.html"><span class="side-emoji">♧</span> Communities</a>
-      <a class="side-link" href="spotlight.html"><span class="side-emoji">▷</span> Spotlight</a>
-      <a class="side-link" href="messages.html"><span class="side-emoji">✉</span> Messages</a>
-      <a class="side-link active" href="notifications.html"><span class="side-emoji">♧</span> Notifications</a>
-      <a class="side-link" href="events.html"><span class="side-emoji">▦</span> Events</a>
-      <a class="side-link" href="marketplace.html"><span class="side-emoji">▣</span> Marketplace</a>
-      <a class="side-link" href="profile.html"><span class="side-emoji">◎</span> My Profile</a>
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <header class="page-head">
+    <div>
+      <h1 class="page-title">Notifications</h1>
+      <p class="page-subtitle">
+        Your latest activity on Campusora
+      </p>
     </div>
-  </aside>  <main class="page">
-    <div class="page-head">
-      <div>
-        <h1 class="page-title">Notifications <span id="unreadTitle"></span></h1>
-        <p class="page-subtitle">Your latest activity on Campusora</p>
-      </div>
-      <button class="text-btn" id="markAllBtn" onclick="markAllRead()">
-        Mark all read
-      </button>
-    </div><div class="tabs" id="filterTabs">
-  <button class="tab active" data-filter="all">All</button>
-  <button class="tab" data-filter="unread">Unread</button>
-  <button class="tab" data-filter="like">Likes</button>
-  <button class="tab" data-filter="comment">Comments</button>
-  <button class="tab" data-filter="follow">Follows</button>
-  <button class="tab" data-filter="gift">🎁 Gifts</button>
-</div>
 
-<section class="notification-list" id="notificationList">
-  <div class="loading">
-    <span class="spinner"></span> Loading your activity...
+    <button class="mark-all-btn" id="markAllBtn">
+      Mark all as read
+    </button>
+  </header>
+
+  <div class="tabs" id="filterTabs">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="unread">Unread</button>
   </div>
-</section>
 
-  </main>  <aside class="right-sidebar">
-    <div class="right-card">
-      <div class="card-title">Your activity</div>
-      <div class="status-line">
-        <span class="status-dot"></span>
-        <span id="connectionStatus">Connecting...</span>
-      </div>
-      <div class="status-line">
-        <span>🔔</span>
-        <span id="activityCount">Loading activity...</span>
-      </div>
-    </div><div class="right-card">
-  <div class="card-title">Stay connected</div>
-  <p class="tip">
-    Follow students, join campus communities, and share what's happening
-    at your school. Your notifications help you keep up with the people
-    and communities you care about.
-  </p>
-</div>
+  <section class="notification-list" id="notificationList">
+    <div class="loading">
+      <span class="spinner"></span>
+      Loading notifications...
+    </div>
+  </section>
 
-<div class="footer-links">
-  Campusora · Building connections across campuses
-</div>
+</main>
 
-  </aside>
-</div><nav class="bottom-nav">
-  <a class="bottom-link" href="index.html"><span>⌂</span><span>Home</span></a>
-  <a class="bottom-link" href="explore.html"><span>⌕</span><span>Explore</span></a>
-  <a class="bottom-link" href="create-post.html"><span>＋</span><span>Create</span></a>
-  <a class="bottom-link active" href="notifications.html" aria-current="page"><span>♧</span><span>Activity</span></a>
-  <a class="bottom-link" href="profile.html"><span>◎</span><span>Profile</span></a>
-</nav><div class="toast" id="toast"></div><script type="module">
+<div class="toast" id="toast"></div>
+
+<script src="shared-nav.js"></script>
+
+<script type="module">
 import { supabase } from './supabase.js';
 
 const $ = id => document.getElementById(id);
@@ -680,11 +420,11 @@ const giftCache = new Map();
 
 function escapeHTML(value = '') {
   return String(value).replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
   })[char]);
 }
 
@@ -692,79 +432,79 @@ function toast(message) {
   const el = $('toast');
   el.textContent = message;
   el.classList.add('show');
+
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => el.classList.remove('show'), 2600);
+  toast.timer = setTimeout(
+    () => el.classList.remove('show'),2600
+  );
 }
 
 function initials(name = 'C') {
-  const parts = String(name).trim().split(/\s+/).filter(Boolean);
-  return parts.slice(0, 2).map(part => part[0]).join('').toUpperCase() || 'C';
+  return String(name).trim().split(/\s+/)
+    .filter(Boolean).slice(0,2)
+    .map(part => part[0]).join('').toUpperCase() || 'C';
 }
 
-function avatarHTML(profile, extraClass = '') {
-  const name = profile?.full_name || profile?.username || 'Campusora member';
-  const url = profile?.avatar_url;
+function avatarHTML(profile) {
+  const name = profile?.full_name || profile?.username || 'Member';
 
-  if (url) {
-    return `<div class="avatar ${extraClass}">
-      <img src="${escapeHTML(url)}" alt=""
-        onerror="this.parentElement.textContent='${escapeHTML(initials(name))}'">
+  if (profile?.avatar_url) {
+    return `<div class="avatar">
+      <img src="${escapeHTML(profile.avatar_url)}" alt="">
     </div>`;
   }
 
-  return `<div class="avatar ${extraClass}">${escapeHTML(initials(name))}</div>`;
+  return `<div class="avatar">${escapeHTML(initials(name))}</div>`;
 }
 
-function timeAgo(dateString) {
-  const date = new Date(dateString);
+function timeAgo(value) {
+  const date = new Date(value);
+
   if (Number.isNaN(date.getTime())) return 'Recently';
 
-  const seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+  const seconds = Math.max(
+    0,Math.floor((Date.now()-date.getTime())/1000)
+  );
 
   if (seconds < 45) return 'Just now';
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+  if (seconds < 3600) return Math.floor(seconds/60)+'m ago';
+  if (seconds < 86400) return Math.floor(seconds/3600)+'h ago';
+  if (seconds < 604800) return Math.floor(seconds/86400)+'d ago';
 
-  return date.toLocaleDateString(undefined, {
-    month: 'short',
-    day: 'numeric'
+  return date.toLocaleDateString(undefined,{
+    month:'short',
+    day:'numeric'
   });
 }
 
 function actorName(profile) {
-  return profile?.full_name || profile?.username || 'A Campusora member';
+  return profile?.full_name ||
+    profile?.username ||
+    'A Campusora member';
 }
 
 function giftDetails(n) {
-  const knownGifts = {
-    rose: { name: 'Rose', icon: '🌹' },
-    love: { name: 'Love', icon: '❤️' },
-    golden_star: { name: 'Golden Star', icon: '⭐' },
-    diamond: { name: 'Diamond', icon: '💎' },
-    royal_crown: { name: 'Royal Crown', icon: '👑' },
-    premium_heart: { name: 'Premium Heart', icon: '💖' }
+  const known = {
+    rose:{name:'Rose',icon:'🌹'},
+    love:{name:'Love',icon:'❤️'},
+    golden_star:{name:'Golden Star',icon:'⭐'},
+    diamond:{name:'Diamond',icon:'💎'},
+    royal_crown:{name:'Royal Crown',icon:'👑'},
+    premium_heart:{name:'Premium Heart',icon:'💖'}
   };
 
   const gift = giftCache.get(n.gift_id);
-  const fallback = knownGifts[n.gift_id] || {
-    name: 'a gift',
-    icon: '🎁'
-  };
-
-  const catalogName = gift?.name;
-  const knownIcon = knownGifts[n.gift_id]?.icon || '🎁';
 
   return {
-    name: catalogName || fallback.name,
-    icon: knownIcon
+    name:gift?.name || known[n.gift_id]?.name || 'a gift',
+    icon:known[n.gift_id]?.icon || '🎁'
   };
 }
 
-function notificationMessage(n, actor) {
+function notificationMessage(n,actor) {
   const name = `<strong>${escapeHTML(actorName(actor))}</strong>`;
 
-  switch (n.type) {
+  switch(n.type) {
     case 'like':
       return `${name} liked your post ❤️`;
 
@@ -791,115 +531,85 @@ function notificationMessage(n, actor) {
 }
 
 function iconFor(type) {
-  const icons = {
-    like: '♥',
-    comment: '●',
-    reply: '↩',
-    follow: '+',
-    community_join: '⌂',
-    gift: '🎁'
-  };
-
-  return icons[type] || '•';
-}
-
-function typeLabel(type) {
-  const labels = {
-    like: 'like',
-    comment: 'comment',
-    reply: 'comment',
-    follow: 'follow',
-    community_join: 'community',
-    gift: 'gift'
-  };
-
-  return labels[type] || 'all';
+  return {
+    like:'♥',
+    comment:'●',
+    reply:'↩',
+    follow:'+',
+    community_join:'⌂',
+    gift:'🎁'
+  }[type] || '•';
 }
 
 async function loadRelatedData() {
   const actorIds = [...new Set(
-    notifications.map(n => n.actor_id).filter(Boolean)
+    notifications.map(n=>n.actor_id).filter(Boolean)
   )];
 
   const postIds = [...new Set(
-    notifications.map(n => n.post_id).filter(Boolean)
+    notifications.map(n=>n.post_id).filter(Boolean)
   )];
 
   const communityIds = [...new Set(
-    notifications.map(n => n.community_id).filter(Boolean)
+    notifications.map(n=>n.community_id).filter(Boolean)
   )];
 
   const giftIds = [...new Set(
-    notifications
-      .filter(n => n.type === 'gift' && n.gift_id)
-      .map(n => n.gift_id)
+    notifications.filter(n=>n.type==='gift'&&n.gift_id)
+      .map(n=>n.gift_id)
   )];
-
-  const missingActors = actorIds.filter(id => !profileCache.has(id));
-  const missingPosts = postIds.filter(id => !postCache.has(id));
-  const missingCommunities = communityIds.filter(id => !communityCache.has(id));
-  const missingGifts = giftIds.filter(id => !giftCache.has(id));
 
   const tasks = [];
 
-  if (missingActors.length) {
+  const missingActors = actorIds.filter(id=>!profileCache.has(id));
+  const missingPosts = postIds.filter(id=>!postCache.has(id));
+  const missingCommunities = communityIds.filter(id=>!communityCache.has(id));
+  const missingGifts = giftIds.filter(id=>!giftCache.has(id));
+
+  if(missingActors.length){
     tasks.push(
       supabase.from('profiles')
         .select('id,username,full_name,avatar_url,school,role')
-        .in('id', missingActors)
-        .then(({ data, error }) => {
-          if (error) {
-            console.warn('Could not load notification profiles:', error.message);
-            return;
-          }
-          (data || []).forEach(profile => profileCache.set(profile.id, profile));
+        .in('id',missingActors)
+        .then(({data,error})=>{
+          if(error){console.warn(error.message);return;}
+          (data||[]).forEach(p=>profileCache.set(p.id,p));
         })
     );
   }
 
-  if (missingPosts.length) {
+  if(missingPosts.length){
     tasks.push(
       supabase.from('posts')
         .select('id,content,user_id')
-        .in('id', missingPosts)
-        .then(({ data, error }) => {
-          if (error) {
-            console.warn('Could not load notification posts:', error.message);
-            return;
-          }
-          (data || []).forEach(post => postCache.set(post.id, post));
+        .in('id',missingPosts)
+        .then(({data,error})=>{
+          if(error){console.warn(error.message);return;}
+          (data||[]).forEach(p=>postCache.set(p.id,p));
         })
     );
   }
 
-  if (missingCommunities.length) {
+  if(missingCommunities.length){
     tasks.push(
       supabase.from('communities')
         .select('id,name')
-        .in('id', missingCommunities)
-        .then(({ data, error }) => {
-          if (error) {
-            console.warn('Could not load communities:', error.message);
-            return;
-          }
-          (data || []).forEach(community =>
-            communityCache.set(community.id, community)
-          );
+        .in('id',missingCommunities)
+        .then(({data,error})=>{
+          if(error){console.warn(error.message);return;}
+          (data||[]).forEach(c=>communityCache.set(c.id,c));
         })
     );
   }
 
-  if (missingGifts.length) {
+  if(missingGifts.length){
     tasks.push(
       supabase.from('campusora_gift_catalog')
         .select('id,name')
-        .in('id', missingGifts)
-        .then(({ data, error }) => {
-          if (error) {
-            console.warn('Could not load gift names:', error.message);
-            return;
-          }
-          (data || []).forEach(gift => giftCache.set(gift.id, gift));
+        .in('id',missingGifts)
+        .then(({data,error})=>{
+          if(error){console.warn(error.message);return;}
+          (data||[]).forEach(g=>giftCache.set(g.id,g));
         })
     );
   }
@@ -908,66 +618,75 @@ async function loadRelatedData() {
 }
 
 function notificationTarget(n) {
-  if (n.post_id) {
+  if(n.post_id){
     return `index.html?post=${encodeURIComponent(n.post_id)}`;
   }
 
-  if (n.community_id) {
+  if(n.community_id){
     return `communities.html?id=${encodeURIComponent(n.community_id)}`;
   }
 
-  if (n.actor_id) {
+  if(n.actor_id){
     const profile = profileCache.get(n.actor_id);
 
-    if (profile?.username) {
-      return `profile.html?username=${encodeURIComponent(profile.username)}`;
-    }
-
-    return `profile.html?id=${encodeURIComponent(n.actor_id)}`;
+    return profile?.username
+      ? `profile.html?username=${encodeURIComponent(profile.username)}`
+      : `profile.html?id=${encodeURIComponent(n.actor_id)}`;
   }
 
   return 'notifications.html';
 }
 
 function renderNotification(n) {
-  const actor = n.actor_id ? profileCache.get(n.actor_id) : null;
-  const post = n.post_id ? postCache.get(n.post_id) : null;
-  const community = n.community_id ? communityCache.get(n.community_id) : null;
-  const gift = n.type === 'gift' ? giftDetails(n) : null;
+  const actor = profileCache.get(n.actor_id);
+  const post = postCache.get(n.post_id);
+  const community = communityCache.get(n.community_id);
+  const gift = n.type==='gift' ? giftDetails(n) : null;
 
-  const preview = post?.content
-    ? `<div class="notification-preview">${escapeHTML(post.content.slice(0, 110))}${post.content.length > 110 ? '…' : ''}</div>`
-    : community?.name
-      ? `<div class="notification-preview">Community: ${escapeHTML(community.name)}</div>`
-      : gift
-        ? `<div class="notification-preview">Gift received: ${escapeHTML(gift.name)} ${gift.icon}</div>`
-        : '';
+  let preview = '';
+
+  if(post?.content){
+    preview = `<div class="notification-preview">
+      ${escapeHTML(post.content.slice(0,110))}
+    </div>`;
+  }else if(community?.name){
+    preview = `<div class="notification-preview">
+      Community: ${escapeHTML(community.name)}
+    </div>`;
+  }else if(gift){
+    preview = `<div class="notification-preview">
+      Gift received: ${escapeHTML(gift.name)} ${gift.icon}
+    </div>`;
+  }
 
   const unread = !n.is_read;
 
   return `
-    <article class="notification ${unread ? 'unread' : ''}"
+    <article class="notification ${unread?'unread':''}"
       data-id="${escapeHTML(n.id)}"
-      data-type="${escapeHTML(n.type)}"
       tabindex="0"
-      role="button"
-      aria-label="${escapeHTML(actorName(actor))}: ${escapeHTML(typeLabel(n.type))} notification"
-      onclick="window.openCampusoraNotification('${escapeHTML(n.id)}')"
-      onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.openCampusoraNotification('${escapeHTML(n.id)}')}">
+      role="button">
 
       <div class="notification-avatar">
         ${avatarHTML(actor)}
-        <span class="type-icon type-${escapeHTML(n.type)}">${iconFor(n.type)}</span>
+        <span class="type-icon type-${escapeHTML(n.type)}">
+          ${iconFor(n.type)}
+        </span>
       </div>
 
       <div class="notification-body">
-        <div class="notification-text">${notificationMessage(n, actor)}</div>
+        <div class="notification-text">
+          ${notificationMessage(n,actor)}
+        </div>
         ${preview}
-        <div class="notification-time">${timeAgo(n.created_at)}</div>
+        <div class="notification-time">
+          ${timeAgo(n.created_at)}
+        </div>
       </div>
 
-      ${unread ? '<span class="notification-dot"></span>' : ''}
-    </article>`;
+      ${unread?'<span class="notification-dot"></span>':''}
+    </article>
+  `;
 }
 
 function render() {
@@ -975,52 +694,23 @@ function render() {
 
   let filtered = notifications;
 
-  if (activeFilter === 'unread') {
-    filtered = filtered.filter(n => !n.is_read);
-  } else if (activeFilter !== 'all') {
-    filtered = filtered.filter(n => n.type === activeFilter);
+  if(activeFilter==='unread'){
+    filtered = notifications.filter(n=>!n.is_read);
   }
 
-  const unreadCount = notifications.filter(n => !n.is_read).length;
+  $('markAllBtn').style.display =
+    notifications.some(n=>!n.is_read) ? 'inline-block':'none';
 
-  $('unreadTitle').textContent = unreadCount ? `(${unreadCount})` : '';
-  $('activityCount').textContent =
-    `${notifications.length} notification${notifications.length === 1 ? '' : 's'}`;
-
-  $('markAllBtn').style.display = unreadCount ? 'inline-block' : 'none';
-
-  if (!filtered.length) {
-    let title = 'You’re all caught up';
-    let description = 'When people interact with you on Campusora, their activity will appear here.';
-    let icon = '✦';
-
-    if (activeFilter === 'unread') {
-      title = 'No unread notifications';
-      description = 'You have read all your notifications.';
-      icon = '✓';
-    } else if (activeFilter === 'like') {
-      title = 'No likes yet';
-      description = 'When someone likes your post, you’ll see it here.';
-      icon = '♥';
-    } else if (activeFilter === 'comment') {
-      title = 'No comments yet';
-      description = 'Comments and replies to your posts will appear here.';
-      icon = '💬';
-    } else if (activeFilter === 'follow') {
-      title = 'No new followers';
-      description = 'When someone follows you, you’ll see it here.';
-      icon = '♧';
-    } else if (activeFilter === 'gift') {
-      title = 'No gifts yet';
-      description = 'When someone sends you a gift, it will appear here.';
-      icon = '🎁';
-    }
-
+  if(!filtered.length){
     list.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">${icon}</div>
-        <h3>${title}</h3>
-        <p>${description}</p>
+        <div class="empty-icon">✦</div>
+        <h3>${activeFilter==='unread'
+          ? 'No unread notifications'
+          : 'You’re all caught up'}</h3>
+        <p>${activeFilter==='unread'
+          ? 'You have read all your notifications.'
+          : 'When people interact with you on Campusora, their activity will appear here.'}</p>
       </div>`;
     return;
   }
@@ -1029,243 +719,214 @@ function render() {
   const earlier = [];
   const now = new Date();
 
-  filtered.forEach(n => {
+  filtered.forEach(n=>{
     const date = new Date(n.created_at);
-    const isToday = !Number.isNaN(date.getTime()) &&
-      date.toDateString() === now.toDateString();
 
-    (isToday ? today : earlier).push(n);
+    if(!Number.isNaN(date.getTime()) &&
+      date.toDateString()===now.toDateString()){
+      today.push(n);
+    }else{
+      earlier.push(n);
+    }
   });
 
   list.innerHTML =
     (today.length
       ? `<div class="section-label">Today</div>${today.map(renderNotification).join('')}`
-      : '') +
+      :'')+
     (earlier.length
       ? `<div class="section-label">Earlier</div>${earlier.map(renderNotification).join('')}`
-      : '');
+      :'');
 }
 
-async function loadNotifications(showLoading = false) {
-  if (!currentUser) return;
+async function loadNotifications(showLoading=false) {
+  if(!currentUser)return;
 
-  if (showLoading) {
+  if(showLoading){
     $('notificationList').innerHTML =
-      '<div class="loading"><span class="spinner"></span> Loading your activity...</div>';
+      '<div class="loading"><span class="spinner"></span> Loading notifications...</div>';
   }
 
-  const { data, error } = await supabase
+  const {data,error} = await supabase
     .from('notifications')
     .select('id,recipient_id,actor_id,type,post_id,comment_id,community_id,gift_id,is_read,created_at')
-    .eq('recipient_id', currentUser.id)
-    .order('created_at', { ascending: false })
+    .eq('recipient_id',currentUser.id)
+    .order('created_at',{ascending:false})
     .limit(100);
 
-  if (error) {
-    console.error('Notification load error:', error);
+  if(error){
+    console.error(error);
 
     $('notificationList').innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">!</div>
         <h3>Could not load notifications</h3>
         <p>Please check your connection and try again.</p>
-        <button class="text-btn" onclick="window.retryNotifications()">Try again</button>
+        <button class="mark-all-btn" id="retryBtn">Try again</button>
       </div>`;
+
+    $('retryBtn')?.addEventListener('click',()=>loadNotifications(true));
     return;
   }
 
-  notifications = data || [];
+  notifications=data||[];
 
   await loadRelatedData();
   render();
 }
 
 async function markRead(id) {
-  const notification = notifications.find(item => item.id === id);
+  const item=notifications.find(n=>n.id===id);
 
-  if (!notification || notification.is_read || !currentUser) return;
+  if(!item||item.is_read)return;
 
-  const { error } = await supabase
+  const {error}=await supabase
     .from('notifications')
-    .update({ is_read: true })
-    .eq('id', id)
-    .eq('recipient_id', currentUser.id);
+    .update({is_read:true})
+    .eq('id',id)
+    .eq('recipient_id',currentUser.id);
 
-  if (error) {
-    console.warn('Could not mark notification read:', error.message);
+  if(error){
+    console.warn(error.message);
     return;
   }
 
-  notification.is_read = true;
+  item.is_read=true;
   render();
 }
 
 async function markAllRead() {
-  if (!currentUser) return;
+  if(!currentUser)return;
 
-  const unread = notifications.filter(item => !item.is_read);
-  if (!unread.length) return;
+  const unread=notifications.filter(n=>!n.is_read);
+  if(!unread.length)return;
 
-  const { error } = await supabase
+  $('markAllBtn').disabled=true;
+
+  const {error}=await supabase
     .from('notifications')
-    .update({ is_read: true })
-    .eq('recipient_id', currentUser.id)
-    .eq('is_read', false);
+    .update({is_read:true})
+    .eq('recipient_id',currentUser.id)
+    .eq('is_read',false);
 
-  if (error) {
-    toast('Could not update notifications. Please try again.');
+  $('markAllBtn').disabled=false;
+
+  if(error){
     console.error(error);
+    toast('Could not mark notifications as read.');
     return;
   }
 
-  notifications.forEach(item => {
-    item.is_read = true;
-  });
+  notifications.forEach(n=>n.is_read=true);
 
   render();
-  toast('All notifications marked as read ✓');
+  toast('All notifications marked as read.');
 }
 
 async function openNotification(id) {
-  const notification = notifications.find(item => item.id === id);
-  if (!notification) return;
+  const item=notifications.find(n=>n.id===id);
+  if(!item)return;
 
   await markRead(id);
-
-  const target = notificationTarget(notification);
-  window.location.href = target;
+  window.location.href=notificationTarget(item);
 }
 
 function setupRealtime() {
-  if (realtimeChannel) {
+  if(realtimeChannel){
     supabase.removeChannel(realtimeChannel);
   }
 
-  realtimeChannel = supabase
-    .channel('campusora-notifications-' + currentUser.id)
-    .on(
-      'postgres_changes',
-      {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'notifications',
-        filter: `recipient_id=eq.${currentUser.id}`
-      },
-      async payload => {
-        if (notifications.some(item => item.id === payload.new.id)) return;
+  realtimeChannel=supabase
+    .channel('campusora-notifications-'+currentUser.id)
+    .on('postgres_changes',{
+      event:'INSERT',
+      schema:'public',
+      table:'notifications',
+      filter:`recipient_id=eq.${currentUser.id}`
+    },async payload=>{
+      if(notifications.some(n=>n.id===payload.new.id))return;
 
-        // Include the new notification's gift_id in the realtime record.
-        notifications.unshift(payload.new);
+      notifications.unshift(payload.new);
+      notifications=notifications.slice(0,100);
 
-        if (notifications.length > 100) {
-          notifications = notifications.slice(0, 100);
-        }
+      await loadRelatedData();
+      render();
 
-        await loadRelatedData();
-        render();
+      const actor=profileCache.get(payload.new.actor_id);
 
-        const actor = payload.new.actor_id
-          ? profileCache.get(payload.new.actor_id)
-          : null;
-
-        if (payload.new.type === 'gift') {
-          const gift = giftDetails(payload.new);
-          toast(`${actorName(actor)} sent you ${gift.name} ${gift.icon}`);
-        } else {
-          toast(`New activity from ${actorName(actor)} ✨`);
-        }
-      }
-    )
-    .subscribe(status => {
-      const statusEl = $('connectionStatus');
-
-      if (status === 'SUBSCRIBED') {
-        statusEl.textContent = 'Live updates connected';
-      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-        statusEl.textContent = 'Live updates reconnecting';
-      } else {
-        statusEl.textContent = 'Connecting to live updates...';
-      }
-    });
+      toast(`New activity from ${actorName(actor)}`);
+    })
+    .subscribe();
 }
 
-function setupFilters() {
-  $('filterTabs').addEventListener('click', event => {
-    const button = event.target.closest('[data-filter]');
-    if (!button) return;
+function setupEvents() {
+  $('filterTabs').addEventListener('click',event=>{
+    const button=event.target.closest('[data-filter]');
+    if(!button)return;
 
-    activeFilter = button.dataset.filter;
+    activeFilter=button.dataset.filter;
 
-    document.querySelectorAll('#filterTabs .tab').forEach(tab => {
-      tab.classList.toggle('active', tab === button);
+    document.querySelectorAll('.tab').forEach(tab=>{
+      tab.classList.toggle('active',tab===button);
     });
 
     render();
   });
-}
 
-function setTopAvatar(profile) {
-  const top = $('topAvatar');
+  $('notificationList').addEventListener('click',event=>{
+    const item=event.target.closest('[data-id]');
+    if(item)openNotification(item.dataset.id);
+  });
 
-  if (profile?.avatar_url) {
-    top.innerHTML = `<img src="${escapeHTML(profile.avatar_url)}" alt="My profile">`;
-  } else {
-    top.textContent = initials(profile?.full_name || profile?.username || 'C');
-  }
+  $('notificationList').addEventListener('keydown',event=>{
+    if(event.key!=='Enter'&&event.key!==' ')return;
 
-  if (profile?.username) {
-    top.href = `profile.html?username=${encodeURIComponent(profile.username)}`;
-  } else if (currentUser) {
-    top.href = `profile.html?id=${encodeURIComponent(currentUser.id)}`;
-  }
+    const item=event.target.closest('[data-id]');
+    if(!item)return;
+
+    event.preventDefault();
+    openNotification(item.dataset.id);
+  });
+
+  $('markAllBtn').addEventListener('click',markAllRead);
 }
 
 async function initialize() {
-  setupFilters();
+  setupEvents();
 
-  const { data, error } = await supabase.auth.getUser();
+  const {data,error}=await supabase.auth.getUser();
 
-  if (error || !data?.user) {
-    $('notificationList').innerHTML = `
+  if(error||!data?.user){
+    $('notificationList').innerHTML=`
       <div class="empty-state">
         <div class="empty-icon">◎</div>
         <h3>Sign in to see your activity</h3>
-        <p>Your likes, comments, gifts, and new followers will appear here after you sign in.</p>
+        <p>Your likes, comments, gifts and new followers will appear here after you sign in.</p>
         <br>
-        <a href="index.html" class="text-btn">Go to Campusora →</a>
+        <a href="auth.html" style="color:#b8a2ff">Sign in →</a>
       </div>`;
 
-    $('connectionStatus').textContent = 'Sign in required';
-    $('activityCount').textContent = 'Sign in to continue';
-    $('markAllBtn').style.display = 'none';
+    $('markAllBtn').style.display='none';
     return;
   }
 
-  currentUser = data.user;
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id,username,full_name,avatar_url')
-    .eq('id', currentUser.id)
-    .maybeSingle();
-
-  setTopAvatar(profile);
+  currentUser=data.user;
 
   await loadNotifications(true);
   setupRealtime();
 
-  refreshTimer = setInterval(render, 60000);
+  refreshTimer=setInterval(()=>{
+    loadNotifications(false);
+  },60000);
 }
 
-window.openCampusoraNotification = openNotification;
-window.retryNotifications = () => loadNotifications(true);
-window.markAllRead = markAllRead;
-
-window.addEventListener('beforeunload', () => {
-  if (realtimeChannel) supabase.removeChannel(realtimeChannel);
-  if (refreshTimer) clearInterval(refreshTimer);
+window.addEventListener('beforeunload',()=>{
+  if(realtimeChannel)supabase.removeChannel(realtimeChannel);
+  if(refreshTimer)clearInterval(refreshTimer);
 });
 
 initialize();
-</script></body>
+</script>
+
+</body>
   </html>
