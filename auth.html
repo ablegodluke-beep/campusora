@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Campusora | Join the Community</title>
-
-<style>
+<title>Campusora | Join the Community</title><style>
 :root {
   --bg: #080b18;
   --purple: #925bff;
@@ -42,11 +39,14 @@ body {
   align-items: center;
   justify-content: center;
   padding: 24px;
+  overflow: hidden;
+
   background:
     radial-gradient(circle at 10% 10%, #29164e 0, transparent 40%),
     radial-gradient(circle at 90% 90%, #102c48 0, transparent 40%),
     var(--bg);
-  transition: opacity .65s ease, visibility .65s ease;
+
+  transition: opacity .7s ease, visibility .7s ease;
 }
 
 .splash.hide {
@@ -55,19 +55,56 @@ body {
   pointer-events: none;
 }
 
+/* LOGO DROP, SPIN AND STAY */
+
 .splash-logo {
-  width: min(190px, 58vw);
-  max-height: 105px;
+  display: block;
+  width: min(230px, 68vw);
+  max-height: 125px;
   object-fit: contain;
+
   background: transparent;
   border: 0;
   box-shadow: none;
+
+  /* Blend the logo's dark background */
+  mix-blend-mode: screen;
+
   opacity: 0;
-  animation: logoDrop 1.2s cubic-bezier(.2,.8,.25,1) forwards;
+  transform: translateY(-100vh);
+
+  animation: campusoraIntro 7.5s cubic-bezier(.2,.75,.25,1) forwards;
 }
 
-.splash-logo.spin {
-  animation: slowSpin 3s ease-in-out forwards;
+/*
+  TOTAL: 7.5 SECONDS
+
+  0–1.5 seconds: Logo drops.
+  1.5–4.5 seconds: Logo spins.
+  4.5–7.5 seconds: Logo stays still.
+*/
+
+@keyframes campusoraIntro {
+
+  0% {
+    opacity: 0;
+    transform: translateY(-100vh) rotate(0deg);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(0) rotate(360deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(360deg);
+  }
 }
 
 .splash-tagline {
@@ -76,33 +113,6 @@ body {
   font-size: 13px;
   letter-spacing: .3px;
   text-align: center;
-}
-
-@keyframes logoDrop {
-  0% {
-    opacity: 0;
-    transform: translateY(-100vh);
-  }
-  75% {
-    opacity: 1;
-    transform: translateY(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slowSpin {
-  0% {
-    transform: rotate(0deg) scale(1);
-  }
-  50% {
-    transform: rotate(180deg) scale(1.04);
-  }
-  100% {
-    transform: rotate(360deg) scale(1);
-  }
 }
 
 /* MAIN PAGE */
@@ -135,13 +145,16 @@ body {
 
 .brand img {
   display: block;
-  width: 125px;
-  max-height: 58px;
+  width: 190px;
+  max-height: 85px;
   object-fit: contain;
   margin: 0 auto;
+
   background: transparent;
   border: 0;
   box-shadow: none;
+
+  mix-blend-mode: screen;
 }
 
 .brand p {
@@ -236,7 +249,7 @@ input::placeholder {
   color: #a0a7b8;
 }
 
-/* CUSTOM MEMBERSHIP SELECTOR */
+/* MEMBERSHIP SELECTOR */
 
 .role-select {
   position: relative;
@@ -470,247 +483,258 @@ input::placeholder {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .splash-logo,
-  .splash-logo.spin {
+  .splash-logo {
     animation: none;
     opacity: 1;
     transform: none;
   }
 }
-</style>
-</head>
+</style></head><body><!-- OPENING SCREEN --><div class="splash" id="splash"><img
+src="./campusora-logo.png"
+alt="Campusora"
+class="splash-logo"
+id="splashLogo"
 
-<body>
+«»
 
-<!-- OPENING ANIMATION -->
-
-<div class="splash" id="splash">
-  <img
-    src="./campusora-logo.png"
-    alt="Campusora"
-    class="splash-logo"
-    id="splashLogo"
-  >
   <p class="splash-tagline">
     Connect with students across campuses
-  </p>
-</div>
+  </p></div><!-- REGISTRATION AND LOGIN --><main class="page" id="mainPage">  <div class="container"><header class="brand">
+  <img src="./campusora-logo.png" alt="Campusora">
+  <p>Connect with students across campuses</p>
+</header>
 
-<!-- REGISTRATION AND LOGIN -->
+<section class="card">
 
-<main class="page" id="mainPage">
-  <div class="container">
+  <div class="tabs">
 
-    <header class="brand">
-      <img src="./campusora-logo.png" alt="Campusora">
-      <p>Connect with students across campuses</p>
-    </header>
+    <button type="button" class="tab active" id="signupTab">
+      Create account
+    </button>
 
-    <section class="card">
-
-      <div class="tabs">
-        <button type="button" class="tab active" id="signupTab">
-          Create account
-        </button>
-
-        <button type="button" class="tab" id="loginTab">
-          Log in
-        </button>
-      </div>
-
-      <h2 id="formTitle">Join Campusora 🚀</h2>
-
-      <p class="subtitle" id="formSubtitle">
-        Connect with students, alumni and communities across campuses.
-      </p>
-
-      <div id="message" class="message" role="status" aria-live="polite"></div>
-
-      <form id="authForm">
-
-        <div id="signupFields">
-
-          <div class="field">
-            <label for="fullName">Full name</label>
-            <input
-              type="text"
-              id="fullName"
-              placeholder="Enter your full name"
-              autocomplete="name"
-              maxlength="80"
-              required
-            >
-          </div>
-
-          <div class="field">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              placeholder="Choose a username"
-              autocomplete="username"
-              minlength="3"
-              maxlength="24"
-              pattern="[A-Za-z0-9_]+"
-              title="Use letters, numbers and underscores only."
-              required
-            >
-          </div>
-
-          <div class="field" id="schoolField">
-            <label for="school">School or university</label>
-            <input
-              type="text"
-              id="school"
-              placeholder="Start typing your school name..."
-              autocomplete="off"
-              maxlength="120"
-              required
-            >
-
-            <div class="school-results" id="schoolResults"></div>
-            <p class="school-status" id="schoolStatus">
-              Type at least 2 letters to find your institution.
-            </p>
-          </div>
-
-          <div class="field">
-            <label for="roleTrigger">I am joining as</label>
-
-            <div class="role-select" id="roleSelect">
-
-              <button
-                type="button"
-                class="role-trigger"
-                id="roleTrigger"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-              >
-                <span id="roleLabel">🎓 Student</span>
-                <span class="arrow">▼</span>
-              </button>
-
-              <div class="role-menu" id="roleMenu" role="listbox">
-
-                <button
-                  type="button"
-                  class="role-option active"
-                  data-role="student"
-                  role="option"
-                  aria-selected="true"
-                >
-                  <span class="role-icon">🎓</span>
-                  <span>Student</span>
-                </button>
-
-                <button
-                  type="button"
-                  class="role-option"
-                  data-role="alumni"
-                  role="option"
-                  aria-selected="false"
-                >
-                  <span class="role-icon">🏅</span>
-                  <span>Alumni</span>
-                </button>
-
-                <button
-                  type="button"
-                  class="role-option"
-                  data-role="general"
-                  role="option"
-                  aria-selected="false"
-                >
-                  <span class="role-icon">🌍</span>
-                  <span>General Member</span>
-                </button>
-
-              </div>
-
-            </div>
-
-            <input type="hidden" id="role" value="student">
-          </div>
-
-        </div>
-
-        <div class="field">
-          <label for="email">Email address</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          >
-        </div>
-
-        <div class="field">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="At least 8 characters"
-            autocomplete="new-password"
-            minlength="8"
-            required
-          >
-        </div>
-
-        <button type="submit" class="primary-btn" id="submitBtn">
-          Create my account
-        </button>
-
-        <button
-          type="button"
-          id="resendBtn"
-          class="secondary-btn hidden"
-        >
-          Resend confirmation email
-        </button>
-
-      </form>
-
-      <p class="terms">
-        By joining Campusora, you agree to use the community respectfully
-        and follow its rules.
-      </p>
-
-    </section>
+    <button type="button" class="tab" id="loginTab">
+      Log in
+    </button>
 
   </div>
-</main>
 
-<script type="module">
+  <h2 id="formTitle">Join Campusora 🚀</h2>
+
+  <p class="subtitle" id="formSubtitle">
+    Connect with students, alumni and communities across campuses.
+  </p>
+
+  <div id="message" class="message" role="status" aria-live="polite"></div>
+
+  <form id="authForm">
+
+    <div id="signupFields">
+
+      <div class="field">
+        <label for="fullName">Full name</label>
+
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Enter your full name"
+          autocomplete="name"
+          maxlength="80"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="username">Username</label>
+
+        <input
+          type="text"
+          id="username"
+          placeholder="Choose a username"
+          autocomplete="username"
+          minlength="3"
+          maxlength="24"
+          pattern="[A-Za-z0-9_]+"
+          title="Use letters, numbers and underscores only."
+          required
+        >
+      </div>
+
+      <div class="field" id="schoolField">
+
+        <label for="school">School or university</label>
+
+        <input
+          type="text"
+          id="school"
+          placeholder="Start typing your school name..."
+          autocomplete="off"
+          maxlength="120"
+          required
+        >
+
+        <div class="school-results" id="schoolResults"></div>
+
+        <p class="school-status" id="schoolStatus">
+          Type at least 2 letters to find your institution.
+        </p>
+
+      </div>
+
+      <div class="field">
+
+        <label for="roleTrigger">I am joining as</label>
+
+        <div class="role-select" id="roleSelect">
+
+          <button
+            type="button"
+            class="role-trigger"
+            id="roleTrigger"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+          >
+            <span id="roleLabel">🎓 Student</span>
+            <span class="arrow">▼</span>
+          </button>
+
+          <div class="role-menu" id="roleMenu" role="listbox">
+
+            <button
+              type="button"
+              class="role-option active"
+              data-role="student"
+              role="option"
+              aria-selected="true"
+            >
+              <span class="role-icon">🎓</span>
+              <span>Student</span>
+            </button>
+
+            <button
+              type="button"
+              class="role-option"
+              data-role="alumni"
+              role="option"
+              aria-selected="false"
+            >
+              <span class="role-icon">🏅</span>
+              <span>Alumni</span>
+            </button>
+
+            <button
+              type="button"
+              class="role-option"
+              data-role="general"
+              role="option"
+              aria-selected="false"
+            >
+              <span class="role-icon">🌍</span>
+              <span>General Member</span>
+            </button>
+
+          </div>
+
+        </div>
+
+        <input type="hidden" id="role" value="student">
+
+      </div>
+
+    </div>
+
+    <div class="field">
+
+      <label for="email">Email address</label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        required
+      >
+
+    </div>
+
+    <div class="field">
+
+      <label for="password">Password</label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="At least 8 characters"
+        autocomplete="new-password"
+        minlength="8"
+        required
+      >
+
+    </div>
+
+    <button type="submit" class="primary-btn" id="submitBtn">
+      Create my account
+    </button>
+
+    <button
+      type="button"
+      id="resendBtn"
+      class="secondary-btn hidden"
+    >
+      Resend confirmation email
+    </button>
+
+  </form>
+
+  <p class="terms">
+    By joining Campusora, you agree to use the community respectfully
+    and follow its rules.
+  </p>
+
+</section>
+
+  </div></main><script type="module">
 import { supabase } from './supabase.js';
 
 /* OPENING ANIMATION */
 
 const splash = document.getElementById('splash');
-const splashLogo = document.getElementById('splashLogo');
 const mainPage = document.getElementById('mainPage');
 
-setTimeout(() => {
-  splashLogo.classList.add('spin');
-}, 1200);
+/*
+  The logo animation runs for 7.5 seconds:
+
+  1.5 seconds: Drop from the top.
+  3 seconds: Spin.
+  3 seconds: Stay still.
+
+  Then the registration/login page appears.
+*/
 
 setTimeout(() => {
+
   splash.classList.add('hide');
   mainPage.classList.add('show');
-}, 7200);
+
+}, 7500);
+
 
 /* FORM ELEMENTS */
 
 const form = document.getElementById('authForm');
 const signupFields = document.getElementById('signupFields');
+
 const signupTab = document.getElementById('signupTab');
 const loginTab = document.getElementById('loginTab');
+
 const formTitle = document.getElementById('formTitle');
 const formSubtitle = document.getElementById('formSubtitle');
+
 const submitBtn = document.getElementById('submitBtn');
 const messageBox = document.getElementById('message');
+
 const passwordInput = document.getElementById('password');
 const emailInput = document.getElementById('email');
+
 const resendBtn = document.getElementById('resendBtn');
 
 const schoolInput = document.getElementById('school');
@@ -724,24 +748,31 @@ const roleLabel = document.getElementById('roleLabel');
 
 let mode = 'signup';
 let pendingConfirmationEmail = '';
+
 let selectedInstitutionId = null;
 let institutionTimer = null;
 let institutionRequest = 0;
 
+
 /* MEMBERSHIP DROPDOWN */
 
 roleTrigger.addEventListener('click', () => {
+
   const isOpen = roleSelect.classList.toggle('open');
 
   roleTrigger.setAttribute('aria-expanded', String(isOpen));
+
 });
 
 document.querySelectorAll('.role-option').forEach(option => {
+
   option.addEventListener('click', () => {
 
     document.querySelectorAll('.role-option').forEach(item => {
+
       item.classList.remove('active');
       item.setAttribute('aria-selected', 'false');
+
     });
 
     option.classList.add('active');
@@ -755,64 +786,100 @@ document.querySelectorAll('.role-option').forEach(option => {
     roleLabel.textContent = icon + ' ' + name;
 
     roleSelect.classList.remove('open');
+
     roleTrigger.setAttribute('aria-expanded', 'false');
+
   });
+
 });
 
 document.addEventListener('click', event => {
+
   if (!roleSelect.contains(event.target)) {
+
     roleSelect.classList.remove('open');
     roleTrigger.setAttribute('aria-expanded', 'false');
+
   }
+
 });
+
 
 /* SCHOOL AUTOCOMPLETE */
 
 function escapeHTML(value) {
+
   return String(value ?? '').replace(/[&<>"']/g, char => ({
+
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
     "'": '&#039;'
+
   })[char]);
+
 }
 
 function closeSchoolResults() {
+
   schoolResults.classList.remove('show');
   schoolResults.innerHTML = '';
+
 }
 
 function selectSchool(institution) {
+
   schoolInput.value = institution.name;
+
   selectedInstitutionId = institution.id;
 
   schoolStatus.textContent = 'Selected: ' + institution.name;
+
   closeSchoolResults();
+
 }
 
 async function searchInstitutions(query) {
+
   const search = query.trim();
+
   const requestNumber = ++institutionRequest;
 
   if (search.length < 2) {
+
     closeSchoolResults();
+
     schoolStatus.textContent =
       'Type at least 2 letters to find your institution.';
+
     return;
+
   }
 
   schoolStatus.textContent = 'Searching institutions...';
+
   schoolResults.innerHTML = '';
+
   schoolResults.classList.remove('show');
 
   try {
+
     const { data, error } = await supabase
+
       .from('institutions')
+
       .select('id, name, institution_type, ownership, state')
+
       .eq('status', 'active')
-      .ilike('name', '%' + search.replace(/[%_,]/g, '') + '%')
+
+      .ilike(
+        'name',
+        '%' + search.replace(/[%_,]/g, '') + '%'
+      )
+
       .order('name')
+
       .limit(20);
 
     if (requestNumber !== institutionRequest) return;
@@ -820,87 +887,128 @@ async function searchInstitutions(query) {
     if (error) throw error;
 
     if (!data || !data.length) {
+
       schoolStatus.textContent =
         'No matching institution found. Check the spelling or enter your school name.';
+
       return;
+
     }
 
     schoolResults.innerHTML = '';
 
     data.forEach(institution => {
+
       const button = document.createElement('button');
 
       button.type = 'button';
+
       button.className = 'school-result';
 
       button.innerHTML = `
         <strong>${escapeHTML(institution.name)}</strong>
+
         <small>
           ${escapeHTML(
             (institution.institution_type || 'Institution')
               .replaceAll('_', ' ')
           )}
-          ${institution.state ? ' · ' + escapeHTML(institution.state) : ''}
+
+          ${institution.state
+            ? ' · ' + escapeHTML(institution.state)
+            : ''}
         </small>
       `;
 
       button.addEventListener('click', () => {
+
         selectSchool(institution);
+
       });
 
       schoolResults.appendChild(button);
+
     });
 
     schoolResults.classList.add('show');
-    schoolStatus.textContent = 'Select your school from the suggestions.';
+
+    schoolStatus.textContent =
+      'Select your school from the suggestions.';
 
   } catch (error) {
+
     if (requestNumber !== institutionRequest) return;
 
     schoolStatus.textContent =
       'School suggestions could not load. You can still enter your school name.';
+
     console.error('Institution search failed:', error);
+
   }
+
 }
 
 schoolInput.addEventListener('input', () => {
+
   selectedInstitutionId = null;
 
   clearTimeout(institutionTimer);
 
   institutionTimer = setTimeout(() => {
+
     searchInstitutions(schoolInput.value);
+
   }, 250);
+
 });
 
 schoolInput.addEventListener('focus', () => {
+
   if (schoolInput.value.trim().length >= 2) {
+
     searchInstitutions(schoolInput.value);
+
   }
+
 });
 
 document.addEventListener('click', event => {
+
   if (!document.getElementById('schoolField').contains(event.target)) {
+
     closeSchoolResults();
+
   }
+
 });
+
 
 /* GENERAL FORM FUNCTIONS */
 
 function showMessage(text, type) {
+
   messageBox.textContent = text;
+
   messageBox.className = 'message ' + type;
+
 }
 
 function clearMessage() {
+
   messageBox.textContent = '';
+
   messageBox.className = 'message';
+
 }
 
 function setMode(newMode) {
+
   mode = newMode;
+
   clearMessage();
+
   resendBtn.classList.add('hidden');
+
   closeSchoolResults();
 
   const isSignup = mode === 'signup';
@@ -908,7 +1016,9 @@ function setMode(newMode) {
   signupFields.classList.toggle('hidden', !isSignup);
 
   document.getElementById('fullName').required = isSignup;
+
   document.getElementById('username').required = isSignup;
+
   schoolInput.required = isSignup;
 
   passwordInput.autocomplete = isSignup
@@ -918,10 +1028,11 @@ function setMode(newMode) {
   passwordInput.minLength = isSignup ? 8 : 1;
 
   signupTab.classList.toggle('active', isSignup);
+
   loginTab.classList.toggle('active', !isSignup);
 
   formTitle.textContent = isSignup
-    ? 'Join Campusora 🚀'
+    ? 'Join Campusora '
     : 'Welcome back 👋';
 
   formSubtitle.textContent = isSignup
@@ -931,24 +1042,43 @@ function setMode(newMode) {
   submitBtn.textContent = isSignup
     ? 'Create my account'
     : 'Log in to Campusora';
+
 }
 
-signupTab.addEventListener('click', () => setMode('signup'));
-loginTab.addEventListener('click', () => setMode('login'));
+signupTab.addEventListener('click', () => {
+
+  setMode('signup');
+
+});
+
+loginTab.addEventListener('click', () => {
+
+  setMode('login');
+
+});
+
+
+/* CHECK URL FOR LOGIN MODE */
 
 const params = new URLSearchParams(window.location.search);
 
 if (params.get('mode') === 'login') {
+
   setMode('login');
+
 }
+
 
 /* REGISTRATION AND LOGIN */
 
 form.addEventListener('submit', async event => {
+
   event.preventDefault();
+
   clearMessage();
 
   submitBtn.disabled = true;
+
   resendBtn.classList.add('hidden');
 
   const originalMode = mode;
@@ -958,56 +1088,80 @@ form.addEventListener('submit', async event => {
     : 'Checking details...';
 
   const email = emailInput.value.trim();
+
   const password = passwordInput.value;
 
   try {
+
     if (mode === 'signup') {
 
       const fullName = document.getElementById('fullName')
         .value.trim();
 
       const username = document.getElementById('username')
-        .value.trim().toLowerCase();
+        .value.trim()
+        .toLowerCase();
 
       const school = schoolInput.value.trim();
+
       const role = roleInput.value;
 
       if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+
         throw new Error(
           'Your username must be 3–24 characters using letters, numbers or underscores.'
         );
+
       }
 
       if (!school) {
+
         throw new Error('Please enter your school or university.');
+
       }
 
       const { data, error } = await supabase.auth.signUp({
+
         email,
+
         password,
+
         options: {
+
           emailRedirectTo:
             window.location.origin + '/profile-setup.html',
+
           data: {
+
             full_name: fullName,
+
             username,
+
             school,
+
             role,
+
             institution_id: selectedInstitutionId
+
           }
+
         }
+
       });
 
       if (error) throw error;
 
       if (data.session && data.user) {
+
         showMessage(
           'Your account has been created! Taking you to profile setup...',
           'success'
         );
 
         window.location.replace('./profile-setup.html');
+
         return;
+
       }
 
       pendingConfirmationEmail = email;
@@ -1022,29 +1176,38 @@ form.addEventListener('submit', async event => {
     } else {
 
       const { data, error } = await supabase.auth.signInWithPassword({
+
         email,
+
         password
+
       });
 
       if (error) {
+
         const errorText = (error.message || '').toLowerCase();
 
         if (
           errorText.includes('invalid login credentials') ||
           errorText.includes('invalid credentials')
         ) {
+
           throw new Error(
             'Incorrect email or password. Please check your details and try again.'
           );
+
         }
 
         throw error;
+
       }
 
       if (!data.session || !data.user) {
+
         throw new Error(
           'Login could not be completed. Please try again.'
         );
+
       }
 
       showMessage(
@@ -1053,46 +1216,65 @@ form.addEventListener('submit', async event => {
       );
 
       window.location.replace('./index.html');
+
       return;
+
     }
 
   } catch (error) {
+
     showMessage(
       error.message || 'Something went wrong. Please try again.',
       'error'
     );
 
   } finally {
+
     submitBtn.disabled = false;
 
     submitBtn.textContent = originalMode === 'signup'
       ? 'Create my account'
       : 'Log in to Campusora';
+
   }
+
 });
+
 
 /* RESEND CONFIRMATION EMAIL */
 
 resendBtn.addEventListener('click', async () => {
+
   if (!pendingConfirmationEmail) {
+
     showMessage(
       'Please register first before requesting another confirmation email.',
       'error'
     );
+
     return;
+
   }
 
   resendBtn.disabled = true;
+
   resendBtn.textContent = 'Sending...';
 
   try {
+
     const { error } = await supabase.auth.resend({
+
       type: 'signup',
+
       email: pendingConfirmationEmail,
+
       options: {
+
         emailRedirectTo:
           window.location.origin + '/profile-setup.html'
+
       }
+
     });
 
     if (error) throw error;
@@ -1103,17 +1285,21 @@ resendBtn.addEventListener('click', async () => {
     );
 
   } catch (error) {
+
     showMessage(
       error.message || 'Could not resend the email. Please try again later.',
       'error'
     );
 
   } finally {
-    resendBtn.disabled = false;
-    resendBtn.textContent = 'Resend confirmation email';
-  }
-});
-</script>
 
-</body>
+    resendBtn.disabled = false;
+
+    resendBtn.textContent = 'Resend confirmation email';
+
+  }
+
+});
+
+</script></body>
   </html>
