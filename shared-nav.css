@@ -560,3 +560,68 @@ pointer-events: none;
 .campusora-nav-badge[hidden] {
 display: none !important;
   }
+/* CAMPUSORA HEADER SIZE ADJUSTMENTS */
+
+/* Bigger standalone logo symbol */
+.campusora-brand img {
+  width: 46px;
+  height: 36px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Campusora name immediately beside the logo */
+.campusora-brand {
+  gap: 5px;
+}
+
+.campusora-brand-name {
+  font-size: 19px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+/* Smaller search bar */
+.campusora-header-search {
+  width: 220px;
+  max-width: 220px;
+  flex: 0 1 220px;
+  margin-left: auto;
+}
+
+/* Mobile adjustments */
+@media (max-width: 760px) {
+  .campusora-brand img {
+    width: 42px;
+    height: 33px;
+  }
+
+  .campusora-brand-name {
+    font-size: 15px;
+  }
+
+  .campusora-header-search {
+    width: 125px;
+    max-width: 145px;
+    flex: 0 1 145px;
+    min-width: 85px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 370px) {
+  .campusora-brand img {
+    width: 36px;
+    height: 30px;
+  }
+
+  .campusora-brand-name {
+    font-size: 13px;
+  }
+
+  .campusora-header-search {
+    min-width: 75px;
+  }
+}
