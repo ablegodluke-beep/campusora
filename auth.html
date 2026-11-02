@@ -1,9 +1,12 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Campusora | Join the Community</title><style>
+<title>Campusora | Join the Community</title>
+
+<style>
 :root {
   --bg: #080b18;
   --purple: #925bff;
@@ -53,26 +56,33 @@ body {
   pointer-events: none;
 }
 
-/* LOGO */
+/* LOGO BLENDING */
 
-.splash-logo {
+.splash-logo,
+.brand img {
   display: block;
-  width: min(230px, 68vw);
-  max-height: 125px;
   object-fit: contain;
   background: transparent;
   border: 0;
   box-shadow: none;
+
+  /*
+    Darkens the image so its background shape
+    is less noticeable against the dark page.
+  */
+  filter: brightness(.72) saturate(1.15);
+  mix-blend-mode: multiply;
+}
+
+/* OPENING LOGO */
+
+.splash-logo {
+  width: min(230px, 68vw);
+  max-height: 125px;
   opacity: 0;
   transform: translateY(-100vh);
   animation: campusoraIntro 7.5s cubic-bezier(.2,.75,.25,1) forwards;
 }
-
-/*
-  0–1.5 seconds: Logo drops.
-  1.5–4.5 seconds: Logo spins.
-  4.5–7.5 seconds: Logo stays still.
-*/
 
 @keyframes campusoraIntro {
   0% {
@@ -133,14 +143,9 @@ body {
 }
 
 .brand img {
-  display: block;
   width: 190px;
   max-height: 85px;
-  object-fit: contain;
   margin: 0 auto;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
 }
 
 .brand p {
@@ -475,217 +480,239 @@ input::placeholder {
     transform: none;
   }
 }
-</style></head><body><!-- OPENING SCREEN --><div class="splash" id="splash"><img
-src="./campusora-logo.png"
-alt="Campusora"
-class="splash-logo"
-id="splashLogo"
+</style>
+</head>
 
-«»
+<body>
+
+<!-- OPENING SCREEN -->
+
+<div class="splash" id="splash">
+
+  <img
+    src="./campusora-logo.png"
+    alt="Campusora"
+    class="splash-logo"
+    id="splashLogo"
+  >
 
   <p class="splash-tagline">
     Connect with students across campuses
-  </p></div><!-- REGISTRATION AND LOGIN --><main class="page" id="mainPage">  <div class="container"><header class="brand">
-
-  <img src="./campusora-logo.png" alt="Campusora">
-
-  <p>Connect with students across campuses</p>
-
-</header>
-
-<section class="card">
-
-  <div class="tabs">
-
-    <button type="button" class="tab active" id="signupTab">
-      Create account
-    </button>
-
-    <button type="button" class="tab" id="loginTab">
-      Log in
-    </button>
-
-  </div>
-
-  <h2 id="formTitle">Join Campusora 🚀</h2>
-
-  <p class="subtitle" id="formSubtitle">
-    Connect with students, alumni and communities across campuses.
   </p>
 
-  <div id="message" class="message" role="status" aria-live="polite"></div>
+</div>
 
-  <form id="authForm">
+<!-- REGISTRATION AND LOGIN -->
 
-    <div id="signupFields">
+<main class="page" id="mainPage">
 
-      <div class="field">
+  <div class="container">
 
-        <label for="fullName">Full name</label>
+    <header class="brand">
 
-        <input
-          type="text"
-          id="fullName"
-          placeholder="Enter your full name"
-          autocomplete="name"
-          maxlength="80"
-          required
-        >
+      <img src="./campusora-logo.png" alt="Campusora">
 
-      </div>
+      <p>Connect with students across campuses</p>
 
-      <div class="field">
+    </header>
 
-        <label for="username">Username</label>
+    <section class="card">
 
-        <input
-          type="text"
-          id="username"
-          placeholder="Choose a username"
-          autocomplete="username"
-          minlength="3"
-          maxlength="24"
-          pattern="[A-Za-z0-9_]+"
-          title="Use letters, numbers and underscores only."
-          required
-        >
+      <div class="tabs">
+
+        <button type="button" class="tab active" id="signupTab">
+          Create account
+        </button>
+
+        <button type="button" class="tab" id="loginTab">
+          Log in
+        </button>
 
       </div>
 
-      <div class="field" id="schoolField">
+      <h2 id="formTitle">Join Campusora 🚀</h2>
 
-        <label for="school">School or university</label>
+      <p class="subtitle" id="formSubtitle">
+        Connect with students, alumni and communities across campuses.
+      </p>
 
-        <input
-          type="text"
-          id="school"
-          placeholder="Start typing your school name..."
-          autocomplete="off"
-          maxlength="120"
-          required
-        >
+      <div id="message" class="message" role="status" aria-live="polite"></div>
 
-        <div class="school-results" id="schoolResults"></div>
+      <form id="authForm">
 
-        <p class="school-status" id="schoolStatus">
-          Type at least 2 letters to find your institution.
-        </p>
+        <div id="signupFields">
 
-      </div>
+          <div class="field">
 
-      <div class="field">
+            <label for="fullName">Full name</label>
 
-        <label for="roleTrigger">I am joining as</label>
-
-        <div class="role-select" id="roleSelect">
-
-          <button
-            type="button"
-            class="role-trigger"
-            id="roleTrigger"
-            aria-haspopup="listbox"
-            aria-expanded="false"
-          >
-            <span id="roleLabel">🎓 Student</span>
-            <span class="arrow">▼</span>
-          </button>
-
-          <div class="role-menu" id="roleMenu" role="listbox">
-
-            <button
-              type="button"
-              class="role-option active"
-              data-role="student"
-              role="option"
-              aria-selected="true"
+            <input
+              type="text"
+              id="fullName"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              maxlength="80"
+              required
             >
-              <span class="role-icon">🎓</span>
-              <span>Student</span>
-            </button>
 
-            <button
-              type="button"
-              class="role-option"
-              data-role="alumni"
-              role="option"
-              aria-selected="false"
-            >
-              <span class="role-icon">🏅</span>
-              <span>Alumni</span>
-            </button>
+          </div>
 
-            <button
-              type="button"
-              class="role-option"
-              data-role="general"
-              role="option"
-              aria-selected="false"
+          <div class="field">
+
+            <label for="username">Username</label>
+
+            <input
+              type="text"
+              id="username"
+              placeholder="Choose a username"
+              autocomplete="username"
+              minlength="3"
+              maxlength="24"
+              pattern="[A-Za-z0-9_]+"
+              title="Use letters, numbers and underscores only."
+              required
             >
-              <span class="role-icon">🌍</span>
-              <span>General Member</span>
-            </button>
+
+          </div>
+
+          <div class="field" id="schoolField">
+
+            <label for="school">School or university</label>
+
+            <input
+              type="text"
+              id="school"
+              placeholder="Start typing your school name..."
+              autocomplete="off"
+              maxlength="120"
+              required
+            >
+
+            <div class="school-results" id="schoolResults"></div>
+
+            <p class="school-status" id="schoolStatus">
+              Type at least 2 letters to find your institution.
+            </p>
+
+          </div>
+
+          <div class="field">
+
+            <label for="roleTrigger">I am joining as</label>
+
+            <div class="role-select" id="roleSelect">
+
+              <button
+                type="button"
+                class="role-trigger"
+                id="roleTrigger"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                <span id="roleLabel">🎓 Student</span>
+                <span class="arrow">▼</span>
+              </button>
+
+              <div class="role-menu" id="roleMenu" role="listbox">
+
+                <button
+                  type="button"
+                  class="role-option active"
+                  data-role="student"
+                  role="option"
+                  aria-selected="true"
+                >
+                  <span class="role-icon">🎓</span>
+                  <span>Student</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="role-option"
+                  data-role="alumni"
+                  role="option"
+                  aria-selected="false"
+                >
+                  <span class="role-icon">🏅</span>
+                  <span>Alumni</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="role-option"
+                  data-role="general"
+                  role="option"
+                  aria-selected="false"
+                >
+                  <span class="role-icon">🌍</span>
+                  <span>General Member</span>
+                </button>
+
+              </div>
+
+            </div>
+
+            <input type="hidden" id="role" value="student">
 
           </div>
 
         </div>
 
-        <input type="hidden" id="role" value="student">
+        <div class="field">
 
-      </div>
+          <label for="email">Email address</label>
 
-    </div>
+          <input
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
 
-    <div class="field">
+        </div>
 
-      <label for="email">Email address</label>
+        <div class="field">
 
-      <input
-        type="email"
-        id="email"
-        placeholder="you@example.com"
-        autocomplete="email"
-        required
-      >
+          <label for="password">Password</label>
 
-    </div>
+          <input
+            type="password"
+            id="password"
+            placeholder="At least 8 characters"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
 
-    <div class="field">
+        </div>
 
-      <label for="password">Password</label>
+        <button type="submit" class="primary-btn" id="submitBtn">
+          Create my account
+        </button>
 
-      <input
-        type="password"
-        id="password"
-        placeholder="At least 8 characters"
-        autocomplete="new-password"
-        minlength="8"
-        required
-      >
+        <button
+          type="button"
+          id="resendBtn"
+          class="secondary-btn hidden"
+        >
+          Resend confirmation email
+        </button>
 
-    </div>
+      </form>
 
-    <button type="submit" class="primary-btn" id="submitBtn">
-      Create my account
-    </button>
+      <p class="terms">
+        By joining Campusora, you agree to use the community respectfully
+        and follow its rules.
+      </p>
 
-    <button
-      type="button"
-      id="resendBtn"
-      class="secondary-btn hidden"
-    >
-      Resend confirmation email
-    </button>
+    </section>
 
-  </form>
+  </div>
 
-  <p class="terms">
-    By joining Campusora, you agree to use the community respectfully
-    and follow its rules.
-  </p>
+</main>
 
-</section>
-
-  </div></main><script type="module">
+<script type="module">
 
 import { supabase } from './supabase.js';
 
@@ -1285,5 +1312,7 @@ resendBtn.addEventListener('click', async () => {
 
 });
 
-</script></body>
+</script>
+
+</body>
         </html>
