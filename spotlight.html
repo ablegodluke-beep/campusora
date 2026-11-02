@@ -6,11 +6,12 @@
 <meta name="theme-color" content="#080b18">
 <title>Spotlight | Campusora</title>
 
+<link rel="stylesheet" href="./shared-nav.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-:root {
+:root{
   --bg:#080b18;
   --panel:#11162a;
   --purple:#8b5cf6;
@@ -22,81 +23,33 @@
   --border:rgba(255,255,255,.12);
 }
 
-* {
+*{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body {
+html,body{
   margin:0;
   width:100%;
-  height:100%;
-  overflow:hidden;
+  min-height:100%;
   background:var(--bg);
   color:var(--text);
   font-family:"DM Sans",system-ui,Arial,sans-serif;
 }
 
-button,input,textarea { font:inherit; }
-button { cursor:pointer; }
-a { color:inherit;text-decoration:none; }
+body{overflow:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
 
-/* TOP BAR */
+/* SPOTLIGHT FEED */
 
-.topbar {
-  height:48px;
+.feed{
   position:fixed;
-  top:0;left:0;right:0;
-  z-index:25;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  padding:0 12px;
-  background:rgba(8,11,24,.97);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(18px);
-}
-
-.brand {
-  font-size:14px;
-  font-weight:900;
-  letter-spacing:-.4px;
-  white-space:nowrap;
-}
-
-.brand span {
-  color:var(--cyan);
-  font-size:10px;
-  font-weight:600;
-  margin-left:3px;
-}
-
-.top-actions {
-  display:flex;
-  gap:7px;
-}
-
-.top-btn {
-  padding:8px 10px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:#151a30;
-  color:white;
-  font-size:10px;
-  font-weight:700;
-}
-
-.top-btn.upload {
-  border:0;
-  background:linear-gradient(120deg,var(--purple),var(--blue));
-}
-
-/* FEED */
-
-.feed {
-  position:fixed;
-  inset:48px 0 0;
+  top:100px;
+  left:0;
+  right:0;
+  bottom:0;
   overflow-y:auto;
   scroll-snap-type:y mandatory;
   scrollbar-width:none;
@@ -104,11 +57,11 @@ a { color:inherit;text-decoration:none; }
   overscroll-behavior-y:contain;
 }
 
-.feed::-webkit-scrollbar { display:none; }
+.feed::-webkit-scrollbar{display:none}
 
-.video-card {
+.video-card{
   width:100%;
-  height:calc(100dvh - 48px);
+  height:calc(100dvh - 100px);
   min-height:360px;
   position:relative;
   overflow:hidden;
@@ -118,7 +71,7 @@ a { color:inherit;text-decoration:none; }
   background:#03050b;
 }
 
-.video-card video {
+.video-card video{
   position:absolute;
   inset:0;
   width:100%;
@@ -128,7 +81,7 @@ a { color:inherit;text-decoration:none; }
   cursor:pointer;
 }
 
-.video-card::after {
+.video-card::after{
   content:"";
   position:absolute;
   inset:25% 0 0;
@@ -138,17 +91,19 @@ a { color:inherit;text-decoration:none; }
     to bottom,
     transparent 0%,
     rgba(0,0,0,.08) 35%,
-    rgba(0,0,0,.78) 100%
+    rgba(0,0,0,.82) 100%
   );
 }
 
 /* PLAY INDICATOR */
 
-.play-indicator {
+.play-indicator{
   position:absolute;
   z-index:8;
-  left:50%;top:50%;
-  width:68px;height:68px;
+  left:50%;
+  top:50%;
+  width:68px;
+  height:68px;
   display:grid;
   place-items:center;
   border:1px solid rgba(255,255,255,.3);
@@ -162,69 +117,72 @@ a { color:inherit;text-decoration:none; }
   backdrop-filter:blur(9px);
 }
 
-.play-indicator.show {
+.play-indicator.show{
   animation:playIndicator .65s ease forwards;
 }
 
-@keyframes playIndicator {
-  0% {opacity:0;transform:translate(-50%,-50%) scale(.65)}
-  25% {opacity:1;transform:translate(-50%,-50%) scale(1.08)}
-  55% {opacity:1;transform:translate(-50%,-50%) scale(1)}
-  100% {opacity:0;transform:translate(-50%,-50%) scale(1)}
+@keyframes playIndicator{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.65)}
+  25%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+  55%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1)}
 }
 
-/* VIDEO TOP CONTROLS */
+/* VIDEO TOP */
 
-.video-top {
+.video-top{
   position:absolute;
   z-index:9;
-  top:10px;left:10px;right:10px;
+  top:10px;
+  left:10px;
+  right:10px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   pointer-events:none;
 }
 
-.video-top > * { pointer-events:auto; }
+.video-top>*{pointer-events:auto}
 
-.spotlight-tag {
-  padding:4px 7px;
+.spotlight-tag{
+  padding:5px 8px;
   border-radius:20px;
   background:rgba(12,17,35,.55);
   border:1px solid rgba(255,255,255,.13);
   color:#e7eaff;
-  font-size:7px;
+  font-size:8px;
   font-weight:800;
   letter-spacing:.5px;
   backdrop-filter:blur(10px);
 }
 
-.sound-btn {
-  width:29px;height:29px;
+.sound-btn{
+  width:31px;
+  height:31px;
   border-radius:50%;
   border:1px solid rgba(255,255,255,.2);
   background:rgba(8,11,24,.58);
   color:white;
-  font-size:13px;
+  font-size:14px;
   display:grid;
   place-items:center;
   backdrop-filter:blur(10px);
 }
 
-.sound-btn:active { transform:scale(.88); }
+.sound-btn:active{transform:scale(.88)}
 
-/* SOCIAL ACTIONS */
+/* RIGHT ACTION COLUMN */
 
-.actions {
+.actions{
   position:absolute;
-  z-index:7;
+  z-index:12;
   right:9px;
   bottom:105px;
   display:flex;
   flex-direction:column;
   align-items:center;
   gap:10px;
-  padding:9px 5px;
+  padding:8px 5px;
   border:1px solid rgba(255,255,255,.12);
   border-radius:24px;
   background:rgba(9,13,29,.38);
@@ -232,7 +190,7 @@ a { color:inherit;text-decoration:none; }
   -webkit-backdrop-filter:blur(13px);
 }
 
-.action {
+.action{
   width:43px;
   min-height:43px;
   display:flex;
@@ -245,24 +203,29 @@ a { color:inherit;text-decoration:none; }
   background:transparent;
   color:white;
   transition:transform .18s;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:manipulation;
 }
 
-.action:active { transform:scale(.85); }
+.action:active{transform:scale(.86)}
 
-.action-icon {
-  width:29px;height:29px;
+.action-icon{
+  width:29px;
+  height:29px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:26px;
+  font-size:25px;
   line-height:1;
   font-weight:900;
   filter:drop-shadow(0 2px 5px rgba(0,0,0,.75));
 }
 
-.action-icon svg {
+.action-icon svg{
   display:block;
-  width:25px;height:25px;
+  width:25px;
+  height:25px;
   stroke:currentColor;
   stroke-width:2.1;
   fill:none;
@@ -270,7 +233,7 @@ a { color:inherit;text-decoration:none; }
   stroke-linejoin:round;
 }
 
-.action-count {
+.action-count{
   display:block;
   max-width:45px;
   font-size:9px;
@@ -281,91 +244,143 @@ a { color:inherit;text-decoration:none; }
   overflow-wrap:anywhere;
 }
 
-.action.liked .action-icon {
+.action.liked .action-icon{
   color:var(--pink);
   animation:likePop .3s ease;
 }
 
-@keyframes likePop {
-  0% {transform:scale(.75)}
-  65% {transform:scale(1.3)}
-  100% {transform:scale(1)}
+@keyframes likePop{
+  0%{transform:scale(.75)}
+  65%{transform:scale(1.3)}
+  100%{transform:scale(1)}
 }
 
-.gift-action .action-icon {
-  font-size:24px;
+.gift-action .action-icon{font-size:24px}
+
+/* REACTION PICKER */
+
+.reaction-picker{
+  position:absolute;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  gap:3px;
+  padding:8px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:35px;
+  background:rgba(15,20,39,.97);
+  box-shadow:0 8px 30px rgba(0,0,0,.45);
+  backdrop-filter:blur(15px);
+  animation:pickerIn .18s ease;
+}
+
+@keyframes pickerIn{
+  from{opacity:0;transform:translateY(8px) scale(.92)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.reaction-option{
+  width:39px;
+  height:43px;
+  border:0;
+  border-radius:20px;
+  background:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  color:white;
+  padding:2px;
+}
+
+.reaction-option:active{
+  background:rgba(255,255,255,.13);
+  transform:scale(1.18);
+}
+
+.reaction-option span:first-child{
+  font-size:23px;
+  line-height:1;
+}
+
+.reaction-option span:last-child{
+  font-size:7px;
+  font-weight:700;
 }
 
 /* CREATOR INFORMATION */
-  .video-info {
+
+.video-info{
   position:absolute;
   z-index:10;
   left:12px;
   right:65px;
-  bottom:50px;
+  bottom:25px;
   padding-bottom:5px;
   pointer-events:none;
 }
 
-.video-info a { pointer-events:auto; }
+.video-info a{pointer-events:auto}
 
-.creator {
+.creator{
   display:flex;
   align-items:center;
-  gap:9px;
-  margin-bottom:9px;
+  gap:8px;
+  margin-bottom:6px;
 }
 
-.creator-avatar {
-  width:38px;height:38px;
+.creator-avatar{
+  width:33px;
+  height:33px;
   flex-shrink:0;
   border-radius:50%;
-  border:2px solid white;
+  border:1.5px solid white;
   object-fit:cover;
   background:linear-gradient(135deg,var(--purple),var(--cyan));
 }
 
-.creator-initials {
+.creator-initials{
   display:grid;
   place-items:center;
   color:white;
-  font-size:11px;
+  font-size:10px;
   font-weight:900;
 }
 
-.creator-details { min-width:0; }
+.creator-details{min-width:0}
 
-.creator-name {
+.creator-name{
   display:block;
-  font-size:12px;
+  font-size:11px;
   font-weight:900;
   text-shadow:0 2px 6px #000;
   overflow-wrap:anywhere;
 }
 
-.creator-school {
-  margin-top:3px;
-  font-size:10px;
+.creator-school{
+  margin-top:2px;
+  font-size:9px;
   color:#e0e4f1;
   text-shadow:0 2px 6px #000;
 }
 
-.profile-pill {
+.profile-pill{
   margin-left:3px;
-  padding:5px 8px;
+  padding:4px 7px;
   border-radius:8px;
   border:1px solid rgba(255,255,255,.6);
   background:rgba(0,0,0,.3);
-  font-size:9px;
+  font-size:8px;
   font-weight:750;
   white-space:nowrap;
 }
 
 /* CAPTION */
 
-.caption {
-  font-size:12px;
-  line-height:1.5;
+.caption{
+  font-size:11px;
+  line-height:1.45;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
   text-shadow:0 2px 5px #000;
@@ -375,19 +390,19 @@ a { color:inherit;text-decoration:none; }
   overflow:hidden;
 }
 
-.caption-toggle {
+.caption-toggle{
   display:none;
-  margin-top:5px;
+  margin-top:4px;
   padding:0;
   border:0;
   background:transparent;
   color:var(--cyan);
-  font-size:11px;
+  font-size:10px;
   font-weight:800;
   text-shadow:0 2px 5px #000;
 }
 
-.video-info.expanded {
+.video-info.expanded{
   max-height:65dvh;
   overflow-y:auto;
   overflow-x:hidden;
@@ -397,32 +412,31 @@ a { color:inherit;text-decoration:none; }
   border-radius:14px;
   background:rgba(8,11,24,.92);
   backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
 }
 
-.video-info.expanded .caption {
+.video-info.expanded .caption{
   display:block;
   overflow:visible;
   -webkit-line-clamp:unset;
 }
 
-.video-info.expanded .caption-toggle {
+.video-info.expanded .caption-toggle{
   position:sticky;
   bottom:0;
   padding:7px 0 2px;
   background:rgba(8,11,24,.96);
 }
 
-.post-time {
-  font-size:9px;
+.post-time{
+  font-size:8px;
   color:#e1e5f1;
-  margin-top:7px;
+  margin-top:5px;
   text-shadow:0 2px 5px #000;
 }
 
-/* LOADING / EMPTY */
+/* LOADING AND EMPTY */
 
-.loading,.empty {
+.loading,.empty{
   min-height:60vh;
   display:flex;
   justify-content:center;
@@ -431,21 +445,21 @@ a { color:inherit;text-decoration:none; }
   text-align:center;
 }
 
-.empty-content { max-width:300px; }
-.empty-icon { font-size:40px;margin-bottom:12px; }
+.empty-content{max-width:300px}
+.empty-icon{font-size:40px;margin-bottom:12px}
 
-.empty h2 {
+.empty h2{
   font-size:18px;
   margin:0 0 9px;
 }
 
-.empty p,.loading {
+.empty p,.loading{
   color:var(--muted);
   font-size:12px;
   line-height:1.7;
 }
 
-.primary-btn {
+.primary-btn{
   border:0;
   border-radius:11px;
   padding:12px 16px;
@@ -455,32 +469,34 @@ a { color:inherit;text-decoration:none; }
   background:linear-gradient(120deg,var(--purple),var(--blue));
 }
 
-.primary-btn:disabled {
+.primary-btn:disabled{
   opacity:.55;
   cursor:not-allowed;
 }
 
 /* COMMENTS */
 
-.comments-backdrop {
+.comments-backdrop{
   position:fixed;
   z-index:35;
-  inset:48px 0 0;
+  inset:100px 0 0;
   background:rgba(0,0,0,.3);
   opacity:0;
   visibility:hidden;
   transition:opacity .22s,visibility .22s;
 }
 
-.comments-backdrop.open {
+.comments-backdrop.open{
   opacity:1;
   visibility:visible;
 }
 
-.comments-sheet {
+.comments-sheet{
   position:fixed;
   z-index:40;
-  left:0;right:0;bottom:0;
+  left:0;
+  right:0;
+  bottom:0;
   height:55dvh;
   max-height:620px;
   min-height:270px;
@@ -498,20 +514,21 @@ a { color:inherit;text-decoration:none; }
   transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility .28s;
 }
 
-.comments-sheet.open {
+.comments-sheet.open{
   transform:translateY(0);
   visibility:visible;
 }
 
-.sheet-handle {
-  width:41px;height:4px;
+.sheet-handle{
+  width:41px;
+  height:4px;
   flex-shrink:0;
   border-radius:9px;
   margin:9px auto 7px;
   background:#68718b;
 }
 
-.sheet-header {
+.sheet-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -520,18 +537,19 @@ a { color:inherit;text-decoration:none; }
   flex-shrink:0;
 }
 
-.sheet-heading {
+.sheet-heading{
   display:flex;
   align-items:center;
   gap:7px;
 }
 
-.sheet-title { font-size:14px;font-weight:850; }
-.comment-total { color:var(--cyan);font-size:12px;font-weight:800; }
-.sheet-subtitle { color:var(--muted);font-size:10px;margin-top:3px; }
+.sheet-title{font-size:14px;font-weight:850}
+.comment-total{color:var(--cyan);font-size:12px;font-weight:800}
+.sheet-subtitle{color:var(--muted);font-size:10px;margin-top:3px}
 
-.close-comments {
-  width:32px;height:32px;
+.close-comments{
+  width:32px;
+  height:32px;
   border-radius:50%;
   border:1px solid var(--border);
   color:white;
@@ -539,7 +557,7 @@ a { color:inherit;text-decoration:none; }
   font-size:21px;
 }
 
-.comments-list {
+.comments-list{
   flex:1;
   min-height:0;
   overflow-y:auto;
@@ -551,34 +569,35 @@ a { color:inherit;text-decoration:none; }
   gap:16px;
 }
 
-.comment { display:flex;gap:9px;align-items:flex-start; }
-.comment-avatar-link { flex-shrink:0; }
+.comment{display:flex;gap:9px;align-items:flex-start}
+.comment-avatar-link{flex-shrink:0}
 
-.comment-avatar {
-  width:34px;height:34px;
+.comment-avatar{
+  width:34px;
+  height:34px;
   border-radius:50%;
   border:1px solid rgba(255,255,255,.18);
   object-fit:cover;
   background:linear-gradient(135deg,var(--purple),var(--blue));
 }
 
-.comment-avatar.initials {
+.comment-avatar.initials{
   display:grid;
   place-items:center;
   font-size:10px;
   font-weight:850;
 }
 
-.comment-body { flex:1;min-width:0; }
+.comment-body{flex:1;min-width:0}
 
-.comment-name {
+.comment-name{
   display:block;
   font-size:11px;
   font-weight:850;
   margin-bottom:4px;
 }
 
-.comment-text {
+.comment-text{
   font-size:12px;
   line-height:1.55;
   white-space:pre-wrap;
@@ -586,9 +605,9 @@ a { color:inherit;text-decoration:none; }
   color:#e9ecf7;
 }
 
-.comment-time { font-size:9px;color:var(--muted);margin-top:5px; }
+.comment-time{font-size:9px;color:var(--muted);margin-top:5px}
 
-.comments-empty {
+.comments-empty{
   margin:auto;
   padding:20px 10px;
   text-align:center;
@@ -597,14 +616,14 @@ a { color:inherit;text-decoration:none; }
   color:var(--muted);
 }
 
-.comments-empty strong {
+.comments-empty strong{
   display:block;
   font-size:15px;
   color:white;
   margin-bottom:5px;
 }
 
-.comment-composer {
+.comment-composer{
   flex-shrink:0;
   display:flex;
   align-items:flex-end;
@@ -614,7 +633,7 @@ a { color:inherit;text-decoration:none; }
   background:#0b1020;
 }
 
-.comment-input {
+.comment-input{
   flex:1;
   min-width:0;
   min-height:39px;
@@ -631,12 +650,13 @@ a { color:inherit;text-decoration:none; }
   line-height:1.4;
 }
 
-.comment-input:focus { border-color:var(--purple); }
-.comment-input::placeholder { color:#939cb8; }
+.comment-input:focus{border-color:var(--purple)}
+.comment-input::placeholder{color:#939cb8}
 
-.send-comment {
+.send-comment{
   flex-shrink:0;
-  width:40px;height:39px;
+  width:40px;
+  height:39px;
   border:0;
   border-radius:50%;
   color:white;
@@ -645,11 +665,11 @@ a { color:inherit;text-decoration:none; }
   background:linear-gradient(135deg,var(--purple),var(--blue));
 }
 
-.send-comment:disabled { opacity:.45; }
+.send-comment:disabled{opacity:.45}
 
 /* UPLOAD AND GIFT MODALS */
 
-.overlay {
+.overlay{
   position:fixed;
   z-index:60;
   inset:0;
@@ -660,7 +680,7 @@ a { color:inherit;text-decoration:none; }
   background:rgba(0,0,0,.8);
 }
 
-.modal {
+.modal{
   width:min(100%,410px);
   max-height:88dvh;
   overflow-y:auto;
@@ -671,25 +691,25 @@ a { color:inherit;text-decoration:none; }
   box-shadow:0 20px 60px rgba(0,0,0,.4);
 }
 
-.modal-header {
+.modal-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:15px;
 }
 
-.modal-header h3 { font-size:15px;margin:0; }
+.modal-header h3{font-size:15px;margin:0}
 
-.modal-close {
+.modal-close{
   border:0;
   background:transparent;
   color:white;
   font-size:24px;
 }
 
-.field-label { font-size:11px;color:var(--muted); }
+.field-label{font-size:11px;color:var(--muted)}
 
-.field {
+.field{
   width:100%;
   margin:7px 0 12px;
   padding:11px;
@@ -701,16 +721,16 @@ a { color:inherit;text-decoration:none; }
   font-size:12px;
 }
 
-textarea.field { min-height:80px;resize:vertical; }
+textarea.field{min-height:80px;resize:vertical}
 
-.hint {
+.hint{
   font-size:10px;
   line-height:1.6;
   color:var(--muted);
   margin:0 0 12px;
 }
 
-.progress {
+.progress{
   height:4px;
   background:#252b43;
   border-radius:8px;
@@ -719,14 +739,14 @@ textarea.field { min-height:80px;resize:vertical; }
   margin:10px 0;
 }
 
-.progress-bar {
+.progress-bar{
   height:100%;
   width:0;
   background:var(--cyan);
   transition:width .2s;
 }
 
-.gift-recipient {
+.gift-recipient{
   display:flex;
   align-items:center;
   gap:10px;
@@ -737,32 +757,33 @@ textarea.field { min-height:80px;resize:vertical; }
   margin-bottom:13px;
 }
 
-.gift-recipient img,.gift-recipient .recipient-initials {
-  width:38px;height:38px;
+.gift-recipient img,.gift-recipient .recipient-initials{
+  width:38px;
+  height:38px;
   border-radius:50%;
   object-fit:cover;
   background:linear-gradient(135deg,var(--purple),var(--cyan));
 }
 
-.recipient-initials {
+.recipient-initials{
   display:grid;
   place-items:center;
   font-size:12px;
   font-weight:900;
 }
 
-.recipient-details { min-width:0; }
-.recipient-name { font-size:12px;font-weight:850; }
-.recipient-caption { font-size:10px;color:var(--muted);margin-top:3px; }
+.recipient-details{min-width:0}
+.recipient-name{font-size:12px;font-weight:850}
+.recipient-caption{font-size:10px;color:var(--muted);margin-top:3px}
 
-.gift-grid {
+.gift-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:9px;
   margin:12px 0 15px;
 }
 
-.gift-option {
+.gift-option{
   min-width:0;
   padding:12px 8px;
   border:1px solid var(--border);
@@ -773,24 +794,24 @@ textarea.field { min-height:80px;resize:vertical; }
   transition:.18s;
 }
 
-.gift-option.selected {
+.gift-option.selected{
   border-color:var(--cyan);
   background:rgba(39,217,242,.1);
   box-shadow:0 0 0 1px rgba(39,217,242,.2);
 }
 
-.gift-emoji { font-size:27px;display:block;margin-bottom:5px; }
-.gift-name { display:block;font-size:11px;font-weight:800; }
-.gift-price { display:block;font-size:10px;color:var(--cyan);margin-top:4px; }
+.gift-emoji{font-size:27px;display:block;margin-bottom:5px}
+.gift-name{display:block;font-size:11px;font-weight:800}
+.gift-price{display:block;font-size:10px;color:var(--cyan);margin-top:4px}
 
-.gift-note {
+.gift-note{
   font-size:10px;
   line-height:1.6;
   color:var(--muted);
   margin:0 0 12px;
 }
 
-.toast {
+.toast{
   position:fixed;
   z-index:100;
   left:50%;
@@ -807,39 +828,11 @@ textarea.field { min-height:80px;resize:vertical; }
   font-size:11px;
 }
 
-/* BOTTOM NAV */
+/* RESPONSIVE */
 
-.bottom-nav {
-  position:fixed;
-  z-index:25;
-  bottom:0;left:0;right:0;
-  height:calc(57px + env(safe-area-inset-bottom));
-  padding-bottom:env(safe-area-inset-bottom);
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  background:rgba(8,11,24,.98);
-  border-top:1px solid var(--border);
-}
-
-.nav-link {
-  min-width:45px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3px;
-  color:#969fba;
-  font-size:9px;
-}
-
-.nav-icon { font-size:20px;line-height:1.1; }
-.nav-link.active { color:var(--cyan); }
-
-@media (min-width:700px) {
-  .topbar { height:54px; }
-
-  .feed {
-    top:54px;
+@media(min-width:700px){
+  .feed{
+    top:100px;
     bottom:0;
     left:50%;
     right:auto;
@@ -849,65 +842,56 @@ textarea.field { min-height:80px;resize:vertical; }
     border-right:1px solid var(--border);
   }
 
-  .video-card { height:calc(100dvh - 54px); }
-  .comments-backdrop { inset:54px 0 0; }
+  .video-card{height:calc(100dvh - 100px)}
+  .comments-backdrop{inset:100px 0 0}
 
-  .comments-sheet {
+  .comments-sheet{
     left:50%;
     right:auto;
     width:min(100%,520px);
     transform:translate(-50%,105%);
   }
 
-  .comments-sheet.open { transform:translate(-50%,0); }
-  .bottom-nav { display:none; }
+  .comments-sheet.open{transform:translate(-50%,0)}
 }
 
-@media (max-width:380px) {
-  .actions {
+@media(max-width:380px){
+  .actions{
     right:5px;
-    bottom:100px;
+    bottom:95px;
     gap:7px;
     padding:7px 3px;
   }
 
-  .action { width:39px;min-height:39px; }
-  .action-icon { width:26px;height:26px;font-size:23px; }
-  .action-icon svg { width:23px;height:23px; }
-  .action-count { font-size:8px; }
-  .video-info { left:9px;right:57px; }
+  .action{width:39px;min-height:39px}
+  .action-icon{width:26px;height:26px;font-size:23px}
+  .action-icon svg{width:23px;height:23px}
+  .action-count{font-size:8px}
+  .video-info{left:9px;right:57px}
+  .reaction-option{width:35px}
+  .reaction-option span:first-child{font-size:21px}
 }
 
-@media (max-height:580px) {
-  .comments-sheet { height:62dvh; }
-  .actions { bottom:82px;gap:5px;padding:6px 3px; }
-  .action { min-height:35px; }
+@media(max-height:580px){
+  .comments-sheet{height:62dvh}
+  .actions{bottom:75px;gap:5px;padding:6px 3px}
+  .action{min-height:35px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <a class="brand" href="index.html">Campusora <span>Spotlight</span></a>
-
-  <div class="top-actions">
-    <button class="top-btn" id="refreshBtn">↻ Refresh</button>
-    <button class="top-btn upload" id="uploadBtn">＋ Upload</button>
-  </div>
-</header>
-
 <main class="feed" id="feed">
   <div class="loading">Loading your Spotlight feed…</div>
 </main>
-
-<nav class="bottom-nav">
-  <a class="nav-link" href="index.html"><span class="nav-icon">⌂</span>Home</a>
-  <a class="nav-link" href="explore.html"><span class="nav-icon">⌕</span>Explore</a>
-  <a class="nav-link active" href="spotlight.html"><span class="nav-icon">▶</span>Spotlight</a>
-  <a class="nav-link" href="communities.html"><span class="nav-icon">♧</span>Communities</a>
-  <a class="nav-link" href="messages.html"><span class="nav-icon">✉</span>Messages</a>
-</nav>
 
 <div class="comments-backdrop" id="commentsBackdrop"></div>
 
@@ -936,7 +920,7 @@ textarea.field { min-height:80px;resize:vertical; }
   </form>
 </section>
 
-<!-- VIDEO UPLOAD -->
+<!-- VIDEO UPLOAD MODAL -->
 
 <div class="overlay" id="uploadOverlay">
   <div class="modal">
@@ -969,7 +953,7 @@ textarea.field { min-height:80px;resize:vertical; }
   </div>
 </div>
 
-<!-- GIFT SELECTION -->
+<!-- GIFT MODAL -->
 
 <div class="overlay" id="giftOverlay">
   <div class="modal">
@@ -994,6 +978,8 @@ textarea.field { min-height:80px;resize:vertical; }
 
 <div class="toast" id="toast"></div>
 
+<script src="./shared-nav.js" defer></script>
+
 <script type="module">
 import { supabase } from './supabase.js';
 
@@ -1016,6 +1002,21 @@ let tapTimer = null;
 let lastTapTime = 0;
 let lastTapCard = null;
 
+let holdTimer = null;
+let holdButton = null;
+let suppressLikeClick = false;
+let activePicker = null;
+
+const REACTIONS = [
+  {id:'like',name:'Like',emoji:'👍'},
+  {id:'love',name:'Love',emoji:'❤️'},
+  {id:'care',name:'Care',emoji:'🤗'},
+  {id:'haha',name:'Haha',emoji:'😂'},
+  {id:'wow',name:'Wow',emoji:'😮'},
+  {id:'sad',name:'Sad',emoji:'😢'},
+  {id:'angry',name:'Angry',emoji:'😡'}
+];
+
 const GIFTS = [
   {id:'rose',name:'Rose',price:500,emoji:'🌹'},
   {id:'love',name:'Love',price:500,emoji:'❤️'},
@@ -1025,25 +1026,29 @@ const GIFTS = [
   {id:'premium_heart',name:'Premium Heart',price:5000,emoji:'💖'}
 ];
 
-function escapeHTML(value='') {
+function escapeHTML(value=''){
   return String(value).replace(/[&<>"']/g,ch=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
   })[ch]);
 }
 
-function initials(name='Campusora') {
+function initials(name='Campusora'){
   return name.trim().split(/\s+/).slice(0,2)
     .map(part=>part[0]||'').join('').toUpperCase()||'C';
 }
 
-function shortNumber(value=0) {
+function shortNumber(value=0){
   const n=Number(value)||0;
   if(n>=1000000)return (n/1000000).toFixed(1)+'M';
   if(n>=1000)return (n/1000).toFixed(1)+'K';
   return String(n);
-  }
+}
 
-function timeAgo(date) {
+function timeAgo(date){
   const difference=Date.now()-new Date(date).getTime();
   if(!Number.isFinite(difference))return '';
   if(difference<60000)return 'Just now';
@@ -1052,11 +1057,11 @@ function timeAgo(date) {
   return Math.floor(difference/86400000)+'d ago';
 }
 
-function profileURL(userId) {
+function profileURL(userId){
   return 'profile.html?id='+encodeURIComponent(userId);
 }
 
-function toast(message) {
+function toast(message){
   const element=$('toast');
   element.textContent=message;
   element.style.display='block';
@@ -1064,14 +1069,14 @@ function toast(message) {
   toast.timer=setTimeout(()=>element.style.display='none',3200);
 }
 
-async function getSession() {
+async function getSession(){
   const {data,error}=await supabase.auth.getSession();
   if(error)throw error;
   currentSession=data.session||null;
   currentUser=currentSession?.user||null;
 }
 
-function requireLogin() {
+function requireLogin(){
   if(currentUser)return true;
   toast('Please sign in to continue.');
   setTimeout(()=>location.href='index.html',1200);
@@ -1080,15 +1085,17 @@ function requireLogin() {
 
 /* LOAD VIDEOS */
 
-async function loadVideos() {
-  if(observer) {
+async function loadVideos(){
+  closeReactionPicker();
+
+  if(observer){
     observer.disconnect();
     observer=null;
   }
 
   feed.innerHTML='<div class="loading">Loading your Spotlight feed…</div>';
 
-  try {
+  try{
     const {data,error}=await supabase
       .from('spotlight_videos')
       .select('id,user_id,caption,video_url,thumbnail_url,institution_id,view_count,created_at')
@@ -1099,7 +1106,7 @@ async function loadVideos() {
 
     const rows=data||[];
 
-    if(!rows.length) {
+    if(!rows.length){
       feed.innerHTML=`
         <div class="empty">
           <div class="empty-content">
@@ -1122,12 +1129,12 @@ async function loadVideos() {
         .in('id',userIds),
 
       supabase.from('spotlight_likes')
-        .select('video_id')
+        .select('video_id,reaction')
         .in('video_id',videoIds),
 
       currentUser
         ? supabase.from('spotlight_likes')
-            .select('video_id')
+            .select('video_id,reaction')
             .eq('user_id',currentUser.id)
             .in('video_id',videoIds)
         : Promise.resolve({data:[],error:null})
@@ -1142,30 +1149,37 @@ async function loadVideos() {
     );
 
     const likeCounts=new Map();
+
     (likesResult.data||[]).forEach(like=>{
-      likeCounts.set(like.video_id,(likeCounts.get(like.video_id)||0)+1);
+      likeCounts.set(
+        like.video_id,
+        (likeCounts.get(like.video_id)||0)+1
+      );
     });
 
-    const myLikes=new Set((myLikesResult.data||[]).map(like=>like.video_id));
+    const myLikes=new Map(
+      (myLikesResult.data||[]).map(like=>[like.video_id,like.reaction||'like'])
+    );
 
     videos=rows.map(video=>({
       ...video,
       profile:profileMap.get(video.user_id)||{},
       likeCount:likeCounts.get(video.id)||0,
       commentCount:0,
+      reaction:myLikes.get(video.id)||null,
       liked:myLikes.has(video.id)
     }));
 
     renderVideos();
 
-    if(location.hash) {
+    if(location.hash){
       const requestedId=decodeURIComponent(location.hash.slice(1));
       const target=[...feed.querySelectorAll('.video-card')]
         .find(card=>card.dataset.videoId===requestedId);
       if(target)target.scrollIntoView({behavior:'smooth'});
     }
 
-  } catch(error) {
+  }catch(error){
     console.error('Spotlight load error:',error);
     feed.innerHTML=`
       <div class="empty">
@@ -1180,10 +1194,23 @@ async function loadVideos() {
   }
 }
 
+/* REACTION DISPLAY */
+
+function getReaction(reactionId){
+  return REACTIONS.find(item=>item.id===reactionId)||REACTIONS[0];
+}
+
+function reactionButtonContent(video){
+  if(video.reaction){
+    return getReaction(video.reaction).emoji;
+  }
+  return '👍';
+}
+
 /* RENDER VIDEOS */
 
-function renderVideos() {
-  if(observer) {
+function renderVideos(){
+  if(observer){
     observer.disconnect();
     observer=null;
   }
@@ -1200,6 +1227,7 @@ function renderVideos() {
 
     return `
       <article class="video-card" data-video-id="${escapeHTML(video.id)}">
+
         <video
           src="${escapeHTML(video.video_url)}"
           ${video.thumbnail_url?`poster="${escapeHTML(video.thumbnail_url)}"`:''}
@@ -1218,8 +1246,12 @@ function renderVideos() {
 
         <div class="actions">
 
-          <button class="action ${video.liked?'liked':''}" data-action="like" aria-label="Like video">
-            <span class="action-icon">${video.liked?'♥':'♡'}</span>
+          <button
+            class="action ${video.liked?'liked':''}"
+            data-action="like"
+            aria-label="${video.reaction?getReaction(video.reaction).name:'Like'} video"
+          >
+            <span class="action-icon">${reactionButtonContent(video)}</span>
             <span class="action-count like-count">${shortNumber(video.likeCount)}</span>
           </button>
 
@@ -1230,6 +1262,17 @@ function renderVideos() {
               </svg>
             </span>
             <span class="action-count comment-count">0</span>
+          </button>
+
+          <button class="action" data-action="share" aria-label="Share video">
+            <span class="action-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 16V3"/>
+                <path d="m7 8 5-5 5 5"/>
+                <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>
+              </svg>
+            </span>
+            <span class="action-count">Share</span>
           </button>
 
           <button class="action gift-action" data-action="gift" aria-label="Send a gift">
@@ -1246,17 +1289,6 @@ function renderVideos() {
             </span>
             <span class="action-count view-count">${shortNumber(video.view_count)}</span>
           </div>
-
-          <button class="action" data-action="share" aria-label="Share video">
-            <span class="action-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 16V3"/>
-                <path d="m7 8 5-5 5 5"/>
-                <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>
-              </svg>
-            </span>
-            <span class="action-count">Share</span>
-          </button>
 
         </div>
 
@@ -1283,6 +1315,7 @@ function renderVideos() {
 
           <div class="post-time">♫ Original video · ${timeAgo(video.created_at)}</div>
         </div>
+
       </article>`;
   }).join('');
 
@@ -1293,7 +1326,7 @@ function renderVideos() {
 
 /* CAPTION EXPANSION */
 
-function setupCaptionButtons() {
+function setupCaptionButtons(){
   feed.querySelectorAll('.video-card').forEach(card=>{
     const caption=card.querySelector('.caption');
     const button=card.querySelector('[data-caption-toggle]');
@@ -1301,11 +1334,8 @@ function setupCaptionButtons() {
     if(!caption||!button)return;
 
     requestAnimationFrame(()=>{
-      if(caption.scrollHeight>caption.clientHeight+2) {
-        button.style.display='block';
-      } else {
-        button.style.display='none';
-      }
+      button.style.display=
+        caption.scrollHeight>caption.clientHeight+2?'block':'none';
     });
   });
 }
@@ -1321,13 +1351,174 @@ feed.addEventListener('click',event=>{
   button.textContent=expanded?'See less':'See more';
 });
 
+/* REACTION PICKER */
+
+function closeReactionPicker(){
+  if(activePicker){
+    activePicker.remove();
+    activePicker=null;
+  }
+}
+
+function openReactionPicker(button){
+  closeReactionPicker();
+
+  const card=button.closest('.video-card');
+  if(!card)return;
+
+  const videoId=card.dataset.videoId;
+  const rect=button.getBoundingClientRect();
+
+  const picker=document.createElement('div');
+  picker.className='reaction-picker';
+
+  picker.innerHTML=REACTIONS.map(reaction=>`
+    <button
+      type="button"
+      class="reaction-option"
+      data-reaction="${reaction.id}"
+      aria-label="${reaction.name}"
+    >
+      <span>${reaction.emoji}</span>
+      <span>${reaction.name}</span>
+    </button>
+  `).join('');
+
+  card.appendChild(picker);
+
+  const cardRect=card.getBoundingClientRect();
+  const pickerWidth=picker.offsetWidth;
+  const pickerHeight=picker.offsetHeight;
+
+  let left=rect.left-cardRect.left-pickerWidth+rect.width+5;
+  let top=rect.top-cardRect.top-pickerHeight-7;
+
+  left=Math.max(5,Math.min(left,card.clientWidth-pickerWidth-5));
+  top=Math.max(45,top);
+
+  picker.style.left=left+'px';
+  picker.style.top=top+'px';
+
+  activePicker=picker;
+  suppressLikeClick=true;
+
+  setTimeout(()=>{suppressLikeClick=false},900);
+}
+
+/* PRESS AND HOLD TO OPEN REACTIONS */
+
+feed.addEventListener('pointerdown',event=>{
+  const button=event.target.closest('[data-action="like"]');
+  if(!button)return;
+
+  if(event.pointerType==='mouse'&&event.button!==0)return;
+
+  clearTimeout(holdTimer);
+  holdButton=button;
+
+  holdTimer=setTimeout(()=>{
+    if(holdButton===button){
+      openReactionPicker(button);
+      holdButton=null;
+    }
+  },480);
+});
+
+['pointerup','pointercancel','pointerleave'].forEach(type=>{
+  feed.addEventListener(type,()=>{
+    clearTimeout(holdTimer);
+    holdTimer=null;
+    holdButton=null;
+  });
+});
+
+document.addEventListener('click',event=>{
+  if(activePicker&&
+    !event.target.closest('.reaction-picker')&&
+    !event.target.closest('[data-action="like"]')){
+    closeReactionPicker();
+  }
+});
+
+/* SAVE SELECTED REACTION */
+
+async function setReaction(videoId,reactionId,button){
+  if(!requireLogin()||likeBusy.has(videoId))return;
+
+  const video=videos.find(item=>item.id===videoId);
+  if(!video||!button)return;
+
+  likeBusy.add(videoId);
+
+  const previousReaction=video.reaction;
+  const previousCount=video.likeCount;
+
+  const nextReaction=
+    previousReaction===reactionId?null:reactionId;
+
+  video.reaction=nextReaction;
+  video.liked=Boolean(nextReaction);
+
+  if(!previousReaction&&nextReaction){
+    video.likeCount++;
+  }else if(previousReaction&&!nextReaction){
+    video.likeCount=Math.max(0,video.likeCount-1);
+  }
+
+  button.classList.toggle('liked',video.liked);
+  button.querySelector('.action-icon').textContent=
+    nextReaction?getReaction(nextReaction).emoji:'👍';
+  button.querySelector('.like-count').textContent=
+    shortNumber(video.likeCount);
+
+  try{
+    if(nextReaction){
+      const {error}=await supabase
+        .from('spotlight_likes')
+        .upsert({
+          video_id:videoId,
+          user_id:currentUser.id,
+          reaction:nextReaction
+        },{
+          onConflict:'video_id,user_id'
+        });
+
+      if(error)throw error;
+    }else{
+      const {error}=await supabase
+        .from('spotlight_likes')
+        .delete()
+        .eq('video_id',videoId)
+        .eq('user_id',currentUser.id);
+
+      if(error)throw error;
+    }
+
+  }catch(error){
+    video.reaction=previousReaction;
+    video.liked=Boolean(previousReaction);
+    video.likeCount=previousCount;
+
+    button.classList.toggle('liked',video.liked);
+    button.querySelector('.action-icon').textContent=
+      previousReaction?getReaction(previousReaction).emoji:'👍';
+    button.querySelector('.like-count').textContent=
+      shortNumber(previousCount);
+
+    toast(error.message||'Could not update your reaction.');
+
+  }finally{
+    likeBusy.delete(videoId);
+  }
+}
+
 /* COMMENT COUNTS */
 
-async function loadCommentCounts() {
+async function loadCommentCounts(){
   const videoIds=videos.map(video=>video.id);
   if(!videoIds.length)return;
 
-  try {
+  try{
     const {data,error}=await supabase
       .from('spotlight_comments')
       .select('video_id')
@@ -1336,31 +1527,38 @@ async function loadCommentCounts() {
     if(error)throw error;
 
     const counts=new Map();
+
     (data||[]).forEach(comment=>{
-      counts.set(comment.video_id,(counts.get(comment.video_id)||0)+1);
+      counts.set(
+        comment.video_id,
+        (counts.get(comment.video_id)||0)+1
+      );
     });
 
     videos.forEach(video=>{
       video.commentCount=counts.get(video.id)||0;
+
       const card=[...feed.querySelectorAll('.video-card')]
         .find(item=>item.dataset.videoId===video.id);
+
       const count=card?.querySelector('.comment-count');
       if(count)count.textContent=shortNumber(video.commentCount);
     });
-  } catch(error) {
+
+  }catch(error){
     console.warn('Could not load comment counts:',error.message);
   }
 }
 
 /* AUTOPLAY AND VIEWS */
 
-function setupVideoObserver() {
+function setupVideoObserver(){
   observer=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
       const video=entry.target.querySelector('video');
       if(!video)return;
 
-      if(entry.isIntersecting&&entry.intersectionRatio>=.65) {
+      if(entry.isIntersecting&&entry.intersectionRatio>=.65){
         document.querySelectorAll('.video-card video').forEach(other=>{
           if(other!==video)other.pause();
         });
@@ -1371,7 +1569,8 @@ function setupVideoObserver() {
           entry.target.dataset.videoId,
           entry.target.querySelector('.view-count')
         );
-      } else {
+
+      }else{
         video.pause();
       }
     });
@@ -1380,23 +1579,25 @@ function setupVideoObserver() {
   feed.querySelectorAll('.video-card').forEach(card=>observer.observe(card));
 }
 
-async function recordView(videoId,counter) {
+async function recordView(videoId,counter){
   if(!currentUser||!videoId)return;
 
-  if(!viewedThisSession.has(videoId)) {
+  if(!viewedThisSession.has(videoId)){
     viewedThisSession.add(videoId);
 
-    try {
+    try{
       const {data,error}=await supabase.rpc(
         'campusora_increment_spotlight_view',
         {target_video_id:videoId}
       );
 
       if(error)throw error;
-      if(counter&&data!==null&&data!==undefined) {
+
+      if(counter&&data!==null&&data!==undefined){
         counter.textContent=shortNumber(data);
       }
-    } catch(error) {
+
+    }catch(error){
       viewedThisSession.delete(videoId);
       console.warn('Public view counter failed:',error.message);
     }
@@ -1405,63 +1606,23 @@ async function recordView(videoId,counter) {
   const rewardViewKey=`reward_view_${videoId}`;
   if(sessionStorage.getItem(rewardViewKey))return;
 
-  try {
+  try{
     const {error}=await supabase.rpc(
       'record_spotlight_video_view',
       {p_video_id:videoId}
     );
+
     if(error)throw error;
     sessionStorage.setItem(rewardViewKey,'true');
-  } catch(error) {
+
+  }catch(error){
     console.warn('Creator Rewards tracking failed:',error.message);
-  }
-}
-
-/* LIKE / UNLIKE */
-
-async function toggleLike(videoId,button) {
-  if(!requireLogin()||likeBusy.has(videoId))return;
-
-  const video=videos.find(item=>item.id===videoId);
-  if(!video||!button)return;
-
-  likeBusy.add(videoId);
-
-  const previousLiked=video.liked;
-  const previousCount=video.likeCount;
-
-  video.liked=!previousLiked;
-  video.likeCount=Math.max(0,previousCount+(previousLiked?-1:1));
-
-  button.classList.toggle('liked',video.liked);
-  button.querySelector('.action-icon').textContent=video.liked?'♥':'♡';
-  button.querySelector('.like-count').textContent=shortNumber(video.likeCount);
-
-  try {
-    if(previousLiked) {
-      const {error}=await supabase.from('spotlight_likes')
-        .delete().eq('video_id',videoId).eq('user_id',currentUser.id);
-      if(error)throw error;
-    } else {
-      const {error}=await supabase.from('spotlight_likes')
-        .insert({video_id:videoId,user_id:currentUser.id});
-      if(error)throw error;
-    }
-  } catch(error) {
-    video.liked=previousLiked;
-    video.likeCount=previousCount;
-    button.classList.toggle('liked',video.liked);
-    button.querySelector('.action-icon').textContent=video.liked?'♥':'♡';
-    button.querySelector('.like-count').textContent=shortNumber(video.likeCount);
-    toast(error.message||'Could not update your like.');
-  } finally {
-    likeBusy.delete(videoId);
   }
 }
 
 /* PLAY / PAUSE */
 
-function showPlayIndicator(card,playing) {
+function showPlayIndicator(card,playing){
   const indicator=card.querySelector('.play-indicator');
   if(!indicator)return;
 
@@ -1471,51 +1632,55 @@ function showPlayIndicator(card,playing) {
   indicator.classList.add('show');
 }
 
-async function toggleVideoPlayback(card) {
+async function toggleVideoPlayback(card){
   if(commentsOpen)return;
 
   const video=card.querySelector('video');
   if(!video)return;
 
-  if(video.paused) {
-    try {
+  if(video.paused){
+    try{
       await video.play();
       showPlayIndicator(card,true);
-    } catch(error) {
+    }catch(error){
       toast('Tap the sound button if you want to hear the video.');
     }
-  } else {
+  }else{
     video.pause();
     showPlayIndicator(card,false);
   }
 }
 
-/* DOUBLE TAP TO LIKE */
+/* DOUBLE TAP TO REACT */
 
-async function handleVideoDoubleTap(card) {
+async function handleVideoDoubleTap(card){
   const video=videos.find(item=>item.id===card.dataset.videoId);
   const button=card.querySelector('[data-action="like"]');
-  if(video&&button&&!video.liked)await toggleLike(video.id,button);
+
+  if(video&&button&&!video.reaction){
+    await setReaction(video.id,'like',button);
+  }
 }
 
-function isInteractiveSurface(target) {
+function isInteractiveSurface(target){
   return Boolean(
     target.closest('button')||
     target.closest('a')||
     target.closest('.actions')||
     target.closest('.video-info')||
-    target.closest('.video-top')
+    target.closest('.video-top')||
+    target.closest('.reaction-picker')
   );
 }
 
-function handleVideoSurfaceTap(event) {
+function handleVideoSurfaceTap(event){
   const card=event.target.closest('.video-card');
   if(!card||isInteractiveSurface(event.target))return;
 
   const now=Date.now();
   const isDoubleTap=lastTapCard===card&&now-lastTapTime<300;
 
-  if(isDoubleTap) {
+  if(isDoubleTap){
     clearTimeout(tapTimer);
     tapTimer=null;
     lastTapTime=0;
@@ -1554,9 +1719,10 @@ feed.addEventListener('dblclick',event=>{
 
 /* COMMENTS PANEL */
 
-async function openComments(videoId) {
+async function openComments(videoId){
   if(!requireLogin())return;
 
+  closeReactionPicker();
   clearTimeout(tapTimer);
   tapTimer=null;
 
@@ -1565,9 +1731,12 @@ async function openComments(videoId) {
 
   const card=[...feed.querySelectorAll('.video-card')]
     .find(item=>item.dataset.videoId===videoId);
+
   card?.querySelector('video')?.pause();
 
-  $('commentList').innerHTML='<div class="comments-empty">Loading comments…</div>';
+  $('commentList').innerHTML=
+    '<div class="comments-empty">Loading comments…</div>';
+
   $('commentCount').textContent='(…)';
   $('commentText').value='';
   $('commentText').style.height='39px';
@@ -1578,7 +1747,7 @@ async function openComments(videoId) {
   await loadComments(videoId);
 }
 
-function closeComments() {
+function closeComments(){
   if(!commentsOpen)return;
 
   commentsOpen=false;
@@ -1588,16 +1757,17 @@ function closeComments() {
   $('commentsSheet').classList.remove('open');
 
   const cards=[...feed.querySelectorAll('.video-card')];
+
   const visibleCard=cards.find(item=>{
     const rect=item.getBoundingClientRect();
-    return rect.top<window.innerHeight&&rect.bottom>48;
+    return rect.top<window.innerHeight&&rect.bottom>100;
   });
 
   visibleCard?.querySelector('video')?.play().catch(()=>{});
 }
 
-async function loadComments(videoId) {
-  try {
+async function loadComments(videoId){
+  try{
     const {data,error}=await supabase
       .from('spotlight_comments')
       .select('id,user_id,content,created_at')
@@ -1610,7 +1780,7 @@ async function loadComments(videoId) {
     const comments=data||[];
     $('commentCount').textContent=`(${comments.length})`;
 
-    if(!comments.length) {
+    if(!comments.length){
       $('commentList').innerHTML=`
         <div class="comments-empty">
           <strong>💬 Start the conversation</strong>
@@ -1628,7 +1798,9 @@ async function loadComments(videoId) {
 
     if(profileError)throw profileError;
 
-    const profileMap=new Map((profiles||[]).map(profile=>[profile.id,profile]));
+    const profileMap=new Map(
+      (profiles||[]).map(profile=>[profile.id,profile])
+    );
 
     $('commentList').innerHTML=comments.map(comment=>{
       const profile=profileMap.get(comment.user_id)||{};
@@ -1652,8 +1824,9 @@ async function loadComments(videoId) {
 
     $('commentList').scrollTop=$('commentList').scrollHeight;
 
-  } catch(error) {
+  }catch(error){
     console.error('Comments error:',error);
+
     $('commentList').innerHTML=`
       <div class="comments-empty">
         <strong>Couldn't load comments</strong>
@@ -1662,8 +1835,9 @@ async function loadComments(videoId) {
   }
 }
 
-async function submitComment(event) {
+async function submitComment(event){
   event.preventDefault();
+
   if(!requireLogin()||!commentsVideoId)return;
 
   const content=$('commentText').value.trim();
@@ -1671,9 +1845,10 @@ async function submitComment(event) {
 
   const videoId=commentsVideoId;
   const button=$('sendComment');
+
   button.disabled=true;
 
-  try {
+  try{
     const {error}=await supabase.from('spotlight_comments').insert({
       video_id:videoId,
       user_id:currentUser.id,
@@ -1688,46 +1863,46 @@ async function submitComment(event) {
     await loadComments(videoId);
     await loadCommentCounts();
 
-  } catch(error) {
+  }catch(error){
     toast(error.message||'Could not post your comment.');
-  } finally {
+  }finally{
     button.disabled=false;
   }
 }
 
 /* SHARE VIDEO */
 
-async function shareVideo(videoId) {
+async function shareVideo(videoId){
   const url=new URL('spotlight.html',location.href);
   url.hash=videoId;
 
-  try {
-    if(navigator.share) {
+  try{
+    if(navigator.share){
       await navigator.share({
         title:'Campusora Spotlight',
         text:'Watch this video on Campusora!',
         url:url.href
       });
-    } else if(navigator.clipboard?.writeText) {
+    }else if(navigator.clipboard?.writeText){
       await navigator.clipboard.writeText(url.href);
       toast('Video link copied! Share it with your friends.');
-    } else {
+    }else{
       prompt('Copy this video link:',url.href);
     }
-  } catch(error) {
+  }catch(error){
     if(error.name!=='AbortError')toast('Could not share the video.');
   }
 }
 
 /* GIFT SYSTEM */
 
-function openGift(videoId) {
+function openGift(videoId){
   if(!requireLogin())return;
 
   const video=videos.find(item=>item.id===videoId);
   if(!video)return;
 
-  if(video.user_id===currentUser.id) {
+  if(video.user_id===currentUser.id){
     toast('You cannot send a gift to yourself.');
     return;
   }
@@ -1778,16 +1953,17 @@ $('giftGrid').addEventListener('click',event=>{
     button.classList.toggle('selected',button===option);
   });
 
-  if(selectedGift) {
+  if(selectedGift){
     $('giftStatus').textContent=
       `${selectedGift.name} selected · ₦${selectedGift.price.toLocaleString('en-NG')}`;
+
     $('sendGiftBtn').disabled=false;
     $('sendGiftBtn').textContent=
       `Pay ₦${selectedGift.price.toLocaleString('en-NG')}`;
   }
 });
 
-async function sendGiftPayment() {
+async function sendGiftPayment(){
   if(!requireLogin()||!giftRecipient||!selectedGift)return;
 
   const button=$('sendGiftBtn');
@@ -1795,12 +1971,14 @@ async function sendGiftPayment() {
   button.textContent='Preparing payment…';
   $('giftStatus').textContent='Connecting securely to Paystack…';
 
-  try {
+  try{
     const {data,error}=await supabase.auth.getSession();
     if(error)throw error;
 
     const token=data.session?.access_token;
-    if(!token)throw new Error('Your login session has expired. Please sign in again.');
+    if(!token){
+      throw new Error('Your login session has expired. Please sign in again.');
+    }
 
     const response=await fetch('/api/gifts/initialize',{
       method:'POST',
@@ -1816,25 +1994,28 @@ async function sendGiftPayment() {
 
     const result=await response.json();
 
-    if(!response.ok||!result.success||!result.authorization_url) {
+    if(!response.ok||!result.success||!result.authorization_url){
       throw new Error(result.error||'Could not start gift payment.');
     }
 
     $('giftStatus').textContent='Opening secure Paystack checkout…';
     location.href=result.authorization_url;
 
-  } catch(error) {
+  }catch(error){
     console.error('Gift checkout error:',error);
-    $('giftStatus').textContent=error.message||'Gift payment could not start.';
+
+    $('giftStatus').textContent=
+      error.message||'Gift payment could not start.';
+
     button.disabled=false;
     button.textContent='Try again';
     toast(error.message||'Could not start gift payment.');
   }
 }
 
-/* OPEN UPLOAD DIALOG */
+/* UPLOAD FUNCTIONALITY */
 
-function openUpload() {
+function openUpload(){
   if(!requireLogin())return;
 
   $('uploadForm').reset();
@@ -1844,16 +2025,14 @@ function openUpload() {
   $('uploadOverlay').style.display='flex';
 }
 
-/* UPLOAD ORIGINAL VIDEO */
-
-async function uploadVideo(event) {
+async function uploadVideo(event){
   event.preventDefault();
   if(!requireLogin())return;
 
   const file=$('videoFile').files[0];
   const caption=$('caption').value.trim();
 
-  if(!file) {
+  if(!file){
     toast('Choose a video first.');
     return;
   }
@@ -1864,12 +2043,12 @@ async function uploadVideo(event) {
     'video/quicktime':'mov'
   };
 
-  if(!extensions[file.type]) {
+  if(!extensions[file.type]){
     toast('Please choose an MP4, WebM or MOV video.');
     return;
   }
 
-  if(file.size>50*1024*1024) {
+  if(file.size>50*1024*1024){
     toast('The video must be 50 MB or smaller.');
     return;
   }
@@ -1886,7 +2065,7 @@ async function uploadVideo(event) {
 
   let uploadedPath=null;
 
-  try {
+  try{
     const {data,error}=await supabase.storage
       .from('campusora-videos')
       .upload(path,file,{
@@ -1924,17 +2103,21 @@ async function uploadVideo(event) {
     await loadVideos();
     feed.scrollTo({top:0,behavior:'smooth'});
 
-  } catch(error) {
+  }catch(error){
     console.error('Upload failed:',error);
 
-    if(uploadedPath) {
-      await supabase.storage.from('campusora-videos').remove([uploadedPath]);
+    if(uploadedPath){
+      await supabase.storage
+        .from('campusora-videos')
+        .remove([uploadedPath]);
     }
 
-    $('uploadStatus').textContent=error.message||'Upload failed.';
+    $('uploadStatus').textContent=
+      error.message||'Upload failed.';
+
     toast(error.message||'Could not publish your video.');
 
-  } finally {
+  }finally{
     button.disabled=false;
   }
 }
@@ -1942,6 +2125,23 @@ async function uploadVideo(event) {
 /* VIDEO ACTION BUTTONS */
 
 feed.addEventListener('click',async event=>{
+  const reactionOption=event.target.closest('[data-reaction]');
+
+  if(reactionOption){
+    const picker=reactionOption.closest('.reaction-picker');
+    const card=reactionOption.closest('.video-card');
+    const button=card?.querySelector('[data-action="like"]');
+
+    if(card&&button){
+      const videoId=card.dataset.videoId;
+      const reactionId=reactionOption.dataset.reaction;
+
+      closeReactionPicker();
+      await setReaction(videoId,reactionId,button);
+    }
+    return;
+  }
+
   const button=event.target.closest('[data-action]');
   if(!button)return;
 
@@ -1951,18 +2151,39 @@ feed.addEventListener('click',async event=>{
   const videoId=card.dataset.videoId;
   const action=button.dataset.action;
 
-  if(action==='like')await toggleLike(videoId,button);
+  if(action==='like'){
+    if(suppressLikeClick){
+      suppressLikeClick=false;
+      return;
+    }
+
+    closeReactionPicker();
+
+    const video=videos.find(item=>item.id===videoId);
+    const nextReaction=video?.reaction==='like'?null:'like';
+
+    await setReaction(videoId,nextReaction||'like',button);
+
+    if(video?.reaction==='like'){
+      await setReaction(videoId,'like',button);
+    }
+  }
+
   if(action==='comments')await openComments(videoId);
   if(action==='share')await shareVideo(videoId);
   if(action==='gift')openGift(videoId);
 
-  if(action==='sound') {
+  if(action==='sound'){
     const video=card.querySelector('video');
     if(!video)return;
 
     video.muted=!video.muted;
     button.textContent=video.muted?'🔇':'🔊';
-    button.setAttribute('aria-label',video.muted?'Turn sound on':'Mute video');
+
+    button.setAttribute(
+      'aria-label',
+      video.muted?'Turn sound on':'Mute video'
+    );
 
     if(!video.muted)video.play().catch(()=>{});
   }
@@ -1970,8 +2191,6 @@ feed.addEventListener('click',async event=>{
 
 /* BUTTONS AND FORMS */
 
-$('uploadBtn').addEventListener('click',openUpload);
-$('refreshBtn').addEventListener('click',loadVideos);
 $('uploadForm').addEventListener('submit',uploadVideo);
 $('commentForm').addEventListener('submit',submitComment);
 $('sendGiftBtn').addEventListener('click',sendGiftPayment);
@@ -1994,8 +2213,9 @@ $('commentText').addEventListener('input',event=>{
 /* KEYBOARD */
 
 document.addEventListener('keydown',event=>{
-  if(event.key==='Escape') {
+  if(event.key==='Escape'){
     closeComments();
+    closeReactionPicker();
     $('uploadOverlay').style.display='none';
     $('giftOverlay').style.display='none';
   }
@@ -2023,13 +2243,15 @@ $('commentsSheet').addEventListener('touchend',event=>{
     horizontalDistance<70&&
     $('commentList').scrollTop<=0&&
     !event.target.closest('textarea')
-  )closeComments();
+  ){
+    closeComments();
+  }
 },{passive:true});
 
 /* START */
 
-async function init() {
-  try {
+async function init(){
+  try{
     await getSession();
     await loadVideos();
 
@@ -2039,7 +2261,7 @@ async function init() {
       loadVideos();
     });
 
-  } catch(error) {
+  }catch(error){
     console.error('Campusora connection error:',error);
 
     feed.innerHTML=`
@@ -2060,4 +2282,4 @@ init();
 </script>
 
 </body>
-</html>
+  </html>
