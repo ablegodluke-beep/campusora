@@ -3,7 +3,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Discover People | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Discover People | Campusora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
 :root {
   --bg:#080b18;
@@ -47,8 +48,6 @@ button {
   max-width:760px;
   margin:auto;
 }
-
-/* TOP AREA */
 
 .topbar {
   display:flex;
@@ -98,8 +97,6 @@ button {
   border-color:var(--cyan);
 }
 
-/* INTRO */
-
 .intro {
   padding:25px 0 20px;
 }
@@ -146,8 +143,6 @@ button {
   font-size:10px;
 }
 
-/* SECTION */
-
 .section-heading {
   display:flex;
   align-items:center;
@@ -165,8 +160,6 @@ button {
   color:var(--muted);
   font-size:10px;
 }
-
-/* PEOPLE */
 
 .people-list {
   display:grid;
@@ -300,8 +293,6 @@ button {
   color:var(--cyan);
 }
 
-/* BUTTONS */
-
 .actions {
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -345,8 +336,6 @@ button {
   opacity:.6;
   cursor:wait;
 }
-
-/* STATUS */
 
 .status {
   grid-column:1/-1;
@@ -459,46 +448,40 @@ button {
     transition-duration:.01ms!important;
   }
 }
-</style></head><body><main class="app">  <header class="topbar"><div class="brand">
-  <img src="./campusora-logo.png" alt="Campusora">
-  <div class="brand-name">Campus<span>ora</span></div>
-</div>
-
-<a class="skip-btn" href="./index.html">
-  Skip →
-</a>
-
-  </header>  <section class="intro"><h1>Find your people on <span>Campusora</span> ✨</h1>
-
-<p>
-  Follow students, alumni and other members to start building
-  your campus community. You can also message people directly.
-</p>
-
-<div class="step-indicator">
-  <span class="step active"></span>
-  <span class="step active"></span>
-  <span class="step active"></span>
-  <span class="step-label">Almost there · Discover people</span>
-</div>
-
-  </section>  <div id="messageBox" class="message-box" role="status" aria-live="polite"></div>  <div class="section-heading">
-    <h2>People to connect with</h2>
-    <span>Follow the people you know</span>
-  </div>  <section class="people-list" id="peopleList">
-    <div class="status">
-      <span class="status-icon">✦</span>
-      Finding people across Campusora...
-    </div>
-  </section>  <section class="finish-area">
-    <p>
-      You're ready to explore Campusora. You can always discover
-      and follow more people later.
-    </p><a href="./index.html" class="finish-btn">
-  Continue to Home Feed →
-</a>
-
-  </section></main><script type="module">
+</style></head><body>
+<main class="app"><header class="topbar">
+  <div class="brand">
+    <img src="./campusora-logo.png" alt="Campusora">
+    <div class="brand-name">Campus<span>ora</span></div>
+  </div>  <a class="skip-btn" href="./index.html">
+    Skip →
+  </a>
+</header><section class="intro">
+  <h1>Find your people on <span>Campusora</span> ✨</h1>  <p>
+    Follow students, alumni and other members to start building
+    your campus community. You can also message people directly.
+  </p>  <div class="step-indicator">
+    <span class="step active"></span>
+    <span class="step active"></span>
+    <span class="step active"></span>
+    <span class="step-label">Almost there · Discover people</span>
+  </div>
+</section><div id="messageBox" class="message-box" role="status" aria-live="polite"></div><div class="section-heading">
+  <h2>People to connect with</h2>
+  <span>Follow the people you know</span>
+</div><section class="people-list" id="peopleList">
+  <div class="status">
+    <span class="status-icon">✦</span>
+    Finding people across Campusora...
+  </div>
+</section><section class="finish-area">
+  <p>
+    You're ready to explore Campusora. You can always discover
+    and follow more people later.
+  </p>  <a href="./index.html" class="finish-btn">
+    Continue to Home Feed →
+  </a>
+</section></main><script type="module">
 import { supabase } from './supabase.js';
 
 const peopleList = document.getElementById('peopleList');
@@ -509,7 +492,9 @@ let profiles = [];
 let followingIds = new Set();
 let busyIds = new Set();
 
-const FEATURED_USERNAME = 'ablegod';
+// The official Campusora account is always featured first.
+// Keep its username as "campusora" even if its display name changes.
+const FEATURED_USERNAME = 'campusora';
 
 function escapeHTML(value = '') {
   return String(value).replace(/[&<>"']/g, char => ({
@@ -589,7 +574,7 @@ function createPersonCard(profile,featured=false) {
   card.className = 'person-card' + (featured ? ' featured' : '');
 
   const featuredLabel = featured
-    ? '<div class="featured-label">✦ Campusora community profile</div>'
+    ? '<div class="featured-label">✦ Official Campusora Profile</div>'
     : '';
 
   card.innerHTML = `
@@ -703,7 +688,7 @@ async function loadPeople() {
       (follows || []).map(row => row.following_id)
     );
 
-    // Load the featured Campusora profile first.
+    // Load the official Campusora profile first.
     let featuredProfile = null;
 
     const { data:featuredData,error:featuredError } = await supabase
@@ -760,7 +745,7 @@ async function loadPeople() {
 
     if (!featuredProfile) {
       showMessage(
-        'Your featured profile could not be found. Please check its username.',
+        'The official Campusora profile could not be found. Check that its username is campusora.',
         'error'
       );
     }
@@ -805,7 +790,7 @@ async function followMember(profileId) {
 
     followingIds.add(profileId);
 
-    // Keep the featured profile visible after following.
+    // Keep the official Campusora profile visible after following.
     const profile = profiles.find(item => item.id === profileId);
 
     const isFeatured = profile &&
@@ -842,4 +827,4 @@ peopleList.addEventListener('click',event => {
 
 loadPeople();
 </script></body>
-  </html>
+</html>
