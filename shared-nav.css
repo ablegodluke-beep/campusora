@@ -560,80 +560,192 @@ pointer-events: none;
 .campusora-nav-badge[hidden] {
 display: none !important;
   }
-/* CAMPUSORA HEADER SIZE ADJUSTMENTS */
+/* CAMPUSORA UNIFIED HEADER */
 
-
-/* Show the logo symbol without the wordmark underneath */
-.campusora-brand img {
-width: 48px !important;
-height: 48px !important;
-object-fit: contain !important;
-object-position: center top !important;
-clip-path: inset(0 0 42% 0);
-margin-bottom: -20px;
-display: block;
-flex-shrink: 0;
+/* Keep branding and navigation visually connected */
+body.has-shared-nav {
+  padding-top: 88px !important;
 }
 
-/* Written Campusora immediately beside the symbol */
+.campusora-topnav {
+  background: rgba(8,11,24,.98);
+  border-bottom: 1px solid rgba(133,88,255,.22);
+}
+
+/* BRANDING ROW */
+.campusora-topnav-brandrow {
+  min-height: 52px;
+  padding: 2px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* LOGO AND NAME */
 .campusora-brand {
-display: flex;
-align-items: center;
-gap: 5px;
-white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.campusora-brand-name {
-font-size: 19px;
-font-weight: 850;
-white-space: nowrap;
-}
-
-/* Smaller search bar on desktop */
-.campusora-header-search {
-width: 150px !important;
-max-width: 150px !important;
-min-width: 0 !important;
-flex: 0 1 150px !important;
-margin-left: auto;
-}
-
-/* Smaller header on phones */
-@media (max-width: 760px) {
 .campusora-brand img {
-width: 42px !important;
-height: 42px !important;
-margin-bottom: -18px;
+  width: 58px !important;
+  height: 58px !important;
+  object-fit: contain !important;
+  object-position: top center !important;
+  clip-path: inset(0 0 40% 0);
+  margin-bottom: -18px;
+  display: block;
+  flex-shrink: 0;
 }
 
 .campusora-brand-name {
-font-size: 15px;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -.7px;
+  white-space: nowrap;
+  margin-left: -2px;
 }
 
+/* SLIM SEARCH */
 .campusora-header-search {
-width: 100px !important;
-max-width: 105px !important;
-min-width: 75px !important;
-flex: 0 1 100px !important;
-}
-}
-
-/* Very small phones */
-@media (max-width: 370px) {
-.campusora-brand img {
-width: 36px !important;
-height: 36px !important;
-margin-bottom: -15px;
+  width: 175px !important;
+  max-width: 175px !important;
+  min-width: 0 !important;
+  flex: 0 1 175px !important;
+  margin-left: auto;
 }
 
-.campusora-brand-name {
-font-size: 13px;
+.campusora-header-search-form {
+  height: 27px;
+  padding: 0 9px;
+  gap: 6px;
+  border-radius: 16px;
 }
 
-.campusora-header-search {
-width: 85px !important;
-max-width: 90px !important;
-min-width: 70px !important;
-flex-basis: 85px !important;
+.campusora-header-search-icon,
+.campusora-header-search-icon svg {
+  width: 14px;
+  height: 14px;
 }
+
+.campusora-header-search-input {
+  font-size: 11px;
 }
+
+/* TAGLINE */
+.campusora-tagline {
+  flex-shrink: 0;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+/* NAVIGATION CONNECTED TO BRANDING */
+.campusora-mainnav {
+  height: 36px;
+  padding: 0 8px;
+  border-top: 1px solid rgba(255,255,255,.045);
+  background: transparent;
+}
+
+.campusora-nav-item {
+  height: 34px;
+}
+
+/* PHONE LAYOUT */
+@media(max-width:760px) {
+
+  body.has-shared-nav {
+    padding-top: 84px !important;
+  }
+
+  .campusora-topnav-brandrow {
+    min-height: 48px;
+    padding: 2px 9px;
+    gap: 7px;
+  }
+
+  .campusora-brand {
+    gap: 2px;
+  }
+
+  .campusora-brand img {
+    width: 50px !important;
+    height: 50px !important;
+    margin-bottom: -16px;
+  }
+
+  .campusora-brand-name {
+    font-size: 15px;
+    margin-left: -2px;
+  }
+
+  .campusora-header-search {
+    width: 105px !important;
+    max-width: 105px !important;
+    min-width: 75px !important;
+    flex: 0 1 105px !important;
+  }
+
+  .campusora-header-search-form {
+    height: 26px;
+    padding: 0 7px;
+    gap: 4px;
+  }
+
+  .campusora-header-search-input {
+    font-size: 10px;
+  }
+
+  .campusora-tagline {
+    max-width: 82px;
+    white-space: normal;
+    text-align: right;
+    font-size: 7px;
+    line-height: 1.3;
+  }
+
+  .campusora-mainnav {
+    height: 36px;
+    padding: 0 5px;
+    gap: 2px;
+  }
+
+  .campusora-nav-item {
+    height: 33px;
+  }
+}
+
+/* VERY SMALL PHONES */
+@media(max-width:370px) {
+
+  .campusora-topnav-brandrow {
+    padding-left: 7px;
+    padding-right: 7px;
+    gap: 5px;
+  }
+
+  .campusora-brand img {
+    width: 45px !important;
+    height: 45px !important;
+    margin-bottom: -14px;
+  }
+
+  .campusora-brand-name {
+    font-size: 13px;
+  }
+
+  .campusora-header-search {
+    width: 82px !important;
+    max-width: 82px !important;
+    min-width: 68px !important;
+    flex-basis: 82px !important;
+  }
+
+  .campusora-tagline {
+    max-width: 70px;
+    font-size: 7px;
+  }
+  }
