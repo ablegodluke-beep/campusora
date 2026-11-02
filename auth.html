@@ -40,12 +40,10 @@ body {
   justify-content: center;
   padding: 24px;
   overflow: hidden;
-
   background:
     radial-gradient(circle at 10% 10%, #29164e 0, transparent 40%),
     radial-gradient(circle at 90% 90%, #102c48 0, transparent 40%),
     var(--bg);
-
   transition: opacity .7s ease, visibility .7s ease;
 }
 
@@ -55,37 +53,28 @@ body {
   pointer-events: none;
 }
 
-/* LOGO DROP, SPIN AND STAY */
+/* LOGO */
 
 .splash-logo {
   display: block;
   width: min(230px, 68vw);
   max-height: 125px;
   object-fit: contain;
-
   background: transparent;
   border: 0;
   box-shadow: none;
-
-  /* Blend the logo's dark background */
-  mix-blend-mode: screen;
-
   opacity: 0;
   transform: translateY(-100vh);
-
   animation: campusoraIntro 7.5s cubic-bezier(.2,.75,.25,1) forwards;
 }
 
 /*
-  TOTAL: 7.5 SECONDS
-
   0–1.5 seconds: Logo drops.
   1.5–4.5 seconds: Logo spins.
   4.5–7.5 seconds: Logo stays still.
 */
 
 @keyframes campusoraIntro {
-
   0% {
     opacity: 0;
     transform: translateY(-100vh) rotate(0deg);
@@ -149,12 +138,9 @@ body {
   max-height: 85px;
   object-fit: contain;
   margin: 0 auto;
-
   background: transparent;
   border: 0;
   box-shadow: none;
-
-  mix-blend-mode: screen;
 }
 
 .brand p {
@@ -500,8 +486,11 @@ id="splashLogo"
   <p class="splash-tagline">
     Connect with students across campuses
   </p></div><!-- REGISTRATION AND LOGIN --><main class="page" id="mainPage">  <div class="container"><header class="brand">
+
   <img src="./campusora-logo.png" alt="Campusora">
+
   <p>Connect with students across campuses</p>
+
 </header>
 
 <section class="card">
@@ -531,6 +520,7 @@ id="splashLogo"
     <div id="signupFields">
 
       <div class="field">
+
         <label for="fullName">Full name</label>
 
         <input
@@ -541,9 +531,11 @@ id="splashLogo"
           maxlength="80"
           required
         >
+
       </div>
 
       <div class="field">
+
         <label for="username">Username</label>
 
         <input
@@ -557,6 +549,7 @@ id="splashLogo"
           title="Use letters, numbers and underscores only."
           required
         >
+
       </div>
 
       <div class="field" id="schoolField">
@@ -693,22 +686,13 @@ id="splashLogo"
 </section>
 
   </div></main><script type="module">
+
 import { supabase } from './supabase.js';
 
 /* OPENING ANIMATION */
 
 const splash = document.getElementById('splash');
 const mainPage = document.getElementById('mainPage');
-
-/*
-  The logo animation runs for 7.5 seconds:
-
-  1.5 seconds: Drop from the top.
-  3 seconds: Spin.
-  3 seconds: Stay still.
-
-  Then the registration/login page appears.
-*/
 
 setTimeout(() => {
 
@@ -1302,4 +1286,4 @@ resendBtn.addEventListener('click', async () => {
 });
 
 </script></body>
-  </html>
+        </html>
