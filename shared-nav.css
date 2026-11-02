@@ -562,66 +562,78 @@ display: none !important;
   }
 /* CAMPUSORA HEADER SIZE ADJUSTMENTS */
 
-/* Bigger standalone logo symbol */
+
+/* Show the logo symbol without the wordmark underneath */
 .campusora-brand img {
-  width: 46px;
-  height: 36px;
-  object-fit: cover;
-  object-position: top center;
-  display: block;
-  flex-shrink: 0;
+width: 48px !important;
+height: 48px !important;
+object-fit: contain !important;
+object-position: center top !important;
+clip-path: inset(0 0 42% 0);
+margin-bottom: -20px;
+display: block;
+flex-shrink: 0;
 }
 
-/* Campusora name immediately beside the logo */
+/* Written Campusora immediately beside the symbol */
 .campusora-brand {
-  gap: 5px;
+display: flex;
+align-items: center;
+gap: 5px;
+white-space: nowrap;
 }
 
 .campusora-brand-name {
-  font-size: 19px;
-  font-weight: 850;
-  white-space: nowrap;
+font-size: 19px;
+font-weight: 850;
+white-space: nowrap;
 }
 
-/* Smaller search bar */
+/* Smaller search bar on desktop */
 .campusora-header-search {
-  width: 220px;
-  max-width: 220px;
-  flex: 0 1 220px;
-  margin-left: auto;
+width: 150px !important;
+max-width: 150px !important;
+min-width: 0 !important;
+flex: 0 1 150px !important;
+margin-left: auto;
 }
 
-/* Mobile adjustments */
+/* Smaller header on phones */
 @media (max-width: 760px) {
-  .campusora-brand img {
-    width: 42px;
-    height: 33px;
-  }
+.campusora-brand img {
+width: 42px !important;
+height: 42px !important;
+margin-bottom: -18px;
+}
 
-  .campusora-brand-name {
-    font-size: 15px;
-  }
+.campusora-brand-name {
+font-size: 15px;
+}
 
-  .campusora-header-search {
-    width: 125px;
-    max-width: 145px;
-    flex: 0 1 145px;
-    min-width: 85px;
-  }
+.campusora-header-search {
+width: 100px !important;
+max-width: 105px !important;
+min-width: 75px !important;
+flex: 0 1 100px !important;
+}
 }
 
 /* Very small phones */
 @media (max-width: 370px) {
-  .campusora-brand img {
-    width: 36px;
-    height: 30px;
-  }
+.campusora-brand img {
+width: 36px !important;
+height: 36px !important;
+margin-bottom: -15px;
+}
 
-  .campusora-brand-name {
-    font-size: 13px;
-  }
+.campusora-brand-name {
+font-size: 13px;
+}
 
-  .campusora-header-search {
-    min-width: 75px;
-  }
+.campusora-header-search {
+width: 85px !important;
+max-width: 90px !important;
+min-width: 70px !important;
+flex-basis: 85px !important;
+}
 }
