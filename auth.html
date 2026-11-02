@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-
-<title>Join Campusora</title>
+<title>Campusora | Join the Community</title>
 
 <style>
 :root {
@@ -13,9 +12,7 @@
   --purple: #925bff;
   --blue: #526dff;
   --cyan: #39d7f5;
-  --dark: #151a2d;
   --muted: #788198;
-  --border: #e4e7ef;
 }
 
 * {
@@ -27,8 +24,8 @@
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, #25174b 0, transparent 35%),
-    radial-gradient(circle at bottom right, #102c48 0, transparent 35%),
+    radial-gradient(circle at 10% 10%, #29164e 0, transparent 35%),
+    radial-gradient(circle at 90% 90%, #102c48 0, transparent 35%),
     var(--bg);
   color: white;
   font-family: "DM Sans", Arial, sans-serif;
@@ -40,15 +37,15 @@ body {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background:
-    radial-gradient(circle at top left, #25174b 0, transparent 40%),
-    radial-gradient(circle at bottom right, #102c48 0, transparent 40%),
-    var(--bg);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  padding: 25px;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 10% 10%, #29164e 0, transparent 40%),
+    radial-gradient(circle at 90% 90%, #102c48 0, transparent 40%),
+    var(--bg);
   transition: opacity .65s ease, visibility .65s ease;
 }
 
@@ -59,44 +56,52 @@ body {
 }
 
 .splash-logo {
-  width: min(250px, 72vw);
-  max-height: 130px;
+  width: min(190px, 58vw);
+  max-height: 105px;
   object-fit: contain;
-  animation: logoDrop 1s cubic-bezier(.2,.8,.25,1) both;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  opacity: 0;
+  animation: logoDrop 1.2s cubic-bezier(.2,.8,.25,1) forwards;
+}
+
+.splash-logo.spin {
+  animation: slowSpin 3s ease-in-out forwards;
 }
 
 .splash-tagline {
-  margin-top: 17px;
-  color: #d9dff5;
-  font-size: 14px;
-  letter-spacing: .25px;
+  margin-top: 18px;
+  color: #e0e5f7;
+  font-size: 13px;
+  letter-spacing: .3px;
   text-align: center;
-  animation: taglineAppear .8s ease both;
 }
 
 @keyframes logoDrop {
   0% {
     opacity: 0;
-    transform: translateY(-100vh) scale(.85);
+    transform: translateY(-100vh);
   }
   75% {
     opacity: 1;
-    transform: translateY(10px) scale(1.02);
+    transform: translateY(12px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-@keyframes taglineAppear {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+@keyframes slowSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform: rotate(180deg) scale(1.04);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
   }
 }
 
@@ -107,10 +112,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 28px 15px;
+  padding: 24px 14px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity .6s ease;
+  transition: opacity .65s ease;
 }
 
 .page.show {
@@ -120,54 +125,59 @@ body {
 
 .container {
   width: 100%;
-  max-width: 430px;
+  max-width: 390px;
 }
 
 .brand {
   text-align: center;
-  margin-bottom: 17px;
+  margin-bottom: 13px;
 }
 
 .brand img {
-  width: 155px;
-  max-height: 75px;
+  display: block;
+  width: 125px;
+  max-height: 58px;
   object-fit: contain;
+  margin: 0 auto;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .brand p {
-  color: #b5bed6;
-  margin-top: 7px;
-  font-size: 12px;
+  color: #c0c9df;
+  margin-top: 6px;
+  font-size: 11px;
 }
 
-/* WHITE FORM CARD */
+/* WHITE CARD */
 
 .card {
-  background: #ffffff;
+  width: 100%;
+  background: #fff;
   color: #171b2b;
-  border-radius: 19px;
-  padding: 21px 21px 18px;
-  box-shadow: 0 22px 65px rgba(0,0,0,.3);
-  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 17px;
+  padding: 18px 19px 16px;
+  box-shadow: 0 20px 65px rgba(0,0,0,.32);
 }
 
 .tabs {
   display: flex;
   gap: 5px;
   padding: 4px;
+  border-radius: 10px;
   background: #f0f1f7;
-  border-radius: 11px;
-  margin-bottom: 19px;
+  margin-bottom: 15px;
 }
 
 .tab {
   flex: 1;
-  border: none;
+  border: 0;
   border-radius: 8px;
-  padding: 10px 8px;
-  color: #697188;
+  padding: 9px;
   background: transparent;
-  font-size: 13px;
+  color: #697188;
+  font-size: 12px;
   font-weight: 800;
   cursor: pointer;
 }
@@ -175,47 +185,46 @@ body {
 .tab.active {
   color: white;
   background: linear-gradient(110deg, var(--purple), var(--blue));
-  box-shadow: 0 3px 9px rgba(82,109,255,.2);
 }
 
 h2 {
-  font-size: 21px;
   color: #171b2b;
+  font-size: 20px;
   margin-bottom: 5px;
-  letter-spacing: -.4px;
 }
 
 .subtitle {
   color: #737b90;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.5;
-  margin-bottom: 17px;
+  margin-bottom: 14px;
 }
 
-/* FORM FIELDS */
+/* INPUTS */
 
 .field {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  position: relative;
 }
 
 label {
   display: block;
-  font-size: 12px;
-  font-weight: 750;
-  margin-bottom: 6px;
   color: #343b50;
+  font-size: 11px;
+  font-weight: 750;
+  margin-bottom: 5px;
 }
 
 input {
+  display: block;
   width: 100%;
-  padding: 11px 12px;
-  background: #ffffff;
+  padding: 10px 11px;
   border: 1px solid #dfe3ed;
   border-radius: 9px;
-  color: #171b2b;
-  font-size: 13px;
   outline: none;
-  transition: border .2s, box-shadow .2s;
+  background: white;
+  color: #171b2b;
+  font-size: 12px;
 }
 
 input:focus {
@@ -227,68 +236,161 @@ input::placeholder {
   color: #a0a7b8;
 }
 
-/* MEMBERSHIP SELECTION */
+/* CUSTOM MEMBERSHIP SELECTOR */
 
-.role-label {
-  margin-bottom: 8px;
+.role-select {
+  position: relative;
 }
 
-.role-options {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 7px;
+.role-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 11px;
+  border: 1px solid #dfe3ed;
+  border-radius: 9px;
+  background: white;
+  color: #343b50;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.role-trigger:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
+.role-trigger .arrow {
+  color: #7c8294;
+  font-size: 13px;
+  transition: transform .2s;
+}
+
+.role-select.open .arrow {
+  transform: rotate(180deg);
+}
+
+.role-menu {
+  display: none;
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  padding: 5px;
+  background: white;
+  border: 1px solid #e0e3ed;
+  border-radius: 11px;
+  box-shadow: 0 12px 30px rgba(25,30,55,.15);
+}
+
+.role-select.open .role-menu {
+  display: block;
 }
 
 .role-option {
-  min-width: 0;
-  border: 1px solid #e0e3ed;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 11px 4px 10px;
-  text-align: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: white;
+  color: #343b50;
+  text-align: left;
   cursor: pointer;
-  color: #596176;
-  transition: .2s ease;
+  font-size: 12px;
 }
 
-.role-option .role-icon {
-  display: block;
-  font-size: 20px;
-  margin-bottom: 5px;
-}
-
-.role-option strong {
-  display: block;
-  font-size: 10px;
-  line-height: 1.3;
-}
-
+.role-option:hover,
 .role-option.active {
-  border: 1.5px solid var(--purple);
-  background: #f5f1ff;
+  background: #f3efff;
   color: #7040d9;
-  box-shadow: 0 0 0 2px rgba(146,91,255,.08);
 }
 
-.role-option:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 2px;
+.role-icon {
+  width: 27px;
+  height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0edff;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+/* SCHOOL SUGGESTIONS */
+
+.school-results {
+  display: none;
+  position: absolute;
+  z-index: 25;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 190px;
+  overflow-y: auto;
+  padding: 5px;
+  background: white;
+  border: 1px solid #e0e3ed;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(25,30,55,.14);
+}
+
+.school-results.show {
+  display: block;
+}
+
+.school-result {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: white;
+  text-align: left;
+  color: #343b50;
+  cursor: pointer;
+}
+
+.school-result:hover {
+  background: #f3efff;
+}
+
+.school-result strong {
+  display: block;
+  font-size: 11px;
+}
+
+.school-result small {
+  display: block;
+  margin-top: 3px;
+  color: #858ca0;
+  font-size: 10px;
+}
+
+.school-status {
+  color: #858ca0;
+  font-size: 10px;
+  margin-top: 5px;
 }
 
 /* BUTTONS */
 
 .primary-btn {
   width: 100%;
-  border: none;
-  border-radius: 10px;
-  padding: 13px;
-  margin-top: 5px;
+  border: 0;
+  border-radius: 9px;
+  padding: 12px;
+  margin-top: 4px;
   color: white;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   background: linear-gradient(110deg, var(--purple), var(--blue));
   cursor: pointer;
-  box-shadow: 0 5px 13px rgba(82,109,255,.18);
 }
 
 .primary-btn:disabled {
@@ -298,13 +400,13 @@ input::placeholder {
 
 .secondary-btn {
   width: 100%;
-  margin-top: 10px;
-  padding: 11px;
+  margin-top: 9px;
+  padding: 10px;
   border: 1px solid #dfe3ed;
   border-radius: 9px;
   color: #5141a0;
   background: #f7f5ff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 750;
   cursor: pointer;
 }
@@ -313,10 +415,10 @@ input::placeholder {
 
 .message {
   display: none;
-  padding: 10px 11px;
-  border-radius: 9px;
-  margin-bottom: 13px;
-  font-size: 12px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  margin-bottom: 11px;
+  font-size: 11px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -336,10 +438,10 @@ input::placeholder {
 }
 
 .terms {
-  color: #8a91a3;
-  font-size: 10px;
+  color: #9299a9;
+  font-size: 9px;
   line-height: 1.5;
-  margin-top: 13px;
+  margin-top: 11px;
   text-align: center;
 }
 
@@ -349,26 +451,30 @@ input::placeholder {
 
 @media (max-width: 380px) {
   .card {
-    padding: 18px 15px 16px;
-  }
-
-  .role-options {
-    gap: 5px;
-  }
-
-  .role-option strong {
-    font-size: 9px;
+    padding: 16px 14px;
   }
 
   h2 {
-    font-size: 19px;
+    font-size: 18px;
+  }
+}
+
+@media (max-height: 720px) {
+  .page {
+    align-items: flex-start;
+  }
+
+  .container {
+    margin: auto 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+  .splash-logo,
+  .splash-logo.spin {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 </style>
@@ -376,13 +482,14 @@ input::placeholder {
 
 <body>
 
-<!-- CAMPUSORA OPENING ANIMATION -->
+<!-- OPENING ANIMATION -->
 
 <div class="splash" id="splash">
   <img
     src="./campusora-logo.png"
     alt="Campusora"
     class="splash-logo"
+    id="splashLogo"
   >
   <p class="splash-tagline">
     Connect with students across campuses
@@ -395,7 +502,7 @@ input::placeholder {
   <div class="container">
 
     <header class="brand">
-      <img src="./campusora-logo.png" alt="Campusora logo">
+      <img src="./campusora-logo.png" alt="Campusora">
       <p>Connect with students across campuses</p>
     </header>
 
@@ -450,52 +557,75 @@ input::placeholder {
             >
           </div>
 
-          <div class="field">
+          <div class="field" id="schoolField">
             <label for="school">School or university</label>
             <input
               type="text"
               id="school"
-              placeholder="Enter your school"
-              autocomplete="organization"
+              placeholder="Start typing your school name..."
+              autocomplete="off"
               maxlength="120"
               required
             >
+
+            <div class="school-results" id="schoolResults"></div>
+            <p class="school-status" id="schoolStatus">
+              Type at least 2 letters to find your institution.
+            </p>
           </div>
 
           <div class="field">
-            <label class="role-label">Join as</label>
+            <label for="roleTrigger">I am joining as</label>
 
-            <div class="role-options" id="roleOptions">
-
-              <button
-                type="button"
-                class="role-option active"
-                data-role="student"
-                aria-pressed="true"
-              >
-                <span class="role-icon">🎓</span>
-                <strong>Student</strong>
-              </button>
+            <div class="role-select" id="roleSelect">
 
               <button
                 type="button"
-                class="role-option"
-                data-role="alumni"
-                aria-pressed="false"
+                class="role-trigger"
+                id="roleTrigger"
+                aria-haspopup="listbox"
+                aria-expanded="false"
               >
-                <span class="role-icon">🏅</span>
-                <strong>Alumni</strong>
+                <span id="roleLabel">🎓 Student</span>
+                <span class="arrow">▼</span>
               </button>
 
-              <button
-                type="button"
-                class="role-option"
-                data-role="general"
-                aria-pressed="false"
-              >
-                <span class="role-icon">🌍</span>
-                <strong>General Member</strong>
-              </button>
+              <div class="role-menu" id="roleMenu" role="listbox">
+
+                <button
+                  type="button"
+                  class="role-option active"
+                  data-role="student"
+                  role="option"
+                  aria-selected="true"
+                >
+                  <span class="role-icon">🎓</span>
+                  <span>Student</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="role-option"
+                  data-role="alumni"
+                  role="option"
+                  aria-selected="false"
+                >
+                  <span class="role-icon">🏅</span>
+                  <span>Alumni</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="role-option"
+                  data-role="general"
+                  role="option"
+                  aria-selected="false"
+                >
+                  <span class="role-icon">🌍</span>
+                  <span>General Member</span>
+                </button>
+
+              </div>
 
             </div>
 
@@ -554,6 +684,23 @@ input::placeholder {
 <script type="module">
 import { supabase } from './supabase.js';
 
+/* OPENING ANIMATION */
+
+const splash = document.getElementById('splash');
+const splashLogo = document.getElementById('splashLogo');
+const mainPage = document.getElementById('mainPage');
+
+setTimeout(() => {
+  splashLogo.classList.add('spin');
+}, 1200);
+
+setTimeout(() => {
+  splash.classList.add('hide');
+  mainPage.classList.add('show');
+}, 7200);
+
+/* FORM ELEMENTS */
+
 const form = document.getElementById('authForm');
 const signupFields = document.getElementById('signupFields');
 const signupTab = document.getElementById('signupTab');
@@ -565,36 +712,180 @@ const messageBox = document.getElementById('message');
 const passwordInput = document.getElementById('password');
 const emailInput = document.getElementById('email');
 const resendBtn = document.getElementById('resendBtn');
+
+const schoolInput = document.getElementById('school');
+const schoolResults = document.getElementById('schoolResults');
+const schoolStatus = document.getElementById('schoolStatus');
+
 const roleInput = document.getElementById('role');
+const roleSelect = document.getElementById('roleSelect');
+const roleTrigger = document.getElementById('roleTrigger');
+const roleLabel = document.getElementById('roleLabel');
 
 let mode = 'signup';
 let pendingConfirmationEmail = '';
+let selectedInstitutionId = null;
+let institutionTimer = null;
+let institutionRequest = 0;
 
-/* SHOW THE OPENING SCREEN FOR 3 SECONDS AFTER THE LOGO ARRIVES */
+/* MEMBERSHIP DROPDOWN */
 
-const splash = document.getElementById('splash');
-const mainPage = document.getElementById('mainPage');
+roleTrigger.addEventListener('click', () => {
+  const isOpen = roleSelect.classList.toggle('open');
 
-setTimeout(() => {
-  splash.classList.add('hide');
-  mainPage.classList.add('show');
-}, 4000);
+  roleTrigger.setAttribute('aria-expanded', String(isOpen));
+});
 
-/* MEMBERSHIP SELECTION */
+document.querySelectorAll('.role-option').forEach(option => {
+  option.addEventListener('click', () => {
 
-document.querySelectorAll('.role-option').forEach(button => {
-  button.addEventListener('click', () => {
-    document.querySelectorAll('.role-option').forEach(option => {
-      option.classList.remove('active');
-      option.setAttribute('aria-pressed', 'false');
+    document.querySelectorAll('.role-option').forEach(item => {
+      item.classList.remove('active');
+      item.setAttribute('aria-selected', 'false');
     });
 
-    button.classList.add('active');
-    button.setAttribute('aria-pressed', 'true');
+    option.classList.add('active');
+    option.setAttribute('aria-selected', 'true');
 
-    roleInput.value = button.dataset.role;
+    roleInput.value = option.dataset.role;
+
+    const icon = option.querySelector('.role-icon').textContent;
+    const name = option.querySelector('span:last-child').textContent;
+
+    roleLabel.textContent = icon + ' ' + name;
+
+    roleSelect.classList.remove('open');
+    roleTrigger.setAttribute('aria-expanded', 'false');
   });
 });
+
+document.addEventListener('click', event => {
+  if (!roleSelect.contains(event.target)) {
+    roleSelect.classList.remove('open');
+    roleTrigger.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* SCHOOL AUTOCOMPLETE */
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  })[char]);
+}
+
+function closeSchoolResults() {
+  schoolResults.classList.remove('show');
+  schoolResults.innerHTML = '';
+}
+
+function selectSchool(institution) {
+  schoolInput.value = institution.name;
+  selectedInstitutionId = institution.id;
+
+  schoolStatus.textContent = 'Selected: ' + institution.name;
+  closeSchoolResults();
+}
+
+async function searchInstitutions(query) {
+  const search = query.trim();
+  const requestNumber = ++institutionRequest;
+
+  if (search.length < 2) {
+    closeSchoolResults();
+    schoolStatus.textContent =
+      'Type at least 2 letters to find your institution.';
+    return;
+  }
+
+  schoolStatus.textContent = 'Searching institutions...';
+  schoolResults.innerHTML = '';
+  schoolResults.classList.remove('show');
+
+  try {
+    const { data, error } = await supabase
+      .from('institutions')
+      .select('id, name, institution_type, ownership, state')
+      .eq('status', 'active')
+      .ilike('name', '%' + search.replace(/[%_,]/g, '') + '%')
+      .order('name')
+      .limit(20);
+
+    if (requestNumber !== institutionRequest) return;
+
+    if (error) throw error;
+
+    if (!data || !data.length) {
+      schoolStatus.textContent =
+        'No matching institution found. Check the spelling or enter your school name.';
+      return;
+    }
+
+    schoolResults.innerHTML = '';
+
+    data.forEach(institution => {
+      const button = document.createElement('button');
+
+      button.type = 'button';
+      button.className = 'school-result';
+
+      button.innerHTML = `
+        <strong>${escapeHTML(institution.name)}</strong>
+        <small>
+          ${escapeHTML(
+            (institution.institution_type || 'Institution')
+              .replaceAll('_', ' ')
+          )}
+          ${institution.state ? ' · ' + escapeHTML(institution.state) : ''}
+        </small>
+      `;
+
+      button.addEventListener('click', () => {
+        selectSchool(institution);
+      });
+
+      schoolResults.appendChild(button);
+    });
+
+    schoolResults.classList.add('show');
+    schoolStatus.textContent = 'Select your school from the suggestions.';
+
+  } catch (error) {
+    if (requestNumber !== institutionRequest) return;
+
+    schoolStatus.textContent =
+      'School suggestions could not load. You can still enter your school name.';
+    console.error('Institution search failed:', error);
+  }
+}
+
+schoolInput.addEventListener('input', () => {
+  selectedInstitutionId = null;
+
+  clearTimeout(institutionTimer);
+
+  institutionTimer = setTimeout(() => {
+    searchInstitutions(schoolInput.value);
+  }, 250);
+});
+
+schoolInput.addEventListener('focus', () => {
+  if (schoolInput.value.trim().length >= 2) {
+    searchInstitutions(schoolInput.value);
+  }
+});
+
+document.addEventListener('click', event => {
+  if (!document.getElementById('schoolField').contains(event.target)) {
+    closeSchoolResults();
+  }
+});
+
+/* GENERAL FORM FUNCTIONS */
 
 function showMessage(text, type) {
   messageBox.textContent = text;
@@ -610,6 +901,7 @@ function setMode(newMode) {
   mode = newMode;
   clearMessage();
   resendBtn.classList.add('hidden');
+  closeSchoolResults();
 
   const isSignup = mode === 'signup';
 
@@ -617,7 +909,7 @@ function setMode(newMode) {
 
   document.getElementById('fullName').required = isSignup;
   document.getElementById('username').required = isSignup;
-  document.getElementById('school').required = isSignup;
+  schoolInput.required = isSignup;
 
   passwordInput.autocomplete = isSignup
     ? 'new-password'
@@ -644,20 +936,15 @@ function setMode(newMode) {
 signupTab.addEventListener('click', () => setMode('signup'));
 loginTab.addEventListener('click', () => setMode('login'));
 
-/* OPEN LOGIN MODE WHEN REQUESTED */
-
 const params = new URLSearchParams(window.location.search);
 
 if (params.get('mode') === 'login') {
   setMode('login');
 }
 
-/*
-  Do not automatically redirect based on an existing session.
-  Redirect only after a successful login or registration.
-*/
+/* REGISTRATION AND LOGIN */
 
-form.addEventListener('submit', async (event) => {
+form.addEventListener('submit', async event => {
   event.preventDefault();
   clearMessage();
 
@@ -675,18 +962,24 @@ form.addEventListener('submit', async (event) => {
 
   try {
     if (mode === 'signup') {
-      const fullName = document.getElementById('fullName').value.trim();
+
+      const fullName = document.getElementById('fullName')
+        .value.trim();
 
       const username = document.getElementById('username')
         .value.trim().toLowerCase();
 
-      const school = document.getElementById('school').value.trim();
+      const school = schoolInput.value.trim();
       const role = roleInput.value;
 
       if (!/^[a-z0-9_]{3,24}$/.test(username)) {
         throw new Error(
           'Your username must be 3–24 characters using letters, numbers or underscores.'
         );
+      }
+
+      if (!school) {
+        throw new Error('Please enter your school or university.');
       }
 
       const { data, error } = await supabase.auth.signUp({
@@ -699,7 +992,8 @@ form.addEventListener('submit', async (event) => {
             full_name: fullName,
             username,
             school,
-            role
+            role,
+            institution_id: selectedInstitutionId
           }
         }
       });
@@ -733,11 +1027,11 @@ form.addEventListener('submit', async (event) => {
       });
 
       if (error) {
-        const message = error.message || '';
+        const errorText = (error.message || '').toLowerCase();
 
         if (
-          message.toLowerCase().includes('invalid login credentials') ||
-          message.toLowerCase().includes('invalid credentials')
+          errorText.includes('invalid login credentials') ||
+          errorText.includes('invalid credentials')
         ) {
           throw new Error(
             'Incorrect email or password. Please check your details and try again.'
