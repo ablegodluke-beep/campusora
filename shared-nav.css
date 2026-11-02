@@ -1,3 +1,7 @@
+/* =====================================
+CAMPUSORA SHARED DESIGN SYSTEM
+===================================== */
+
 :root {
 --campus-bg: #080b18;
 --campus-panel: #101629;
@@ -11,14 +15,16 @@
 }
 
 * {
-box-sizing: border-box;
-}
+  box-sizing: border-box;
+  }
+
+/* =====================================
+SHARED HEADER
+===================================== */
 
 body.has-shared-nav {
-padding-top: 79px !important;
+padding-top: 78px !important;
 }
-
-/* SHARED HEADER */
 
 .campusora-topnav {
 position: fixed;
@@ -27,68 +33,81 @@ left: 0;
 right: 0;
 width: 100%;
 z-index: 9999;
-background: rgba(8,11,24,.97);
+background: rgba(8,11,24,.98);
 backdrop-filter: blur(18px);
 -webkit-backdrop-filter: blur(18px);
 border-bottom: 1px solid var(--campus-border);
 font-family: "DM Sans", Arial, sans-serif;
 }
 
+/* BRANDING ROW */
+
 .campusora-topnav-brandrow {
+height: 42px;
 min-height: 42px;
-padding: 4px 18px;
+padding: 0 12px;
 display: flex;
 align-items: center;
-gap: 16px;
+gap: 10px;
 position: relative;
 }
+
+/* LOGO AND NAME */
 
 .campusora-brand {
 display: inline-flex;
 align-items: center;
-gap: 7px;
+gap: 2px;
 flex-shrink: 0;
 text-decoration: none;
 color: var(--campus-text);
+white-space: nowrap;
 }
 
 .campusora-brand img {
-width: 31px;
-height: 31px;
+width: 45px;
+height: 45px;
 object-fit: contain;
+object-position: center top;
+clip-path: inset(0 0 40% 0);
+margin-bottom: -14px;
 display: block;
+flex-shrink: 0;
 }
 
 .campusora-brand-name {
-font-size: 19px;
+font-size: 18px;
 font-weight: 850;
 letter-spacing: -.7px;
 color: white;
 white-space: nowrap;
+margin-left: -2px;
 }
 
-/* SEARCH BAR */
+/* =====================================
+GLOBAL SEARCH
+===================================== */
 
 .campusora-header-search {
-width: min(100%, 390px);
-max-width: 390px;
-flex: 1;
+width: 220px;
+max-width: 220px;
 min-width: 0;
+flex: 0 1 220px;
 position: relative;
 z-index: 10001;
 margin-left: auto;
 }
 
 .campusora-header-search-form {
-height: 34px;
+height: 27px;
 width: 100%;
 display: flex;
 align-items: center;
-gap: 8px;
-padding: 0 12px;
+gap: 7px;
+padding: 0 9px;
 background: #121b30;
 border: 1px solid var(--campus-border);
-border-radius: 22px;
+border-radius: 18px;
 transition: border-color .2s, background .2s;
 }
 
@@ -98,8 +117,8 @@ background: #151e35;
 }
 
 .campusora-header-search-icon {
-width: 17px;
-height: 17px;
+width: 15px;
+height: 15px;
 flex-shrink: 0;
 display: flex;
 align-items: center;
@@ -108,8 +127,8 @@ color: var(--campus-muted);
 }
 
 .campusora-header-search-icon svg {
-width: 17px;
-height: 17px;
+width: 15px;
+height: 15px;
 fill: none;
 stroke: currentColor;
 stroke-width: 2;
@@ -127,7 +146,7 @@ border: none;
 background: transparent;
 color: white;
 font-family: inherit;
-font-size: 12px;
+font-size: 11px;
 }
 
 .campusora-header-search-input::placeholder {
@@ -146,7 +165,7 @@ top: calc(100% + 9px);
 left: 0;
 right: 0;
 width: 100%;
-max-height: min(72vh, 570px);
+max-height: min(72vh,570px);
 overflow-y: auto;
 overscroll-behavior: contain;
 padding: 9px;
@@ -278,7 +297,9 @@ font-weight: 500;
 white-space: nowrap;
 }
 
-/* ICON NAVIGATION */
+/* =====================================
+MAIN NAVIGATION
+===================================== */
 
 .campusora-mainnav {
 height: 36px;
@@ -287,7 +308,8 @@ display: grid;
 grid-template-columns: repeat(7,minmax(0,1fr));
 align-items: center;
 gap: 3px;
-border-top: 1px solid rgba(255,255,255,.035);
+background: transparent;
+border: none;
 }
 
 .campusora-nav-item {
@@ -322,7 +344,9 @@ color: #a98aff;
 background: rgba(133,88,255,.13);
 }
 
-/* MENU CARDS */
+/* =====================================
+MENU CARDS
+===================================== */
 
 .menu-grid {
 display: grid;
@@ -382,7 +406,9 @@ font-size: 10px;
 line-height: 1.4;
 }
 
-/* TABLET AND MOBILE */
+/* =====================================
+MOBILE HEADER
+===================================== */
 
 @media(max-width:760px) {
 
@@ -391,43 +417,48 @@ padding-top: 76px !important;
 }
 
 .campusora-topnav-brandrow {
+height: 40px;
 min-height: 40px;
-padding: 4px 10px;
-gap: 8px;
+padding: 0 8px;
+gap: 6px;
 }
 
 .campusora-brand {
-gap: 5px;
+gap: 1px;
 }
 
 .campusora-brand img {
-width: 28px;
-height: 28px;
+width: 43px;
+height: 43px;
+margin-bottom: -13px;
 }
 
 .campusora-brand-name {
-font-size: 16px;
+font-size: 14px;
+margin-left: -2px;
 }
 
 .campusora-header-search {
-max-width: none;
-min-width: 75px;
+width: 110px;
+max-width: 110px;
+min-width: 70px;
+flex: 0 1 110px;
 }
 
 .campusora-header-search-form {
-height: 31px;
-padding: 0 8px;
+height: 25px;
+padding: 0 7px;
 gap: 5px;
 }
 
 .campusora-header-search-icon,
 .campusora-header-search-icon svg {
-width: 15px;
-height: 15px;
+width: 14px;
+height: 14px;
 }
 
 .campusora-header-search-input {
-font-size: 11px;
+font-size: 10px;
 }
 
 .campusora-tagline {
@@ -463,8 +494,6 @@ max-height: calc(100dvh - 95px);
 border-radius: 15px;
 }
 
-/* TWO CARDS SIDE BY SIDE ON PHONES */
-
 .menu-grid {
 grid-template-columns: repeat(2,minmax(0,1fr));
 gap: 10px;
@@ -490,26 +519,35 @@ font-size: 11px;
 .menu-card-info small {
 font-size: 9px;
 }
-
 }
 
-/* VERY NARROW PHONES */
+/* =====================================
+VERY SMALL PHONES
+===================================== */
 
 @media(max-width:370px) {
 
 .campusora-topnav-brandrow {
-gap: 6px;
-padding-left: 8px;
-padding-right: 8px;
-}
-
-.campusora-brand-name {
-font-size: 14px;
+padding-left: 6px;
+padding-right: 6px;
+gap: 4px;
 }
 
 .campusora-brand img {
-width: 25px;
-height: 25px;
+width: 38px;
+height: 38px;
+margin-bottom: -11px;
+}
+
+.campusora-brand-name {
+font-size: 12px;
+}
+
+.campusora-header-search {
+width: 82px;
+max-width: 82px;
+min-width: 65px;
+flex-basis: 82px;
 }
 
 .campusora-tagline {
@@ -518,7 +556,7 @@ font-size: 7px;
 }
 
 .campusora-header-search-input {
-font-size: 10px;
+font-size: 9px;
 }
 
 .campusora-nav-item svg {
@@ -529,10 +567,11 @@ height: 21px;
 .menu-grid {
 grid-template-columns: 1fr;
 }
-
 }
 
-/* UNREAD MESSAGE AND NOTIFICATION BADGES */
+/* =====================================
+UNREAD BADGES
+===================================== */
 
 .campusora-nav-badge {
 position: absolute;
@@ -559,193 +598,4 @@ pointer-events: none;
 
 .campusora-nav-badge[hidden] {
 display: none !important;
-  }
-/* CAMPUSORA UNIFIED HEADER */
-
-/* Keep branding and navigation visually connected */
-body.has-shared-nav {
-  padding-top: 88px !important;
-}
-
-.campusora-topnav {
-  background: rgba(8,11,24,.98);
-  border-bottom: 1px solid rgba(133,88,255,.22);
-}
-
-/* BRANDING ROW */
-.campusora-topnav-brandrow {
-  min-height: 52px;
-  padding: 2px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* LOGO AND NAME */
-.campusora-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.campusora-brand img {
-  width: 58px !important;
-  height: 58px !important;
-  object-fit: contain !important;
-  object-position: top center !important;
-  clip-path: inset(0 0 40% 0);
-  margin-bottom: -18px;
-  display: block;
-  flex-shrink: 0;
-}
-
-.campusora-brand-name {
-  font-size: 19px;
-  font-weight: 850;
-  letter-spacing: -.7px;
-  white-space: nowrap;
-  margin-left: -2px;
-}
-
-/* SLIM SEARCH */
-.campusora-header-search {
-  width: 175px !important;
-  max-width: 175px !important;
-  min-width: 0 !important;
-  flex: 0 1 175px !important;
-  margin-left: auto;
-}
-
-.campusora-header-search-form {
-  height: 27px;
-  padding: 0 9px;
-  gap: 6px;
-  border-radius: 16px;
-}
-
-.campusora-header-search-icon,
-.campusora-header-search-icon svg {
-  width: 14px;
-  height: 14px;
-}
-
-.campusora-header-search-input {
-  font-size: 11px;
-}
-
-/* TAGLINE */
-.campusora-tagline {
-  flex-shrink: 0;
-  font-size: 9px;
-  white-space: nowrap;
-}
-
-/* NAVIGATION CONNECTED TO BRANDING */
-.campusora-mainnav {
-  height: 36px;
-  padding: 0 8px;
-  border-top: 1px solid rgba(255,255,255,.045);
-  background: transparent;
-}
-
-.campusora-nav-item {
-  height: 34px;
-}
-
-/* PHONE LAYOUT */
-@media(max-width:760px) {
-
-  body.has-shared-nav {
-    padding-top: 84px !important;
-  }
-
-  .campusora-topnav-brandrow {
-    min-height: 48px;
-    padding: 2px 9px;
-    gap: 7px;
-  }
-
-  .campusora-brand {
-    gap: 2px;
-  }
-
-  .campusora-brand img {
-    width: 50px !important;
-    height: 50px !important;
-    margin-bottom: -16px;
-  }
-
-  .campusora-brand-name {
-    font-size: 15px;
-    margin-left: -2px;
-  }
-
-  .campusora-header-search {
-    width: 105px !important;
-    max-width: 105px !important;
-    min-width: 75px !important;
-    flex: 0 1 105px !important;
-  }
-
-  .campusora-header-search-form {
-    height: 26px;
-    padding: 0 7px;
-    gap: 4px;
-  }
-
-  .campusora-header-search-input {
-    font-size: 10px;
-  }
-
-  .campusora-tagline {
-    max-width: 82px;
-    white-space: normal;
-    text-align: right;
-    font-size: 7px;
-    line-height: 1.3;
-  }
-
-  .campusora-mainnav {
-    height: 36px;
-    padding: 0 5px;
-    gap: 2px;
-  }
-
-  .campusora-nav-item {
-    height: 33px;
-  }
-}
-
-/* VERY SMALL PHONES */
-@media(max-width:370px) {
-
-  .campusora-topnav-brandrow {
-    padding-left: 7px;
-    padding-right: 7px;
-    gap: 5px;
-  }
-
-  .campusora-brand img {
-    width: 45px !important;
-    height: 45px !important;
-    margin-bottom: -14px;
-  }
-
-  .campusora-brand-name {
-    font-size: 13px;
-  }
-
-  .campusora-header-search {
-    width: 82px !important;
-    max-width: 82px !important;
-    min-width: 68px !important;
-    flex-basis: 82px !important;
-  }
-
-  .campusora-tagline {
-    max-width: 70px;
-    font-size: 7px;
-  }
-  }
+                 }
