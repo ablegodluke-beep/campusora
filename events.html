@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#090b18">
   <title>Events | Campusora</title>
+  <link rel="stylesheet" href="shared-nav.css">
 
   <style>
     :root {
@@ -732,6 +733,42 @@
       to { transform: rotate(360deg); }
     }
 
+    /* SOCIAL EVENTS PAGE LAYOUT */
+    body { font-family:"DM Sans",Inter,system-ui,sans-serif; font-size:13px; }
+    .container { width:min(1040px,94%); padding:22px 0 50px; }
+    .topbar,.hero,.stats { display:none !important; }
+    .events-headbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:4px 0 22px; }
+    .events-headbar .search { width:min(440px,100%); }
+    .events-headbar .search input { min-height:42px; border-radius:24px; background:#151a2d; border-color:rgba(255,255,255,.08); padding-left:42px; }
+    .events-headbar .search-icon { top:10px; }
+    .add-event-btn { min-height:42px; border:0; border-radius:22px; padding:0 18px; display:inline-flex; align-items:center; justify-content:center; gap:7px; white-space:nowrap; font-weight:800; color:white; background:linear-gradient(110deg,#8558ff,#398bff); box-shadow:0 5px 18px rgba(90,92,246,.22); }
+    .events-heading { margin:0 0 15px; }
+    .events-heading h1 { font-size:23px; font-weight:900; letter-spacing:-.6px; }
+    .events-heading p { color:var(--muted); font-size:12px; margin-top:4px; }
+    .filters { border-bottom:1px solid var(--border); margin-bottom:18px; padding-bottom:13px; }
+    .chip { border-radius:22px; padding:9px 15px; }
+    .feed { grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .event-card { border-radius:15px; }
+    .poster { height:190px; }
+    .event-body { padding:15px; }
+    .event-body h3 { font-size:16px; font-weight:850; }
+    .event-footer,.card-actions { flex-wrap:wrap; }
+    @media(max-width:680px) {
+      .container { width:94%; padding-top:16px; }
+      .events-headbar { gap:8px; margin-bottom:18px; }
+      .events-headbar .search { flex:1; min-width:0; }
+      .events-headbar .search input { min-height:40px; font-size:12px; padding-right:8px; }
+      .add-event-btn { min-height:40px; padding:0 12px; font-size:11px; }
+      .events-heading h1 { font-size:20px; }
+      .feed { grid-template-columns:1fr; }
+      .poster { height:195px; }
+    }
+    @media(max-width:370px) {
+      .events-headbar { gap:6px; }
+      .add-event-btn { padding:0 9px; font-size:10px; }
+      .events-headbar .search input { font-size:10px; }
+    }
+
     @media (max-width: 680px) {
       .topbar {
         height: 62px;
@@ -802,31 +839,17 @@
 </head>
 
 <body>
-  <header class="topbar">
-    <a href="index.html" class="brand">
-      <span class="brand-icon">✦</span>
-      <span>Campusora</span>
-    </a>
-
-    <div class="top-actions">
-      <a href="index.html" class="btn">← Home</a>
-      <button class="btn btn-primary" id="topCreateBtn">＋ Create Event</button>
-    </div>
-  </header>
-
   <main class="container">
-    <section class="hero">
-      <div class="eyebrow">Campusora community</div>
-      <h1>Make memories.<br><span class="gradient-text">Find your next event.</span></h1>
-      <p>
-        Discover what's happening across campuses. Find academic programmes,
-        career opportunities, parties, sports, music, and experiences worth sharing.
-      </p>
-
-      <div class="hero-bottom">
-        <button class="btn btn-primary" id="heroCreateBtn">＋ Create an Event</button>
-        <button class="btn" id="sharePageBtn">↗ Share Events</button>
-      </div>
+    <section class="events-headbar">
+      <label class="search" aria-label="Search events">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="search" placeholder="Search events, schools, locations...">
+      </label>
+      <button class="add-event-btn" id="topCreateBtn">＋ Add Event</button>
+    </section>
+    <section class="events-heading">
+      <h1>Events</h1>
+      <p>Discover what's happening across campuses.</p>
     </section>
 
     <div id="notice" class="notice" role="status"></div>
@@ -857,10 +880,6 @@
           <p class="section-subtitle">Find something happening around you.</p>
         </div>
 
-        <label class="search">
-          <span class="search-icon">⌕</span>
-          <input id="searchInput" type="search" placeholder="Search events, schools, locations...">
-        </label>
       </div>
 
       <div class="filters" id="categoryFilters">
@@ -1380,7 +1399,7 @@
 
         return `
           <article class="event-card">
-            <div class="poster">
+                      <div class="poster">
               <span class="poster-symbol">${categoryIcons[category] || '✨'}</span>
               ${poster ? `<img src="${escapeHTML(poster)}" alt="Event poster" loading="lazy" onerror="this.remove()">` : ''}
               <span class="category-badge">${escapeHTML(category)}</span>
@@ -1562,27 +1581,6 @@
         }
       }
     }
-
-    $('sharePageBtn').addEventListener('click', async () => {
-      try {
-        if (navigator.share) {
-          await navigator.share({
-            title: 'Campusora Events',
-            text: 'Discover events and activities on Campusora.',
-            url: window.location.href
-          });
-        } else if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(window.location.href);
-          notify('Events page link copied!', 'success');
-        } else {
-          window.prompt('Copy this link:', window.location.href);
-        }
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          notify('Could not share this page.', 'error');
-        }
-      }
-    });
 
     function openCreateForm() {
       if (!requireLogin()) return;
@@ -1827,8 +1825,6 @@
     }
 
     $('topCreateBtn').addEventListener('click', openCreateForm);
-    $('heroCreateBtn').addEventListener('click', openCreateForm);
-
     $('searchInput').addEventListener('input', renderEvents);
 
     $('categoryFilters').addEventListener('click', event => {
@@ -1895,5 +1891,6 @@
 
     init();
   </script>
+  <script src="shared-nav.js"></script>
 </body>
-  </html>
+</html>
