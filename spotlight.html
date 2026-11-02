@@ -913,6 +913,33 @@ textarea.field { min-height:80px;resize:vertical; }
     <div class="modal-header">
       <h3>🎬 Create a Spotlight</h3>
       <button class="modal-close" data-close="uploadOverlay" aria-label="Close upload">×</button>
+  </div>
+  n>
+        <span class="comment-total" id="commentCount">(0)</span>
+      </div>
+      <div class="sheet-subtitle">Share your thoughts with the community</div>
+    </div>
+    <button class="close-comments" id="closeComments" aria-label="Close comments">×</button>
+  </header>
+
+  <div class="comments-list" id="commentList">
+    <div class="comments-empty">Loading comments…</div>
+  </div>
+
+  <form class="comment-composer" id="commentForm">
+    <textarea class="comment-input" id="commentText" maxlength="2000"
+      rows="1" placeholder="Add a comment…" required></textarea>
+    <button class="send-comment" id="sendComment" type="submit" aria-label="Send comment">➤</button>
+  </form>
+</section>
+
+<!-- VIDEO UPLOAD -->
+
+<div class="overlay" id="uploadOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🎬 Create a Spotlight</h3>
+      <button class="modal-close" data-close="uploadOverlay" aria-label="Close upload">×</button>
     </div>
 
     <form id="uploadForm">
@@ -1430,7 +1457,8 @@ async function recordView(videoId,counter) {
       }
     } catch(error) {
       viewedThisSession.delete(videoId);
-      console.warn('Public view counter failed:',error.message);
+
+          console.warn('Public view counter failed:',error.message);
     }
   }
 
