@@ -723,7 +723,8 @@ body.has-shared-nav {
   width:100%;
   margin:7px 0 12px;
   padding:11px;
-  border-radius:9px;
+
+    border-radius:9px;
   border:1px solid var(--border);
   outline:none;
   color:white;
@@ -1448,7 +1449,7 @@ async function recordView(videoId,counter) {
 async function setReaction(videoId,reactionId) {
   if(!requireLogin()||likeBusy.has(videoId))return;
 
-  const reaction=getReaction(reactionId);
+    const reaction=getReaction(reactionId);
   const video=videos.find(item=>item.id===videoId);
   const card=[...feed.querySelectorAll('.video-card')]
     .find(item=>item.dataset.videoId===videoId);
@@ -1543,7 +1544,7 @@ function startLikeHold(button) {
   holdTimer=setTimeout(()=>{
     suppressLikeClick=true;
     openReactionPicker(button);
-  },450);
+  },2000);
 }
 
 function cancelLikeHold() {
@@ -1653,46 +1654,13 @@ function isInteractiveSurface(target) {
 function handleVideoSurfaceTap(event) {
   const card=event.target.closest('.video-card');
   if(!card||isInteractiveSurface(event.target))return;
-
-  const now=Date.now();
-  const isDoubleTap=lastTapCard===card&&now-lastTapTime<300;
-
-  if(isDoubleTap) {
-    clearTimeout(tapTimer);
-    tapTimer=null;
-    lastTapTime=0;
-    lastTapCard=null;
-    handleVideoDoubleTap(card);
-    return;
-  }
-
-  lastTapTime=now;
-  lastTapCard=card;
-
-  clearTimeout(tapTimer);
-  tapTimer=setTimeout(()=>{
-    toggleVideoPlayback(card);
-    tapTimer=null;
-    lastTapTime=0;
-    lastTapCard=null;
-  },280);
+  toggleVideoPlayback(card);
 }
 
 feed.addEventListener('touchend',event=>{
   if(event.changedTouches.length!==1)return;
   handleVideoSurfaceTap(event);
 },{passive:true});
-
-feed.addEventListener('dblclick',event=>{
-  const card=event.target.closest('.video-card');
-  if(!card||isInteractiveSurface(event.target))return;
-
-  clearTimeout(tapTimer);
-  tapTimer=null;
-  lastTapTime=0;
-  lastTapCard=null;
-  handleVideoDoubleTap(card);
-});
 
 /* COMMENTS PANEL */
 
@@ -2202,4 +2170,3 @@ init();
 
 </body>
 </html>
-  
