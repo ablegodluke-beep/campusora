@@ -19,11 +19,11 @@ CAMPUSORA SHARED DESIGN SYSTEM
   }
 
 /* =====================================
-COMPACT SHARED HEADER
+SHARED HEADER
 ===================================== */
 
 body.has-shared-nav {
-padding-top: 66px !important;
+padding-top: 72px !important;
 }
 
 .campusora-topnav {
@@ -32,7 +32,7 @@ top: 0;
 left: 0;
 right: 0;
 width: 100%;
-height: 66px;
+height: 72px;
 z-index: 9999;
 display: flex;
 flex-direction: column;
@@ -46,64 +46,66 @@ BRANDING ROW
 ===================================== */
 
 .campusora-topnav-brandrow {
-height: 36px;
-min-height: 36px;
+height: 42px;
+min-height: 42px;
 width: 100%;
-padding: 0 16px;
-display: flex;
+padding: 0 14px;
+display: grid;
+grid-template-columns: max-content minmax(70px,1fr) max-content;
 align-items: center;
-gap: 12px;
+gap: 10px;
 position: relative;
 }
 
-/* LOGO AND CAMPUSORA NAME */
+/* LOGO AND NAME */
 
 .campusora-brand {
 display: inline-flex;
 align-items: center;
-gap: 3px;
+gap: 5px;
 flex-shrink: 0;
 text-decoration: none;
 color: white;
 white-space: nowrap;
+min-width: 0;
 }
 
 .campusora-brand img {
-width: 37px;
-height: 37px;
+width: 34px;
+height: 34px;
 object-fit: contain;
-object-position: center top;
-clip-path: inset(0 0 38% 0);
-margin-bottom: -13px;
+object-position: center;
+clip-path: none;
+margin: 0;
 display: block;
 flex-shrink: 0;
 }
 
 .campusora-brand-name {
-font-size: 17px;
+font-size: 16px;
 font-weight: 900;
-letter-spacing: -.65px;
+letter-spacing: -.5px;
 color: #fff;
 white-space: nowrap;
-margin-left: -2px;
+margin: 0;
 }
 
 /* =====================================
-GLOBAL SEARCH
+SEARCH - CENTER
 ===================================== */
 
 .campusora-header-search {
-width: 230px;
-max-width: 230px;
-min-width: 90px;
-flex: 0 1 230px;
+width: 100%;
+max-width: 250px;
+min-width: 0;
 position: relative;
 z-index: 10001;
-margin-left: auto;
+justify-self: center;
+margin: 0;
 }
 
 .campusora-header-search-form {
-height: 27px;
+height: 29px;
 width: 100%;
 display: flex;
 align-items: center;
@@ -293,15 +295,32 @@ font-size: 12px;
 line-height: 1.6;
 }
 
-/* TAGLINE */
+/* =====================================
+TAGLINE - RIGHT SIDE
+===================================== */
 
 .campusora-tagline {
+width: 125px;
 flex-shrink: 0;
+text-align: right;
 color: #a3aec7;
-font-size: 10px;
+font-size: 0;
 font-weight: 600;
-white-space: nowrap;
-margin-left: 2px;
+line-height: 1.25;
+white-space: normal;
+margin: 0;
+}
+
+.campusora-tagline::before {
+content: "Connect with students across";
+display: block;
+font-size: 9px;
+}
+
+.campusora-tagline::after {
+content: "campuses";
+display: block;
+font-size: 9px;
 }
 
 /* =====================================
@@ -439,44 +458,43 @@ MOBILE HEADER
 @media(max-width:760px) {
 
 body.has-shared-nav {
-padding-top: 66px !important;
+padding-top: 70px !important;
 }
 
 .campusora-topnav {
-height: 66px;
+height: 70px;
 }
 
 .campusora-topnav-brandrow {
-height: 36px;
-min-height: 36px;
-padding: 0 8px;
+height: 40px;
+min-height: 40px;
+padding: 0 7px;
+grid-template-columns: max-content minmax(55px,1fr) max-content;
 gap: 6px;
 }
 
 .campusora-brand {
-gap: 2px;
+gap: 3px;
 }
 
 .campusora-brand img {
-width: 35px;
-height: 35px;
-margin-bottom: -12px;
+width: 31px;
+height: 31px;
 }
 
 .campusora-brand-name {
-font-size: 14px;
-margin-left: -2px;
+font-size: 13px;
+letter-spacing: -.4px;
 }
 
 .campusora-header-search {
-width: 120px;
-max-width: 120px;
-min-width: 75px;
-flex: 0 1 120px;
+width: 100%;
+max-width: 180px;
+min-width: 0;
 }
 
 .campusora-header-search-form {
-height: 25px;
+height: 26px;
 padding: 0 7px;
 gap: 5px;
 }
@@ -492,11 +510,12 @@ font-size: 10px;
 }
 
 .campusora-tagline {
-max-width: 100px;
-white-space: normal;
-text-align: right;
+width: 88px;
+}
+
+.campusora-tagline::before,
+.campusora-tagline::after {
 font-size: 8px;
-line-height: 1.2;
 }
 
 .campusora-mainnav {
@@ -517,7 +536,7 @@ height: 23px;
 
 .campusora-header-search-results {
 position: fixed;
-top: 68px;
+top: 72px;
 left: 8px;
 right: 8px;
 width: auto;
@@ -564,26 +583,30 @@ padding-right: 5px;
 gap: 3px;
 }
 
+.campusora-brand {
+gap: 2px;
+}
+
 .campusora-brand img {
-width: 31px;
-height: 31px;
-margin-bottom: -10px;
+width: 28px;
+height: 28px;
 }
 
 .campusora-brand-name {
-font-size: 12px;
-}
-
-.campusora-header-search {
-width: 83px;
-max-width: 83px;
-min-width: 65px;
-flex-basis: 83px;
+font-size: 11px;
 }
 
 .campusora-tagline {
-max-width: 75px;
+width: 70px;
+}
+
+.campusora-tagline::before,
+.campusora-tagline::after {
 font-size: 7px;
+}
+
+.campusora-header-search {
+max-width: 130px;
 }
 
 .campusora-header-search-input {
