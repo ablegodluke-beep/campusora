@@ -9,19 +9,17 @@ const MENU = "menu.html";
 const currentFile = location.pathname.split("/").pop() || HOME;
 
 const icons = {
-home: "<svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-7h6v7"/></svg>",
-suggestions: "<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8h5M19.5 5.5v5"/></svg>",
-messages: "<svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9.5 9.5 0 0 1-4-.9L3 21l1.9-4.3A8 8 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/></svg>",
-spotlight: "<svg viewBox="0 0 24 24"><path d="m9 6 10 6-10 6V6Z"/><path d="M4 4v16"/></svg>",
-notifications: "<svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>",
-marketplace: "<svg viewBox="0 0 24 24"><path d="M3 9h18l-2-6H5L3 9Z"/><path d="M5 9v12h14V9"/><path d="M9 21v-7h6v7"/></svg>",
-menu: "<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>",
-search: "<svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.3 4.3"/></svg>"
+home: `<svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg>`,
+suggestions: `<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 8h5M19.5 5.5v5"/></svg>`,
+messages: `<svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9.5 9.5 0 0 1-4-.9L3 21l1.9-4.3A8 8 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/></svg>`,
+spotlight: `<svg viewBox="0 0 24 24"><path d="m9 6 10 6-10 6V6ZM4 4v16"/></svg>`,
+notifications: `<svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>`,
+marketplace: `<svg viewBox="0 0 24 24"><path d="M3 9h18l-2-6H5L3 9ZM5 9v12h14V9M9 21v-7h6v7"/></svg>`,
+menu: `<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`,
+search: `<svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.3 4.3"/></svg>`
 };
 
-/* =================================
-HEADER
-================================= */
+/* HEADER */
 
 const topbar = document.createElement("header");
 topbar.className = "campusora-topnav";
@@ -44,9 +42,7 @@ brandName.textContent = "Campusora";
 
 brand.append(logo, brandName);
 
-/* =================================
-GLOBAL SEARCH
-================================= */
+/* GLOBAL SEARCH */
 
 const searchWrap = document.createElement("div");
 searchWrap.className = "campusora-header-search";
@@ -74,17 +70,13 @@ searchResults.hidden = true;
 searchForm.append(searchIcon, searchInput);
 searchWrap.append(searchForm, searchResults);
 
-/* TAGLINE */
-
 const tagline = document.createElement("div");
 tagline.className = "campusora-tagline";
 tagline.textContent = "Connect with students across campuses";
 
 brandRow.append(brand, searchWrap, tagline);
 
-/* =================================
-MAIN NAVIGATION
-================================= */
+/* NAVIGATION */
 
 const mainNav = document.createElement("nav");
 mainNav.className = "campusora-mainnav";
@@ -100,6 +92,8 @@ const navItems = [
 ["Menu", MENU, "menu"]
 ];
 
+const navLinks = {};
+
 navItems.forEach(([label, file, icon]) => {
 const link = document.createElement("a");
 
@@ -114,12 +108,22 @@ link.classList.add("active");
 link.setAttribute("aria-current", "page");
 }
 
+if (icon === "messages" || icon === "notifications") {
+link.style.position = "relative";
+
+const badge = document.createElement("span");
+badge.className = "campusora-nav-badge";
+badge.hidden = true;
+badge.setAttribute("aria-label", "Unread count");
+
+link.appendChild(badge);
+navLinks[icon] = badge;
+}
+
 mainNav.appendChild(link);
 });
 
 topbar.append(brandRow, mainNav);
-
-/* INSTALL HEADER */
 
 function installNavigation() {
 if (document.querySelector(".campusora-topnav")) return;
@@ -134,13 +138,228 @@ document.addEventListener("DOMContentLoaded", installNavigation);
 installNavigation();
 }
 
+/* BADGE DISPLAY */
+
+function updateBadge(type, count) {
+const badge = navLinks[type];
+if (!badge) return;
+
+const number = Number(count) || 0;
+
+badge.hidden = number <= 0;
+badge.textContent = number > 99 ? "99+" : String(number);
+badge.setAttribute(
+"aria-label",
+number + " unread " + type
+);
+}
+
+/* SUPABASE */
+
+let supabaseClient = null;
+let currentUser = null;
+let messageChannel = null;
+let notificationChannel = null;
+let badgeTimer = null;
+
+async function getSupabase() {
+if (supabaseClient) return supabaseClient;
+
+const module = await import("./supabase.js");
+supabaseClient = module.supabase;
+
+return supabaseClient;
+}
+
+/* LOAD UNREAD MESSAGE COUNT */
+
+async function loadMessageBadge(supabase, user) {
+const { data: memberships, error } = await supabase
+.from("conversation_members")
+.select("conversation_id,last_read_at,joined_at")
+.eq("user_id", user.id);
+
+if (error) throw error;
+
+if (!memberships?.length) {
+updateBadge("messages", 0);
+return;
+}
+
+const ids = memberships.map(item => item.conversation_id);
+
+const { data: messages, error: messageError } = await supabase
+.from("messages")
+.select("conversation_id,sender_id,created_at,deleted_at")
+.in("conversation_id", ids)
+.is("deleted_at", null)
+.order("created_at", { ascending: false })
+.limit(Math.min(1000, ids.length * 50));
+
+if (messageError) throw messageError;
+
+const latestMessages = new Map();
+
+(messages || []).forEach(message => {
+if (!latestMessages.has(message.conversation_id)) {
+latestMessages.set(message.conversation_id, message);
+}
+});
+
+let unread = 0;
+
+memberships.forEach(member => {
+const last = latestMessages.get(member.conversation_id);
+
+if (!last || last.sender_id === user.id) return;
+
+if (!member.last_read_at) {
+unread++;
+return;
+}
+
+if (
+new Date(last.created_at) >
+new Date(member.last_read_at)
+) {
+unread++;
+}
+});
+
+updateBadge("messages", unread);
+}
+
+/* LOAD UNREAD NOTIFICATIONS */
+
+async function loadNotificationBadge(supabase, user) {
+const { count, error } = await supabase
+.from("notifications")
+.select("id", { count: "exact", head: true })
+.eq("recipient_id", user.id)
+.eq("is_read", false);
+
+if (error) throw error;
+
+updateBadge("notifications", count || 0);
+}
+
+/* REFRESH BOTH BADGES */
+
+async function refreshBadges() {
+try {
+const supabase = await getSupabase();
+
+const { data: { user }, error } = await supabase.auth.getUser();
+
+if (error || !user) {
+currentUser = null;
+updateBadge("messages", 0);
+updateBadge("notifications", 0);
+return;
+}
+
+currentUser = user;
+
+await Promise.all([
+loadMessageBadge(supabase, user),
+loadNotificationBadge(supabase, user)
+]);
+
+} catch (error) {
+console.error("Campusora badge error:", error);
+}
+}
+
+/* LIVE UPDATES */
+
+async function setupBadgeRealtime() {
+try {
+const supabase = await getSupabase();
+
+const { data: { user } } = await supabase.auth.getUser();
+
+if (!user) return;
+
+currentUser = user;
+
+if (messageChannel) {
+supabase.removeChannel(messageChannel);
+}
+
+if (notificationChannel) {
+supabase.removeChannel(notificationChannel);
+}
+
+messageChannel = supabase
+.channel("campusora-nav-messages-" + user.id)
+.on(
+"postgres_changes",
+{
+event: "*",
+schema: "public",
+table: "messages"
+},
+() => {
+refreshBadges();
+}
+)
+.on(
+"postgres_changes",
+{
+event: "UPDATE",
+schema: "public",
+table: "conversation_members",
+filter: "user_id=eq." + user.id
+},
+() => {
+refreshBadges();
+}
+)
+.subscribe();
+
+notificationChannel = supabase
+.channel("campusora-nav-notifications-" + user.id)
+.on(
+"postgres_changes",
+{
+event: "*",
+schema: "public",
+table: "notifications",
+filter: "recipient_id=eq." + user.id
+},
+() => {
+refreshBadges();
+}
+)
+.subscribe();
+
+await refreshBadges();
+
+} catch (error) {
+console.error("Campusora live badges error:", error);
+}
+}
+
+/* START BADGES */
+
+setupBadgeRealtime();
+
+if (badgeTimer) clearInterval(badgeTimer);
+
+badgeTimer = setInterval(() => {
+refreshBadges();
+}, 60000);
+
+document.addEventListener("visibilitychange", () => {
+if (!document.hidden) refreshBadges();
+});
+
 /* =================================
-SEARCH ENGINE
+GLOBAL SEARCH ENGINE
 ================================= */
 
 let searchTimer = null;
 let searchRequest = 0;
-let supabaseClient = null;
 
 const categoryNames = {
 people: "People",
@@ -172,15 +391,6 @@ searchResults.appendChild(box);
 openSearchResults();
 }
 
-async function getSupabase() {
-if (supabaseClient) return supabaseClient;
-
-const module = await import("./supabase.js");
-supabaseClient = module.supabase;
-
-return supabaseClient;
-}
-
 function createTextElement(tag, className, text) {
 const element = document.createElement(tag);
 element.className = className;
@@ -197,14 +407,18 @@ avatar.loading = "lazy";
 
 avatar.src = url || (
 "data:image/svg+xml;charset=UTF-8," +
-encodeURIComponent("<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"> <rect width="100" height="100" fill="#202943"/> <circle cx="50" cy="37" r="19" fill="#7785a8"/> <path d="M15 100c2-24 16-36 35-36s33 12 35 36" fill="#7785a8"/> </svg>")
+encodeURIComponent(
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#202943"/><circle cx="50" cy="37" r="19" fill="#7785a8"/><path d="M15 100c2-24 16-36 35-36s33 12 35 36" fill="#7785a8"/></svg>`
+)
 );
 
 avatar.onerror = () => {
 avatar.onerror = null;
 avatar.src =
 "data:image/svg+xml;charset=UTF-8," +
-encodeURIComponent("<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#202943"/></svg>");
+encodeURIComponent(
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#202943"/></svg>`
+);
 };
 
 return avatar;
@@ -221,8 +435,10 @@ link.appendChild(createAvatar(avatarURL));
 } else {
 const symbol = document.createElement("span");
 symbol.className = "campusora-search-result-symbol";
-symbol.textContent = type === "video" ? "▶" :
+symbol.textContent =
+type === "video" ? "▶" :
 type === "community" ? "◉" : "▤";
+
 link.appendChild(symbol);
 }
 
@@ -242,29 +458,25 @@ return link;
 /* SEARCH PEOPLE */
 
 async function searchPeople(supabase, pattern) {
-const [nameResult, usernameResult] = await Promise.all([
-supabase
-.from("profiles")
+const [names, usernames] = await Promise.all([
+supabase.from("profiles")
 .select("id,username,full_name,school,avatar_url")
-.ilike("full_name", pattern)
-.limit(5),
+.ilike("full_name", pattern).limit(5),
 
-supabase
-.from("profiles")
+supabase.from("profiles")
 .select("id,username,full_name,school,avatar_url")
-.ilike("username", pattern)
-.limit(5)
+.ilike("username", pattern).limit(5)
 ]);
 
-if (nameResult.error) throw nameResult.error;
-if (usernameResult.error) throw usernameResult.error;
+if (names.error) throw names.error;
+if (usernames.error) throw usernames.error;
 
 const combined = [
-...(nameResult.data || []),
-...(usernameResult.data || [])
+...(names.data || []),
+...(usernames.data || [])
 ];
 
-return [...new Map(combined.map(user => [user.id, user])).values()]
+return [...new Map(combined.map(x => [x.id, x])).values()]
 .slice(0, 5);
 }
 
@@ -279,11 +491,10 @@ const { data, error } = await supabase
 .limit(5);
 
 if (error) throw error;
-
 return data || [];
 }
 
-/* SEARCH SPOTLIGHT VIDEOS */
+/* SEARCH VIDEOS */
 
 async function searchVideos(supabase, pattern) {
 const { data, error } = await supabase
@@ -294,40 +505,35 @@ const { data, error } = await supabase
 .limit(5);
 
 if (error) throw error;
-
 return data || [];
 }
 
 /* SEARCH COMMUNITIES */
 
 async function searchCommunities(supabase, pattern) {
-const [nameResult, descriptionResult] = await Promise.all([
-supabase
-.from("communities")
+const [names, descriptions] = await Promise.all([
+supabase.from("communities")
 .select("id,name,school,description")
-.ilike("name", pattern)
-.limit(5),
+.ilike("name", pattern).limit(5),
 
-supabase
-.from("communities")
+supabase.from("communities")
 .select("id,name,school,description")
-.ilike("description", pattern)
-.limit(5)
+.ilike("description", pattern).limit(5)
 ]);
 
-if (nameResult.error) throw nameResult.error;
-if (descriptionResult.error) throw descriptionResult.error;
+if (names.error) throw names.error;
+if (descriptions.error) throw descriptions.error;
 
 const combined = [
-...(nameResult.data || []),
-...(descriptionResult.data || [])
+...(names.data || []),
+...(descriptions.data || [])
 ];
 
-return [...new Map(combined.map(item => [item.id, item])).values()]
+return [...new Map(combined.map(x => [x.id, x])).values()]
 .slice(0, 5);
 }
 
-/* LOAD AUTHOR DETAILS */
+/* AUTHOR DETAILS */
 
 async function getProfiles(supabase, ids) {
 const uniqueIds = [...new Set(ids.filter(Boolean))];
@@ -346,9 +552,7 @@ return Object.fromEntries(
 );
 }
 
-/* =================================
-DISPLAY SEARCH RESULTS
-================================= */
+/* DISPLAY SEARCH RESULTS */
 
 function addSection(title, items) {
 if (!items.length) return;
@@ -357,11 +561,14 @@ const section = document.createElement("section");
 section.className = "campusora-search-section";
 
 section.appendChild(
-createTextElement("div", "campusora-search-section-title", title)
+createTextElement(
+"div",
+"campusora-search-section-title",
+title
+)
 );
 
 items.forEach(item => section.appendChild(item));
-
 searchResults.appendChild(section);
 }
 
@@ -375,19 +582,12 @@ const posts = results.posts || [];
 const videos = results.videos || [];
 const communities = results.communities || [];
 
-const postProfiles = await getProfiles(
-supabase,
-posts.map(post => post.user_id)
-);
-
-const videoProfiles = await getProfiles(
-supabase,
-videos.map(video => video.user_id)
-);
+const [postProfiles, videoProfiles] = await Promise.all([
+getProfiles(supabase, posts.map(x => x.user_id)),
+getProfiles(supabase, videos.map(x => x.user_id))
+]);
 
 if (requestNumber !== searchRequest) return;
-
-/* PEOPLE */
 
 addSection(
 categoryNames.people,
@@ -403,13 +603,10 @@ user.avatar_url,
 ))
 );
 
-/* POSTS */
-
 addSection(
 categoryNames.posts,
 posts.map(post => {
 const author = postProfiles[post.user_id] || {};
-
 const preview = (post.content || "Shared a post").trim();
 
 return createResult(
@@ -421,8 +618,6 @@ author.avatar_url,
 );
 })
 );
-
-/* SPOTLIGHT VIDEOS */
 
 addSection(
 categoryNames.videos,
@@ -439,14 +634,14 @@ video.thumbnail_url || author.avatar_url,
 })
 );
 
-/* COMMUNITIES */
-
 addSection(
 categoryNames.communities,
 communities.map(community => createResult(
 community.name || "Campus community",
-[community.school || "", community.description || ""]
-.filter(Boolean).join(" · ").slice(0, 100),
+[
+community.school || "",
+community.description || ""
+].filter(Boolean).join(" · ").slice(0, 100),
 "communities.html?community=" + encodeURIComponent(community.id),
 null,
 "community"
@@ -461,9 +656,7 @@ return;
 openSearchResults();
 }
 
-/* =================================
-RUN SEARCH
-================================= */
+/* RUN SEARCH */
 
 async function searchCampusora(term) {
 const requestNumber = ++searchRequest;
@@ -497,7 +690,7 @@ showMessage("Search is temporarily unavailable. Please try again.");
 }
 }
 
-/* INPUT EVENTS */
+/* SEARCH EVENTS */
 
 searchInput.addEventListener("input", () => {
 clearTimeout(searchTimer);
@@ -522,17 +715,13 @@ event.preventDefault();
 
 const term = searchInput.value.trim();
 
-if (term.length >= 2) {
-searchCampusora(term);
-}
+if (term.length >= 2) searchCampusora(term);
 });
 
 searchInput.addEventListener("focus", () => {
 const term = searchInput.value.trim();
 
-if (term.length >= 2) {
-searchCampusora(term);
-}
+if (term.length >= 2) searchCampusora(term);
 });
 
 document.addEventListener("click", event => {
