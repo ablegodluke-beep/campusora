@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b0b17">
+<meta name="theme-color" content="#080b18">
 <title>Communities | Campusora</title>
+
+<link rel="stylesheet" href="shared-nav.css">
 
 <style>
 :root {
-  --bg:#090914;
-  --panel:#121221;
-  --panel2:#19192c;
-  --line:#292941;
-  --text:#f5f4ff;
-  --muted:#a5a4bd;
-  --purple:#9065ff;
-  --blue:#4d8dff;
-  --cyan:#36d9e8;
-  --pink:#f26cc8;
-  --green:#49dfaa;
-  --radius:19px;
+  --bg:#080b18;
+  --panel:#101528;
+  --panel2:#151d34;
+  --line:#252d46;
+  --text:#f5f7ff;
+  --muted:#9ba8c4;
+  --purple:#9565ff;
+  --blue:#438cff;
+  --cyan:#35d8e8;
+  --green:#45dca5;
+  --radius:15px;
 }
 
 * {
@@ -29,12 +30,12 @@
 }
 
 body {
+  min-height:100vh;
   background:
-    radial-gradient(ellipse at 45% -20%, #242052 0, transparent 42%),
+    radial-gradient(ellipse at 50% -25%,#242052 0,transparent 45%),
     var(--bg);
   color:var(--text);
-  font-family:Inter,system-ui,-apple-system,sans-serif;
-  min-height:100vh;
+  font-family:"DM Sans",Inter,system-ui,sans-serif;
 }
 
 button,input,textarea,select {
@@ -51,803 +52,69 @@ button:disabled {
 }
 
 a {
-  text-decoration:none;
   color:inherit;
+  text-decoration:none;
 }
 
-.topbar {
-  height:68px;
-  position:sticky;
-  top:0;
-  z-index:50;
-  display:flex;
-  align-items:center;
-  gap:20px;
-  padding:0 4%;
-  background:rgba(9,9,20,.93);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line);
-}
-
-.logo {
-  font-size:23px;
-  font-weight:900;
-  letter-spacing:-1px;
-  white-space:nowrap;
-}
-
-.logo span {
-  background:linear-gradient(110deg,var(--purple),var(--cyan));
-  background-clip:text;
-  -webkit-background-clip:text;
-  color:transparent;
-}
-
-.searchbox {
-  flex:1;
-  max-width:520px;
+.page {
+  width:min(100%,1050px);
   margin:auto;
-  position:relative;
+  padding:19px 17px 65px;
 }
 
-.searchbox input {
-  width:100%;
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:30px;
-  padding:12px 18px 12px 43px;
-  color:var(--text);
-  outline:none;
-}
-
-.searchbox input:focus {
-  border-color:var(--purple);
-}
-
-.search-icon {
-  position:absolute;
-  left:15px;
-  top:11px;
-  color:var(--muted);
-}
-
-.top-actions {
+.page-toolbar {
   display:flex;
   align-items:center;
-  gap:10px;
+  justify-content:space-between;
+  gap:12px;
+  margin:12px 0 19px;
 }
 
-.icon-btn {
-  width:39px;
-  height:39px;
+.search-area {
+  position:relative;
+  flex:1;
+  max-width:460px;
+}
+
+.search-area span {
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:17px;
+}
+
+.search-area input {
+  width:100%;
+  height:43px;
+  padding:0 14px 0 40px;
   border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
   background:var(--panel);
   color:var(--text);
-  border-radius:50%;
-  font-size:17px;
+  font-size:12px;
+}
+
+.search-area input:focus {
+  border-color:var(--purple);
+  box-shadow:0 0 0 3px #9565ff16;
 }
 
 .primary-btn {
   border:0;
-  border-radius:12px;
+  border-radius:11px;
   padding:11px 16px;
   color:white;
-  font-weight:800;
+  font-size:12px;
+  font-weight:850;
+  white-space:nowrap;
   background:linear-gradient(110deg,#8052ff,#426dff);
-  box-shadow:0 5px 22px #654cff22;
 }
 
 .primary-btn:hover {
-  filter:brightness(1.12);
-}
-
-.layout {
-  max-width:1450px;
-  margin:auto;
-  padding:24px 22px 100px;
-  display:grid;
-  grid-template-columns:225px minmax(0,1fr) 285px;
-  gap:22px;
-  align-items:start;
-}
-
-.sidebar {
-  position:sticky;
-  top:88px;
-}
-
-.panel {
-  background:rgba(18,18,33,.94);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:17px;
-  margin-bottom:17px;
-}
-
-.profile-mini {
-  display:flex;
-  gap:11px;
-  align-items:center;
-  padding-bottom:16px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:12px;
-}
-
-.avatar {
-  width:43px;
-  height:43px;
-  flex-shrink:0;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:linear-gradient(135deg,#8052ff,#20bfd5);
-  color:white;
-  font-weight:900;
-  overflow:hidden;
-}
-
-.avatar img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.profile-mini strong {
-  display:block;
-  font-size:13px;
-}
-
-.profile-mini small {
-  display:block;
-  margin-top:4px;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.nav-label {
-  font-size:10px;
-  color:var(--muted);
-  font-weight:800;
-  letter-spacing:1.4px;
-  padding:13px 10px 8px;
-  text-transform:uppercase;
-}
-
-.nav-item {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  width:100%;
-  padding:11px 12px;
-  border:0;
-  border-radius:12px;
-  background:transparent;
-  color:#c6c5dc;
-  text-align:left;
-  margin:3px 0;
-  font-size:13px;
-  transition:.2s;
-}
-
-.nav-item:hover,
-.nav-item.active {
-  background:linear-gradient(100deg,#8052ff24,#347cff19);
-  color:white;
-}
-
-.nav-item.active {
-  box-shadow:inset 3px 0 var(--purple);
-}
-
-.nav-icon {
-  width:23px;
-  font-size:17px;
-  text-align:center;
-}
-
-.side-note {
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
-  margin-top:14px;
-}
-
-.side-note strong {
-  color:#c9baff;
-}
-
-.main {
-  min-width:0;
-}
-
-.welcome {
-  position:relative;
-  overflow:hidden;
-  border-radius:23px;
-  border:1px solid #41356e;
-  padding:25px;
-  margin-bottom:18px;
-  background:
-    radial-gradient(circle at 90% 5%,#1e9ca944,transparent 35%),
-    radial-gradient(circle at 80% 100%,#8551ff44,transparent 40%),
-    linear-gradient(125deg,#21163c,#11172d 75%);
-}
-
-.welcome::after {
-  content:"";
-  position:absolute;
-  width:160px;
-  height:160px;
-  right:-45px;
-  top:-65px;
-  border:1px solid #ffffff14;
-  border-radius:50%;
-  box-shadow:0 0 0 24px #ffffff05,0 0 0 48px #ffffff03;
-  pointer-events:none;
-}
-
-.eyebrow {
-  color:var(--cyan);
-  text-transform:uppercase;
-  letter-spacing:2px;
-  font-size:10px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
-.welcome h1 {
-  font-size:clamp(25px,4vw,36px);
-  letter-spacing:-1.1px;
-  line-height:1.15;
-  margin-bottom:11px;
-  max-width:550px;
-}
-
-.welcome h1 span {
-  color:#a990ff;
-}
-
-.welcome p {
-  color:#c1bfd9;
-  font-size:13px;
-  line-height:1.7;
-  max-width:530px;
-}
-
-.welcome-actions {
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:19px;
-}
-
-.secondary-btn {
-  background:#ffffff0b;
-  border:1px solid #ffffff20;
-  color:white;
-  border-radius:12px;
-  padding:10px 15px;
-  font-weight:750;
-  font-size:12px;
-}
-
-.secondary-btn:hover {
-  background:#ffffff16;
-}
-
-.section-heading {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin:25px 2px 13px;
-}
-
-.section-heading h2 {
-  font-size:18px;
-  letter-spacing:-.4px;
-}
-
-.section-heading p {
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-}
-
-.text-btn {
-  background:none;
-  border:0;
-  color:#b4a1ff;
-  font-size:12px;
-  font-weight:800;
-}
-
-.filters {
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:2px 0 10px;
-  scrollbar-width:none;
-}
-
-.filters::-webkit-scrollbar {
-  display:none;
-}
-
-.filter {
-  white-space:nowrap;
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--muted);
-  padding:9px 15px;
-  border-radius:30px;
-  font-size:12px;
-  font-weight:750;
-}
-
-.filter.active {
-  background:linear-gradient(110deg,#8052ff,#426dff);
-  color:white;
-  border-color:transparent;
-}
-
-.stories {
-  display:flex;
-  gap:13px;
-  overflow-x:auto;
-  padding:4px 1px 10px;
-  scrollbar-width:none;
-}
-
-.stories::-webkit-scrollbar {
-  display:none;
-}
-
-.story {
-  width:100px;
-  min-width:100px;
-  border:0;
-  background:none;
-  color:white;
-  text-align:center;
-}
-
-.story-ring {
-  width:65px;
-  height:65px;
-  border-radius:50%;
-  margin:0 auto 8px;
-  padding:3px;
-  background:linear-gradient(135deg,var(--purple),var(--cyan),var(--pink));
-}
-
-.story-inner {
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(135deg,#29204d,#163744);
-  border:3px solid var(--bg);
-  font-size:24px;
-}
-
-.story strong {
-  display:block;
-  font-size:11px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.story small {
-  display:block;
-  color:var(--muted);
-  margin-top:4px;
-  font-size:10px;
-}
-
-.composer {
-  display:flex;
-  gap:12px;
-  align-items:center;
-  padding:15px;
-  margin:12px 0 18px;
-}
-
-.composer-open {
-  flex:1;
-  text-align:left;
-  color:var(--muted);
-  background:#090914;
-  border:1px solid var(--line);
-  border-radius:30px;
-  padding:13px 16px;
-  font-size:12px;
-}
-
-.composer-open:hover {
-  border-color:var(--purple);
-}
-
-.composer-tools {
-  display:flex;
-  gap:8px;
-}
-
-.composer-tools button {
-  border:0;
-  background:transparent;
-  font-size:19px;
-  padding:4px;
-}
-
-.feed-post {
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  margin-bottom:15px;
-  overflow:hidden;
-}
-
-.post-header {
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:16px 16px 8px;
-}
-
-.post-author {
-  flex:1;
-  min-width:0;
-}
-
-.post-author strong {
-  font-size:13px;
-}
-
-.post-author small {
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-}
-
-.role-badge {
-  display:inline-block;
-  font-size:9px;
-  padding:3px 7px;
-  border-radius:20px;
-  color:#c7b8ff;
-  background:#8a64ff20;
-  border:1px solid #8a64ff40;
-  margin-left:5px;
-}
-
-.post-menu {
-  background:none;
-  color:var(--muted);
-  border:0;
-  font-size:20px;
-}
-
-.post-body {
-  padding:8px 16px 14px;
-  font-size:13px;
-  line-height:1.8;
-  overflow-wrap:anywhere;
-}
-
-.post-community {
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  color:#b6a2ff;
-  background:#8a64ff12;
-  border:1px solid #8a64ff30;
-  border-radius:20px;
-  padding:5px 9px;
-  margin-bottom:10px;
-  font-size:10px;
-}
-
-.post-image {
-  display:block;
-  width:100%;
-  max-height:460px;
-  object-fit:cover;
-  background:#1a1a2b;
-}
-
-.post-stats {
-  display:flex;
-  justify-content:space-between;
-  padding:11px 16px;
-  color:var(--muted);
-  font-size:11px;
-  border-bottom:1px solid var(--line);
-}
-
-.post-actions {
-  display:flex;
-  gap:4px;
-  padding:7px 9px;
-}
-
-.post-action {
-  flex:1;
-  background:none;
-  border:0;
-  border-radius:9px;
-  color:#c0bfd7;
-  padding:10px 5px;
-  font-size:11px;
-  font-weight:750;
-}
-
-.post-action:hover {
-  background:#ffffff08;
-}
-
-.post-action.liked {
-  color:#ff78c6;
-}
-
-.comment-area {
-  padding:0 14px 13px;
-}
-
-.comment-form {
-  display:flex;
-  gap:8px;
-}
-
-.comment-form input {
-  min-width:0;
-  flex:1;
-  border:1px solid var(--line);
-  border-radius:25px;
-  padding:10px 13px;
-  background:#090914;
-  color:white;
-  outline:none;
-  font-size:12px;
-}
-
-.comment-form button {
-  border:0;
-  background:#8052ff;
-  color:white;
-  border-radius:22px;
-  padding:0 13px;
-  font-size:11px;
-  font-weight:800;
-}
-
-.comments-preview {
-  padding:0 14px 12px;
-  color:#d1cfe5;
-  font-size:12px;
-  line-height:1.6;
-}
-
-.comments-preview p {
-  margin-top:7px;
-  overflow-wrap:anywhere;
-}
-
-.comments-preview strong {
-  color:white;
-}
-
-.community-grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-}
-
-.community-card {
-  min-width:0;
-  padding:15px;
-  border:1px solid var(--line);
-  border-radius:17px;
-  background:linear-gradient(145deg,#19192b,#10101d);
-  transition:transform .2s,border-color .2s;
-}
-
-.community-card:hover {
-  transform:translateY(-2px);
-  border-color:#6f58bd;
-}
-
-.community-card-top {
-  display:flex;
-  align-items:center;
-  gap:11px;
-  margin-bottom:12px;
-}
-
-.community-symbol {
-  width:48px;
-  height:48px;
-  flex-shrink:0;
-  display:grid;
-  place-items:center;
-  font-size:22px;
-  border-radius:15px;
-  background:linear-gradient(140deg,#8052ff38,#29c9e42a);
-  border:1px solid #8c7bff30;
-}
-
-.community-card h3 {
-  font-size:13px;
-  line-height:1.4;
-  overflow-wrap:anywhere;
-}
-
-.community-card .school {
-  font-size:10px;
-  color:var(--muted);
-  margin-top:4px;
-  line-height:1.4;
-}
-
-.community-card p {
-  color:#b5b3cc;
-  font-size:11px;
-  line-height:1.7;
-  margin-bottom:13px;
-  overflow-wrap:anywhere;
-}
-
-.community-card-footer {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  border-top:1px solid var(--line);
-  padding-top:12px;
-}
-
-.member-count {
-  color:var(--muted);
-  font-size:10px;
-}
-
-.join-btn {
-  background:linear-gradient(110deg,#8052ff,#426dff);
-  border:0;
-  color:white;
-  border-radius:10px;
-  padding:9px 12px;
-  font-size:11px;
-  font-weight:850;
-  white-space:nowrap;
-}
-
-.join-btn.joined {
-  background:#ffffff0b;
-  border:1px solid #44435f;
-  color:#d6d4eb;
-}
-
-.right-title {
-  font-size:13px;
-  margin-bottom:13px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.suggestion {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:11px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.suggestion:last-child {
-  border-bottom:0;
-  padding-bottom:0;
-}
-
-.suggestion-icon {
-  width:38px;
-  height:38px;
-  border-radius:12px;
-  background:#8a64ff1c;
-  display:grid;
-  place-items:center;
-  font-size:18px;
-  flex-shrink:0;
-}
-
-.suggestion-info {
-  flex:1;
-  min-width:0;
-}
-
-.suggestion-info strong {
-  display:block;
-  font-size:11px;
-  line-height:1.5;
-}
-
-.suggestion-info small {
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:3px;
-}
-
-.suggestion button {
-  border:1px solid #58458e;
-  color:#c4b5ff;
-  background:#8052ff12;
-  border-radius:9px;
-  padding:7px 9px;
-  font-size:10px;
-  font-weight:800;
-}
-
-.trend-item {
-  padding:10px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.trend-item:last-child {
-  border-bottom:0;
-}
-
-.trend-item small {
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-bottom:5px;
-}
-
-.trend-item strong {
-  font-size:12px;
-}
-
-.trend-item p {
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.empty-state {
-  padding:35px 20px;
-  text-align:center;
-  border:1px dashed #393653;
-  border-radius:18px;
-  background:#12122180;
-}
-
-.empty-emoji {
-  font-size:38px;
-  margin-bottom:12px;
-}
-
-.empty-state h3 {
-  font-size:16px;
-  margin-bottom:8px;
-}
-
-.empty-state p {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-  max-width:350px;
-  margin:0 auto 15px;
-}
-
-.loading {
-  color:var(--muted);
-  padding:25px;
-  text-align:center;
-  font-size:12px;
+  filter:brightness(1.1);
 }
 
 .status-message {
@@ -873,6 +140,425 @@ a {
   background:#e53c6410;
 }
 
+.section-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:19px 1px 12px;
+}
+
+.section-heading h2 {
+  font-size:15px;
+  font-weight:850;
+}
+
+.section-heading p {
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+}
+
+.text-btn {
+  background:none;
+  border:0;
+  color:#b4a1ff;
+  font-size:11px;
+  font-weight:800;
+}
+
+.filters {
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding:2px 0 12px;
+  scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar {
+  display:none;
+}
+
+.filter {
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--muted);
+  padding:8px 13px;
+  border-radius:25px;
+  font-size:11px;
+  font-weight:750;
+}
+
+.filter.active {
+  background:linear-gradient(110deg,#8052ff,#426dff);
+  color:white;
+  border-color:transparent;
+}
+
+/* COMMUNITY DIRECTORY — VERTICAL ROWS */
+
+.community-grid {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
+}
+
+.community-card {
+  width:100%;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:linear-gradient(110deg,#121a30,#101528);
+  transition:border-color .2s,background .2s;
+}
+
+.community-card:hover {
+  border-color:#6652a8;
+  background:#151b32;
+}
+
+.community-card-top {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  flex:1;
+  min-width:0;
+  margin:0;
+}
+
+.community-symbol {
+  width:45px;
+  height:45px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  font-size:21px;
+  border-radius:13px;
+  background:linear-gradient(140deg,#8052ff38,#29c9e42a);
+  border:1px solid #8c7bff30;
+}
+
+.community-card h3 {
+  font-size:12px;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+}
+
+.community-card .school {
+  font-size:10px;
+  color:var(--muted);
+  margin-top:4px;
+  line-height:1.4;
+}
+
+.community-card p {
+  display:none;
+}
+
+.community-card-footer {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:9px;
+  flex-shrink:0;
+}
+
+.member-count {
+  color:var(--muted);
+  font-size:10px;
+  white-space:nowrap;
+}
+
+.join-btn {
+  background:linear-gradient(110deg,#8052ff,#426dff);
+  border:0;
+  color:white;
+  border-radius:9px;
+  padding:9px 13px;
+  font-size:10px;
+  font-weight:850;
+  white-space:nowrap;
+}
+
+.join-btn.joined {
+  background:#ffffff0b;
+  border:1px solid #44435f;
+  color:#d6d4eb;
+}
+
+.community-card > .text-btn {
+  display:none;
+}
+
+.empty-state {
+  padding:30px 18px;
+  text-align:center;
+  border:1px dashed #393653;
+  border-radius:15px;
+  background:#12122180;
+}
+
+.empty-emoji {
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.empty-state h3 {
+  font-size:14px;
+  margin-bottom:7px;
+}
+
+.empty-state p {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+  max-width:350px;
+  margin:0 auto 13px;
+}
+
+.loading {
+  color:var(--muted);
+  padding:22px;
+  text-align:center;
+  font-size:12px;
+}
+
+.hidden {
+  display:none!important;
+}
+
+/* COMMUNITY CONVERSATIONS */
+
+.conversation-section {
+  margin-top:28px;
+  padding-top:17px;
+  border-top:1px solid var(--line);
+}
+
+.composer {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:12px;
+  margin:12px 0 14px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:var(--panel);
+}
+
+.avatar {
+  width:39px;
+  height:39px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:linear-gradient(135deg,#8052ff,#20bfd5);
+  color:white;
+  font-weight:900;
+  overflow:hidden;
+}
+
+.avatar img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.composer-open {
+  flex:1;
+  min-width:0;
+  text-align:left;
+  color:var(--muted);
+  background:#090e1d;
+  border:1px solid var(--line);
+  border-radius:25px;
+  padding:12px 14px;
+  font-size:11px;
+}
+
+.composer-open:hover {
+  border-color:var(--purple);
+}
+
+.composer-tools {
+  display:flex;
+  gap:7px;
+}
+
+.composer-tools button {
+  border:0;
+  background:transparent;
+  font-size:18px;
+  padding:4px;
+}
+
+.feed-post {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin-bottom:12px;
+  overflow:hidden;
+}
+
+.post-header {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 13px 7px;
+}
+
+.post-author {
+  flex:1;
+  min-width:0;
+}
+
+.post-author strong {
+  font-size:12px;
+}
+
+.post-author small {
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.role-badge {
+  display:inline-block;
+  font-size:9px;
+  padding:3px 7px;
+  border-radius:20px;
+  color:#c7b8ff;
+  background:#8a64ff20;
+  border:1px solid #8a64ff40;
+  margin-left:5px;
+}
+
+.post-menu {
+  background:none;
+  color:var(--muted);
+  border:0;
+  font-size:20px;
+}
+
+.post-body {
+  padding:8px 13px 12px;
+  font-size:12px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+}
+
+.post-community {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:#b6a2ff;
+  background:#8a64ff12;
+  border:1px solid #8a64ff30;
+  border-radius:20px;
+  padding:5px 9px;
+  margin-bottom:9px;
+  font-size:10px;
+}
+
+.post-image {
+  display:block;
+  width:100%;
+  max-height:440px;
+  object-fit:cover;
+  background:#1a1a2b;
+}
+
+.post-stats {
+  display:flex;
+  justify-content:space-between;
+  padding:10px 13px;
+  color:var(--muted);
+  font-size:10px;
+  border-bottom:1px solid var(--line);
+}
+
+.post-actions {
+  display:flex;
+  gap:4px;
+  padding:7px 8px;
+}
+
+.post-action {
+  flex:1;
+  background:none;
+  border:0;
+  border-radius:9px;
+  color:#c0bfd7;
+  padding:9px 4px;
+  font-size:10px;
+  font-weight:750;
+}
+
+.post-action:hover {
+  background:#ffffff08;
+}
+
+.post-action.liked {
+  color:#ff78c6;
+}
+
+.comment-area {
+  padding:0 12px 12px;
+}
+
+.comment-form {
+  display:flex;
+  gap:8px;
+}
+
+.comment-form input {
+  min-width:0;
+  flex:1;
+  border:1px solid var(--line);
+  border-radius:25px;
+  padding:10px 12px;
+  background:#090914;
+  color:white;
+  outline:none;
+  font-size:11px;
+}
+
+.comment-form button {
+  border:0;
+  background:#8052ff;
+  color:white;
+  border-radius:22px;
+  padding:0 13px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.comments-preview {
+  padding:0 13px 11px;
+  color:#d1cfe5;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.comments-preview p {
+  margin-top:7px;
+  overflow-wrap:anywhere;
+}
+
+.comments-preview strong {
+  color:white;
+}
+
+/* MODALS */
+
 .modal-backdrop {
   position:fixed;
   inset:0;
@@ -882,7 +568,7 @@ a {
   display:none;
   align-items:center;
   justify-content:center;
-  padding:16px;
+  padding:15px;
 }
 
 .modal-backdrop.show {
@@ -890,13 +576,13 @@ a {
 }
 
 .modal {
-  width:min(100%,520px);
+  width:min(100%,500px);
   max-height:90vh;
   overflow-y:auto;
-  padding:22px;
+  padding:20px;
   border:1px solid #383454;
-  border-radius:22px;
-  background:#121221;
+  border-radius:19px;
+  background:#121a2d;
   box-shadow:0 20px 90px #0009;
 }
 
@@ -904,16 +590,16 @@ a {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:18px;
+  margin-bottom:17px;
 }
 
 .modal-head h2 {
-  font-size:19px;
+  font-size:17px;
 }
 
 .close-btn {
-  width:35px;
-  height:35px;
+  width:34px;
+  height:34px;
   border:1px solid var(--line);
   background:#ffffff08;
   color:white;
@@ -922,31 +608,31 @@ a {
 }
 
 .field {
-  margin-bottom:15px;
+  margin-bottom:14px;
 }
 
 .field label {
   display:block;
-  font-size:12px;
+  font-size:11px;
   font-weight:800;
-  margin-bottom:8px;
+  margin-bottom:7px;
 }
 
 .field input,
 .field textarea,
 .field select {
   width:100%;
-  background:#090914;
+  background:#090e1d;
   border:1px solid #34334e;
-  border-radius:12px;
+  border-radius:11px;
   color:white;
-  padding:12px 13px;
+  padding:11px 12px;
   outline:none;
-  font-size:13px;
+  font-size:12px;
 }
 
 .field textarea {
-  min-height:115px;
+  min-height:105px;
   resize:vertical;
   line-height:1.6;
 }
@@ -970,7 +656,7 @@ a {
 
 .modal-submit {
   width:100%;
-  padding:13px;
+  padding:12px;
 }
 
 .toast {
@@ -998,182 +684,66 @@ a {
   transform:translate(-50%,0);
 }
 
-.mobile-nav {
-  display:none;
-}
-
-.hidden {
+/* Hidden support elements used by existing community functions */
+.support-data {
   display:none!important;
 }
 
-@media(max-width:1150px) {
-  .layout {
-    grid-template-columns:190px minmax(0,1fr);
+@media(max-width:600px) {
+  .page {
+    padding:13px 11px 45px;
   }
 
-  .right-sidebar {
-    display:none;
-  }
-}
-
-@media(max-width:760px) {
-  .topbar {
-    height:60px;
-    padding:0 13px;
-    gap:10px;
+  .page-toolbar {
+    gap:8px;
+    margin-top:9px;
   }
 
-  .logo {
-    font-size:21px;
-  }
-
-  .searchbox {
-    max-width:none;
-  }
-
-  .searchbox input {
-    padding:10px 12px 10px 34px;
+  .search-area input {
+    height:41px;
     font-size:11px;
   }
 
-  .search-icon {
-    left:11px;
-    top:9px;
-    font-size:12px;
-  }
-
-  .top-actions .icon-btn {
-    display:none;
-  }
-
-  .top-actions .primary-btn {
-    padding:9px 11px;
+  .page-toolbar .primary-btn {
+    padding:10px 12px;
     font-size:11px;
-  }
-
-  .layout {
-    display:block;
-    padding:15px 12px 95px;
-  }
-
-  .left-sidebar {
-    display:none;
-  }
-
-  .welcome {
-    padding:21px 18px;
-    border-radius:19px;
-  }
-
-  .welcome h1 {
-    font-size:28px;
-  }
-
-  .welcome p {
-    font-size:12px;
-  }
-
-  .section-heading {
-    margin-top:23px;
-  }
-
-  .section-heading h2 {
-    font-size:17px;
-  }
-
-  .panel {
-    padding:13px;
-  }
-
-  .community-grid {
-    grid-template-columns:1fr;
-    gap:10px;
   }
 
   .community-card {
-    padding:14px;
+    gap:8px;
+    padding:10px 9px;
   }
 
-  .community-card p {
-    font-size:12px;
+  .community-symbol {
+    width:40px;
+    height:40px;
+    font-size:19px;
+    border-radius:11px;
   }
 
-  .mobile-nav {
-    position:fixed;
-    display:flex;
-    align-items:center;
-    justify-content:space-around;
-    gap:3px;
-    z-index:60;
-    left:0;
-    right:0;
-    bottom:0;
-    padding:9px 5px calc(9px + env(safe-area-inset-bottom));
-    background:rgba(12,12,24,.97);
-    border-top:1px solid var(--line);
-    backdrop-filter:blur(15px);
+  .community-card h3 {
+    font-size:11px;
   }
 
-  .mobile-nav a {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
-    color:#aaa9c2;
-    font-size:9px;
-    min-width:48px;
-  }
-
-  .mobile-nav a span:first-child {
-    font-size:20px;
-  }
-
-  .mobile-nav a.active {
-    color:#b8a3ff;
-  }
-
-  .mobile-nav .create-mobile {
-    margin-top:-25px;
-    background:linear-gradient(135deg,#8052ff,#426dff);
-    color:white;
-    width:46px;
-    height:46px;
-    min-width:46px;
-    border-radius:16px;
-    justify-content:center;
-    box-shadow:0 5px 22px #8052ff55;
-  }
-
-  .mobile-nav .create-mobile span:last-child {
+  .member-count {
     display:none;
+  }
+
+  .join-btn {
+    padding:9px 11px;
+    font-size:10px;
   }
 
   .composer-tools {
     display:none;
   }
 
-  .post-header {
-    padding:13px 12px 7px;
-  }
-
-  .post-body {
-    padding:8px 13px 12px;
-  }
-
-  .post-stats {
-    padding:10px 13px;
-  }
-
-  .post-action {
-    font-size:10px;
-  }
-
   .modal {
-    padding:18px;
+    padding:17px;
   }
 
   .toast {
-    bottom:85px;
+    bottom:20px;
   }
 }
 </style>
@@ -1181,217 +751,115 @@ a {
 
 <body>
 
-<header class="topbar">
-  <a href="index.html" class="logo">Campus<span>ora</span></a>
+<div class="page">
 
-  <div class="searchbox">
-    <span class="search-icon">⌕</span>
-    <input id="globalSearch" type="search"
-      placeholder="Find campuses, communities, people..."
-      autocomplete="off">
+  <div class="page-toolbar">
+    <label class="search-area">
+      <span>⌕</span>
+      <input id="globalSearch" type="search"
+        placeholder="Search communities..."
+        autocomplete="off">
+    </label>
+
+    <button class="primary-btn" onclick="openCreateCommunity()">
+      ＋ Create
+    </button>
   </div>
 
-  <div class="top-actions">
-    <button class="icon-btn" onclick="refreshPage()" title="Refresh">↻</button>
-    <button class="primary-btn" onclick="openCreateCommunity()">＋ Create</button>
-  </div>
-</header>
+  <div id="statusMessage" class="status-message"></div>
 
-<div class="layout">
-
-  <aside class="sidebar left-sidebar">
-    <div class="panel">
-      <div class="profile-mini">
-        <div class="avatar" id="myAvatar">C</div>
-        <div>
-          <strong id="myName">Campusora Member</strong>
-          <small id="myRole">Your campus, your people</small>
-        </div>
-      </div>
-
-      <div class="nav-label">Your space</div>
-
-      <a class="nav-item" href="index.html">
-        <span class="nav-icon">⌂</span> Home Feed
-      </a>
-
-      <a class="nav-item" href="explore.html">
-        <span class="nav-icon">⌕</span> Explore
-      </a>
-
-      <a class="nav-item active" href="communities.html">
-        <span class="nav-icon">◉</span> Communities
-      </a>
-
-      <a class="nav-item" href="follow-system.html">
-        <span class="nav-icon">♧</span> People
-      </a>
-
-      <a class="nav-item" href="profile.html">
-        <span class="nav-icon">♙</span> My Profile
-      </a>
-
-      <a class="nav-item" href="create-post.html">
-        <span class="nav-icon">✚</span> Create a post
-      </a>
-
-      <div class="nav-label">Discover more</div>
-
-      <a class="nav-item" href="events.html">
-        <span class="nav-icon">▦</span> Campus Events
-      </a>
-
-      <a class="nav-item" href="marketplace.html">
-        <span class="nav-icon">▣</span> Marketplace
-      </a>
-
-      <a class="nav-item" href="jobs.html">
-        <span class="nav-icon">✧</span> Opportunities
-      </a>
-
-      <div class="side-note">
-        <strong>Campusora</strong><br>
-        Different campuses. One connected community.
+  <section id="discoverSection">
+    <div class="section-heading">
+      <div>
+        <h2>Discover communities</h2>
+        <p>Find your people across campuses.</p>
       </div>
     </div>
-  </aside>
 
-  <main class="main">
+    <div class="filters" id="discoverFilters">
+      <button class="filter active" data-type="all"
+        onclick="setDiscoverType('all',this)">All</button>
 
-    <section class="welcome">
-      <div class="eyebrow">Your campus. Your people. Your world.</div>
-      <h1>Find your people.<br>Build your <span>campus circle.</span></h1>
-      <p>
-        Meet students from different schools, join conversations,
-        share experiences and find communities where you belong.
-      </p>
+      <button class="filter" data-type="campus"
+        onclick="setDiscoverType('campus',this)">Campuses</button>
 
-      <div class="welcome-actions">
-        <button class="primary-btn" onclick="showDiscover()">🌍 Discover communities</button>
-        <button class="secondary-btn" onclick="openCreateCommunity()">＋ Start your community</button>
+      <button class="filter" data-type="joined"
+        onclick="setDiscoverType('joined',this)">Joined</button>
+    </div>
+
+    <div class="community-grid" id="communityGrid">
+      <div class="loading">Finding communities...</div>
+    </div>
+  </section>
+
+  <section class="conversation-section" id="conversationSection">
+
+    <div class="section-heading">
+      <div>
+        <h2>Community conversations</h2>
+        <p>Questions, discussions and campus life.</p>
       </div>
-    </section>
+    </div>
 
-    <div id="statusMessage" class="status-message"></div>
+    <div class="panel composer">
+      <div class="avatar" id="composerAvatar">C</div>
 
-    <section>
-      <div class="section-heading">
-        <div>
-          <h2>Communities in your orbit ✨</h2>
-          <p>Find your people across campuses.</p>
-        </div>
-        <button class="text-btn" onclick="showDiscover()">See all →</button>
+      <button class="composer-open" onclick="openCreatePost()">
+        What's happening in your community?
+      </button>
+
+      <div class="composer-tools">
+        <button title="Write a post" onclick="openCreatePost()">✍️</button>
+        <button title="Create a community"
+          onclick="openCreateCommunity()">🌍</button>
       </div>
+    </div>
 
-      <div class="stories" id="communityStories">
-        <div class="loading">Loading your campus circles...</div>
-      </div>
-    </section>
+    <div class="filters" id="filterTabs">
+      <button class="filter active" data-filter="all"
+        onclick="setFilter('all',this)">For You</button>
 
-    <section>
-      <div class="section-heading">
-        <div>
-          <h2>Your community space 💬</h2>
-          <p>Conversations, questions and campus life.</p>
-        </div>
-      </div>
+      <button class="filter" data-filter="joined"
+        onclick="setFilter('joined',this)">My Communities</button>
 
-      <div class="panel composer">
-        <div class="avatar" id="composerAvatar">C</div>
-        <button class="composer-open" onclick="openCreatePost()">
-          What's happening in your community?
-        </button>
-        <div class="composer-tools">
-          <button title="Write a post" onclick="openCreatePost()">✍️</button>
-          <button title="Create a community" onclick="openCreateCommunity()">🌍</button>
-        </div>
-      </div>
+      <button class="filter" data-filter="discover"
+        onclick="setFilter('discover',this)">Discover</button>
 
-      <div class="filters" id="filterTabs">
-        <button class="filter active" data-filter="all" onclick="setFilter('all',this)">For You</button>
-        <button class="filter" data-filter="joined" onclick="setFilter('joined',this)">My Communities</button>
-        <button class="filter" data-filter="discover" onclick="setFilter('discover',this)">Discover</button>
-        <button class="filter" data-filter="campus" onclick="setFilter('campus',this)">My Campus</button>
-      </div>
-    </section>
+      <button class="filter" data-filter="campus"
+        onclick="setFilter('campus',this)">My Campus</button>
+    </div>
 
     <section id="communityFeed">
       <div class="loading">Getting the conversation started...</div>
     </section>
 
-    <section id="discoverSection" class="hidden">
-      <div class="section-heading">
-        <div>
-          <h2>Find your next circle 🌍</h2>
-          <p id="discoverSubtitle">Explore communities across campuses.</p>
-        </div>
-        <button class="text-btn" onclick="hideDiscover()">Back to feed ↑</button>
-      </div>
-
-      <div class="filters" id="discoverFilters">
-        <button class="filter active" data-type="all" onclick="setDiscoverType('all',this)">All</button>
-        <button class="filter" data-type="campus" onclick="setDiscoverType('campus',this)">Campuses</button>
-        <button class="filter" data-type="joined" onclick="setDiscoverType('joined',this)">Joined</button>
-      </div>
-
-      <div class="community-grid" id="communityGrid">
-        <div class="loading">Finding your people...</div>
-      </div>
-    </section>
-
-  </main>
-
-  <aside class="sidebar right-sidebar">
-    <section class="panel">
-      <div class="right-title">
-        <strong>💜 Communities to explore</strong>
-        <button class="text-btn" onclick="showDiscover()">More</button>
-      </div>
-      <div id="suggestedCommunities">
-        <div class="loading">Finding communities...</div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="right-title"><strong>⚡ Make Campusora yours</strong></div>
-      <p style="color:var(--muted);font-size:12px;line-height:1.8">
-        Join a community, introduce yourself, ask a question or share
-        something happening on your campus. Your next connection could
-        be from a school miles away.
-      </p>
-      <button class="primary-btn" style="width:100%;margin-top:14px"
-        onclick="openCreatePost()">Start a conversation</button>
-    </section>
-
-    <section class="panel">
-      <div class="right-title"><strong>🌐 Our community</strong></div>
-      <p style="color:var(--muted);font-size:11px;line-height:1.9">
-        Campusora brings students, alumni and general members together.
-        Be respectful, protect your privacy and help make every campus
-        feel welcome.
-      </p>
-    </section>
-  </aside>
+  </section>
 
 </div>
 
-<nav class="mobile-nav">
-  <a href="index.html"><span>⌂</span><span>Home</span></a>
-  <a href="explore.html"><span>⌕</span><span>Explore</span></a>
-  <a href="create-post.html" class="create-mobile"><span>＋</span><span>Create</span></a>
-  <a href="communities.html" class="active"><span>◉</span><span>Circles</span></a>
-  <a href="profile.html"><span>♙</span><span>Profile</span></a>
-</nav>
+<!-- Hidden elements retained for the existing community functions -->
+<div class="support-data">
+  <div id="myAvatar" class="avatar">C</div>
+  <span id="myName">Campusora Member</span>
+  <span id="myRole">Your campus, your people</span>
+  <div id="communityStories"></div>
+  <div id="suggestedCommunities"></div>
+  <span id="discoverSubtitle"></span>
+</div>
 
 <!-- Create community modal -->
-<div class="modal-backdrop" id="communityModal" onclick="backdropClose(event,'communityModal')">
+<div class="modal-backdrop" id="communityModal"
+  onclick="backdropClose(event,'communityModal')">
+
   <div class="modal">
     <div class="modal-head">
-      <h2>Start a community 🌍</h2>
-      <button class="close-btn" onclick="closeModal('communityModal')">×</button>
+      <h2>Start a community</h2>
+      <button class="close-btn"
+        onclick="closeModal('communityModal')">×</button>
     </div>
 
     <form id="createCommunityForm">
+
       <div class="field">
         <label for="communityName">Community name</label>
         <input id="communityName" maxlength="100" required
@@ -1402,7 +870,9 @@ a {
         <label for="communitySchool">School or campus</label>
         <input id="communitySchool" maxlength="150" required
           placeholder="e.g. Akwa Ibom State University">
-        <div class="field-help">Use the school this community represents.</div>
+        <div class="field-help">
+          Use the school this community represents.
+        </div>
       </div>
 
       <div class="field">
@@ -1411,28 +881,36 @@ a {
           placeholder="Tell people what they can share, discuss and do here..."></textarea>
       </div>
 
-      <button class="primary-btn modal-submit" id="createCommunitySubmit" type="submit">
+      <button class="primary-btn modal-submit"
+        id="createCommunitySubmit" type="submit">
         Create community
       </button>
+
     </form>
   </div>
 </div>
 
-<!-- Create community post modal -->
-<div class="modal-backdrop" id="postModal" onclick="backdropClose(event,'postModal')">
+ <!-- Create community post modal -->
+<div class="modal-backdrop" id="postModal"
+  onclick="backdropClose(event,'postModal')">
+
   <div class="modal">
     <div class="modal-head">
-      <h2>Start a conversation 💬</h2>
-      <button class="close-btn" onclick="closeModal('postModal')">×</button>
+      <h2>Start a conversation</h2>
+      <button class="close-btn"
+        onclick="closeModal('postModal')">×</button>
     </div>
 
     <form id="createPostForm">
+
       <div class="field">
         <label for="postCommunity">Where do you want to post?</label>
         <select id="postCommunity" required>
           <option value="">Choose a community</option>
         </select>
-        <div class="field-help">This post will appear inside the selected community.</div>
+        <div class="field-help">
+          This post will appear inside the selected community.
+        </div>
       </div>
 
       <div class="field">
@@ -1441,9 +919,11 @@ a {
           placeholder="Ask a question, share campus gist, celebrate a win or start a discussion..."></textarea>
       </div>
 
-      <button class="primary-btn modal-submit" id="createPostSubmit" type="submit">
+      <button class="primary-btn modal-submit"
+        id="createPostSubmit" type="submit">
         Publish to community
       </button>
+
     </form>
   </div>
 </div>
@@ -1466,7 +946,10 @@ let searchTerm = '';
 let discoverType = 'all';
 let busy = false;
 
-const COMMUNITY_EMOJIS = ['🌍','🎓','💜','🚀','📚','🎨','🎮','🎵','⚽','💡','🧪','🎬','📸','💻','🌱'];
+const COMMUNITY_EMOJIS = [
+  '🌍','🎓','💜','🚀','📚','🎨','🎮','🎵',
+  '⚽','💡','🧪','🎬','📸','💻','🌱'
+];
 
 function escapeHTML(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -1502,7 +985,10 @@ function showToast(message) {
   toast.classList.add('show');
 
   clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove('show'),3000);
+
+  showToast.timer = setTimeout(
+    () => toast.classList.remove('show'),3000
+  );
 }
 
 function showStatus(message,isError=false) {
@@ -1529,7 +1015,9 @@ function backdropClose(event,id) {
 }
 
 function getDisplayName(profile) {
-  return profile?.full_name || profile?.username || 'Campusora Member';
+  return profile?.full_name ||
+    profile?.username ||
+    'Campusora Member';
 }
 
 function avatarMarkup(profile,sizeClass='') {
@@ -1542,7 +1030,9 @@ function avatarMarkup(profile,sizeClass='') {
     </div>`;
   }
 
-  return `<div class="avatar ${sizeClass}">${escapeHTML(initials(name))}</div>`;
+  return `<div class="avatar ${sizeClass}">
+    ${escapeHTML(initials(name))}
+  </div>`;
 }
 
 function roleName(role) {
@@ -1563,18 +1053,23 @@ async function initialize() {
     currentUser = session?.user || null;
 
     if (currentUser) {
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id',currentUser.id)
-        .maybeSingle();
+      const { data: profile, error: profileError } =
+        await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id',currentUser.id)
+          .maybeSingle();
 
       if (profileError) {
-        console.warn('Profile could not be loaded:',profileError.message);
+        console.warn(
+          'Profile could not be loaded:',
+          profileError.message
+        );
       }
 
       currentProfile = profile || null;
       updateMyProfile();
+
     } else {
       $('myName').textContent = 'Welcome to Campusora';
       $('myRole').textContent = 'Connect across campuses';
@@ -1586,19 +1081,28 @@ async function initialize() {
     await loadCommunityFeed();
 
   } catch (error) {
-    console.error('Campusora Communities initialization error:',error);
+    console.error(
+      'Campusora Communities initialization error:',
+      error
+    );
+
     showStatus(
       'Campusora could not finish loading. Please refresh the page. Details: ' +
       (error.message || 'Unknown error'),
       true
     );
 
-    $('communityStories').innerHTML = `
+    $('communityGrid').innerHTML = `
       <div class="empty-state">
         <div class="empty-emoji">😕</div>
         <h3>We hit a small problem</h3>
-        <p>Refresh the page and try again. If this continues, the error message above can help us fix it.</p>
-        <button class="primary-btn" onclick="refreshPage()">Try again</button>
+        <p>
+          Refresh the page and try again. If this continues,
+          the error message above can help us fix it.
+        </p>
+        <button class="primary-btn" onclick="refreshPage()">
+          Try again
+        </button>
       </div>`;
 
     $('communityFeed').innerHTML = `
@@ -1606,7 +1110,9 @@ async function initialize() {
         <div class="empty-emoji">💜</div>
         <h3>Your campus people are waiting</h3>
         <p>We're having trouble loading the community space.</p>
-        <button class="primary-btn" onclick="refreshPage()">Reload communities</button>
+        <button class="primary-btn" onclick="refreshPage()">
+          Reload communities
+        </button>
       </div>`;
   }
 }
@@ -1618,6 +1124,7 @@ function updateMyProfile() {
 
   $('myName').textContent = name;
   $('myRole').textContent = roleName(currentProfile.role);
+
   $('myAvatar').innerHTML = currentProfile.avatar_url
     ? `<img src="${escapeHTML(currentProfile.avatar_url)}" alt="">`
     : escapeHTML(initials(name));
@@ -1635,29 +1142,39 @@ async function loadCommunities() {
 
   if (error) {
     console.error('Community query error:',error);
+
     showStatus(
-      'We could not load communities from Supabase: ' + error.message,
+      'We could not load communities from Supabase: ' +
+      error.message,
       true
     );
+
     throw error;
   }
 
   communities = data || [];
 
   if (currentUser) {
-    const { data: memberships, error: membershipError } = await supabase
-      .from('community_members')
-      .select('community_id')
-      .eq('user_id',currentUser.id);
+    const { data: memberships, error: membershipError } =
+      await supabase
+        .from('community_members')
+        .select('community_id')
+        .eq('user_id',currentUser.id);
 
     if (membershipError) {
-      console.warn('Membership query:',membershipError.message);
+      console.warn(
+        'Membership query:',
+        membershipError.message
+      );
     } else {
-      joinedIds = new Set((memberships || []).map(row => row.community_id));
+      joinedIds = new Set(
+        (memberships || []).map(row => row.community_id)
+      );
     }
   }
 
   await loadMemberCounts();
+
   renderStories();
   renderSuggestions();
   renderCommunityGrid();
@@ -1674,7 +1191,10 @@ async function loadMemberCounts() {
     .select('community_id');
 
   if (error) {
-    console.warn('Member counts unavailable:',error.message);
+    console.warn(
+      'Member counts unavailable:',
+      error.message
+    );
     return;
   }
 
@@ -1694,11 +1214,16 @@ async function loadCommunityFeed() {
     .limit(40);
 
   if (error) {
-    console.error('Community feed query:',error.message);
+    console.error(
+      'Community feed query:',
+      error.message
+    );
+
     showStatus(
       'Community posts could not load: ' + error.message,
       true
     );
+
     feedPosts = [];
     renderFeed();
     return;
@@ -1712,44 +1237,90 @@ async function loadCommunityFeed() {
     return;
   }
 
-  const userIds = [...new Set(posts.map(post => post.user_id).filter(Boolean))];
-  const communityIds = [...new Set(posts.map(post => post.community_id).filter(Boolean))];
+  const userIds = [
+    ...new Set(posts.map(post => post.user_id).filter(Boolean))
+  ];
+
+  const communityIds = [
+    ...new Set(posts.map(post => post.community_id).filter(Boolean))
+  ];
+
   const postIds = posts.map(post => post.id);
 
-  const [profilesResult,communitiesResult,likesResult,commentsResult] =
-    await Promise.all([
-      userIds.length
-        ? supabase.from('profiles').select('id,username,full_name,avatar_url,role,school').in('id',userIds)
-        : Promise.resolve({data:[],error:null}),
-      communityIds.length
-        ? supabase.from('communities').select('id,name,school').in('id',communityIds)
-        : Promise.resolve({data:[],error:null}),
-      currentUser && postIds.length
-        ? supabase.from('likes').select('post_id').eq('user_id',currentUser.id).in('post_id',postIds)
-        : Promise.resolve({data:[],error:null}),
-      postIds.length
-        ? supabase.from('comments').select('post_id').in('post_id',postIds)
-        : Promise.resolve({data:[],error:null})
-    ]);
+  const [
+    profilesResult,
+    communitiesResult,
+    likesResult,
+    commentsResult
+  ] = await Promise.all([
 
-  if (profilesResult.error) console.warn('Post profiles:',profilesResult.error.message);
-  if (communitiesResult.error) console.warn('Post communities:',communitiesResult.error.message);
-  if (likesResult.error) console.warn('Post likes:',likesResult.error.message);
-  if (commentsResult.error) console.warn('Post comments:',commentsResult.error.message);
+    userIds.length
+      ? supabase
+          .from('profiles')
+          .select('id,username,full_name,avatar_url,role,school')
+          .in('id',userIds)
+      : Promise.resolve({data:[],error:null}),
+
+    communityIds.length
+      ? supabase
+          .from('communities')
+          .select('id,name,school')
+          .in('id',communityIds)
+      : Promise.resolve({data:[],error:null}),
+
+    currentUser && postIds.length
+      ? supabase
+          .from('likes')
+          .select('post_id')
+          .eq('user_id',currentUser.id)
+          .in('post_id',postIds)
+      : Promise.resolve({data:[],error:null}),
+
+    postIds.length
+      ? supabase
+          .from('comments')
+          .select('post_id')
+          .in('post_id',postIds)
+      : Promise.resolve({data:[],error:null})
+  ]);
+
+  if (profilesResult.error) {
+    console.warn('Post profiles:',profilesResult.error.message);
+  }
+
+  if (communitiesResult.error) {
+    console.warn('Post communities:',communitiesResult.error.message);
+  }
+
+  if (likesResult.error) {
+    console.warn('Post likes:',likesResult.error.message);
+  }
+
+  if (commentsResult.error) {
+    console.warn('Post comments:',commentsResult.error.message);
+  }
 
   const profileMap = Object.fromEntries(
-    (profilesResult.data || []).map(profile => [profile.id,profile])
+    (profilesResult.data || []).map(
+      profile => [profile.id,profile]
+    )
   );
 
   const communityMap = Object.fromEntries(
-    (communitiesResult.data || []).map(community => [community.id,community])
+    (communitiesResult.data || []).map(
+      community => [community.id,community]
+    )
   );
 
-  const likedIds = new Set((likesResult.data || []).map(row => row.post_id));
+  const likedIds = new Set(
+    (likesResult.data || []).map(row => row.post_id)
+  );
+
   const commentCounts = {};
 
   (commentsResult.data || []).forEach(row => {
-    commentCounts[row.post_id] = (commentCounts[row.post_id] || 0) + 1;
+    commentCounts[row.post_id] =
+      (commentCounts[row.post_id] || 0) + 1;
   });
 
   feedPosts = posts.map(post => ({
@@ -1765,17 +1336,13 @@ async function loadCommunityFeed() {
 
 function renderStories() {
   const joined = communities.filter(c => joinedIds.has(c.id));
+
   const featured = joined.length
     ? joined.slice(0,12)
     : communities.slice(0,12);
 
   if (!featured.length) {
-    $('communityStories').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-emoji">🌱</div>
-        <h3>Your campus circles start here</h3>
-        <p>Discover communities and join the conversations.</p>
-      </div>`;
+    $('communityStories').innerHTML = '';
     return;
   }
 
@@ -1797,12 +1364,10 @@ function renderSuggestions() {
 
   const container = $('suggestedCommunities');
 
+  if (!container) return;
+
   if (!suggestions.length) {
-    container.innerHTML = `
-      <p style="font-size:12px;color:var(--muted);line-height:1.7">
-        You've joined every community currently available. Create a new circle
-        or invite your campus friends.
-      </p>`;
+    container.innerHTML = '';
     return;
   }
 
@@ -1823,8 +1388,9 @@ function getFilteredCommunities() {
 
   if (searchTerm) {
     list = list.filter(c =>
-      [c.name,c.school,c.description]
-        .some(value => String(value || '').toLowerCase().includes(searchTerm))
+      [c.name,c.school,c.description].some(value =>
+        String(value || '').toLowerCase().includes(searchTerm)
+      )
     );
   }
 
@@ -1845,37 +1411,52 @@ function renderCommunityGrid() {
 
   if (!list.length) {
     grid.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-state">
         <div class="empty-emoji">🔎</div>
         <h3>No matching communities</h3>
         <p>Try another search or create the community you're looking for.</p>
-        <button class="primary-btn" onclick="openCreateCommunity()">Create community</button>
+        <button class="primary-btn" onclick="openCreateCommunity()">
+          Create community
+        </button>
       </div>`;
     return;
   }
 
   grid.innerHTML = list.map(c => `
     <article class="community-card">
+
       <div class="community-card-top">
         <div class="community-symbol">${emojiFor(c)}</div>
+
         <div>
           <h3>${escapeHTML(c.name)}</h3>
-          <div class="school">${escapeHTML(c.school || 'Campusora community')}</div>
+          <div class="school">
+            ${escapeHTML(c.school || 'Campusora community')}
+          </div>
         </div>
       </div>
 
-      <p>${escapeHTML(c.description || 'Meet people, share experiences and start conversations in this community.')}</p>
+      <p>
+        ${escapeHTML(c.description || 'Meet people, share experiences and start conversations in this community.')}
+      </p>
 
       <div class="community-card-footer">
-        <span class="member-count">👥 ${memberCounts[c.id] || 0} members</span>
-        <button class="join-btn ${joinedIds.has(c.id) ? 'joined' : ''}"
+        <span class="member-count">
+          👥 ${memberCounts[c.id] || 0}
+        </span>
+
+        <button
+          class="join-btn ${joinedIds.has(c.id) ? 'joined' : ''}"
           onclick="joinCommunity('${c.id}')">
           ${joinedIds.has(c.id) ? '✓ Joined' : '+ Join'}
         </button>
       </div>
 
-      <button class="text-btn" style="margin-top:12px"
-        onclick="openCommunity('${c.id}')">Open community →</button>
+      <button class="text-btn"
+        onclick="openCommunity('${c.id}')">
+        Open community
+      </button>
+
     </article>
   `).join('');
 }
@@ -1885,11 +1466,14 @@ function renderFeed() {
   let list = [...feedPosts];
 
   if (activeFilter === 'joined') {
-    list = list.filter(post => joinedIds.has(post.community_id));
+    list = list.filter(post =>
+      joinedIds.has(post.community_id)
+    );
   }
 
   if (activeFilter === 'campus') {
     const school = currentProfile?.school;
+
     list = school
       ? list.filter(post => post.community?.school === school)
       : [];
@@ -1917,17 +1501,21 @@ function renderFeed() {
     const hasJoined = joinedIds.size > 0;
 
     let title = 'The conversation starts with you ✨';
-    let message = 'Join a community and share a question, campus gist, idea or experience. Your community feed will grow as people post.';
+    let message =
+      'Join a community and share a question, campus gist, idea or experience. Your community feed will grow as people post.';
 
     if (activeFilter === 'joined' && !hasJoined) {
       title = 'You haven’t joined a community yet';
-      message = 'Find a campus circle that interests you and join the conversation.';
+      message =
+        'Find a campus circle that interests you and join the conversation.';
     } else if (activeFilter === 'campus' && !currentProfile?.school) {
       title = 'Add your campus to your profile';
-      message = 'Your school is not set on your profile yet. You can still discover communities across campuses.';
+      message =
+        'Your school is not set on your profile yet. You can still discover communities across campuses.';
     } else if (searchTerm) {
       title = 'No matching conversations';
-      message = 'Try a different search or discover a community.';
+      message =
+        'Try a different search or discover a community.';
     }
 
     container.innerHTML = `
@@ -1935,45 +1523,76 @@ function renderFeed() {
         <div class="empty-emoji">💜</div>
         <h3>${escapeHTML(title)}</h3>
         <p>${escapeHTML(message)}</p>
-        <button class="primary-btn" onclick="showDiscover()">Explore communities</button>
-        <button class="secondary-btn" style="margin-left:5px"
-          onclick="openCreateCommunity()">Create one</button>
+        <button class="primary-btn" onclick="showDiscover()">
+          Explore communities
+        </button>
+        <button class="text-btn"
+          style="margin-left:8px"
+          onclick="openCreateCommunity()">
+          Create one
+        </button>
       </div>`;
 
     return;
   }
 
   container.innerHTML = list.map(post => renderPost(post)).join('');
+
+  list.slice(0,10).forEach(post => {
+    loadRecentComments(post.id);
+  });
 }
 
 function renderPost(post) {
   const author = post.author || {};
   const community = post.community || {};
   const name = getDisplayName(author);
+
   const date = post.created_at
     ? new Date(post.created_at).toLocaleString(undefined,{
-        month:'short',day:'numeric',hour:'numeric',minute:'2-digit'
+        month:'short',
+        day:'numeric',
+        hour:'numeric',
+        minute:'2-digit'
       })
     : '';
 
   const image = post.image_url
-    ? `<img class="post-image" src="${escapeHTML(post.image_url)}" alt="Post image" loading="lazy">`
+    ? `<img class="post-image"
+        src="${escapeHTML(post.image_url)}"
+        alt="Post image"
+        loading="lazy">`
     : '';
 
   return `
     <article class="feed-post" id="post-${post.id}">
+
       <div class="post-header">
         ${avatarMarkup(author)}
+
         <div class="post-author">
           <strong>${escapeHTML(name)}</strong>
-          ${author.role ? `<span class="role-badge">${escapeHTML(roleName(author.role))}</span>` : ''}
-          <small>${escapeHTML(date)} · ${escapeHTML(community.school || 'Campusora')}</small>
+
+          ${author.role
+            ? `<span class="role-badge">${escapeHTML(roleName(author.role))}</span>`
+            : ''}
+
+          <small>
+            ${escapeHTML(date)} ·
+            ${escapeHTML(community.school || 'Campusora')}
+          </small>
         </div>
-        <button class="post-menu" onclick="showPostInfo()" aria-label="Post options">···</button>
+
+        <button class="post-menu"
+          onclick="showPostInfo()"
+          aria-label="Post options">···</button>
       </div>
 
       <div class="post-body">
-        <div class="post-community">🌍 ${escapeHTML(community.name || 'Community')}</div>
+        <div class="post-community">
+          🌍 ${escapeHTML(community.name || 'Community')}
+        </div>
+
         ${escapeHTML(post.content || '').replace(/\n/g,'<br>')}
       </div>
 
@@ -1985,25 +1604,41 @@ function renderPost(post) {
       </div>
 
       <div class="post-actions">
-        <button class="post-action ${post.liked ? 'liked' : ''}"
+        <button
+          class="post-action ${post.liked ? 'liked' : ''}"
           onclick="toggleLike('${post.id}')">
           ${post.liked ? '♥ Liked' : '♡ Like'}
         </button>
-        <button class="post-action" onclick="focusComment('${post.id}')">💬 Comment</button>
-        <button class="post-action" onclick="sharePost('${post.id}')">↗ Share</button>
+
+        <button class="post-action"
+          onclick="focusComment('${post.id}')">
+          💬 Comment
+        </button>
+
+        <button class="post-action"
+          onclick="sharePost('${post.id}')">
+          ↗ Share
+        </button>
       </div>
 
-      <div class="comments-preview" id="comments-${post.id}"></div>
+      <div class="comments-preview"
+        id="comments-${post.id}"></div>
 
       <div class="comment-area">
-        <form class="comment-form" onsubmit="submitComment(event,'${post.id}')">
-          <input id="comment-input-${post.id}"
+        <form class="comment-form"
+          onsubmit="submitComment(event,'${post.id}')">
+
+          <input
+            id="comment-input-${post.id}"
             placeholder="${currentUser ? 'Add to the conversation...' : 'Sign in to comment'}"
             ${currentUser ? '' : 'readonly onclick="requireLogin()"'}
-            maxlength="2000" autocomplete="off">
+            maxlength="2000"
+            autocomplete="off">
+
           <button type="submit">Send</button>
         </form>
       </div>
+
     </article>`;
 }
 
@@ -2015,6 +1650,7 @@ async function loadPostLikes(postId) {
 
   if (!error) {
     const post = feedPosts.find(p => p.id === postId);
+
     if (post) post.likeCount = count || 0;
   }
 }
@@ -2023,6 +1659,7 @@ async function toggleLike(postId) {
   if (!currentUser) return requireLogin();
 
   const post = feedPosts.find(p => p.id === postId);
+
   if (!post || busy) return;
 
   busy = true;
@@ -2038,11 +1675,17 @@ async function toggleLike(postId) {
       if (error) throw error;
 
       post.liked = false;
-      post.likeCount = Math.max(0,(post.likeCount || 0) - 1);
+      post.likeCount = Math.max(
+        0,(post.likeCount || 0) - 1
+      );
+
     } else {
       const { error } = await supabase
         .from('likes')
-        .insert({post_id:postId,user_id:currentUser.id});
+        .insert({
+          post_id:postId,
+          user_id:currentUser.id
+        });
 
       if (error) throw error;
 
@@ -2051,9 +1694,11 @@ async function toggleLike(postId) {
     }
 
     renderFeed();
+
   } catch (error) {
     console.error(error);
     showToast(error.message || 'Could not update your like.');
+
   } finally {
     busy = false;
   }
@@ -2070,6 +1715,7 @@ async function submitComment(event,postId) {
   if (!content) return;
 
   const button = event.submitter;
+
   if (button) button.disabled = true;
 
   try {
@@ -2084,10 +1730,14 @@ async function submitComment(event,postId) {
     if (error) throw error;
 
     input.value = '';
+
     showToast('Your comment has been posted 💜');
 
     const post = feedPosts.find(p => p.id === postId);
-    if (post) post.commentCount = (post.commentCount || 0) + 1;
+
+    if (post) {
+      post.commentCount = (post.commentCount || 0) + 1;
+    }
 
     renderFeed();
     await loadRecentComments(postId);
@@ -2095,6 +1745,7 @@ async function submitComment(event,postId) {
   } catch (error) {
     console.error(error);
     showToast(error.message || 'Could not post comment.');
+
   } finally {
     if (button) button.disabled = false;
   }
@@ -2102,6 +1753,7 @@ async function submitComment(event,postId) {
 
 async function loadRecentComments(postId) {
   const target = $('comments-' + postId);
+
   if (!target) return;
 
   const { data, error } = await supabase
@@ -2136,7 +1788,9 @@ async function loadRecentComments(postId) {
 
   target.innerHTML = comments.map(comment => `
     <p>
-      <strong>${escapeHTML(getDisplayName(map[comment.user_id]))}:</strong>
+      <strong>
+        ${escapeHTML(getDisplayName(map[comment.user_id]))}:
+      </strong>
       ${escapeHTML(comment.content)}
     </p>
   `).join('');
@@ -2144,16 +1798,23 @@ async function loadRecentComments(postId) {
 
 function focusComment(postId) {
   const input = $('comment-input-' + postId);
+
   if (!input) return;
-  input.scrollIntoView({behavior:'smooth',block:'center'});
+
+  input.scrollIntoView({
+    behavior:'smooth',
+    block:'center'
+  });
+
   input.focus();
   loadRecentComments(postId);
 }
 
 function requireLogin() {
   showToast('Please sign in to continue.');
+
   setTimeout(() => {
-    location.href = 'login.html';
+    location.href = 'auth.html?mode=login';
   },900);
 }
 
@@ -2161,6 +1822,7 @@ async function joinCommunity(id) {
   if (!currentUser) return requireLogin();
 
   const community = communities.find(c => c.id === id);
+
   if (!community) return;
 
   const alreadyJoined = joinedIds.has(id);
@@ -2176,17 +1838,26 @@ async function joinCommunity(id) {
       if (error) throw error;
 
       joinedIds.delete(id);
-      memberCounts[id] = Math.max(0,(memberCounts[id] || 0) - 1);
+
+      memberCounts[id] = Math.max(
+        0,(memberCounts[id] || 0) - 1
+      );
+
       showToast('You left ' + community.name);
+
     } else {
       const { error } = await supabase
         .from('community_members')
-        .insert({community_id:id,user_id:currentUser.id});
+        .insert({
+          community_id:id,
+          user_id:currentUser.id
+        });
 
       if (error) throw error;
 
       joinedIds.add(id);
       memberCounts[id] = (memberCounts[id] || 0) + 1;
+
       showToast('You joined ' + community.name + ' 🎉');
     }
 
@@ -2194,10 +1865,15 @@ async function joinCommunity(id) {
     renderSuggestions();
     renderCommunityGrid();
     renderFeed();
+    fillPostCommunityOptions();
 
   } catch (error) {
     console.error('Membership action failed:',error);
-    showToast(error.message || 'Could not update membership. Please try again.');
+
+    showToast(
+      error.message ||
+      'Could not update membership. Please try again.'
+    );
   }
 }
 
@@ -2205,6 +1881,7 @@ function openCreateCommunity() {
   if (!currentUser) return requireLogin();
 
   $('communitySchool').value = currentProfile?.school || '';
+
   openModal('communityModal');
 }
 
@@ -2213,7 +1890,9 @@ function openCreatePost(communityId='') {
 
   fillPostCommunityOptions();
 
-  if (communityId) $('postCommunity').value = communityId;
+  if (communityId) {
+    $('postCommunity').value = communityId;
+  }
 
   openModal('postModal');
 }
@@ -2224,29 +1903,31 @@ function fillPostCommunityOptions() {
   if (!select) return;
 
   const joined = communities.filter(c => joinedIds.has(c.id));
-
   const list = joined.length ? joined : communities;
 
-  select.innerHTML = '<option value="">Choose a community</option>' +
+  select.innerHTML =
+    '<option value="">Choose a community</option>' +
     list.map(c => `
-      <option value="${escapeHTML(c.id)}">${escapeHTML(c.name)}${c.school ? ' — ' + escapeHTML(c.school) : ''}</option>
+      <option value="${escapeHTML(c.id)}">
+        ${escapeHTML(c.name)}${c.school ? ' — ' + escapeHTML(c.school) : ''}
+      </option>
     `).join('');
-}
-
-async function createCommunity(event) {
+  }
+  async function createCommunity(event) {
   event.preventDefault();
 
-  if (!currentUser) return requireLogin();
+  if (!requireLogin()) return;
 
   const name = $('communityName').value.trim();
   const school = $('communitySchool').value.trim();
   const description = $('communityDescription').value.trim();
+  const button = $('createCommunityBtn');
 
-  if (!name || !school || !description) {
-    return showToast('Please complete all fields.');
+  if (!name) {
+    showToast('Enter a community name.');
+    return;
   }
 
-  const button = $('createCommunitySubmit');
   button.disabled = true;
   button.textContent = 'Creating...';
 
@@ -2255,64 +1936,69 @@ async function createCommunity(event) {
       .from('communities')
       .insert({
         name,
-        school,
-        description,
-        created_by:currentUser.id
+        school: school || null,
+        description: description || null,
+        created_by: currentUser.id
       })
       .select()
       .single();
 
     if (error) throw error;
 
-    // Try to join the community creator to their new community.
     const { error: joinError } = await supabase
       .from('community_members')
       .insert({
-        community_id:data.id,
-        user_id:currentUser.id
+        community_id: data.id,
+        user_id: currentUser.id
       });
 
-    if (joinError) {
-      console.warn('Community created, but auto-join failed:',joinError.message);
-    } else {
+    if (!joinError) {
       joinedIds.add(data.id);
     }
 
-    closeModal('communityModal');
+    closeModal('createCommunityModal');
     $('createCommunityForm').reset();
 
-    showToast('Your community is live! 🎉');
+    showToast('Community created successfully!');
 
     await loadCommunities();
     await loadCommunityFeed();
-    showDiscover();
+    renderCommunityGrid();
 
   } catch (error) {
-    console.error('Create community:',error);
-    showToast(error.message || 'Could not create the community.');
+    console.error('Create community error:', error);
+    showToast(error.message || 'Could not create community.');
   } finally {
     button.disabled = false;
-    button.textContent = 'Create community';
+    button.textContent = 'Create Community';
   }
 }
+
 
 async function createCommunityPost(event) {
   event.preventDefault();
 
-  if (!currentUser) return requireLogin();
+  if (!requireLogin()) return;
 
   const communityId = $('postCommunity').value;
   const content = $('postContent').value.trim();
+  const button = $('publishPostBtn');
 
-  if (!communityId || !content) {
-    return showToast('Choose a community and write your post.');
+  if (!communityId) {
+    showToast('Choose a community first.');
+    return;
+  }
+
+  if (!content) {
+    showToast('Write something before publishing.');
+    return;
   }
 
   if (!joinedIds.has(communityId)) {
-    return showToast('Join this community before posting.');
+    showToast('Join this community before posting.');
+    return;
   }
 
-  const button = $('createPostSubmit');
   button.disabled = true;
   button.textContent = 'Publishing...';
 
@@ -2320,219 +2006,289 @@ async function createCommunityPost(event) {
     const { error } = await supabase
       .from('posts')
       .insert({
-        user_id:currentUser.id,
+        user_id: currentUser.id,
         content,
-        audience:'community',
-        institution_id:null,
-        community_id:communityId
+        audience: 'community',
+        institution_id: null,
+        community_id: communityId
       });
 
     if (error) throw error;
 
-    closeModal('postModal');
+    closeModal('createPostModal');
     $('createPostForm').reset();
 
-    showToast('Your community post is live! 💜');
+    showToast('Your post has been published.');
 
     await loadCommunityFeed();
 
   } catch (error) {
-    console.error('Create community post:',error);
-    showToast(error.message || 'Could not publish the post.');
+    console.error('Create community post error:', error);
+    showToast(error.message || 'Could not publish your post.');
   } finally {
     button.disabled = false;
-    button.textContent = 'Publish to community';
+    button.textContent = 'Publish Post';
   }
 }
 
-function setFilter(filter,button) {
+
+function setFilter(filter, button) {
   activeFilter = filter;
 
-  document.querySelectorAll('#filterTabs .filter').forEach(item => {
-    item.classList.toggle('active',item === button);
+  document.querySelectorAll('.filter').forEach(item => {
+    item.classList.remove('active');
   });
 
-  if (filter === 'discover') {
-    showDiscover();
+  if (button) {
+    button.classList.add('active');
   } else {
-    $('discoverSection').classList.add('hidden');
-    $('communityFeed').scrollIntoView({behavior:'smooth',block:'start'});
+    const activeButton = document.querySelector(
+      `.filter[data-filter="${filter}"]`
+    );
+
+    if (activeButton) activeButton.classList.add('active');
   }
 
   renderFeed();
+
+  if (filter !== 'discover') {
+    $('communityFeed')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
 }
 
-function setDiscoverType(type,button) {
+
+function setDiscoverType(type, button) {
   discoverType = type;
 
-  document.querySelectorAll('#discoverFilters .filter').forEach(item => {
-    item.classList.toggle('active',item === button);
+  document.querySelectorAll('.discover-filter').forEach(item => {
+    item.classList.remove('active');
   });
+
+  if (button) {
+    button.classList.add('active');
+  }
 
   renderCommunityGrid();
 }
+
 
 function showDiscover() {
-  $('discoverSection').classList.remove('hidden');
   activeFilter = 'discover';
 
-  document.querySelectorAll('#filterTabs .filter').forEach(item => {
-    item.classList.toggle('active',item.dataset.filter === 'discover');
+  document.querySelectorAll('.filter').forEach(item => {
+    item.classList.remove('active');
   });
+
+  document.querySelector(
+    '.filter[data-filter="discover"]'
+  )?.classList.add('active');
 
   renderCommunityGrid();
-  $('discoverSection').scrollIntoView({behavior:'smooth',block:'start'});
+
+  $('discoverSection')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
+
 
 function hideDiscover() {
-  $('discoverSection').classList.add('hidden');
   activeFilter = 'all';
 
-  document.querySelectorAll('#filterTabs .filter').forEach(item => {
-    item.classList.toggle('active',item.dataset.filter === 'all');
+  document.querySelectorAll('.filter').forEach(item => {
+    item.classList.remove('active');
   });
 
+  document.querySelector(
+    '.filter[data-filter="all"]'
+  )?.classList.add('active');
+
   renderFeed();
-  $('communityFeed').scrollIntoView({behavior:'smooth',block:'start'});
+
+  $('communityFeed')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
+
 
 function openCommunity(id) {
-  const community = communities.find(c => c.id === id);
+  const community = communities.find(item => item.id === id);
+
   if (!community) return;
 
-  const matching = feedPosts.filter(post => post.community_id === id);
+  activeFilter = 'all';
+  searchTerm = community.name.toLowerCase();
 
-  if (matching.length) {
-    activeFilter = 'all';
-    searchTerm = community.name.toLowerCase();
+  if ($('globalSearch')) {
     $('globalSearch').value = community.name;
-    renderFeed();
-    $('communityFeed').scrollIntoView({behavior:'smooth',block:'start'});
-  } else {
-    openCommunityDetails(community);
   }
+
+  renderFeed();
+
+  $('communityFeed')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
+
 
 function openCommunityDetails(community) {
-  const description = community.description || 'Meet people, share campus experiences and start conversations here.';
-  const memberCount = memberCounts[community.id] || 0;
-  const joined = joinedIds.has(community.id);
+  if (!community) return;
 
-  // Use the community page's own modal to show its details.
-  let modal = $('communityDetailsModal');
+  const existing = document.getElementById('communityDetailsModal');
 
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'communityDetailsModal';
-    modal.className = 'modal-backdrop';
-    modal.onclick = event => {
-      if (event.target === modal) closeModal('communityDetailsModal');
-    };
+  if (existing) existing.remove();
 
-    modal.innerHTML = `
-      <div class="modal">
-        <div class="modal-head">
-          <h2 id="detailsName"></h2>
-          <button class="close-btn" onclick="closeModal('communityDetailsModal')">×</button>
-        </div>
-        <div id="detailsContent"></div>
-      </div>`;
+  const isJoined = joinedIds.has(community.id);
 
-    document.body.appendChild(modal);
-  }
+  const modal = document.createElement('div');
+  modal.id = 'communityDetailsModal';
+  modal.className = 'modal-backdrop';
 
-  $('detailsName').textContent = community.name;
+  modal.innerHTML = `
+    <div class="modal">
+      <button class="modal-close"
+        onclick="closeModal('communityDetailsModal')">×</button>
 
-  $('detailsContent').innerHTML = `
-    <div style="font-size:45px;margin-bottom:12px">${emojiFor(community)}</div>
-    <div class="post-community">🌍 ${escapeHTML(community.school || 'Campusora community')}</div>
-    <p style="font-size:13px;line-height:1.8;color:#c6c4dc;margin:12px 0">
-      ${escapeHTML(description)}
-    </p>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">
-      👥 ${memberCount} members
-    </p>
-    <button class="primary-btn" style="width:100%;margin-bottom:10px"
-      onclick="joinCommunity('${community.id}')">
-      ${joined ? 'Leave community' : 'Join community'}
-    </button>
-    ${joined ? `<button class="secondary-btn" style="width:100%"
-      onclick="closeModal('communityDetailsModal');openCreatePost('${community.id}')">
-      ✍️ Write a community post
-    </button>` : ''}
+      <h2>${escapeHTML(community.name)}</h2>
+
+      <p class="post-community">
+        ${escapeHTML(community.school || 'Campusora Community')}
+      </p>
+
+      <p>
+        ${escapeHTML(community.description || 'Connect with members of this community.')}
+      </p>
+
+      <div class="modal-actions">
+        <button class="primary-btn"
+          onclick="joinCommunity('${escapeHTML(community.id)}')">
+          ${isJoined ? 'Leave Community' : 'Join Community'}
+        </button>
+
+        ${isJoined ? `
+          <button class="secondary-btn"
+            onclick="openCreatePost('${escapeHTML(community.id)}')">
+            Write a Post
+          </button>
+        ` : ''}
+      </div>
+    </div>
   `;
 
-  openModal('communityDetailsModal');
+  document.body.appendChild(modal);
 }
 
-function showPostInfo() {
-  showToast('Community posts are visible to help members connect.');
+
+function showPostInfo(message) {
+  showToast(message || 'This feature is coming soon.');
 }
+
 
 async function sharePost(postId) {
-  const url = location.origin + location.pathname + '#post-' + postId;
+  const postUrl =
+    location.origin + location.pathname + '#post-' + postId;
 
   try {
     if (navigator.share) {
       await navigator.share({
-        title:'Campusora community post',
-        text:'Join the conversation on Campusora!',
-        url
+        title: 'Campusora Community Post',
+        text: 'Check out this post on Campusora.',
+        url: postUrl
       });
-    } else if (navigator.clipboard) {
-      await navigator.clipboard.writeText(url);
-      showToast('Post link copied!');
     } else {
-      showToast('Open the post and copy the page link to share it.');
+      await navigator.clipboard.writeText(postUrl);
+      showToast('Post link copied.');
     }
   } catch (error) {
     if (error.name !== 'AbortError') {
-      showToast('Could not share this post right now.');
+      console.error('Share error:', error);
+      showToast('Could not share this post.');
     }
   }
 }
+
 
 function refreshPage() {
   location.reload();
 }
 
-$('createCommunityForm').addEventListener('submit',createCommunity);
-$('createPostForm').addEventListener('submit',createCommunityPost);
 
-$('globalSearch').addEventListener('input',event => {
+function closeModal(id) {
+  const modal = document.getElementById(id);
+
+  if (modal) {
+    modal.classList.remove('active');
+    modal.remove();
+  }
+}
+
+
+function backdropClose(event, id) {
+  if (event.target === event.currentTarget) {
+    closeModal(id);
+  }
+}
+
+
+// SEARCH
+$('globalSearch')?.addEventListener('input', event => {
   searchTerm = event.target.value.trim().toLowerCase();
 
   renderCommunityGrid();
   renderFeed();
 
   if (searchTerm) {
-    $('discoverSection').classList.remove('hidden');
+    $('discoverSection')?.classList.remove('hidden');
   }
 });
 
-// Expose handlers used by HTML buttons.
-Object.assign(window,{
-  refreshPage,
-  openCreateCommunity,
-  openCreatePost,
-  closeModal,
-  backdropClose,
-  showDiscover,
-  hideDiscover,
+
+// FORMS
+$('createCommunityForm')?.addEventListener(
+  'submit',
+  createCommunity
+);
+
+$('createPostForm')?.addEventListener(
+  'submit',
+  createCommunityPost
+);
+
+
+// MAKE HTML BUTTON FUNCTIONS AVAILABLE
+Object.assign(window, {
   setFilter,
   setDiscoverType,
-  joinCommunity,
+  showDiscover,
+  hideDiscover,
+  openCreateCommunity,
+  openCreatePost,
   openCommunity,
+  openCommunityDetails,
+  joinCommunity,
   toggleLike,
   submitComment,
   focusComment,
   sharePost,
   requireLogin,
-  showPostInfo
+  showPostInfo,
+  refreshPage,
+  closeModal,
+  backdropClose
 });
 
+
+// START THE PAGE
 initialize();
+
 </script>
 
+<script src="shared-nav.js"></script>
+
 </body>
-  </html>
+</html>
