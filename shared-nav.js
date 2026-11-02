@@ -10,26 +10,17 @@ const currentFile = location.pathname.split("/").pop() || HOME;
 
 const icons = {
 home: `<svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-7h6v7"/></svg>`,
-
 suggestions: `<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 8h5M19.5 5.5v5"/></svg>`,
-
 messages: `<svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9.5 9.5 0 0 1-4-.9L3 21l1.9-4.3A8 8 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/></svg>`,
-
 spotlight: `<svg viewBox="0 0 24 24"><path d="m9 6 10 6-10 6V6ZM4 4v16"/></svg>`,
-
 notifications: `<svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>`,
-
 marketplace: `<svg viewBox="0 0 24 24"><path d="M3 9h18l-2-6H5L3 9ZM5 9v12h14V9M9 21v-7h6v7"/></svg>`,
-
 menu: `<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`,
-
 search: `<svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.3 4.3"/></svg>`
 };
 
 
-/* =================================
-SHARED HEADER
-================================= */
+/* SHARED HEADER */
 
 const topbar = document.createElement("header");
 topbar.className = "campusora-topnav";
@@ -53,9 +44,7 @@ brandName.textContent = "Campusora";
 brand.append(logo, brandName);
 
 
-/* =================================
-GLOBAL SEARCH
-================================= */
+/* GLOBAL SEARCH */
 
 const searchWrap = document.createElement("div");
 searchWrap.className = "campusora-header-search";
@@ -90,9 +79,7 @@ tagline.textContent = "Connect with students across campuses";
 brandRow.append(brand, searchWrap, tagline);
 
 
-/* =================================
-NAVIGATION
-================================= */
+/* ICON NAVIGATION */
 
 const mainNav = document.createElement("nav");
 mainNav.className = "campusora-mainnav";
@@ -111,7 +98,6 @@ const navItems = [
 const navLinks = {};
 
 navItems.forEach(([label, file, icon]) => {
-
 const link = document.createElement("a");
 
 link.className = "campusora-nav-item";
@@ -126,7 +112,6 @@ link.setAttribute("aria-current", "page");
 }
 
 if (icon === "messages" || icon === "notifications") {
-
 const badge = document.createElement("span");
 
 badge.className = "campusora-nav-badge";
@@ -134,93 +119,68 @@ badge.hidden = true;
 badge.setAttribute("aria-label", "Unread count");
 
 link.appendChild(badge);
-
 navLinks[icon] = badge;
 }
 
 mainNav.appendChild(link);
-
 });
 
 topbar.append(brandRow, mainNav);
 
-
 function installNavigation() {
-
 if (document.querySelector(".campusora-topnav")) return;
 
 document.body.classList.add("has-shared-nav");
 document.body.prepend(topbar);
-
 }
 
 if (document.readyState === "loading") {
-
 document.addEventListener("DOMContentLoaded", installNavigation);
-
 } else {
-
 installNavigation();
-
 }
 
 
-/* =================================
-BADGE DISPLAY
-================================= */
+/* BADGE DISPLAY */
 
 function updateBadge(type, count) {
-
 const badge = navLinks[type];
-
 if (!badge) return;
 
 const number = Number(count) || 0;
 
 badge.hidden = number <= 0;
-
 badge.textContent = number > 99 ? "99+" : String(number);
 
 badge.setAttribute(
 "aria-label",
 number + " unread " + type
 );
-
 }
 
 
-/* =================================
-SUPABASE CONNECTION
-================================= */
+/* SUPABASE CONNECTION */
 
 let supabaseClient = null;
-let currentUser = null;
-
 let messageChannel = null;
 let notificationChannel = null;
-
 let badgeTimer = null;
 let refreshInProgress = false;
+let realtimeSetupPromise = null;
 
 async function getSupabase() {
-
 if (supabaseClient) return supabaseClient;
 
 const module = await import("./supabase.js");
-
 supabaseClient = module.supabase;
 
 return supabaseClient;
-
 }
 
 
-/* =================================
-UNREAD MESSAGE COUNT
-================================= */
+/* UNREAD MESSAGE COUNT */
 
 async function loadMessageBadge(supabase, user) {
-
 const { data: memberships, error } = await supabase
 .from("conversation_members")
 .select("conversation_id,last_read_at,joined_at")
@@ -228,68 +188,50 @@ const { data: memberships, error } = await supabase
 
 if (error) throw error;
 
-if (!memberships || memberships.length === 0) {
-
+if (!memberships || !memberships.length) {
 updateBadge("messages", 0);
 return;
-
 }
 
 let unreadCount = 0;
-
-/*
-Check the latest message in each conversation.
-This avoids relying on a limited batch of old messages.
-*/
-
 const batchSize = 10;
 
 for (let i = 0; i < memberships.length; i += batchSize) {
-
 const batch = memberships.slice(i, i + batchSize);
 
-const results = await Promise.all(
+const counts = await Promise.all(
 batch.map(async member => {
-
-const { data: latest, error } = await supabase
+let query = supabase
 .from("messages")
-.select("sender_id,created_at")
+.select("id", { count: "exact", head: true })
 .eq("conversation_id", member.conversation_id)
-.is("deleted_at", null)
-.order("created_at", { ascending: false })
-.limit(1)
-.maybeSingle();
-
-if (error) throw error;
-
-if (!latest) return false;
-
-if (latest.sender_id === user.id) return false;
+.neq("sender_id", user.id)
+.is("deleted_at", null);
 
 const lastRead = member.last_read_at || member.joined_at;
 
-if (!lastRead) return true;
+if (lastRead) {
+query = query.gt("created_at", lastRead);
+}
 
-return new Date(latest.created_at) > new Date(lastRead);
+const { count, error } = await query;
 
+if (error) throw error;
+
+return count || 0;
 })
 );
 
-unreadCount += results.filter(Boolean).length;
-
+unreadCount += counts.reduce((sum, count) => sum + count, 0);
 }
 
 updateBadge("messages", unreadCount);
-
 }
 
 
-/* =================================
-UNREAD NOTIFICATION COUNT
-================================= */
+/* UNREAD NOTIFICATION COUNT */
 
 async function loadNotificationBadge(supabase, user) {
-
 const { count, error } = await supabase
 .from("notifications")
 .select("id", {
@@ -302,22 +244,17 @@ head: true
 if (error) throw error;
 
 updateBadge("notifications", count || 0);
-
 }
 
 
-/* =================================
-REFRESH BADGES
-================================= */
+/* REFRESH BADGES */
 
 async function refreshBadges() {
-
 if (refreshInProgress) return;
 
 refreshInProgress = true;
 
 try {
-
 const supabase = await getSupabase();
 
 const {
@@ -326,17 +263,10 @@ error
 } = await supabase.auth.getUser();
 
 if (error || !user) {
-
-currentUser = null;
-
 updateBadge("messages", 0);
 updateBadge("notifications", 0);
-
 return;
-
 }
-
-currentUser = user;
 
 await Promise.all([
 loadMessageBadge(supabase, user),
@@ -344,49 +274,41 @@ loadNotificationBadge(supabase, user)
 ]);
 
 } catch (error) {
-
 console.error("Campusora badge error:", error);
-
 } finally {
-
 refreshInProgress = false;
-
+}
 }
 
-}
 
-
-/* =================================
-LIVE BADGE UPDATES
-================================= */
+/* LIVE BADGE UPDATES */
 
 async function setupBadgeRealtime() {
+if (realtimeSetupPromise) return realtimeSetupPromise;
 
+realtimeSetupPromise = (async () => {
 try {
-
 const supabase = await getSupabase();
 
 const {
-data: { user }
+data: { user },
+error
 } = await supabase.auth.getUser();
 
-if (!user) {
-
+if (error || !user) {
 updateBadge("messages", 0);
 updateBadge("notifications", 0);
-
 return;
-
 }
-
-currentUser = user;
 
 if (messageChannel) {
 await supabase.removeChannel(messageChannel);
+messageChannel = null;
 }
 
 if (notificationChannel) {
 await supabase.removeChannel(notificationChannel);
+notificationChannel = null;
 }
 
 messageChannel = supabase
@@ -429,59 +351,64 @@ filter: "recipient_id=eq." + user.id
 await refreshBadges();
 
 } catch (error) {
-
 console.error("Campusora live badges error:", error);
+}
+})();
 
+try {
+await realtimeSetupPromise;
+} finally {
+realtimeSetupPromise = null;
+}
 }
 
-}
 
+/* AUTHENTICATION EVENTS */
 
-/* =================================
-AUTH CHANGES
-================================= */
-
-async function handleAuthChange(event, session) {
-
-if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
-
+async function handleAuthChange(event) {
+if (event === "SIGNED_IN") {
 await setupBadgeRealtime();
+}
 
-} else if (event === "SIGNED_OUT") {
+if (event === "TOKEN_REFRESHED") {
+await refreshBadges();
+}
 
-currentUser = null;
-
+if (event === "SIGNED_OUT") {
 updateBadge("messages", 0);
 updateBadge("notifications", 0);
 
-if (messageChannel) {
-await supabaseClient.removeChannel(messageChannel);
+const supabase = supabaseClient;
+
+if (supabase && messageChannel) {
+await supabase.removeChannel(messageChannel);
 messageChannel = null;
 }
 
-if (notificationChannel) {
-await supabaseClient.removeChannel(notificationChannel);
+if (supabase && notificationChannel) {
+await supabase.removeChannel(notificationChannel);
 notificationChannel = null;
 }
-
+}
 }
 
-}
 
-
-/* =================================
-START BADGES
-================================= */
+/* START BADGES */
 
 async function startBadges() {
-
 try {
-
 const supabase = await getSupabase();
 
-supabase.auth.onAuthStateChange((event, session) => {
+supabase.auth.onAuthStateChange((event) => {
 
-handleAuthChange(event, session);
+/*
+Run authentication work after the Supabase
+auth callback has finished.
+*/
+
+setTimeout(() => {
+handleAuthChange(event);
+}, 0);
 
 });
 
@@ -490,31 +417,22 @@ await setupBadgeRealtime();
 if (badgeTimer) clearInterval(badgeTimer);
 
 badgeTimer = setInterval(() => {
-
 refreshBadges();
-
 }, 60000);
 
 document.addEventListener("visibilitychange", () => {
-
 if (!document.hidden) refreshBadges();
-
 });
 
 } catch (error) {
-
 console.error("Campusora badge startup error:", error);
-
 }
-
 }
 
 startBadges();
 
 
-/* =================================
-GLOBAL SEARCH ENGINE
-================================= */
+/* GLOBAL SEARCH ENGINE */
 
 let searchTimer = null;
 let searchRequest = 0;
@@ -526,61 +444,40 @@ videos: "Spotlight videos",
 communities: "Communities"
 };
 
-
 function closeSearchResults() {
-
 searchResults.hidden = true;
 searchResults.classList.remove("show");
-
 searchInput.setAttribute("aria-expanded", "false");
-
 }
-
 
 function openSearchResults() {
-
 searchResults.hidden = false;
 searchResults.classList.add("show");
-
 searchInput.setAttribute("aria-expanded", "true");
-
 }
 
-
 function showMessage(message) {
-
 searchResults.replaceChildren();
 
 const box = document.createElement("div");
-
 box.className = "campusora-search-message";
 box.textContent = message;
 
 searchResults.appendChild(box);
-
 openSearchResults();
-
 }
-
 
 function createTextElement(tag, className, text) {
-
 const element = document.createElement(tag);
-
 element.className = className;
 element.textContent = text || "";
-
 return element;
-
 }
 
 
-/* =================================
-SEARCH AVATAR
-================================= */
+/* SEARCH AVATAR */
 
 function createAvatar(url) {
-
 const avatar = document.createElement("img");
 
 avatar.className = "campusora-search-avatar";
@@ -595,39 +492,29 @@ encodeURIComponent(
 );
 
 avatar.onerror = () => {
-
 avatar.onerror = null;
-
 avatar.src =
 "data:image/svg+xml;charset=UTF-8," +
 encodeURIComponent(
 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#202943"/></svg>`
 );
-
 };
 
 return avatar;
-
 }
 
 
-/* =================================
-CREATE SEARCH RESULT
-================================= */
+/* CREATE SEARCH RESULT */
 
 function createResult(title, subtitle, url, avatarURL, type) {
-
 const link = document.createElement("a");
 
 link.className = "campusora-search-result";
 link.href = url;
 
 if (avatarURL) {
-
 link.appendChild(createAvatar(avatarURL));
-
 } else {
-
 const symbol = document.createElement("span");
 
 symbol.className = "campusora-search-result-symbol";
@@ -637,11 +524,9 @@ type === "video" ? "▶" :
 type === "community" ? "◉" : "▤";
 
 link.appendChild(symbol);
-
 }
 
 const info = document.createElement("div");
-
 info.className = "campusora-search-result-info";
 
 info.append(
@@ -652,18 +537,13 @@ createTextElement("small", "", subtitle)
 link.appendChild(info);
 
 return link;
-
 }
 
 
-/* =================================
-SAFE CATEGORY SEARCH
-================================= */
+/* SAFE CATEGORY SEARCH */
 
 async function safeSearch(name, callback) {
-
 try {
-
 const data = await callback();
 
 return {
@@ -673,7 +553,6 @@ error: null
 };
 
 } catch (error) {
-
 console.error("Campusora " + name + " search error:", error);
 
 return {
@@ -681,20 +560,14 @@ name,
 data: [],
 error
 };
-
+}
 }
 
-}
 
-
-/* =================================
-SEARCH PEOPLE
-================================= */
+/* SEARCH PEOPLE */
 
 async function searchPeople(supabase, pattern) {
-
 const [names, usernames] = await Promise.all([
-
 supabase
 .from("profiles")
 .select("id,username,full_name,school,avatar_url")
@@ -706,7 +579,6 @@ supabase
 .select("id,username,full_name,school,avatar_url")
 .ilike("username", pattern)
 .limit(5)
-
 ]);
 
 if (names.error) throw names.error;
@@ -718,20 +590,14 @@ const combined = [
 ];
 
 return [
-...new Map(
-combined.map(item => [item.id, item])
-).values()
+...new Map(combined.map(item => [item.id, item])).values()
 ].slice(0, 5);
-
 }
 
 
-/* =================================
-SEARCH POSTS
-================================= */
+/* SEARCH POSTS */
 
 async function searchPosts(supabase, pattern) {
-
 const { data, error } = await supabase
 .from("posts")
 .select("id,user_id,content,created_at")
@@ -740,18 +606,13 @@ const { data, error } = await supabase
 .limit(5);
 
 if (error) throw error;
-
 return data || [];
-
 }
 
 
-/* =================================
-SEARCH SPOTLIGHT VIDEOS
-================================= */
+/* SEARCH SPOTLIGHT VIDEOS */
 
 async function searchVideos(supabase, pattern) {
-
 const { data, error } = await supabase
 .from("spotlight_videos")
 .select("id,user_id,caption,thumbnail_url,created_at")
@@ -760,20 +621,14 @@ const { data, error } = await supabase
 .limit(5);
 
 if (error) throw error;
-
 return data || [];
-
 }
 
 
-/* =================================
-SEARCH COMMUNITIES
-================================= */
+/* SEARCH COMMUNITIES */
 
 async function searchCommunities(supabase, pattern) {
-
 const [names, descriptions] = await Promise.all([
-
 supabase
 .from("communities")
 .select("id,name,school,description")
@@ -785,7 +640,6 @@ supabase
 .select("id,name,school,description")
 .ilike("description", pattern)
 .limit(5)
-
 ]);
 
 if (names.error) throw names.error;
@@ -797,20 +651,14 @@ const combined = [
 ];
 
 return [
-...new Map(
-combined.map(item => [item.id, item])
-).values()
+...new Map(combined.map(item => [item.id, item])).values()
 ].slice(0, 5);
-
 }
 
 
-/* =================================
-GET AUTHOR DETAILS
-================================= */
+/* GET AUTHOR DETAILS */
 
 async function getProfiles(supabase, ids) {
-
 const uniqueIds = [...new Set(ids.filter(Boolean))];
 
 if (!uniqueIds.length) return {};
@@ -825,20 +673,15 @@ if (error) throw error;
 return Object.fromEntries(
 (data || []).map(profile => [profile.id, profile])
 );
-
 }
 
 
-/* =================================
-DISPLAY SEARCH SECTIONS
-================================= */
+/* DISPLAY SEARCH SECTIONS */
 
 function addSection(title, items) {
-
 if (!items.length) return;
 
 const section = document.createElement("section");
-
 section.className = "campusora-search-section";
 
 section.appendChild(
@@ -849,21 +692,14 @@ title
 )
 );
 
-items.forEach(item => {
-section.appendChild(item);
-});
-
+items.forEach(item => section.appendChild(item));
 searchResults.appendChild(section);
-
 }
 
 
-/* =================================
-RENDER SEARCH RESULTS
-================================= */
+/* RENDER SEARCH RESULTS */
 
 async function renderSearchResults(supabase, results, requestNumber) {
-
 if (requestNumber !== searchRequest) return;
 
 searchResults.replaceChildren();
@@ -877,25 +713,12 @@ let postProfiles = {};
 let videoProfiles = {};
 
 try {
-
 [postProfiles, videoProfiles] = await Promise.all([
-
-getProfiles(
-supabase,
-posts.map(item => item.user_id)
-),
-
-getProfiles(
-supabase,
-videos.map(item => item.user_id)
-)
-
+getProfiles(supabase, posts.map(item => item.user_id)),
+getProfiles(supabase, videos.map(item => item.user_id))
 ]);
-
 } catch (error) {
-
 console.error("Campusora author lookup error:", error);
-
 }
 
 if (requestNumber !== searchRequest) return;
@@ -905,22 +728,15 @@ if (requestNumber !== searchRequest) return;
 
 addSection(
 categoryNames.people,
-
 people.map(user => createResult(
-
 user.full_name || "Campusora Member",
-
 [
 user.username ? "@" + user.username : "",
 user.school || ""
 ].filter(Boolean).join(" · ") || "Campusora member",
-
 "profile.html?id=" + encodeURIComponent(user.id),
-
 user.avatar_url,
-
 "person"
-
 ))
 );
 
@@ -929,11 +745,8 @@ user.avatar_url,
 
 addSection(
 categoryNames.posts,
-
 posts.map(post => {
-
 const author = postProfiles[post.user_id] || {};
-
 const preview = (post.content || "Shared a post").trim();
 
 const destination = author.id
@@ -942,25 +755,16 @@ const destination = author.id
 : "home-feed.html";
 
 return createResult(
-
-preview.length > 75
-? preview.slice(0, 75) + "..."
-: preview,
-
+preview.length > 75 ? preview.slice(0, 75) + "..." : preview,
 "By " + (
 author.full_name ||
 author.username ||
 "Campusora member"
 ),
-
 destination,
-
 author.avatar_url,
-
 "post"
-
 );
-
 })
 );
 
@@ -969,29 +773,20 @@ author.avatar_url,
 
 addSection(
 categoryNames.videos,
-
 videos.map(video => {
-
 const author = videoProfiles[video.user_id] || {};
 
 return createResult(
-
 video.caption || "Spotlight video",
-
 "By " + (
 author.full_name ||
 author.username ||
 "Campusora creator"
 ),
-
 "spotlight.html",
-
 video.thumbnail_url || author.avatar_url,
-
 "video"
-
 );
-
 })
 );
 
@@ -1000,82 +795,43 @@ video.thumbnail_url || author.avatar_url,
 
 addSection(
 categoryNames.communities,
-
 communities.map(community => createResult(
-
 community.name || "Campus community",
-
 [
 community.school || "",
 community.description || ""
 ].filter(Boolean).join(" · ").slice(0, 100),
-
 "communities.html",
-
 null,
-
 "community"
-
 ))
 );
 
-
 if (!searchResults.children.length) {
-
 showMessage("No matching results found.");
-
 return;
-
 }
 
 openSearchResults();
-
 }
 
 
-/* =================================
-RUN GLOBAL SEARCH
-================================= */
+/* RUN GLOBAL SEARCH */
 
 async function searchCampusora(term) {
-
 const requestNumber = ++searchRequest;
 
 showMessage("Searching Campusora...");
 
 try {
-
 const supabase = await getSupabase();
-
 const pattern = "%" + term + "%";
 
-/*
-Each category is handled separately.
-One failed category will not stop the others.
-*/
-
 const results = await Promise.all([
-
-safeSearch(
-"people",
-() => searchPeople(supabase, pattern)
-),
-
-safeSearch(
-"posts",
-() => searchPosts(supabase, pattern)
-),
-
-safeSearch(
-"videos",
-() => searchVideos(supabase, pattern)
-),
-
-safeSearch(
-"communities",
-() => searchCommunities(supabase, pattern)
-)
-
+safeSearch("people", () => searchPeople(supabase, pattern)),
+safeSearch("posts", () => searchPosts(supabase, pattern)),
+safeSearch("videos", () => searchVideos(supabase, pattern)),
+safeSearch("communities", () => searchCommunities(supabase, pattern))
 ]);
 
 if (requestNumber !== searchRequest) return;
@@ -1091,7 +847,6 @@ const total = Object.values(grouped)
 .reduce((sum, items) => sum + items.length, 0);
 
 if (total === 0) {
-
 const failed = results.every(result => result.error);
 
 showMessage(
@@ -1101,110 +856,68 @@ failed
 );
 
 return;
-
 }
 
-await renderSearchResults(
-supabase,
-grouped,
-requestNumber
-);
+await renderSearchResults(supabase, grouped, requestNumber);
 
 } catch (error) {
-
 if (requestNumber !== searchRequest) return;
 
 console.error("Campusora search error:", error);
-
-showMessage(
-"Search is temporarily unavailable. Please try again."
-);
-
+showMessage("Search is temporarily unavailable. Please try again.");
 }
-
 }
 
 
-/* =================================
-SEARCH EVENTS
-================================= */
+/* SEARCH EVENTS */
 
 searchInput.addEventListener("input", () => {
-
 clearTimeout(searchTimer);
 
 const term = searchInput.value.trim();
 
 if (term.length < 2) {
-
 searchRequest++;
-
 closeSearchResults();
-
 return;
-
 }
 
 openSearchResults();
 
 searchTimer = setTimeout(() => {
-
 searchCampusora(term);
-
 }, 350);
-
 });
 
-
 searchForm.addEventListener("submit", event => {
-
 event.preventDefault();
 
 const term = searchInput.value.trim();
 
 if (term.length >= 2) {
-
 searchCampusora(term);
-
 }
-
 });
 
-
 searchInput.addEventListener("focus", () => {
-
 const term = searchInput.value.trim();
 
 if (term.length >= 2) {
-
 searchCampusora(term);
-
 }
-
 });
-
 
 document.addEventListener("click", event => {
-
 if (!searchWrap.contains(event.target)) {
-
 closeSearchResults();
-
 }
-
 });
 
-
 searchInput.addEventListener("keydown", event => {
-
 if (event.key === "Escape") {
-
 closeSearchResults();
-
 searchInput.blur();
-
 }
-
 });
 
 })();
