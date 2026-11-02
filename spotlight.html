@@ -179,7 +179,7 @@ body.has-shared-nav {
   position:absolute;
   z-index:12;
   right:10px;
-  bottom:calc(105px + env(safe-area-inset-bottom));
+  bottom:calc(72px + env(safe-area-inset-bottom));
   display:flex;
   flex-direction:column-reverse;
   align-items:center;
@@ -210,6 +210,13 @@ body.has-shared-nav {
 }
 
 .action:active { transform:scale(.85); }
+
+.like-action-wrap {
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
 .action-icon {
   width:33px;
@@ -265,7 +272,7 @@ body.has-shared-nav {
   position:absolute;
   right:0;
   bottom:calc(100% + 10px);
-  display:none;
+  display:none !important;
   align-items:center;
   gap:5px;
   padding:9px;
@@ -277,7 +284,7 @@ body.has-shared-nav {
 }
 
 .reaction-picker.open {
-  display:flex;
+  display:flex !important;
   animation:reactionOpen .18s ease-out;
 }
 
@@ -359,8 +366,9 @@ body.has-shared-nav {
 
 .creator-name {
   display:block;
-  font-size:11px;
+  font-size:12px;
   font-weight:900;
+  -webkit-text-stroke:.35px currentColor;
   text-shadow:0 2px 6px #000;
   overflow-wrap:anywhere;
 }
@@ -697,9 +705,6 @@ body.has-shared-nav {
   background:#11162a;
   box-shadow:0 20px 60px rgba(0,0,0,.4);
 }
-    background:#11162a;
-  box-shadow:0 20px 60px rgba(0,0,0,.4);
-}
 
 .modal-header {
   display:flex;
@@ -844,7 +849,7 @@ textarea.field { min-height:80px;resize:vertical; }
 @media (max-width:380px) {
   .actions {
     right:5px;
-    bottom:calc(95px + env(safe-area-inset-bottom));
+    bottom:calc(62px + env(safe-area-inset-bottom));
     gap:9px;
     padding:9px 4px;
   }
@@ -860,7 +865,7 @@ textarea.field { min-height:80px;resize:vertical; }
 
 @media (max-height:580px) {
   .actions {
-    bottom:calc(75px + env(safe-area-inset-bottom));
+    bottom:calc(55px + env(safe-area-inset-bottom));
     gap:5px;
     padding:6px 3px;
   }
@@ -908,32 +913,6 @@ textarea.field { min-height:80px;resize:vertical; }
 
 <!-- VIDEO UPLOAD -->
 
-<div class="overlay" id="uploadOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>🎬 Create a Spotlight</h3>
-      <button class="modal-close" data-close="uploadOverlay" aria-label="Close upload">×</button>
-  </div>
-  n>
-        <span class="comment-total" id="commentCount">(0)</span>
-      </div>
-      <div class="sheet-subtitle">Share your thoughts with the community</div>
-    </div>
-    <button class="close-comments" id="closeComments" aria-label="Close comments">×</button>
-  </header>
-
-  <div class="comments-list" id="commentList">
-    <div class="comments-empty">Loading comments…</div>
-  </div>
-
-  <form class="comment-composer" id="commentForm">
-    <textarea class="comment-input" id="commentText" maxlength="2000"
-      rows="1" placeholder="Add a comment…" required></textarea>
-    <button class="send-comment" id="sendComment" type="submit" aria-label="Send comment">➤</button>
-  </form>
-</section>
-
-<!-- VIDEO UPLOAD -->
 
 <div class="overlay" id="uploadOverlay">
   <div class="modal">
@@ -1313,11 +1292,13 @@ function renderVideos() {
   </button>
 
   <!-- LIKE -->
-  <button class="action ${video.liked?'liked':''}" data-action="like" aria-label="${video.liked?reaction.name:'Like video'}">
-    <span class="action-icon">${video.liked?reaction.emoji:'♡'}</span>
-    <span class="action-count like-count">${shortNumber(video.likeCount)}</span>
+  <div class="like-action-wrap">
+    <button class="action ${video.liked?'liked':''}" data-action="like" aria-label="${video.liked?reaction.name:'Like video'}">
+      <span class="action-icon">${video.liked?reaction.emoji:'♡'}</span>
+      <span class="action-count like-count">${shortNumber(video.likeCount)}</span>
+    </button>
     ${reactionPickerHTML()}
-  </button>
+  </div>
 
 </div>
 
@@ -1562,7 +1543,7 @@ async function toggleLike(videoId) {
 /* LONG-PRESS REACTION PICKER */
 
 function openReactionPicker(button) {
-  const picker=button.querySelector('[data-reaction-picker]');
+  const picker=button.parentElement?.querySelector('[data-reaction-picker]');
   if(!picker)return;
 
   closeReactionPickers(picker);
@@ -2202,4 +2183,4 @@ init();
 </script>
 
 </body>
-</html>
+  </html>
