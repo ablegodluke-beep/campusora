@@ -15,8 +15,8 @@ CAMPUSORA SHARED DESIGN SYSTEM
 }
 
 * {
-  box-sizing: border-box;
-  }
+box-sizing: border-box;
+}
 
 /* =====================================
 SHARED HEADER
@@ -324,7 +324,7 @@ font-size: 9px;
 }
 
 /* =====================================
-SOCIAL MEDIA NAVIGATION
+MODERN SOCIAL MEDIA NAVIGATION
 ===================================== */
 
 .campusora-mainnav {
@@ -341,7 +341,7 @@ border: none;
 }
 
 .campusora-nav-item {
-height: 29px;
+height: 28px;
 min-width: 0;
 position: relative;
 display: flex;
@@ -349,44 +349,55 @@ align-items: center;
 justify-content: center;
 color: #aeb9d0;
 text-decoration: none;
-border-radius: 8px;
-transition: background .18s,color .18s,transform .18s;
+border-radius: 9px;
+transition: background .2s ease, color .2s ease, transform .2s ease;
 }
 
 .campusora-nav-item svg {
-width: 24px;
-height: 24px;
+width: 23px;
+height: 23px;
 display: block;
 fill: currentColor;
-stroke: currentColor;
-stroke-width: 1.8;
-stroke-linecap: round;
-stroke-linejoin: round;
+stroke: none;
+transition: transform .2s ease, filter .2s ease;
 }
 
 .campusora-nav-item:hover {
-background: rgba(255,255,255,.09);
-color: #fff;
+background: rgba(255,255,255,.08);
+color: #ffffff;
+}
+
+.campusora-nav-item:hover svg {
+transform: scale(1.07);
 }
 
 .campusora-nav-item:active {
-transform: scale(.94);
+transform: scale(.92);
 }
 
 .campusora-nav-item.active {
-color: #a98aff;
-background: rgba(133,88,255,.16);
+color: #b99bff;
+background: rgba(133,88,255,.13);
+}
+
+.campusora-nav-item.active svg {
+filter: drop-shadow(0 0 5px rgba(133,88,255,.4));
 }
 
 .campusora-nav-item.active::after {
 content: "";
 position: absolute;
-left: 24%;
-right: 24%;
-bottom: -1px;
+left: 28%;
+right: 28%;
+bottom: 0;
 height: 2px;
 border-radius: 5px;
-background: linear-gradient(90deg,var(--campus-purple),var(--campus-cyan));
+background: linear-gradient(
+90deg,
+#8558ff,
+#398bff,
+#28d5e8
+);
 }
 
 /* =====================================
@@ -530,8 +541,8 @@ height: 28px;
 }
 
 .campusora-nav-item svg {
-width: 23px;
-height: 23px;
+width: 22px;
+height: 22px;
 }
 
 .campusora-header-search-results {
