@@ -1,65 +1,57 @@
-/* =========================================
-CAMPUSORA — SHARED NAVIGATION
-Official Compact Design + Live Search
-========================================= */
-
 :root {
---nav-bg: #080b18;
---nav-surface: #101426;
---nav-border: rgba(255,255,255,.09);
---nav-text: #f5f6ff;
---nav-muted: #aab2cc;
---nav-purple: #925bff;
---nav-blue: #526dff;
---nav-cyan: #39d7f5;
---nav-gradient: linear-gradient(120deg,#925bff,#526dff,#39d7f5);
+--campus-bg: #080b18;
+--campus-panel: #101629;
+--campus-panel-hover: #18213a;
+--campus-border: rgba(255,255,255,.09);
+--campus-text: #f5f7ff;
+--campus-muted: #929bb5;
+--campus-purple: #8558ff;
+--campus-blue: #398bff;
+--campus-cyan: #28d5e8;
 }
 
-/* PAGE SPACING */
+* {
+  box-sizing: border-box;
+  }
 
 body.has-shared-nav {
 padding-top: 79px !important;
-padding-bottom: 20px !important;
 }
 
-/* FIXED HEADER */
+/* =================================
+SHARED HEADER
+================================= */
 
 .campusora-topnav {
 position: fixed;
 top: 0;
 left: 0;
 right: 0;
-z-index: 9990;
 width: 100%;
+z-index: 9999;
 background: rgba(8,11,24,.97);
 backdrop-filter: blur(18px);
 -webkit-backdrop-filter: blur(18px);
-box-shadow: 0 5px 25px rgba(0,0,0,.18);
+border-bottom: 1px solid var(--campus-border);
+font-family: "DM Sans", Arial, sans-serif;
 }
-
-/* BRANDING ROW */
 
 .campusora-topnav-brandrow {
-height: 42px;
 min-height: 42px;
+padding: 4px 18px;
 display: flex;
 align-items: center;
-justify-content: space-between;
-gap: 10px;
-padding: 2px 14px;
-border: none;
+gap: 16px;
+position: relative;
 }
 
-/* LOGO AND NAME */
-
 .campusora-brand {
-display: flex;
+display: inline-flex;
 align-items: center;
-gap: 4px;
-min-width: 0;
+gap: 7px;
 flex-shrink: 0;
 text-decoration: none;
-color: var(--nav-text);
+color: var(--campus-text);
 }
 
 .campusora-brand img {
@@ -73,487 +65,350 @@ display: block;
 font-size: 19px;
 font-weight: 850;
 letter-spacing: -.7px;
+color: white;
 white-space: nowrap;
 }
 
-/* SEARCH AREA */
+/* =================================
+SEARCH BAR
+================================= */
 
 .campusora-header-search {
-position: relative;
-flex: 1;
-min-width: 100px;
+width: min(100%, 390px);
 max-width: 390px;
-margin: 0 auto;
+flex: 1;
+position: relative;
+z-index: 10001;
+margin-left: auto;
 }
 
 .campusora-header-search-form {
+height: 34px;
 width: 100%;
-height: 31px;
 display: flex;
 align-items: center;
-gap: 7px;
-padding: 0 11px;
-border: 1px solid rgba(255,255,255,.09);
-border-radius: 20px;
-background: #151b30;
-transition: border-color .2s ease, background .2s ease;
+gap: 8px;
+padding: 0 12px;
+background: #121b30;
+border: 1px solid var(--campus-border);
+border-radius: 22px;
+transition: border-color .2s, background .2s;
 }
 
 .campusora-header-search-form:focus-within {
-border-color: rgba(146,91,255,.75);
-background: #1a2038;
+border-color: var(--campus-purple);
+background: #151e35;
 }
 
 .campusora-header-search-icon {
-width: 16px;
-height: 16px;
+width: 17px;
+height: 17px;
 flex-shrink: 0;
-color: var(--nav-muted);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--campus-muted);
+}
+
+.campusora-header-search-icon svg {
+width: 17px;
+height: 17px;
+fill: none;
+stroke: currentColor;
+stroke-width: 2;
+stroke-linecap: round;
+stroke-linejoin: round;
 }
 
 .campusora-header-search-input {
 width: 100%;
 min-width: 0;
+height: 100%;
 padding: 0;
-border: none;
 outline: none;
+border: none;
 background: transparent;
-color: var(--nav-text);
-font-family: "DM Sans", sans-serif;
-font-size: 11px;
+color: white;
+font-family: inherit;
+font-size: 12px;
 }
 
 .campusora-header-search-input::placeholder {
-color: #8992ad;
-opacity: 1;
+color: #8994ae;
 }
 
-/* SEARCH RESULTS DROPDOWN */
+.campusora-header-search-input::-webkit-search-cancel-button {
+cursor: pointer;
+}
+
+/* =================================
+SEARCH RESULTS PANEL
+================================= */
 
 .campusora-header-search-results {
 position: absolute;
-top: calc(100% + 8px);
+top: calc(100% + 9px);
 left: 0;
 right: 0;
-z-index: 10010;
-display: none;
-max-height: 360px;
+width: 100%;
+max-height: min(72vh, 570px);
 overflow-y: auto;
-padding: 7px;
-border: 1px solid var(--nav-border);
-border-radius: 13px;
+overscroll-behavior: contain;
+padding: 9px;
 background: #101629;
-box-shadow: 0 12px 35px rgba(0,0,0,.45);
+border: 1px solid rgba(255,255,255,.12);
+border-radius: 16px;
+box-shadow: 0 18px 55px rgba(0,0,0,.55);
+scrollbar-width: thin;
+scrollbar-color: #51447c transparent;
+}
+
+.campusora-header-search-results[hidden] {
+display: none !important;
 }
 
 .campusora-header-search-results.show {
 display: block;
+animation: campusoraSearchOpen .16s ease-out;
 }
 
-.campusora-search-message {
-padding: 13px 10px;
-color: var(--nav-muted);
-font-size: 12px;
-text-align: center;
+@keyframes campusoraSearchOpen {
+from {
+opacity: 0;
+transform: translateY(-5px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.campusora-search-section {
+padding: 5px 0 9px;
+}
+
+.campusora-search-section + .campusora-search-section {
+border-top: 1px solid var(--campus-border);
+padding-top: 11px;
+}
+
+.campusora-search-section-title {
+padding: 5px 9px 8px;
+color: #b8a5ff;
+font-size: 11px;
+font-weight: 850;
+letter-spacing: .3px;
+text-transform: uppercase;
 }
 
 .campusora-search-result {
-width: 100%;
 display: flex;
 align-items: center;
-gap: 10px;
+gap: 11px;
+min-width: 0;
 padding: 9px;
-border: none;
-border-radius: 9px;
-background: transparent;
-color: var(--nav-text);
-text-align: left;
+border-radius: 11px;
 text-decoration: none;
-cursor: pointer;
+color: white;
+transition: background .18s;
 }
 
-.campusora-search-result:hover {
-background: rgba(146,91,255,.13);
+.campusora-search-result:hover,
+.campusora-search-result:focus-visible {
+background: var(--campus-panel-hover);
+outline: none;
 }
 
 .campusora-search-avatar {
-width: 37px;
-height: 37px;
+width: 38px;
+height: 38px;
 flex-shrink: 0;
 border-radius: 50%;
 object-fit: cover;
 background: #202943;
 }
 
+.campusora-search-result-symbol {
+width: 38px;
+height: 38px;
+flex-shrink: 0;
+display: grid;
+place-items: center;
+border-radius: 12px;
+color: #c6b7ff;
+font-size: 17px;
+font-weight: 800;
+background: linear-gradient(135deg, #8052ff35, #28d5e825);
+border: 1px solid #8b78ff30;
+}
+
 .campusora-search-result-info {
+display: flex;
+flex-direction: column;
+gap: 4px;
 min-width: 0;
 flex: 1;
 }
 
 .campusora-search-result-info strong {
-display: block;
-overflow: hidden;
-color: #fff;
+color: #f5f7ff;
 font-size: 12px;
+line-height: 1.4;
 font-weight: 750;
-text-overflow: ellipsis;
-white-space: nowrap;
+overflow-wrap: anywhere;
 }
 
 .campusora-search-result-info small {
-display: block;
-margin-top: 3px;
-overflow: hidden;
-color: var(--nav-muted);
+color: var(--campus-muted);
 font-size: 10px;
-text-overflow: ellipsis;
+line-height: 1.4;
+overflow-wrap: anywhere;
+}
+
+.campusora-search-message {
+padding: 23px 12px;
+text-align: center;
+color: var(--campus-muted);
+font-size: 12px;
+line-height: 1.6;
+}
+
+/* =================================
+TAGLINE
+================================= */
+
+.campusora-tagline {
+flex-shrink: 0;
+color: #a3aec7;
+font-size: 10px;
+font-weight: 500;
 white-space: nowrap;
 }
 
-.campusora-search-see-all {
-width: 100%;
-margin-top: 5px;
-padding: 10px 8px;
-border: none;
-border-top: 1px solid var(--nav-border);
-border-radius: 0 0 8px 8px;
-background: transparent;
-color: var(--nav-cyan);
-font-size: 11px;
-font-weight: 750;
-cursor: pointer;
-}
-
-.campusora-search-see-all:hover {
-background: rgba(57,215,245,.08);
-}
-
-/* TAGLINE */
-
-.campusora-tagline {
-margin-left: auto;
-color: var(--nav-muted);
-font-family: "DM Sans", sans-serif;
-font-size: 11px;
-font-weight: 500;
-text-align: right;
-line-height: 1.3;
-flex-shrink: 0;
-}
-
-/* MAIN NAVIGATION */
+/* =================================
+ICON NAVIGATION
+================================= */
 
 .campusora-mainnav {
-width: 100%;
 height: 36px;
-min-height: 36px;
+padding: 0 8px;
 display: grid;
 grid-template-columns: repeat(7, minmax(0,1fr));
 align-items: center;
-padding: 0 10px 2px;
 gap: 3px;
-border-bottom: 1px solid var(--nav-border);
+border-top: 1px solid rgba(255,255,255,.035);
 }
 
-/* NAVIGATION ICON BUTTONS */
-
 .campusora-nav-item {
-position: relative;
-width: 100%;
-min-width: 0;
-height: 33px;
+height: 34px;
 display: flex;
 align-items: center;
 justify-content: center;
-padding: 0;
-margin: 0;
-border: 1px solid transparent;
-border-radius: 9px;
-background: transparent;
-color: var(--nav-muted);
+color: #9da8c1;
 text-decoration: none;
-cursor: pointer;
-transition: background .2s ease, color .2s ease, transform .2s ease;
--webkit-tap-highlight-color: transparent;
+border-radius: 9px;
+transition: background .2s, color .2s;
 }
 
 .campusora-nav-item svg {
 width: 23px;
 height: 23px;
-flex-shrink: 0;
 fill: none;
 stroke: currentColor;
 stroke-width: 2.7;
 stroke-linecap: round;
 stroke-linejoin: round;
-transition: transform .2s ease, filter .2s ease;
 }
-
-/* HOVER */
 
 .campusora-nav-item:hover {
-color: #fff;
-background: rgba(146,91,255,.13);
+background: rgba(255,255,255,.07);
+color: white;
 }
-
-.campusora-nav-item:hover svg {
-transform: scale(1.08);
-}
-
-/* ACTIVE PAGE */
 
 .campusora-nav-item.active {
-color: #fff;
-background: rgba(146,91,255,.18);
-border-color: rgba(146,91,255,.30);
+color: #a98aff;
+background: rgba(133,88,255,.13);
 }
 
-.campusora-nav-item.active svg {
-color: var(--nav-cyan);
-filter: drop-shadow(0 0 6px rgba(57,215,245,.45));
+/* =================================
+MENU PAGE CARD STYLING
+================================= */
+
+.menu-grid {
+display: grid;
+grid-template-columns: repeat(2,minmax(0,1fr));
+gap: 13px;
 }
 
-/* FOCUS */
-
-.campusora-nav-item:focus-visible {
-outline: 2px solid var(--nav-cyan);
-outline-offset: 2px;
-}
-
-/* NOTIFICATION BADGE */
-
-.campusora-nav-badge {
-position: absolute;
-top: 0;
-right: 0;
-min-width: 16px;
-height: 16px;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-padding: 0 4px;
-border-radius: 20px;
-background: #ff456b;
-color: #fff;
-font-size: 9px;
-font-weight: 800;
-}
-
-/* =========================================
-CAMPUSORA MENU PAGE
-========================================= */
-
-.campusora-menu-page {
-width: 100%;
-max-width: 900px;
-margin: 0 auto;
-padding: 20px 16px 45px;
-color: var(--nav-text);
-}
-
-.campusora-menu-title {
-margin: 0 0 18px;
-font-size: 23px;
-font-weight: 850;
-letter-spacing: -.6px;
-}
-
-.campusora-menu-profile {
+.menu-card {
+min-width: 0;
+min-height: 78px;
 display: flex;
 align-items: center;
 gap: 13px;
 padding: 15px;
-margin-bottom: 24px;
-border: 1px solid var(--nav-border);
+border: 1px solid var(--campus-border);
 border-radius: 15px;
-background: var(--nav-surface);
+background: linear-gradient(145deg,#151d34,#101629);
+color: white;
 text-decoration: none;
-color: var(--nav-text);
+transition: transform .2s, border-color .2s, background .2s;
 }
 
-.campusora-menu-avatar {
-width: 49px;
-height: 49px;
+.menu-card:hover {
+transform: translateY(-2px);
+border-color: rgba(133,88,255,.55);
+background: #18213a;
+}
+
+.menu-card-icon {
+width: 43px;
+height: 43px;
 flex-shrink: 0;
-border-radius: 50%;
-object-fit: cover;
-background: #202943;
+display: grid;
+place-items: center;
+border-radius: 13px;
+background: linear-gradient(135deg,#8052ff35,#28d5e825);
+border: 1px solid #8b78ff30;
+font-size: 21px;
 }
 
-.campusora-menu-profile-info {
-flex: 1;
+.menu-card-info {
 min-width: 0;
 }
 
-.campusora-menu-profile-name {
+.menu-card-info strong {
 display: block;
-font-size: 15px;
-font-weight: 750;
-overflow-wrap: anywhere;
+font-size: 13px;
+font-weight: 800;
+line-height: 1.4;
 }
 
-.campusora-menu-profile-action {
+.menu-card-info small {
 display: block;
 margin-top: 4px;
-color: var(--nav-cyan);
-font-size: 12px;
-font-weight: 600;
+color: var(--campus-muted);
+font-size: 10px;
+line-height: 1.4;
 }
 
-.campusora-menu-section {
-margin: 0 0 25px;
-}
+/* =================================
+RESPONSIVE
+================================= */
 
-.campusora-menu-section-title {
-margin: 0 0 11px;
-color: var(--nav-muted);
-font-size: 12px;
-font-weight: 800;
-letter-spacing: .8px;
-text-transform: uppercase;
-}
-
-.campusora-menu-grid {
-display: grid;
-grid-template-columns: repeat(2, minmax(0,1fr));
-gap: 10px;
-}
-
-.campusora-menu-card {
-min-width: 0;
-min-height: 66px;
-display: flex;
-align-items: center;
-gap: 11px;
-padding: 12px;
-border: 1px solid var(--nav-border);
-border-radius: 13px;
-background: var(--nav-surface);
-color: var(--nav-text);
-text-decoration: none;
-transition: background .2s ease, border-color .2s ease, transform .2s ease;
-}
-
-.campusora-menu-card:hover {
-background: rgba(146,91,255,.13);
-border-color: rgba(146,91,255,.35);
-transform: translateY(-2px);
-}
-
-.campusora-menu-card-icon {
-width: 38px;
-height: 38px;
-flex-shrink: 0;
-display: flex;
-align-items: center;
-justify-content: center;
-border-radius: 11px;
-background: rgba(146,91,255,.13);
-color: var(--nav-cyan);
-}
-
-.campusora-menu-card-icon svg {
-width: 21px;
-height: 21px;
-fill: none;
-stroke: currentColor;
-stroke-width: 2.2;
-stroke-linecap: round;
-stroke-linejoin: round;
-}
-
-.campusora-menu-card-name {
-min-width: 0;
-font-size: 13px;
-font-weight: 700;
-line-height: 1.35;
-overflow-wrap: anywhere;
-}
-
-.campusora-menu-footer {
-display: flex;
-flex-wrap: wrap;
-gap: 15px;
-padding-top: 18px;
-border-top: 1px solid var(--nav-border);
-}
-
-.campusora-menu-footer a {
-color: var(--nav-muted);
-font-size: 12px;
-text-decoration: none;
-}
-
-.campusora-menu-footer a:hover {
-color: var(--nav-cyan);
-}
-
-/* DESKTOP */
-
-@media (min-width: 900px) {
-body.has-shared-nav {
-padding-top: 81px !important;
-}
-
-.campusora-topnav-brandrow {
-padding-left: 25px;
-padding-right: 25px;
-}
-
-.campusora-brand img {
-width: 33px;
-height: 33px;
-}
-
-.campusora-brand-name {
-font-size: 20px;
-}
-
-.campusora-header-search {
-max-width: 420px;
-}
-
-.campusora-header-search-form {
-height: 33px;
-}
-
-.campusora-mainnav {
-padding-left: 20px;
-padding-right: 20px;
-gap: 5px;
-}
-
-.campusora-nav-item {
-height: 34px;
-}
-
-.campusora-nav-item svg {
-width: 24px;
-height: 24px;
-}
-
-.campusora-menu-grid {
-grid-template-columns: repeat(3, minmax(0,1fr));
-}
-}
-
-/* MOBILE */
-
-@media (max-width: 600px) {
+@media(max-width:760px) {
 body.has-shared-nav {
 padding-top: 76px !important;
-padding-bottom: 15px !important;
 }
 
 .campusora-topnav-brandrow {
-height: 40px;
 min-height: 40px;
-padding: 2px 9px;
-gap: 6px;
+padding: 4px 10px;
+gap: 8px;
 }
 
 .campusora-brand {
-gap: 3px;
+gap: 5px;
 }
 
 .campusora-brand img {
@@ -563,103 +418,94 @@ height: 28px;
 
 .campusora-brand-name {
 font-size: 16px;
-letter-spacing: -.5px;
 }
 
 .campusora-header-search {
-min-width: 75px;
 max-width: none;
+min-width: 75px;
 }
 
 .campusora-header-search-form {
-height: 29px;
-gap: 5px;
+height: 31px;
 padding: 0 8px;
+gap: 5px;
+}
+
+.campusora-header-search-icon,
+.campusora-header-search-icon svg {
+width: 15px;
+height: 15px;
 }
 
 .campusora-header-search-input {
-font-size: 10px;
-}
-
-.campusora-header-search-input::placeholder {
-font-size: 10px;
-}
-
-.campusora-header-search-results {
-max-height: 300px;
+font-size: 11px;
 }
 
 .campusora-tagline {
-font-size: 9px;
 max-width: 105px;
+white-space: normal;
+text-align: right;
+font-size: 8px;
+line-height: 1.3;
 }
 
 .campusora-mainnav {
 height: 36px;
-min-height: 36px;
-padding: 0 4px 2px;
+padding: 0 5px;
 gap: 2px;
 }
 
 .campusora-nav-item {
 height: 33px;
-border-radius: 8px;
 }
 
 .campusora-nav-item svg {
 width: 22px;
 height: 22px;
-stroke-width: 2.7;
 }
 
-.campusora-nav-item span {
-display: none !important;
+.campusora-header-search-results {
+position: fixed;
+top: 75px;
+left: 8px;
+right: 8px;
+width: auto;
+max-height: calc(100dvh - 95px);
+border-radius: 15px;
 }
 
-.campusora-menu-page {
-padding: 17px 12px 35px;
+.menu-grid {
+grid-template-columns: repeat(2,minmax(0,1fr));
+gap: 10px;
 }
 
-.campusora-menu-title {
-font-size: 21px;
+.menu-card {
+min-height: 75px;
+padding: 11px;
+gap: 9px;
 }
 
-.campusora-menu-grid {
-gap: 8px;
+.menu-card-icon {
+width: 36px;
+height: 36px;
+font-size: 18px;
+border-radius: 11px;
 }
 
-.campusora-menu-card {
-min-height: 61px;
-gap: 8px;
-padding: 9px;
+.menu-card-info strong {
+font-size: 11px;
 }
 
-.campusora-menu-card-icon {
-width: 34px;
-height: 34px;
-}
-
-.campusora-menu-card-icon svg {
-width: 19px;
-height: 19px;
-}
-
-.campusora-menu-card-name {
-font-size: 12px;
+.menu-card-info small {
+font-size: 9px;
 }
 }
 
-/* VERY SMALL PHONES */
-
-@media (max-width: 360px) {
-body.has-shared-nav {
-padding-top: 74px !important;
-}
-
+@media(max-width:370px) {
 .campusora-topnav-brandrow {
-padding-left: 6px;
-padding-right: 6px;
-gap: 4px;
+gap: 6px;
+padding-left: 8px;
+padding-right: 8px;
 }
 
 .campusora-brand-name {
@@ -667,40 +513,21 @@ font-size: 14px;
 }
 
 .campusora-brand img {
-width: 26px;
-height: 26px;
-}
-
-.campusora-header-search {
-min-width: 65px;
-}
-
-.campusora-header-search-form {
-padding: 0 6px;
-}
-
-.campusora-header-search-icon {
-width: 14px;
-height: 14px;
-}
-
-.campusora-header-search-input,
-.campusora-header-search-input::placeholder {
-font-size: 9px;
+width: 25px;
+height: 25px;
 }
 
 .campusora-tagline {
-font-size: 7px;
 max-width: 82px;
+font-size: 7px;
+}
+
+.campusora-header-search-input {
+font-size: 10px;
 }
 
 .campusora-nav-item svg {
 width: 21px;
 height: 21px;
-}
-
-.campusora-menu-card {
-gap: 6px;
-padding: 8px 7px;
 }
    }
