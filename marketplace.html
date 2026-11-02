@@ -1,1337 +1,1001 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080d1b">
-
-  <title>Marketplace | Campusora</title>
-
-  <style>
-    :root {
-      --bg: #080d1b;
-      --panel: #0e1729;
-      --card: #101a2d;
-      --border: #243451;
-      --text: #f5f7ff;
-      --muted: #98a9ca;
-      --purple: #594bff;
-      --purple-light: #7568ff;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    button, input, select, textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* TOP NAVIGATION */
-
-    .topbar {
-      height: 66px;
-      padding: 0 26px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      background: #0a1020;
-      border-bottom: 1px solid #1c2941;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 23px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .brand-icon {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #5c51ff, #23b8df);
-      font-size: 23px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      height: 100%;
-    }
-
-    .nav-links a {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .nav-links a.active {
-      color: var(--purple-light);
-      border-bottom: 3px solid var(--purple-light);
-    }
-
-    .nav-icons {
-      display: flex;
-      gap: 18px;
-      font-size: 22px;
-    }
-
-    /* MAIN CONTENT */
-
-    .container {
-      max-width: 1450px;
-      margin: auto;
-      padding: 34px 26px 50px;
-    }
-
-    .page-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 22px;
-      margin-bottom: 32px;
-    }
-
-    .heading-title {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .heading-icon {
-      font-size: 39px;
-    }
-
-    h1 {
-      font-size: clamp(27px, 3vw, 36px);
-      margin: 0 0 9px;
-    }
-
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .search-box {
-      width: min(100%, 465px);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 15px;
-      height: 50px;
-      background: #111b30;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-    }
-
-    .search-box span {
-      font-size: 21px;
-    }
-
-    .search-box input {
-      width: 100%;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: white;
-      min-width: 0;
-    }
-
-    .search-box input::placeholder {
-      color: #8193b5;
-    }
-
-    /* SELL PANEL */
-
-    .sell-panel {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 26px;
-      margin-bottom: 25px;
-      background: linear-gradient(115deg, #0f192d, #0c1426);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-    }
-
-    .sell-info {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      min-width: 0;
-    }
-
-    .sell-icon {
-      width: 72px;
-      height: 72px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #1a2843;
-      font-size: 30px;
-    }
-
-    .sell-info h2 {
-      font-size: 18px;
-      margin: 0 0 8px;
-    }
-
-    .sell-info p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-      font-size: 14px;
-    }
-
-    .primary-btn {
-      border: 0;
-      color: white;
-      background: linear-gradient(135deg, #6357ff, #5145f5);
-      border-radius: 11px;
-      padding: 15px 22px;
-      font-weight: 700;
-      transition: transform .2s, opacity .2s;
-    }
-
-    .primary-btn:hover {
-      opacity: .9;
-      transform: translateY(-1px);
-    }
-
-    /* CATEGORY FILTERS */
-
-    .categories {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 22px;
-      scrollbar-width: thin;
-    }
-
-    .category-btn {
-      flex-shrink: 0;
-      border: 1px solid var(--border);
-      background: #101a2d;
-      color: #d5def2;
-      padding: 12px 22px;
-      border-radius: 30px;
-      font-size: 13px;
-    }
-
-    .category-btn.active {
-      background: var(--purple);
-      color: white;
-      border-color: var(--purple);
-    }
-
-    /* PRODUCT GRID */
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 24px;
-    }
-
-    .product-card {
-      min-width: 0;
-      overflow: hidden;
-      background: var(--card);
-      border: 1px solid #23324c;
-      border-radius: 14px;
-      transition: transform .2s, border-color .2s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-3px);
-      border-color: #5145f5;
-    }
-
-    .product-image-wrap {
-      position: relative;
-      aspect-ratio: 1 / .82;
-      background: #1a2334;
-      overflow: hidden;
-    }
-
-    .product-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .price-tag {
-      position: absolute;
-      top: 12px;
-      right: 10px;
-      background: var(--purple);
-      color: white;
-      padding: 8px 11px;
-      font-weight: 800;
-      border-radius: 10px;
-      font-size: 13px;
-      box-shadow: 0 3px 12px #0005;
-    }
-
-    .product-details {
-      padding: 13px;
-    }
-
-    .product-name {
-      font-size: 15px;
-      line-height: 1.4;
-      font-weight: 700;
-      margin: 0 0 6px;
-      overflow-wrap: anywhere;
-    }
-
-    .product-condition {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-
-    .product-description {
-      font-size: 12px;
-      color: #a9b7d1;
-      line-height: 1.5;
-      margin-bottom: 12px;
-      overflow-wrap: anywhere;
-    }
-
-    .seller {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 13px;
-      min-width: 0;
-    }
-
-    .seller-avatar {
-      width: 37px;
-      height: 37px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #293852;
-      font-size: 17px;
-    }
-
-    .seller-info {
-      min-width: 0;
-    }
-
-    .seller-name {
-      font-size: 12px;
-      overflow-wrap: anywhere;
-    }
-
-    .seller-time {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 4px;
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .buy-btn {
-      flex: 1;
-      min-width: 0;
-      border: 0;
-      color: white;
-      background: linear-gradient(135deg, #6256ff, #5045f5);
-      padding: 12px 8px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .chat-btn {
-      width: 46px;
-      flex-shrink: 0;
-      border: 1px solid #2b3d5e;
-      color: #d7e2ff;
-      background: #111b30;
-      border-radius: 10px;
-      font-size: 19px;
-    }
-
-    .empty-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: var(--muted);
-      padding: 50px 20px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-    }
-
-    /* ADD PRODUCT MODAL */
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      background: #000b;
-      padding: 20px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-content {
-      width: 100%;
-      max-width: 510px;
-      max-height: 90vh;
-      overflow-y: auto;
-      background: #101a2d;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 23px;
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .modal-header h2 {
-      margin: 0;
-      font-size: 21px;
-    }
-
-    .close-btn {
-      border: 0;
-      color: white;
-      background: #26344e;
-      border-radius: 9px;
-      padding: 8px 12px;
-      font-size: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: #d7e0f4;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      min-height: 45px;
-      padding: 12px;
-      color: white;
-      background: #091121;
-      border: 1px solid #2a3b5a;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .form-group textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--purple-light);
-    }
-
-    .form-group input[type="file"] {
-      padding: 10px;
-    }
-
-    .form-group select option {
-      background: #101a2d;
-    }
-
-    .preview-image {
-      display: none;
-      width: 100%;
-      max-height: 220px;
-      object-fit: contain;
-      margin-top: 10px;
-      border-radius: 10px;
-      background: #080d1b;
-    }
-
-    .form-message {
-      font-size: 13px;
-      color: #ffb7b7;
-      margin: 10px 0;
-      line-height: 1.5;
-    }
-
-    .submit-btn {
-      width: 100%;
-      margin-top: 5px;
-    }
-
-    /* TABLET */
-
-    @media (max-width: 1000px) {
-      .nav-links {
-        gap: 15px;
-      }
-
-      .products-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-      }
-
-      .container {
-        padding: 28px 20px 40px;
-      }
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 650px) {
-      .topbar {
-        height: 60px;
-        padding: 0 14px;
-      }
-
-      .brand {
-        font-size: 19px;
-        gap: 7px;
-      }
-
-      .brand-icon {
-        width: 33px;
-        height: 33px;
-        font-size: 20px;
-      }
-
-      .nav-links {
-        gap: 0;
-      }
-
-      .nav-links a {
-        display: none;
-      }
-
-      .nav-links a.active {
-        display: flex;
-        border-bottom: 0;
-        background: #1a2140;
-        padding: 9px 12px;
-        border-radius: 10px;
-        font-size: 12px;
-      }
-
-      .nav-icons {
-        display: none;
-      }
-
-      .container {
-        padding: 24px 12px 35px;
-      }
-
-      .page-heading {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 18px;
-        margin-bottom: 23px;
-      }
-
-      .heading-title {
-        gap: 10px;
-      }
-
-      .heading-icon {
-        font-size: 32px;
-      }
-
-      h1 {
-        font-size: 27px;
-      }
-
-      .subtitle {
-        font-size: 13px;
-      }
-
-      .search-box {
-        width: 100%;
-        height: 46px;
-      }
-
-      .sell-panel {
-        padding: 16px;
-        gap: 12px;
-        margin-bottom: 20px;
-      }
-
-      .sell-info {
-        gap: 11px;
-      }
-
-      .sell-icon {
-        width: 45px;
-        height: 45px;
-        font-size: 21px;
-      }
-
-      .sell-info h2 {
-        font-size: 14px;
-        margin-bottom: 5px;
-      }
-
-      .sell-info p {
-        font-size: 11px;
-      }
-
-      .sell-panel .primary-btn {
-        padding: 12px;
-        font-size: 12px;
-        flex-shrink: 0;
-      }
-
-      .categories {
-        gap: 8px;
-        margin-bottom: 16px;
-      }
-
-      .category-btn {
-        padding: 10px 16px;
-        font-size: 12px;
-      }
-
-      .products-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-      }
-
-      .product-image-wrap {
-        aspect-ratio: 1 / .88;
-      }
-
-      .price-tag {
-        top: 7px;
-        right: 6px;
-        padding: 6px 7px;
-        font-size: 11px;
-        border-radius: 7px;
-      }
-
-      .product-details {
-        padding: 9px;
-      }
-
-      .product-name {
-        font-size: 13px;
-        margin-bottom: 5px;
-      }
-
-      .product-condition {
-        font-size: 10px;
-        margin-bottom: 10px;
-      }
-
-      .product-description {
-        font-size: 11px;
-      }
-
-      .seller {
-        gap: 7px;
-        margin-bottom: 10px;
-      }
-
-      .seller-avatar {
-        width: 29px;
-        height: 29px;
-        font-size: 14px;
-      }
-
-      .seller-name {
-        font-size: 10px;
-      }
-
-      .seller-time {
-        font-size: 9px;
-      }
-
-      .product-actions {
-        gap: 6px;
-      }
-
-      .buy-btn {
-        padding: 11px 5px;
-        font-size: 12px;
-      }
-
-      .chat-btn {
-        width: 35px;
-        font-size: 16px;
-      }
-
-      .modal {
-        padding: 12px;
-      }
-
-      .modal-content {
-        padding: 18px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .brand {
-        font-size: 17px;
-      }
-
-      .sell-panel {
-        align-items: flex-start;
-      }
-
-      .sell-panel .primary-btn {
-        padding: 10px 8px;
-      }
-
-      .product-details {
-        padding: 7px;
-      }
-
-      .product-name {
-        font-size: 12px;
-      }
-
-      .buy-btn {
-        font-size: 11px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <header class="topbar">
-    <a class="brand" href="index.html">
-      <span class="brand-icon">C</span>
-      <span>Campusora</span>
-    </a>
-
-    <nav class="nav-links">
-      <a href="index.html">⌂ Home</a>
-      <a href="courses.html">♧ Courses</a>
-      <a href="community.html">♙ Community</a>
-      <a href="marketplace.html" class="active">♧ Marketplace</a>
-    </nav>
-
-    <div class="nav-icons">
-      <a href="messages.html" aria-label="Messages">♧</a>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <section class="page-heading">
-      <div>
-        <div class="heading-title">
-          <span class="heading-icon">♧</span>
-          <h1>Marketplace</h1>
-        </div>
-
-        <p class="subtitle">
-          Buy and sell with your campus community. Great deals, real people.
-        </p>
-      </div>
-
-      <label class="search-box">
-        <span>⌕</span>
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Search for products..."
-          aria-label="Search products"
-        >
-      </label>
-    </section>
-
-    <section class="sell-panel">
-      <div class="sell-info">
-        <div class="sell-icon">♧</div>
-
-        <div>
-          <h2>Post a Product</h2>
-          <p>Share something you're selling. Add a photo, description and price.</p>
-        </div>
-      </div>
-
-      <button class="primary-btn" id="openSellModal">
-        ＋ Add Product
-      </button>
-    </section>
-
-    <div class="categories" id="categories">
-      <button class="category-btn active" data-category="All">All</button>
-      <button class="category-btn" data-category="Electronics">Electronics</button>
-      <button class="category-btn" data-category="Books">Books</button>
-      <button class="category-btn" data-category="Clothing">Clothing</button>
-      <button class="category-btn" data-category="Accessories">Accessories</button>
-      <button class="category-btn" data-category="Furniture">Furniture</button>
-      <button class="category-btn" data-category="Study Materials">Study Materials</button>
-      <button class="category-btn" data-category="Other">Other</button>
-    </div>
-
-    <section class="products-grid" id="productsGrid">
-      <div class="empty-state">Loading marketplace products...</div>
-    </section>
-
-  </main>
-
-  <!-- ADD PRODUCT FORM -->
-
-  <div class="modal" id="sellModal">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h2>Sell an Item</h2>
-        <button class="close-btn" id="closeSellModal" aria-label="Close">×</button>
-      </div>
-
-      <form id="productForm">
-
-        <div class="form-group">
-          <label for="productName">Product name *</label>
-          <input id="productName" type="text" maxlength="100"
-                 placeholder="e.g. Samsung Galaxy phone" required>
-        </div>
-
-        <div class="form-group">
-          <label for="productPrice">Price in naira (₦) *</label>
-          <input id="productPrice" type="number" min="1" step="1"
-                 placeholder="e.g. 25000" required>
-        </div>
-
-        <div class="form-group">
-          <label for="productCategory">Category *</label>
-          <select id="productCategory" required>
-            <option value="">Choose a category</option>
-            <option>Electronics</option>
-            <option>Books</option>
-            <option>Clothing</option>
-            <option>Accessories</option>
-            <option>Furniture</option>
-            <option>Study Materials</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="productCondition">Condition *</label>
-          <select id="productCondition" required>
-            <option value="">Choose condition</option>
-            <option>New</option>
-            <option>Like New</option>
-            <option>Good condition</option>
-            <option>Fair condition</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="productLocation">Location *</label>
-          <input id="productLocation" type="text" maxlength="100"
-                 placeholder="e.g. University campus" required>
-        </div>
-
-        <div class="form-group">
-          <label for="productDescription">Description *</label>
-          <textarea id="productDescription" maxlength="1500"
-                    placeholder="Describe your item..." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="productImage">Product photo *</label>
-          <input id="productImage" type="file"
-                 accept="image/jpeg,image/png,image/webp,image/gif" required>
-          <small style="display:block;color:#98a9ca;margin-top:7px">
-            Choose a photo from your phone. Maximum size: 5 MB.
-          </small>
-          <img id="imagePreview" class="preview-image" alt="Product photo preview">
-        </div>
-
-        <p class="form-message" id="formMessage" role="status"></p>
-
-        <button type="submit" class="primary-btn submit-btn" id="submitProduct">
-          Publish Product
-        </button>
-
-      </form>
-    </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Marketplace | Campusora</title><link rel="stylesheet" href="shared-nav.css"><style>
+:root{
+  --bg:#080b18;
+  --panel:#101426;
+  --card:#11182b;
+  --border:#252d48;
+  --text:#fff;
+  --muted:#929bb7;
+  --purple:#9065ff;
+  --blue:#548bff;
+  --cyan:#38d9ff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:13px;
+  min-height:100vh;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+.page{
+  max-width:1250px;
+  margin:auto;
+  padding:20px 16px 40px;
+}
+
+.market-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:17px;
+}
+
+.heading-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.heading-icon{
+  width:38px;
+  height:38px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  color:#d8caff;
+  background:#211b42;
+  font-size:21px;
+}
+
+.heading-title{
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:-.5px;
+}
+
+.add-product-btn{
+  flex-shrink:0;
+  border:0;
+  border-radius:10px;
+  padding:11px 15px;
+  color:white;
+  font-weight:750;
+  font-size:12px;
+  background:linear-gradient(120deg,#9065ff,#548bff);
+}
+
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  height:43px;
+  padding:0 13px;
+  margin-bottom:17px;
+  background:#11182b;
+  border:1px solid var(--border);
+  border-radius:11px;
+}
+
+.search-icon{
+  color:#a99aff;
+  font-size:20px;
+}
+
+.search-box input{
+  width:100%;
+  min-width:0;
+  border:0;
+  outline:0;
+  color:white;
+  background:transparent;
+  font-size:13px;
+}
+
+.search-box input::placeholder{color:#7885a5}
+
+.categories{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:10px;
+  margin-bottom:13px;
+  scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{display:none}
+
+.category-btn{
+  flex-shrink:0;
+  border:1px solid var(--border);
+  background:#11182b;
+  color:#c5cee4;
+  padding:8px 14px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:650;
+}
+
+.category-btn.active{
+  background:#694cff;
+  color:white;
+  border-color:#8068ff;
+}
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:15px;
+}
+
+.product-card{
+  min-width:0;
+  overflow:hidden;
+  background:var(--card);
+  border:1px solid #242d48;
+  border-radius:13px;
+}
+
+.product-image-wrap{
+  position:relative;
+  aspect-ratio:1/.85;
+  overflow:hidden;
+  background:#1a2237;
+}
+
+.product-image{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.price-tag{
+  position:absolute;
+  top:9px;
+  right:9px;
+  padding:7px 9px;
+  border-radius:8px;
+  background:#7655ff;
+  color:white;
+  font-weight:800;
+  font-size:12px;
+}
+
+.product-details{padding:11px}
+
+.product-name{
+  font-size:13px;
+  line-height:1.4;
+  font-weight:800;
+  overflow-wrap:anywhere;
+  margin-bottom:5px;
+}
+
+.product-condition{
+  color:#a9b5d0;
+  font-size:10px;
+  margin-bottom:7px;
+}
+
+.product-description{
+  color:#aab5ce;
+  font-size:11px;
+  line-height:1.4;
+  margin-bottom:8px;
+  overflow-wrap:anywhere;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.product-location{
+  color:#8997b6;
+  font-size:10px;
+  margin-bottom:10px;
+}
+
+.seller{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  margin-bottom:10px;
+}
+
+.seller-avatar{
+  width:29px;
+  height:29px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:linear-gradient(135deg,#7952ee,#2689ee);
+  font-size:12px;
+}
+
+.seller-info{min-width:0}
+
+.seller-name{
+  font-size:10px;
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+
+.seller-time{
+  color:#7784a2;
+  font-size:9px;
+  margin-top:3px;
+}
+
+.product-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.buy-btn{
+  flex:1;
+  min-width:0;
+  border:0;
+  border-radius:9px;
+  padding:10px 6px;
+  color:white;
+  background:linear-gradient(120deg,#7957ff,#4e73ff);
+  font-size:11px;
+  font-weight:750;
+}
+
+.chat-btn{
+  width:38px;
+  height:36px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border:1px solid #46517a;
+  border-radius:9px;
+  color:#cbbaff;
+  background:#201b3d;
+  font-size:18px;
+}
+
+.buy-btn:disabled,.chat-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.empty-state{
+  grid-column:1/-1;
+  padding:38px 15px;
+  text-align:center;
+  color:var(--muted);
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+}
+
+.empty-state h3{
+  color:white;
+  font-size:15px;
+  margin-bottom:7px;
+}
+
+.empty-state p{
+  font-size:12px;
+  line-height:1.5;
+}
+
+/* ADD PRODUCT MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  padding:15px;
+  align-items:center;
+  justify-content:center;
+  background:#000b;
+}
+
+.modal.open{display:flex}
+
+.modal-content{
+  width:100%;
+  max-width:500px;
+  max-height:90vh;
+  overflow-y:auto;
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:#10182c;
+}
+
+.modal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.modal-header h2{
+  font-size:18px;
+}
+
+.close-btn{
+  border:0;
+  border-radius:8px;
+  padding:6px 11px;
+  background:#27314c;
+  color:white;
+  font-size:20px;
+}
+
+.form-group{margin-bottom:13px}
+
+.form-group label{
+  display:block;
+  margin-bottom:7px;
+  color:#d7e0f4;
+  font-size:12px;
+  font-weight:650;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;
+  min-height:43px;
+  padding:11px;
+  border:1px solid #2a3b5a;
+  border-radius:9px;
+  outline:0;
+  color:white;
+  background:#091121;
+}
+
+.form-group textarea{
+  min-height:85px;
+  resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+  border-color:var(--purple);
+}
+
+.form-group input[type=file]{padding:9px}
+
+.form-group select option{background:#101a2d}
+
+.preview-image{
+  display:none;
+  width:100%;
+  max-height:200px;
+  object-fit:contain;
+  margin-top:9px;
+  border-radius:9px;
+  background:#080d1b;
+}
+
+.form-message{
+  color:#ffb7b7;
+  font-size:12px;
+  line-height:1.5;
+  margin:9px 0;
+}
+
+.submit-btn{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:13px;
+  color:white;
+  background:linear-gradient(120deg,#9065ff,#548bff);
+  font-weight:750;
+}
+
+@media(max-width:1000px){
+  .products-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media(max-width:650px){
+  .page{padding:17px 11px 30px}
+
+  .heading-title{font-size:19px}
+
+  .heading-icon{
+    width:34px;
+    height:34px;
+    font-size:19px;
+  }
+
+  .add-product-btn{
+    padding:10px 11px;
+    font-size:11px;
+  }
+
+  .products-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .product-details{padding:9px}
+
+  .product-name{font-size:12px}
+
+  .product-description{font-size:10px}
+
+  .price-tag{
+    top:7px;
+    right:6px;
+    padding:6px 7px;
+    font-size:10px;
+  }
+
+  .chat-btn{
+    width:34px;
+    height:34px;
+  }
+
+  .buy-btn{font-size:10px}
+}
+
+@media(max-width:350px){
+  .heading-title{font-size:17px}
+  .add-product-btn{padding:9px 8px}
+  .product-details{padding:7px}
+}
+</style></head><body><main class="page">  <section class="market-heading">
+    <div class="heading-left">
+      <div class="heading-icon">🛍</div>
+      <h1 class="heading-title">Marketplace</h1>
+    </div><button class="add-product-btn" id="openSellModal">
+  ＋ Add Products
+</button>
+
+  </section>  <label class="search-box">
+    <span class="search-icon">⌕</span>
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Search products..."
+      aria-label="Search products"
+    >
+  </label>  <div class="categories" id="categories">
+    <button class="category-btn active" data-category="All">All</button>
+    <button class="category-btn" data-category="Electronics">Electronics</button>
+    <button class="category-btn" data-category="Books">Books</button>
+    <button class="category-btn" data-category="Clothing">Clothing</button>
+    <button class="category-btn" data-category="Accessories">Accessories</button>
+    <button class="category-btn" data-category="Furniture">Furniture</button>
+    <button class="category-btn" data-category="Study Materials">Study Materials</button>
+    <button class="category-btn" data-category="Other">Other</button>
+  </div>  <section class="products-grid" id="productsGrid">
+    <div class="empty-state">Loading products...</div>
+  </section></main><!-- ADD PRODUCT MODAL --><div class="modal" id="sellModal">
+  <div class="modal-content"><div class="modal-header">
+  <h2>Add Product</h2>
+  <button class="close-btn" id="closeSellModal" aria-label="Close">×</button>
+</div>
+
+<form id="productForm">
+
+  <div class="form-group">
+    <label for="productName">Product name *</label>
+    <input id="productName" type="text" maxlength="100"
+      placeholder="e.g. Samsung Galaxy phone" required>
   </div>
 
-  <script type="module">
-    import { supabase } from "./supabase.js";
+  <div class="form-group">
+    <label for="productPrice">Price in naira (₦) *</label>
+    <input id="productPrice" type="number" min="1" step="1"
+      placeholder="e.g. 25000" required>
+  </div>
 
-    const grid = document.getElementById("productsGrid");
-    const searchInput = document.getElementById("searchInput");
-    const modal = document.getElementById("sellModal");
-    const productForm = document.getElementById("productForm");
-    const imageInput = document.getElementById("productImage");
-    const imagePreview = document.getElementById("imagePreview");
-    const formMessage = document.getElementById("formMessage");
-    const submitButton = document.getElementById("submitProduct");
+  <div class="form-group">
+    <label for="productCategory">Category *</label>
+    <select id="productCategory" required>
+      <option value="">Choose a category</option>
+      <option>Electronics</option>
+      <option>Books</option>
+      <option>Clothing</option>
+      <option>Accessories</option>
+      <option>Furniture</option>
+      <option>Study Materials</option>
+      <option>Other</option>
+    </select>
+  </div>
 
-    let products = [];
-    let activeCategory = "All";
-    let currentUser = null;
-    let previewUrl = null;
+  <div class="form-group">
+    <label for="productCondition">Condition *</label>
+    <select id="productCondition" required>
+      <option value="">Choose condition</option>
+      <option>New</option>
+      <option>Like New</option>
+      <option>Good condition</option>
+      <option>Fair condition</option>
+    </select>
+  </div>
 
-    const placeholderImage =
-      "https://placehold.co/600x500/101a2d/98a9ca?text=Product+Photo";
+  <div class="form-group">
+    <label for="productLocation">Location *</label>
+    <input id="productLocation" type="text" maxlength="100"
+      placeholder="e.g. University campus" required>
+  </div>
 
-    function escapeHTML(value = "") {
-      return String(value).replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      })[character]);
+  <div class="form-group">
+    <label for="productDescription">Description *</label>
+    <textarea id="productDescription" maxlength="1500"
+      placeholder="Describe your item..." required></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="productImage">Product photo *</label>
+    <input id="productImage" type="file"
+      accept="image/jpeg,image/png,image/webp,image/gif" required>
+
+    <small style="display:block;color:#98a9ca;margin-top:7px">
+      Maximum photo size: 5 MB.
+    </small>
+
+    <img id="imagePreview" class="preview-image" alt="Product preview">
+  </div>
+
+  <p class="form-message" id="formMessage" role="status"></p>
+
+  <button type="submit" class="submit-btn" id="submitProduct">
+    Publish Product
+  </button>
+
+</form>
+
+  </div>
+</div><script src="shared-nav.js"></script><script type="module">
+import { supabase } from "./supabase.js";
+
+const grid = document.getElementById("productsGrid");
+const searchInput = document.getElementById("searchInput");
+const modal = document.getElementById("sellModal");
+const productForm = document.getElementById("productForm");
+const imageInput = document.getElementById("productImage");
+const imagePreview = document.getElementById("imagePreview");
+const formMessage = document.getElementById("formMessage");
+const submitButton = document.getElementById("submitProduct");
+
+let products = [];
+let activeCategory = "All";
+let currentUser = null;
+let previewUrl = null;
+
+const placeholderImage =
+  "https://placehold.co/600x500/101a2d/98a9ca?text=Product+Photo";
+
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+function formatPrice(price) {
+  return "₦" + Number(price || 0).toLocaleString("en-NG");
+}
+
+function getProductImage(product) {
+  let images = product.image_urls;
+
+  if (typeof images === "string") {
+    try {
+      images = JSON.parse(images);
+    } catch {
+      images = [images];
     }
+  }
 
-    function formatPrice(price) {
-      return "₦" + Number(price || 0).toLocaleString("en-NG");
-    }
+  if (Array.isArray(images) && images.length) {
+    return images[0];
+  }
 
-    function getProductImage(product) {
-      let images = product.image_urls;
+  return placeholderImage;
+}
 
-      if (typeof images === "string") {
-        try {
-          images = JSON.parse(images);
-        } catch {
-          images = [images];
-        }
-      }
+function timeAgo(date) {
+  if (!date) return "Recently";
 
-      if (Array.isArray(images) && images.length) {
-        return images[0];
-      }
+  const seconds = Math.max(
+    0,
+    Math.floor((Date.now() - new Date(date).getTime()) / 1000)
+  );
 
-      return placeholderImage;
-    }
+  if (seconds < 60) return "Just now";
+  if (seconds < 3600) return Math.floor(seconds / 60) + "m ago";
+  if (seconds < 86400) return Math.floor(seconds / 3600) + "h ago";
+  if (seconds < 604800) return Math.floor(seconds / 86400) + "d ago";
 
-    function timeAgo(date) {
-      if (!date) return "Recently";
+  return new Date(date).toLocaleDateString();
+}
 
-      const seconds = Math.max(
-        0,
-        Math.floor((Date.now() - new Date(date).getTime()) / 1000)
-      );
+function sellerName(product) {
+  const profile = product.profiles;
 
-      if (seconds < 60) return "Just now";
-      if (seconds < 3600) return Math.floor(seconds / 60) + "m ago";
-      if (seconds < 86400) return Math.floor(seconds / 3600) + "h ago";
-      if (seconds < 604800) return Math.floor(seconds / 86400) + "d ago";
+  if (Array.isArray(profile)) {
+    return profile[0]?.full_name || "Campusora seller";
+  }
 
-      return new Date(date).toLocaleDateString();
-    }
+  return profile?.full_name || "Campusora seller";
+}
 
-    function sellerName(product) {
-      const profile = product.profiles;
-      if (Array.isArray(profile)) {
-        return profile[0]?.full_name || "Campusora seller";
-      }
+function renderProducts() {
+  const query = searchInput.value.trim().toLowerCase();
 
-      return profile?.full_name || "Campusora seller";
-    }
+  const filtered = products.filter(product => {
+    const matchesCategory =
+      activeCategory === "All" ||
+      product.category === activeCategory;
 
-    function renderProducts() {
-      const query = searchInput.value.trim().toLowerCase();
+    const searchableText = [
+      product.name,
+      product.description,
+      product.category,
+      product.location
+    ].join(" ").toLowerCase();
 
-      const filtered = products.filter(product => {
-        const matchesCategory =
-          activeCategory === "All" ||
-          product.category === activeCategory;
+    return matchesCategory && searchableText.includes(query);
+  });
 
-        const searchableText = [
-          product.name,
-          product.description,
-          product.category,
-          product.location
-        ].join(" ").toLowerCase();
+  if (!filtered.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div style="font-size:30px;margin-bottom:10px">🛍️</div>
+        <h3>No products found</h3>
+        <p>Try another search or category.</p>
+      </div>`;
+    return;
+  }
 
-        return matchesCategory && searchableText.includes(query);
-      });
+  grid.innerHTML = filtered.map(product => {
+    const image = getProductImage(product);
+    const name = escapeHTML(product.name);
+    const condition = escapeHTML(product.condition || "Used");
+    const category = escapeHTML(product.category || "Other");
+    const location = escapeHTML(product.location || "Campus");
+    const description = escapeHTML(product.description || "");
+    const seller = escapeHTML(sellerName(product));
+    const price = formatPrice(product.price);
+    const time = timeAgo(product.created_at);
 
-      if (!filtered.length) {
-        grid.innerHTML = `
-          <div class="empty-state">
-            <div style="font-size:35px;margin-bottom:12px">🛍️</div>
-            <h3>No products found</h3>
-            <p>Try another search or be the first to post an item.</p>
-          </div>`;
-        return;
-      }
+    const isOwnProduct =
+      currentUser && product.seller_id === currentUser.id;
 
-      grid.innerHTML = filtered.map(product => {
-        const image = getProductImage(product);
-        const name = escapeHTML(product.name);
-        const condition = escapeHTML(product.condition || "Used");
-        const category = escapeHTML(product.category || "Other");
-        const location = escapeHTML(product.location || "Campus");
-        const description = escapeHTML(product.description || "");
-        const seller = escapeHTML(sellerName(product));
-        const price = formatPrice(product.price);
-        const time = timeAgo(product.created_at);
-        const isOwnProduct =
-          currentUser && product.seller_id === currentUser.id;
+    return `
+      <article class="product-card">
 
-        return `
-          <article class="product-card">
-            <div class="product-image-wrap">
-              <img
-                class="product-image"
-                src="${escapeHTML(image)}"
-                alt="${name}"
-                loading="lazy"
-                onerror="this.onerror=null;this.src='${placeholderImage}'"
-              >
-              <span class="price-tag">${price}</span>
+        <div class="product-image-wrap">
+          <img
+            class="product-image"
+            src="${escapeHTML(image)}"
+            alt="${name}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='${placeholderImage}'"
+          >
+          <span class="price-tag">${price}</span>
+        </div>
+
+        <div class="product-details">
+
+          <h3 class="product-name">${name}</h3>
+
+          <div class="product-condition">
+            ${condition} · ${category}
+          </div>
+
+          ${description ? `
+            <div class="product-description">${description}</div>
+          ` : ""}
+
+          <div class="product-location">📍 ${location}</div>
+
+          <div class="seller">
+            <div class="seller-avatar">👤</div>
+
+            <div class="seller-info">
+              <div class="seller-name">${seller}</div>
+              <div class="seller-time">${time}</div>
             </div>
+          </div>
 
-            <div class="product-details">
-              <h3 class="product-name">${name}</h3>
+          <div class="product-actions">
 
-              <div class="product-condition">
-                ${condition} · ${category}
-              </div>
+            <button
+              class="buy-btn"
+              data-action="buy"
+              data-seller="${escapeHTML(product.seller_id)}"
+              data-product="${escapeHTML(product.name)}"
+              ${isOwnProduct ? "disabled" : ""}
+            >${isOwnProduct ? "Your item" : "Message seller"}</button>
 
-              ${description ? `
-                <div class="product-description">${description}</div>
-              ` : ""}
+            <button
+              class="chat-btn"
+              data-action="chat"
+              data-seller="${escapeHTML(product.seller_id)}"
+              data-product="${escapeHTML(product.name)}"
+              aria-label="Message seller"
+              title="Message seller"
+              ${isOwnProduct ? "disabled" : ""}
+            >✉</button>
 
-              <div class="product-description">📍 ${location}</div>
+          </div>
+        </div>
+      </article>`;
+  }).join("");
+}
 
-              <div class="seller">
-                <div class="seller-avatar">👤</div>
-                <div class="seller-info">
-                  <div class="seller-name">${seller}</div>
-                  <div class="seller-time">${time}</div>
-                </div>
-              </div>
+async function loadProducts() {
+  grid.innerHTML = '<div class="empty-state">Loading products...</div>';
 
-              <div class="product-actions">
-                <button
-                  class="buy-btn"
-                  data-action="buy"
-                  data-seller="${escapeHTML(product.seller_id)}"
-                  data-product="${escapeHTML(product.name)}"
-                  ${isOwnProduct ? "disabled" : ""}
-                >${isOwnProduct ? "Your item" : "Buy"}</button>
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
 
-                <button
-                  class="chat-btn"
-                  data-action="chat"
-                  data-seller="${escapeHTML(product.seller_id)}"
-                  data-product="${escapeHTML(product.name)}"
-                  aria-label="Message seller"
-                  ${isOwnProduct ? "disabled" : ""}
-                >☏</button>
-              </div>
-            </div>
-          </article>`;
-      }).join("");
-    }
+  if (error) {
+    console.error("Could not load products:", error);
 
-    async function loadProducts() {
-      grid.innerHTML = '<div class="empty-state">Loading products...</div>';
+    grid.innerHTML = `
+      <div class="empty-state">
+        <h3>Couldn't load products</h3>
+        <p>Check your internet connection and product-table permissions.</p>
+        <button class="submit-btn" id="retryProducts">Try again</button>
+      </div>`;
 
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("status", "active")
-        .order("created_at", { ascending: false });
+    document.getElementById("retryProducts")
+      ?.addEventListener("click", loadProducts);
 
-      if (error) {
-        console.error("Could not load products:", error);
+    return;
+  }
 
-        grid.innerHTML = `
-          <div class="empty-state">
-            <h3>Couldn't load products</h3>
-            <p>Check your internet connection and Supabase product-table permissions.</p>
-            <button class="primary-btn" id="retryProducts">Try again</button>
-          </div>`;
+  products = data || [];
+  renderProducts();
+}
 
-        document.getElementById("retryProducts")
-          ?.addEventListener("click", loadProducts);
+async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser();
 
-        return;
-      }
+  if (error) {
+    console.error("Could not check login:", error);
+    return null;
+  }
 
-      products = data || [];
-      renderProducts();
-    }
+  return data.user;
+}
 
-    async function getCurrentUser() {
-      const { data, error } = await supabase.auth.getUser();
+document.getElementById("openSellModal").addEventListener("click", async () => {
+  currentUser = await getCurrentUser();
 
-      if (error) {
-        console.error("Could not check login:", error);
-        return null;
-      }
+  if (!currentUser) {
+    alert("Please log in to Campusora before posting a product.");
+    window.location.href = "index.html";
+    return;
+  }
 
-      return data.user;
-    }
+  formMessage.textContent = "";
+  modal.classList.add("open");
+});
 
-    document.getElementById("openSellModal").addEventListener("click", async () => {
-      currentUser = await getCurrentUser();
+document.getElementById("closeSellModal").addEventListener("click", () => {
+  modal.classList.remove("open");
+});
 
-      if (!currentUser) {
-        alert("Please log in to Campusora before posting a product.");
-        window.location.href = "index.html";
-        return;
-      }
+modal.addEventListener("click", event => {
+  if (event.target === modal) {
+    modal.classList.remove("open");
+  }
+});
 
-      formMessage.textContent = "";
-      modal.classList.add("open");
-    });
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    modal.classList.remove("open");
+  }
+});
 
-    document.getElementById("closeSellModal").addEventListener("click", () => {
-      modal.classList.remove("open");
-    });
+imageInput.addEventListener("change", () => {
+  const file = imageInput.files[0];
 
-    modal.addEventListener("click", event => {
-      if (event.target === modal) {
-        modal.classList.remove("open");
-      }
-    });
+  if (previewUrl) {
+    URL.revokeObjectURL(previewUrl);
+    previewUrl = null;
+  }
 
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        modal.classList.remove("open");
-      }
-    });
+  if (!file) {
+    imagePreview.style.display = "none";
+    imagePreview.removeAttribute("src");
+    return;
+  }
 
-    imageInput.addEventListener("change", () => {
-      const file = imageInput.files[0];
+  if (!file.type.startsWith("image/")) {
+    imageInput.value = "";
+    formMessage.textContent = "Please select an image file.";
+    return;
+  }
 
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-        previewUrl = null;
-      }
+  if (file.size > 5 * 1024 * 1024) {
+    imageInput.value = "";
+    imagePreview.style.display = "none";
+    formMessage.textContent =
+      "Your photo is too large. Please choose one under 5 MB.";
+    return;
+  }
 
-      if (!file) {
-        imagePreview.style.display = "none";
-        imagePreview.removeAttribute("src");
-        return;
-      }
+  previewUrl = URL.createObjectURL(file);
+  imagePreview.src = previewUrl;
+  imagePreview.style.display = "block";
+  formMessage.textContent = "";
+});
 
-      if (!file.type.startsWith("image/")) {
-        imageInput.value = "";
-        formMessage.textContent = "Please select an image file.";
-        return;
-      }
+productForm.addEventListener("submit", async event => {
+  event.preventDefault();
 
-      if (file.size > 5 * 1024 * 1024) {
-        imageInput.value = "";
-        imagePreview.style.display = "none";
-        formMessage.textContent = "Your photo is too large. Please choose one under 5 MB.";
-        return;
-      }
+  currentUser = await getCurrentUser();
 
-      previewUrl = URL.createObjectURL(file);
-      imagePreview.src = previewUrl;
-      imagePreview.style.display = "block";
-      formMessage.textContent = "";
-    });
+  if (!currentUser) {
+    formMessage.textContent = "Please log in before publishing a product.";
+    return;
+  }
 
-    productForm.addEventListener("submit", async event => {
-      event.preventDefault();
+  const file = imageInput.files[0];
 
-      currentUser = await getCurrentUser();
+  if (!file) {
+    formMessage.textContent = "Please choose a product photo.";
+    return;
+  }
 
-      if (!currentUser) {
-        formMessage.textContent = "Please log in before publishing a product.";
-        return;
-      }
+  if (file.size > 5 * 1024 * 1024) {
+    formMessage.textContent =
+      "Please choose an image smaller than 5 MB.";
+    return;
+  }
 
-      const file = imageInput.files[0];
+  submitButton.disabled = true;
+  submitButton.textContent = "Publishing...";
+  formMessage.textContent = "Uploading your photo. Please wait...";
 
-      if (!file) {
-        formMessage.textContent = "Please choose a product photo.";
-        return;
-      }
+  let uploadedPath = null;
 
-      if (file.size > 5 * 1024 * 1024) {
-        formMessage.textContent = "Please choose an image smaller than 5 MB.";
-        return;
-      }
+  try {
+    const extension = file.name.split(".").pop().toLowerCase();
 
-      submitButton.disabled = true;
-      submitButton.textContent = "Publishing...";
-      formMessage.textContent = "Uploading your photo. Please wait...";
+    const safeExtension = /^[a-z0-9]+$/.test(extension)
+      ? extension
+      : "jpg";
 
-      let uploadedPath = null;
+    const filePath =
+      `${currentUser.id}/${crypto.randomUUID()}.${safeExtension}`;
 
-      try {
-        const extension = file.name.split(".").pop().toLowerCase();
-        const safeExtension = /^[a-z0-9]+$/.test(extension)
-          ? extension
-          : "jpg";
-
-        const filePath =
-          `${currentUser.id}/${crypto.randomUUID()}.${safeExtension}`;
-
-        const { data: uploadData, error: uploadError } = await supabase
-          .storage
-          .from("product-images")
-          .upload(filePath, file, {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: file.type
-          });
-
-        if (uploadError) throw uploadError;
-
-        uploadedPath = uploadData.path;
-
-        const { data: publicData } = supabase
-          .storage
-          .from("product-images")
-          .getPublicUrl(uploadData.path);
-
-        const imageUrl = publicData.publicUrl;
-
-        const product = {
-          seller_id: currentUser.id,
-          name: document.getElementById("productName").value.trim(),
-          price: Number(document.getElementById("productPrice").value),
-          category: document.getElementById("productCategory").value,
-          condition: document.getElementById("productCondition").value,
-          location: document.getElementById("productLocation").value.trim(),
-          description: document.getElementById("productDescription").value.trim(),
-          image_urls: [imageUrl],
-          status: "active"
-        };
-
-        const { error: insertError } = await supabase
-          .from("products")
-          .insert(product);
-
-        if (insertError) throw insertError;
-
-        productForm.reset();
-        imagePreview.style.display = "none";
-
-        if (previewUrl) {
-          URL.revokeObjectURL(previewUrl);
-          previewUrl = null;
-        }
-
-        modal.classList.remove("open");
-        alert("Your product has been published!");
-
-        await loadProducts();
-
-      } catch (error) {
-        console.error("Product publishing error:", error);
-
-        formMessage.textContent =
-          error.message ||
-          "Something went wrong. Please check your Supabase settings and try again.";
-
-        if (uploadedPath) {
-          console.warn(
-            "The photo uploaded but product publishing failed. The uploaded file is:",
-            uploadedPath
-          );
-        }
-
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Publish Product";
-      }
-    });
-
-    searchInput.addEventListener("input", renderProducts);
-
-    document.querySelectorAll(".category-btn").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelector(".category-btn.active")
-          ?.classList.remove("active");
-
-        button.classList.add("active");
-        activeCategory = button.dataset.category;
-
-        renderProducts();
-      });
-    });
-
-    grid.addEventListener("click", event => {
-      const button = event.target.closest("button[data-action]");
-      if (!button) return;
-
-      const sellerId = button.dataset.seller;
-      const productName = button.dataset.product;
-
-      if (!sellerId || !productName) return;
-
-      const params = new URLSearchParams({
-        user: sellerId,
-        product: productName
+    const { data: uploadData, error: uploadError } = await supabase
+      .storage
+      .from("product-images")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type
       });
 
-      window.location.href = `messages.html?${params.toString()}`;
-    });
+    if (uploadError) throw uploadError;
 
-    currentUser = await getCurrentUser();
+    uploadedPath = uploadData.path;
+
+    const { data: publicData } = supabase
+      .storage
+      .from("product-images")
+      .getPublicUrl(uploadData.path);
+
+    const imageUrl = publicData.publicUrl;
+
+    const product = {
+      seller_id: currentUser.id,
+      name: document.getElementById("productName").value.trim(),
+      price: Number(document.getElementById("productPrice").value),
+      category: document.getElementById("productCategory").value,
+      condition: document.getElementById("productCondition").value,
+      location: document.getElementById("productLocation").value.trim(),
+      description: document.getElementById("productDescription").value.trim(),
+      image_urls: [imageUrl],
+      status: "active"
+    };
+
+    const { error: insertError } = await supabase
+      .from("products")
+      .insert(product);
+
+    if (insertError) throw insertError;
+
+    productForm.reset();
+    imagePreview.style.display = "none";
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      previewUrl = null;
+    }
+
+    modal.classList.remove("open");
+    alert("Your product has been published!");
+
     await loadProducts();
-  </script>
 
-</body>
+  } catch (error) {
+    console.error("Product publishing error:", error);
+
+    formMessage.textContent =
+      error.message ||
+      "Something went wrong. Please check your Supabase settings and try again.";
+
+    if (uploadedPath) {
+      console.warn(
+        "The photo uploaded but product publishing failed. The uploaded file is:",
+        uploadedPath
+      );
+    }
+
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Publish Product";
+  }
+});
+
+searchInput.addEventListener("input", renderProducts);
+
+document.querySelectorAll(".category-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelector(".category-btn.active")
+      ?.classList.remove("active");
+
+    button.classList.add("active");
+    activeCategory = button.dataset.category;
+
+    renderProducts();
+  });
+});
+
+grid.addEventListener("click", event => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const sellerId = button.dataset.seller;
+  const productName = button.dataset.product;
+
+  if (!sellerId || !productName) return;
+
+  const params = new URLSearchParams({
+    user: sellerId,
+    product: productName
+  });
+
+  window.location.href = `messages.html?${params.toString()}`;
+});
+
+currentUser = await getCurrentUser();
+await loadProducts();
+</script></body>
   </html>
