@@ -1,1034 +1,1024 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b18">
-  <title>Set Up Your Profile | Campusora</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">  <style>
-    :root {
-      --bg:#080b18;
-      --surface:#101426;
-      --surface2:#171c32;
-      --border:rgba(255,255,255,.09);
-      --text:#f5f6ff;
-      --muted:#929bb6;
-      --purple:#925bff;
-      --blue:#526dff;
-      --cyan:#39d7f5;
-      --gradient:linear-gradient(120deg,#925bff,#526dff,#39d7f5);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Set Up Your Profile | Campusora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root {
+  --bg:#080b18;
+  --surface:#101426;
+  --surface2:#171c32;
+  --border:rgba(255,255,255,.09);
+  --text:#f5f6ff;
+  --muted:#929bb6;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
+  --gradient:linear-gradient(120deg,#925bff,#526dff,#39d7f5);
+}
 
-    * {
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body {
-      min-height:100vh;
-      padding:18px 12px 35px;
-      background:
-        radial-gradient(circle at 10% 0%,rgba(92,45,170,.13),transparent 32%),
-        radial-gradient(circle at 100% 100%,rgba(20,105,150,.10),transparent 35%),
-        var(--bg);
-      color:var(--text);
-      font-family:"DM Sans",sans-serif;
-    }
+body {
+  min-height:100vh;
+  padding:18px 12px 35px;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(92,45,170,.13),transparent 32%),
+    radial-gradient(circle at 100% 100%,rgba(20,105,150,.10),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
+}
 
-    .app {
-      width:100%;
-      max-width:620px;
-      margin:auto;
-    }
+.app {
+  width:100%;
+  max-width:620px;
+  margin:auto;
+}
 
-    .topbar {
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:10px;
-      padding:5px 2px 17px;
-      border-bottom:1px solid var(--border);
-      margin-bottom:20px;
-    }
+.topbar {
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  padding:5px 2px 17px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:20px;
+}
 
-    .brand-logo {
-      width:42px;
-      height:42px;
-      object-fit:contain;
-      display:block;
-      filter:brightness(.48) saturate(1.15);
-      mix-blend-mode:screen;
-    }
+.brand-logo {
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  display:block;
+  filter:brightness(.48) saturate(1.15);
+  mix-blend-mode:screen;
+}
 
-    .brand-name {
-      font-size:19px;
-      font-weight:800;
-      letter-spacing:-.6px;
-    }
+.brand-name {
+  font-size:19px;
+  font-weight:800;
+  letter-spacing:-.6px;
+}
 
-    .brand-name span {
-      color:var(--cyan);
-    }
+.brand-name span {
+  color:var(--cyan);
+}
 
-    .page-heading {
-      margin:0 0 17px;
-    }
+.page-heading {
+  margin:0 0 17px;
+}
 
-    .page-heading h1 {
-      font-size:22px;
-      letter-spacing:-.6px;
-      margin-bottom:5px;
-    }
+.page-heading h1 {
+  font-size:22px;
+  letter-spacing:-.6px;
+  margin-bottom:5px;
+}
 
-    .page-heading p {
-      font-size:12px;
-      line-height:1.6;
-      color:var(--muted);
-    }
+.page-heading p {
+  font-size:12px;
+  line-height:1.6;
+  color:var(--muted);
+}
 
-    .card {
-      background:rgba(16,20,38,.96);
-      border:1px solid var(--border);
-      border-radius:17px;
-      padding:20px;
-      box-shadow:0 15px 45px rgba(0,0,0,.2);
-    }
+.card {
+  background:rgba(16,20,38,.96);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:20px;
+  box-shadow:0 15px 45px rgba(0,0,0,.2);
+}
 
-    .section-title {
-      font-size:13px;
-      font-weight:800;
-      margin:21px 0 12px;
-    }
+.section-title {
+  font-size:13px;
+  font-weight:800;
+  margin:21px 0 12px;
+}
 
-    .section-title:first-child {
-      margin-top:0;
-    }
+.section-title:first-child {
+  margin-top:0;
+}
 
-    .cover-preview {
-      height:145px;
-      position:relative;
-      overflow:hidden;
-      border-radius:13px;
-      border:1px solid var(--border);
-      background:
-        radial-gradient(circle at 20% 20%,#3a246b,transparent 45%),
-        linear-gradient(120deg,#171c32,#172d49);
-      margin-bottom:11px;
-    }
+.cover-preview {
+  height:145px;
+  position:relative;
+  overflow:hidden;
+  border-radius:13px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at 20% 20%,#3a246b,transparent 45%),
+    linear-gradient(120deg,#171c32,#172d49);
+  margin-bottom:11px;
+}
 
-    .cover-preview img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:none;
-    }
+.cover-preview img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
 
-    .cover-placeholder {
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap:8px;
-      color:#c3cbe5;
-      font-size:12px;
-    }
+.cover-placeholder {
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:8px;
+  color:#c3cbe5;
+  font-size:12px;
+}
 
-    .cover-placeholder strong {
-      font-size:25px;
-    }
+.cover-placeholder strong {
+  font-size:25px;
+}
 
-    .picture-row {
-      display:flex;
-      align-items:center;
-      gap:15px;
-      margin:16px 0 22px;
-    }
+.picture-row {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin:16px 0 22px;
+}
 
-    .avatar {
-      width:88px;
-      height:88px;
-      flex-shrink:0;
-      border-radius:50%;
-      border:2px solid transparent;
-      background:
-        linear-gradient(var(--surface2),var(--surface2)) padding-box,
-        var(--gradient) border-box;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:32px;
-      overflow:hidden;
-    }
+.avatar {
+  width:88px;
+  height:88px;
+  flex-shrink:0;
+  border-radius:50%;
+  border:2px solid transparent;
+  background:
+    linear-gradient(var(--surface2),var(--surface2)) padding-box,
+    var(--gradient) border-box;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  overflow:hidden;
+}
 
-    .avatar img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:none;
-    }
+.avatar img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
 
-    .upload-info {
-      flex:1;
-      min-width:0;
-    }
+.upload-info {
+  flex:1;
+  min-width:0;
+}
 
-    .upload-info strong {
-      display:block;
-      font-size:13px;
-      margin-bottom:5px;
-    }
+.upload-info strong {
+  display:block;
+  font-size:13px;
+  margin-bottom:5px;
+}
 
-    .upload-info p {
-      color:var(--muted);
-      font-size:11px;
-      line-height:1.5;
-      margin-bottom:9px;
-    }
+.upload-info p {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin-bottom:9px;
+}
 
-    .upload-btn {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      background:#202744;
-      border:1px solid rgba(146,91,255,.4);
-      color:white;
-      padding:9px 12px;
-      border-radius:9px;
-      font-size:11px;
-      font-weight:700;
-      cursor:pointer;
-    }
+.upload-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#202744;
+  border:1px solid rgba(146,91,255,.4);
+  color:white;
+  padding:9px 12px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
 
-    .upload-btn:hover {
-      border-color:var(--cyan);
-    }
+.upload-btn:hover {
+  border-color:var(--cyan);
+}
 
-    .upload-btn input {
-      display:none;
-    }
+.upload-btn input {
+  display:none;
+}
 
-    .field {
-      margin-bottom:15px;
-    }
+.field {
+  margin-bottom:15px;
+}
 
-    label.field-label {
-      display:block;
-      font-size:12px;
-      font-weight:700;
-      margin-bottom:7px;
-      color:#dce0f5;
-    }
+label.field-label {
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:7px;
+  color:#dce0f5;
+}
 
-    input:not([type="file"]),textarea,select {
-      width:100%;
-      padding:12px 13px;
-      border:1px solid var(--border);
-      border-radius:10px;
-      background:var(--surface2);
-      color:white;
-      font:inherit;
-      font-size:13px;
-      outline:none;
-    }
+input:not([type="file"]),textarea,select {
+  width:100%;
+  padding:12px 13px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--surface2);
+  color:white;
+  font:inherit;
+  font-size:13px;
+  outline:none;
+}
 
-    input:focus,textarea:focus,select:focus {
-      border-color:var(--purple);
-      box-shadow:0 0 0 3px rgba(146,91,255,.12);
-    }
+input:focus,textarea:focus,select:focus {
+  border-color:var(--purple);
+  box-shadow:0 0 0 3px rgba(146,91,255,.12);
+}
 
-    input::placeholder,textarea::placeholder {
-      color:#737d9c;
-    }
+input::placeholder,textarea::placeholder {
+  color:#737d9c;
+}
 
-    textarea {
-      resize:vertical;
-      min-height:85px;
-      line-height:1.6;
-    }
+textarea {
+  resize:vertical;
+  min-height:85px;
+  line-height:1.6;
+}
 
-    select option {
-      background:var(--surface);
-      color:white;
-    }
+select option {
+  background:var(--surface);
+  color:white;
+}
 
-    .hint {
-      color:var(--muted);
-      font-size:10px;
-      line-height:1.6;
-      margin-top:6px;
-    }
+.hint {
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+  margin-top:6px;
+}
 
-    .badge-panel {
-      padding:14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:rgba(255,255,255,.025);
-      margin-bottom:18px;
-    }
+.badge-panel {
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+  margin-bottom:18px;
+}
 
-    .badge-panel h3 {
-      font-size:13px;
-      margin-bottom:6px;
-    }
+.badge-panel h3 {
+  font-size:13px;
+  margin-bottom:6px;
+}
 
-    .badge-panel>p {
-      color:var(--muted);
-      font-size:11px;
-      line-height:1.5;
-      margin-bottom:12px;
-    }
+.badge-panel>p {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin-bottom:12px;
+}
 
-    .member-preview {
-      display:flex;
-      align-items:center;
-      gap:9px;
-      flex-wrap:wrap;
-    }
+.member-preview {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+}
 
-    .member-name {
-      font-size:14px;
-      font-weight:800;
-      overflow-wrap:anywhere;
-    }
+.member-name {
+  font-size:14px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
 
-    .member-badge {
-      display:inline-flex;
-      align-items:center;
-      gap:5px;
-      padding:5px 9px;
-      border-radius:20px;
-      font-size:10px;
-      font-weight:800;
-      white-space:nowrap;
-    }
+.member-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
 
-    .badge-student {
-      color:#8ed5ff;
-      background:rgba(65,155,255,.13);
-      border:1px solid rgba(65,155,255,.32);
-    }
+.badge-student {
+  color:#8ed5ff;
+  background:rgba(65,155,255,.13);
+  border:1px solid rgba(65,155,255,.32);
+}
 
-    .badge-alumni {
-      color:#d1a5ff;
-      background:rgba(146,91,255,.14);
-      border:1px solid rgba(146,91,255,.35);
-    }
+.badge-alumni {
+  color:#d1a5ff;
+  background:rgba(146,91,255,.14);
+  border:1px solid rgba(146,91,255,.35);
+}
 
-    .badge-general {
-      color:#7de9e2;
-      background:rgba(57,215,245,.1);
-      border:1px solid rgba(57,215,245,.3);
-    }
+.badge-general {
+  color:#7de9e2;
+  background:rgba(57,215,245,.1);
+  border:1px solid rgba(57,215,245,.3);
+}
 
-    .primary-btn {
-      width:100%;
-      padding:13px;
-      margin-top:5px;
-      border:none;
-      border-radius:10px;
-      background:var(--gradient);
-      color:white;
-      font-size:13px;
-      font-weight:800;
-      cursor:pointer;
-    }
+.primary-btn {
+  width:100%;
+  padding:13px;
+  margin-top:5px;
+  border:none;
+  border-radius:10px;
+  background:var(--gradient);
+  color:white;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+}
 
-    .primary-btn:disabled {
-      opacity:.6;
-      cursor:wait;
-    }
+.primary-btn:disabled {
+  opacity:.6;
+  cursor:wait;
+}
 
-    .message {
-      display:none;
-      padding:11px;
-      border-radius:9px;
-      margin-bottom:15px;
-      font-size:12px;
-      line-height:1.6;
-      overflow-wrap:anywhere;
-    }
+.message {
+  display:none;
+  padding:11px;
+  border-radius:9px;
+  margin-bottom:15px;
+  font-size:12px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
 
-    .message.error {
-      display:block;
-      color:#ff9ba8;
-      background:rgba(255,90,110,.1);
-      border:1px solid rgba(255,90,110,.3);
-    }
+.message.error {
+  display:block;
+  color:#ff9ba8;
+  background:rgba(255,90,110,.1);
+  border:1px solid rgba(255,90,110,.3);
+}
 
-    .message.success {
-      display:block;
-      color:#7df0c4;
-      background:rgba(57,215,160,.1);
-      border:1px solid rgba(57,215,160,.3);
-    }
+.message.success {
+  display:block;
+  color:#7df0c4;
+  background:rgba(57,215,160,.1);
+  border:1px solid rgba(57,215,160,.3);
+}
 
-    @media(max-width:420px) {
-      body {
-        padding:13px 10px 25px;
-      }
+@media(max-width:420px) {
+  body {
+    padding:13px 10px 25px;
+  }
 
-      .card {
-        padding:16px 14px;
-      }
+  .card {
+    padding:16px 14px;
+  }
 
-      .page-heading h1 {
-        font-size:20px;
-      }
+  .page-heading h1 {
+    font-size:20px;
+  }
 
-      .cover-preview {
-        height:120px;
-      }
+  .cover-preview {
+    height:120px;
+  }
 
-      .avatar {
-        width:76px;
-        height:76px;
-      }
+  .avatar {
+    width:76px;
+    height:76px;
+  }
 
-      .picture-row {
-        gap:11px;
-      }
-    }
-  </style></head><body>
-  <main class="app"><header class="topbar">
+  .picture-row {
+    gap:11px;
+  }
+}
+</style></head><body>
+<main class="app"><header class="topbar">
   <img class="brand-logo" src="./campusora-logo.png" alt="Campusora">
   <div class="brand-name">Campus<span>ora</span></div>
-</header>
-
-<section class="page-heading">
-  <h1>Let's build your profile </h1>
+</header><section class="page-heading">
+  <h1>Let's build your profile</h1>
   <p>
     Add your pictures and introduce yourself.
     Help people discover you and connect with your campus community.
   </p>
-</section>
+</section><section class="card">  <div id="message" class="message" role="status" aria-live="polite"></div>  <form id="profileForm"><h3 class="section-title">Your cover photo</h3>
 
-<section class="card">
+<div class="cover-preview">
+  <img id="coverPreview" alt="Cover photo preview">
+  <div class="cover-placeholder" id="coverPlaceholder">
+    <strong>🌄</strong>
+    <span>Your cover photo will appear here</span>
+  </div>
+</div>
 
-  <div id="message" class="message" role="status" aria-live="polite"></div>
+<label class="upload-btn">
+  📷 Choose cover photo
+  <input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
+</label>
 
-  <form id="profileForm">
+<p class="hint">JPG, PNG or WebP. Maximum size: 5 MB.</p>
 
-    <h3 class="section-title">Your cover photo</h3>
+<h3 class="section-title">Your profile picture</h3>
 
-    <div class="cover-preview">
-      <img id="coverPreview" alt="Cover photo preview">
-      <div class="cover-placeholder" id="coverPlaceholder">
-        <strong>🌄</strong>
-        <span>Your cover photo will appear here</span>
-      </div>
-    </div>
+<div class="picture-row">
+  <div class="avatar">
+    <span id="avatarPlaceholder">👤</span>
+    <img id="avatarPreview" alt="Profile picture preview">
+  </div>
+
+  <div class="upload-info">
+    <strong>Make it recognisable</strong>
+    <p>
+      Choose a clear picture so people can recognise you
+      in the Campusora community.
+    </p>
 
     <label class="upload-btn">
-      📷 Choose cover photo
-      <input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
+      📷 Choose profile picture
+      <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp">
     </label>
+  </div>
+</div>
 
-    <p class="hint">JPG, PNG or WebP. Maximum size: 5 MB.</p>
+<div class="field">
+  <label class="field-label" for="fullName">Full name</label>
+  <input id="fullName" type="text" maxlength="80"
+         placeholder="Your full name" autocomplete="name" required>
+</div>
 
-    <h3 class="section-title">Your profile picture</h3>
+<div class="field">
+  <label class="field-label" for="username">Username</label>
+  <input id="username" type="text" minlength="3" maxlength="24"
+         pattern="[A-Za-z0-9_]+" placeholder="your_username"
+         autocomplete="username" required>
+  <p class="hint">Use 3–24 letters, numbers or underscores.</p>
+</div>
 
-    <div class="picture-row">
-      <div class="avatar">
-        <span id="avatarPlaceholder">👤</span>
-        <img id="avatarPreview" alt="Profile picture preview">
-      </div>
+<div class="field">
+  <label class="field-label" for="institutionSearch">Find your school</label>
 
-      <div class="upload-info">
-        <strong>Make it recognisable</strong>
-        <p>
-          Choose a clear picture so people can recognise you
-          in the Campusora community.
-        </p>
+  <input
+    id="institutionSearch"
+    type="search"
+    placeholder="Type your university, polytechnic or college..."
+    autocomplete="off"
+    required
+  >
 
-        <label class="upload-btn">
-          📷 Choose profile picture
-          <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp">
-        </label>
-      </div>
-    </div>
+  <p class="hint">
+    Search by institution name. Select the correct school from the results below.
+  </p>
 
-    <div class="field">
-      <label class="field-label" for="fullName">Full name</label>
-      <input id="fullName" type="text" maxlength="80"
-             placeholder="Your full name" autocomplete="name" required>
-    </div>
+  <div id="institutionStatus" class="hint" aria-live="polite">
+    Loading institutions...
+  </div>
 
-    <div class="field">
-      <label class="field-label" for="username">Username</label>
-      <input id="username" type="text" minlength="3" maxlength="24"
-             pattern="[A-Za-z0-9_]+" placeholder="your_username"
-             autocomplete="username" required>
-      <p class="hint">Use 3–24 letters, numbers or underscores.</p>
-    </div>
+  <div id="institutionResults" style="margin-top:8px;display:grid;gap:7px;"></div>
 
-    <div class="field">
-      <label class="field-label" for="institutionSearch">Find your school</label>
-
-      <input
-        id="institutionSearch"
-        type="search"
-        placeholder="Type your university, polytechnic or college..."
-        autocomplete="off"
-        required
-      >
-
-      <p class="hint">
-        Search by institution name. Select the correct school from the results below.
-      </p>
-
-      <div id="institutionStatus" class="hint" aria-live="polite">
-        Loading institutions...
-      </div>
-
-      <div id="institutionResults" style="margin-top:8px;display:grid;gap:7px;"></div>
-
-      <div id="selectedInstitution"
-           style="display:none;margin-top:12px;padding:12px;border:1px solid rgba(57,215,245,.3);background:rgba(57,215,245,.07);border-radius:11px;">
-        <strong style="font-size:12px;color:#7de9e2;">Selected institution</strong>
-        <p id="selectedInstitutionName" style="font-size:13px;margin-top:5px;overflow-wrap:anywhere;"></p>
-        <button id="changeInstitution" type="button"
-                style="margin-top:8px;background:transparent;border:0;color:#bda5ff;font-size:12px;cursor:pointer;">
-          Change school
-        </button>
-      </div>
-
-      <p class="hint">
-        Can't find your school? The directory is still growing. You can continue using the school name you enter manually.
-      </p>
-
-      <label class="field-label" for="school" style="margin-top:14px;">
-        Or enter your school manually
-      </label>
-      <input
-        id="school"
-        type="text"
-        maxlength="120"
-        placeholder="Enter your school name if it isn't listed"
-      >
-    </div>
-
-    <div class="field">
-      <label class="field-label" for="role">Membership type</label>
-      <select id="role" required>
-        <option value="student">🎓 Student</option>
-        <option value="alumni">🏅 Alumni</option>
-        <option value="general">🌐 General Member</option>
-      </select>
-    </div>
-
-    <div class="badge-panel">
-      <h3>Your Campusora identity</h3>
-      <p>
-        Your membership badge helps people identify your role
-        in the Campusora community.
-      </p>
-
-      <div class="member-preview">
-        <span class="member-name" id="badgeName">Your Name</span>
-        <span id="memberBadge" class="member-badge badge-student">
-          🎓 Student
-        </span>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="field-label" for="bio">About you</label>
-      <textarea id="bio" maxlength="300"
-                placeholder="Tell people about yourself, what you study or your interests..."></textarea>
-      <p class="hint">Up to 300 characters. This is optional.</p>
-    </div>
-
-    <button class="primary-btn" id="saveBtn" type="submit">
-      Complete profile and continue →
+  <div id="selectedInstitution"
+       style="display:none;margin-top:12px;padding:12px;border:1px solid rgba(57,215,245,.3);background:rgba(57,215,245,.07);border-radius:11px;">
+    <strong style="font-size:12px;color:#7de9e2;">Selected institution</strong>
+    <p id="selectedInstitutionName" style="font-size:13px;margin-top:5px;overflow-wrap:anywhere;"></p>
+    <button id="changeInstitution" type="button"
+            style="margin-top:8px;background:transparent;border:0;color:#bda5ff;font-size:12px;cursor:pointer;">
+      Change school
     </button>
+  </div>
+
+  <p class="hint">
+    Can't find your school? The directory is still growing. You can continue using the school name you enter manually.
+  </p>
+
+  <label class="field-label" for="school" style="margin-top:14px;">
+    Or enter your school manually
+  </label>
+  <input
+    id="school"
+    type="text"
+    maxlength="120"
+    placeholder="Enter your school name if it isn't listed"
+  >
+</div>
+
+<div class="field">
+  <label class="field-label" for="role">Membership type</label>
+  <select id="role" required>
+    <option value="student">🎓 Student</option>
+    <option value="alumni">🏅 Alumni</option>
+    <option value="general">🌐 General Member</option>
+  </select>
+</div>
+
+<div class="badge-panel">
+  <h3>Your Campusora identity</h3>
+  <p>
+    Your membership badge helps people identify your role
+    in the Campusora community.
+  </p>
+
+  <div class="member-preview">
+    <span class="member-name" id="badgeName">Your Name</span>
+    <span id="memberBadge" class="member-badge badge-student">
+      🎓 Student
+    </span>
+  </div>
+</div>
+
+<div class="field">
+  <label class="field-label" for="bio">About you</label>
+  <textarea id="bio" maxlength="300"
+            placeholder="Tell people about yourself, what you study or your interests..."></textarea>
+  <p class="hint">Up to 300 characters. This is optional.</p>
+</div>
+
+<button class="primary-btn" id="saveBtn" type="submit">
+  Complete profile and continue →
+</button>
 
   </form>
 </section>
+</main><script type="module">
+import { supabase } from './supabase.js';
 
-  </main>  <script type="module">
-    import { supabase } from './supabase.js';
+const form = document.getElementById('profileForm');
+const saveBtn = document.getElementById('saveBtn');
+const message = document.getElementById('message');
 
-    const form = document.getElementById('profileForm');
-    const saveBtn = document.getElementById('saveBtn');
-    const message = document.getElementById('message');
+const avatarFile = document.getElementById('avatarFile');
+const coverFile = document.getElementById('coverFile');
 
-    const avatarFile = document.getElementById('avatarFile');
-    const coverFile = document.getElementById('coverFile');
+const avatarPreview = document.getElementById('avatarPreview');
+const avatarPlaceholder = document.getElementById('avatarPlaceholder');
 
-    const avatarPreview = document.getElementById('avatarPreview');
-    const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+const coverPreview = document.getElementById('coverPreview');
+const coverPlaceholder = document.getElementById('coverPlaceholder');
 
-    const coverPreview = document.getElementById('coverPreview');
-    const coverPlaceholder = document.getElementById('coverPlaceholder');
+const fullNameInput = document.getElementById('fullName');
+const usernameInput = document.getElementById('username');
+const schoolInput = document.getElementById('school');
+const roleInput = document.getElementById('role');
+const bioInput = document.getElementById('bio');
 
-    const fullNameInput = document.getElementById('fullName');
-    const usernameInput = document.getElementById('username');
-    const schoolInput = document.getElementById('school');
-    const roleInput = document.getElementById('role');
-    const bioInput = document.getElementById('bio');
+const institutionSearch = document.getElementById('institutionSearch');
+const institutionStatus = document.getElementById('institutionStatus');
+const institutionResults = document.getElementById('institutionResults');
+const selectedInstitutionBox = document.getElementById('selectedInstitution');
+const selectedInstitutionName = document.getElementById('selectedInstitutionName');
+const changeInstitutionButton = document.getElementById('changeInstitution');
 
-    const institutionSearch = document.getElementById('institutionSearch');
-    const institutionStatus = document.getElementById('institutionStatus');
-    const institutionResults = document.getElementById('institutionResults');
-    const selectedInstitutionBox = document.getElementById('selectedInstitution');
-    const selectedInstitutionName = document.getElementById('selectedInstitutionName');
-    const changeInstitutionButton = document.getElementById('changeInstitution');
+const badgeName = document.getElementById('badgeName');
+const memberBadge = document.getElementById('memberBadge');
 
-    const badgeName = document.getElementById('badgeName');
-    const memberBadge = document.getElementById('memberBadge');
+let currentUser = null;
+let existingAvatarUrl = null;
+let existingCoverUrl = null;
+let selectedInstitutionId = null;
+let selectedInstitutionLabel = '';
+let institutions = [];
+let institutionSearchTimer = null;
 
-    let currentUser = null;
-    let existingAvatarUrl = null;
-    let existingCoverUrl = null;
-    let selectedInstitutionId = null;
-    let selectedInstitutionLabel = '';
-    let institutions = [];
-    let institutionSearchTimer = null;
+const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+const maxFileSize = 5 * 1024 * 1024;
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    const maxFileSize = 5 * 1024 * 1024;
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = 'message ' + type;
+}
 
-    function showMessage(text, type) {
-      message.textContent = text;
-      message.className = 'message ' + type;
-    }
+function clearMessage() {
+  message.textContent = '';
+  message.className = 'message';
+}
 
-    function clearMessage() {
-      message.textContent = '';
-      message.className = 'message';
-    }
+function setImagePreview(img, placeholder, url) {
+  if (!url) {
+    img.removeAttribute('src');
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+    return;
+  }
 
-    function setImagePreview(img, placeholder, url) {
-      if (!url) {
-        img.removeAttribute('src');
-        img.style.display = 'none';
-        placeholder.style.display = 'flex';
-        return;
-      }
+  img.onload = () => {
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  };
 
-      img.onload = () => {
-        img.style.display = 'block';
-        placeholder.style.display = 'none';
-      };
+  img.onerror = () => {
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+  };
 
-      img.onerror = () => {
-        img.style.display = 'none';
-        placeholder.style.display = 'flex';
-      };
+  img.src = url;
+}
 
-      img.src = url;
-    }
+function setAvatarPreview(url) {
+  if (!url) {
+    avatarPreview.removeAttribute('src');
+    avatarPreview.style.display = 'none';
+    avatarPlaceholder.style.display = 'block';
+    return;
+  }
 
-    function setAvatarPreview(url) {
-      if (!url) {
-        avatarPreview.removeAttribute('src');
-        avatarPreview.style.display = 'none';
-        avatarPlaceholder.style.display = 'block';
-        return;
-      }
+  avatarPreview.onload = () => {
+    avatarPreview.style.display = 'block';
+    avatarPlaceholder.style.display = 'none';
+  };
 
-      avatarPreview.onload = () => {
-        avatarPreview.style.display = 'block';
-        avatarPlaceholder.style.display = 'none';
-      };
+  avatarPreview.onerror = () => {
+    avatarPreview.style.display = 'none';
+    avatarPlaceholder.style.display = 'block';
+  };
 
-      avatarPreview.onerror = () => {
-        avatarPreview.style.display = 'none';
-        avatarPlaceholder.style.display = 'block';
-      };
+  avatarPreview.src = url;
+}
 
-      avatarPreview.src = url;
-    }
+function updateBadgePreview() {
+  badgeName.textContent = fullNameInput.value.trim() || 'Your Name';
+  memberBadge.className = 'member-badge';
 
-    function updateBadgePreview() {
-      badgeName.textContent = fullNameInput.value.trim() || 'Your Name';
-      memberBadge.className = 'member-badge';
+  if (roleInput.value === 'student') {
+    memberBadge.textContent = '🎓 Student';
+    memberBadge.classList.add('badge-student');
+  } else if (roleInput.value === 'alumni') {
+    memberBadge.textContent = '🏅 Alumni';
+    memberBadge.classList.add('badge-alumni');
+  } else {
+    memberBadge.textContent = '🌐 General Member';
+    memberBadge.classList.add('badge-general');
+  }
+}
 
-      if (roleInput.value === 'student') {
-        memberBadge.textContent = '🎓 Student';
-        memberBadge.classList.add('badge-student');
-      } else if (roleInput.value === 'alumni') {
-        memberBadge.textContent = '🏅 Alumni';
-        memberBadge.classList.add('badge-alumni');
-      } else {
-        memberBadge.textContent = '🌐 General Member';
-        memberBadge.classList.add('badge-general');
-      }
-    }
+function validateImage(file) {
+  if (!file) return null;
 
-    function validateImage(file) {
-      if (!file) return null;
+  if (!allowedTypes.includes(file.type)) {
+    return 'Please choose a JPG, PNG or WebP image.';
+  }
 
-      if (!allowedTypes.includes(file.type)) {
-        return 'Please choose a JPG, PNG or WebP image.';
-      }
+  if (file.size > maxFileSize) {
+    return 'Your image is larger than 5 MB. Please choose a smaller image.';
+  }
 
-      if (file.size > maxFileSize) {
-        return 'Your image is larger than 5 MB. Please choose a smaller image.';
-      }
+  return null;
+}
 
-      return null;
-    }
+function previewSelectedFile(file, img, placeholder, isAvatar = false) {
+  if (!file) return;
 
-    function previewSelectedFile(file, img, placeholder, isAvatar = false) {
-      if (!file) return;
+  const error = validateImage(file);
 
-      const error = validateImage(file);
+  if (error) {
+    showMessage(error, 'error');
 
-      if (error) {
-        showMessage(error, 'error');
+    if (isAvatar) avatarFile.value = '';
+    else coverFile.value = '';
 
-        if (isAvatar) avatarFile.value = '';
-        else coverFile.value = '';
+    return;
+  }
 
-        return;
-      }
+  clearMessage();
+  const localUrl = URL.createObjectURL(file);
 
-      clearMessage();
-      const localUrl = URL.createObjectURL(file);
+  if (isAvatar) setAvatarPreview(localUrl);
+  else setImagePreview(img, placeholder, localUrl);
+}
 
-      if (isAvatar) setAvatarPreview(localUrl);
-      else setImagePreview(img, placeholder, localUrl);
-    }
+avatarFile.addEventListener('change', () => {
+  previewSelectedFile(avatarFile.files[0], avatarPreview, avatarPlaceholder, true);
+});
 
-    avatarFile.addEventListener('change', () => {
-      previewSelectedFile(avatarFile.files[0], avatarPreview, avatarPlaceholder, true);
-    });
+coverFile.addEventListener('change', () => {
+  previewSelectedFile(coverFile.files[0], coverPreview, coverPlaceholder, false);
+});
 
-    coverFile.addEventListener('change', () => {
-      previewSelectedFile(coverFile.files[0], coverPreview, coverPlaceholder, false);
-    });
+fullNameInput.addEventListener('input', updateBadgePreview);
+roleInput.addEventListener('change', updateBadgePreview);
 
-    fullNameInput.addEventListener('input', updateBadgePreview);
-    roleInput.addEventListener('change', updateBadgePreview);
+function clearSelectedInstitution() {
+  selectedInstitutionId = null;
+  selectedInstitutionLabel = '';
+  selectedInstitutionBox.style.display = 'none';
+  institutionSearch.disabled = false;
+  institutionSearch.value = '';
+  institutionResults.innerHTML = '';
+  institutionSearch.focus();
+}
 
-    function clearSelectedInstitution() {
-      selectedInstitutionId = null;
-      selectedInstitutionLabel = '';
-      selectedInstitutionBox.style.display = 'none';
-      institutionSearch.disabled = false;
-      institutionSearch.value = '';
-      institutionResults.innerHTML = '';
-      institutionSearch.focus();
-    }
+function selectInstitution(institution) {
+  selectedInstitutionId = institution.id;
+  selectedInstitutionLabel = institution.name;
 
-    function selectInstitution(institution) {
-      selectedInstitutionId = institution.id;
-      selectedInstitutionLabel = institution.name;
+  institutionSearch.value = institution.name;
+  schoolInput.value = institution.name;
 
-      institutionSearch.value = institution.name;
-      schoolInput.value = institution.name;
+  selectedInstitutionName.textContent =
+    institution.name + ' · ' +
+    institution.institution_type.replaceAll('_', ' ');
 
-      selectedInstitutionName.textContent =
-        institution.name + ' · ' +
-        institution.institution_type.replaceAll('_', ' ');
+  selectedInstitutionBox.style.display = 'block';
+  institutionSearch.disabled = true;
+  institutionResults.innerHTML = '';
+  institutionStatus.textContent = 'Your institution has been selected.';
+  clearMessage();
+}
 
-      selectedInstitutionBox.style.display = 'block';
-      institutionSearch.disabled = true;
-      institutionResults.innerHTML = '';
-      institutionStatus.textContent = 'Your institution has been selected.';
-      clearMessage();
-    }
+changeInstitutionButton.addEventListener('click', clearSelectedInstitution);
 
-    changeInstitutionButton.addEventListener('click', clearSelectedInstitution);
+function renderInstitutionResults(rows) {
+  institutionResults.innerHTML = '';
 
-    function renderInstitutionResults(rows) {
-      institutionResults.innerHTML = '';
+  if (!rows.length) {
+    institutionStatus.textContent =
+      'No matching institution found. You can enter its name manually below.';
+    return;
+  }
 
-      if (!rows.length) {
-        institutionStatus.textContent =
-          'No matching institution found. You can enter its name manually below.';
-        return;
-      }
+  institutionStatus.textContent = 'Select your institution:';
 
-      institutionStatus.textContent = 'Select your institution:';
+  rows.forEach((institution) => {
+    const button = document.createElement('button');
+    button.type = 'button';
 
-      rows.forEach((institution) => {
-        const button = document.createElement('button');
-        button.type = 'button';
+    button.style.cssText =
+      'text-align:left;padding:12px;border-radius:10px;' +
+      'border:1px solid rgba(255,255,255,.1);' +
+      'background:#171c32;color:#f5f6ff;cursor:pointer;';
 
-        button.style.cssText =
-          'text-align:left;padding:12px;border-radius:10px;' +
-          'border:1px solid rgba(255,255,255,.1);' +
-          'background:#171c32;color:#f5f6ff;cursor:pointer;';
+    const name = document.createElement('strong');
+    name.style.cssText = 'display:block;font-size:13px;';
+    name.textContent = institution.name;
 
-        const name = document.createElement('strong');
-        name.style.cssText = 'display:block;font-size:13px;';
-        name.textContent = institution.name;
+    const detail = document.createElement('span');
+    detail.style.cssText = 'display:block;margin-top:5px;font-size:11px;color:#929bb6;';
+    detail.textContent =
+      institution.state + ' · ' +
+      institution.institution_type.replaceAll('_', ' ') +
+      ' · ' + institution.ownership;
 
-        const detail = document.createElement('span');
-        detail.style.cssText = 'display:block;margin-top:5px;font-size:11px;color:#929bb6;';
-        detail.textContent =
-          institution.state + ' · ' +
-          institution.institution_type.replaceAll('_', ' ') +
-          ' · ' + institution.ownership;
+    button.append(name, detail);
+    button.addEventListener('click', () => selectInstitution(institution));
+    institutionResults.appendChild(button);
+  });
+}
 
-        button.append(name, detail);
-        button.addEventListener('click', () => selectInstitution(institution));
-        institutionResults.appendChild(button);
-      });
-    }
+async function searchInstitutions(query) {
+  const search = query.trim();
 
-    async function searchInstitutions(query) {
-      const search = query.trim();
+  if (search.length < 2) {
+    institutionResults.innerHTML = '';
+    institutionStatus.textContent =
+      'Type at least 2 letters to search the institution directory.';
+    return;
+  }
 
-      if (search.length < 2) {
-        institutionResults.innerHTML = '';
-        institutionStatus.textContent =
-          'Type at least 2 letters to search the institution directory.';
-        return;
-      }
+  institutionStatus.textContent = 'Searching institutions...';
 
-      institutionStatus.textContent = 'Searching institutions...';
+  const { data, error } = await supabase
+    .from('institutions')
+    .select('id, name, institution_type, ownership, state')
+    .eq('status', 'active')
+    .ilike('name', '%' + search.replace(/[%_,]/g, '') + '%')
+    .order('name')
+    .limit(20);
 
-      const { data, error } = await supabase
+  if (error) {
+    institutionStatus.textContent =
+      'We could not load the directory. You can enter your school manually below.';
+    console.error('Institution search failed:', error);
+    return;
+  }
+
+  institutions = data || [];
+  renderInstitutionResults(institutions);
+}
+
+institutionSearch.addEventListener('input', () => {
+  if (institutionSearch.disabled) return;
+
+  clearTimeout(institutionSearchTimer);
+
+  institutionSearchTimer = setTimeout(() => {
+    searchInstitutions(institutionSearch.value);
+  }, 250);
+});
+
+async function initialise() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error || !data.session) {
+    window.location.replace('./auth.html');
+    return;
+  }
+
+  currentUser = data.session.user;
+
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('full_name, username, school, institution_id, role, bio, avatar_url, cover_url')
+    .eq('id', currentUser.id)
+    .maybeSingle();
+
+  if (profileError) {
+    showMessage(
+      'We could not load your saved profile. You can still complete the form.',
+      'error'
+    );
+  }
+
+  if (profile) {
+    fullNameInput.value =
+      profile.full_name || currentUser.user_metadata?.full_name || '';
+
+    usernameInput.value =
+      profile.username || currentUser.user_metadata?.username || '';
+
+    schoolInput.value =
+      profile.school || currentUser.user_metadata?.school || '';
+
+    roleInput.value =
+      profile.role || currentUser.user_metadata?.role || 'student';
+
+    bioInput.value = profile.bio || '';
+
+    existingAvatarUrl = profile.avatar_url || null;
+    existingCoverUrl = profile.cover_url || null;
+
+    setAvatarPreview(existingAvatarUrl);
+    setImagePreview(coverPreview, coverPlaceholder, existingCoverUrl);
+
+    if (profile.institution_id) {
+      const { data: institution, error: institutionError } = await supabase
         .from('institutions')
         .select('id, name, institution_type, ownership, state')
-        .eq('status', 'active')
-        .ilike('name', '%' + search.replace(/[%_,]/g, '') + '%')
-        .order('name')
-        .limit(20);
-
-      if (error) {
-        institutionStatus.textContent =
-          'We could not load the directory. You can enter your school manually below.';
-        console.error('Institution search failed:', error);
-        return;
-      }
-
-      institutions = data || [];
-      renderInstitutionResults(institutions);
-    }
-
-    institutionSearch.addEventListener('input', () => {
-      if (institutionSearch.disabled) return;
-
-      clearTimeout(institutionSearchTimer);
-
-      institutionSearchTimer = setTimeout(() => {
-        searchInstitutions(institutionSearch.value);
-      }, 250);
-    });
-
-    async function initialise() {
-      const { data, error } = await supabase.auth.getSession();
-
-      if (error || !data.session) {
-        window.location.replace('./auth.html');
-        return;
-      }
-
-      currentUser = data.session.user;
-
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('full_name, username, school, institution_id, role, bio, avatar_url, cover_url')
-        .eq('id', currentUser.id)
+        .eq('id', profile.institution_id)
         .maybeSingle();
 
-      if (profileError) {
-        showMessage(
-          'We could not load your saved profile. You can still complete the form.',
-          'error'
-        );
+      if (!institutionError && institution) {
+        selectInstitution(institution);
       }
-
-      if (profile) {
-        fullNameInput.value =
-          profile.full_name || currentUser.user_metadata?.full_name || '';
-
-        usernameInput.value =
-          profile.username || currentUser.user_metadata?.username || '';
-
-        schoolInput.value =
-          profile.school || currentUser.user_metadata?.school || '';
-
-        roleInput.value =
-          profile.role || currentUser.user_metadata?.role || 'student';
-
-        bioInput.value = profile.bio || '';
-
-        existingAvatarUrl = profile.avatar_url || null;
-        existingCoverUrl = profile.cover_url || null;
-
-        setAvatarPreview(existingAvatarUrl);
-        setImagePreview(coverPreview, coverPlaceholder, existingCoverUrl);
-
-        if (profile.institution_id) {
-          const { data: institution, error: institutionError } = await supabase
-            .from('institutions')
-            .select('id, name, institution_type, ownership, state')
-            .eq('id', profile.institution_id)
-            .maybeSingle();
-
-          if (!institutionError && institution) {
-            selectInstitution(institution);
-          }
-        }
-      } else {
-        fullNameInput.value = currentUser.user_metadata?.full_name || '';
-        usernameInput.value = currentUser.user_metadata?.username || '';
-        schoolInput.value = currentUser.user_metadata?.school || '';
-        roleInput.value = currentUser.user_metadata?.role || 'student';
-      }
-
-      institutionStatus.textContent =
-        'Type at least 2 letters to search the institution directory.';
-
-      updateBadgePreview();
     }
+  } else {
+    fullNameInput.value = currentUser.user_metadata?.full_name || '';
+    usernameInput.value = currentUser.user_metadata?.username || '';
+    schoolInput.value = currentUser.user_metadata?.school || '';
+    roleInput.value = currentUser.user_metadata?.role || 'student';
+  }
 
-    async function uploadImage(file, imageType) {
-      if (!file) return null;
+  institutionStatus.textContent =
+    'Type at least 2 letters to search the institution directory.';
 
-      const error = validateImage(file);
-      if (error) throw new Error(error);
+  updateBadgePreview();
+}
 
-      const extension = file.type === 'image/jpeg'
-        ? 'jpg'
-        : file.type === 'image/png'
-          ? 'png'
-          : 'webp';
+async function uploadImage(file, imageType) {
+  if (!file) return null;
 
-      const filePath =
-        currentUser.id + '/' + imageType + '-' +
-        Date.now() + '.' + extension;
+  const error = validateImage(file);
+  if (error) throw new Error(error);
 
-      const { error: uploadError } = await supabase.storage
-        .from('campusora-images')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          contentType: file.type,
-          upsert: false
-        });
+  const extension = file.type === 'image/jpeg'
+    ? 'jpg'
+    : file.type === 'image/png'
+      ? 'png'
+      : 'webp';
 
-      if (uploadError) throw uploadError;
+  const filePath =
+    currentUser.id + '/' + imageType + '-' +
+    Date.now() + '.' + extension;
 
-      const { data } = supabase.storage
-        .from('campusora-images')
-        .getPublicUrl(filePath);
-
-      return data.publicUrl;
-    }
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      clearMessage();
-
-      if (!currentUser) {
-        showMessage('Your session has expired. Please log in again.', 'error');
-        return;
-      }
-
-      const fullName = fullNameInput.value.trim();
-      const username = usernameInput.value.trim().toLowerCase();
-      const role = roleInput.value;
-      const bio = bioInput.value.trim();
-
-      let school = schoolInput.value.trim();
-
-      if (selectedInstitutionId) {
-        school = selectedInstitutionLabel;
-      }
-
-      if (!school) {
-        showMessage('Please select your institution or enter its name manually.', 'error');
-        return;
-      }
-
-      if (!/^[a-z0-9_]{3,24}$/.test(username)) {
-        showMessage(
-          'Your username must be 3–24 characters using letters, numbers or underscores.',
-          'error'
-        );
-        return;
-      }
-
-      if (!['student', 'alumni', 'general'].includes(role)) {
-        showMessage('Please choose a valid membership type.', 'error');
-        return;
-      }
-
-      const avatar = avatarFile.files[0];
-      const cover = coverFile.files[0];
-
-      const avatarError = validateImage(avatar);
-      const coverError = validateImage(cover);
-
-      if (avatarError || coverError) {
-        showMessage(avatarError || coverError, 'error');
-        return;
-      }
-
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving your profile...';
-
-      try {
-        let avatarUrl = existingAvatarUrl;
-        let coverUrl = existingCoverUrl;
-
-        if (avatar) {
-          showMessage('Uploading your profile picture...', 'success');
-          avatarUrl = await uploadImage(avatar, 'profile');
-        }
-
-        if (cover) {
-          showMessage('Uploading your cover photo...', 'success');
-          coverUrl = await uploadImage(cover, 'cover');
-        }
-
-        showMessage('Saving your profile details...', 'success');
-
-        const { error } = await supabase
-          .from('profiles')
-          .upsert({
-            id: currentUser.id,
-            full_name: fullName,
-            username,
-            school,
-            institution_id: selectedInstitutionId,
-            role,
-            bio,
-            avatar_url: avatarUrl,
-            cover_url: coverUrl
-          }, {
-            onConflict: 'id'
-          });
-
-        if (error) throw error;
-
-        showMessage('Your profile is ready! Welcome to Campusora.', 'success');
-        saveBtn.textContent = 'Opening suggestions...';
-
-        setTimeout(() => {
-          window.location.replace('./suggestions.html');
-        }, 800);
-
-      } catch (error) {
-        console.error('Profile save failed:', error);
-
-        let text = error.message ||
-          'Could not save your profile. Please try again.';
-
-        if (error.code === '23505') {
-          text = 'That username is already taken. Please choose another one.';
-        } else if (error.code === '42501') {
-          text = 'Campusora could not save your profile because of a database permission issue.';
-        } else if (error.code === '23503') {
-          text = 'The selected institution could not be found. Please select it again.';
-        } else if (error.message &&
-                   error.message.toLowerCase().includes('row-level security')) {
-          text = 'Permission was denied. Please check the Campusora database and storage policies.';
-        }
-
-        showMessage(text, 'error');
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'Complete profile and continue →';
-      }
+  const { error: uploadError } = await supabase.storage
+    .from('campusora-images')
+    .upload(filePath, file, {
+      cacheControl: '3600',
+      contentType: file.type,
+      upsert: false
     });
 
-    initialise();
-  </script></body>
-                   </html>
+  if (uploadError) throw uploadError;
+
+  const { data } = supabase.storage
+    .from('campusora-images')
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+}
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  clearMessage();
+
+  if (!currentUser) {
+    showMessage('Your session has expired. Please log in again.', 'error');
+    return;
+  }
+
+  const fullName = fullNameInput.value.trim();
+  const username = usernameInput.value.trim().toLowerCase();
+  const role = roleInput.value;
+  const bio = bioInput.value.trim();
+
+  let school = schoolInput.value.trim();
+
+  if (selectedInstitutionId) {
+    school = selectedInstitutionLabel;
+  }
+
+  if (!school) {
+    showMessage('Please select your institution or enter its name manually.', 'error');
+    return;
+  }
+
+  if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+    showMessage(
+      'Your username must be 3–24 characters using letters, numbers or underscores.',
+      'error'
+    );
+    return;
+  }
+
+  if (!['student', 'alumni', 'general'].includes(role)) {
+    showMessage('Please choose a valid membership type.', 'error');
+    return;
+  }
+
+  const avatar = avatarFile.files[0];
+  const cover = coverFile.files[0];
+
+  const avatarError = validateImage(avatar);
+  const coverError = validateImage(cover);
+
+  if (avatarError || coverError) {
+    showMessage(avatarError || coverError, 'error');
+    return;
+  }
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving your profile...';
+
+  try {
+    let avatarUrl = existingAvatarUrl;
+    let coverUrl = existingCoverUrl;
+
+    if (avatar) {
+      showMessage('Uploading your profile picture...', 'success');
+      avatarUrl = await uploadImage(avatar, 'profile');
+    }
+
+    if (cover) {
+      showMessage('Uploading your cover photo...', 'success');
+      coverUrl = await uploadImage(cover, 'cover');
+    }
+
+    showMessage('Saving your profile details...', 'success');
+
+    const { error } = await supabase
+      .from('profiles')
+      .upsert({
+        id: currentUser.id,
+        full_name: fullName,
+        username,
+        school,
+        institution_id: selectedInstitutionId,
+        role,
+        bio,
+        avatar_url: avatarUrl,
+        cover_url: coverUrl
+      }, {
+        onConflict: 'id'
+      });
+
+    if (error) throw error;
+
+    showMessage('Your profile is ready! Welcome to Campusora.', 'success');
+    saveBtn.textContent = 'Opening suggestions...';
+
+    setTimeout(() => {
+      window.location.replace('./onboarding-suggestions.html');
+    }, 800);
+
+  } catch (error) {
+    console.error('Profile save failed:', error);
+
+    let text = error.message ||
+      'Could not save your profile. Please try again.';
+
+    if (error.code === '23505') {
+      text = 'That username is already taken. Please choose another one.';
+    } else if (error.code === '42501') {
+      text = 'Campusora could not save your profile because of a database permission issue.';
+    } else if (error.code === '23503') {
+      text = 'The selected institution could not be found. Please select it again.';
+    } else if (error.message &&
+               error.message.toLowerCase().includes('row-level security')) {
+      text = 'Permission was denied. Please check the Campusora database and storage policies.';
+    }
+
+    showMessage(text, 'error');
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Complete profile and continue →';
+  }
+});
+
+initialise();
+</script></body>
+    </html>
