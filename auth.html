@@ -56,7 +56,10 @@ body {
   pointer-events: none;
 }
 
-/* LOGO BLENDING */
+/* LOGO BACKGROUND BLENDING
+   Keeps the logo colours bright.
+   Blends darker background pixels into the page.
+*/
 
 .splash-logo,
 .brand img {
@@ -65,13 +68,8 @@ body {
   background: transparent;
   border: 0;
   box-shadow: none;
-
-  /*
-    Darkens the image so its background shape
-    is less noticeable against the dark page.
-  */
-  filter: brightness(.72) saturate(1.15);
-  mix-blend-mode: multiply;
+  filter: none;
+  mix-blend-mode: lighten;
 }
 
 /* OPENING LOGO */
@@ -1315,4 +1313,4 @@ resendBtn.addEventListener('click', async () => {
 </script>
 
 </body>
-        </html>
+              </html>
