@@ -531,3 +531,36 @@ width: 21px;
 height: 21px;
 }
    }
+
+/* UNREAD MESSAGE & NOTIFICATION BADGES */
+
+.campusora-nav-badge {
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  background: #ff3158;
+  color: #ffffff;
+  font-family: "DM Sans", sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  border: 2px solid #080b18;
+  box-shadow: 0 2px 8px rgba(255, 49, 88, 0.35);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.campusora-nav-badge[hidden] {
+  display: none !important;
+}
+
+.campusora-nav-item {
+  position: relative;
+}
