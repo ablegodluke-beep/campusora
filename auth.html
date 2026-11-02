@@ -1,265 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b18">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
 
-  <title>Join Campusora</title>
+<title>Join Campusora</title>
 
-  <style>
-    :root {
-      --bg: #080b18;
-      --surface: #101426;
-      --surface2: #171c32;
-      --purple: #925bff;
-      --blue: #526dff;
-      --cyan: #39d7f5;
-      --text: #f5f6ff;
-      --muted: #a0a8c4;
-      --border: rgba(255,255,255,.09);
-    }
+<style>
+:root {
+  --bg: #080b18;
+  --purple: #925bff;
+  --blue: #526dff;
+  --cyan: #39d7f5;
+  --dark: #151a2d;
+  --muted: #788198;
+  --border: #e4e7ef;
+}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, #25174b 0, transparent 35%),
-        radial-gradient(circle at bottom right, #102c48 0, transparent 35%),
-        var(--bg);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px 15px;
-    }
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, #25174b 0, transparent 35%),
+    radial-gradient(circle at bottom right, #102c48 0, transparent 35%),
+    var(--bg);
+  color: white;
+  font-family: "DM Sans", Arial, sans-serif;
+}
 
-    .container {
-      width: 100%;
-      max-width: 450px;
-    }
+/* OPENING SCREEN */
 
-    .brand {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background:
+    radial-gradient(circle at top left, #25174b 0, transparent 40%),
+    radial-gradient(circle at bottom right, #102c48 0, transparent 40%),
+    var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 25px;
+  transition: opacity .65s ease, visibility .65s ease;
+}
 
-    .logo {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 55px;
-      height: 55px;
-      border-radius: 17px;
-      font-size: 25px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
-      margin-bottom: 12px;
-    }
+.splash.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
-    .brand h1 {
-      font-size: 29px;
-      letter-spacing: -.8px;
-    }
+.splash-logo {
+  width: min(250px, 72vw);
+  max-height: 130px;
+  object-fit: contain;
+  animation: logoDrop 1s cubic-bezier(.2,.8,.25,1) both;
+}
 
-    .brand h1 span {
-      color: var(--cyan);
-    }
+.splash-tagline {
+  margin-top: 17px;
+  color: #d9dff5;
+  font-size: 14px;
+  letter-spacing: .25px;
+  text-align: center;
+  animation: taglineAppear .8s ease both;
+}
 
-    .brand p {
-      color: var(--muted);
-      margin-top: 8px;
-      font-size: 14px;
-    }
+@keyframes logoDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-100vh) scale(.85);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(10px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
-    .card {
-      background: rgba(16,20,38,.94);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 27px 23px;
-      box-shadow: 0 20px 70px rgba(0,0,0,.25);
-    }
+@keyframes taglineAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .tabs {
-      display: flex;
-      gap: 8px;
-      padding: 5px;
-      border-radius: 12px;
-      background: var(--bg);
-      margin-bottom: 24px;
-    }
+/* MAIN PAGE */
 
-    .tab {
-      flex: 1;
-      border: none;
-      border-radius: 9px;
-      padding: 12px;
-      color: var(--muted);
-      background: transparent;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 28px 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .6s ease;
+}
 
-    .tab.active {
-      color: white;
-      background: linear-gradient(110deg, var(--purple), var(--blue));
-    }
+.page.show {
+  opacity: 1;
+  visibility: visible;
+}
 
-    h2 {
-      font-size: 23px;
-      margin-bottom: 8px;
-    }
+.container {
+  width: 100%;
+  max-width: 430px;
+}
 
-    .subtitle {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 23px;
-    }
+.brand {
+  text-align: center;
+  margin-bottom: 17px;
+}
 
-    .field {
-      margin-bottom: 16px;
-    }
+.brand img {
+  width: 155px;
+  max-height: 75px;
+  object-fit: contain;
+}
 
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #dce0f5;
-    }
+.brand p {
+  color: #b5bed6;
+  margin-top: 7px;
+  font-size: 12px;
+}
 
-    input, select {
-      width: 100%;
-      padding: 13px 14px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      color: white;
-      font-size: 14px;
-      outline: none;
-    }
+/* WHITE FORM CARD */
 
-    input:focus, select:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(146,91,255,.12);
-    }
+.card {
+  background: #ffffff;
+  color: #171b2b;
+  border-radius: 19px;
+  padding: 21px 21px 18px;
+  box-shadow: 0 22px 65px rgba(0,0,0,.3);
+  border: 1px solid rgba(255,255,255,.5);
+}
 
-    input::placeholder {
-      color: #737d9c;
-    }
+.tabs {
+  display: flex;
+  gap: 5px;
+  padding: 4px;
+  background: #f0f1f7;
+  border-radius: 11px;
+  margin-bottom: 19px;
+}
 
-    select option {
-      background: var(--surface);
-      color: white;
-    }
+.tab {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 8px;
+  color: #697188;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
 
-    .primary-btn {
-      width: 100%;
-      border: none;
-      border-radius: 11px;
-      padding: 14px;
-      margin-top: 7px;
-      color: white;
-      font-size: 15px;
-      font-weight: 800;
-      background: linear-gradient(110deg, var(--purple), var(--blue));
-      cursor: pointer;
-    }
+.tab.active {
+  color: white;
+  background: linear-gradient(110deg, var(--purple), var(--blue));
+  box-shadow: 0 3px 9px rgba(82,109,255,.2);
+}
 
-    .primary-btn:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
+h2 {
+  font-size: 21px;
+  color: #171b2b;
+  margin-bottom: 5px;
+  letter-spacing: -.4px;
+}
 
-    .message {
-      display: none;
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 16px;
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
+.subtitle {
+  color: #737b90;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 17px;
+}
 
-    .message.success {
-      display: block;
-      background: rgba(57,215,160,.10);
-      border: 1px solid rgba(57,215,160,.3);
-      color: #7df0c4;
-    }
+/* FORM FIELDS */
 
-    .message.error {
-      display: block;
-      background: rgba(255,90,110,.10);
-      border: 1px solid rgba(255,90,110,.3);
-      color: #ff9ba8;
-    }
+.field {
+  margin-bottom: 12px;
+}
 
-    .back {
-      display: block;
-      text-align: center;
-      color: var(--muted);
-      text-decoration: none;
-      margin-top: 22px;
-      font-size: 13px;
-    }
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 750;
+  margin-bottom: 6px;
+  color: #343b50;
+}
 
-    .back:hover {
-      color: var(--cyan);
-    }
+input {
+  width: 100%;
+  padding: 11px 12px;
+  background: #ffffff;
+  border: 1px solid #dfe3ed;
+  border-radius: 9px;
+  color: #171b2b;
+  font-size: 13px;
+  outline: none;
+  transition: border .2s, box-shadow .2s;
+}
 
-    .hidden {
-      display: none !important;
-    }
+input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(146,91,255,.1);
+}
 
-    .terms {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 15px;
-      text-align: center;
-    }
+input::placeholder {
+  color: #a0a7b8;
+}
 
-    .secondary-btn {
-      width: 100%;
-      margin-top: 12px;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: white;
-      background: var(--surface2);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+/* MEMBERSHIP SELECTION */
 
-    @media (max-width: 380px) {
-      .card {
-        padding: 22px 17px;
-      }
+.role-label {
+  margin-bottom: 8px;
+}
 
-      .brand h1 {
-        font-size: 26px;
-      }
-    }
-  </style>
+.role-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.role-option {
+  min-width: 0;
+  border: 1px solid #e0e3ed;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 11px 4px 10px;
+  text-align: center;
+  cursor: pointer;
+  color: #596176;
+  transition: .2s ease;
+}
+
+.role-option .role-icon {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.role-option strong {
+  display: block;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.role-option.active {
+  border: 1.5px solid var(--purple);
+  background: #f5f1ff;
+  color: #7040d9;
+  box-shadow: 0 0 0 2px rgba(146,91,255,.08);
+}
+
+.role-option:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* BUTTONS */
+
+.primary-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  margin-top: 5px;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  background: linear-gradient(110deg, var(--purple), var(--blue));
+  cursor: pointer;
+  box-shadow: 0 5px 13px rgba(82,109,255,.18);
+}
+
+.primary-btn:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.secondary-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+  border: 1px solid #dfe3ed;
+  border-radius: 9px;
+  color: #5141a0;
+  background: #f7f5ff;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+/* MESSAGES */
+
+.message {
+  display: none;
+  padding: 10px 11px;
+  border-radius: 9px;
+  margin-bottom: 13px;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.message.success {
+  display: block;
+  background: #eafaf2;
+  border: 1px solid #bcebd0;
+  color: #167344;
+}
+
+.message.error {
+  display: block;
+  background: #fff0f1;
+  border: 1px solid #ffc9cf;
+  color: #b42336;
+}
+
+.terms {
+  color: #8a91a3;
+  font-size: 10px;
+  line-height: 1.5;
+  margin-top: 13px;
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 380px) {
+  .card {
+    padding: 18px 15px 16px;
+  }
+
+  .role-options {
+    gap: 5px;
+  }
+
+  .role-option strong {
+    font-size: 9px;
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
 </head>
 
 <body>
-  <main class="container">
+
+<!-- CAMPUSORA OPENING ANIMATION -->
+
+<div class="splash" id="splash">
+  <img
+    src="./campusora-logo.png"
+    alt="Campusora"
+    class="splash-logo"
+  >
+  <p class="splash-tagline">
+    Connect with students across campuses
+  </p>
+</div>
+
+<!-- REGISTRATION AND LOGIN -->
+
+<main class="page" id="mainPage">
+  <div class="container">
 
     <header class="brand">
-      <div class="logo">C</div>
-      <h1>Campus<span>ora</span></h1>
-      <p>Your campus. Your people. Your community.</p>
+      <img src="./campusora-logo.png" alt="Campusora logo">
+      <p>Connect with students across campuses</p>
     </header>
 
     <section class="card">
@@ -326,12 +463,43 @@
           </div>
 
           <div class="field">
-            <label for="role">I am joining as</label>
-            <select id="role" required>
-              <option value="student">Student</option>
-              <option value="alumni">Alumni</option>
-              <option value="general">General Member</option>
-            </select>
+            <label class="role-label">Join as</label>
+
+            <div class="role-options" id="roleOptions">
+
+              <button
+                type="button"
+                class="role-option active"
+                data-role="student"
+                aria-pressed="true"
+              >
+                <span class="role-icon">🎓</span>
+                <strong>Student</strong>
+              </button>
+
+              <button
+                type="button"
+                class="role-option"
+                data-role="alumni"
+                aria-pressed="false"
+              >
+                <span class="role-icon">🏅</span>
+                <strong>Alumni</strong>
+              </button>
+
+              <button
+                type="button"
+                class="role-option"
+                data-role="general"
+                aria-pressed="false"
+              >
+                <span class="role-icon">🌍</span>
+                <strong>General Member</strong>
+              </button>
+
+            </div>
+
+            <input type="hidden" id="role" value="student">
           </div>
 
         </div>
@@ -380,246 +548,278 @@
 
     </section>
 
-    <a href="./index.html" class="back">← Back to Campusora home</a>
+  </div>
+</main>
 
-  </main>
+<script type="module">
+import { supabase } from './supabase.js';
 
-  <script type="module">
-    import { supabase } from './supabase.js';
+const form = document.getElementById('authForm');
+const signupFields = document.getElementById('signupFields');
+const signupTab = document.getElementById('signupTab');
+const loginTab = document.getElementById('loginTab');
+const formTitle = document.getElementById('formTitle');
+const formSubtitle = document.getElementById('formSubtitle');
+const submitBtn = document.getElementById('submitBtn');
+const messageBox = document.getElementById('message');
+const passwordInput = document.getElementById('password');
+const emailInput = document.getElementById('email');
+const resendBtn = document.getElementById('resendBtn');
+const roleInput = document.getElementById('role');
 
-    const form = document.getElementById('authForm');
-    const signupFields = document.getElementById('signupFields');
-    const signupTab = document.getElementById('signupTab');
-    const loginTab = document.getElementById('loginTab');
-    const formTitle = document.getElementById('formTitle');
-    const formSubtitle = document.getElementById('formSubtitle');
-    const submitBtn = document.getElementById('submitBtn');
-    const messageBox = document.getElementById('message');
-    const passwordInput = document.getElementById('password');
-    const emailInput = document.getElementById('email');
-    const resendBtn = document.getElementById('resendBtn');
+let mode = 'signup';
+let pendingConfirmationEmail = '';
 
-    let mode = 'signup';
-    let pendingConfirmationEmail = '';
+/* SHOW THE OPENING SCREEN FOR 3 SECONDS AFTER THE LOGO ARRIVES */
 
-    function showMessage(text, type) {
-      messageBox.textContent = text;
-      messageBox.className = 'message ' + type;
-    }
+const splash = document.getElementById('splash');
+const mainPage = document.getElementById('mainPage');
 
-    function clearMessage() {
-      messageBox.textContent = '';
-      messageBox.className = 'message';
-    }
+setTimeout(() => {
+  splash.classList.add('hide');
+  mainPage.classList.add('show');
+}, 4000);
 
-    function setMode(newMode) {
-      mode = newMode;
-      clearMessage();
-      resendBtn.classList.add('hidden');
+/* MEMBERSHIP SELECTION */
 
-      const isSignup = mode === 'signup';
-
-      signupFields.classList.toggle('hidden', !isSignup);
-
-      document.getElementById('fullName').required = isSignup;
-      document.getElementById('username').required = isSignup;
-      document.getElementById('school').required = isSignup;
-      document.getElementById('role').required = isSignup;
-
-      passwordInput.autocomplete = isSignup
-        ? 'new-password'
-        : 'current-password';
-
-      passwordInput.minLength = isSignup ? 8 : 1;
-
-      signupTab.classList.toggle('active', isSignup);
-      loginTab.classList.toggle('active', !isSignup);
-
-      formTitle.textContent = isSignup
-        ? 'Join Campusora 🚀'
-        : 'Welcome back 👋';
-
-      formSubtitle.textContent = isSignup
-        ? 'Connect with students, alumni and communities across campuses.'
-        : 'Log in to reconnect with your campus community.';
-
-      submitBtn.textContent = isSignup
-        ? 'Create my account'
-        : 'Log in to Campusora';
-    }
-
-    signupTab.addEventListener('click', () => setMode('signup'));
-    loginTab.addEventListener('click', () => setMode('login'));
-
-    // A login link opens the login form.
-    const params = new URLSearchParams(window.location.search);
-
-    if (params.get('mode') === 'login') {
-      setMode('login');
-    }
-
-    /*
-      IMPORTANT:
-      Do not check the current session here.
-      Opening this page must not automatically redirect the user.
-      Redirect only after a successful login or registration.
-    */
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      clearMessage();
-
-      submitBtn.disabled = true;
-      resendBtn.classList.add('hidden');
-
-      const originalMode = mode;
-
-      submitBtn.textContent = mode === 'signup'
-        ? 'Creating account...'
-        : 'Checking details...';
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
-
-      try {
-        if (mode === 'signup') {
-          const fullName = document.getElementById('fullName').value.trim();
-          const username = document.getElementById('username')
-            .value.trim().toLowerCase();
-          const school = document.getElementById('school').value.trim();
-          const role = document.getElementById('role').value;
-
-          if (!/^[a-z0-9_]{3,24}$/.test(username)) {
-            throw new Error(
-              'Your username must be 3–24 characters using letters, numbers or underscores.'
-            );
-          }
-
-          const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-              emailRedirectTo:
-                window.location.origin + '/profile-setup.html',
-              data: {
-                full_name: fullName,
-                username,
-                school,
-                role
-              }
-            }
-          });
-
-          if (error) throw error;
-
-          if (data.session && data.user) {
-            showMessage(
-              'Your account has been created! Taking you to profile setup...',
-              'success'
-            );
-
-            window.location.replace('./profile-setup.html');
-            return;
-          }
-
-          pendingConfirmationEmail = email;
-
-          showMessage(
-            'Your registration was received. Check your email and tap the confirmation link to continue.',
-            'success'
-          );
-
-          resendBtn.classList.remove('hidden');
-
-        } else {
-          // Only redirect after Supabase confirms the login details.
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password
-          });
-
-          if (error) {
-            const message = error.message || '';
-
-            if (
-              message.toLowerCase().includes('invalid login credentials') ||
-              message.toLowerCase().includes('invalid credentials')
-            ) {
-              throw new Error('Incorrect email or password. Please check your details and try again.');
-            }
-
-            throw error;
-          }
-
-          if (!data.session || !data.user) {
-            throw new Error('Login could not be completed. Please try again.');
-          }
-
-          showMessage(
-            'Login successful! Welcome back to Campusora.',
-            'success'
-          );
-
-          // Existing users go directly to the main feed.
-          window.location.replace('./index.html');
-          return;
-        }
-
-      } catch (error) {
-        showMessage(
-          error.message || 'Something went wrong. Please try again.',
-          'error'
-        );
-
-      } finally {
-        submitBtn.disabled = false;
-
-        submitBtn.textContent = originalMode === 'signup'
-          ? 'Create my account'
-          : 'Log in to Campusora';
-      }
+document.querySelectorAll('.role-option').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.role-option').forEach(option => {
+      option.classList.remove('active');
+      option.setAttribute('aria-pressed', 'false');
     });
 
-    resendBtn.addEventListener('click', async () => {
-      if (!pendingConfirmationEmail) {
-        showMessage(
-          'Please register first before requesting another confirmation email.',
-          'error'
+    button.classList.add('active');
+    button.setAttribute('aria-pressed', 'true');
+
+    roleInput.value = button.dataset.role;
+  });
+});
+
+function showMessage(text, type) {
+  messageBox.textContent = text;
+  messageBox.className = 'message ' + type;
+}
+
+function clearMessage() {
+  messageBox.textContent = '';
+  messageBox.className = 'message';
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  clearMessage();
+  resendBtn.classList.add('hidden');
+
+  const isSignup = mode === 'signup';
+
+  signupFields.classList.toggle('hidden', !isSignup);
+
+  document.getElementById('fullName').required = isSignup;
+  document.getElementById('username').required = isSignup;
+  document.getElementById('school').required = isSignup;
+
+  passwordInput.autocomplete = isSignup
+    ? 'new-password'
+    : 'current-password';
+
+  passwordInput.minLength = isSignup ? 8 : 1;
+
+  signupTab.classList.toggle('active', isSignup);
+  loginTab.classList.toggle('active', !isSignup);
+
+  formTitle.textContent = isSignup
+    ? 'Join Campusora 🚀'
+    : 'Welcome back 👋';
+
+  formSubtitle.textContent = isSignup
+    ? 'Connect with students, alumni and communities across campuses.'
+    : 'Log in to reconnect with your campus community.';
+
+  submitBtn.textContent = isSignup
+    ? 'Create my account'
+    : 'Log in to Campusora';
+}
+
+signupTab.addEventListener('click', () => setMode('signup'));
+loginTab.addEventListener('click', () => setMode('login'));
+
+/* OPEN LOGIN MODE WHEN REQUESTED */
+
+const params = new URLSearchParams(window.location.search);
+
+if (params.get('mode') === 'login') {
+  setMode('login');
+}
+
+/*
+  Do not automatically redirect based on an existing session.
+  Redirect only after a successful login or registration.
+*/
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  clearMessage();
+
+  submitBtn.disabled = true;
+  resendBtn.classList.add('hidden');
+
+  const originalMode = mode;
+
+  submitBtn.textContent = mode === 'signup'
+    ? 'Creating account...'
+    : 'Checking details...';
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  try {
+    if (mode === 'signup') {
+      const fullName = document.getElementById('fullName').value.trim();
+
+      const username = document.getElementById('username')
+        .value.trim().toLowerCase();
+
+      const school = document.getElementById('school').value.trim();
+      const role = roleInput.value;
+
+      if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+        throw new Error(
+          'Your username must be 3–24 characters using letters, numbers or underscores.'
         );
-        return;
       }
 
-      resendBtn.disabled = true;
-      resendBtn.textContent = 'Sending...';
-
-      try {
-        const { error } = await supabase.auth.resend({
-          type: 'signup',
-          email: pendingConfirmationEmail,
-          options: {
-            emailRedirectTo:
-              window.location.origin + '/profile-setup.html'
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo:
+            window.location.origin + '/profile-setup.html',
+          data: {
+            full_name: fullName,
+            username,
+            school,
+            role
           }
-        });
+        }
+      });
 
-        if (error) throw error;
+      if (error) throw error;
 
+      if (data.session && data.user) {
         showMessage(
-          'A new confirmation email has been requested. Check your inbox and spam folder.',
+          'Your account has been created! Taking you to profile setup...',
           'success'
         );
 
-      } catch (error) {
-        showMessage(
-          error.message || 'Could not resend the email. Please try again later.',
-          'error'
-        );
+        window.location.replace('./profile-setup.html');
+        return;
+      }
 
-      } finally {
-        resendBtn.disabled = false;
-        resendBtn.textContent = 'Resend confirmation email';
+      pendingConfirmationEmail = email;
+
+      showMessage(
+        'Your registration was received. Check your email and tap the confirmation link to continue.',
+        'success'
+      );
+
+      resendBtn.classList.remove('hidden');
+
+    } else {
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        const message = error.message || '';
+
+        if (
+          message.toLowerCase().includes('invalid login credentials') ||
+          message.toLowerCase().includes('invalid credentials')
+        ) {
+          throw new Error(
+            'Incorrect email or password. Please check your details and try again.'
+          );
+        }
+
+        throw error;
+      }
+
+      if (!data.session || !data.user) {
+        throw new Error(
+          'Login could not be completed. Please try again.'
+        );
+      }
+
+      showMessage(
+        'Login successful! Welcome back to Campusora.',
+        'success'
+      );
+
+      window.location.replace('./index.html');
+      return;
+    }
+
+  } catch (error) {
+    showMessage(
+      error.message || 'Something went wrong. Please try again.',
+      'error'
+    );
+
+  } finally {
+    submitBtn.disabled = false;
+
+    submitBtn.textContent = originalMode === 'signup'
+      ? 'Create my account'
+      : 'Log in to Campusora';
+  }
+});
+
+/* RESEND CONFIRMATION EMAIL */
+
+resendBtn.addEventListener('click', async () => {
+  if (!pendingConfirmationEmail) {
+    showMessage(
+      'Please register first before requesting another confirmation email.',
+      'error'
+    );
+    return;
+  }
+
+  resendBtn.disabled = true;
+  resendBtn.textContent = 'Sending...';
+
+  try {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: pendingConfirmationEmail,
+      options: {
+        emailRedirectTo:
+          window.location.origin + '/profile-setup.html'
       }
     });
-  </script>
+
+    if (error) throw error;
+
+    showMessage(
+      'A new confirmation email has been requested. Check your inbox and spam folder.',
+      'success'
+    );
+
+  } catch (error) {
+    showMessage(
+      error.message || 'Could not resend the email. Please try again later.',
+      'error'
+    );
+
+  } finally {
+    resendBtn.disabled = false;
+    resendBtn.textContent = 'Resend confirmation email';
+  }
+});
+</script>
+
 </body>
   </html>
