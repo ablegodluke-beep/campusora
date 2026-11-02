@@ -51,7 +51,7 @@ min-height: 42px;
 width: 100%;
 padding: 0 14px;
 display: grid;
-grid-template-columns: max-content minmax(70px,1fr) max-content;
+grid-template-columns: max-content minmax(0,1fr) max-content;
 align-items: center;
 gap: 10px;
 position: relative;
@@ -75,7 +75,6 @@ width: 34px;
 height: 34px;
 object-fit: contain;
 object-position: center;
-clip-path: none;
 margin: 0;
 display: block;
 flex-shrink: 0;
@@ -91,21 +90,21 @@ margin: 0;
 }
 
 /* =====================================
-SEARCH - CENTER
+SEARCH - TOP RIGHT
 ===================================== */
 
 .campusora-header-search {
 width: 100%;
-max-width: 250px;
+max-width: 220px;
 min-width: 0;
 position: relative;
 z-index: 10001;
-justify-self: center;
+justify-self: end;
 margin: 0;
 }
 
 .campusora-header-search-form {
-height: 29px;
+height: 30px;
 width: 100%;
 display: flex;
 align-items: center;
@@ -163,6 +162,12 @@ color: #8994ae;
 cursor: pointer;
 }
 
+/* REMOVE OLD TAGLINE */
+
+.campusora-tagline {
+display: none !important;
+}
+
 /* =====================================
 SEARCH RESULTS
 ===================================== */
@@ -170,9 +175,9 @@ SEARCH RESULTS
 .campusora-header-search-results {
 position: absolute;
 top: calc(100% + 9px);
-left: 0;
+left: auto;
 right: 0;
-width: 100%;
+width: min(350px, calc(100vw - 16px));
 max-height: min(72vh,570px);
 overflow-y: auto;
 overscroll-behavior: contain;
@@ -296,35 +301,7 @@ line-height: 1.6;
 }
 
 /* =====================================
-TAGLINE - RIGHT SIDE
-===================================== */
-
-.campusora-tagline {
-width: 125px;
-flex-shrink: 0;
-text-align: right;
-color: #a3aec7;
-font-size: 0;
-font-weight: 600;
-line-height: 1.25;
-white-space: normal;
-margin: 0;
-}
-
-.campusora-tagline::before {
-content: "Connect with students across";
-display: block;
-font-size: 9px;
-}
-
-.campusora-tagline::after {
-content: "campuses";
-display: block;
-font-size: 9px;
-}
-
-/* =====================================
-MODERN SOCIAL MEDIA NAVIGATION
+MAIN NAVIGATION
 ===================================== */
 
 .campusora-mainnav {
@@ -339,6 +316,8 @@ gap: 5px;
 background: transparent;
 border: none;
 }
+
+/* BASE ICON STYLE */
 
 .campusora-nav-item {
 height: 28px;
@@ -362,26 +341,78 @@ stroke: none;
 transition: transform .2s ease, filter .2s ease;
 }
 
+/* =====================================
+INDIVIDUAL NAVIGATION COLOURS
+===================================== */
+
+/* HOME - PURPLE */
+
+.campusora-nav-item:nth-child(1) {
+color: #a879ff;
+}
+
+/* SUGGESTIONS - CYAN */
+
+.campusora-nav-item:nth-child(2) {
+color: #35d6dc;
+}
+
+/* MESSAGES - BLUE */
+
+.campusora-nav-item:nth-child(3) {
+color: #539bff;
+}
+
+/* SPOTLIGHT - PINK/PURPLE */
+
+.campusora-nav-item:nth-child(4) {
+color: #ed75dc;
+}
+
+/* NOTIFICATIONS - ORANGE */
+
+.campusora-nav-item:nth-child(5) {
+color: #ffad55;
+}
+
+/* MARKETPLACE - GREEN */
+
+.campusora-nav-item:nth-child(6) {
+color: #51d99a;
+}
+
+/* MENU - LIGHT PURPLE */
+
+.campusora-nav-item:nth-child(7) {
+color: #b9a5ff;
+}
+
+/* =====================================
+HOVER EFFECTS
+===================================== */
+
 .campusora-nav-item:hover {
-background: rgba(255,255,255,.08);
-color: #ffffff;
+background: rgba(255,255,255,.09);
+transform: translateY(-1px);
 }
 
 .campusora-nav-item:hover svg {
-transform: scale(1.07);
+transform: scale(1.1);
+filter: brightness(1.2);
 }
 
 .campusora-nav-item:active {
 transform: scale(.92);
 }
 
+/* ACTIVE PAGE */
+
 .campusora-nav-item.active {
-color: #b99bff;
-background: rgba(133,88,255,.13);
+background: rgba(255,255,255,.09);
 }
 
 .campusora-nav-item.active svg {
-filter: drop-shadow(0 0 5px rgba(133,88,255,.4));
+filter: drop-shadow(0 0 6px currentColor);
 }
 
 .campusora-nav-item.active::after {
@@ -392,12 +423,7 @@ right: 28%;
 bottom: 0;
 height: 2px;
 border-radius: 5px;
-background: linear-gradient(
-90deg,
-#8558ff,
-#398bff,
-#28d5e8
-);
+background: currentColor;
 }
 
 /* =====================================
@@ -479,9 +505,9 @@ height: 70px;
 .campusora-topnav-brandrow {
 height: 40px;
 min-height: 40px;
-padding: 0 7px;
-grid-template-columns: max-content minmax(55px,1fr) max-content;
-gap: 6px;
+padding: 0 9px;
+grid-template-columns: max-content minmax(0,1fr);
+gap: 5px;
 }
 
 .campusora-brand {
@@ -500,13 +526,13 @@ letter-spacing: -.4px;
 
 .campusora-header-search {
 width: 100%;
-max-width: 180px;
+max-width: 155px;
 min-width: 0;
 }
 
 .campusora-header-search-form {
-height: 26px;
-padding: 0 7px;
+height: 27px;
+padding: 0 8px;
 gap: 5px;
 }
 
@@ -518,15 +544,6 @@ height: 14px;
 
 .campusora-header-search-input {
 font-size: 10px;
-}
-
-.campusora-tagline {
-width: 88px;
-}
-
-.campusora-tagline::before,
-.campusora-tagline::after {
-font-size: 8px;
 }
 
 .campusora-mainnav {
@@ -580,6 +597,7 @@ font-size: 11px;
 .menu-card-info small {
 font-size: 9px;
 }
+
 }
 
 /* =====================================
@@ -607,17 +625,8 @@ height: 28px;
 font-size: 11px;
 }
 
-.campusora-tagline {
-width: 70px;
-}
-
-.campusora-tagline::before,
-.campusora-tagline::after {
-font-size: 7px;
-}
-
 .campusora-header-search {
-max-width: 130px;
+max-width: 125px;
 }
 
 .campusora-header-search-input {
@@ -625,13 +634,14 @@ font-size: 9px;
 }
 
 .campusora-nav-item svg {
-width: 22px;
-height: 22px;
+width: 21px;
+height: 21px;
 }
 
 .menu-grid {
 grid-template-columns: 1fr;
 }
+
 }
 
 /* =====================================
@@ -663,4 +673,4 @@ pointer-events: none;
 
 .campusora-nav-badge[hidden] {
 display: none !important;
-  }
+}
