@@ -268,6 +268,13 @@ body.has-shared-nav {
 
 /* REACTION PICKER */
 
+.like-action-wrap,
+.like-action-wrap [data-action="like"] {
+  touch-action:none;
+  -webkit-user-select:none;
+  user-select:none;
+}
+
 .reaction-picker {
   position:absolute;
   right:0;
@@ -728,8 +735,7 @@ body.has-shared-nav {
   width:100%;
   margin:7px 0 12px;
   padding:11px;
-
-    border-radius:9px;
+  border-radius:9px;
   border:1px solid var(--border);
   outline:none;
   color:white;
@@ -913,7 +919,6 @@ textarea.field { min-height:80px;resize:vertical; }
 
 <!-- VIDEO UPLOAD -->
 
-
 <div class="overlay" id="uploadOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -926,7 +931,7 @@ textarea.field { min-height:80px;resize:vertical; }
       <input class="field" id="videoFile" type="file"
         accept="video/mp4,video/webm,video/quicktime" required>
 
-      <p class="hint">MP4, WebM or MOV. Maximum size: 50 MB. Your original video file is uploaded without intentional compression.</p>
+      <p class="hint">MP4, WebM or MOV. Maximum size: 50 MB. Your original video is uploaded without intentional compression.</p>
 
       <label class="field-label" for="caption">Caption</label>
       <textarea class="field" id="caption" maxlength="1000"
@@ -994,7 +999,9 @@ let tapTimer = null;
 let lastTapTime = 0;
 let lastTapCard = null;
 let holdTimer = null;
-let suppressLikeClick = false;
+let pressedLikeButton = null;
+let holdTriggered = false;
+let holdPointerId = null;
 let activePicker = null;
 
 const REACTIONS = [
@@ -1411,8 +1418,7 @@ function setupVideoObserver() {
           entry.target.querySelector('.view-count')
         );
       } else {
-
-                video.pause();
+        video.pause();
       }
     });
   },{root:feed,threshold:[.2,.65,.9]});
@@ -1438,8 +1444,7 @@ async function recordView(videoId,counter) {
       }
     } catch(error) {
       viewedThisSession.delete(videoId);
-
-          console.warn('Public view counter failed:',error.message);
+      console.warn('Public view counter failed:',error.message);
     }
   }
 
@@ -1463,7 +1468,7 @@ async function recordView(videoId,counter) {
 async function setReaction(videoId,reactionId) {
   if(!requireLogin()||likeBusy.has(videoId))return;
 
-    const reaction=getReaction(reactionId);
+  const reaction=getReaction(reactionId);
   const video=videos.find(item=>item.id===videoId);
   const card=[...feed.querySelectorAll('.video-card')]
     .find(item=>item.dataset.videoId===videoId);
@@ -1551,30 +1556,60 @@ function openReactionPicker(button) {
   activePicker=picker;
 }
 
-function startLikeHold(button) {
+  function startLikeHold(button,event) {
   clearTimeout(holdTimer);
-  suppressLikeClick=false;
+  pressedLikeButton=button;
+  holdTriggered=false;
+  holdPointerId=event.pointerId;
 
   holdTimer=setTimeout(()=>{
-    suppressLikeClick=true;
+    if(!pressedLikeButton)return;
+    holdTriggered=true;
     openReactionPicker(button);
   },2000);
 }
 
-function cancelLikeHold() {
+function finishLikePress(event,allowShortTap=true) {
+  if(!pressedLikeButton)return;
+  if(holdPointerId!==null && event.pointerId!==holdPointerId)return;
+
+  const button=pressedLikeButton;
+  const wasLongPress=holdTriggered;
+  const releasedOnButton=button===event.target || button.contains(event.target);
+
   clearTimeout(holdTimer);
   holdTimer=null;
+  pressedLikeButton=null;
+  holdTriggered=false;
+  holdPointerId=null;
+
+  if(allowShortTap && !wasLongPress && releasedOnButton) {
+    const card=button.closest('.video-card');
+    if(card)toggleLike(card.dataset.videoId);
+  }
 }
 
 feed.addEventListener('pointerdown',event=>{
   const button=event.target.closest('[data-action="like"]');
   if(!button)return;
-  startLikeHold(button);
+
+  event.preventDefault();
+  startLikeHold(button,event);
+
+  try {
+    button.setPointerCapture(event.pointerId);
+  } catch(error) {}
 });
 
-feed.addEventListener('pointerup',cancelLikeHold);
-feed.addEventListener('pointerleave',cancelLikeHold);
-feed.addEventListener('pointercancel',cancelLikeHold);
+document.addEventListener('pointerup',event=>finishLikePress(event,true));
+document.addEventListener('pointercancel',event=>finishLikePress(event,false));
+window.addEventListener('blur',()=>{
+  clearTimeout(holdTimer);
+  holdTimer=null;
+  pressedLikeButton=null;
+  holdTriggered=false;
+  holdPointerId=null;
+});
 
 feed.addEventListener('contextmenu',event=>{
   if(event.target.closest('[data-action="like"]')) {
@@ -1596,19 +1631,6 @@ feed.addEventListener('click',async event=>{
 
     picker?.classList.remove('open');
     activePicker=null;
-    suppressLikeClick=true;
-    return;
-  }
-
-  const likeButton=event.target.closest('[data-action="like"]');
-  if(likeButton) {
-    if(suppressLikeClick) {
-      suppressLikeClick=false;
-      return;
-    }
-
-    const card=likeButton.closest('.video-card');
-    if(card)await toggleLike(card.dataset.videoId);
     return;
   }
 
@@ -2183,4 +2205,4 @@ init();
 </script>
 
 </body>
-  </html>
+</html>
