@@ -9,26 +9,56 @@ const MENU = "menu.html";
 const currentFile = location.pathname.split("/").pop() || HOME;
 
 /* =====================================
-RECOGNIZABLE SOCIAL MEDIA ICONS
+MODERN SOCIAL MEDIA ICONS
 ===================================== */
 
 const icons = {
 
-home: "<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M2.5 10.4 12 2.8l9.5 7.6v10.1a1 1 0 0 1-1 1h-6v-7h-5v7h-6a1 1 0 0 1-1-1V10.4Z'/></svg>",
+home: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M2.5 10.2 12 2.5l9.5 7.7v9.5a1.8 1.8 0 0 1-1.8 1.8h-4.9v-7h-5.6v7H4.3a1.8 1.8 0 0 1-1.8-1.8z"/>
+</svg>`,
 
-suggestions: "<svg viewBox='0 0 24 24' aria-hidden='true'><circle cx='9' cy='8' r='3.5'/><circle cx='18' cy='9' r='2.7'/><path d='M2 20c0-3.7 3-6.5 7-6.5s7 2.8 7 6.5v1H2v-1Z'/><path d='M16 14c3.5-.3 6 2 6 5v2h-4'/></svg>",
+suggestions: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<circle cx="9" cy="8" r="4"/>
+<circle cx="18" cy="9" r="3"/>
+<path d="M1.5 20.5c0-4.1 3.1-7 7.5-7s7.5 2.9 7.5 7v1h-15z"/>
+<path d="M16 14.1c3.8-.1 6.5 2.2 6.5 5.8v1h-4v-1c0-2.1-.8-4.1-2.5-5.8z"/>
+</svg>`,
 
-messages: "<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M12 2.5C6.2 2.5 2 6.3 2 11.4c0 2.4 1 4.4 2.8 6L4 22l5.1-2.5c.9.3 1.9.5 2.9.5 5.8 0 10-3.8 10-8.6S17.8 2.5 12 2.5Z'/><path d='m10 8-2 4h4l-1 4 5-6h-4l1-2Z' fill='#080b18' stroke='none'/></svg>",
+messages: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M12 2.2C6.1 2.2 1.8 6 1.8 11.2c0 2.4 1 4.5 2.8 6.1l-.8 4.5 5-2.4c1 .3 2.1.5 3.2.5 5.9 0 10.2-3.8 10.2-8.7S17.9 2.2 12 2.2Z"/>
+<circle cx="7.5" cy="11.5" r="1.25" fill="#080b18"/>
+<circle cx="12" cy="11.5" r="1.25" fill="#080b18"/>
+<circle cx="16.5" cy="11.5" r="1.25" fill="#080b18"/>
+</svg>`,
 
-spotlight: "<svg viewBox='0 0 24 24' aria-hidden='true'><rect x='2.5' y='3.5' width='19' height='17' rx='4'/><path d='m10 8 6 4-6 4V8Z' fill='#080b18' stroke='none'/></svg>",
+spotlight: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<rect x="2" y="2" width="20" height="20" rx="6"/>
+<path d="M9 6.8v10.4a.8.8 0 0 0 1.2.7l8-5.2a.8.8 0 0 0 0-1.4l-8-5.2a.8.8 0 0 0-1.2.7Z" fill="#080b18"/>
+</svg>`,
 
-notifications: "<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z'/><path d='M10 21h4' fill='none' stroke='#080b18' stroke-width='2'/></svg>",
+notifications: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M18.5 9.5a6.5 6.5 0 0 0-13 0c0 7-3 7.2-3 9.2h19c0-2-3-2.2-3-9.2Z"/>
+<path d="M9 21h6a3 3 0 0 1-6 0Z"/>
+</svg>`,
 
-marketplace: "<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M3 9 5 3h14l2 6v2a3 3 0 0 1-3 3 3 3 0 0 1-3-2 3 3 0 0 1-3 2 3 3 0 0 1-3-2 3 3 0 0 1-3 2 3 3 0 0 1-3-3V9Z'/><path d='M5 13v8h14v-8M9 21v-6h6v6' fill='none' stroke='currentColor' stroke-width='2'/></svg>",
+marketplace: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M3 8.5 5 3h14l2 5.5v2a3.2 3.2 0 0 1-5.8 1.9A3.2 3.2 0 0 1 9.4 12a3.2 3.2 0 0 1-5.9-1.5v-2Z"/>
+<path d="M5 13v8h14v-8a4.1 4.1 0 0 1-3.8-1.7A4.1 4.1 0 0 1 12 13a4.1 4.1 0 0 1-3.2-1.7A4.1 4.1 0 0 1 5 13Z"/>
+<path d="M9 21v-5h6v5" fill="#080b18"/>
+</svg>`,
 
-menu: "<svg viewBox='0 0 24 24' aria-hidden='true'><rect x='3' y='3' width='5' height='5' rx='1'/><rect x='9.5' y='3' width='5' height='5' rx='1'/><rect x='16' y='3' width='5' height='5' rx='1'/><rect x='3' y='9.5' width='5' height='5' rx='1'/><rect x='9.5' y='9.5' width='5' height='5' rx='1'/><rect x='16' y='9.5' width='5' height='5' rx='1'/><rect x='3' y='16' width='5' height='5' rx='1'/><rect x='9.5' y='16' width='5' height='5' rx='1'/><rect x='16' y='16' width='5' height='5' rx='1'/></svg>",
+menu: `<svg viewBox="0 0 24 24" aria-hidden="true">
+<rect x="2" y="2" width="9" height="9" rx="2.5"/>
+<rect x="13" y="2" width="9" height="9" rx="2.5"/>
+<rect x="2" y="13" width="9" height="9" rx="2.5"/>
+<rect x="13" y="13" width="9" height="9" rx="2.5"/>
+</svg>`,
 
-search: "<svg viewBox='0 0 24 24'><circle cx='10.8' cy='10.8' r='7.3'/><path d='m16.2 16.2 4.3 4.3'/></svg>"
+search: `<svg viewBox="0 0 24 24">
+<circle cx="10.8" cy="10.8" r="7.3"/>
+<path d="m16.2 16.2 4.3 4.3"/>
+</svg>`
 
 };
 
