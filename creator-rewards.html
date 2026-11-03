@@ -3,23 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101124">
+<meta name="theme-color" content="#080b18">
+
 <title>Creator Rewards | Campusora</title>
+
+<link rel="stylesheet" href="./shared-nav.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
-  --bg: #101124;
-  --card: #191b35;
-  --card2: #202343;
+  --bg: #080b18;
+  --card: #101529;
+  --card2: #171e36;
   --purple: #8b7cff;
   --blue: #5bc0ff;
-  --text: #f5f5ff;
-  --muted: #a9accb;
+  --cyan: #39d9ed;
+  --text: #f5f6ff;
+  --muted: #929bb8;
   --green: #5be0a0;
   --red: #ff858f;
-  --border: rgba(255,255,255,.09);
+  --border: rgba(255,255,255,.075);
 }
 
 * {
@@ -30,93 +34,101 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+  font-family: 'DM Sans', Arial, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
 }
 
-header {
+button, input, select, textarea {
+  font: inherit;
+}
+
+.container {
+  width: min(1120px, 94%);
+  margin: 22px auto 45px;
+}
+
+.page-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  padding: 17px 5%;
-  border-bottom: 1px solid var(--border);
-  background: #13142a;
-}
-
-.brand {
-  font-size: 21px;
-  font-weight: 800;
-  color: white;
-  text-decoration: none;
-}
-
-.brand span {
-  color: var(--purple);
-}
-
-.back-link {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.container {
-  width: min(1050px, 92%);
-  margin: 30px auto 60px;
-}
-
-.hero {
-  padding: 30px 24px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, #292653, #182a4a);
-  border: 1px solid var(--border);
-  margin-bottom: 24px;
-}
-
-.tag {
-  display: inline-block;
-  background: rgba(139,124,255,.17);
-  color: #c6bdff;
-  padding: 5px 11px;
-  border-radius: 30px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-h1 {
-  font-size: clamp(27px, 5vw, 39px);
-  line-height: 1.2;
-  margin: 15px 0 10px;
-}
-
-h2 {
-  font-size: 21px;
-  margin-top: 0;
-}
-
-p {
-  color: var(--muted);
-}
-
-.hero p {
-  max-width: 650px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.heading-text h1 {
+  font-size: 21px;
+  margin: 0;
+  font-weight: 750;
+  letter-spacing: -.4px;
+}
+
+.heading-text p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+button, .button {
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--purple), #6657e8);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 15px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: opacity .2s, transform .2s;
+}
+
+button:hover, .button:hover {
+  opacity: .9;
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secondary {
+  background: var(--card2);
+  border: 1px solid var(--border);
 }
 
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 22px;
+  border-radius: 15px;
+  padding: 19px;
   min-width: 0;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+}
+
+.card h2 {
+  font-size: 16px;
+  margin: 0 0 5px;
+  font-weight: 750;
+}
+
+.card > p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 5px 0 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 16px;
 }
 
 .grid .card {
@@ -126,9 +138,9 @@ p {
 .requirement {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  padding: 14px 0;
+  padding: 13px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -138,17 +150,20 @@ p {
 
 .requirement strong {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .requirement small {
   color: var(--muted);
   display: block;
   margin-top: 3px;
+  font-size: 11px;
 }
 
 .status {
-  font-size: 12px;
+  font-size: 10px;
+  font-weight: 700;
   padding: 5px 9px;
   border-radius: 30px;
   background: #30314c;
@@ -172,59 +187,89 @@ p {
 
 .progress-track {
   width: 100%;
-  height: 9px;
-  background: #30314c;
+  height: 7px;
+  background: #252d48;
   border-radius: 20px;
   overflow: hidden;
-  margin: 15px 0;
+  margin: 15px 0 8px;
 }
 
 .progress-fill {
   height: 100%;
   width: 0;
-  background: linear-gradient(90deg, var(--purple), var(--blue));
+  background: linear-gradient(90deg, var(--purple), var(--blue), var(--cyan));
+  border-radius: 20px;
   transition: width .3s ease;
 }
 
-button, .button {
-  border: 0;
-  border-radius: 11px;
-  background: linear-gradient(135deg, var(--purple), #6657e8);
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-  padding: 13px 17px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 15px 0;
 }
 
-button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-.secondary {
+.stat {
   background: var(--card2);
   border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 13px 11px;
+  min-width: 0;
+}
+
+.stat strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 10px;
+  display: block;
+  margin-top: 3px;
+}
+
+.record {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+.record:last-child {
+  border-bottom: 0;
+}
+
+.record strong {
+  display: block;
+  font-size: 13px;
+}
+
+.record small {
+  color: var(--muted);
+  font-size: 11px;
+  display: block;
+  margin-top: 3px;
 }
 
 form label {
   display: block;
-  font-size: 13px;
-  margin: 15px 0 6px;
+  font-size: 12px;
+  margin: 14px 0 6px;
   color: #d7d8f1;
+  font-weight: 600;
 }
 
 input, select, textarea {
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #383a60;
-  background: #111329;
+  padding: 11px 12px;
+  border-radius: 9px;
+  border: 1px solid #303957;
+  background: #0b1022;
   color: white;
   outline: none;
-  font: inherit;
+  font-size: 13px;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -233,15 +278,15 @@ input:focus, select:focus, textarea:focus {
 
 textarea {
   resize: vertical;
-  min-height: 90px;
+  min-height: 85px;
 }
 
 .message {
-  padding: 12px;
-  border-radius: 10px;
+  padding: 11px 12px;
+  border-radius: 9px;
   display: none;
-  margin: 15px 0;
-  font-size: 14px;
+  margin: 13px 0;
+  font-size: 12px;
   overflow-wrap: anywhere;
 }
 
@@ -263,80 +308,127 @@ textarea {
   display: none !important;
 }
 
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.stat {
-  background: var(--card2);
-  border-radius: 12px;
-  padding: 14px 10px;
-  min-width: 0;
-}
-
-.stat strong {
-  display: block;
-  font-size: 21px;
-  overflow-wrap: anywhere;
-}
-
-.stat span {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.record {
-  padding: 13px 0;
-  border-bottom: 1px solid var(--border);
-  overflow-wrap: anywhere;
-}
-
-.record:last-child {
-  border-bottom: 0;
-}
-
-.record strong {
-  display: block;
-}
-
-.record small {
-  color: var(--muted);
-}
-
 .notice {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
 }
 
-footer {
+.section-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  margin: 22px 0 10px;
+}
+
+#applicationCard {
+  border-color: rgba(139,124,255,.25);
+}
+
+#applicationForm button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+#applyButton {
+  margin-top: 12px;
+}
+
+#loginCard {
   text-align: center;
-  border-top: 1px solid var(--border);
-  padding: 22px;
-  color: var(--muted);
-  font-size: 13px;
+  padding: 35px 20px;
 }
 
-@media (max-width: 650px) {
-  .grid {
-    grid-template-columns: 1fr;
+#loginCard h2 {
+  font-size: 18px;
+}
+
+#loginCard .button {
+  margin-top: 10px;
+}
+
+#eligibilitySummary {
+  margin-top: 10px;
+}
+
+#notEligibleMessage {
+  margin-top: 12px;
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: 94%;
+    margin-top: 17px;
   }
 
-  .hero {
-    padding: 23px 18px;
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .page-heading {
+    align-items: flex-start;
+  }
+
+  .heading-text h1 {
+    font-size: 19px;
   }
 
   .card {
-    padding: 18px;
+    padding: 15px;
+    border-radius: 13px;
   }
 
   .stat-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  header {
-    padding: 15px 4%;
+  .stat {
+    padding: 11px 8px;
+  }
+
+  .stat strong {
+    font-size: 14px;
+  }
+
+  .stat span {
+    font-size: 9px;
+  }
+
+  .requirement {
+    gap: 8px;
+  }
+
+  .requirement strong {
+    font-size: 12px;
+  }
+
+  .requirement small {
+    font-size: 10px;
+  }
+
+  .status {
+    font-size: 9px;
+    padding: 5px 7px;
+  }
+}
+
+@media (max-width: 380px) {
+  .page-heading {
+    flex-direction: column;
+  }
+
+  .page-heading button {
+    width: 100%;
+  }
+
+  .stat {
+    padding: 10px 6px;
+  }
+
+  .stat strong {
+    font-size: 12px;
   }
 }
 </style>
@@ -344,22 +436,18 @@ footer {
 
 <body>
 
-<header>
-  <a class="brand" href="index.html">Campus<span>ora</span></a>
-  <a class="back-link" href="profile.html">← Back to Profile</a>
-</header>
-
 <main class="container">
 
-  <section class="hero">
-    <span class="tag">CAMPUSORA CREATOR PROGRAM</span>
-    <h1>Create. Share. Grow. Earn.</h1>
-    <p>
-      Build your audience, connect with your supporters, and check
-      your progress toward joining the Campusora Creator Rewards Program.
-    </p>
-    <button type="button" id="refreshButton">Refresh My Progress</button>
-  </section>
+  <div class="page-heading">
+    <div class="heading-text">
+      <h1>Creator Rewards</h1>
+      <p>Track your progress, earnings and creator payouts.</p>
+    </div>
+
+    <button type="button" id="refreshButton">
+      ↻ Refresh
+    </button>
+  </div>
 
   <div id="pageMessage" class="message" role="status"></div>
 
@@ -367,11 +455,7 @@ footer {
     <h2>Sign in required</h2>
     <p>Please sign in to your Campusora account to check eligibility
        and access your Creator Rewards information.</p>
-    <a class="button" href="login.html">Sign In</a>
-    <p class="notice">
-      If your sign-in page uses a different filename, open it using
-      your website's existing login link.
-    </p>
+    <a class="button" href="auth.html">Sign In</a>
   </section>
 
   <div id="rewardsContent" class="hidden">
@@ -447,6 +531,8 @@ footer {
       </form>
     </section>
 
+    <div class="section-label">Creator finances</div>
+
     <section class="grid">
       <div class="card">
         <h2>My Earnings</h2>
@@ -486,10 +572,6 @@ footer {
 
   </div>
 </main>
-
-<footer>
-  Campusora — Connecting campuses, creating opportunities.
-</footer>
 
 <script>
 "use strict";
@@ -815,10 +897,6 @@ $("applicationForm").addEventListener("submit", async event => {
   $("submitApplication").textContent = "Submitting...";
 
   try {
-    /*
-      Recheck eligibility immediately before submission.
-      This reduces the chance of submitting with outdated progress.
-    */
     const { data: latest, error: checkError } = await db.rpc(
       "check_creator_reward_eligibility",
       { p_user_id: currentUser.id }
@@ -920,5 +998,7 @@ async function initialisePage() {
 initialisePage();
 </script>
 
+<script src="./shared-nav.js"></script>
+
 </body>
-  </html>
+</html>
