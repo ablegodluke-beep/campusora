@@ -1,8 +1,14 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About Campusora</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+<title>About Campusora</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./shared-nav.css">
+
+<style>
 :root {
     --bg: #080b18;
     --card: #111629;
@@ -31,39 +37,6 @@ body {
 a {
     color: inherit;
     text-decoration: none;
-}
-
-.topbar {
-    height: 66px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 5%;
-    border-bottom: 1px solid var(--border);
-    background: rgba(8,11,24,.96);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.logo {
-    font-size: 21px;
-    font-weight: 800;
-    letter-spacing: -.7px;
-}
-
-.logo span {
-    color: var(--purple);
-}
-
-.back-btn {
-    color: #d7d9ed;
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 9px 15px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
 }
 
 .container {
@@ -258,23 +231,7 @@ a {
     font-weight: 700;
 }
 
-.footer {
-    text-align: center;
-    color: #68718b;
-    font-size: 11px;
-    padding: 30px 10px;
-}
-
 @media(max-width:600px) {
-    .topbar {
-        padding: 0 4%;
-        height: 60px;
-    }
-
-    .logo {
-        font-size: 19px;
-    }
-
     .container {
         margin-top: 25px;
     }
@@ -298,10 +255,14 @@ a {
         grid-template-columns: 1fr;
     }
 }
-</style></head><body><header class="topbar">
-    <a href="index.html" class="logo">Campus<span>ora</span></a>
-    <a href="settings.html" class="back-btn">← Settings</a>
-</header><main class="container"><section class="heading">
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+<section class="heading">
     <span class="tag">GET TO KNOW US</span>
     <h1>About Campusora 🌍</h1>
     <p>
@@ -464,9 +425,9 @@ a {
     </div>
 </section>
 
-<div class="footer">
-    Campusora · Connect, Learn, Grow, Together.
-</div>
+</main>
 
-</main></body>
-  </html>
+<script src="./shared-nav.js"></script>
+
+</body>
+</html>
