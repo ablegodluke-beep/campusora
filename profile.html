@@ -278,7 +278,19 @@ grid-row:1;
 
 .post-card{padding:19px}
 
-.post-header{display:flex;align-items:center;gap:11px}
+.post-header{display:flex;align-items:center;gap:11px;position:relative}
+.post-menu-wrap{margin-left:auto;position:relative;flex-shrink:0}
+.post-menu-trigger{width:34px;height:34px;border:1px solid var(--border);border-radius:10px;background:var(--card2);color:#dce1f7;font-size:20px;line-height:1}
+.post-menu-pop{position:absolute;right:0;top:39px;z-index:30;min-width:145px;padding:6px;background:#171d33;border:1px solid var(--border);border-radius:11px;box-shadow:0 12px 35px #0009}
+.post-menu-item{display:block;width:100%;padding:10px;border:0;border-radius:7px;background:transparent;color:#ff9aaa;text-align:left;font-size:12px;font-weight:700}
+.post-menu-item:hover{background:#2a1a2b}
+.share-overlay{position:fixed;inset:0;z-index:250;background:#02040dcc;backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:18px}
+.share-panel{width:min(390px,100%);padding:20px;border:1px solid #51417e;border-radius:20px;background:linear-gradient(145deg,#191a36,#0e1428);box-shadow:0 22px 70px #0009}
+.share-panel h3{margin:0 0 6px;font-size:18px}.share-panel p{margin:0 0 16px;color:var(--muted);font-size:12px;line-height:1.6}
+.share-choice{display:flex;align-items:center;gap:12px;width:100%;padding:14px;margin-top:9px;border:1px solid var(--border);border-radius:13px;background:#171d33;color:#fff;text-align:left}
+.share-choice strong{display:block;font-size:13px}.share-choice small{display:block;margin-top:4px;color:var(--muted);font-size:11px}
+.share-choice-icon{display:grid;place-items:center;width:39px;height:39px;flex-shrink:0;border-radius:12px;background:#6846c933;color:#c7b5ff;font-size:20px}
+.share-cancel{width:100%;margin-top:12px;padding:10px;border:0;background:transparent;color:var(--muted)}
 
 .post-avatar{
   width:43px;
@@ -1255,17 +1267,21 @@ body.premium-active .cover{
           </div>
 
           <div class="premium-line">
+            <span id="profileSchool" class="school"></span>
             <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
           </div>
-
-          <div id="profileSchool" class="school"></div>
           <div id="profileBio" class="bio"></div>
 
         </div>
       </div>
 
-      <!-- Followers | Posts | Following -->
+      <!-- Posts | Followers | Following -->
       <div class="stats">
+
+        <div class="stat">
+          <strong id="postCount">0</strong>
+          <span>Posts</span>
+        </div>
 
         <div
           class="stat stat-clickable"
@@ -1276,11 +1292,6 @@ body.premium-active .cover{
         >
           <strong id="followerCount">0</strong>
           <span>Followers</span>
-        </div>
-
-        <div class="stat">
-          <strong id="postCount">0</strong>
-          <span>Posts</span>
         </div>
 
         <div
@@ -1375,8 +1386,8 @@ body.premium-active .cover{
       id="closePhotoViewer"
       class="photo-viewer-close"
       type="button"
-      aria-label="Close photo"
-    >×</button>
+      aria-label="Back to profile"
+    >← Back</button>
 
     <img
       id="photoViewerImage"
@@ -1679,11 +1690,10 @@ function makeProfileName(person) {
 }
 
 function appendPostPremiumIndicator(authorName,author) {
-  if(!activePremium||!currentProfile||author?.id!==currentProfile.id)return;
-  const badge=document.createElement('span');
-  badge.className='inline-premium';
-  badge.textContent='✦ PREMIUM';
-  authorName.append(badge);
+  const role=(author?.role||'').toLowerCase();
+  const labels={student:'🎓 STUDENT',alumni:'🏅 ALUMNI',general:'🌟 GENERAL MEMBER'};
+  const label=labels[role];if(!label)return;
+  const badge=document.createElement('span');badge.className='inline-premium';badge.textContent=label;authorName.append(badge);
 }
 
 /* PREMIUM MEMBERSHIP */
@@ -1738,7 +1748,7 @@ function showPremiumStatus(membership) {
   document.body.classList.add('premium-active');
   status?.classList.remove('hidden');
   plans?.classList.add('hidden');
-  button?.classList.add('hidden');
+  button?.classList.toggle('hidden',!isOwnProfile);
 
   if(membership.plan_type==='permanent'){
     status.textContent='✦ Your Permanent Premium membership is active. You have no expiry date.';
@@ -2271,8 +2281,7 @@ async function startGiftCheckout() {
 }
 
 $('giftPayButton').addEventListener('click',startGiftCheckout);
-
-async function verifyGiftPaymentReturn() {
+  async function verifyGiftPaymentReturn() {
   const params=new URLSearchParams(location.search);
   const isGiftReturn=params.get('gift_payment')==='1'||params.has('gift_reference');
   if(!isGiftReturn)return;
@@ -2479,7 +2488,7 @@ async function openConnectionsList(type) {
 
   const {data:people,error:peopleError}=await supabase
     .from('profiles')
-    .select('id,username,full_name,avatar_url,school')
+    .select('id,username,full_name,avatar_url,school,role')
     .in('id',ids);
 
   if(peopleError){
@@ -2495,21 +2504,24 @@ async function openConnectionsList(type) {
     if(!person)continue;
 
     const row=document.createElement('a');
-    row.className='connection-person';
+    row.className='connection-item';
     row.href=profileLink(person.id);
 
     const avatar=document.createElement('img');
+    avatar.className='connection-avatar';
     avatar.src=person.avatar_url||fallbackAvatar;
     avatar.alt='';
     avatar.onerror=()=>{avatar.src=fallbackAvatar;};
 
     const details=document.createElement('span');
-    details.className='connection-person-details';
+    details.className='connection-info';
 
     const name=document.createElement('strong');
+    name.className='connection-name';
     name.textContent=person.full_name||person.username||'Campusora Member';
 
     const username=document.createElement('small');
+    username.className='connection-username';
     username.textContent=person.username?'@'+person.username:(person.school||'');
 
     details.append(name,username);
@@ -2608,7 +2620,7 @@ async function loadCounts(profile) {
   $('followingCount').textContent=following.count??0;
 }
 
-/* POSTS */
+/* POSTS AND SPOTLIGHT VIDEOS */
 
 function makeActionButton(icon,label) {
   const button=document.createElement('button');
@@ -2627,38 +2639,320 @@ function makeActionButton(icon,label) {
   return button;
 }
 
-async function loadPosts(profile) {
+/* Post menu: every post gets a three-dot menu.
+   Deletion is restricted to the post owner. */
+
+function addPostMenu(card,post) {
+  const wrap=document.createElement('div');
+  wrap.className='post-menu-wrap';
+
+  const trigger=document.createElement('button');
+  trigger.type='button';
+  trigger.className='post-menu-trigger';
+  trigger.textContent='⋯';
+  trigger.setAttribute('aria-label','Post options');
+
+  const pop=document.createElement('div');
+  pop.className='post-menu-pop hidden';
+
+  const deleteButton=document.createElement('button');
+  deleteButton.type='button';
+  deleteButton.className='post-menu-item';
+  deleteButton.textContent='Delete Post';
+
+  if(!currentUser||post.user_id!==currentUser.id){
+    deleteButton.disabled=true;
+    deleteButton.title='You can only delete your own posts.';
+  }else{
+    deleteButton.addEventListener('click',async()=>{
+      pop.classList.add('hidden');
+
+      if(!confirm('Delete this post? This cannot be undone.'))return;
+
+      deleteButton.disabled=true;
+      deleteButton.textContent='Deleting...';
+
+      const {error}=await supabase
+        .from('posts')
+        .delete()
+        .eq('id',post.id)
+        .eq('user_id',currentUser.id);
+
+      if(error){
+        console.error('Delete post error:',error);
+        alert('This post could not be deleted. Please try again.');
+        deleteButton.disabled=false;
+        deleteButton.textContent='Delete Post';
+        return;
+      }
+
+      card.remove();
+      await loadCounts(currentProfile);
+    });
+  }
+
+  pop.append(deleteButton);
+  wrap.append(trigger,pop);
+
+  trigger.addEventListener('click',event=>{
+    event.stopPropagation();
+    document.querySelectorAll('.post-menu-pop').forEach(menu=>{
+      if(menu!==pop)menu.classList.add('hidden');
+    });
+    pop.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click',event=>{
+    if(!wrap.contains(event.target))pop.classList.add('hidden');
+  });
+
+  return wrap;
+}
+
+function openSharePanel(post) {
+  const overlay=document.createElement('div');
+  overlay.className='share-overlay';
+
+  const panel=document.createElement('div');
+  panel.className='share-panel';
+
+  const heading=document.createElement('h3');
+  heading.textContent='Share this post';
+
+  const description=document.createElement('p');
+  description.textContent='Choose where you want to share this post on Campusora.';
+
+  const communities=document.createElement('button');
+  communities.type='button';
+  communities.className='share-choice';
+
+  const communitiesIcon=document.createElement('span');
+  communitiesIcon.className='share-choice-icon';
+  communitiesIcon.textContent='👥';
+
+  const communitiesText=document.createElement('span');
+  communitiesText.innerHTML='<strong>To Communities</strong><small>Share this post with one of your communities.</small>';
+
+  communities.append(communitiesIcon,communitiesText);
+
+  const moments=document.createElement('button');
+  moments.type='button';
+  moments.className='share-choice';
+
+  const momentsIcon=document.createElement('span');
+  momentsIcon.className='share-choice-icon';
+  momentsIcon.textContent='◉';
+
+  const momentsText=document.createElement('span');
+  momentsText.innerHTML='<strong>To Moments</strong><small>Share this post as a 24-hour Moment.</small>';
+
+  moments.append(momentsIcon,momentsText);
+
+  const cancel=document.createElement('button');
+  cancel.type='button';
+  cancel.className='share-cancel';
+  cancel.textContent='Cancel';
+
+  const close=()=>{
+    overlay.remove();
+    document.body.style.overflow='';
+  };
+
+  cancel.addEventListener('click',close);
+  overlay.addEventListener('click',event=>{
+    if(event.target===overlay)close();
+  });
+
+  communities.addEventListener('click',()=>{
+    close();
+    sharePostToCommunity(post);
+  });
+
+  moments.addEventListener('click',()=>{
+    close();
+    sharePostToMoment(post);
+  });
+
+  panel.append(heading,description,communities,moments,cancel);
+  overlay.append(panel);
+  document.body.append(overlay);
+  document.body.style.overflow='hidden';
+}
+
+async function sharePostToCommunity(post) {
+  if(!currentUser){
+    location.href='./auth.html?mode=login';
+    return;
+  }
+
+  const {data:memberships,error}=await supabase
+    .from('community_members')
+    .select('community_id')
+    .eq('user_id',currentUser.id);
+
+  if(error){
+    console.error('Community membership error:',error);
+    alert('Your communities could not be loaded.');
+    return;
+  }
+
+  if(!memberships?.length){
+    if(confirm('You have not joined any communities yet. Visit Communities now?')){
+      location.href='./communities.html';
+    }
+    return;
+  }
+
+  const ids=memberships.map(row=>row.community_id);
+
+  const {data:communities, error:communityError}=await supabase
+    .from('communities')
+    .select('id,name')
+    .in('id',ids)
+    .order('name',{ascending:true});
+
+  if(communityError||!communities?.length){
+    alert('Your communities could not be loaded.');
+    return;
+  }
+
+  const options=communities.map((community,index)=>
+    (index+1)+'. '+community.name
+  ).join('\n');
+
+  const answer=prompt('Choose a community by entering its number:\n\n'+options);
+
+  if(answer===null)return;
+
+  const selectedIndex=Number(answer)-1;
+  const selected=communities[selectedIndex];
+
+  if(!selected){
+    alert('That community number is not valid.');
+    return;
+  }
+
+  const {error:shareError}=await supabase
+    .from('posts')
+    .insert({
+      user_id:currentUser.id,
+      content:post.content||'',
+      image_url:post.image_url||null,
+      audience:'community',
+      institution_id:null,
+      community_id:selected.id
+    });
+
+  if(shareError){
+    console.error('Share to community error:',shareError);
+    alert('Your post could not be shared to that community.');
+    return;
+  }
+
+  alert('Your post has been shared to '+selected.name+'.');
+}
+
+async function sharePostToMoment(post) {
+  if(!currentUser){
+    location.href='./auth.html?mode=login';
+    return;
+  }
+
+  let mediaType='text';
+  let mediaPath=null;
+
+  if(post.video_url){
+    mediaType='video';
+    mediaPath=post.video_url;
+  }else if(post.image_url){
+    mediaType='image';
+    mediaPath=post.image_url;
+  }
+
+  const caption=(post.content||'').trim();
+
+  if(mediaType==='text'&&!caption){
+    alert('This post has no text or media to share.');
+    return;
+  }
+
+  const {error}=await supabase
+    .from('campusora_moments')
+    .insert({
+      user_id:currentUser.id,
+      media_type:mediaType,
+      media_path:mediaPath,
+      caption,
+      audience:'public'
+    });
+
+  if(error){
+    console.error('Share to Moment error:',error);
+    alert('Your post could not be shared to Moments.');
+    return;
+  }
+
+  alert('Your post has been shared to Moments.');
+  }
+
+ async function loadPosts(profile) {
   const container=$('postsContainer');
   container.replaceChildren();
 
-  const {data:posts,error}=await supabase
-    .from('posts')
-    .select('id,user_id,content,image_url,created_at')
-    .eq('user_id',profile.id)
-    .order('created_at',{ascending:false});
+  const [postsResult,spotlightResult]=await Promise.all([
+    supabase.from('posts')
+      .select('id,user_id,content,image_url,video_url,created_at')
+      .eq('user_id',profile.id)
+      .order('created_at',{ascending:false}),
+    supabase.from('spotlight_videos')
+      .select('id,user_id,caption,video_url,thumbnail_url,view_count,created_at')
+      .eq('user_id',profile.id)
+      .order('created_at',{ascending:false})
+  ]);
 
-  if(error){
+  if(postsResult.error){
+    console.error('Posts loading error:',postsResult.error);
     container.textContent='We could not load these posts. Please check post read permissions.';
-    console.error(error);
     return;
   }
 
-  if(!posts?.length){
-    container.innerHTML='<div class="empty">📝<br><br>No posts yet.<br>When this member publishes a post, it will appear here.</div>';
+  if(spotlightResult.error){
+    console.error('Spotlight loading error:',spotlightResult.error);
+  }
+
+  const posts=postsResult.data||[];
+  const videos=spotlightResult.data||[];
+
+  if(!posts.length&&!videos.length){
+    container.innerHTML='<div class="empty">📝<br><br>No posts yet.<br>When this member publishes a post or Spotlight video, it will appear here.</div>';
     return;
   }
 
-  const ids=[...new Set(posts.map(post=>post.user_id))];
+  const authorIds=[...new Set([
+    ...posts.map(post=>post.user_id),
+    ...videos.map(video=>video.user_id)
+  ])];
 
   const {data:authors}=await supabase
     .from('profiles')
-    .select('id,username,full_name,avatar_url')
-    .in('id',ids);
+    .select('id,username,full_name,avatar_url,role')
+    .in('id',authorIds);
 
   const authorMap=new Map((authors||[]).map(person=>[person.id,person]));
 
-  for(const post of posts){
-    container.append(await createPostCard(post,authorMap.get(post.user_id)||profile));
+  const entries=[
+    ...posts.map(item=>({...item,_type:'post'})),
+    ...videos.map(item=>({...item,_type:'spotlight'}))
+  ].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+
+  for(const item of entries){
+    const author=authorMap.get(item.user_id)||profile;
+
+    if(item._type==='post'){
+      container.append(await createPostCard(item,author));
+    }else{
+      container.append(createSpotlightProfileCard(item,author));
+    }
   }
 
   if(location.hash.startsWith('#post-')){
@@ -2669,6 +2963,75 @@ async function loadPosts(profile) {
       });
     },200);
   }
+}
+
+function createSpotlightProfileCard(video,author) {
+  const card=document.createElement('article');
+  card.className='post-card spotlight-profile-card';
+  card.id='spotlight-'+video.id;
+
+  const header=document.createElement('div');
+  header.className='post-header';
+
+  const avatar=makeProfileAvatar(author,'post-avatar');
+
+  const info=document.createElement('div');
+  info.style.minWidth='0';
+
+  const authorName=document.createElement('a');
+  authorName.className='post-author';
+  authorName.href=profileLink(author.id);
+  authorName.textContent=author.full_name||author.username||'Campusora Member';
+
+  const role=(author.role||'general').toLowerCase();
+  const badge=document.createElement('span');
+  badge.className='role-badge';
+  badge.textContent=role==='student'?'🎓 Student':
+    role==='alumni'?'🏅 Alumni':'🌟 General Member';
+
+  authorName.append(badge);
+
+  const meta=document.createElement('div');
+  meta.className='post-meta';
+  meta.textContent='Spotlight · '+formatDate(video.created_at);
+
+  info.append(authorName,meta);
+  header.append(avatar,info);
+
+  if(currentUser&&video.user_id===currentUser.id){
+    header.append(addPostMenu(card,{
+      id:video.id,
+      user_id:video.user_id,
+      _spotlight:true
+    }));
+  }
+
+  card.append(header);
+
+  if(video.caption){
+    const caption=document.createElement('div');
+    caption.className='post-text';
+    caption.textContent=video.caption;
+    card.append(caption);
+  }
+
+  const player=document.createElement('video');
+  player.className='post-image spotlight-profile-video';
+  player.src=video.video_url;
+  player.controls=true;
+  player.playsInline=true;
+  player.preload='metadata';
+
+  if(video.thumbnail_url)player.poster=video.thumbnail_url;
+
+  card.append(player);
+
+  const views=document.createElement('div');
+  views.className='post-meta';
+  views.textContent='▶ '+Number(video.view_count||0).toLocaleString()+' views';
+  card.append(views);
+
+  return card;
 }
 
 async function createPostCard(post,author) {
@@ -2688,14 +3051,21 @@ async function createPostCard(post,author) {
   authorName.className='post-author';
   authorName.href=profileLink(author.id);
   authorName.textContent=author.full_name||author.username||'Campusora Member';
-  appendPostPremiumIndicator(authorName,author);
+
+  const role=(author.role||'general').toLowerCase();
+  const badge=document.createElement('span');
+  badge.className='role-badge';
+  badge.textContent=role==='student'?'🎓 Student':
+    role==='alumni'?'🏅 Alumni':'🌟 General Member';
+
+  authorName.append(badge);
 
   const meta=document.createElement('div');
   meta.className='post-meta';
   meta.textContent=(author.username?'@'+author.username+' · ':'')+formatDate(post.created_at);
 
   info.append(authorName,meta);
-  header.append(avatar,info);
+  header.append(avatar,info,addPostMenu(card,post));
   card.append(header);
 
   if(post.content){
@@ -2714,6 +3084,16 @@ async function createPostCard(post,author) {
     image.addEventListener('click',()=>openPhotoViewer(post.image_url,'Post image'));
     image.onerror=()=>image.remove();
     card.append(image);
+  }
+
+  if(post.video_url){
+    const video=document.createElement('video');
+    video.className='post-image';
+    video.src=post.video_url;
+    video.controls=true;
+    video.playsInline=true;
+    video.preload='metadata';
+    card.append(video);
   }
 
   const stats=document.createElement('div');
@@ -2804,25 +3184,8 @@ async function createPostCard(post,author) {
     if(!commentsArea.classList.contains('hidden'))await renderComments();
   });
 
-  shareBtn.addEventListener('click',async()=>{
-    const url=new URL('./profile.html',location.href);
-    url.searchParams.set('id',author.id);
-    url.hash='post-'+post.id;
-
-    try{
-      if(navigator.share){
-        await navigator.share({
-          title:'Campusora post',
-          text:'Check out this post on Campusora!',
-          url:url.href
-        });
-      }else{
-        await navigator.clipboard.writeText(url.href);
-        alert('Post link copied!');
-      }
-    }catch(error){
-      if(error.name!=='AbortError')prompt('Copy this post link:',url.href);
-    }
+  shareBtn.addEventListener('click',()=>{
+    openSharePanel(post);
   });
 
   async function renderComments() {
@@ -2904,7 +3267,7 @@ async function createPostCard(post,author) {
 
     const userIds=[...new Set((all||[]).map(item=>item.user_id))];
     const {data:people}=await supabase.from('profiles')
-      .select('id,username,full_name,avatar_url')
+      .select('id,username,full_name,avatar_url,role')
       .in('id',userIds);
 
     const peopleMap=new Map((people||[]).map(person=>[person.id,person]));
@@ -2926,9 +3289,9 @@ async function createPostCard(post,author) {
 
     const name=makeProfileName(person);
 
-    const text=document.createElement('div');
-    text.className='comment-text';
-    text.textContent=item.content||'';
+    const content=document.createElement('div');
+    content.className='comment-text';
+    content.textContent=item.content||'';
 
     const time=document.createElement('div');
     time.className='comment-time';
@@ -2954,7 +3317,7 @@ async function createPostCard(post,author) {
     tools.append(react,reactCount);
     if(depth===0)tools.append(reply);
 
-    body.append(name,text,time,tools);
+    body.append(name,content,time,tools);
     row.append(avatar,body);
     wrapper.append(row);
 
