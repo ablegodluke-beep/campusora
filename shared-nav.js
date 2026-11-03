@@ -115,6 +115,12 @@ mainNav.appendChild(link);
 
 topbar.append(brandRow, mainNav);
 
+/* =====================================
+NAVIGATION SCROLL BEHAVIOUR
+Swipe up = hide
+Swipe down = show
+===================================== */
+
 function setupNavigationScroll() {
 let lastScrollPosition = window.scrollY;
 let ticking = false;
@@ -130,12 +136,14 @@ ticking = false;
 return;
 }
 
-if (Math.abs(difference) >= 8) {
-if (difference < 0) {
+if (Math.abs(difference) >= 5) {
+
+if (difference > 0) {
 topbar.classList.add("nav-hidden");
-} else {
+} else if (difference < 0) {
 topbar.classList.remove("nav-hidden");
 }
+
 lastScrollPosition = currentPosition;
 }
 
@@ -152,6 +160,7 @@ ticking = true;
 
 function installNavigation() {
 if (document.querySelector(".campusora-topnav")) return;
+
 document.body.classList.add("has-shared-nav");
 document.body.prepend(topbar);
 setupNavigationScroll();
@@ -162,6 +171,10 @@ document.addEventListener("DOMContentLoaded", installNavigation);
 } else {
 installNavigation();
 }
+
+/* =====================================
+NOTIFICATION BADGES
+===================================== */
 
 function updateBadge(type, count) {
 const badge = navLinks[type];
@@ -182,6 +195,7 @@ let realtimeSetupPromise = null;
 
 async function getSupabase() {
 if (supabaseClient) return supabaseClient;
+
 const module = await import("./supabase.js");
 supabaseClient = module.supabase;
 return supabaseClient;
@@ -379,6 +393,10 @@ console.error("Campusora badge startup error:", error);
 
 startBadges();
 
+/* =====================================
+GLOBAL SEARCH
+===================================== */
+
 let searchTimer = null;
 let searchRequest = 0;
 
@@ -403,9 +421,11 @@ searchInput.setAttribute("aria-expanded", "true");
 
 function showMessage(message) {
 searchResults.replaceChildren();
+
 const box = document.createElement("div");
 box.className = "campusora-search-message";
 box.textContent = message;
+
 searchResults.appendChild(box);
 openSearchResults();
 }
@@ -450,11 +470,13 @@ symbol.className = "campusora-search-result-symbol";
 symbol.textContent =
 type === "video" ? "▶" :
 type === "community" ? "◉" : "▤";
+
 link.appendChild(symbol);
 }
 
 const info = document.createElement("div");
 info.className = "campusora-search-result-info";
+
 info.append(
 createTextElement("strong", "", title),
 createTextElement("small", "", subtitle)
@@ -489,6 +511,7 @@ if (names.error) throw names.error;
 if (usernames.error) throw usernames.error;
 
 const combined = [...(names.data || []), ...(usernames.data || [])];
+
 return [...new Map(combined.map(item => [item.id, item])).values()].slice(0, 5);
 }
 
@@ -531,6 +554,7 @@ if (names.error) throw names.error;
 if (descriptions.error) throw descriptions.error;
 
 const combined = [...(names.data || []), ...(descriptions.data || [])];
+
 return [...new Map(combined.map(item => [item.id, item])).values()].slice(0, 5);
 }
 
@@ -677,11 +701,13 @@ const total = Object.values(grouped)
 
 if (total === 0) {
 const failed = results.every(result => result.error);
+
 showMessage(
 failed
 ? "Search is temporarily unavailable. Please try again."
 : "No matching results found."
 );
+
 return;
 }
 
@@ -689,6 +715,7 @@ await renderSearchResults(supabase, grouped, requestNumber);
 
 } catch (error) {
 if (requestNumber !== searchRequest) return;
+
 console.error("Campusora search error:", error);
 showMessage("Search is temporarily unavailable. Please try again.");
 }
@@ -696,6 +723,7 @@ showMessage("Search is temporarily unavailable. Please try again.");
 
 searchInput.addEventListener("input", () => {
 clearTimeout(searchTimer);
+
 const term = searchInput.value.trim();
 
 if (term.length < 2) {
@@ -710,6 +738,7 @@ searchTimer = setTimeout(() => searchCampusora(term), 350);
 
 searchForm.addEventListener("submit", event => {
 event.preventDefault();
+
 const term = searchInput.value.trim();
 if (term.length >= 2) searchCampusora(term);
 });
