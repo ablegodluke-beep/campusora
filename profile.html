@@ -1821,12 +1821,18 @@ function makeProfileName(person) {
   link.textContent=person?.full_name||person?.username||'Campusora Member';
   container.append(link);
 
-  if(activePremium&&currentProfile&&person?.id===currentProfile.id){
-    const badge=document.createElement('span');
-    badge.className='inline-premium';
-    badge.textContent='✦ PREMIUM';
-    container.append(badge);
-  }
+  const role=(person?.role||'general').toLowerCase();
+
+  const badge=document.createElement('span');
+  badge.className='badge';
+  badge.textContent=role==='student'
+    ?'🎓 Student'
+    :role==='alumni'
+      ?'🏅 Alumni'
+      :'🌟 General Member';
+
+  container.append(badge);
+
   return container;
 }
 
