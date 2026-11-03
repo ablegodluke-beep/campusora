@@ -1,29 +1,48 @@
 /* =====================================
-CAMPUSORA — HIDE ALL VISIBLE SCROLLBARS
+CAMPUSORA — HIDE VISIBLE SCROLLBARS
 Keep normal scrolling enabled.
+Optimised for mobile browsers.
 ===================================== */
 
 * {
   box-sizing: border-box;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  scrollbar-color: transparent transparent !important;
   }
 
+/* Hide scrollbars on all elements */
 *::-webkit-scrollbar,
 *::-webkit-scrollbar-track,
-*::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-corner,
+*::-webkit-resizer,
+*::-webkit-scrollbar-button {
 display: none !important;
 width: 0 !important;
 height: 0 !important;
+min-width: 0 !important;
+min-height: 0 !important;
 background: transparent !important;
+border: 0 !important;
 }
 
+/* Apply scrollbar hiding directly to the page */
 html,
 body {
 max-width: 100%;
 overflow-x: clip;
 scrollbar-width: none !important;
 -ms-overflow-style: none !important;
+scrollbar-color: transparent transparent !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+display: none !important;
+width: 0 !important;
+height: 0 !important;
+background: transparent !important;
 }
 
 /* =====================================
@@ -184,6 +203,14 @@ background: #111629;
 border: 1px solid rgba(180,190,210,.15);
 border-radius: 11px;
 box-shadow: 0 12px 35px rgba(0,0,0,.4);
+scrollbar-width: none !important;
+-ms-overflow-style: none !important;
+}
+
+.campusora-header-search-results::-webkit-scrollbar {
+display: none !important;
+width: 0 !important;
+height: 0 !important;
 }
 
 .campusora-header-search-results[hidden] {
