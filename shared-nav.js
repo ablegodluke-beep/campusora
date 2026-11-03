@@ -9,15 +9,26 @@ const MENU = "menu.html";
 const currentFile = location.pathname.split("/").pop() || HOME;
 
 const icons = {
-home: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 10.2 12 2.5l9.5 7.7v9.5a1.8 1.8 0 0 1-1.8 1.8h-4.9v-7h-5.6v7H4.3a1.8 1.8 0 0 1-1.8-1.8z"/></svg>",
-suggestions: "<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><circle cx="18" cy="9" r="3"/><path d="M1.5 20.5c0-4.1 3.1-7 7.5-7s7.5 2.9 7.5 7v1h-15z"/><path d="M16 14.1c3.8-.1 6.5 2.2 6.5 5.8v1h-4v-1c0-2.1-.8-4.1-2.5-5.8z"/></svg>",
-messages: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2C6.1 2.2 1.8 6 1.8 11.2c0 2.4 1 4.5 2.8 6.1l-.8 4.5 5-2.4c1 .3 2.1.5 3.2.5 5.9 0 10.2-3.8 10.2-8.7S17.9 2.2 12 2.2Z"/><circle cx="7.5" cy="11.5" r="1.25"/><circle cx="12" cy="11.5" r="1.25"/><circle cx="16.5" cy="11.5" r="1.25"/></svg>",
-spotlight: "<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6"/><path d="M9 6.8v10.4a.8.8 0 0 0 1.2.7l8-5.2a.8.8 0 0 0 0-1.4l-8-5.2a.8.8 0 0 0-1.2.7Z"/></svg>",
-notifications: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.5 9.5a6.5 6.5 0 0 0-13 0c0 7-3 7.2-3 9.2h19c0-2-3-2.2-3-9.2Z"/><path d="M9 21h6a3 3 0 0 1-6 0Z"/></svg>",
-marketplace: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5 5 3h14l2 5.5v2a3.2 3.2 0 0 1-5.8 1.9A3.2 3.2 0 0 1 9.4 12a3.2 3.2 0 0 1-5.9-1.5v-2Z"/><path d="M5 13v8h14v-8a4.1 4.1 0 0 1-3.8-1.7A4.1 4.1 0 0 1 12 13a4.1 4.1 0 0 1-3.2-1.7A4.1 4.1 0 0 1 5 13Z"/><path d="M9 21v-5h6v5"/></svg>",
-menu: "<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2.5"/><rect x="13" y="2" width="9" height="9" rx="2.5"/><rect x="2" y="13" width="9" height="9" rx="2.5"/><rect x="13" y="13" width="9" height="9" rx="2.5"/></svg>",
-search: "<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.3 4.3"/></svg>"
+home: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 10.2 12 2.5l9.5 7.7v9.5a1.8 1.8 0 0 1-1.8 1.8h-4.9v-7h-5.6v7H4.3a1.8 1.8 0 0 1-1.8-1.8z"/></svg>`,
+
+suggestions: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><circle cx="18" cy="9" r="3"/><path d="M1.5 20.5c0-4.1 3.1-7 7.5-7s7.5 2.9 7.5 7v1h-15z"/><path d="M16 14.1c3.8-.1 6.5 2.2 6.5 5.8v1h-4v-1c0-2.1-.8-4.1-2.5-5.8z"/></svg>`,
+
+messages: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2C6.1 2.2 1.8 6 1.8 11.2c0 2.4 1 4.5 2.8 6.1l-.8 4.5 5-2.4c1 .3 2.1.5 3.2.5 5.9 0 10.2-3.8 10.2-8.7S17.9 2.2 12 2.2Z"/><circle cx="7.5" cy="11.5" r="1.25"/><circle cx="12" cy="11.5" r="1.25"/><circle cx="16.5" cy="11.5" r="1.25"/></svg>`,
+
+spotlight: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6"/><path d="M9 6.8v10.4a.8.8 0 0 0 1.2.7l8-5.2a.8.8 0 0 0 0-1.4l-8-5.2a.8.8 0 0 0-1.2.7Z"/></svg>`,
+
+notifications: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.5 9.5a6.5 6.5 0 0 0-13 0c0 7-3 7.2-3 9.2h19c0-2-3-2.2-3-9.2Z"/><path d="M9 21h6a3 3 0 0 1-6 0Z"/></svg>`,
+
+marketplace: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5 5 3h14l2 5.5v2a3.2 3.2 0 0 1-5.8 1.9A3.2 3.2 0 0 1 9.4 12a3.2 3.2 0 0 1-5.9-1.5v-2Z"/><path d="M5 13v8h14v-8a4.1 4.1 0 0 1-3.8-1.7A4.1 4.1 0 0 1 12 13a4.1 4.1 0 0 1-3.2-1.7A4.1 4.1 0 0 1 5 13Z"/><path d="M9 21v-5h6v5"/></svg>`,
+
+menu: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2.5"/><rect x="13" y="2" width="9" height="9" rx="2.5"/><rect x="2" y="13" width="9" height="9" rx="2.5"/><rect x="13" y="13" width="9" height="9" rx="2.5"/></svg>`,
+
+search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.3 4.3"/></svg>`
 };
+
+/* =====================================
+CREATE SHARED HEADER
+===================================== */
 
 const topbar = document.createElement("header");
 topbar.className = "campusora-topnav";
@@ -39,6 +50,8 @@ brandName.className = "campusora-brand-name";
 brandName.textContent = "Campusora";
 
 brand.append(logo, brandName);
+
+/* SEARCH */
 
 const searchWrap = document.createElement("div");
 searchWrap.className = "campusora-header-search";
@@ -66,11 +79,17 @@ searchResults.hidden = true;
 searchForm.append(searchIcon, searchInput);
 searchWrap.append(searchForm, searchResults);
 
+/* TAGLINE */
+
 const tagline = document.createElement("div");
 tagline.className = "campusora-tagline";
 tagline.textContent = "Connect with students across campuses";
 
 brandRow.append(brand, searchWrap, tagline);
+
+/* =====================================
+MAIN NAVIGATION
+===================================== */
 
 const mainNav = document.createElement("nav");
 mainNav.className = "campusora-mainnav";
@@ -90,6 +109,7 @@ const navLinks = {};
 
 navItems.forEach(([label, file, icon]) => {
 const link = document.createElement("a");
+
 link.className = "campusora-nav-item";
 link.href = file;
 link.title = label;
@@ -103,9 +123,11 @@ link.setAttribute("aria-current", "page");
 
 if (icon === "messages" || icon === "notifications") {
 const badge = document.createElement("span");
+
 badge.className = "campusora-nav-badge";
 badge.hidden = true;
 badge.setAttribute("aria-label", "Unread count");
+
 link.appendChild(badge);
 navLinks[icon] = badge;
 }
@@ -117,19 +139,6 @@ topbar.append(brandRow, mainNav);
 
 /* =====================================
 NAVIGATION SCROLL BEHAVIOUR
-
-Finger moves UP:
-Page scrolls down.
-Keep navigation visible until its
-original full height has passed,
-then smoothly hide it.
-
-Finger moves DOWN:
-Page scrolls up.
-Show navigation immediately.
-
-At page top:
-Always show navigation.
 ===================================== */
 
 function setupNavigationScroll() {
@@ -140,7 +149,6 @@ function handleScroll() {
 const currentPosition = Math.max(0, window.scrollY);
 const difference = currentPosition - lastScrollPosition;
 
-/* Always show navigation at the top. */
 if (currentPosition <= 0) {
 topbar.classList.remove("nav-hidden");
 lastScrollPosition = currentPosition;
@@ -148,11 +156,8 @@ ticking = false;
 return;
 }
 
-/* Measure the complete original navigation height. */
 const originalNavHeight = topbar.offsetHeight;
 
-/* Do not hide until the page has passed the
-navigation's original full position. */
 if (currentPosition <= originalNavHeight) {
 topbar.classList.remove("nav-hidden");
 lastScrollPosition = currentPosition;
@@ -160,13 +165,9 @@ ticking = false;
 return;
 }
 
-/* Page moving down: hide smoothly. */
 if (difference > 0) {
 topbar.classList.add("nav-hidden");
-}
-
-/* Page moving up: show immediately. */
-else if (difference < 0) {
+} else if (difference < 0) {
 topbar.classList.remove("nav-hidden");
 }
 
@@ -181,8 +182,6 @@ ticking = true;
 }
 }, { passive: true });
 
-/* Set the correct state if the page opens
-while already scrolled down. */
 if (window.scrollY > topbar.offsetHeight) {
 topbar.classList.add("nav-hidden");
 } else {
@@ -190,11 +189,16 @@ topbar.classList.remove("nav-hidden");
 }
 }
 
+/* =====================================
+INSTALL NAVIGATION
+===================================== */
+
 function installNavigation() {
 if (document.querySelector(".campusora-topnav")) return;
 
 document.body.classList.add("has-shared-nav");
 document.body.prepend(topbar);
+
 setupNavigationScroll();
 }
 
@@ -213,6 +217,7 @@ const badge = navLinks[type];
 if (!badge) return;
 
 const number = Number(count) || 0;
+
 badge.hidden = number <= 0;
 badge.textContent = number > 99 ? "99+" : String(number);
 badge.setAttribute("aria-label", number + " unread " + type);
@@ -230,6 +235,7 @@ if (supabaseClient) return supabaseClient;
 
 const module = await import("./supabase.js");
 supabaseClient = module.supabase;
+
 return supabaseClient;
 }
 
@@ -261,10 +267,15 @@ let query = supabase
 .is("deleted_at", null);
 
 const lastRead = member.last_read_at || member.joined_at;
-if (lastRead) query = query.gt("created_at", lastRead);
+
+if (lastRead) {
+query = query.gt("created_at", lastRead);
+}
 
 const { count, error } = await query;
+
 if (error) throw error;
+
 return count || 0;
 }));
 
@@ -282,16 +293,22 @@ const { count, error } = await supabase
 .eq("is_read", false);
 
 if (error) throw error;
+
 updateBadge("notifications", count || 0);
 }
 
 async function refreshBadges() {
 if (refreshInProgress) return;
+
 refreshInProgress = true;
 
 try {
 const supabase = await getSupabase();
-const { data: { user }, error } = await supabase.auth.getUser();
+
+const {
+data: { user },
+error
+} = await supabase.auth.getUser();
 
 if (error || !user) {
 updateBadge("messages", 0);
@@ -317,7 +334,11 @@ if (realtimeSetupPromise) return realtimeSetupPromise;
 realtimeSetupPromise = (async () => {
 try {
 const supabase = await getSupabase();
-const { data: { user }, error } = await supabase.auth.getUser();
+
+const {
+data: { user },
+error
+} = await supabase.auth.getUser();
 
 if (error || !user) {
 updateBadge("messages", 0);
@@ -412,7 +433,10 @@ setTimeout(() => handleAuthChange(event), 0);
 await setupBadgeRealtime();
 
 if (badgeTimer) clearInterval(badgeTimer);
-badgeTimer = setInterval(() => refreshBadges(), 60000);
+
+badgeTimer = setInterval(() => {
+refreshBadges();
+}, 60000);
 
 document.addEventListener("visibilitychange", () => {
 if (!document.hidden) refreshBadges();
@@ -464,26 +488,34 @@ openSearchResults();
 
 function createTextElement(tag, className, text) {
 const element = document.createElement(tag);
+
 element.className = className;
 element.textContent = text || "";
+
 return element;
 }
 
 function createAvatar(url) {
 const avatar = document.createElement("img");
+
 avatar.className = "campusora-search-avatar";
 avatar.alt = "";
 avatar.loading = "lazy";
 
 avatar.src = url || (
 "data:image/svg+xml;charset=UTF-8," +
-encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='#202943'/><circle cx='50' cy='37' r='19' fill='#7785a8'/><path d='M15 100c2-24 16-36 35-36s33 12 35 36' fill='#7785a8'/></svg>")
+encodeURIComponent(
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='#202943'/><circle cx='50' cy='37' r='19' fill='#7785a8'/><path d='M15 100c2-24 16-36 35-36s33 12 35 36' fill='#7785a8'/></svg>"
+)
 );
 
 avatar.onerror = () => {
 avatar.onerror = null;
+
 avatar.src = "data:image/svg+xml;charset=UTF-8," +
-encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='#202943'/></svg>");
+encodeURIComponent(
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='#202943'/></svg>"
+);
 };
 
 return avatar;
@@ -491,6 +523,7 @@ return avatar;
 
 function createResult(title, subtitle, url, avatarURL, type) {
 const link = document.createElement("a");
+
 link.className = "campusora-search-result";
 link.href = url;
 
@@ -498,7 +531,9 @@ if (avatarURL) {
 link.appendChild(createAvatar(avatarURL));
 } else {
 const symbol = document.createElement("span");
+
 symbol.className = "campusora-search-result-symbol";
+
 symbol.textContent =
 type === "video" ? "▶" :
 type === "community" ? "◉" : "▤";
@@ -515,16 +550,28 @@ createTextElement("small", "", subtitle)
 );
 
 link.appendChild(info);
+
 return link;
 }
 
 async function safeSearch(name, callback) {
 try {
 const data = await callback();
-return { name, data: data || [], error: null };
+
+return {
+name,
+data: data || [],
+error: null
+};
+
 } catch (error) {
 console.error("Campusora " + name + " search error:", error);
-return { name, data: [], error };
+
+return {
+name,
+data: [],
+error
+};
 }
 }
 
@@ -532,19 +579,28 @@ async function searchPeople(supabase, pattern) {
 const [names, usernames] = await Promise.all([
 supabase.from("profiles")
 .select("id,username,full_name,school,avatar_url")
-.ilike("full_name", pattern).limit(5),
+.ilike("full_name", pattern)
+.limit(5),
 
 supabase.from("profiles")
 .select("id,username,full_name,school,avatar_url")
-.ilike("username", pattern).limit(5)
+.ilike("username", pattern)
+.limit(5)
 ]);
 
 if (names.error) throw names.error;
 if (usernames.error) throw usernames.error;
 
-const combined = [...(names.data || []), ...(usernames.data || [])];
+const combined = [
+...(names.data || []),
+...(usernames.data || [])
+];
 
-return [...new Map(combined.map(item => [item.id, item])).values()].slice(0, 5);
+return [
+...new Map(
+combined.map(item => [item.id, item])
+).values()
+].slice(0, 5);
 }
 
 async function searchPosts(supabase, pattern) {
@@ -556,6 +612,7 @@ const { data, error } = await supabase
 .limit(5);
 
 if (error) throw error;
+
 return data || [];
 }
 
@@ -568,6 +625,7 @@ const { data, error } = await supabase
 .limit(5);
 
 if (error) throw error;
+
 return data || [];
 }
 
@@ -575,23 +633,33 @@ async function searchCommunities(supabase, pattern) {
 const [names, descriptions] = await Promise.all([
 supabase.from("communities")
 .select("id,name,school,description")
-.ilike("name", pattern).limit(5),
+.ilike("name", pattern)
+.limit(5),
 
 supabase.from("communities")
 .select("id,name,school,description")
-.ilike("description", pattern).limit(5)
+.ilike("description", pattern)
+.limit(5)
 ]);
 
 if (names.error) throw names.error;
 if (descriptions.error) throw descriptions.error;
 
-const combined = [...(names.data || []), ...(descriptions.data || [])];
+const combined = [
+...(names.data || []),
+...(descriptions.data || [])
+];
 
-return [...new Map(combined.map(item => [item.id, item])).values()].slice(0, 5);
+return [
+...new Map(
+combined.map(item => [item.id, item])
+).values()
+].slice(0, 5);
 }
 
 async function getProfiles(supabase, ids) {
 const uniqueIds = [...new Set(ids.filter(Boolean))];
+
 if (!uniqueIds.length) return {};
 
 const { data, error } = await supabase
@@ -602,7 +670,10 @@ const { data, error } = await supabase
 if (error) throw error;
 
 return Object.fromEntries(
-(data || []).map(profile => [profile.id, profile])
+(data || []).map(profile => [
+profile.id,
+profile
+])
 );
 }
 
@@ -613,10 +684,17 @@ const section = document.createElement("section");
 section.className = "campusora-search-section";
 
 section.appendChild(
-createTextElement("div", "campusora-search-section-title", title)
+createTextElement(
+"div",
+"campusora-search-section-title",
+title
+)
 );
 
-items.forEach(item => section.appendChild(item));
+items.forEach(item => {
+section.appendChild(item);
+});
+
 searchResults.appendChild(section);
 }
 
@@ -634,67 +712,100 @@ let postProfiles = {};
 let videoProfiles = {};
 
 try {
-[postProfiles, videoProfiles] = await Promise.all([
+[
+postProfiles,
+videoProfiles
+] = await Promise.all([
 getProfiles(supabase, posts.map(item => item.user_id)),
 getProfiles(supabase, videos.map(item => item.user_id))
 ]);
+
 } catch (error) {
 console.error("Campusora author lookup error:", error);
 }
 
 if (requestNumber !== searchRequest) return;
 
-addSection(categoryNames.people, people.map(user =>
+addSection(
+categoryNames.people,
+people.map(user =>
 createResult(
 user.full_name || "Campusora Member",
-[user.username ? "@" + user.username : "", user.school || ""]
-.filter(Boolean).join(" · ") || "Campusora member",
+[
+user.username ? "@" + user.username : "",
+user.school || ""
+].filter(Boolean).join(" · ") || "Campusora member",
 "profile.html?id=" + encodeURIComponent(user.id),
 user.avatar_url,
 "person"
-)
-));
+))
+);
 
-addSection(categoryNames.posts, posts.map(post => {
+addSection(
+categoryNames.posts,
+posts.map(post => {
 const author = postProfiles[post.user_id] || {};
-const preview = (post.content || "Shared a post").trim();
+
+const preview = (
+post.content || "Shared a post"
+).trim();
 
 const destination = author.id
-? "profile.html?id=" + encodeURIComponent(author.id) +
-"#post-" + encodeURIComponent(post.id)
+? "profile.html?id=" +
+encodeURIComponent(author.id) +
+"#post-" +
+encodeURIComponent(post.id)
 : "home-feed.html";
 
 return createResult(
-preview.length > 75 ? preview.slice(0, 75) + "..." : preview,
-"By " + (author.full_name || author.username || "Campusora member"),
+preview.length > 75
+? preview.slice(0, 75) + "..."
+: preview,
+"By " + (
+author.full_name ||
+author.username ||
+"Campusora member"
+),
 destination,
 author.avatar_url,
 "post"
 );
-}));
+})
+);
 
-addSection(categoryNames.videos, videos.map(video => {
+addSection(
+categoryNames.videos,
+videos.map(video => {
 const author = videoProfiles[video.user_id] || {};
 
 return createResult(
 video.caption || "Spotlight video",
-"By " + (author.full_name || author.username || "Campusora creator"),
+"By " + (
+author.full_name ||
+author.username ||
+"Campusora creator"
+),
 "spotlight.html",
 video.thumbnail_url || author.avatar_url,
 "video"
 );
-}));
+})
+);
 
-addSection(categoryNames.communities, communities.map(community =>
+addSection(
+categoryNames.communities,
+communities.map(community =>
 createResult(
 community.name || "Campus community",
-[community.school || "", community.description || ""]
-.filter(Boolean).join(" · ").slice(0, 100),
+[
+community.school || "",
+community.description || ""
+].filter(Boolean).join(" · ").slice(0, 100),
 "communities.html",
 null,
 "community"
-)
-));
+))
+);
 
 if (!searchResults.children.length) {
 showMessage("No matching results found.");
@@ -706,6 +817,7 @@ openSearchResults();
 
 async function searchCampusora(term) {
 const requestNumber = ++searchRequest;
+
 showMessage("Searching Campusora...");
 
 try {
@@ -743,15 +855,24 @@ failed
 return;
 }
 
-await renderSearchResults(supabase, grouped, requestNumber);
+await renderSearchResults(
+supabase,
+grouped,
+requestNumber
+);
 
 } catch (error) {
 if (requestNumber !== searchRequest) return;
 
 console.error("Campusora search error:", error);
-showMessage("Search is temporarily unavailable. Please try again.");
+
+showMessage(
+"Search is temporarily unavailable. Please try again."
+);
 }
 }
+
+/* SEARCH INPUT */
 
 searchInput.addEventListener("input", () => {
 clearTimeout(searchTimer);
@@ -765,23 +886,34 @@ return;
 }
 
 openSearchResults();
-searchTimer = setTimeout(() => searchCampusora(term), 350);
+
+searchTimer = setTimeout(() => {
+searchCampusora(term);
+}, 350);
 });
 
 searchForm.addEventListener("submit", event => {
 event.preventDefault();
 
 const term = searchInput.value.trim();
-if (term.length >= 2) searchCampusora(term);
+
+if (term.length >= 2) {
+searchCampusora(term);
+}
 });
 
 searchInput.addEventListener("focus", () => {
 const term = searchInput.value.trim();
-if (term.length >= 2) searchCampusora(term);
+
+if (term.length >= 2) {
+searchCampusora(term);
+}
 });
 
 document.addEventListener("click", event => {
-if (!searchWrap.contains(event.target)) closeSearchResults();
+if (!searchWrap.contains(event.target)) {
+closeSearchResults();
+}
 });
 
 searchInput.addEventListener("keydown", event => {
