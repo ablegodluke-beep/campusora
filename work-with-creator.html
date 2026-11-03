@@ -1,636 +1,658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101827">
-
-  <title>Work With the Creator | Campusora</title>
-
-  <meta name="description" content="Partner with Campusora for business promotions, brand collaborations, sponsorships and creative projects.">
-
-  <style>
-    :root {
-      --bg: #101827;
-      --surface: #182335;
-      --surface-light: #202e43;
-      --text: #f4f7fc;
-      --muted: #a7b3c6;
-      --accent: #a9f36b;
-      --accent-dark: #1c3215;
-      --border: rgba(255,255,255,.11);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Inter, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button, a {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .page {
-      max-width: 1050px;
-      margin: auto;
-      padding: 0 24px;
-    }
-
-    /* NAVIGATION */
-
-    .nav {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -.7px;
-    }
-
-    .brand-icon {
-      width: 36px;
-      height: 36px;
-      display: grid;
-      place-items: center;
-      background: var(--accent);
-      color: #14200e;
-      border-radius: 12px;
-      font-weight: 900;
-      font-size: 19px;
-    }
-
-    .back-link {
-      font-size: 13px;
-      color: var(--muted);
-      padding: 9px 14px;
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      transition: .2s;
-    }
-
-    .back-link:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-
-    /* INTRODUCTION */
-
-    .intro {
-      padding: 75px 0 50px;
-      max-width: 760px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--accent);
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 24px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 25px;
-      height: 2px;
-      background: var(--accent);
-    }
-
-    h1 {
-      font-size: clamp(43px, 8vw, 76px);
-      line-height: 1.04;
-      letter-spacing: -4px;
-      font-weight: 850;
-      max-width: 720px;
-    }
-
-    h1 span {
-      color: var(--accent);
-    }
-
-    .intro-text {
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 520px;
-      margin-top: 24px;
-      line-height: 1.9;
-    }
-
-    .intro-note {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 27px;
-      font-size: 12px;
-      color: #d0d9e6;
-    }
-
-    .online-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 12px rgba(169,243,107,.45);
-      flex-shrink: 0;
-    }
-
-    /* MAIN CONTENT */
-
-    .section-heading {
-      margin-bottom: 20px;
-    }
-
-    .section-heading h2 {
-      font-size: 23px;
-      letter-spacing: -.7px;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .contact-card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      padding: 26px;
-      min-height: 230px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      overflow: hidden;
-      transition: transform .22s, border-color .22s;
-    }
-
-    .contact-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(169,243,107,.5);
-    }
-
-    .contact-card.whatsapp {
-      background:
-        radial-gradient(
-          circle at 100% 0%,
-          rgba(169,243,107,.10),
-          transparent 45%
-        ),
-        var(--surface);
-    }
-
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .icon-box {
-      width: 49px;
-      height: 49px;
-      display: grid;
-      place-items: center;
-      border-radius: 15px;
-      background: var(--surface-light);
-      color: var(--accent);
-    }
-
-    .icon-box svg {
-      width: 25px;
-      height: 25px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.7;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .card-label {
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-    }
-
-    .contact-card h3 {
-      font-size: 21px;
-      margin-bottom: 5px;
-      letter-spacing: -.5px;
-    }
-
-    .contact-card .description {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
-
-    .contact-action {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-top: auto;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 13px;
-      font-weight: 700;
-      overflow-wrap: anywhere;
-    }
-
-    .contact-action .arrow {
-      color: var(--accent);
-      font-size: 20px;
-      flex-shrink: 0;
-      transition: transform .2s;
-    }
-
-    .contact-card:hover .arrow {
-      transform: translateX(4px);
-    }
-
-    /* WHAT WE CAN DISCUSS */
-
-    .opportunities {
-      margin-top: 75px;
-      padding: 32px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-    }
-
-    .opportunities h2 {
-      font-size: 23px;
-      letter-spacing: -.7px;
-    }
-
-    .opportunities > p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 8px;
-      max-width: 500px;
-    }
-
-    .topic-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .topic {
-      padding: 10px 14px;
-      background: var(--surface-light);
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      font-size: 12px;
-      color: #e1e8f1;
-    }
-
-    .topic span {
-      color: var(--accent);
-      margin-right: 5px;
-    }
-
-    /* CLOSING */
-
-    .closing {
-      margin: 65px 0 50px;
-      padding: 32px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .closing h2 {
-      font-size: clamp(24px, 4vw, 34px);
-      letter-spacing: -1.2px;
-      line-height: 1.25;
-    }
-
-    .closing p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 9px;
-    }
-
-    .closing-mark {
-      width: 65px;
-      height: 65px;
-      border-radius: 21px;
-      background: var(--accent);
-      color: #14200e;
-      display: grid;
-      place-items: center;
-      font-size: 32px;
-      font-weight: 900;
-      flex-shrink: 0;
-      transform: rotate(-7deg);
-    }
-
-    /* FOOTER */
-
-    footer {
-      padding: 25px 0 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .footer-brand {
-      color: var(--text);
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a:hover {
-      color: var(--accent);
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 600px) {
-      .page {
-        padding: 0 18px;
-      }
-
-      .nav {
-        min-height: 70px;
-      }
-
-      .brand {
-        font-size: 18px;
-      }
-
-      .back-link {
-        font-size: 12px;
-        padding: 8px 11px;
-      }
-
-      .intro {
-        padding: 58px 0 40px;
-      }
-
-      h1 {
-        font-size: clamp(42px, 12vw, 62px);
-        letter-spacing: -2.8px;
-      }
-
-      .intro-text {
-        font-size: 14px;
-      }
-
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 13px;
-      }
-
-      .contact-card {
-        min-height: 205px;
-        padding: 22px;
-        border-radius: 19px;
-      }
-
-      .opportunities {
-        margin-top: 55px;
-        padding: 24px 20px;
-        border-radius: 20px;
-      }
-
-      .topic-list {
-        gap: 8px;
-      }
-
-      .topic {
-        font-size: 11px;
-        padding: 9px 11px;
-      }
-
-      .closing {
-        margin: 50px 0 35px;
-      }
-
-      .closing-mark {
-        width: 49px;
-        height: 49px;
-        font-size: 25px;
-        border-radius: 15px;
-      }
-
-      footer {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        transition: none !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+
+<title>Work With the Creator | Campusora</title>
+
+<meta name="description" content="Partner with Campusora for business promotions, brand collaborations, sponsorships and creative projects.">
+
+<style>
+:root {
+  --bg: #080b18;
+  --surface: #101529;
+  --surface-light: #171e36;
+  --purple: #8b7cff;
+  --blue: #5bc0ff;
+  --cyan: #39d9ed;
+  --text: #f5f6ff;
+  --muted: #929bb8;
+  --border: rgba(255,255,255,.075);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', Inter, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page {
+  max-width: 1050px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+/* EXISTING PAGE HEADER */
+
+.nav {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.7px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  color: white;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 19px;
+}
+
+.back-link {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  transition: .2s;
+}
+
+.back-link:hover {
+  color: var(--cyan);
+  border-color: var(--purple);
+  background: rgba(139,124,255,.08);
+}
+
+/* INTRODUCTION */
+
+.intro {
+  padding: 65px 0 45px;
+  max-width: 760px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 25px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+}
+
+h1 {
+  font-size: clamp(38px, 7vw, 66px);
+  line-height: 1.08;
+  letter-spacing: -3px;
+  font-weight: 850;
+  max-width: 720px;
+  color: white;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--purple), var(--blue), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.intro-text {
+  color: #c0c7dc;
+  font-size: 15px;
+  max-width: 540px;
+  margin-top: 20px;
+  line-height: 1.85;
+}
+
+.intro-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  font-size: 12px;
+  color: #dce2f5;
+}
+
+.online-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(57,217,237,.45);
+  flex-shrink: 0;
+}
+
+/* CONTACT SECTION */
+
+.section-heading {
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  font-size: 21px;
+  letter-spacing: -.5px;
+  color: white;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.contact-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 23px;
+  min-height: 220px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  overflow: hidden;
+  transition: transform .22s, border-color .22s, background .22s;
+}
+
+.contact-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(139,124,255,.55);
+  background: #131a31;
+}
+
+.contact-card.whatsapp {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(91,192,255,.10),
+      transparent 48%
+    ),
+    var(--surface);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 21px;
+}
+
+.icon-box {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--surface-light);
+  color: var(--cyan);
+  border: 1px solid var(--border);
+}
+
+.icon-box svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.card-label {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.contact-card h3 {
+  font-size: 19px;
+  margin-bottom: 5px;
+  letter-spacing: -.4px;
+  color: white;
+}
+
+.contact-card .description {
+  color: #aab4ce;
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+
+.contact-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  color: #e7eaff;
+}
+
+.contact-action .arrow {
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: transform .2s;
+}
+
+.contact-card:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* OPPORTUNITIES */
+
+.opportunities {
+  margin-top: 55px;
+  padding: 27px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+}
+
+.opportunities h2 {
+  font-size: 21px;
+  letter-spacing: -.5px;
+  color: white;
+}
+
+.opportunities > p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 7px;
+  max-width: 500px;
+}
+
+.topic-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 21px;
+}
+
+.topic {
+  padding: 9px 13px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  font-size: 11px;
+  color: #e1e8f8;
+}
+
+.topic span {
+  color: var(--cyan);
+  margin-right: 5px;
+}
+
+/* CLOSING */
+
+.closing {
+  margin: 50px 0 40px;
+  padding: 27px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.closing h2 {
+  font-size: clamp(23px, 4vw, 32px);
+  letter-spacing: -1px;
+  line-height: 1.25;
+  color: white;
+}
+
+.closing p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.closing-mark {
+  width: 58px;
+  height: 58px;
+  border-radius: 17px;
+  background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 900;
+  flex-shrink: 0;
+  transform: rotate(-7deg);
+}
+
+/* FOOTER */
+
+footer {
+  padding: 22px 0 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  color: var(--muted);
+  font-size: 11px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-brand {
+  color: white;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-links a:hover {
+  color: var(--cyan);
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .page {
+    padding: 0 16px;
+  }
+
+  .nav {
+    min-height: 65px;
+  }
+
+  .brand {
+    font-size: 17px;
+  }
+
+  .brand-icon {
+    width: 33px;
+    height: 33px;
+  }
+
+  .back-link {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  .intro {
+    padding: 48px 0 35px;
+  }
+
+  h1 {
+    font-size: clamp(37px, 11vw, 55px);
+    letter-spacing: -2px;
+  }
+
+  .intro-text {
+    font-size: 13px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .contact-card {
+    min-height: 195px;
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .opportunities {
+    margin-top: 42px;
+    padding: 21px 17px;
+    border-radius: 15px;
+  }
+
+  .topic-list {
+    gap: 7px;
+  }
+
+  .topic {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+
+  .closing {
+    margin: 40px 0 30px;
+  }
+
+  .closing-mark {
+    width: 45px;
+    height: 45px;
+    font-size: 23px;
+    border-radius: 13px;
+  }
+
+  footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+</style>
 </head>
 
 <body>
-  <div class="page">
+<div class="page">
 
-    <header class="nav">
-      <a class="brand" href="index.html" aria-label="Campusora home">
-        <span class="brand-icon">C.</span>
-        <span>campusora</span>
-      </a>
+  <header class="nav">
+    <a class="brand" href="index.html" aria-label="Campusora home">
+      <span class="brand-icon">C.</span>
+      <span>campusora</span>
+    </a>
 
-      <a class="back-link" href="index.html">
-        ← Back to Campusora
-      </a>
-    </header>
+    <a class="back-link" href="index.html">
+      ← Back to Campusora
+    </a>
+  </header>
 
-    <main>
-      <section class="intro">
-        <div class="eyebrow">Work With the Creator</div>
+  <main>
 
-        <h1>
-          Good ideas<br>
-          deserve to <span>happen.</span>
-        </h1>
+    <section class="intro">
+      <div class="eyebrow">Work With the Creator</div>
 
-        <p class="intro-text">
-          Have a brand, a business, or a creative idea you'd like
-          to bring to life? Let's talk about what we can build
-          together through Campusora.
-        </p>
+      <h1>
+        Good ideas<br>
+        deserve to <span>happen.</span>
+      </h1>
 
-        <div class="intro-note">
-          <span class="online-dot"></span>
-          <span>Open to business enquiries and collaborations</span>
-        </div>
-      </section>
+      <p class="intro-text">
+        Have a brand, a business, or a creative idea you'd like
+        to bring to life? Let's talk about what we can build
+        together through Campusora.
+      </p>
 
-      <section aria-labelledby="contact-heading">
-        <div class="section-heading">
-          <h2 id="contact-heading">Let's talk directly.</h2>
-          <p>Choose your preferred way to get in touch.</p>
-        </div>
+      <div class="intro-note">
+        <span class="online-dot"></span>
+        <span>Open to business enquiries and collaborations</span>
+      </div>
+    </section>
 
-        <div class="contact-grid">
-
-          <!-- EMAIL CONTACT -->
-          <a
-            class="contact-card"
-            href="mailto:ablegodluke@gmail.com?subject=Campusora%20Collaboration%20Enquiry"
-            aria-label="Send an email to AbleGod about a Campusora collaboration"
-          >
-            <div class="card-top">
-              <div class="icon-box">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="3" y="5" width="18" height="14" rx="3"></rect>
-                  <path d="m4 7 8 6 8-6"></path>
-                </svg>
-              </div>
-              <span class="card-label">Contact 01</span>
-            </div>
-
-            <h3>Send an email</h3>
-
-            <p class="description">
-              For detailed proposals, business enquiries and
-              formal collaborations.
-            </p>
-
-            <div class="contact-action">
-              <span>ablegodluke@gmail.com</span>
-              <span class="arrow" aria-hidden="true">↗</span>
-            </div>
-          </a>
-
-          <!-- WHATSAPP CONTACT -->
-          <a
-            class="contact-card whatsapp"
-            href="https://wa.me/2349017579718?text=Hello%2C%20I%20found%20your%20contact%20on%20Campusora.%20I%27d%20like%20to%20discuss%20a%20collaboration."
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Message the Campusora creator on WhatsApp"
-          >
-            <div class="card-top">
-              <div class="icon-box">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.6A8.5 8.5 0 1 1 20.5 11.5Z"></path>
-                  <path d="M8.5 8.2c.3-.6.6-.6 1-.6.2 0 .4 0 .6.5l.8 1.8c.1.3.1.5-.1.7l-.6.7c-.2.2-.2.4 0 .7.6 1 1.4 1.8 2.4 2.3.3.2.5.2.7-.1l.8-.9c.2-.2.4-.2.7-.1l1.7.8c.3.2.5.3.5.5 0 .4-.2 1-.7 1.4-.5.4-1.2.7-2 .6-1.1-.1-2.5-.7-4-2-1.2-1.1-2.1-2.5-2.4-3.5-.3-1.1 0-2 .6-2.8Z"></path>
-                </svg>
-              </div>
-              <span class="card-label">Contact 02</span>
-            </div>
-
-            <h3>Chat on WhatsApp</h3>
-
-            <p class="description">
-              For a quick conversation about promotions,
-              partnerships or your next idea.
-            </p>
-
-            <div class="contact-action">
-              <span>+234 901 757 9718</span>
-              <span class="arrow" aria-hidden="true">↗</span>
-            </div>
-          </a>
-
-        </div>
-      </section>
-
-      <section class="opportunities">
-        <h2>What can we work on?</h2>
-
-        <p>
-          If you have an idea that fits Campusora and its community,
-          reach out and tell me about it.
-        </p>
-
-        <div class="topic-list">
-          <div class="topic"><span>↗</span> Business promotions</div>
-          <div class="topic"><span>↗</span> Brand collaborations</div>
-          <div class="topic"><span>↗</span> Content creation</div>
-          <div class="topic"><span>↗</span> Sponsorships</div>
-          <div class="topic"><span>↗</span> Creative projects</div>
-          <div class="topic"><span>↗</span> Other partnerships</div>
-        </div>
-      </section>
-
-      <section class="closing">
-        <div>
-          <h2>Let's build something<br>worth talking about.</h2>
-          <p>One conversation could be the start of something great.</p>
-        </div>
-
-        <div class="closing-mark" aria-hidden="true">↗</div>
-      </section>
-    </main>
-
-    <footer>
-      <a class="footer-brand" href="index.html">Campusora.</a>
-
-      <div class="footer-links">
-        <a href="index.html">Home</a>
-        <a href="mailto:ablegodluke@gmail.com">Email</a>
-        <a
-          href="https://wa.me/2349017579718"
-          target="_blank"
-          rel="noopener noreferrer"
-        >WhatsApp</a>
+    <section aria-labelledby="contact-heading">
+      <div class="section-heading">
+        <h2 id="contact-heading">Let's talk directly.</h2>
+        <p>Choose your preferred way to get in touch.</p>
       </div>
 
-      <span>Connecting people. Creating opportunities.</span>
-    </footer>
+      <div class="contact-grid">
 
-  </div>
+        <a
+          class="contact-card"
+          href="mailto:ablegodluke@gmail.com?subject=Campusora%20Collaboration%20Enquiry"
+          aria-label="Send an email about a Campusora collaboration"
+        >
+          <div class="card-top">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+                <path d="m4 7 8 6 8-6"></path>
+              </svg>
+            </div>
+            <span class="card-label">Contact 01</span>
+          </div>
+
+          <h3>Send an email</h3>
+
+          <p class="description">
+            For detailed proposals, business enquiries and
+            formal collaborations.
+          </p>
+
+          <div class="contact-action">
+            <span>ablegodluke@gmail.com</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </div>
+        </a>
+
+        <a
+          class="contact-card whatsapp"
+          href="https://wa.me/2349017579718?text=Hello%2C%20I%20found%20your%20contact%20on%20Campusora.%20I%27d%20like%20to%20discuss%20a%20collaboration."
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Message the Campusora creator on WhatsApp"
+        >
+          <div class="card-top">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.6A8.5 8.5 0 1 1 20.5 11.5Z"></path>
+                <path d="M8.5 8.2c.3-.6.6-.6 1-.6.2 0 .4 0 .6.5l.8 1.8c.1.3.1.5-.1.7l-.6.7c-.2.2-.2.4 0 .7.6 1 1.4 1.8 2.4 2.3.3.2.5.2.7-.1l.8-.9c.2-.2.4-.2.7-.1l1.7.8c.3.2.5.3.5.5 0 .4-.2 1-.7 1.4-.5.4-1.2.7-2 .6-1.1-.1-2.5-.7-4-2-1.2-1.1-2.1-2.5-2.4-3.5-.3-1.1 0-2 .6-2.8Z"></path>
+              </svg>
+            </div>
+            <span class="card-label">Contact 02</span>
+          </div>
+
+          <h3>Chat on WhatsApp</h3>
+
+          <p class="description">
+            For a quick conversation about promotions,
+            partnerships or your next idea.
+          </p>
+
+          <div class="contact-action">
+            <span>+234 901 757 9718</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="opportunities">
+      <h2>What can we work on?</h2>
+
+      <p>
+        If you have an idea that fits Campusora and its community,
+        reach out and tell me about it.
+      </p>
+
+      <div class="topic-list">
+        <div class="topic"><span>↗</span> Business promotions</div>
+        <div class="topic"><span>↗</span> Brand collaborations</div>
+        <div class="topic"><span>↗</span> Content creation</div>
+        <div class="topic"><span>↗</span> Sponsorships</div>
+        <div class="topic"><span>↗</span> Creative projects</div>
+        <div class="topic"><span>↗</span> Other partnerships</div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div>
+        <h2>Let's build something<br>worth talking about.</h2>
+        <p>One conversation could be the start of something great.</p>
+      </div>
+
+      <div class="closing-mark" aria-hidden="true">↗</div>
+    </section>
+
+  </main>
+
+  <footer>
+    <a class="footer-brand" href="index.html">Campusora.</a>
+
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="mailto:ablegodluke@gmail.com">Email</a>
+      <a
+        href="https://wa.me/2349017579718"
+        target="_blank"
+        rel="noopener noreferrer"
+      >WhatsApp</a>
+    </div>
+
+    <span>Connecting people. Creating opportunities.</span>
+  </footer>
+
+</div>
 </body>
-  </html>
+</html>
