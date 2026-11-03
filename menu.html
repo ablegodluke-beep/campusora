@@ -1,11 +1,16 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Menu | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Menu | Campusora</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared-nav.css"><style>
+<link rel="stylesheet" href="shared-nav.css">
+
+<style>
 :root {
   --bg:#080b18;
   --card:#111629;
@@ -17,9 +22,7 @@
   --cyan:#39d7f5;
 }
 
-* {
-  box-sizing:border-box;
-}
+* { box-sizing:border-box; }
 
 body {
   margin:0;
@@ -36,15 +39,11 @@ a {
   text-decoration:none;
 }
 
-/* MAIN CONTAINER */
-
 .menu-container {
   width:min(100%,1050px);
   margin:0 auto;
   padding:22px 18px 45px;
 }
-
-/* PAGE HEADING */
 
 .menu-heading {
   margin-bottom:19px;
@@ -62,8 +61,6 @@ a {
   color:var(--muted);
   font-size:12px;
 }
-
-/* PROFILE CARD */
 
 .menu-profile {
   display:flex;
@@ -133,8 +130,6 @@ a {
   padding:0 5px;
 }
 
-/* CATEGORY */
-
 .menu-category {
   margin-bottom:25px;
 }
@@ -159,15 +154,11 @@ a {
   font-size:11px;
 }
 
-/* MENU GRID */
-
 .menu-grid {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:10px;
 }
-
-/* MENU CARDS */
 
 .menu-card {
   min-width:0;
@@ -224,8 +215,6 @@ a {
   font-size:19px;
   flex-shrink:0;
 }
-
-/* RESPONSIVE */
 
 @media(min-width:850px) {
   .menu-container {
@@ -290,235 +279,284 @@ a {
     grid-template-columns:1fr;
   }
 }
-</style></head><body><main class="menu-container">  <!-- PAGE HEADING -->  <div class="menu-heading">
+</style>
+</head>
+
+<body>
+
+<main class="menu-container">
+
+  <div class="menu-heading">
     <h1>Menu</h1>
     <p>Discover more of Campusora.</p>
-  </div>  <!-- PROFILE CARD -->  <a href="profile.html" class="menu-profile" id="profileCard"><img
-  src=""
-  alt="Profile picture"
-  class="profile-picture"
-  id="menuAvatar"
->
+  </div>
 
-<div class="profile-details">
-  <span class="profile-name" id="menuName">Loading profile...</span>
-  <span class="profile-username" id="menuUsername"></span>
-  <span class="profile-action">View your profile</span>
-</div>
+  <!-- PROFILE CARD -->
+  <a href="profile.html" class="menu-profile" id="profileCard">
+    <img src="" alt="Profile picture" class="profile-picture" id="menuAvatar">
 
-<span class="profile-arrow">›</span>
+    <div class="profile-details">
+      <span class="profile-name" id="menuName">Loading profile...</span>
+      <span class="profile-username" id="menuUsername"></span>
+      <span class="profile-action">View your profile</span>
+    </div>
 
-  </a>  <!-- DISCOVER & CONNECT -->  <section class="menu-category"><div class="category-heading">
-  <h2>Discover & Connect</h2>
-  <span>Explore Campusora</span>
-</div>
-
-<div class="menu-grid">
-
-  <a href="explore.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9"></circle>
-        <path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Explore</span>
-    <span class="menu-card-arrow">›</span>
+    <span class="profile-arrow">›</span>
   </a>
 
-  <a href="communities.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="9" cy="8" r="3"></circle>
-        <circle cx="17" cy="9" r="2.5"></circle>
-        <path d="M2.5 20c0-3.4 2.8-6 6.5-6s6.5 2.6 6.5 6"></path>
-        <path d="M15 14c3.5-.4 6 1.8 6 4.5"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Communities</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+  <!-- DISCOVER & CONNECT -->
+  <section class="menu-category">
+    <div class="category-heading">
+      <h2>Discover & Connect</h2>
+      <span>Explore Campusora</span>
+    </div>
 
-  <a href="events.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <rect x="3" y="5" width="18" height="16" rx="3"></rect>
-        <path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h6"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Events</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+    <div class="menu-grid">
 
-</div>
+      <a href="explore.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Explore</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  </section>  <!-- CREATOR & EARNINGS -->  <section class="menu-category"><div class="category-heading">
-  <h2>Creator & Earnings</h2>
-  <span>Build and earn</span>
-</div>
+      <a href="communities.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="9" cy="8" r="3"></circle>
+            <circle cx="17" cy="9" r="2.5"></circle>
+            <path d="M2.5 20c0-3.4 2.8-6 6.5-6s6.5 2.6 6.5 6"></path>
+            <path d="M15 14c3.5-.4 6 1.8 6 4.5"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Communities</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-<div class="menu-grid">
+      <a href="events.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="5" width="18" height="16" rx="3"></rect>
+            <path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h6"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Events</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  <a href="creator-rewards.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Creator Rewards</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+    </div>
+  </section>
 
-  <a href="gift-earnings.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <rect x="3" y="9" width="18" height="12" rx="2"></rect>
-        <path d="M12 9v12M3 13h18M12 9H7a2.5 2.5 0 1 1 2.5-2.5L12 9ZM12 9h5a2.5 2.5 0 1 0-2.5-2.5L12 9Z"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Gift Earnings</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+  <!-- CREATOR & EARNINGS -->
+  <section class="menu-category">
+    <div class="category-heading">
+      <h2>Creator & Earnings</h2>
+      <span>Build and earn</span>
+    </div>
 
-  <a href="work-with-creator.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <rect x="3" y="7" width="18" height="14" rx="2"></rect>
-        <path d="M8 7V4h8v3M3 12h18M10 12v2h4v-2"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Work With Creator</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+    <div class="menu-grid">
 
-  <a href="advertise.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="m3 11 18-6v14L3 13v-2Z"></path>
-        <path d="m7 14 2 7h4l-2-6M21 9v6"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Promote Your Content</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+      <a href="creator-rewards.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Creator Rewards</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  <a href="profile-ranks.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3Z"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Profile Ranks</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+      <a href="gift-earnings.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="9" width="18" height="12" rx="2"></rect>
+            <path d="M12 9v12M3 13h18M12 9H7a2.5 2.5 0 1 1 2.5-2.5L12 9ZM12 9h5a2.5 2.5 0 1 0-2.5-2.5L12 9Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Gift Earnings</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-</div>
+      <a href="work-with-creator.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="7" width="18" height="14" rx="2"></rect>
+            <path d="M8 7V4h8v3M3 12h18M10 12v2h4v-2"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Work With Creator</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  </section>  <!-- ACCOUNT & SETTINGS -->  <section class="menu-category"><div class="category-heading">
-  <h2>Account & Settings</h2>
-  <span>Your account</span>
-</div>
+      <a href="advertise.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="m3 11 18-6v14L3 13v-2Z"></path>
+            <path d="m7 14 2 7h4l-2-6M21 9v6"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Promote Your Content</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-<div class="menu-grid">
+      <a href="profile-ranks.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Profile Ranks</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  <a href="settings.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2Z"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Settings</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+    </div>
+  </section>
 
-  <a href="account-management.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="8" r="4"></circle>
-        <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Account Management</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+  <!-- ADMINISTRATION: ONLY YOUR ACCOUNT -->
+  <section class="menu-category" id="adminMenuSection" hidden>
+    <div class="category-heading">
+      <h2>Administration</h2>
+      <span>Platform management</span>
+    </div>
 
-  <a href="privacy.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <rect x="4" y="10" width="16" height="11" rx="2"></rect>
-        <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Privacy</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+    <div class="menu-grid">
+      <a href="admin.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="8" height="8" rx="2"></rect>
+            <rect x="13" y="3" width="8" height="5" rx="2"></rect>
+            <rect x="13" y="10" width="8" height="11" rx="2"></rect>
+            <rect x="3" y="13" width="8" height="8" rx="2"></rect>
+          </svg>
+        </span>
+        <span class="menu-card-name">Admin Dashboard</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+    </div>
+  </section>
 
-</div>
+  <!-- ACCOUNT & SETTINGS -->
+  <section class="menu-category">
+    <div class="category-heading">
+      <h2>Account & Settings</h2>
+      <span>Your account</span>
+    </div>
 
-  </section>  <!-- HELP & SAFETY -->  <section class="menu-category"><div class="category-heading">
-  <h2>Help & Safety</h2>
-  <span>We're here to help</span>
-</div>
+    <div class="menu-grid">
 
-<div class="menu-grid">
+      <a href="settings.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2Z"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Settings</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  <a href="safety-centre.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
-        <path d="m9 12 2 2 4-4"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Safety Centre</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+      <a href="account-management.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Account Management</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  <a href="help-support.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9"></circle>
-        <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-1.2 1.1-1.8 1.5-1.8 3.3M12 17.5h.01"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Help & Support</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+      <a href="privacy.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="4" y="10" width="16" height="11" rx="2"></rect>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Privacy</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
 
-  <a href="about.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9"></circle>
-        <path d="M12 11v5M12 8h.01"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">About Campusora</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+    </div>
+  </section>
 
-  <a href="legal.html" class="menu-card">
-    <span class="menu-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M6 3h9l4 4v14H6z"></path>
-        <path d="M14 3v5h5M9 13h7M9 17h7"></path>
-      </svg>
-    </span>
-    <span class="menu-card-name">Legal & Policies</span>
-    <span class="menu-card-arrow">›</span>
-  </a>
+  <!-- HELP & SAFETY -->
+  <section class="menu-category">
+    <div class="category-heading">
+      <h2>Help & Safety</h2>
+      <span>We're here to help</span>
+    </div>
 
-</div>
+    <div class="menu-grid">
 
-  </section></main><script src="shared-nav.js"></script><script type="module">
+      <a href="safety-centre.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Safety Centre</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="help-support.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-1.2 1.1-1.8 1.5-1.8 3.3M12 17.5h.01"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Help & Support</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="about.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 11v5M12 8h.01"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">About Campusora</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+      <a href="legal.html" class="menu-card">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 3h9l4 4v14H6z"></path>
+            <path d="M14 3v5h5M9 13h7M9 17h7"></path>
+          </svg>
+        </span>
+        <span class="menu-card-name">Legal & Policies</span>
+        <span class="menu-card-arrow">›</span>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<script src="shared-nav.js"></script>
+
+<script type="module">
 import { supabase } from './supabase.js';
 
 const avatar = document.getElementById('menuAvatar');
 const name = document.getElementById('menuName');
 const username = document.getElementById('menuUsername');
 const profileCard = document.getElementById('profileCard');
+const adminMenuSection = document.getElementById('adminMenuSection');
+
+/* YOUR APPROVED PROFILE ID */
+const OWNER_PROFILE_ID = '4e2c55c4-e5ad-4bed-b7cb-60be8f9b1ccb';
 
 /* DEFAULT PROFILE IMAGE */
-
 function showDefaultAvatar() {
   avatar.src =
     'data:image/svg+xml;charset=UTF-8,' +
@@ -531,8 +569,39 @@ function showDefaultAvatar() {
     `);
 }
 
-/* LOAD REAL PROFILE */
+/* VERIFY WHETHER THIS IS YOUR AUTHORIZED ADMIN ACCOUNT */
+async function checkOwnerAdminAccess(user, accessToken) {
+  adminMenuSection.hidden = true;
 
+  // Do not even check other accounts.
+  if (user.id !== OWNER_PROFILE_ID) return;
+
+  try {
+    const response = await fetch('./api/admin?action=check', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + accessToken
+      },
+      cache: 'no-store'
+    });
+
+    if (!response.ok) return;
+
+    const result = await response.json();
+
+    if (
+      result.success === true &&
+      ['super_admin', 'admin'].includes(result.admin_role)
+    ) {
+      adminMenuSection.hidden = false;
+    }
+
+  } catch (error) {
+    console.error('Admin menu verification failed:', error);
+  }
+}
+
+/* LOAD REAL PROFILE */
 async function loadMenuProfile() {
   try {
     const { data, error } = await supabase.auth.getSession();
@@ -543,6 +612,9 @@ async function loadMenuProfile() {
     }
 
     const user = data.session.user;
+
+    // Admin link is checked only for your exact account.
+    await checkOwnerAdminAccess(user, data.session.access_token);
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
@@ -582,5 +654,7 @@ async function loadMenuProfile() {
 }
 
 loadMenuProfile();
-</script></body>
-  </html>
+</script>
+
+</body>
+</html>
