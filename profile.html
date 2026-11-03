@@ -211,7 +211,16 @@ h1{
 
 .school{color:#aeb8d7;font-size:10px;font-style:italic;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
 .school-inline{display:inline-block;max-width:100%;margin-left:2px;vertical-align:middle}
-
+.school-line{
+  display:block;
+  color:#aeb8d7;
+  font-size:11px;
+  font-style:italic;
+  font-weight:500;
+  line-height:1.5;
+  margin-top:5px;
+  overflow-wrap:anywhere;
+}
 .bio{
   color:#dce1f7;
   font-size:13px;
@@ -1236,33 +1245,38 @@ body.premium-active .cover{
         class="avatar profile-avatar"
         alt="View profile photo"
       >
+<div class="profile-heading">
 
-      <div class="profile-heading">
+  <div class="profile-main">
 
-        <div class="profile-main">
+    <!-- Name and rank -->
+    <div class="name-line">
+      <h1 id="profileName">Campusora Member</h1>
 
-          <div class="name-line">
-            <h1 id="profileName">Campusora Member</h1>
-            <span id="profileSchool" class="school school-inline"></span>
-            <span id="profileBadge" class="badge">🎓 Student</span>
+      <button
+        id="getRanksButton"
+        class="get-ranks-btn"
+        type="button"
+        onclick="window.location.href='./profile-ranks.html'"
+      >👑 Get Ranks</button>
 
-            <button
-              id="getRanksButton"
-              class="get-ranks-btn"
-              type="button"
-              onclick="window.location.href='./profile-ranks.html'"
-            >👑 Get Ranks</button>
+      <span id="profileRankBadge" class="profile-rank-badge hidden"></span>
+    </div>
 
-            <span id="profileRankBadge" class="profile-rank-badge hidden"></span>
-          </div>
+    <!-- Username and school role -->
+    <div class="username-line">
+      <span id="profileUsername" class="username"></span>
+      <span id="profileBadge" class="badge">🎓 Student</span>
+    </div>
 
-          <div class="username-line">
-            <span id="profileUsername" class="username"></span>
-          </div>
-          <div id="profileBio" class="bio"></div>
+    <!-- School -->
+    <div id="profileSchool" class="school-line hidden"></div>
 
-        </div>
-      </div>
+    <!-- Bio -->
+    <div id="profileBio" class="bio"></div>
+
+  </div>
+</div>
 
       <!-- Posts | Followers | Following -->
       <div class="stats">
