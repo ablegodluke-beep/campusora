@@ -9,7 +9,7 @@ const MENU = "menu.html";
 const currentFile = location.pathname.split("/").pop() || HOME;
 
 /* =====================================
-MODERN SOCIAL MEDIA ICONS
+PREMIUM OUTLINE NAVIGATION ICONS
 ===================================== */
 
 const icons = {
@@ -27,14 +27,14 @@ suggestions: `<svg viewBox="0 0 24 24" aria-hidden="true">
 
 messages: `<svg viewBox="0 0 24 24" aria-hidden="true">
 <path d="M12 2.2C6.1 2.2 1.8 6 1.8 11.2c0 2.4 1 4.5 2.8 6.1l-.8 4.5 5-2.4c1 .3 2.1.5 3.2.5 5.9 0 10.2-3.8 10.2-8.7S17.9 2.2 12 2.2Z"/>
-<circle cx="7.5" cy="11.5" r="1.25" fill="#080b18"/>
-<circle cx="12" cy="11.5" r="1.25" fill="#080b18"/>
-<circle cx="16.5" cy="11.5" r="1.25" fill="#080b18"/>
+<circle cx="7.5" cy="11.5" r="1.25"/>
+<circle cx="12" cy="11.5" r="1.25"/>
+<circle cx="16.5" cy="11.5" r="1.25"/>
 </svg>`,
 
 spotlight: `<svg viewBox="0 0 24 24" aria-hidden="true">
 <rect x="2" y="2" width="20" height="20" rx="6"/>
-<path d="M9 6.8v10.4a.8.8 0 0 0 1.2.7l8-5.2a.8.8 0 0 0 0-1.4l-8-5.2a.8.8 0 0 0-1.2.7Z" fill="#080b18"/>
+<path d="M9 6.8v10.4a.8.8 0 0 0 1.2.7l8-5.2a.8.8 0 0 0 0-1.4l-8-5.2a.8.8 0 0 0-1.2.7Z"/>
 </svg>`,
 
 notifications: `<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -45,7 +45,7 @@ notifications: `<svg viewBox="0 0 24 24" aria-hidden="true">
 marketplace: `<svg viewBox="0 0 24 24" aria-hidden="true">
 <path d="M3 8.5 5 3h14l2 5.5v2a3.2 3.2 0 0 1-5.8 1.9A3.2 3.2 0 0 1 9.4 12a3.2 3.2 0 0 1-5.9-1.5v-2Z"/>
 <path d="M5 13v8h14v-8a4.1 4.1 0 0 1-3.8-1.7A4.1 4.1 0 0 1 12 13a4.1 4.1 0 0 1-3.2-1.7A4.1 4.1 0 0 1 5 13Z"/>
-<path d="M9 21v-5h6v5" fill="#080b18"/>
+<path d="M9 21v-5h6v5"/>
 </svg>`,
 
 menu: `<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -55,7 +55,7 @@ menu: `<svg viewBox="0 0 24 24" aria-hidden="true">
 <rect x="13" y="13" width="9" height="9" rx="2.5"/>
 </svg>`,
 
-search: `<svg viewBox="0 0 24 24">
+search: `<svg viewBox="0 0 24 24" aria-hidden="true">
 <circle cx="10.8" cy="10.8" r="7.3"/>
 <path d="m16.2 16.2 4.3 4.3"/>
 </svg>`
@@ -177,6 +177,68 @@ mainNav.appendChild(link);
 
 topbar.append(brandRow, mainNav);
 
+/* =====================================
+NAVIGATION SCROLL BEHAVIOUR
+===================================== */
+
+function setupNavigationScroll() {
+
+let lastScrollPosition = window.scrollY;
+let ticking = false;
+
+function handleScroll() {
+
+const currentPosition = window.scrollY;
+const difference = currentPosition - lastScrollPosition;
+
+if (currentPosition <= 10) {
+
+topbar.classList.remove("nav-hidden");
+lastScrollPosition = currentPosition;
+ticking = false;
+return;
+
+}
+
+if (Math.abs(difference) >= 8) {
+
+if (difference < 0) {
+
+// Scrolling up: hide navigation
+topbar.classList.add("nav-hidden");
+
+} else {
+
+// Scrolling down: show navigation
+topbar.classList.remove("nav-hidden");
+
+}
+
+lastScrollPosition = currentPosition;
+
+}
+
+ticking = false;
+
+}
+
+window.addEventListener("scroll", () => {
+
+if (!ticking) {
+
+window.requestAnimationFrame(handleScroll);
+ticking = true;
+
+}
+
+}, { passive: true });
+
+}
+
+/* =====================================
+INSTALL NAVIGATION
+===================================== */
+
 function installNavigation() {
 
 if (document.querySelector(".campusora-topnav")) return;
@@ -184,12 +246,18 @@ if (document.querySelector(".campusora-topnav")) return;
 document.body.classList.add("has-shared-nav");
 document.body.prepend(topbar);
 
+setupNavigationScroll();
+
 }
 
 if (document.readyState === "loading") {
+
 document.addEventListener("DOMContentLoaded", installNavigation);
+
 } else {
+
 installNavigation();
+
 }
 
 /* =====================================
