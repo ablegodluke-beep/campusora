@@ -3,8 +3,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Settings | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+<title>Settings | Campusora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./shared-nav.css">
+<style>
 :root {
   --bg:#080b18;
   --card:#111629;
@@ -32,36 +35,6 @@ body {
 button,input,textarea,select {font:inherit}
 button {cursor:pointer}
 a {color:inherit;text-decoration:none}
-
-.topbar {
-  height:60px;
-  padding:0 4%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:rgba(8,11,24,.96);
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:10;
-  backdrop-filter:blur(15px);
-}
-
-.brand {
-  font-size:21px;
-  font-weight:800;
-  background:linear-gradient(90deg,#b18aff,#45dafa);
-  color:transparent;
-  background-clip:text;
-  -webkit-background-clip:text;
-}
-
-.back-link {
-  font-size:12px;
-  color:var(--muted);
-}
-
-.back-link:hover {color:var(--cyan)}
 
 .container {
   width:min(700px,94%);
@@ -416,266 +389,291 @@ select option {background:var(--card)}
   overflow-wrap:anywhere;
 }
 
-/* BOTTOM */
-
-.footer {
-  text-align:center;
-  color:#68718b;
-  font-size:10px;
-  padding:25px 5px;
-}
-
 @media(max-width:450px) {
   .container {margin-top:20px}
   .menu-row {min-height:62px;padding:11px 12px}
   .card {padding:15px}
   .page-heading h1 {font-size:21px}
 }
-</style></head><body><header class="topbar">
-  <a href="./index.html" class="brand">Campusora</a>
-  <a href="./index.html" class="back-link">← Back to feed</a>
-</header><main class="container">  <div class="page-heading">
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+  <div class="page-heading">
     <h1>Settings ⚙️</h1>
     <p>Manage your Campusora account and preferences.</p>
-  </div>  <div id="pageMessage" class="message" role="status" aria-live="polite"></div>  <div class="menu-label">Account</div>  <div class="settings-menu"><button type="button" class="menu-row toggle-panel"
-  data-panel="accountPanel" aria-expanded="false">
-  <span class="menu-icon">👤</span>
-  <span class="menu-text">
-    <strong>Account Settings</strong>
-    <small>Account information, password and logout</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</button>
-
-<button type="button" class="menu-row toggle-panel"
-  data-panel="profilePanel" aria-expanded="false">
-  <span class="menu-icon">🖼️</span>
-  <span class="menu-text">
-    <strong>Profile Settings</strong>
-    <small>Profile pictures and personal information</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</button>
-
-<a href="./privacy.html" class="menu-row">
-  <span class="menu-icon">🔒</span>
-  <span class="menu-text">
-    <strong>Privacy Settings</strong>
-    <small>Manage your privacy preferences</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</a>
-
-<a href="./account-management.html" class="menu-row">
-  <span class="menu-icon">⚙️</span>
-  <span class="menu-text">
-    <strong>Account Management</strong>
-    <small>Manage your account status and requests</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</a>
-
-  </div>  <!-- ACCOUNT PANEL: CLOSED UNTIL CLICKED -->  <section class="settings-panel" id="accountPanel"><div class="card">
-  <h2>Your account</h2>
-  <p class="card-description">Your currently signed-in Campusora account.</p>
-
-  <div class="account-info">
-    <div class="account-icon">👤</div>
-    <div>
-      <strong id="accountName">Loading account...</strong>
-      <span id="accountEmail">Please wait</span>
-    </div>
   </div>
 
-  <a id="profileLink" href="./profile.html" class="secondary-btn">
-    View my public profile
-  </a>
-</div>
+  <div id="pageMessage" class="message" role="status" aria-live="polite"></div>
 
-<div class="card">
-  <h2>Change password 🔐</h2>
-  <p class="card-description">Choose a new password for your Campusora account.</p>
+  <div class="menu-label">Account</div>
 
-  <form id="passwordForm">
+  <div class="settings-menu">
 
-    <div class="field">
-      <label for="newPassword">New password</label>
-      <input id="newPassword" type="password" minlength="8"
-        autocomplete="new-password"
-        placeholder="At least 8 characters" required>
-    </div>
-
-    <div class="field">
-      <label for="confirmPassword">Confirm new password</label>
-      <input id="confirmPassword" type="password" minlength="8"
-        autocomplete="new-password"
-        placeholder="Enter the password again" required>
-    </div>
-
-    <button type="submit" class="primary-btn" id="changePasswordBtn">
-      Update password
+    <button type="button" class="menu-row toggle-panel"
+      data-panel="accountPanel" aria-expanded="false">
+      <span class="menu-icon">👤</span>
+      <span class="menu-text">
+        <strong>Account Settings</strong>
+        <small>Account information, password and logout</small>
+      </span>
+      <span class="menu-arrow">›</span>
     </button>
 
-  </form>
-</div>
+    <button type="button" class="menu-row toggle-panel"
+      data-panel="profilePanel" aria-expanded="false">
+      <span class="menu-icon">🖼️</span>
+      <span class="menu-text">
+        <strong>Profile Settings</strong>
+        <small>Profile pictures and personal information</small>
+      </span>
+      <span class="menu-arrow">›</span>
+    </button>
 
-<div class="card">
-  <h2>Sign out</h2>
-  <p class="card-description">Sign out of your Campusora account on this device.</p>
+    <a href="./privacy.html" class="menu-row">
+      <span class="menu-icon">🔒</span>
+      <span class="menu-text">
+        <strong>Privacy Settings</strong>
+        <small>Manage your privacy preferences</small>
+      </span>
+      <span class="menu-arrow">›</span>
+    </a>
 
-  <button type="button" class="danger-btn" id="logoutBtn">
-    Log out of Campusora
-  </button>
-</div>
+    <a href="./account-management.html" class="menu-row">
+      <span class="menu-icon">⚙️</span>
+      <span class="menu-text">
+        <strong>Account Management</strong>
+        <small>Manage your account status and requests</small>
+      </span>
+      <span class="menu-arrow">›</span>
+    </a>
 
-  </section>  <div class="menu-label">Profile & Preferences</div>  <div class="settings-menu"><a href="./safety-centre.html" class="menu-row">
-  <span class="menu-icon">🛡️</span>
-  <span class="menu-text">
-    <strong>Safety Centre</strong>
-    <small>Account safety and community guidelines</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</a>
-
-<a href="./help-support.html" class="menu-row">
-  <span class="menu-icon">💬</span>
-  <span class="menu-text">
-    <strong>Help & Support</strong>
-    <small>Get assistance with Campusora</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</a>
-
-<a href="./legal.html" class="menu-row">
-  <span class="menu-icon">📄</span>
-  <span class="menu-text">
-    <strong>Legal & Policies</strong>
-    <small>Terms and platform policies</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</a>
-
-<a href="./about.html" class="menu-row">
-  <span class="menu-icon">ℹ️</span>
-  <span class="menu-text">
-    <strong>About Campusora</strong>
-    <small>Learn about our community</small>
-  </span>
-  <span class="menu-arrow">›</span>
-</a>
-
-  </div>  <!-- PROFILE PANEL: CLOSED UNTIL CLICKED -->  <section class="settings-panel" id="profilePanel"><div class="card">
-  <h2>Profile pictures 📸</h2>
-  <p class="card-description">
-    Change your profile picture and cover picture.
-  </p>
-
-  <div class="field">
-    <label>Cover picture</label>
-
-    <div class="cover-preview">
-      <span id="coverPlaceholder">Your cover picture will appear here</span>
-      <img id="coverPreview" alt="Cover picture preview">
-    </div>
-
-    <label class="upload-label">
-      Choose cover picture
-      <input id="coverFile" type="file"
-        accept="image/jpeg,image/png,image/webp">
-    </label>
-
-    <span class="file-name" id="coverFileName">
-      No new cover picture selected
-    </span>
   </div>
 
-  <div class="field">
-    <label>Profile picture</label>
+  <!-- ACCOUNT PANEL -->
 
-    <div class="avatar-row">
-      <div class="avatar-preview">
-        <span id="avatarPlaceholder">👤</span>
-        <img id="avatarPreview" alt="Profile picture preview">
+  <section class="settings-panel" id="accountPanel">
+
+    <div class="card">
+      <h2>Your account</h2>
+      <p class="card-description">Your currently signed-in Campusora account.</p>
+
+      <div class="account-info">
+        <div class="account-icon">👤</div>
+        <div>
+          <strong id="accountName">Loading account...</strong>
+          <span id="accountEmail">Please wait</span>
+        </div>
       </div>
 
-      <div>
+      <a id="profileLink" href="./profile.html" class="secondary-btn">
+        View my public profile
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>Change password 🔐</h2>
+      <p class="card-description">Choose a new password for your Campusora account.</p>
+
+      <form id="passwordForm">
+
+        <div class="field">
+          <label for="newPassword">New password</label>
+          <input id="newPassword" type="password" minlength="8"
+            autocomplete="new-password"
+            placeholder="At least 8 characters" required>
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm new password</label>
+          <input id="confirmPassword" type="password" minlength="8"
+            autocomplete="new-password"
+            placeholder="Enter the password again" required>
+        </div>
+
+        <button type="submit" class="primary-btn" id="changePasswordBtn">
+          Update password
+        </button>
+
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Sign out</h2>
+      <p class="card-description">Sign out of your Campusora account on this device.</p>
+
+      <button type="button" class="danger-btn" id="logoutBtn">
+        Log out of Campusora
+      </button>
+    </div>
+
+  </section>
+
+  <div class="menu-label">Profile & Preferences</div>
+
+  <div class="settings-menu">
+
+    <a href="./safety-centre.html" class="menu-row">
+      <span class="menu-icon">🛡️</span>
+      <span class="menu-text">
+        <strong>Safety Centre</strong>
+        <small>Account safety and community guidelines</small>
+      </span>
+      <span class="menu-arrow">›</span>
+    </a>
+
+    <a href="./help-support.html" class="menu-row">
+      <span class="menu-icon">💬</span>
+      <span class="menu-text">
+        <strong>Help & Support</strong>
+        <small>Get assistance with Campusora</small>
+      </span>
+      <span class="menu-arrow">›</span>
+    </a>
+
+    <a href="./legal.html" class="menu-row">
+      <span class="menu-icon">📄</span>
+      <span class="menu-text">
+        <strong>Legal & Policies</strong>
+        <small>Terms and platform policies</small>
+      </span>
+      <span class="menu-arrow">›</span>
+    </a>
+
+    <a href="./about.html" class="menu-row">
+      <span class="menu-icon">ℹ️</span>
+      <span class="menu-text">
+        <strong>About Campusora</strong>
+        <small>Learn about our community</small>
+      </span>
+      <span class="menu-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- PROFILE PANEL -->
+
+  <section class="settings-panel" id="profilePanel">
+
+    <div class="card">
+      <h2>Profile pictures 📸</h2>
+      <p class="card-description">
+        Change your profile picture and cover picture.
+      </p>
+
+      <div class="field">
+        <label>Cover picture</label>
+
+        <div class="cover-preview">
+          <span id="coverPlaceholder">Your cover picture will appear here</span>
+          <img id="coverPreview" alt="Cover picture preview">
+        </div>
+
         <label class="upload-label">
-          Choose profile picture
-          <input id="avatarFile" type="file"
+          Choose cover picture
+          <input id="coverFile" type="file"
             accept="image/jpeg,image/png,image/webp">
         </label>
 
-        <span class="file-name" id="avatarFileName">
-          No new profile picture selected
+        <span class="file-name" id="coverFileName">
+          No new cover picture selected
         </span>
       </div>
-    </div>
-  </div>
 
-  <p class="small-note">
-    JPG, PNG or WebP only. Maximum file size: 5 MB per image.
-  </p>
+      <div class="field">
+        <label>Profile picture</label>
 
-  <button type="button" class="primary-btn" id="savePhotosBtn">
-    Save picture changes
-  </button>
-</div>
+        <div class="avatar-row">
+          <div class="avatar-preview">
+            <span id="avatarPlaceholder">👤</span>
+            <img id="avatarPreview" alt="Profile picture preview">
+          </div>
 
-<div class="card">
-  <h2>Profile information</h2>
-  <p class="card-description">
-    Update the information people see when they visit your profile.
-  </p>
+          <div>
+            <label class="upload-label">
+              Choose profile picture
+              <input id="avatarFile" type="file"
+                accept="image/jpeg,image/png,image/webp">
+            </label>
 
-  <form id="profileForm">
+            <span class="file-name" id="avatarFileName">
+              No new profile picture selected
+            </span>
+          </div>
+        </div>
+      </div>
 
-    <div class="field">
-      <label for="fullName">Full name</label>
-      <input id="fullName" type="text" maxlength="80"
-        placeholder="Your full name" required>
-    </div>
-
-    <div class="field">
-      <label for="username">Username</label>
-      <input id="username" type="text" minlength="3" maxlength="24"
-        pattern="[A-Za-z0-9_]+"
-        placeholder="your_username" required>
       <p class="small-note">
-        Use 3–24 letters, numbers or underscores.
+        JPG, PNG or WebP only. Maximum file size: 5 MB per image.
       </p>
+
+      <button type="button" class="primary-btn" id="savePhotosBtn">
+        Save picture changes
+      </button>
     </div>
 
-    <div class="field">
-      <label for="school">School or institution</label>
-      <input id="school" type="text" maxlength="120"
-        placeholder="Your school" required>
+    <div class="card">
+      <h2>Profile information</h2>
+      <p class="card-description">
+        Update the information people see when they visit your profile.
+      </p>
+
+      <form id="profileForm">
+
+        <div class="field">
+          <label for="fullName">Full name</label>
+          <input id="fullName" type="text" maxlength="80"
+            placeholder="Your full name" required>
+        </div>
+
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" type="text" minlength="3" maxlength="24"
+            pattern="[A-Za-z0-9_]+"
+            placeholder="your_username" required>
+          <p class="small-note">
+            Use 3–24 letters, numbers or underscores.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="school">School or institution</label>
+          <input id="school" type="text" maxlength="120"
+            placeholder="Your school" required>
+        </div>
+
+        <div class="field">
+          <label for="role">Membership type</label>
+          <select id="role" required>
+            <option value="student">Student</option>
+            <option value="alumni">Alumni</option>
+            <option value="general">General Member</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="bio">About you</label>
+          <textarea id="bio" maxlength="300"
+            placeholder="Tell people something about yourself..."></textarea>
+        </div>
+
+        <button type="submit" class="primary-btn" id="saveProfileBtn">
+          Save profile changes
+        </button>
+
+      </form>
     </div>
 
-    <div class="field">
-      <label for="role">Membership type</label>
-      <select id="role" required>
-        <option value="student">Student</option>
-        <option value="alumni">Alumni</option>
-        <option value="general">General Member</option>
-      </select>
-    </div>
+  </section>
 
-    <div class="field">
-      <label for="bio">About you</label>
-      <textarea id="bio" maxlength="300"
-        placeholder="Tell people something about yourself..."></textarea>
-    </div>
+</main>
 
-    <button type="submit" class="primary-btn" id="saveProfileBtn">
-      Save profile changes
-    </button>
+<script src="./shared-nav.js"></script>
 
-  </form>
-</div>
-
-  </section>  <div class="footer">
-    Campusora · Connect, Learn, Grow, Together.
-  </div></main><script type="module">
+<script type="module">
 import { supabase } from './supabase.js';
 
 const pageMessage = document.getElementById('pageMessage');
@@ -704,6 +702,7 @@ let avatarObjectUrl = null;
 let coverObjectUrl = null;
 
 /* OPEN SETTINGS SECTIONS ONLY WHEN CLICKED */
+
 document.querySelectorAll('.toggle-panel').forEach(button => {
   button.addEventListener('click', () => {
     const panel = document.getElementById(button.dataset.panel);
@@ -799,6 +798,7 @@ function validatePhoto(file) {
 }
 
 /* LOAD ACCOUNT AND PROFILE */
+
 async function initialise() {
   const {data,error} = await supabase.auth.getSession();
 
@@ -854,6 +854,7 @@ async function initialise() {
 }
 
 /* PROFILE PICTURE PREVIEW */
+
 avatarFile.addEventListener('change',() => {
   const file = avatarFile.files[0];
   if (!file) return;
@@ -874,6 +875,7 @@ avatarFile.addEventListener('change',() => {
 });
 
 /* COVER PICTURE PREVIEW */
+
 coverFile.addEventListener('change',() => {
   const file = coverFile.files[0];
   if (!file) return;
@@ -894,6 +896,7 @@ coverFile.addEventListener('change',() => {
 });
 
 /* UPLOAD PHOTO */
+
 async function uploadProfilePhoto(file,imageType) {
   const extension = file.type === 'image/jpeg' ? 'jpg' :
     file.type === 'image/png' ? 'png' : 'webp';
@@ -920,6 +923,7 @@ async function uploadProfilePhoto(file,imageType) {
 }
 
 /* SAVE PICTURES */
+
 savePhotosBtn.addEventListener('click',async () => {
   clearMessage();
 
@@ -1019,6 +1023,7 @@ savePhotosBtn.addEventListener('click',async () => {
 });
 
 /* UPDATE PROFILE INFORMATION */
+
 profileForm.addEventListener('submit',async event => {
   event.preventDefault();
   clearMessage();
@@ -1097,6 +1102,7 @@ profileForm.addEventListener('submit',async event => {
 });
 
 /* CHANGE PASSWORD */
+
 passwordForm.addEventListener('submit',async event => {
   event.preventDefault();
   clearMessage();
@@ -1142,6 +1148,7 @@ passwordForm.addEventListener('submit',async event => {
 });
 
 /* LOG OUT */
+
 logoutBtn.addEventListener('click',async () => {
   const confirmed = window.confirm(
     'Are you sure you want to log out of Campusora?'
@@ -1169,5 +1176,7 @@ logoutBtn.addEventListener('click',async () => {
 });
 
 initialise();
-</script></body>
-  </html>
+</script>
+
+</body>
+</html>
