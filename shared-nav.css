@@ -1,42 +1,34 @@
-/* Campusora: hide all visible scrollbars */
+/* =====================================
+CAMPUSORA — HIDE ALL VISIBLE SCROLLBARS
+Keep normal scrolling enabled.
+===================================== */
+
 * {
+  box-sizing: border-box;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
-}
+  }
 
-*::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  background: transparent !important;
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-thumb {
+display: none !important;
+width: 0 !important;
+height: 0 !important;
+background: transparent !important;
 }
 
 html,
 body {
-  overflow-x: clip;
+max-width: 100%;
+overflow-x: clip;
+scrollbar-width: none !important;
+-ms-overflow-style: none !important;
 }
 
 /* =====================================
 CAMPUSORA SHARED NAVIGATION
 Compact • Gray • Icon Only • Mobile Fit
-===================================== */
-
-* {
-  box-sizing: border-box;
-  }
-
-html {
-max-width: 100%;
-overflow-x: clip;
-}
-
-body {
-max-width: 100%;
-overflow-x: clip;
-}
-
-/* =====================================
-MAIN HEADER
 ===================================== */
 
 .campusora-topnav {
@@ -47,12 +39,13 @@ top: 0;
 z-index: 9999;
 background: #080b18;
 border-bottom: 1px solid rgba(180,190,210,.10);
+transform: translateY(0);
 transition: transform .28s ease;
 will-change: transform;
 }
 
 .campusora-topnav.nav-hidden {
-transform: translateY(-110%);
+transform: translateY(-100%);
 pointer-events: none;
 }
 
@@ -381,7 +374,6 @@ PHONE LAYOUT
 ===================================== */
 
 @media (max-width: 600px) {
-
 .campusora-topnav-brandrow {
 min-height: 45px;
 padding: 5px 9px;
@@ -443,7 +435,6 @@ SMALL PHONE SCREENS
 ===================================== */
 
 @media (max-width: 360px) {
-
 .campusora-topnav-brandrow {
 padding-left: 6px;
 padding-right: 6px;
@@ -478,7 +469,6 @@ REDUCED MOTION
 ===================================== */
 
 @media (prefers-reduced-motion: reduce) {
-
 .campusora-topnav,
 .campusora-nav-item {
 transition: none;
