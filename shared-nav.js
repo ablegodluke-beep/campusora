@@ -9,14 +9,14 @@ const MENU = "menu.html";
 const currentFile = location.pathname.split("/").pop() || HOME;
 
 const icons = {
-home: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 10.2 12 2.5l9.5 7.7v9.5a1.8 1.8 0 0 1-1.8 1.8h-4.9v-7h-5.6v7H4.3a1.8 1.8 0 0 1-1.8-1.8z"/></svg>`,
-suggestions: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><circle cx="18" cy="9" r="3"/><path d="M1.5 20.5c0-4.1 3.1-7 7.5-7s7.5 2.9 7.5 7v1h-15z"/><path d="M16 14.1c3.8-.1 6.5 2.2 6.5 5.8v1h-4v-1c0-2.1-.8-4.1-2.5-5.8z"/></svg>`,
-messages: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2C6.1 2.2 1.8 6 1.8 11.2c0 2.4 1 4.5 2.8 6.1l-.8 4.5 5-2.4c1 .3 2.1.5 3.2.5 5.9 0 10.2-3.8 10.2-8.7S17.9 2.2 12 2.2Z"/><circle cx="7.5" cy="11.5" r="1.25"/><circle cx="12" cy="11.5" r="1.25"/><circle cx="16.5" cy="11.5" r="1.25"/></svg>`,
-spotlight: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6"/><path d="M9 6.8v10.4a.8.8 0 0 0 1.2.7l8-5.2a.8.8 0 0 0 0-1.4l-8-5.2a.8.8 0 0 0-1.2.7Z"/></svg>`,
-notifications: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.5 9.5a6.5 6.5 0 0 0-13 0c0 7-3 7.2-3 9.2h19c0-2-3-2.2-3-9.2Z"/><path d="M9 21h6a3 3 0 0 1-6 0Z"/></svg>`,
-marketplace: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5 5 3h14l2 5.5v2a3.2 3.2 0 0 1-5.8 1.9A3.2 3.2 0 0 1 9.4 12a3.2 3.2 0 0 1-5.9-1.5v-2Z"/><path d="M5 13v8h14v-8a4.1 4.1 0 0 1-3.8-1.7A4.1 4.1 0 0 1 12 13a4.1 4.1 0 0 1-3.2-1.7A4.1 4.1 0 0 1 5 13Z"/><path d="M9 21v-5h6v5"/></svg>`,
-menu: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2.5"/><rect x="13" y="2" width="9" height="9" rx="2.5"/><rect x="2" y="13" width="9" height="9" rx="2.5"/><rect x="13" y="13" width="9" height="9" rx="2.5"/></svg>`,
-search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.3 4.3"/></svg>`
+home: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 10.2 12 2.5l9.5 7.7v9.5a1.8 1.8 0 0 1-1.8 1.8h-4.9v-7h-5.6v7H4.3a1.8 1.8 0 0 1-1.8-1.8z"/></svg>",
+suggestions: "<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><circle cx="18" cy="9" r="3"/><path d="M1.5 20.5c0-4.1 3.1-7 7.5-7s7.5 2.9 7.5 7v1h-15z"/><path d="M16 14.1c3.8-.1 6.5 2.2 6.5 5.8v1h-4v-1c0-2.1-.8-4.1-2.5-5.8z"/></svg>",
+messages: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2C6.1 2.2 1.8 6 1.8 11.2c0 2.4 1 4.5 2.8 6.1l-.8 4.5 5-2.4c1 .3 2.1.5 3.2.5 5.9 0 10.2-3.8 10.2-8.7S17.9 2.2 12 2.2Z"/><circle cx="7.5" cy="11.5" r="1.25"/><circle cx="12" cy="11.5" r="1.25"/><circle cx="16.5" cy="11.5" r="1.25"/></svg>",
+spotlight: "<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6"/><path d="M9 6.8v10.4a.8.8 0 0 0 1.2.7l8-5.2a.8.8 0 0 0 0-1.4l-8-5.2a.8.8 0 0 0-1.2.7Z"/></svg>",
+notifications: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.5 9.5a6.5 6.5 0 0 0-13 0c0 7-3 7.2-3 9.2h19c0-2-3-2.2-3-9.2Z"/><path d="M9 21h6a3 3 0 0 1-6 0Z"/></svg>",
+marketplace: "<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5 5 3h14l2 5.5v2a3.2 3.2 0 0 1-5.8 1.9A3.2 3.2 0 0 1 9.4 12a3.2 3.2 0 0 1-5.9-1.5v-2Z"/><path d="M5 13v8h14v-8a4.1 4.1 0 0 1-3.8-1.7A4.1 4.1 0 0 1 12 13a4.1 4.1 0 0 1-3.2-1.7A4.1 4.1 0 0 1 5 13Z"/><path d="M9 21v-5h6v5"/></svg>",
+menu: "<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2.5"/><rect x="13" y="2" width="9" height="9" rx="2.5"/><rect x="2" y="13" width="9" height="9" rx="2.5"/><rect x="13" y="13" width="9" height="9" rx="2.5"/></svg>",
+search: "<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.3 4.3"/></svg>"
 };
 
 const topbar = document.createElement("header");
@@ -117,36 +117,60 @@ topbar.append(brandRow, mainNav);
 
 /* =====================================
 NAVIGATION SCROLL BEHAVIOUR
-Swipe up = hide
-Swipe down = show
+
+Finger moves UP:
+Page scrolls down.
+Keep navigation visible until its
+original full height has passed,
+then smoothly hide it.
+
+Finger moves DOWN:
+Page scrolls up.
+Show navigation immediately.
+
+At page top:
+Always show navigation.
 ===================================== */
 
 function setupNavigationScroll() {
-let lastScrollPosition = window.scrollY;
+let lastScrollPosition = Math.max(0, window.scrollY);
 let ticking = false;
 
 function handleScroll() {
-const currentPosition = window.scrollY;
+const currentPosition = Math.max(0, window.scrollY);
 const difference = currentPosition - lastScrollPosition;
 
-if (currentPosition <= 10) {
+/* Always show navigation at the top. */
+if (currentPosition <= 0) {
 topbar.classList.remove("nav-hidden");
 lastScrollPosition = currentPosition;
 ticking = false;
 return;
 }
 
-if (Math.abs(difference) >= 5) {
+/* Measure the complete original navigation height. */
+const originalNavHeight = topbar.offsetHeight;
 
+/* Do not hide until the page has passed the
+navigation's original full position. */
+if (currentPosition <= originalNavHeight) {
+topbar.classList.remove("nav-hidden");
+lastScrollPosition = currentPosition;
+ticking = false;
+return;
+}
+
+/* Page moving down: hide smoothly. */
 if (difference > 0) {
 topbar.classList.add("nav-hidden");
-} else if (difference < 0) {
+}
+
+/* Page moving up: show immediately. */
+else if (difference < 0) {
 topbar.classList.remove("nav-hidden");
 }
 
 lastScrollPosition = currentPosition;
-}
-
 ticking = false;
 }
 
@@ -156,6 +180,14 @@ window.requestAnimationFrame(handleScroll);
 ticking = true;
 }
 }, { passive: true });
+
+/* Set the correct state if the page opens
+while already scrolled down. */
+if (window.scrollY > topbar.offsetHeight) {
+topbar.classList.add("nav-hidden");
+} else {
+topbar.classList.remove("nav-hidden");
+}
 }
 
 function installNavigation() {
