@@ -22,21 +22,19 @@
   --cyan:#42d9f5;
   --gold:#f5ce75;
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
+  min-height:100vh;
   background:radial-gradient(ellipse at top left,#171438 0%,transparent 42%),var(--bg);
   color:var(--text);
   font-family:'DM Sans',sans-serif;
-  min-height:100vh
 }
-
 button,textarea{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 a{color:inherit;text-decoration:none}
+.hidden{display:none!important}
 
 .topbar{
   min-height:62px;
@@ -49,49 +47,42 @@ a{color:inherit;text-decoration:none}
   position:sticky;
   top:0;
   z-index:20;
-  backdrop-filter:blur(14px)
+  backdrop-filter:blur(14px);
 }
-
 .brand{
   display:flex;
   align-items:center;
   gap:8px;
   font-size:19px;
   font-weight:800;
-  color:#fff
 }
-
 .brand img{
   width:34px;
   height:34px;
   object-fit:contain;
-  background:transparent
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  filter:none;
+  mix-blend-mode:lighten;
 }
-
 .top-actions{display:flex;gap:8px}
-
 .top-btn{
   background:var(--card2);
   color:var(--text);
   border:1px solid var(--border);
   padding:8px 12px;
   border-radius:10px;
-  font-size:12px
+  font-size:12px;
 }
-
-.page{
-  width:min(850px,94%);
-  margin:22px auto 60px
-}
-
+.page{width:min(850px,94%);margin:22px auto 60px}
 .profile-card,.post-card{
   background:rgba(17,22,41,.96);
   border:1px solid var(--border);
   border-radius:18px;
   overflow:hidden;
-  margin-bottom:20px
+  margin-bottom:20px;
 }
-
 .cover{
   height:210px;
   background:
@@ -99,35 +90,15 @@ a{color:inherit;text-decoration:none}
     linear-gradient(120deg,#151b3d,#302064,#07566c);
   background-position:center;
   background-size:cover;
-  position:relative
-}
-
-.cover.has-cover{cursor:zoom-in}
-
-.profile-content{padding:0 25px 22px}
-
-.avatar{
-  width:108px;
-  height:108px;
-  border-radius:50%;
-  object-fit:cover;
-  border:5px solid var(--card);
-  background:var(--card2)
-}
-
-.profile-avatar{
-  margin-top:-54px;
   position:relative;
-  cursor:zoom-in;
-  display:block
 }
-
+.cover.has-cover{cursor:zoom-in}
+.profile-content{padding:0 25px 22px}
 .premium-top-row{
   display:flex;
   justify-content:flex-end;
-  margin-top:9px
+  margin-top:9px;
 }
-
 .premium-btn{
   display:inline-flex;
   align-items:center;
@@ -138,38 +109,43 @@ a{color:inherit;text-decoration:none}
   border-radius:8px;
   padding:7px 11px;
   font-size:10px;
-  font-weight:800
+  font-weight:800;
 }
-
+.avatar{
+  width:108px;
+  height:108px;
+  border-radius:50%;
+  object-fit:cover;
+  border:5px solid var(--card);
+  background:var(--card2);
+}
+.profile-avatar{
+  margin-top:0;
+  position:relative;
+  cursor:zoom-in;
+  display:block;
+}
 .profile-heading{margin-top:8px}
-
 .name-line{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
-  gap:7px
+  gap:7px;
 }
-
 h1{
   font-size:22px;
   line-height:1.35;
   margin:0;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
 }
-
 .username-line{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
   gap:6px;
-  margin-top:4px
+  margin-top:4px;
 }
-
-.username{
-  color:var(--muted);
-  font-size:12px
-}
-
+.username{color:var(--muted);font-size:12px}
 .badge{
   display:inline-flex;
   align-items:center;
@@ -179,26 +155,23 @@ h1{
   border-radius:20px;
   padding:3px 6px;
   font-size:9px;
-  font-weight:700
+  font-weight:700;
 }
-
 .school{
   color:#aeb8d7;
   font-size:12px;
   line-height:1.6;
   margin-top:9px;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
 }
-
 .bio{
   color:#dce1f7;
   font-size:13px;
   line-height:1.7;
   margin-top:9px;
   white-space:pre-wrap;
-  overflow-wrap:anywhere
+  overflow-wrap:anywhere;
 }
-
 .profile-rank-badge{
   display:inline-flex;
   align-items:center;
@@ -207,30 +180,24 @@ h1{
   border-radius:20px;
   font-size:8px;
   font-weight:900;
-  white-space:nowrap
+  white-space:nowrap;
 }
-
-.profile-rank-badge.hidden{display:none}
-
 .rank-queen{
   color:#ffe6a1;
   background:linear-gradient(135deg,#6f4210,#2d1c0b);
-  border:1px solid #d9ad55
+  border:1px solid #d9ad55;
 }
-
 .rank-king{
   color:#d9f2ff;
   background:linear-gradient(135deg,#174a78,#10233f);
-  border:1px solid #66b9f0
+  border:1px solid #66b9f0;
 }
-
 .rank-grand-master{
   color:#f4e7ff;
   background:linear-gradient(135deg,#55218a,#211039);
-  border:1px solid #c28bff
+  border:1px solid #c28bff;
 }
-
-.premium-badge{
+.premium-badge,.inline-premium{
   display:inline-flex;
   align-items:center;
   background:rgba(245,206,117,.08);
@@ -239,17 +206,32 @@ h1{
   border-radius:12px;
   padding:3px 6px;
   font-size:8px;
-  font-weight:800
+  font-weight:800;
 }
-
+.profile-stats{
+  display:flex;
+  gap:25px;
+  flex-wrap:wrap;
+  border-top:1px solid var(--border);
+  margin-top:19px;
+  padding-top:16px;
+}
+.stat{
+  border:0;
+  background:transparent;
+  padding:0;
+  color:inherit;
+  text-align:left;
+}
+.stat strong{display:block;font-size:17px}
+.stat span{color:var(--muted);font-size:11px}
 .profile-actions{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
   gap:8px;
-  margin-top:15px
+  margin-top:15px;
 }
-
 .profile-action-btn{
   min-width:105px;
   border:1px solid var(--border);
@@ -258,74 +240,12 @@ h1{
   color:white;
   background:var(--card2);
   font-size:11px;
-  font-weight:800
+  font-weight:800;
 }
-
 .profile-action-btn.primary{
   border:0;
-  background:linear-gradient(110deg,#8053f7,#3e8fff,#38cce5)
+  background:linear-gradient(110deg,#8053f7,#3e8fff,#38cce5);
 }
-
-.stats{
-  display:flex;
-  gap:25px;
-  flex-wrap:wrap;
-  border-top:1px solid var(--border);
-  margin-top:19px;
-  padding-top:16px
-}
-
-.stat{
-  border:0;
-  background:transparent;
-  padding:0;
-  color:inherit;
-  text-align:left
-}
-
-.stat strong{display:block;font-size:17px}
-.stat span{color:var(--muted);font-size:11px}
-
-.gift-strip{
-  margin-top:18px;
-  padding:13px 0 3px;
-  border-top:1px solid var(--border)
-}
-
-.gift-strip-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:10px
-}
-
-.gift-strip-title{font-size:12px;font-weight:800}
-.gift-strip-subtitle{color:var(--muted);font-size:10px}
-
-.gift-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  overflow-x:auto;
-  padding:2px 0 8px
-}
-
-.gift-chip{
-  flex:0 0 auto;
-  display:flex;
-  align-items:center;
-  gap:5px;
-  padding:7px 9px;
-  border-radius:12px;
-  border:1px solid rgba(135,88,255,.2);
-  background:rgba(135,88,255,.09)
-}
-
-.gift-chip-icon{font-size:19px}
-.gift-chip-count{font-size:11px;font-weight:800}
-.gift-chip-name{font-size:8px;color:var(--muted)}
-
 .gift-button{
   display:inline-flex;
   align-items:center;
@@ -337,446 +257,266 @@ h1{
   color:#eee8ff;
   background:linear-gradient(120deg,rgba(135,88,255,.28),rgba(66,217,245,.12));
   font-size:10px;
-  font-weight:800
+  font-weight:800;
 }
-
-.section-title{font-size:18px;margin:27px 0 14px}
-
-.post-card{padding:18px}
-
-.post-header{display:flex;align-items:center;gap:11px}
-
-.post-avatar{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  object-fit:cover;
-  background:var(--card2);
-  flex-shrink:0;
-  cursor:pointer
+.gift-section{
+  margin-top:18px;
+  padding:13px 0 3px;
+  border-top:1px solid var(--border);
 }
-
-.post-author{font-size:13px;font-weight:800}
-.post-meta{font-size:10px;color:var(--muted);margin-top:4px}
-
-.inline-premium{
-  display:inline-flex;
-  margin-left:5px;
-  padding:2px 5px;
-  border:1px solid rgba(245,206,117,.38);
-  border-radius:6px;
-  color:var(--gold);
-  background:rgba(245,206,117,.07);
-  font-size:7px;
-  font-weight:800
-}
-
-.post-text{
-  font-size:13px;
-  line-height:1.8;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  margin:16px 0
-}
-
-.post-image{
-  width:100%;
-  max-height:560px;
-  object-fit:contain;
-  background:#090c18;
-  border-radius:12px;
-  display:block;
-  margin-bottom:14px;
-  cursor:zoom-in
-}
-
-.post-stats{
+.gift-section-top{
   display:flex;
+  align-items:center;
   justify-content:space-between;
   gap:10px;
-  color:var(--muted);
-  font-size:11px;
-  padding:10px 2px;
-  border-bottom:1px solid var(--border)
+  margin-bottom:10px;
 }
-
-.post-actions{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  padding-top:10px
-}
-
-.action-btn{
+.gift-section-title{font-size:12px;font-weight:800}
+.gift-section-subtitle{color:var(--muted);font-size:10px}
+.gift-row{
   display:flex;
   align-items:center;
-  justify-content:center;
-  gap:6px;
-  border:0;
-  background:transparent;
-  color:#b8c1df;
-  border-radius:10px;
-  padding:10px 4px;
-  font-size:11px
+  gap:8px;
+  overflow-x:auto;
+  padding:2px 0 8px;
 }
-
+.gift-chip{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:7px 9px;
+  border-radius:12px;
+  border:1px solid rgba(135,88,255,.2);
+  background:rgba(135,88,255,.09);
+}
+.gift-chip-icon{font-size:19px}
+.gift-chip-count{font-size:11px;font-weight:800}
+.gift-chip-name{font-size:8px;color:var(--muted)}
+.section-title{font-size:18px;margin:27px 0 14px}
+.post-card{padding:18px}
+.post-header{display:flex;align-items:center;gap:11px}
+.post-avatar{
+  width:42px;height:42px;border-radius:50%;
+  object-fit:cover;background:var(--card2);
+  flex-shrink:0;cursor:pointer;
+}
+.post-author{font-size:13px;font-weight:800}
+.post-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.post-text{
+  font-size:13px;line-height:1.8;
+  white-space:pre-wrap;overflow-wrap:anywhere;
+  margin:16px 0;
+}
+.post-image{
+  width:100%;max-height:560px;object-fit:contain;
+  background:#090c18;border-radius:12px;
+  display:block;margin-bottom:14px;cursor:zoom-in;
+}
+.post-stats{
+  display:flex;justify-content:space-between;gap:10px;
+  color:var(--muted);font-size:11px;padding:10px 2px;
+  border-bottom:1px solid var(--border);
+}
+.post-actions{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:7px;padding-top:10px;
+}
+.action-btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  border:0;background:transparent;color:#b8c1df;
+  border-radius:10px;padding:10px 4px;font-size:11px;
+}
 .action-btn:hover{background:var(--card2);color:white}
 .action-icon{font-size:18px}
-
 .action-btn.liked,.react-btn.reacted{
-  color:#ff6b91;
-  background:rgba(255,99,132,.09)
+  color:#ff6b91;background:rgba(255,99,132,.09);
 }
-
 .comments-area{
   border-top:1px solid var(--border);
-  margin-top:12px;
-  padding-top:14px
+  margin-top:12px;padding-top:14px;
 }
-
 .comment-form{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-
 .comment-input{
-  width:100%;
-  min-width:0;
-  resize:vertical;
-  min-height:40px;
-  max-height:130px;
-  color:white;
-  background:#0b1020;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:11px;
-  outline:none;
-  font-size:12px
+  width:100%;min-width:0;resize:vertical;min-height:40px;
+  max-height:130px;color:white;background:#0b1020;
+  border:1px solid var(--border);border-radius:12px;
+  padding:11px;outline:none;font-size:12px;
 }
-
 .comment-send{
-  background:var(--purple);
-  border:0;
-  color:white;
-  border-radius:10px;
-  padding:10px 13px;
-  font-size:11px;
-  font-weight:700;
-  flex-shrink:0
+  background:var(--purple);border:0;color:white;
+  border-radius:10px;padding:10px 13px;
+  font-size:11px;font-weight:700;flex-shrink:0;
 }
-
 .comment{display:flex;gap:9px;margin:13px 0}
-
 .comment-avatar{
-  width:32px;
-  height:32px;
-  object-fit:cover;
-  border-radius:50%;
-  background:var(--card2);
-  flex-shrink:0;
-  cursor:pointer
+  width:32px;height:32px;object-fit:cover;
+  border-radius:50%;background:var(--card2);
+  flex-shrink:0;cursor:pointer;
 }
-
 .comment-body{
-  flex:1;
-  min-width:0;
-  background:#0b1020;
-  padding:10px 12px;
-  border-radius:12px
+  flex:1;min-width:0;background:#0b1020;
+  padding:10px 12px;border-radius:12px;
 }
-
 .comment-name{
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:6px;
-  color:#c8b4ff;
-  display:inline-block
+  font-size:11px;font-weight:800;margin-bottom:6px;
+  color:#c8b4ff;display:inline-block;
 }
-
 .comment-text{
-  color:#dce1f7;
-  font-size:12px;
-  line-height:1.6;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere
+  color:#dce1f7;font-size:12px;line-height:1.6;
+  white-space:pre-wrap;overflow-wrap:anywhere;
 }
-
 .comment-time{font-size:9px;color:var(--muted);margin-top:7px}
-
 .comment-tools{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  flex-wrap:wrap;
-  margin-top:8px
+  display:flex;align-items:center;gap:13px;
+  flex-wrap:wrap;margin-top:8px;
 }
-
 .small-action{
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  padding:3px 0;
-  font-size:10px
+  border:0;background:transparent;color:var(--muted);
+  padding:3px 0;font-size:10px;
 }
-
 .replies{
-  margin:9px 0 0 12px;
-  padding-left:12px;
-  border-left:2px solid var(--border)
+  margin:9px 0 0 12px;padding-left:12px;
+  border-left:2px solid var(--border);
 }
-
 .reply-form{display:flex;gap:7px;margin-top:10px}
 .reply-form .comment-input{min-height:36px;padding:9px}
 .reply-form .comment-send{padding:9px 11px}
-
 .reaction-picker{
-  display:flex;
-  gap:5px;
-  padding:7px;
-  margin-top:6px;
-  width:max-content;
-  max-width:100%;
-  background:#202944;
-  border:1px solid var(--border);
-  border-radius:30px;
-  box-shadow:0 8px 25px #0008
+  display:flex;gap:5px;padding:7px;margin-top:6px;
+  width:max-content;max-width:100%;
+  background:#202944;border:1px solid var(--border);
+  border-radius:30px;box-shadow:0 8px 25px #0008;
 }
-
 .reaction-picker button{
-  border:0;
-  background:transparent;
-  font-size:20px;
-  padding:3px;
-  transition:transform .15s
+  border:0;background:transparent;font-size:20px;padding:3px;
 }
-
-.reaction-picker button:hover{transform:scale(1.25)}
-
 .empty,.message{
-  background:var(--card);
-  border:1px solid var(--border);
-  color:var(--muted);
-  border-radius:14px;
-  padding:24px;
-  text-align:center;
-  line-height:1.7;
-  font-size:12px
+  background:var(--card);border:1px solid var(--border);
+  color:var(--muted);border-radius:14px;padding:24px;
+  text-align:center;line-height:1.7;font-size:12px;
 }
-
 .message.error{color:#ff9aae;border-color:rgba(255,99,132,.4)}
-.hidden{display:none!important}
 .loading{text-align:center;padding:45px 15px;color:var(--muted)}
-
 body.premium-active{
   background:
     radial-gradient(ellipse at top left,rgba(101,63,153,.25),transparent 42%),
     radial-gradient(ellipse at top right,rgba(168,121,37,.1),transparent 40%),
-    #08090f
+    #08090f;
 }
-
 body.premium-active .profile-card{
   border-color:rgba(245,206,117,.45);
-  box-shadow:0 0 22px rgba(168,121,37,.07)
+  box-shadow:0 0 22px rgba(168,121,37,.07);
 }
-
 .photo-viewer{
-  position:fixed;
-  inset:0;
-  z-index:200;
-  background:rgba(2,4,12,.94);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px
+  position:fixed;inset:0;z-index:200;
+  background:rgba(2,4,12,.94);display:flex;
+  align-items:center;justify-content:center;padding:20px;
 }
-
 .photo-viewer-content{
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative
+  width:100%;height:100%;display:flex;
+  align-items:center;justify-content:center;position:relative;
 }
-
 .photo-viewer-image{
-  max-width:100%;
-  max-height:85vh;
-  object-fit:contain;
-  border-radius:12px
+  max-width:100%;max-height:85vh;
+  object-fit:contain;border-radius:12px;
 }
-
 .photo-viewer-close{
-  position:absolute;
-  top:4px;
-  right:4px;
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:#171d33;
-  color:white;
-  border:1px solid var(--border);
-  font-size:25px
+  position:absolute;top:4px;right:4px;
+  width:42px;height:42px;border-radius:50%;
+  background:#171d33;color:white;
+  border:1px solid var(--border);font-size:25px;
 }
-
 .modal-overlay{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:rgba(3,5,14,.82);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:16px
+  position:fixed;inset:0;z-index:100;
+  background:rgba(3,5,14,.82);display:flex;
+  align-items:center;justify-content:center;padding:16px;
 }
-
 .premium-modal,.gift-modal{
-  width:min(450px,100%);
-  max-height:90vh;
-  overflow-y:auto;
-  background:#111629;
-  border:1px solid rgba(245,206,117,.4);
-  border-radius:18px;
-  padding:20px
+  width:min(450px,100%);max-height:90vh;overflow-y:auto;
+  background:#111629;border:1px solid rgba(245,206,117,.4);
+  border-radius:18px;padding:20px;
 }
-
 .gift-modal{border-color:rgba(135,88,255,.5)}
-
 .modal-top{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:8px
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:12px;margin-bottom:8px;
 }
-
 .modal-title{margin:0;font-size:18px}
-.modal-subtitle{color:var(--muted);font-size:11px;line-height:1.7;margin:8px 0 16px}
-
-.modal-close{
-  width:30px;
-  height:30px;
-  border:1px solid var(--border);
-  border-radius:9px;
-  background:#171d33;
-  color:white;
-  font-size:17px
+.modal-subtitle{
+  color:var(--muted);font-size:11px;
+  line-height:1.7;margin:8px 0 16px;
 }
-
+.modal-close{
+  width:30px;height:30px;border:1px solid var(--border);
+  border-radius:9px;background:#171d33;color:white;font-size:17px;
+}
 .plan-card{
   border:1px solid rgba(245,206,117,.25);
-  border-radius:13px;
-  background:rgba(255,255,255,.025);
-  padding:14px;
-  margin-top:10px
+  border-radius:13px;background:rgba(255,255,255,.025);
+  padding:14px;margin-top:10px;
 }
-
 .plan-top{display:flex;justify-content:space-between;gap:10px}
 .plan-name{font-size:12px;font-weight:800}
 .plan-description{color:var(--muted);font-size:10px;margin-top:5px}
 .plan-price{color:var(--gold);font-size:18px;font-weight:800}
 .plan-duration{color:#c3b58e;font-size:9px;text-align:right;margin-top:4px}
-
 .plan-continue,.gift-pay-button{
-  width:100%;
-  margin-top:12px;
-  padding:11px;
+  width:100%;margin-top:12px;padding:11px;
   border:1px solid rgba(245,206,117,.55);
-  border-radius:9px;
-  background:linear-gradient(135deg,#342713,#20190f);
-  color:#f5ce75;
-  font-size:11px;
-  font-weight:800
+  border-radius:9px;background:linear-gradient(135deg,#342713,#20190f);
+  color:#f5ce75;font-size:11px;font-weight:800;
 }
-
 .plan-card.permanent{border-color:rgba(135,88,255,.45)}
 .plan-card.permanent .plan-continue{
   background:linear-gradient(110deg,#6641c8,#3b5ac7);
-  color:white;
-  border:0
+  color:white;border:0;
 }
-
 .modal-note{
-  margin:14px 0 0;
-  color:#7f89a8;
-  font-size:9px;
-  line-height:1.7;
-  text-align:center
+  margin:14px 0 0;color:#7f89a8;
+  font-size:9px;line-height:1.7;text-align:center;
 }
-
 .premium-status{
-  padding:12px;
-  margin-top:12px;
+  padding:12px;margin-top:12px;
   background:rgba(245,206,117,.07);
   border:1px solid rgba(245,206,117,.3);
-  border-radius:11px;
-  color:#f5ce75;
-  font-size:11px;
-  line-height:1.8
+  border-radius:11px;color:#f5ce75;
+  font-size:11px;line-height:1.8;
 }
-
 .modal-message,.gift-modal-message{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
-  margin-top:12px;
-  overflow-wrap:anywhere
+  color:var(--muted);font-size:11px;
+  line-height:1.7;margin-top:12px;overflow-wrap:anywhere;
 }
-
-.gift-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:9px
-}
-
+.gift-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .gift-option{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  min-width:0;
-  min-height:125px;
-  padding:12px 8px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:rgba(255,255,255,.025);
-  color:white
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;min-width:0;min-height:125px;
+  padding:12px 8px;border:1px solid var(--border);
+  border-radius:13px;background:rgba(255,255,255,.025);color:white;
 }
-
 .gift-option.selected{
-  border-color:#a98aff;
-  background:rgba(135,88,255,.18)
+  border-color:#a98aff;background:rgba(135,88,255,.18);
 }
-
 .gift-option-icon{font-size:29px}
 .gift-option-name{font-size:11px;font-weight:800;margin-top:5px}
 .gift-option-price{color:#c9b5ff;font-size:10px;margin-top:4px}
-
 .gift-pay-button{
-  border:0;
-  background:linear-gradient(110deg,#8053f7,#3e8fff,#38cce5);
-  color:white
+  border:0;background:linear-gradient(110deg,#8053f7,#3e8fff,#38cce5);
+  color:white;
 }
-
 .gift-history{
-  margin-top:17px;
-  padding-top:14px;
-  border-top:1px solid var(--border)
+  margin-top:17px;padding-top:14px;border-top:1px solid var(--border);
 }
-
 .gift-history-title{font-size:12px;margin:0 0 10px}
 .gift-history-list{display:flex;flex-direction:column;gap:8px}
 .gift-history-item{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  background:rgba(255,255,255,.025);
-  border-radius:10px
+  display:flex;align-items:center;gap:10px;
+  padding:10px;background:rgba(255,255,255,.025);border-radius:10px;
 }
-
 .gift-history-icon{font-size:21px}
 .gift-history-details{flex:1;min-width:0}
 .gift-history-sender{font-size:10px;font-weight:800}
 .gift-history-date{color:var(--muted);font-size:9px;margin-top:4px}
-.gift-history-empty,.gift-empty{color:var(--muted);font-size:10px;padding:8px 0}
 
 @media(max-width:600px){
   .topbar{padding:0 3%;min-height:56px}
@@ -787,17 +527,15 @@ body.premium-active .profile-card{
   .cover{height:150px}
   .profile-content{padding:0 15px 18px}
   .avatar{width:88px;height:88px}
-  .profile-avatar{margin-top:-44px}
   h1{font-size:19px}
   .school{font-size:11px}
   .bio{font-size:12px}
-  .stats{gap:19px}
+  .profile-stats{gap:19px}
   .stat strong{font-size:16px}
   .post-card{padding:13px}
   .action-btn{font-size:10px}
   .replies{margin-left:5px;padding-left:8px}
 }
-
 @media(max-width:380px){
   .top-actions{gap:5px}
   .top-btn{padding:7px}
@@ -813,7 +551,6 @@ body.premium-active .profile-card{
     <img src="./campusora-logo.png" alt="Campusora">
     <span>Campusora</span>
   </a>
-
   <div class="top-actions">
     <button class="top-btn" id="homeButton" type="button">⌂ Home</button>
     <button class="top-btn" id="createPostButton" type="button">＋ Post</button>
@@ -821,26 +558,24 @@ body.premium-active .profile-card{
 </header>
 
 <main class="page">
-
   <div id="pageMessage" class="message hidden"></div>
   <div id="loading" class="loading">Loading Campusora profile...</div>
 
   <section id="profileSection" class="profile-card hidden">
-
     <div id="cover" class="cover" aria-label="View cover photo"></div>
 
     <div class="profile-content">
 
-      <img id="profileAvatar" class="avatar profile-avatar" alt="Profile photo">
-
+      <!-- Premium stays at the top-right, immediately below the cover. -->
       <div class="premium-top-row">
         <button id="premiumButton" class="premium-btn hidden" type="button">
           ✦ Upgrade to Premium
         </button>
       </div>
 
-      <div class="profile-heading">
+      <img id="profileAvatar" class="avatar profile-avatar" alt="Profile photo">
 
+      <div class="profile-heading">
         <div class="name-line">
           <h1 id="profileName">Campusora Member</h1>
           <span id="profileRankBadge" class="profile-rank-badge hidden"></span>
@@ -854,18 +589,10 @@ body.premium-active .profile-card{
 
         <div id="profileSchool" class="school"></div>
         <div id="profileBio" class="bio"></div>
-
-        <div class="profile-actions">
-          <button id="followButton" class="profile-action-btn primary hidden" type="button">Follow</button>
-          <button id="messageButton" class="profile-action-btn hidden" type="button">Message</button>
-          <button id="getRanksButton" class="profile-action-btn hidden" type="button">👑 Get Ranks</button>
-          <button id="giftButton" class="gift-button" type="button">🎁 Send a Gift</button>
-        </div>
-
       </div>
 
-      <div class="stats">
-
+      <!-- Statistics come before Follow and Message. -->
+      <div class="profile-stats">
         <button class="stat" id="followersStat" type="button">
           <strong id="followerCount">0</strong>
           <span>Followers</span>
@@ -880,17 +607,26 @@ body.premium-active .profile-card{
           <strong id="followingCount">0</strong>
           <span>Following</span>
         </button>
-
       </div>
 
-      <section id="giftStrip" class="gift-strip">
-        <div class="gift-strip-top">
-          <span class="gift-strip-title">🎁 Gifts Received</span>
-          <span id="giftTotal" class="gift-strip-subtitle">0 gifts</span>
-        </div>
+      <div class="profile-actions">
+        <button id="followButton" class="profile-action-btn primary hidden" type="button">Follow</button>
+        <button id="messageButton" class="profile-action-btn hidden" type="button">Message</button>
+        <button id="getRanksButton" class="profile-action-btn hidden" type="button">👑 Get Ranks</button>
+      </div>
 
+      <!-- My Gifts is separate from Gifts Received. -->
+      <div class="profile-actions">
+        <button id="giftButton" class="gift-button" type="button">🎁 Send a Gift</button>
+      </div>
+
+      <section id="giftStrip" class="gift-section">
+        <div class="gift-section-top">
+          <span class="gift-section-title">🎁 Gifts Received</span>
+          <span id="giftTotal" class="gift-section-subtitle">0 gifts</span>
+        </div>
         <div id="giftCounts" class="gift-row">
-          <span class="gift-empty">Loading gifts...</span>
+          <span>Loading gifts...</span>
         </div>
       </section>
 
@@ -906,2092 +642,1702 @@ body.premium-active .profile-card{
       <img id="photoViewerImage" class="photo-viewer-image" alt="Expanded photo">
     </div>
   </div>
+  </main>
 
-  <div id="premiumModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
-    <div class="premium-modal">
+<!-- PREMIUM MEMBERSHIP MODAL -->
+<div id="premiumModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <button class="modal-close" id="closePremiumModal" type="button">×</button>
+    <h2>Campusora Premium</h2>
+    <p>Unlock more ways to stand out on Campusora.</p>
 
-      <div class="modal-top">
-        <h2 class="modal-title">✦ Upgrade to Premium</h2>
-        <button id="closePremiumModal" class="modal-close" type="button">×</button>
-      </div>
-
-      <p class="modal-subtitle">
-        Give your Campusora profile an exclusive look with Premium styling and a special badge.
-      </p>
-
-      <div id="premiumStatus" class="premium-status hidden"></div>
-
-      <div id="premiumPlans">
-
-        <div class="plan-card">
-          <div class="plan-top">
-            <div>
-              <div class="plan-name">Monthly Premium</div>
-              <div class="plan-description">Premium badge and exclusive profile styling.</div>
-            </div>
-            <div>
-              <div class="plan-price">₦2,000</div>
-              <div class="plan-duration">30 days</div>
-            </div>
-          </div>
-          <button class="plan-continue" type="button" data-plan="monthly">
-            Continue →
-          </button>
-        </div>
-
-        <div class="plan-card permanent">
-          <div class="plan-top">
-            <div>
-              <div class="plan-name">Permanent Premium</div>
-              <div class="plan-description">One payment for Premium membership without an expiry date.</div>
-            </div>
-            <div>
-              <div class="plan-price">₦10,000</div>
-              <div class="plan-duration">One-time</div>
-            </div>
-          </div>
-          <button class="plan-continue" type="button" data-plan="permanent">
-            Choose Permanent →
-          </button>
-        </div>
-
-      </div>
-
-      <div id="premiumModalMessage" class="modal-message hidden"></div>
-
-      <p class="modal-note">
-        Monthly Premium lasts 30 days and does not automatically renew.
-        Payment must be verified before Premium is activated.
-      </p>
-
-    </div>
-  </div>
-
-  <div id="giftModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
-    <div class="gift-modal">
-
-      <div class="modal-top">
-        <h2 id="giftModalTitle" class="modal-title">🎁 Send a Gift</h2>
-        <button id="closeGiftModal" class="modal-close" type="button">×</button>
-      </div>
-
-      <p id="giftModalSubtitle" class="modal-subtitle">
-        Choose a gift to brighten someone's Campusora profile.
-      </p>
-
-      <div id="giftGrid" class="gift-grid"></div>
-
-      <button id="giftPayButton" class="gift-pay-button" type="button" disabled>
-        Select a gift to continue
+    <div class="premium-plans">
+      <button class="premium-plan" data-plan="monthly" type="button">
+        <strong>Monthly Premium</strong>
+        <span>Premium access for one month</span>
       </button>
 
-      <div id="giftModalMessage" class="gift-modal-message"></div>
+      <button class="premium-plan" data-plan="permanent" type="button">
+        <strong>Permanent Premium</strong>
+        <span>One-time payment for permanent access</span>
+      </button>
+    </div>
 
-      <section id="giftHistory" class="gift-history hidden">
-        <h3 class="gift-history-title">🎁 Your Gifts Received</h3>
-        <div id="giftHistoryList" class="gift-history-list"></div>
-      </section>
+    <p id="premiumMessage" class="modal-message"></p>
+    <button id="premiumPayButton" class="primary-btn" type="button" disabled>
+      Select a plan
+    </button>
+  </div>
+</div>
 
-      <p class="modal-note">
-        Gifts are recorded only after successful Paystack payment verification.
-      </p>
+<!-- SEND GIFT MODAL -->
+<div id="giftModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <button class="modal-close" id="closeGiftModal" type="button">×</button>
+    <h2>Send a Gift</h2>
+    <p id="giftRecipientName">Choose a gift to send.</p>
 
+    <div id="giftCatalog" class="gift-catalog">
+      <p>Loading gifts...</p>
+    </div>
+
+    <p id="giftMessage" class="modal-message"></p>
+
+    <button id="sendGiftButton" class="primary-btn" type="button" disabled>
+      Select a gift
+    </button>
+  </div>
+</div>
+
+<!-- FOLLOWERS / FOLLOWING MODAL -->
+<div id="followListModal" class="modal-overlay hidden">
+  <div class="modal-box follow-list-box">
+    <button class="modal-close" id="closeFollowList" type="button">×</button>
+    <h2 id="followListTitle">People</h2>
+    <div id="followListContent">
+      <p>Loading...</p>
     </div>
   </div>
+</div>
 
-  <script type="module">
-import { supabase } from './supabase.js';
+<script type="module">
+import { supabase } from "./supabase.js";
 
-const $ = id => document.getElementById(id);
+/* =====================================
+   PROFILE PAGE STATE
+===================================== */
+
+const params = new URLSearchParams(window.location.search);
+
+const requestedProfileId = params.get("id");
+const requestedUsername = params.get("username");
 
 let currentUser = null;
-let currentProfile = null;
-let isOwnProfile = false;
-let activePremium = null;
-let premiumBusy = false;
-
-let giftCatalogRows = [];
+let profile = null;
+let selectedPremiumPlan = null;
 let selectedGift = null;
-let giftBusy = false;
-let giftCatalogError = '';
+let giftCatalog = [];
+let isFollowing = false;
+let currentFollowListType = "followers";
 
-const fallbackAvatar = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" rx="50" fill="#252d48"/><text x="50" y="62" text-anchor="middle" font-size="45" fill="#c8b4ff">👤</text></svg>'
-);
-
-const GIFT_DEFINITIONS = [
-  {slug:'rose',name:'Rose',icon:'🌹',price:500},
-  {slug:'love',name:'Love',icon:'💖',price:500},
-  {slug:'golden_star',name:'Golden Star',icon:'⭐',price:1000},
-  {slug:'diamond',name:'Diamond',icon:'💎',price:1500},
-  {slug:'royal_crown',name:'Royal Crown',icon:'👑',price:2000},
-  {slug:'premium_heart',name:'Premium Heart',icon:'💝',price:5000}
+const reactionOptions = [
+  { name: "like", icon: "👍" },
+  { name: "love", icon: "❤️" },
+  { name: "haha", icon: "😂" },
+  { name: "wow", icon: "😮" },
+  { name: "sad", icon: "😢" },
+  { name: "angry", icon: "😡" }
 ];
 
-function giftSlug(value) {
-  return String(value||'')
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g,'_')
-    .replace(/^_+|_+$/g,'');
+const fallbackAvatar =
+  "data:image/svg+xml," +
+  encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
+      <rect width="100%" height="100%" fill="#171c32"/>
+      <circle cx="80" cy="60" r="28" fill="#777f9c"/>
+      <path d="M25 150c5-35 25-52 55-52s50 17 55 52"
+        fill="#777f9c"/>
+    </svg>
+  `);
+
+/* =====================================
+   ELEMENT HELPERS
+===================================== */
+
+const $ = (id) => document.getElementById(id);
+
+function showMessage(element, message, type = "info") {
+  if (!element) return;
+
+  element.textContent = message;
+  element.className = `modal-message ${type}`;
 }
 
-function formatNaira(amount) {
-  return '₦'+Number(amount||0).toLocaleString('en-NG');
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
 }
 
-function giftDefinitionByIdOrSlug(value) {
-  const target=String(value||'');
-  const slug=giftSlug(target);
+function formatDate(dateValue) {
+  if (!dateValue) return "";
 
-  return GIFT_DEFINITIONS.find(gift=>
-    gift.slug===target ||
-    gift.slug===slug ||
-    giftSlug(gift.name)===slug
-  )||null;
-}
-
-function getGiftForCatalogRow(row) {
-  if(!row)return null;
-
-  const candidates=[
-    row.slug,
-    row.gift_id,
-    row.name,
-    row.title,
-    row.id
-  ].filter(Boolean);
-
-  for(const value of candidates){
-    const gift=giftDefinitionByIdOrSlug(value);
-    if(gift)return gift;
-  }
-
-  return null;
-}
-
-function findCatalogRowForGift(gift) {
-  if(!gift)return null;
-
-  return giftCatalogRows.find(row=>{
-    const definition=getGiftForCatalogRow(row);
-    return definition?.slug===gift.slug;
-  })||null;
-}
-
-$('homeButton').addEventListener('click',()=>location.href='./index.html');
-$('createPostButton').addEventListener('click',()=>location.href='./create-post.html');
-
-function formatDate(value) {
-  if(!value)return '';
-  const date=new Date(value);
-  if(Number.isNaN(date.getTime()))return '';
-  return date.toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
-}
-
-function showMessage(message,error=false) {
-  $('pageMessage').textContent=message;
-  $('pageMessage').classList.remove('hidden');
-  $('pageMessage').classList.toggle('error',error);
-}
-
-function makeActionButton(icon,label) {
-  const button=document.createElement('button');
-  button.type='button';
-  button.className='action-btn';
-
-  const iconSpan=document.createElement('span');
-  iconSpan.className='action-icon';
-  iconSpan.textContent=icon;
-
-  const labelSpan=document.createElement('span');
-  labelSpan.className='action-label';
-  labelSpan.textContent=label;
-
-  button.append(iconSpan,labelSpan);
-  return button;
-}
-
-function profileLink(userId) {
-  return './profile.html?id='+encodeURIComponent(userId);
-}
-
-/* PHOTO VIEWER */
-
-function openPhotoViewer(url,alt='Photo') {
-  if(!url)return;
-
-  $('photoViewerImage').src=url;
-  $('photoViewerImage').alt=alt;
-  $('photoViewer').classList.remove('hidden');
-  document.body.style.overflow='hidden';
-}
-
-function closePhotoViewer() {
-  $('photoViewer').classList.add('hidden');
-  $('photoViewerImage').src='';
-  document.body.style.overflow='';
-}
-
-$('closePhotoViewer').addEventListener('click',closePhotoViewer);
-
-$('photoViewer').addEventListener('click',event=>{
-  if(event.target===$('photoViewer'))closePhotoViewer();
-});
-
-$('photoViewerImage').addEventListener('click',event=>{
-  event.stopPropagation();
-});
-
-$('profileAvatar').addEventListener('click',()=>{
-  const url=currentProfile?.avatar_url;
-  if(url)openPhotoViewer(url,'Profile photo');
-});
-
-$('cover').addEventListener('click',()=>{
-  const url=currentProfile?.cover_url;
-  if(url)openPhotoViewer(url,'Cover photo');
-});
-
-document.addEventListener('keydown',event=>{
-  if(event.key==='Escape'){
-    if(!$('photoViewer').classList.contains('hidden'))closePhotoViewer();
-    else if(!$('premiumModal').classList.contains('hidden'))closePremiumModal();
-    else if(!$('giftModal').classList.contains('hidden'))closeGiftModal();
-  }
-});
-
-function makeProfileAvatar(person,className='comment-avatar') {
-  const img=document.createElement('img');
-  img.className=className;
-  img.src=person?.avatar_url||fallbackAvatar;
-  img.alt='View profile';
-  img.loading='lazy';
-
-  img.addEventListener('error',()=>{
-    img.src=fallbackAvatar;
-  },{once:true});
-
-  img.addEventListener('click',()=>{
-    if(person?.avatar_url){
-      openPhotoViewer(person.avatar_url,'Profile photo');
-    }else if(person?.id){
-      location.href=profileLink(person.id);
-    }
+  return new Date(dateValue).toLocaleDateString("en-NG", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
   });
-
-  return img;
 }
 
-function makeProfileName(person) {
-  const container=document.createElement('span');
-  container.style.display='inline-flex';
-  container.style.alignItems='center';
-  container.style.flexWrap='wrap';
-  container.style.gap='4px';
+function formatMoney(amount) {
+  return `₦${Number(amount || 0).toLocaleString("en-NG")}`;
+}
 
-  const a=document.createElement('a');
-  a.className='comment-name';
-  a.href=profileLink(person.id);
-  a.textContent=person?.full_name||person?.username||'Campusora Member';
+function getProfileName(person) {
+  return person?.full_name || person?.username || "Campusora Member";
+}
 
-  container.append(a);
+function getAvatar(person) {
+  return person?.avatar_url || fallbackAvatar;
+}
 
-  if(activePremium&&currentProfile&&person?.id===currentProfile.id){
-    const premium=document.createElement('span');
-    premium.className='inline-premium';
-    premium.textContent='✦ PREMIUM';
-    premium.setAttribute('aria-label','Premium member');
-    container.append(premium);
+function openModal(id) {
+  $(id)?.classList.remove("hidden");
+}
+
+function closeModal(id) {
+  $(id)?.classList.add("hidden");
+}
+
+/* =====================================
+   PROFILE DISPLAY HELPERS
+===================================== */
+
+function setText(id, value) {
+  const element = $(id);
+  if (element) element.textContent = value ?? "";
+}
+
+function setImage(id, source) {
+  const element = $(id);
+  if (!element) return;
+
+  element.src = source || fallbackAvatar;
+
+  element.onerror = () => {
+    element.src = fallbackAvatar;
+  };
+}
+
+function displayProfile(person) {
+  if (!person) return;
+
+  setImage("profileAvatar", getAvatar(person));
+  setImage("profileCover", person.cover_url);
+
+  setText("profileName", getProfileName(person));
+  setText(
+    "profileUsername",
+    person.username ? `@${person.username}` : ""
+  );
+
+  setText("profileSchool", person.school || "School not added");
+  setText("profileBio", person.bio || "No bio added yet.");
+
+  const role = person.role || "General Member";
+  setText("profileRole", role);
+
+  const profileLink = $("profileAvatar");
+  if (profileLink) {
+    profileLink.alt = `${getProfileName(person)} profile photo`;
   }
 
-  return container;
+  document.title = `${getProfileName(person)} | Campusora`;
 }
 
-function appendPostPremiumIndicator(authorName,author) {
-  if(!activePremium||!currentProfile||author?.id!==currentProfile.id)return;
+/* =====================================
+   AUTHENTICATION
+===================================== */
 
-  const indicator=document.createElement('span');
-  indicator.className='inline-premium';
-  indicator.textContent='✦ PREMIUM';
-  indicator.setAttribute('aria-label','Premium member');
-  authorName.append(indicator);
+async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error("Authentication check:", error);
+    return null;
+  }
+
+  return data.user || null;
 }
 
-/* PREMIUM MEMBERSHIP */
+/* =====================================
+   LOAD PROFILE
+===================================== */
+
+async function findProfile() {
+  let query = supabase
+    .from("profiles")
+    .select(`
+      id,
+      username,
+      full_name,
+      school,
+      role,
+      bio,
+      avatar_url,
+      cover_url,
+      created_at
+    `);
+
+  if (requestedProfileId) {
+    query = query.eq("id", requestedProfileId);
+  } else if (requestedUsername) {
+    query = query.eq("username", requestedUsername);
+  } else if (currentUser) {
+    query = query.eq("id", currentUser.id);
+  } else {
+    return null;
+  }
+
+  const { data, error } = await query.maybeSingle();
+
+  if (error) {
+    console.error("Profile loading error:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+function showProfileError(message) {
+  const container = $("profileContent") || $("profileSection");
+
+  if (container) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>${escapeHTML(message)}</p>
+      </div>
+    `;
+  }
+}
+
+/* =====================================
+   PREMIUM MEMBERSHIP
+===================================== */
+
+async function checkPremiumMembership() {
+  if (!profile?.id) return false;
+
+  try {
+    const { data, error } = await supabase
+      .from("premium_memberships")
+      .select("plan_type,status,payment_verified,starts_at,expires_at")
+      .eq("user_id", profile.id)
+      .eq("payment_verified", true)
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (error) {
+      console.warn("Premium status could not be checked:", error);
+      return false;
+    }
+
+    if (!data?.length) return false;
+
+    const membership = data[0];
+
+    if (
+      membership.expires_at &&
+      new Date(membership.expires_at) < new Date()
+    ) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Premium check failed:", error);
+    return false;
+  }
+}
+
+async function updatePremiumDisplay() {
+  const isPremium = await checkPremiumMembership();
+
+  const badge = $("premiumBadge");
+  const button = $("premiumButton");
+
+  if (badge) {
+    badge.classList.toggle("hidden", !isPremium);
+  }
+
+  if (button) {
+    button.textContent = isPremium ? "Premium Member" : "Get Premium";
+  }
+
+  return isPremium;
+}
 
 function openPremiumModal() {
-  $('premiumModal').classList.remove('hidden');
-  document.body.style.overflow='hidden';
+  selectedPremiumPlan = null;
+
+  const payButton = $("premiumPayButton");
+  if (payButton) {
+    payButton.disabled = true;
+    payButton.textContent = "Select a plan";
+  }
+
+  document.querySelectorAll(".premium-plan").forEach((button) => {
+    button.classList.remove("selected");
+  });
+
+  showMessage($("premiumMessage"), "");
+  openModal("premiumModal");
 }
 
-function closePremiumModal() {
-  $('premiumModal').classList.add('hidden');
-  document.body.style.overflow='';
-}
+document.querySelectorAll(".premium-plan").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedPremiumPlan = button.dataset.plan;
 
-$('closePremiumModal').addEventListener('click',closePremiumModal);
+    document.querySelectorAll(".premium-plan").forEach((item) => {
+      item.classList.remove("selected");
+    });
 
-$('premiumModal').addEventListener('click',event=>{
-  if(event.target===$('premiumModal'))closePremiumModal();
+    button.classList.add("selected");
+
+    const payButton = $("premiumPayButton");
+
+    if (payButton) {
+      payButton.disabled = false;
+      payButton.textContent = "Continue to payment";
+    }
+  });
 });
 
-$('premiumButton').addEventListener('click',async()=>{
-  if(!currentUser){
-    alert('Please log in to upgrade your profile.');
-    location.href='./auth.html?mode=login';
+$("premiumButton")?.addEventListener("click", async () => {
+  if (!currentUser) {
+    alert("Please log in to get Premium.");
     return;
   }
 
-  if(!isOwnProfile){
-    alert('You can upgrade your own profile from your profile page.');
+  if (profile?.id !== currentUser.id) {
     return;
   }
 
-  await refreshPremiumStatus();
+  const alreadyPremium = await updatePremiumDisplay();
+
+  if (alreadyPremium) {
+    alert("Your Premium membership is active.");
+    return;
+  }
+
   openPremiumModal();
 });
 
-function showPremiumStatus(membership) {
-  activePremium=membership||null;
-
-  const badge=$('premiumBadge');
-  const status=$('premiumStatus');
-  const plans=$('premiumPlans');
-
-  if(!membership){
-    badge.classList.add('hidden');
-    document.body.classList.remove('premium-active');
-    status.classList.add('hidden');
-    plans.classList.remove('hidden');
-
-    $('premiumButton').classList.toggle('hidden',!isOwnProfile);
-    $('premiumButton').textContent='✦ Upgrade to Premium';
-    return;
-  }
-
-  badge.classList.remove('hidden');
-  document.body.classList.add('premium-active');
-  status.classList.remove('hidden');
-  plans.classList.add('hidden');
-
-  // Only the owner can see the upgrade button.
-  $('premiumButton').classList.add('hidden');
-
-  if(membership.plan_type==='permanent'){
-    status.textContent='✦ This member has an active Permanent Premium membership.';
-  }else{
-    const expiry=membership.expires_at
-      ?formatDate(membership.expires_at)
-      :'the end of the membership period';
-
-    status.textContent='✦ Premium membership active until '+expiry+'.';
-  }
-}
-
-/*
-  IMPORTANT:
-  Check the membership belonging to the profile currently being viewed.
-  Do not assign Premium here. Only verified active database records count.
-*/
-
-async function refreshPremiumStatus() {
-  if(!currentProfile)return;
-
-  const {data,error}=await supabase
-    .from('premium_memberships')
-    .select('user_id,plan_type,status,payment_verified,starts_at,expires_at')
-    .eq('user_id',currentProfile.id)
-    .eq('status','active')
-    .eq('payment_verified',true);
-
-  if(error){
-    console.error('Premium status could not be loaded:',error);
-    showPremiumStatus(null);
-    return;
-  }
-
-  const now=Date.now();
-
-  const membership=(data||[])
-    .filter(item=>{
-      if(item.user_id!==currentProfile.id)return false;
-
-      if(item.plan_type==='permanent'){
-        return true;
-      }
-
-      return item.plan_type==='monthly' &&
-        item.expires_at &&
-        new Date(item.expires_at).getTime()>now;
-    })
-    .sort((a,b)=>{
-      if(a.plan_type==='permanent')return -1;
-      if(b.plan_type==='permanent')return 1;
-      return new Date(b.expires_at)-new Date(a.expires_at);
-    })[0]||null;
-
-  showPremiumStatus(membership);
-}
-
-function setPremiumMessage(message,isError=false) {
-  const box=$('premiumModalMessage');
-  box.textContent=message;
-  box.classList.remove('hidden');
-  box.style.color=isError?'#ff9aae':'#d7c99e';
-}
-
-function clearPremiumMessage() {
-  $('premiumModalMessage').textContent='';
-  $('premiumModalMessage').classList.add('hidden');
-}
-
-async function startPremiumCheckout(planType) {
-  if(premiumBusy)return;
-
-  if(!currentUser){
-    alert('Please log in before purchasing Premium.');
-    location.href='./auth.html?mode=login';
-    return;
-  }
-
-  if(!isOwnProfile||currentUser.id!==currentProfile?.id){
-    setPremiumMessage('You can only purchase Premium for your own account.',true);
-    return;
-  }
-
-  if(!['monthly','permanent'].includes(planType)){
-    setPremiumMessage('This Premium plan is not valid.',true);
-    return;
-  }
-
-  await refreshPremiumStatus();
-
-  if(activePremium){
-    setPremiumMessage('You already have an active Premium membership.');
-    return;
-  }
-
-  const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
-  const session=sessionData?.session;
-
-  if(sessionError||!session?.access_token){
-    setPremiumMessage('Your login session could not be confirmed. Please log in again.',true);
-    return;
-  }
-
-  premiumBusy=true;
-  clearPremiumMessage();
-
-  const buttons=[...document.querySelectorAll('[data-plan]')];
-
-  buttons.forEach(button=>{
-    button.disabled=true;
-    button.dataset.originalText=button.textContent;
-    button.textContent='Connecting to payment...';
-  });
-
-  try{
-    const response=await fetch('/api/premium/initialize',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+session.access_token
-      },
-      body:JSON.stringify({plan_type:planType})
-    });
-
-    const result=await response.json().catch(()=>({}));
-
-    if(!response.ok||!result.authorization_url){
-      throw new Error(result.error||result.message||'Could not start payment. Please try again.');
-    }
-
-    window.location.assign(result.authorization_url);
-
-  }catch(error){
-    console.error('Premium checkout error:',error);
-    setPremiumMessage(error.message||'Payment could not be started. Please try again.',true);
-  }finally{
-    premiumBusy=false;
-
-    buttons.forEach(button=>{
-      button.disabled=false;
-      button.textContent=button.dataset.originalText||'Continue';
-    });
-  }
-}
-
-document.querySelectorAll('[data-plan]').forEach(button=>{
-  button.addEventListener('click',()=>{
-    startPremiumCheckout(button.dataset.plan);
-  });
+$("closePremiumModal")?.addEventListener("click", () => {
+  closeModal("premiumModal");
 });
 
-async function verifyPremiumPaymentReturn() {
-  const params=new URLSearchParams(location.search);
+/* =====================================
+   PREMIUM PAYMENT
+===================================== */
 
-  if(params.get('gift_payment')==='1'||params.has('gift_reference'))return;
+async function initializePremiumPayment() {
+  if (!selectedPremiumPlan || !currentUser) return;
 
-  const reference=params.get('reference')||params.get('trxref');
-  if(!reference)return;
+  const button = $("premiumPayButton");
 
-  params.delete('reference');
-  params.delete('trxref');
+  button.disabled = true;
+  button.textContent = "Preparing payment...";
 
-  const newQuery=params.toString();
-  const cleanUrl=location.pathname+(newQuery?'?'+newQuery:'')+location.hash;
-  history.replaceState({},'',cleanUrl);
+  showMessage($("premiumMessage"), "Connecting to payment service...");
 
-  if(!currentUser){
-    showMessage('Your payment return was detected. Please log in again to verify and activate Premium.',true);
-    return;
-  }
-
-  if(!isOwnProfile||currentUser.id!==currentProfile?.id){
-    showMessage('Please open your own profile to finish verifying your Premium payment.',true);
-    return;
-  }
-
-  const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
-  const session=sessionData?.session;
-
-  if(sessionError||!session?.access_token){
-    showMessage('Please log in again to verify your Premium payment.',true);
-    return;
-  }
-
-  showMessage('Verifying your Premium payment. Please wait...');
-
-  try{
-    const response=await fetch('/api/premium/verify',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+session.access_token
+  try {
+    const response = await fetch("/api/premium/initialize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
       },
-      body:JSON.stringify({reference})
-    });
-
-    const result=await response.json().catch(()=>({}));
-
-    if(!response.ok||!result.success){
-      throw new Error(result.error||result.message||'Payment verification was unsuccessful.');
-    }
-
-    showMessage('Payment verified successfully! Your Premium membership is now active.');
-
-    await refreshPremiumStatus();
-    await loadPosts(currentProfile);
-
-  }catch(error){
-    console.error('Premium verification error:',error);
-
-    showMessage(
-      error.message||'We could not verify your payment. If you were charged, please contact Campusora support.',
-      true
-    );
-  }
-}
-
-/* PART 3 CONTINUES WITH GIFTS, RANKS, FOLLOWING, POSTS AND COMMENTS */
-  /* VIRTUAL GIFTS */
-
-function setGiftMessage(message,isError=false) {
-  const box=$('giftModalMessage');
-  box.textContent=message||'';
-  box.classList.toggle('error',!!isError);
-}
-
-function openGiftModal() {
-  if(!currentProfile)return;
-
-  $('giftModal').classList.remove('hidden');
-  document.body.style.overflow='hidden';
-
-  if(isOwnProfile){
-    $('giftModalTitle').textContent='🎁 My Gifts';
-    $('giftModalSubtitle').textContent='See the gifts you have received on Campusora.';
-    $('giftGrid').classList.add('hidden');
-    $('giftPayButton').classList.add('hidden');
-    $('giftHistory').classList.remove('hidden');
-    loadGiftHistory();
-  }else{
-    $('giftModalTitle').textContent='🎁 Send a Gift';
-    $('giftModalSubtitle').textContent='Choose a gift to brighten '+(currentProfile.full_name||currentProfile.username||'this member')+"'s profile.";
-    $('giftGrid').classList.remove('hidden');
-    $('giftPayButton').classList.remove('hidden');
-    $('giftHistory').classList.add('hidden');
-    renderGiftOptions();
-  }
-}
-
-function closeGiftModal() {
-  $('giftModal').classList.add('hidden');
-  document.body.style.overflow='';
-}
-
-$('giftButton').addEventListener('click',()=>{
-  if(!currentProfile)return;
-
-  if(!currentUser&&!isOwnProfile){
-    location.href='./auth.html?mode=login';
-    return;
-  }
-
-  openGiftModal();
-});
-
-$('closeGiftModal').addEventListener('click',closeGiftModal);
-
-$('giftModal').addEventListener('click',event=>{
-  if(event.target===$('giftModal'))closeGiftModal();
-});
-
-async function loadGiftCatalog() {
-  giftCatalogError='';
-
-  const {data,error}=await supabase
-    .from('campusora_gift_catalog')
-    .select('*');
-
-  if(error){
-    console.error('Gift catalogue error:',error);
-    giftCatalogRows=[];
-    giftCatalogError='The gift collection could not be loaded.';
-    return;
-  }
-
-  giftCatalogRows=(data||[]).filter(row=>row.active!==false);
-}
-
-function renderGiftOptions() {
-  const grid=$('giftGrid');
-  grid.replaceChildren();
-
-  selectedGift=null;
-  $('giftPayButton').disabled=true;
-  $('giftPayButton').textContent='Select a gift to continue';
-  setGiftMessage('');
-
-  if(giftCatalogError){
-    grid.textContent=giftCatalogError;
-    setGiftMessage(giftCatalogError,true);
-    return;
-  }
-
-  if(!giftCatalogRows.length){
-    grid.textContent='No gifts are available right now.';
-    return;
-  }
-
-  for(const gift of GIFT_DEFINITIONS){
-    const catalogRow=findCatalogRowForGift(gift);
-
-    const button=document.createElement('button');
-    button.type='button';
-    button.className='gift-option';
-    button.disabled=!catalogRow?.id;
-
-    const check=document.createElement('span');
-    check.className='gift-option-check';
-    check.textContent='✓';
-
-    const icon=document.createElement('span');
-    icon.className='gift-option-icon';
-    icon.textContent=gift.icon;
-
-    const name=document.createElement('span');
-    name.className='gift-option-name';
-    name.textContent=gift.name;
-
-    const price=document.createElement('span');
-    price.className='gift-option-price';
-    price.textContent=formatNaira(gift.price);
-
-    button.append(check,icon,name,price);
-
-    button.addEventListener('click',()=>{
-      if(!catalogRow)return;
-
-      selectedGift=gift;
-
-      grid.querySelectorAll('.gift-option').forEach(option=>{
-        option.classList.remove('selected');
-      });
-
-      button.classList.add('selected');
-      $('giftPayButton').disabled=false;
-      $('giftPayButton').textContent='Send '+gift.icon+' '+gift.name+' · '+formatNaira(gift.price);
-      setGiftMessage('You selected '+gift.name+'. Continue to Paystack.');
-    });
-
-    grid.append(button);
-  }
-}
-
-async function loadGiftCounts(profile) {
-  const container=$('giftCounts');
-  container.replaceChildren();
-
-  const {data,error}=await supabase.rpc('campusora_get_gift_counts',{
-    p_recipient_id:profile.id
-  });
-
-  if(error){
-    console.error('Gift counts error:',error);
-    $('giftTotal').textContent='—';
-    container.textContent='Gifts are temporarily unavailable.';
-    return;
-  }
-
-  const counts=Array.isArray(data)?data:[];
-  const total=counts.reduce((sum,item)=>sum+Number(item.gift_count||0),0);
-
-  $('giftTotal').textContent=total+' '+(total===1?'gift':'gifts');
-
-  if(!total){
-    container.textContent='No gifts received yet.';
-    return;
-  }
-
-  for(const item of counts){
-    const count=Number(item.gift_count||0);
-    if(count<=0)continue;
-
-    let gift=giftDefinitionByIdOrSlug(item.gift_id);
-
-    if(!gift){
-      const row=giftCatalogRows.find(r=>String(r.id)===String(item.gift_id));
-      gift=getGiftForCatalogRow(row);
-    }
-
-    if(!gift)continue;
-
-    const chip=document.createElement('div');
-    chip.className='gift-chip';
-
-    const icon=document.createElement('span');
-    icon.className='gift-chip-icon';
-    icon.textContent=gift.icon;
-
-    const details=document.createElement('div');
-    details.style.display='flex';
-    details.style.flexDirection='column';
-    details.style.alignItems='center';
-
-    const amount=document.createElement('span');
-    amount.className='gift-chip-count';
-    amount.textContent='×'+count;
-
-    const name=document.createElement('span');
-    name.className='gift-chip-name';
-    name.textContent=gift.name;
-
-    details.append(amount,name);
-    chip.append(icon,details);
-    container.append(chip);
-  }
-}
-
-async function loadGiftHistory() {
-  const list=$('giftHistoryList');
-  list.replaceChildren();
-
-  if(!currentUser||!isOwnProfile||!currentProfile){
-    list.textContent='Gift history is visible only to the profile owner.';
-    return;
-  }
-
-  list.textContent='Loading your gift history...';
-
-  const {data:records,error}=await supabase
-    .from('campusora_received_gifts')
-    .select('sender_id,gift_id,created_at')
-    .eq('recipient_id',currentUser.id)
-    .order('created_at',{ascending:false})
-    .limit(100);
-
-  list.replaceChildren();
-
-  if(error){
-    console.error('Gift history error:',error);
-    list.textContent='Your gift history could not be loaded.';
-    return;
-  }
-
-  if(!records?.length){
-    list.textContent='You have not received any gifts yet.';
-    return;
-  }
-
-  const senderIds=[...new Set(records.map(r=>r.sender_id).filter(Boolean))];
-  let senderMap=new Map();
-
-  if(senderIds.length){
-    const {data:senders}=await supabase
-      .from('profiles')
-      .select('id,username,full_name')
-      .in('id',senderIds);
-
-    senderMap=new Map((senders||[]).map(p=>[p.id,p]));
-  }
-
-  for(const record of records){
-    const gift=giftDefinitionByIdOrSlug(record.gift_id)||
-      getGiftForCatalogRow(giftCatalogRows.find(r=>String(r.id)===String(record.gift_id)));
-
-    const sender=senderMap.get(record.sender_id);
-
-    const item=document.createElement('div');
-    item.className='gift-history-item';
-
-    const icon=document.createElement('span');
-    icon.className='gift-history-icon';
-    icon.textContent=gift?.icon||'🎁';
-
-    const details=document.createElement('div');
-    details.className='gift-history-details';
-
-    const senderName=document.createElement('div');
-    senderName.className='gift-history-sender';
-
-    if(sender){
-      const link=document.createElement('a');
-      link.href=profileLink(sender.id);
-      link.textContent=sender.full_name||sender.username||'Campusora member';
-      senderName.append(link);
-    }else{
-      senderName.textContent='Campusora member';
-    }
-
-    const date=document.createElement('div');
-    date.className='gift-history-date';
-    date.textContent='Sent you '+(gift?.name||'a gift')+' · '+formatDate(record.created_at);
-
-    details.append(senderName,date);
-    item.append(icon,details);
-    list.append(item);
-  }
-}
-
-async function startGiftCheckout() {
-  if(giftBusy)return;
-
-  if(!currentUser){
-    setGiftMessage('Please log in to send a gift.',true);
-    return;
-  }
-
-  if(!currentProfile||isOwnProfile){
-    setGiftMessage('You cannot send a gift to yourself.',true);
-    return;
-  }
-
-  if(!selectedGift){
-    setGiftMessage('Please select a gift first.',true);
-    return;
-  }
-
-  const catalogRow=findCatalogRowForGift(selectedGift);
-
-  if(!catalogRow?.id){
-    setGiftMessage('This gift is unavailable.',true);
-    return;
-  }
-
-  const {data:sessionData}=await supabase.auth.getSession();
-  const session=sessionData?.session;
-
-  if(!session?.access_token){
-    setGiftMessage('Please log in again.',true);
-    return;
-  }
-
-  giftBusy=true;
-  $('giftPayButton').disabled=true;
-  $('giftPayButton').textContent='Connecting to Paystack...';
-  setGiftMessage('Preparing your gift payment...');
-
-  try{
-    const callbackUrl=new URL('./profile.html',location.href);
-    callbackUrl.searchParams.set('id',currentProfile.id);
-    callbackUrl.searchParams.set('gift_payment','1');
-
-    const response=await fetch('/api/gifts/initialize',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+session.access_token
-      },
-      body:JSON.stringify({
-        recipient_id:currentProfile.id,
-        gift_id:catalogRow.id,
-        callback_url:callbackUrl.href
+      body: JSON.stringify({
+        plan_type: selectedPremiumPlan,
+        user_id: currentUser.id,
+        email: currentUser.email
       })
     });
 
-    const result=await response.json().catch(()=>({}));
+    const result = await response.json();
 
-    if(!response.ok||!result.authorization_url){
-      throw new Error(result.error||result.message||'Could not start gift payment.');
+    if (!response.ok || !result.authorization_url) {
+      throw new Error(result.message || "Could not initialize payment.");
     }
 
-    location.assign(result.authorization_url);
-    return;
+    window.location.href = result.authorization_url;
 
-  }catch(error){
-    console.error('Gift checkout error:',error);
-    setGiftMessage(error.message||'Gift payment could not be started.',true);
-  }finally{
-    giftBusy=false;
-
-    $('giftPayButton').disabled=!selectedGift;
-    $('giftPayButton').textContent=selectedGift
-      ?'Send '+selectedGift.icon+' '+selectedGift.name+' · '+formatNaira(selectedGift.price)
-      :'Select a gift to continue';
-  }
-}
-
-$('giftPayButton').addEventListener('click',startGiftCheckout);
-
-async function verifyGiftPaymentReturn() {
-  const params=new URLSearchParams(location.search);
-
-  const isGiftReturn=
-    params.get('gift_payment')==='1'||
-    params.has('gift_reference');
-
-  if(!isGiftReturn)return;
-
-  const reference=
-    params.get('gift_reference')||
-    params.get('reference')||
-    params.get('trxref');
-
-  params.delete('gift_payment');
-  params.delete('gift_reference');
-  params.delete('reference');
-  params.delete('trxref');
-
-  const remaining=params.toString();
-  history.replaceState(
-    {},
-    '',
-    location.pathname+(remaining?'?'+remaining:'')+location.hash
-  );
-
-  if(!reference){
-    showMessage('No gift payment reference was found. If you were charged, contact Campusora support.',true);
-    return;
-  }
-
-  if(!currentUser){
-    showMessage('Please log in again to verify your gift payment.',true);
-    return;
-  }
-
-  const {data:sessionData}=await supabase.auth.getSession();
-  const session=sessionData?.session;
-
-  if(!session?.access_token){
-    showMessage('Your session has expired. Please log in again.',true);
-    return;
-  }
-
-  showMessage('Verifying your gift payment. Please wait...');
-
-  try{
-    const response=await fetch('/api/gifts/verify',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+session.access_token
-      },
-      body:JSON.stringify({reference})
-    });
-
-    const result=await response.json().catch(()=>({}));
-
-    if(!response.ok||!result.success){
-      throw new Error(result.error||result.message||'Gift payment verification failed.');
-    }
-
-    showMessage('🎉 Gift payment verified successfully!');
-
-    await loadGiftCounts(currentProfile);
-
-    if(isOwnProfile)await loadGiftHistory();
-
-  }catch(error){
-    console.error('Gift verification error:',error);
-    showMessage(error.message||'Gift payment could not be verified.',true);
-  }
-}
-
-/* PROFILE RANK */
-
-async function loadProfileRank(profile) {
-  const rankButton=$('getRanksButton');
-  const rankBadge=$('profileRankBadge');
-
-  if(!rankButton||!rankBadge)return;
-
-  rankButton.classList.toggle('hidden',!isOwnProfile);
-  rankBadge.classList.add('hidden');
-  rankBadge.textContent='';
-
-  rankBadge.classList.remove(
-    'rank-queen',
-    'rank-king',
-    'rank-grand-master'
-  );
-
-  const {data,error}=await supabase
-    .from('profile_ranks')
-    .select('rank_type')
-    .eq('user_id',profile.id)
-    .eq('status','active')
-    .eq('payment_verified',true)
-    .maybeSingle();
-
-  if(error){
-    console.error('Could not load profile rank:',error);
-    return;
-  }
-
-  if(!data)return;
-
-  const rankDetails={
-    queen:{label:'👑 QUEEN',css:'rank-queen'},
-    king:{label:'👑 KING',css:'rank-king'},
-    grand_master:{label:'💎 GRAND MASTER',css:'rank-grand-master'}
-  };
-
-  const rank=rankDetails[data.rank_type];
-  if(!rank)return;
-
-  rankBadge.textContent=rank.label;
-  rankBadge.classList.add(rank.css);
-  rankBadge.classList.remove('hidden');
-  rankButton.classList.add('hidden');
-}
-
-/* FOLLOW SYSTEM */
-
-async function loadFollowButton() {
-  const button=$('followButton');
-  if(!button)return;
-
-  if(!currentUser||isOwnProfile){
-    button.classList.add('hidden');
-    return;
-  }
-
-  button.classList.remove('hidden');
-  button.disabled=true;
-  button.textContent='Loading...';
-
-  const {data,error}=await supabase
-    .from('follows')
-    .select('follower_id')
-    .eq('follower_id',currentUser.id)
-    .eq('following_id',currentProfile.id)
-    .maybeSingle();
-
-  if(error){
-    console.error('Follow status error:',error);
-    button.textContent='Follow';
-    button.disabled=false;
-    return;
-  }
-
-  button.dataset.following=data?'true':'false';
-  button.textContent=data?'Following':'Follow';
-  button.disabled=false;
-}
-
-async function toggleFollow() {
-  const button=$('followButton');
-
-  if(!currentUser){
-    location.href='./auth.html?mode=login';
-    return;
-  }
-
-  if(!currentProfile||currentUser.id===currentProfile.id)return;
-
-  button.disabled=true;
-
-  const isFollowing=button.dataset.following==='true';
-
-  let result;
-
-  if(isFollowing){
-    result=await supabase
-      .from('follows')
-      .delete()
-      .eq('follower_id',currentUser.id)
-      .eq('following_id',currentProfile.id);
-  }else{
-    result=await supabase
-      .from('follows')
-      .insert({
-        follower_id:currentUser.id,
-        following_id:currentProfile.id
-      });
-  }
-
-  if(result.error){
-    console.error('Follow update error:',result.error);
-    alert('We could not update your follow. Please try again.');
-    button.disabled=false;
-    return;
-  }
-
-  button.dataset.following=isFollowing?'false':'true';
-  button.textContent=isFollowing?'Follow':'Following';
-
-  await loadCounts(currentProfile);
-  button.disabled=false;
-}
-
-if($('followButton')){
-  $('followButton').addEventListener('click',toggleFollow);
-}
-
-if($('messageButton')){
-  $('messageButton').addEventListener('click',()=>{
-    if(!currentUser){
-      location.href='./auth.html?mode=login';
-      return;
-    }
-
-    if(!currentProfile||isOwnProfile)return;
-
-    location.href='./messages.html?user='+encodeURIComponent(currentProfile.id);
-  });
-}
-
-/* FOLLOWERS AND FOLLOWING LISTS */
-
-async function openFollowList(type) {
-  if(!currentProfile)return;
-
-  const isFollowers=type==='followers';
-  const title=isFollowers?'Followers':'Following';
-
-  const overlay=document.createElement('div');
-  overlay.className='modal-overlay';
-
-  const modal=document.createElement('div');
-  modal.className='gift-modal';
-
-  const top=document.createElement('div');
-  top.className='modal-top';
-
-  const heading=document.createElement('h2');
-  heading.className='modal-title';
-  heading.textContent=title;
-
-  const close=document.createElement('button');
-  close.className='modal-close';
-  close.type='button';
-  close.textContent='×';
-
-  top.append(heading,close);
-
-  const list=document.createElement('div');
-  list.className='gift-history-list';
-  list.style.marginTop='15px';
-
-  modal.append(top,list);
-  overlay.append(modal);
-  document.body.append(overlay);
-  document.body.style.overflow='hidden';
-
-  function closeList(){
-    overlay.remove();
-    document.body.style.overflow='';
-  }
-
-  close.addEventListener('click',closeList);
-  overlay.addEventListener('click',event=>{
-    if(event.target===overlay)closeList();
-  });
-
-  list.textContent='Loading...';
-
-  let query=supabase.from('follows')
-    .select(isFollowers?'follower_id':'following_id')
-    .eq(isFollowers?'following_id':'follower_id',currentProfile.id)
-    .limit(200);
-
-  const {data,error}=await query;
-
-  list.replaceChildren();
-
-  if(error){
-    list.textContent='Could not load this list.';
-    console.error('Follow list error:',error);
-    return;
-  }
-
-  const ids=(data||[])
-    .map(row=>isFollowers?row.follower_id:row.following_id)
-    .filter(Boolean);
-
-  if(!ids.length){
-    list.textContent='No '+title.toLowerCase()+' yet.';
-    return;
-  }
-
-  const {data:people,error:peopleError}=await supabase
-    .from('profiles')
-    .select('id,username,full_name,avatar_url')
-    .in('id',ids);
-
-  if(peopleError){
-    list.textContent='Could not load member profiles.';
-    return;
-  }
-
-  for(const person of people||[]){
-    const item=document.createElement('div');
-    item.className='gift-history-item';
-
-    const avatar=makeProfileAvatar(person,'comment-avatar');
-
-    const details=document.createElement('div');
-    details.className='gift-history-details';
-
-    const link=document.createElement('a');
-    link.className='gift-history-sender';
-    link.href=profileLink(person.id);
-    link.textContent=person.full_name||person.username||'Campusora member';
-
-    const username=document.createElement('div');
-    username.className='gift-history-date';
-    username.textContent=person.username?'@'+person.username:'';
-
-    details.append(link,username);
-    item.append(avatar,details);
-    list.append(item);
-  }
-}
-
-$('followerCount').parentElement.style.cursor='pointer';
-$('followingCount').parentElement.style.cursor='pointer';
-
-$('followerCount').parentElement.addEventListener('click',()=>{
-  openFollowList('followers');
-});
-
-$('followingCount').parentElement.addEventListener('click',()=>{
-  openFollowList('following');
-});
-
-/* POST REACTIONS */
-
-const REACTIONS={
-  like:{emoji:'👍',label:'Like'},
-  love:{emoji:'❤️',label:'Love'},
-  haha:{emoji:'😂',label:'Haha'},
-  wow:{emoji:'😮',label:'Wow'},
-  sad:{emoji:'😢',label:'Sad'},
-  angry:{emoji:'😡',label:'Angry'}
-};
-
-function createReactionPicker(onSelect) {
-  const picker=document.createElement('div');
-  picker.className='reaction-picker hidden';
-
-  Object.entries(REACTIONS).forEach(([key,item])=>{
-    const button=document.createElement('button');
-    button.type='button';
-    button.className='reaction-choice';
-    button.textContent=item.emoji;
-    button.title=item.label;
-
-    button.addEventListener('click',event=>{
-      event.stopPropagation();
-      picker.classList.add('hidden');
-      onSelect(key);
-    });
-
-    picker.append(button);
-  });
-
-  return picker;
-}
-
-function attachLongPressReaction(button,picker,onDefault) {
-  let timer=null;
-  let longPressed=false;
-
-  const cancel=()=>{
-    if(timer){
-      clearTimeout(timer);
-      timer=null;
-    }
-  };
-
-  button.addEventListener('pointerdown',()=>{
-    longPressed=false;
-
-    timer=setTimeout(()=>{
-      longPressed=true;
-      picker.classList.remove('hidden');
-    },2000);
-  });
-
-  button.addEventListener('pointerup',()=>{
-    if(!timer)return;
-
-    cancel();
-
-    if(!longPressed){
-      onDefault();
-    }
-  });
-
-  button.addEventListener('pointerleave',cancel);
-  button.addEventListener('pointercancel',cancel);
-  button.addEventListener('contextmenu',event=>event.preventDefault());
-
-  button.addEventListener('click',event=>{
-    event.preventDefault();
-  });
-}
-
-async function savePostReaction(postId,reaction) {
-  if(!currentUser){
-    location.href='./auth.html?mode=login';
-    return;
-  }
-
-  const {error}=await supabase
-    .from('post_reactions')
-    .upsert({
-      post_id:postId,
-      user_id:currentUser.id,
-      reaction
-    },{
-      onConflict:'post_id,user_id'
-    });
-
-  if(error){
-    console.error('Post reaction error:',error);
-    alert('Could not save your reaction. Please try again.');
-  }
-}
-
-async function removePostReaction(postId) {
-  if(!currentUser)return;
-
-  const {error}=await supabase
-    .from('post_reactions')
-    .delete()
-    .eq('post_id',postId)
-    .eq('user_id',currentUser.id);
-
-  if(error)console.error('Remove post reaction error:',error);
-}
-
-/* LOAD POSTS */
-
-async function loadPosts(profile) {
-  const container=$('postsContainer');
-  container.replaceChildren();
-
-  const {data:posts,error}=await supabase
-    .from('posts')
-    .select('id,user_id,content,image_url,video_url,video_name,created_at')
-    .eq('user_id',profile.id)
-    .order('created_at',{ascending:false});
-
-  if(error){
-    container.textContent='We could not load these posts.';
-    console.error(error);
-    return;
-  }
-
-  if(!posts?.length){
-    const empty=document.createElement('div');
-    empty.className='empty';
-    empty.textContent='📝 No posts yet. When this member publishes a post, it will appear here.';
-    container.append(empty);
-    return;
-  }
-
-  for(const post of posts){
-    container.append(await createPostCard(post,profile));
-  }
-
-  if(location.hash.startsWith('#post-')){
-    setTimeout(()=>{
-      document.getElementById(location.hash.slice(1))?.scrollIntoView({
-        behavior:'smooth',
-        block:'center'
-      });
-    },200);
-  }
-}
-
-async function createPostCard(post,author) {
-  const card=document.createElement('article');
-  card.className='post-card';
-  card.id='post-'+post.id;
-
-  const header=document.createElement('div');
-  header.className='post-header';
-
-  const avatar=makeProfileAvatar(author,'post-avatar');
-
-  const info=document.createElement('div');
-  info.style.minWidth='0';
-
-  const authorName=document.createElement('a');
-  authorName.className='post-author';
-  authorName.href=profileLink(author.id);
-  authorName.textContent=author.full_name||author.username||'Campusora Member';
-
-  appendPostPremiumIndicator(authorName,author);
-
-  const meta=document.createElement('div');
-  meta.className='post-meta';
-  meta.textContent=(author.username?'@'+author.username+' · ':'')+formatDate(post.created_at);
-
-  info.append(authorName,meta);
-  header.append(avatar,info);
-  card.append(header);
-
-  if(post.content){
-    const text=document.createElement('div');
-    text.className='post-text';
-    text.textContent=post.content;
-    card.append(text);
-  }
-
-  if(post.image_url){
-    const image=document.createElement('img');
-    image.className='post-image';
-    image.src=post.image_url;
-    image.alt='Post image';
-    image.loading='lazy';
-
-    image.addEventListener('click',()=>{
-      openPhotoViewer(post.image_url,'Post image');
-    });
-
-    image.onerror=()=>image.remove();
-    card.append(image);
-  }
-
-  if(post.video_url){
-    const video=document.createElement('video');
-    video.controls=true;
-    video.playsInline=true;
-    video.preload='metadata';
-    video.style.width='100%';
-    video.style.maxHeight='500px';
-    video.style.borderRadius='12px';
-    video.style.marginTop='12px';
-
-    const source=document.createElement('source');
-    source.src=post.video_url;
-    video.append(source);
-
-    card.append(video);
-  }
-
-  const stats=document.createElement('div');
-  stats.className='post-stats';
-
-  const reactionStat=document.createElement('span');
-  const commentStat=document.createElement('span');
-
-  stats.append(reactionStat,commentStat);
-
-  const actions=document.createElement('div');
-  actions.className='post-actions';
-
-  const reactBtn=makeActionButton('👍','Like');
-  const commentBtn=makeActionButton('💬','Comment');
-  const shareBtn=makeActionButton('↗','Share');
-
-  actions.append(reactBtn,commentBtn,shareBtn);
-
-  const picker=createReactionPicker(async reaction=>{
-    await savePostReaction(post.id,reaction);
-    await refreshReactionDisplay();
-  });
-
-  const area=document.createElement('div');
-  area.className='comments-area hidden';
-
-  card.append(stats,actions,picker,area);
-
-  let myReaction=null;
-  let reactionCount=0;
-  let commentCount=0;
-
-  async function refreshReactionDisplay() {
-    const [allResult,myResult,commentsResult]=await Promise.all([
-      supabase.from('post_reactions')
-        .select('reaction')
-        .eq('post_id',post.id),
-
-      currentUser
-        ?supabase.from('post_reactions')
-          .select('reaction')
-          .eq('post_id',post.id)
-          .eq('user_id',currentUser.id)
-          .maybeSingle()
-        :Promise.resolve({data:null}),
-
-      supabase.from('comments')
-        .select('id',{count:'exact',head:true})
-        .eq('post_id',post.id)
-    ]);
-
-    reactionCount=allResult.data?.length||0;
-    myReaction=myResult.data?.reaction||null;
-    commentCount=commentsResult.count??0;
-
-    const counts={};
-
-    (allResult.data||[]).forEach(row=>{
-      counts[row.reaction]=(counts[row.reaction]||0)+1;
-    });
-
-    const summary=Object.entries(counts)
-      .map(([key,count])=>(REACTIONS[key]?.emoji||'👍')+' '+count)
-      .join('  ');
-
-    reactionStat.textContent=summary||'Be the first to react';
-    commentStat.textContent='💬 '+commentCount+' '+(commentCount===1?'comment':'comments');
-
-    reactBtn.classList.toggle('liked',!!myReaction);
-    reactBtn.querySelector('.action-icon').textContent=
-      myReaction?(REACTIONS[myReaction]?.emoji||'👍'):'👍';
-
-    reactBtn.querySelector('.action-label').textContent=
-      myReaction?(REACTIONS[myReaction]?.label||'Liked'):'Like';
-  }
-
-  attachLongPressReaction(
-    reactBtn,
-    picker,
-    async()=>{
-      if(myReaction==='like'){
-        await removePostReaction(post.id);
-      }else{
-        await savePostReaction(post.id,'like');
-      }
-
-      await refreshReactionDisplay();
-    }
-  );
-
-  await refreshReactionDisplay();
-
-  commentBtn.addEventListener('click',async()=>{
-    area.classList.toggle('hidden');
-
-    if(!area.classList.contains('hidden')){
-      await renderComments();
-    }
-  });
-
-  shareBtn.addEventListener('click',async()=>{
-    const url=new URL('./profile.html',location.href);
-    url.searchParams.set('id',author.id);
-    url.hash='post-'+post.id;
-
-    try{
-      if(navigator.share){
-        await navigator.share({
-          title:'Campusora post',
-          text:'Check out this post on Campusora!',
-          url:url.href
-        });
-      }else{
-        await navigator.clipboard.writeText(url.href);
-        alert('Post link copied!');
-      }
-    }catch(error){
-      if(error.name!=='AbortError'){
-        prompt('Copy this post link:',url.href);
-      }
-    }
-  });
-
-  async function renderComments() {
-    area.replaceChildren();
-
-    const form=document.createElement('form');
-    form.className='comment-form';
-
-    const input=document.createElement('textarea');
-    input.className='comment-input';
-    input.rows=1;
-    input.maxLength=2000;
-    input.placeholder=currentUser?'Write a comment...':'Log in to write a comment...';
-
-    const send=document.createElement('button');
-    send.className='comment-send';
-    send.type='submit';
-    send.textContent='Send';
-
-    form.append(input,send);
-    area.append(form);
-
-    const list=document.createElement('div');
-    area.append(list);
-
-    form.addEventListener('submit',async event=>{
-      event.preventDefault();
-
-      if(!currentUser){
-        location.href='./auth.html?mode=login';
-        return;
-      }
-
-      const content=input.value.trim();
-      if(!content)return;
-
-      send.disabled=true;
-      send.textContent='Sending...';
-
-      const {error}=await supabase.from('comments').insert({
-        post_id:post.id,
-        user_id:currentUser.id,
-        content,
-        parent_comment_id:null
-      });
-
-      if(error){
-        alert('Comment could not be saved.');
-        send.disabled=false;
-        send.textContent='Send';
-        return;
-      }
-
-      await refreshReactionDisplay();
-      await renderComments();
-    });
-
-    list.textContent='Loading comments...';
-
-    const {data:all,error}=await supabase
-      .from('comments')
-      .select('id,post_id,user_id,content,created_at,parent_comment_id')
-      .eq('post_id',post.id)
-      .order('created_at',{ascending:true});
-
-    list.replaceChildren();
-
-    if(error){
-      list.textContent='Comments could not be loaded.';
-      return;
-    }
-
-    const top=(all||[]).filter(c=>!c.parent_comment_id);
-
-    if(!top.length){
-      list.textContent='No comments yet. Be the first to comment!';
-      return;
-    }
-
-    const userIds=[...new Set((all||[]).map(c=>c.user_id))];
-
-    const {data:people}=await supabase
-      .from('profiles')
-      .select('id,username,full_name,avatar_url')
-      .in('id',userIds);
-
-    const peopleMap=new Map((people||[]).map(p=>[p.id,p]));
-
-    for(const item of top){
-      const person=peopleMap.get(item.user_id)||{id:item.user_id};
-      list.append(await buildComment(item,person,all||[],peopleMap,0));
-    }
-  }
-
-  async function buildComment(item,person,all,peopleMap,depth) {
-    const wrapper=document.createElement('div');
-
-    const row=document.createElement('div');
-    row.className='comment';
-
-    const avatar=makeProfileAvatar(person);
-    const body=document.createElement('div');
-    body.className='comment-body';
-
-    const name=makeProfileName(person);
-
-    const text=document.createElement('div');
-    text.className='comment-text';
-    text.textContent=item.content||'';
-
-    const time=document.createElement('div');
-    time.className='comment-time';
-    time.textContent=formatDate(item.created_at);
-
-    const tools=document.createElement('div');
-    tools.className='comment-tools';
-
-    const react=document.createElement('button');
-    react.type='button';
-    react.className='small-action react-btn';
-    react.textContent='👍 React';
-
-    const reply=document.createElement('button');
-    reply.type='button';
-    reply.className='small-action';
-    reply.textContent='↩ Reply';
-
-    const reactCount=document.createElement('span');
-    reactCount.className='small-action';
-
-    tools.append(react,reactCount);
-    if(depth===0)tools.append(reply);
-
-    body.append(name,text,time,tools);
-    row.append(avatar,body);
-    wrapper.append(row);
-
-    const [reactionResult,myReactionResult]=await Promise.all([
-      supabase.from('comment_reactions')
-        .select('reaction')
-        .eq('comment_id',item.id),
-
-      currentUser
-        ?supabase.from('comment_reactions')
-          .select('id,reaction')
-          .eq('comment_id',item.id)
-          .eq('user_id',currentUser.id)
-          .maybeSingle()
-        :Promise.resolve({data:null})
-    ]);
-
-    let reactions=reactionResult.data||[];
-    let myReaction=myReactionResult.data?.reaction||null;
-
-    function updateCommentReaction() {
-      const count=reactions.length;
-
-      reactCount.textContent=count+' '+(count===1?'reaction':'reactions');
-
-      react.textContent=myReaction
-        ?(REACTIONS[myReaction]?.emoji||'👍')+' Reacted'
-        :'👍 React';
-
-      react.classList.toggle('reacted',!!myReaction);
-    }
-
-    const commentPicker=createReactionPicker(async reaction=>{
-      await saveCommentReaction(item.id,reaction);
-    });
-
-    tools.append(commentPicker);
-
-    async function refreshCommentReactions() {
-      const [allResult,mineResult]=await Promise.all([
-        supabase.from('comment_reactions')
-          .select('reaction')
-          .eq('comment_id',item.id),
-
-        currentUser
-          ?supabase.from('comment_reactions')
-            .select('reaction')
-            .eq('comment_id',item.id)
-            .eq('user_id',currentUser.id)
-            .maybeSingle()
-          :Promise.resolve({data:null})
-      ]);
-
-      reactions=allResult.data||[];
-      myReaction=mineResult.data?.reaction||null;
-      updateCommentReaction();
-    }
-
-    async function saveCommentReaction(commentId,reaction) {
-      if(!currentUser){
-        location.href='./auth.html?mode=login';
-        return;
-      }
-
-      const {data:existing}=await supabase
-        .from('comment_reactions')
-        .select('id,reaction')
-        .eq('comment_id',commentId)
-        .eq('user_id',currentUser.id)
-        .maybeSingle();
-
-      let result;
-
-      if(existing?.id&&existing.reaction===reaction){
-        result=await supabase.from('comment_reactions')
-          .delete()
-          .eq('id',existing.id);
-      }else if(existing?.id){
-        result=await supabase.from('comment_reactions')
-          .update({reaction})
-          .eq('id',existing.id);
-      }else{
-        result=await supabase.from('comment_reactions')
-          .insert({
-            comment_id:commentId,
-            user_id:currentUser.id,
-            reaction
-          });
-      }
-
-      if(result.error){
-        console.error('Comment reaction error:',result.error);
-        alert('Could not save your reaction.');
-      }
-
-      await refreshCommentReactions();
-    }
-
-    attachLongPressReaction(
-      react,
-      commentPicker,
-      async()=>{
-        await saveCommentReaction(
-          item.id,
-          myReaction==='like'?'like':'like'
-        );
-      }
-    );
-
-    updateCommentReaction();
-
-    const replies=all.filter(c=>c.parent_comment_id===item.id);
-
-    if(depth===0){
-      const repliesBox=document.createElement('div');
-      repliesBox.className='replies';
-
-      for(const replyItem of replies){
-        const replyPerson=peopleMap.get(replyItem.user_id)||{id:replyItem.user_id};
-        repliesBox.append(
-          await buildComment(replyItem,replyPerson,all,peopleMap,1)
-        );
-      }
-
-      const replyForm=document.createElement('form');
-      replyForm.className='reply-form hidden';
-
-      const replyInput=document.createElement('textarea');
-      replyInput.className='comment-input';
-      replyInput.rows=1;
-      replyInput.maxLength=2000;
-      replyInput.placeholder='Write a reply...';
-
-      const replySend=document.createElement('button');
-      replySend.className='comment-send';
-      replySend.type='submit';
-      replySend.textContent='Reply';
-
-      replyForm.append(replyInput,replySend);
-      repliesBox.append(replyForm);
-
-      reply.addEventListener('click',()=>{
-        if(!currentUser){
-          location.href='./auth.html?mode=login';
-          return;
-        }
-
-        replyForm.classList.toggle('hidden');
-
-        if(!replyForm.classList.contains('hidden')){
-          replyInput.focus();
-        }
-      });
-
-      replyForm.addEventListener('submit',async event=>{
-        event.preventDefault();
-
-        if(!currentUser){
-          location.href='./auth.html?mode=login';
-          return;
-        }
-
-        const content=replyInput.value.trim();
-        if(!content)return;
-
-        replySend.disabled=true;
-        replySend.textContent='Sending...';
-
-        const {error}=await supabase.from('comments').insert({
-          post_id:post.id,
-          user_id:currentUser.id,
-          content,
-          parent_comment_id:item.id
-        });
-
-        if(error){
-          alert('Reply could not be saved.');
-          replySend.disabled=false;
-          replySend.textContent='Reply';
-          return;
-        }
-
-        await refreshReactionDisplay();
-        await renderComments();
-      });
-
-      wrapper.append(repliesBox);
-    }
-
-    return wrapper;
-  }
-
-  return card;
-}
-
-/* INITIALIZE PROFILE */
-
-async function loadProfile() {
-  const {data:sessionData}=await supabase.auth.getSession();
-  currentUser=sessionData?.session?.user||null;
-
-  const params=new URLSearchParams(location.search);
-  const requestedId=params.get('id');
-  const requestedUsername=params.get('username');
-
-  let query=supabase.from('profiles')
-    .select('id,username,full_name,school,role,bio,avatar_url,cover_url,created_at');
-
-  if(requestedId){
-    query=query.eq('id',requestedId);
-  }else if(requestedUsername){
-    query=query.eq('username',requestedUsername);
-  }else if(currentUser){
-    query=query.eq('id',currentUser.id);
-  }else{
-    $('loading').classList.add('hidden');
-    showMessage('Please log in to view your profile.');
-    return;
-  }
-
-  const {data:profile,error}=await query.maybeSingle();
-
-  if(error||!profile){
-    $('loading').classList.add('hidden');
+  } catch (error) {
+    console.error("Premium payment error:", error);
 
     showMessage(
-      error
-        ?'We could not load this profile. Please refresh and try again.'
-        :'This profile could not be found.',
-      true
+      $("premiumMessage"),
+      error.message || "Payment could not be started.",
+      "error"
     );
 
-    return;
-  }
-
-  currentProfile=profile;
-  isOwnProfile=!!currentUser&&currentUser.id===profile.id;
-
-  $('profileName').textContent=
-    profile.full_name||profile.username||'Campusora Member';
-
-  $('profileUsername').textContent=
-    profile.username?'@'+profile.username:'';
-
-  $('profileSchool').textContent=profile.school||'';
-  $('profileSchool').classList.toggle('hidden',!profile.school);
-
-  $('profileBio').textContent=profile.bio||'';
-  $('profileBio').classList.toggle('hidden',!profile.bio);
-
-  const roles={
-    student:'🎓 Student',
-    alumni:'🏅 Alumni',
-    general:'🌟 General Member'
-  };
-
-  $('profileBadge').textContent=
-    roles[(profile.role||'general').toLowerCase()]||'🌟 Member';
-
-  $('profileAvatar').src=profile.avatar_url||fallbackAvatar;
-  $('profileAvatar').onerror=()=>{
-    $('profileAvatar').src=fallbackAvatar;
-  };
-
-  $('cover').style.backgroundImage='';
-
-  if(profile.cover_url){
-    const safeCoverUrl=profile.cover_url.replaceAll('"','%22');
-    $('cover').style.backgroundImage=`url("${safeCoverUrl}")`;
-    $('cover').classList.add('has-cover');
-  }else{
-    $('cover').classList.remove('has-cover');
-  }
-
-  $('premiumButton').classList.toggle('hidden',!isOwnProfile);
-  $('giftButton').textContent=isOwnProfile?'🎁 My Gifts':'🎁 Send a Gift';
-
-  if($('followButton')){
-    $('followButton').classList.toggle('hidden',isOwnProfile);
-  }
-
-  if($('messageButton')){
-    $('messageButton').classList.toggle('hidden',isOwnProfile);
-  }
-
-  $('loading').classList.add('hidden');
-  $('profileSection').classList.remove('hidden');
-  $('postsHeading').classList.remove('hidden');
-
-  await Promise.all([
-    loadProfileRank(profile),
-    refreshPremiumStatus(),
-    loadGiftCatalog()
-  ]);
-
-  await Promise.all([
-    loadCounts(profile),
-    loadFollowButton(),
-    loadPosts(profile),
-    loadGiftCounts(profile)
-  ]);
-
-  await verifyGiftPaymentReturn();
-
-  if(isOwnProfile){
-    await verifyPremiumPaymentReturn();
+    button.disabled = false;
+    button.textContent = "Try again";
   }
 }
 
-/* SHARED CAMPUSORA NAVIGATION */
+$("premiumPayButton")?.addEventListener("click", initializePremiumPayment);
 
-const navCss=document.createElement('link');
-navCss.rel='stylesheet';
-navCss.href='./shared-nav.css';
-document.head.append(navCss);
+/* =====================================
+   PREMIUM PAYMENT VERIFICATION
+===================================== */
 
-const navScript=document.createElement('script');
-navScript.type='module';
-navScript.src='./shared-nav.js';
-document.body.append(navScript);
+async function verifyPremiumPayment() {
+  const reference = params.get("premium_reference");
+  const paymentStatus = params.get("premium_payment");
 
-/* START */
+  if (paymentStatus !== "1" || !reference) return;
 
-loadProfile().catch(error=>{
-  console.error('Profile loading error:',error);
+  try {
+    const response = await fetch("/api/premium/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ reference })
+    });
 
-  $('loading').classList.add('hidden');
+    const result = await response.json();
 
-  showMessage(
-    'Something went wrong while loading the profile. Please refresh the page.',
-    true
-  );
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Premium payment verification failed.");
+    }
+
+    alert("Your Premium payment has been confirmed!");
+
+    params.delete("premium_payment");
+    params.delete("premium_reference");
+
+    const cleanUrl =
+      window.location.pathname +
+      (params.toString() ? `?${params.toString()}` : "");
+
+    window.history.replaceState({}, "", cleanUrl);
+
+  } catch (error) {
+    console.error("Premium verification error:", error);
+    alert(error.message || "We could not verify your Premium payment.");
+  }
+}
+
+/* =====================================
+   RANK BUTTON
+===================================== */
+
+$("getRanksButton")?.addEventListener("click", () => {
+  window.location.href = "./profile-ranks.html";
 });
+
+/* =====================================
+   PROFILE ACTION BUTTONS
+===================================== */
+
+$("homeButton")?.addEventListener("click", () => {
+  window.location.href = "./index.html";
+});
+
+$("createPostButton")?.addEventListener("click", () => {
+  window.location.href = "./create-post.html";
+});
+
+$("messageButton")?.addEventListener("click", () => {
+  if (!profile?.id) return;
+
+  if (!currentUser) {
+    alert("Please log in to send a message.");
+    return;
+  }
+
+  if (profile.id === currentUser.id) {
+    alert("You cannot message yourself.");
+    return;
+  }
+
+  window.location.href =
+    `./messages.html?user=${encodeURIComponent(profile.id)}`;
+});
+
+/* =====================================
+   FOLLOW BUTTON
+===================================== */
+
+async function checkFollowStatus() {
+  if (!currentUser || !profile || currentUser.id === profile.id) {
+    isFollowing = false;
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("follows")
+    .select("follower_id")
+    .eq("follower_id", currentUser.id)
+    .eq("following_id", profile.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Follow status error:", error);
+    return;
+  }
+
+  isFollowing = !!data;
+  updateFollowButton();
+}
+
+function updateFollowButton() {
+  const button = $("followButton");
+  if (!button) return;
+
+  if (profile?.id === currentUser?.id) {
+    button.classList.add("hidden");
+    return;
+  }
+
+  button.classList.remove("hidden");
+  button.textContent = isFollowing ? "Following" : "Follow";
+  button.classList.toggle("following", isFollowing);
+}
+
+$("followButton")?.addEventListener("click", async () => {
+  if (!currentUser) {
+    alert("Please log in to follow this member.");
+    return;
+  }
+
+  if (!profile || currentUser.id === profile.id) return;
+
+  const button = $("followButton");
+  button.disabled = true;
+
+  try {
+    if (isFollowing) {
+      const { error } = await supabase
+        .from("follows")
+        .delete()
+        .eq("follower_id", currentUser.id)
+        .eq("following_id", profile.id);
+
+      if (error) throw error;
+
+      isFollowing = false;
+
+    } else {
+      const { error } = await supabase
+        .from("follows")
+        .insert({
+          follower_id: currentUser.id,
+          following_id: profile.id
+        });
+
+      if (error) throw error;
+
+      isFollowing = true;
+    }
+
+    updateFollowButton();
+    await loadCounts(profile);
+
+  } catch (error) {
+    console.error("Follow action failed:", error);
+    alert("Could not update follow status. Please try again.");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+/* =====================================
+   FOLLOWER / FOLLOWING LIST BUTTONS
+===================================== */
+
+$("followersCount")?.addEventListener("click", () => {
+  openFollowList("followers");
+});
+
+$("followingCount")?.addEventListener("click", () => {
+  openFollowList("following");
+});
+
+$("closeFollowList")?.addEventListener("click", () => {
+  closeModal("followListModal");
+});
+  /* =====================================
+   FOLLOWER / FOLLOWING COUNTS
+===================================== */
+
+async function loadCounts(person) {
+  if (!person?.id) return;
+
+  try {
+    const [
+      postsResult,
+      followersResult,
+      followingResult
+    ] = await Promise.all([
+      supabase
+        .from("posts")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", person.id),
+
+      supabase
+        .from("follows")
+        .select("follower_id", { count: "exact", head: true })
+        .eq("following_id", person.id),
+
+      supabase
+        .from("follows")
+        .select("following_id", { count: "exact", head: true })
+        .eq("follower_id", person.id)
+    ]);
+
+    if (postsResult.error) console.error(postsResult.error);
+    if (followersResult.error) console.error(followersResult.error);
+    if (followingResult.error) console.error(followingResult.error);
+
+    setText("postsCount", postsResult.count ?? 0);
+    setText("followersCount", followersResult.count ?? 0);
+    setText("followingCount", followingResult.count ?? 0);
+
+  } catch (error) {
+    console.error("Could not load profile counts:", error);
+  }
+}
+
+/* =====================================
+   FOLLOWERS / FOLLOWING LIST
+===================================== */
+
+async function openFollowList(type) {
+  if (!profile?.id) return;
+
+  currentFollowListType = type;
+
+  setText(
+    "followListTitle",
+    type === "followers" ? "Followers" : "Following"
+  );
+
+  const container = $("followListContent");
+
+  if (container) {
+    container.innerHTML = "<p>Loading...</p>";
+  }
+
+  openModal("followListModal");
+
+  try {
+    const column = type === "followers"
+      ? "follower_id"
+      : "following_id";
+
+    const { data, error } = await supabase
+      .from("follows")
+      .select(column)
+      .eq(
+        type === "followers" ? "following_id" : "follower_id",
+        profile.id
+      )
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const ids = (data || []).map(item => item[column]);
+
+    if (!ids.length) {
+      if (container) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>No ${type} yet.</p>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    const { data: people, error: peopleError } = await supabase
+      .from("profiles")
+      .select("id,username,full_name,avatar_url,school,role")
+      .in("id", ids);
+
+    if (peopleError) throw peopleError;
+
+    const orderedPeople = ids
+      .map(id => people?.find(person => person.id === id))
+      .filter(Boolean);
+
+    if (container) {
+      container.innerHTML = orderedPeople.map(person => `
+        <a class="follow-list-person"
+           href="./profile.html?id=${encodeURIComponent(person.id)}">
+          <img src="${escapeHTML(getAvatar(person))}"
+               alt=""
+               onerror="this.src='${fallbackAvatar}'">
+          <div>
+            <strong>${escapeHTML(getProfileName(person))}</strong>
+            <small>
+              ${person.username ? `@${escapeHTML(person.username)}` : ""}
+              ${person.school ? ` · ${escapeHTML(person.school)}` : ""}
+            </small>
+          </div>
+        </a>
+      `).join("");
+    }
+
+  } catch (error) {
+    console.error(`Could not load ${type}:`, error);
+
+    if (container) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <p>Could not load this list. Please try again.</p>
+        </div>
+      `;
+    }
+  }
+}
+
+/* =====================================
+   GIFTS
+===================================== */
+
+$("myGiftsButton")?.addEventListener("click", () => {
+  window.location.href = "./gift-earnings.html";
+});
+
+$("sendGiftButton")?.addEventListener("click", sendGift);
+
+$("closeGiftModal")?.addEventListener("click", () => {
+  closeModal("giftModal");
+});
+
+async function loadGiftCatalog() {
+  const container = $("giftCatalog");
+
+  if (!container) return;
+
+  try {
+    const { data, error } = await supabase
+      .from("campusora_gift_catalog")
+      .select("*")
+      .eq("is_active", true)
+      .order("price", { ascending: true });
+
+    if (error) throw error;
+
+    giftCatalog = data || [];
+
+    if (!giftCatalog.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <p>No gifts are available right now.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = giftCatalog.map(gift => `
+      <button class="gift-option"
+              type="button"
+              data-gift-id="${escapeHTML(gift.id)}">
+        <span class="gift-option-icon">
+          ${escapeHTML(gift.icon || gift.emoji || "🎁")}
+        </span>
+        <strong>${escapeHTML(gift.name || "Gift")}</strong>
+        <small>${formatMoney(gift.price)}</small>
+      </button>
+    `).join("");
+
+    container.querySelectorAll(".gift-option").forEach(button => {
+      button.addEventListener("click", () => {
+        const gift = giftCatalog.find(
+          item => String(item.id) === button.dataset.giftId
+        );
+
+        if (!gift) return;
+
+        selectedGift = gift;
+
+        container.querySelectorAll(".gift-option").forEach(option => {
+          option.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+
+        const sendButton = $("sendGiftButton");
+
+        if (sendButton) {
+          sendButton.disabled = false;
+          sendButton.textContent =
+            `Send ${gift.name} · ${formatMoney(gift.price)}`;
+        }
+
+        showMessage($("giftMessage"), "");
+      });
+    });
+
+  } catch (error) {
+    console.error("Gift catalog error:", error);
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>Could not load gifts. Please try again later.</p>
+      </div>
+    `;
+  }
+}
+
+function openGiftModal() {
+  if (!currentUser) {
+    alert("Please log in to send a gift.");
+    return;
+  }
+
+  if (!profile || currentUser.id === profile.id) {
+    alert("You cannot send a gift to yourself.");
+    return;
+  }
+
+  selectedGift = null;
+
+  setText(
+    "giftRecipientName",
+    `Send a gift to ${getProfileName(profile)}`
+  );
+
+  const sendButton = $("sendGiftButton");
+
+  if (sendButton) {
+    sendButton.disabled = true;
+    sendButton.textContent = "Select a gift";
+  }
+
+  showMessage($("giftMessage"), "");
+  openModal("giftModal");
+
+  loadGiftCatalog();
+}
+
+$("sendGiftOpenButton")?.addEventListener("click", openGiftModal);
+
+async function sendGift() {
+  if (!currentUser || !profile || !selectedGift) return;
+
+  const button = $("sendGiftButton");
+
+  button.disabled = true;
+  button.textContent = "Preparing payment...";
+
+  showMessage($("giftMessage"), "Connecting to payment service...");
+
+  try {
+    const response = await fetch("/api/gifts/initialize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        gift_id: selectedGift.id,
+        sender_id: currentUser.id,
+        recipient_id: profile.id,
+        email: currentUser.email
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.authorization_url) {
+      throw new Error(result.message || "Could not start gift payment.");
+    }
+
+    window.location.href = result.authorization_url;
+
+  } catch (error) {
+    console.error("Gift payment error:", error);
+
+    showMessage(
+      $("giftMessage"),
+      error.message || "Could not start payment.",
+      "error"
+    );
+
+    button.disabled = false;
+    button.textContent = "Try again";
+  }
+}
+
+/* =====================================
+   GIFT PAYMENT VERIFICATION
+===================================== */
+
+async function verifyGiftPayment() {
+  const reference = params.get("gift_reference");
+  const paymentStatus = params.get("gift_payment");
+
+  if (paymentStatus !== "1" || !reference) return;
+
+  try {
+    const response = await fetch("/api/gifts/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ reference })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Gift payment verification failed.");
+    }
+
+    alert("Your gift has been sent successfully!");
+
+    params.delete("gift_payment");
+    params.delete("gift_reference");
+
+    const cleanUrl =
+      window.location.pathname +
+      (params.toString() ? `?${params.toString()}` : "");
+
+    window.history.replaceState({}, "", cleanUrl);
+
+  } catch (error) {
+    console.error("Gift verification error:", error);
+    alert(error.message || "We could not verify your gift payment.");
+  }
+}
+
+/* =====================================
+   GIFTS RECEIVED
+===================================== */
+
+async function loadReceivedGifts() {
+  if (!profile?.id) return;
+
+  const container = $("giftsReceived");
+
+  if (!container) return;
+
+  try {
+    const { data, error } = await supabase
+      .from("campusora_received_gifts")
+      .select("*")
+      .eq("recipient_id", profile.id)
+      .order("created_at", { ascending: false })
+      .limit(12);
+
+    if (error) throw error;
+
+    if (!data?.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <p>No gifts received yet.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const senderIds = [
+      ...new Set(data.map(gift => gift.sender_id).filter(Boolean))
+    ];
+
+    let senders = [];
+
+    if (senderIds.length) {
+      const { data: people, error: peopleError } = await supabase
+        .from("profiles")
+        .select("id,username,full_name,avatar_url")
+        .in("id", senderIds);
+
+      if (!peopleError) senders = people || [];
+    }
+
+    container.innerHTML = data.map(gift => {
+      const sender = senders.find(
+        person => person.id === gift.sender_id
+      );
+
+      return `
+        <div class="received-gift">
+          <div class="received-gift-icon">
+            ${escapeHTML(gift.gift_icon || gift.emoji || "🎁")}
+          </div>
+          <div>
+            <strong>${escapeHTML(gift.gift_name || "Gift")}</strong>
+            <small>
+              From ${escapeHTML(
+                sender ? getProfileName(sender) : "Campusora Member"
+              )}
+            </small>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error("Received gifts error:", error);
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>Gifts could not be loaded right now.</p>
+      </div>
+    `;
+  }
+}
+
+/* =====================================
+   POST REACTIONS
+===================================== */
+
+function reactionIcon(reaction) {
+  return reactionOptions.find(item => item.name === reaction)?.icon || "👍";
+}
+
+async function loadPostReactions(postId, element) {
+  const { data, error } = await supabase
+    .from("post_reactions")
+    .select("user_id,reaction")
+    .eq("post_id", postId);
+
+  if (error) {
+    console.error("Post reactions error:", error);
+    return;
+  }
+
+  const count = data?.length || 0;
+  const myReaction = data?.find(
+    item => item.user_id === currentUser?.id
+  );
+
+  const countElement = element.querySelector(".reaction-count");
+  const button = element.querySelector(".post-like-button");
+
+  if (countElement) countElement.textContent = count;
+
+  if (button) {
+    button.textContent = myReaction
+      ? `${reactionIcon(myReaction.reaction)} ${myReaction.reaction}`
+      : "👍 Like";
+
+    button.classList.toggle("reacted", !!myReaction);
+  }
+}
+
+async function savePostReaction(postId, reaction) {
+  if (!currentUser) {
+    alert("Please log in to react to posts.");
+    return;
+  }
+
+  const { data: existing, error: findError } = await supabase
+    .from("post_reactions")
+    .select("id,reaction")
+    .eq("post_id", postId)
+    .eq("user_id", currentUser.id)
+    .maybeSingle();
+
+  if (findError) throw findError;
+
+  if (existing?.reaction === reaction) {
+    const { error } = await supabase
+      .from("post_reactions")
+      .delete()
+      .eq("id", existing.id);
+
+    if (error) throw error;
+
+  } else if (existing) {
+    const { error } = await supabase
+      .from("post_reactions")
+      .update({ reaction })
+      .eq("id", existing.id);
+
+    if (error) throw error;
+
+  } else {
+    const { error } = await supabase
+      .from("post_reactions")
+      .insert({
+        post_id: postId,
+        user_id: currentUser.id,
+        reaction
+      });
+
+    if (error) throw error;
+  }
+}
+
+/* =====================================
+   COMMENTS AND REPLIES
+===================================== */
+
+async function loadComments(postId, container) {
+  const { data: comments, error } = await supabase
+    .from("comments")
+    .select("id,post_id,user_id,content,created_at,parent_comment_id")
+    .eq("post_id", postId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Comments error:", error);
+    container.innerHTML = "<p>Could not load comments.</p>";
+    return;
+  }
+
+  if (!comments?.length) {
+    container.innerHTML = "<p class='no-comments'>No comments yet.</p>";
+    return;
+  }
+
+  const userIds = [...new Set(comments.map(comment => comment.user_id))];
+
+  const { data: people } = await supabase
+    .from("profiles")
+    .select("id,username,full_name,avatar_url")
+    .in("id", userIds);
+
+  const getPerson = id => people?.find(person => person.id === id);
+
+  const roots = comments.filter(comment => !comment.parent_comment_id);
+
+  container.innerHTML = roots.map(comment => {
+    const person = getPerson(comment.user_id);
+
+    const replies = comments.filter(
+      reply => reply.parent_comment_id === comment.id
+    );
+
+    return `
+      <div class="comment-item" data-comment-id="${comment.id}">
+        <img class="comment-avatar"
+             src="${escapeHTML(getAvatar(person))}"
+             alt=""
+             onerror="this.src='${fallbackAvatar}'">
+
+        <div class="comment-content">
+          <strong>${escapeHTML(getProfileName(person))}</strong>
+          <p>${escapeHTML(comment.content)}</p>
+
+          <div class="comment-actions">
+            <button type="button"
+                    class="comment-react-button"
+                    data-comment-id="${comment.id}">
+              React
+            </button>
+
+            <button type="button"
+                    class="reply-button"
+                    data-comment-id="${comment.id}">
+              Reply
+            </button>
+
+            <span>${formatDate(comment.created_at)}</span>
+          </div>
+
+          <div class="comment-replies">
+            ${replies.map(reply => {
+              const replyPerson = getPerson(reply.user_id);
+
+              return `
+                <div class="reply-item">
+                  <strong>${escapeHTML(getProfileName(replyPerson))}</strong>
+                  <p>${escapeHTML(reply.content)}</p>
+                </div>
+              `;
+            }).join("")}
+          </div>
+
+          <form class="reply-form hidden"
+                data-parent-id="${comment.id}">
+            <input type="text"
+                   name="reply"
+                   placeholder="Write a reply..."
+                   required>
+            <button type="submit">Reply</button>
+          </form>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll(".reply-button").forEach(button => {
+    button.addEventListener("click", () => {
+      if (!currentUser) {
+        alert("Please log in to reply.");
+        return;
+      }
+
+      const form = container.querySelector(
+        `.reply-form[data-parent-id="${button.dataset.commentId}"]`
+      );
+
+      form?.classList.toggle("hidden");
+    });
+  });
+
+  container.querySelectorAll(".reply-form").forEach(form => {
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (!currentUser) return;
+
+      const input = form.querySelector("input[name='reply']");
+      const content = input.value.trim();
+
+      if (!content) return;
+
+      const { error } = await supabase
+        .from("comments")
+        .insert({
+          post_id: postId,
+          user_id: currentUser.id,
+          content,
+          parent_comment_id: form.dataset.parentId
+        });
+
+      if (error) {
+        alert("Could not send reply.");
+        console.error(error);
+        return;
+      }
+
+      await loadComments(postId, container);
+    });
+  });
+
+  container.querySelectorAll(".comment-react-button").forEach(button => {
+    button.addEventListener("click", () => {
+      if (!currentUser) {
+        alert("Please log in to react.");
+        return;
+      }
+
+      showCommentReactionPicker(
+        button,
+        button.dataset.commentId,
+        postId,
+        container
+      );
+    });
+  });
+}
+
+async function showCommentReactionPicker(
+  button,
+  commentId,
+  postId,
+  container
+) {
+  const existing = button.parentElement.querySelector(".reaction-picker");
+
+  if (existing) {
+    existing.remove();
+    return;
+  }
+
+  const picker = document.createElement("div");
+  picker.className = "reaction-picker";
+
+  picker.innerHTML = reactionOptions.map(option => `
+    <button type="button"
+            data-reaction="${option.name}"
+            title="${option.name}">
+      ${option.icon}
+    </button>
+  `).join("");
+
+  button.parentElement.appendChild(picker);
+
+  picker.querySelectorAll("button").forEach(optionButton => {
+    optionButton.addEventListener("click", async () => {
+      try {
+        const reaction = optionButton.dataset.reaction;
+
+        const { data: existingReaction, error: findError } =
+          await supabase
+            .from("comment_reactions")
+            .select("id,reaction")
+            .eq("comment_id", commentId)
+            .eq("user_id", currentUser.id)
+            .maybeSingle();
+
+        if (findError) throw findError;
+
+        if (existingReaction?.reaction === reaction) {
+          const { error } = await supabase
+            .from("comment_reactions")
+            .delete()
+            .eq("id", existingReaction.id);
+
+          if (error) throw error;
+
+        } else if (existingReaction) {
+          const { error } = await supabase
+            .from("comment_reactions")
+            .update({ reaction })
+            .eq("id", existingReaction.id);
+
+          if (error) throw error;
+
+        } else {
+          const { error } = await supabase
+            .from("comment_reactions")
+            .insert({
+              comment_id: commentId,
+              user_id: currentUser.id,
+              reaction
+            });
+
+          if (error) throw error;
+        }
+
+        picker.remove();
+
+      } catch (error) {
+        console.error("Comment reaction error:", error);
+        alert("Could not save your reaction.");
+      }
+    });
+  });
+}
+
+/* =====================================
+   LOAD PROFILE POSTS
+===================================== */
+
+async function loadPosts() {
+  const container =
+    $("postsContainer") ||
+    $("profilePosts") ||
+    $("postsList");
+
+  if (!container || !profile?.id) return;
+
+  container.innerHTML = "<p class='loading-text'>Loading posts...</p>";
+
+  try {
+    const { data: posts, error } = await supabase
+      .from("posts")
+      .select("id,user_id,content,image_url,video_url,video_name,created_at")
+      .eq("user_id", profile.id)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!posts?.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <p>No posts yet.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = posts.map(post => {
+      const image = post.image_url
+        ? `<img class="post-image"
+                src="${escapeHTML(post.image_url)}"
+                alt="Post image"
+                loading="lazy">`
+        : "";
+
+      const video = post.video_url
+        ? `
+          <video class="post-video"
+                 controls
+                 playsinline
+                 preload="metadata">
+            <source src="${escapeHTML(post.video_url)}">
+          </video>
+          ${post.video_name
+            ? `<small>${escapeHTML(post.video_name)}</small>`
+            : ""}
+        `
+        : "";
+
+      return `
+        <article class="profile-post" data-post-id="${post.id}">
+          <div class="post-author">
+            <img src="${escapeHTML(getAvatar(profile))}"
+                 alt=""
+                 onerror="this.src='${fallbackAvatar}'">
+
+            <div>
+              <strong>${escapeHTML(getProfileName(profile))}</strong>
+              <small>${formatDate(post.created_at)}</small>
+            </div>
+          </div>
+
+          ${post.content
+            ? `<p class="post-text">${escapeHTML(post.content)}</p>`
+            : ""}
+
+          ${image}
+          ${video}
+
+          <div class="post-actions">
+            <button type="button" class="post-like-button">
+              👍 Like
+            </button>
+
+            <span class="reaction-count">0</span>
+
+            <button type="button" class="toggle-comments-button">
+              💬 Comments
+            </button>
+
+            <button type="button" class="post-share-button">
+              ↗ Share
+            </button>
+          </div>
+
+          <div class="post-reaction-picker hidden">
+            ${reactionOptions.map(option => `
+              <button type="button"
+                      data-reaction="${option.name}"
+                      title="${option.name}">
+                ${option.icon}
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="post-comments hidden">
+            <form class="comment-form">
+              <input type="text"
+                     name="comment"
+                     placeholder="Write a comment..."
+                     required>
+              <button type="submit">Send</button>
+            </form>
+
+            <div class="comments-list">
+              <p>Loading comments...</p>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    for (const post of posts) {
+      const article = container.querySelector(
+        `[data-post-id="${post.id}"]`
+      );
+
+      if (!article) continue;
+
+      await loadPostReactions(post.id, article);
+
+      const commentsArea = article.querySelector(".post-comments");
+      const commentsList = article.querySelector(".comments-list");
+
+      article.querySelector(".post-like-button")
+        ?.addEventListener("click", () => {
+          article.querySelector(".post-reaction-picker")
+            ?.classList.toggle("hidden");
+        });
+
+      article.querySelectorAll(".post-reaction-picker button")
+        .forEach(button => {
+          button.addEventListener("click", async () => {
+            try {
+              await savePostReaction(post.id, button.dataset.reaction);
+              await loadPostReactions(post.id, article);
+
+              article.querySelector(".post-reaction-picker")
+                ?.classList.add("hidden");
+
+            } catch (error) {
+              console.error(error);
+              alert("Could not save your reaction.");
+            }
+          });
+        });
+
+      article.querySelector(".toggle-comments-button")
+        ?.addEventListener("click", async () => {
+          commentsArea.classList.toggle("hidden");
+
+          if (!commentsArea.classList.contains("hidden")) {
+            await loadComments(post.id, commentsList);
+          }
+        });
+
+      article.querySelector(".comment-form")
+        ?.addEventListener("submit", async event => {
+          event.preventDefault();
+
+          if (!currentUser) {
+            alert("Please log in to comment.");
+            return;
+          }
+
+          const input = event.target.querySelector("input[name='comment']");
+          const content = input.value.trim();
+
+          if (!content) return;
+
+          const { error } = await supabase
+            .from("comments")
+            .insert({
+              post_id: post.id,
+              user_id: currentUser.id,
+              content
+            });
+
+          if (error) {
+            console.error(error);
+            alert("Could not send your comment.");
+            return;
+          }
+
+          input.value = "";
+          await loadComments(post.id, commentsList);
+        });
+
+      article.querySelector(".post-share-button")
+        ?.addEventListener("click", async () => {
+          const shareUrl =
+            `${window.location.origin}/profile.html?id=${profile.id}`;
+
+          try {
+            if (navigator.share) {
+              await navigator.share({
+                title: `${getProfileName(profile)} on Campusora`,
+                text: post.content || "Check out this post on Campusora.",
+                url: shareUrl
+              });
+            } else if (navigator.clipboard) {
+              await navigator.clipboard.writeText(shareUrl);
+              alert("Profile link copied.");
+            } else {
+              prompt("Copy this link:", shareUrl);
+            }
+          } catch (error) {
+            if (error.name !== "AbortError") {
+              console.error("Share error:", error);
+            }
+          }
+        });
+    }
+
+  } catch (error) {
+    console.error("Posts loading error:", error);
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>Could not load posts. Please refresh and try again.</p>
+      </div>
+    `;
+  }
+}
+
+/* =====================================
+   PHOTO VIEWER
+===================================== */
+
+const photoViewer = $("photoViewer");
+const photoViewerImage = $("photoViewerImage");
+
+function openPhotoViewer(source) {
+  if (!photoViewer || !photoViewerImage) return;
+
+  photoViewerImage.src = source;
+  photoViewer.classList.remove("hidden");
+}
+
+$("closePhotoViewer")?.addEventListener("click", () => {
+  photoViewer?.classList.add("hidden");
+});
+
+photoViewer?.addEventListener("click", event => {
+  if (event.target === photoViewer) {
+    photoViewer.classList.add("hidden");
+  }
+});
+
+$("profileAvatar")?.addEventListener("click", () => {
+  if (profile?.avatar_url) {
+    openPhotoViewer(profile.avatar_url);
+  }
+});
+
+$("profileCover")?.addEventListener("click", () => {
+  if (profile?.cover_url) {
+    openPhotoViewer(profile.cover_url);
+  }
+});
+
+/* =====================================
+   PAGE INITIALIZATION
+===================================== */
+
+async function initializeProfilePage() {
+  try {
+    currentUser = await getCurrentUser();
+
+    profile = await findProfile();
+
+    if (!profile) {
+      showProfileError(
+        currentUser
+          ? "We could not find this profile."
+          : "Please log in to view your profile."
+      );
+      return;
+    }
+
+    displayProfile(profile);
+
+    if (currentUser?.id === profile.id) {
+      $("followButton")?.classList.add("hidden");
+      $("messageButton")?.classList.add("hidden");
+      $("sendGiftOpenButton")?.classList.add("hidden");
+    }
+
+    await Promise.all([
+      loadCounts(profile),
+      checkFollowStatus(),
+      updatePremiumDisplay(),
+      loadPosts(),
+      loadReceivedGifts()
+    ]);
+
+    await verifyPremiumPayment();
+    await verifyGiftPayment();
+
+  } catch (error) {
+    console.error("Profile initialization failed:", error);
+
+    showProfileError(
+      "Your profile could not be loaded. Please refresh the page."
+    );
+  }
+}
+
+/* =====================================
+   SHARED NAVIGATION
+===================================== */
+
+async function loadSharedNavigation() {
+  try {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "./shared-nav.css";
+
+    if (!document.querySelector('link[href="./shared-nav.css"]')) {
+      document.head.appendChild(css);
+    }
+
+    const script = document.createElement("script");
+    script.src = "./shared-nav.js";
+    script.defer = true;
+    document.body.appendChild(script);
+
+  } catch (error) {
+    console.error("Shared navigation error:", error);
+  }
+}
+
+/* =====================================
+   START
+===================================== */
+
+loadSharedNavigation();
+initializeProfilePage();
+
 </script>
 </body>
 </html>
