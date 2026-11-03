@@ -291,6 +291,102 @@ grid-row:1;
 .post-menu-item{display:block;width:100%;padding:11px 12px;border:1px solid rgba(255,99,132,.25);border-radius:9px;background:rgba(255,99,132,.09);color:#ff9aaa;text-align:left;font-size:12px;font-weight:800}
 .post-menu-item:hover{background:rgba(255,99,132,.17)}
 .post-menu-item:disabled{opacity:.45}
+  /* CAMPUSORA DELETE CONFIRMATION */
+
+.delete-confirm-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(2,4,15,.82);
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+  animation:deleteFadeIn .2s ease;
+}
+
+.delete-confirm-dialog{
+  width:100%;
+  max-width:350px;
+  padding:25px 21px 21px;
+  text-align:center;
+  background:linear-gradient(145deg,#171e35,#0b1020);
+  border:1px solid #343e60;
+  border-radius:19px;
+  box-shadow:0 22px 65px #000b;
+  animation:deletePopIn .22s ease;
+}
+
+.delete-confirm-icon{
+  width:57px;
+  height:57px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 14px;
+  font-size:25px;
+  background:rgba(255,75,95,.12);
+  border:1px solid rgba(255,75,95,.25);
+  border-radius:17px;
+}
+
+.delete-confirm-dialog h3{
+  margin:0 0 9px;
+  color:#fff;
+  font-size:19px;
+  font-weight:750;
+}
+
+.delete-confirm-dialog p{
+  margin:0 auto 23px;
+  max-width:275px;
+  color:#aab4d0;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.delete-confirm-actions{
+  display:flex;
+  gap:10px;
+}
+
+.delete-confirm-actions button{
+  flex:1;
+  min-height:43px;
+  border-radius:11px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.delete-cancel-btn{
+  color:#dce4ff;
+  background:#202943;
+  border:1px solid #35415f;
+}
+
+.delete-confirm-btn{
+  color:#fff;
+  background:linear-gradient(135deg,#e4475c,#c72c48);
+  border:1px solid #ed5369;
+}
+
+.delete-confirm-actions button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+@keyframes deleteFadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes deletePopIn{
+  from{opacity:0;transform:scale(.94) translateY(8px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
 .share-overlay{position:fixed;inset:0;z-index:250;background:#02040dcc;backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:18px}
 .share-panel{width:min(390px,100%);padding:20px;border:1px solid #51417e;border-radius:20px;background:linear-gradient(145deg,#191a36,#0e1428);box-shadow:0 22px 70px #0009}
 .share-panel h3{margin:0 0 6px;font-size:18px}.share-panel p{margin:0 0 16px;color:var(--muted);font-size:12px;line-height:1.6}
@@ -2666,25 +2762,141 @@ function makeActionButton(icon,label) {
    Deletion is restricted to the post owner. */
 
 function addPostMenu(card,post) {
-  const wrap=document.createElement('div');wrap.className='post-menu-wrap';
-  const trigger=document.createElement('button');trigger.type='button';trigger.className='post-menu-trigger';trigger.textContent='⋯';trigger.setAttribute('aria-label','Post options');
-  const pop=document.createElement('div');pop.className='post-menu-pop hidden';
-  const title=document.createElement('div');title.className='post-menu-title';title.textContent='Post options';
-  const note=document.createElement('div');note.className='post-menu-note';
+  const wrap=document.createElement('div');
+  wrap.className='post-menu-wrap';
+
+  const trigger=document.createElement('button');
+  trigger.type='button';
+  trigger.className='post-menu-trigger';
+  trigger.textContent='⋯';
+  trigger.setAttribute('aria-label','Post options');
+
+  const pop=document.createElement('div');
+  pop.className='post-menu-pop hidden';
+
+  const title=document.createElement('div');
+  title.className='post-menu-title';
+  title.textContent='Post options';
+
+  const note=document.createElement('div');
+  note.className='post-menu-note';
+
   const owner=!!currentUser&&post.user_id===currentUser.id;
-  note.textContent=owner?'You can remove this post from your profile.':'Only the person who published this post can delete it.';
-  const deleteButton=document.createElement('button');deleteButton.type='button';deleteButton.className='post-menu-item';deleteButton.textContent='Delete post';deleteButton.disabled=!owner;
-  if(owner)deleteButton.addEventListener('click',async()=>{
-    pop.classList.add('hidden');if(!confirm('Delete this post? This cannot be undone.'))return;
-    deleteButton.disabled=true;deleteButton.textContent='Deleting…';
-    const table=post._spotlight?'spotlight_videos':'posts';
-    const {error}=await supabase.from(table).delete().eq('id',post.id).eq('user_id',currentUser.id);
-    if(error){console.error('Delete post error:',error);alert('This post could not be deleted. Please try again.');deleteButton.disabled=false;deleteButton.textContent='Delete post';return;}
-    card.remove();await loadCounts(currentProfile);
+
+  note.textContent=owner
+    ?'You can remove this post from your profile.'
+    :'Only the person who published this post can delete it.';
+
+  const deleteButton=document.createElement('button');
+  deleteButton.type='button';
+  deleteButton.className='post-menu-item';
+  deleteButton.textContent='Delete post';
+  deleteButton.disabled=!owner;
+
+  if(owner) deleteButton.addEventListener('click',()=>{
+    pop.classList.add('hidden');
+
+    const overlay=document.createElement('div');
+    overlay.className='delete-confirm-overlay';
+
+    const dialog=document.createElement('div');
+    dialog.className='delete-confirm-dialog';
+    dialog.setAttribute('role','dialog');
+    dialog.setAttribute('aria-modal','true');
+
+    const icon=document.createElement('div');
+    icon.className='delete-confirm-icon';
+    icon.textContent='🗑️';
+
+    const heading=document.createElement('h3');
+    heading.textContent='Delete post?';
+
+    const message=document.createElement('p');
+    message.textContent='Are you sure you want to delete this post? This action cannot be undone.';
+
+    const actions=document.createElement('div');
+    actions.className='delete-confirm-actions';
+
+    const cancel=document.createElement('button');
+    cancel.type='button';
+    cancel.className='delete-cancel-btn';
+    cancel.textContent='Cancel';
+
+    const confirmDelete=document.createElement('button');
+    confirmDelete.type='button';
+    confirmDelete.className='delete-confirm-btn';
+    confirmDelete.textContent='Delete';
+
+    actions.append(cancel,confirmDelete);
+    dialog.append(icon,heading,message,actions);
+    overlay.append(dialog);
+    document.body.append(overlay);
+
+    function closeDialog(){
+      overlay.remove();
+    }
+
+    cancel.addEventListener('click',closeDialog);
+
+    overlay.addEventListener('click',event=>{
+      if(event.target===overlay) closeDialog();
+    });
+
+    const escapeHandler=event=>{
+      if(event.key==='Escape'){
+        closeDialog();
+        document.removeEventListener('keydown',escapeHandler);
+      }
+    };
+
+    document.addEventListener('keydown',escapeHandler);
+
+    confirmDelete.addEventListener('click',async()=>{
+      confirmDelete.disabled=true;
+      cancel.disabled=true;
+      confirmDelete.textContent='Deleting…';
+
+      const table=post._spotlight?'spotlight_videos':'posts';
+
+      const {error}=await supabase
+        .from(table)
+        .delete()
+        .eq('id',post.id)
+        .eq('user_id',currentUser.id);
+
+      if(error){
+        console.error('Delete post error:',error);
+        message.textContent='This post could not be deleted. Please try again.';
+        confirmDelete.disabled=false;
+        cancel.disabled=false;
+        confirmDelete.textContent='Try again';
+        return;
+      }
+
+      document.removeEventListener('keydown',escapeHandler);
+      overlay.remove();
+      card.remove();
+      await loadCounts(currentProfile);
+    });
   });
-  pop.append(title,note,deleteButton);wrap.append(trigger,pop);
-  trigger.addEventListener('click',event=>{event.stopPropagation();document.querySelectorAll('.post-menu-pop').forEach(menu=>{if(menu!==pop)menu.classList.add('hidden');});pop.classList.toggle('hidden');});
-  document.addEventListener('click',event=>{if(!wrap.contains(event.target))pop.classList.add('hidden');});
+
+  pop.append(title,note,deleteButton);
+  wrap.append(trigger,pop);
+
+  trigger.addEventListener('click',event=>{
+    event.stopPropagation();
+
+    document.querySelectorAll('.post-menu-pop').forEach(menu=>{
+      if(menu!==pop) menu.classList.add('hidden');
+    });
+
+    pop.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click',event=>{
+    if(!wrap.contains(event.target)) pop.classList.add('hidden');
+  });
+
   return wrap;
 }
 
