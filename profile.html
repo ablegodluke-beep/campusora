@@ -209,13 +209,8 @@ h1{
   margin:0
 }
 
-.school{
-  color:#aeb8d7;
-  font-size:12px;
-  line-height:1.6;
-  margin-top:9px;
-  overflow-wrap:anywhere
-}
+.school{color:#aeb8d7;font-size:10px;font-style:italic;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
+.school-inline{display:inline-block;max-width:100%;margin-left:2px;vertical-align:middle}
 
 .bio{
   color:#dce1f7;
@@ -281,9 +276,12 @@ grid-row:1;
 .post-header{display:flex;align-items:center;gap:11px;position:relative}
 .post-menu-wrap{margin-left:auto;position:relative;flex-shrink:0}
 .post-menu-trigger{width:34px;height:34px;border:1px solid var(--border);border-radius:10px;background:var(--card2);color:#dce1f7;font-size:20px;line-height:1}
-.post-menu-pop{position:absolute;right:0;top:39px;z-index:30;min-width:145px;padding:6px;background:#171d33;border:1px solid var(--border);border-radius:11px;box-shadow:0 12px 35px #0009}
-.post-menu-item{display:block;width:100%;padding:10px;border:0;border-radius:7px;background:transparent;color:#ff9aaa;text-align:left;font-size:12px;font-weight:700}
-.post-menu-item:hover{background:#2a1a2b}
+.post-menu-pop{position:absolute;right:0;top:39px;z-index:30;width:220px;max-width:calc(100vw - 42px);padding:12px;display:flex;flex-direction:column;align-items:stretch;gap:9px;background:linear-gradient(145deg,#1a2038,#101629);border:1px solid #394361;border-radius:13px;box-shadow:0 14px 38px #000b}
+.post-menu-title{font-size:12px;font-weight:800;color:#eef1ff;padding:1px 2px 5px;border-bottom:1px solid var(--border)}
+.post-menu-note{font-size:10px;line-height:1.55;color:var(--muted);padding:2px}
+.post-menu-item{display:block;width:100%;padding:11px 12px;border:1px solid rgba(255,99,132,.25);border-radius:9px;background:rgba(255,99,132,.09);color:#ff9aaa;text-align:left;font-size:12px;font-weight:800}
+.post-menu-item:hover{background:rgba(255,99,132,.17)}
+.post-menu-item:disabled{opacity:.45}
 .share-overlay{position:fixed;inset:0;z-index:250;background:#02040dcc;backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:18px}
 .share-panel{width:min(390px,100%);padding:20px;border:1px solid #51417e;border-radius:20px;background:linear-gradient(145deg,#191a36,#0e1428);box-shadow:0 22px 70px #0009}
 .share-panel h3{margin:0 0 6px;font-size:18px}.share-panel p{margin:0 0 16px;color:var(--muted);font-size:12px;line-height:1.6}
@@ -546,13 +544,10 @@ body.premium-active .cover{
 }
 
 .photo-viewer-content{
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative
 }
+.photo-viewer-tools{position:absolute;right:0;top:58px;width:66px;min-height:54px;display:flex;align-items:center;justify-content:center;padding:6px;background:rgba(12,17,34,.82);border:1px solid var(--border);border-radius:13px;z-index:3}
+.photo-viewer-tools .photo-viewer-close{position:static;width:52px;height:36px;border-radius:9px;font-size:12px;padding:0 5px;white-space:nowrap}
 
 .photo-viewer-image{
   display:block;
@@ -564,11 +559,9 @@ body.premium-active .cover{
 }
 
 .photo-viewer-close{
-  position:absolute;
-  top:4px;
-  right:4px;
-  width:42px;
-  height:42px;
+  position:static;
+  width:52px;
+  height:36px;
   border-radius:50%;
   background:rgba(23,29,51,.95);
   color:white;
@@ -1250,6 +1243,8 @@ body.premium-active .cover{
 
           <div class="name-line">
             <h1 id="profileName">Campusora Member</h1>
+            <span id="profileSchool" class="school school-inline"></span>
+            <span id="profileBadge" class="badge">🎓 Student</span>
 
             <button
               id="getRanksButton"
@@ -1263,12 +1258,6 @@ body.premium-active .cover{
 
           <div class="username-line">
             <span id="profileUsername" class="username"></span>
-            <span id="profileBadge" class="badge">🎓 Student</span>
-          </div>
-
-          <div class="premium-line">
-            <span id="profileSchool" class="school"></span>
-            <span id="premiumBadge" class="premium-badge hidden">✦ PREMIUM</span>
           </div>
           <div id="profileBio" class="bio"></div>
 
@@ -1382,12 +1371,54 @@ body.premium-active .cover{
   aria-label="Photo viewer"
 >
   <div class="photo-viewer-content">
-    <button
-      id="closePhotoViewer"
-      class="photo-viewer-close"
-      type="button"
-      aria-label="Back to profile"
-    >← Back</button>
+    <div class="photo-viewer-tools">
+      <button id="closePhotoViewer" class="photo-viewer-close" type="button" aria-label="Back to profile">← Back</button>
+    </div>
+
+    <img
+      id="photoViewerImage"
+      class="photo-viewer-image"
+      alt="Expanded photo"
+    >
+  </div>
+</div>
+
+<!-- Premium plan modal -->
+<div
+  id="premiumModal"
+  class="modal-overlay hidden"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="connections-modal">
+
+    <div class="connections-head">
+      <strong id="connectionsTitle">Followers</strong>
+      <button
+        id="closeConnections"
+        class="connections-close"
+        type="button"
+        aria-label="Close"
+      >×</button>
+    </div>
+
+    <div id="connectionsList" class="connections-list"></div>
+
+  </div>
+</div>
+
+<!-- Full-size profile and cover photo viewer -->
+<div
+  id="photoViewer"
+  class="photo-viewer hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Photo viewer"
+>
+  <div class="photo-viewer-content">
+    <div class="photo-viewer-tools">
+      <button id="closePhotoViewer" class="photo-viewer-close" type="button" aria-label="Back to profile">← Back</button>
+    </div>
 
     <img
       id="photoViewerImage"
@@ -1690,10 +1721,9 @@ function makeProfileName(person) {
 }
 
 function appendPostPremiumIndicator(authorName,author) {
-  const role=(author?.role||'').toLowerCase();
-  const labels={student:'🎓 STUDENT',alumni:'🏅 ALUMNI',general:'🌟 GENERAL MEMBER'};
-  const label=labels[role];if(!label)return;
-  const badge=document.createElement('span');badge.className='inline-premium';badge.textContent=label;authorName.append(badge);
+  const role=(author?.role||'general').toLowerCase();
+  const labels={student:'🎓 Student',alumni:'🏅 Alumni',general:'🌟 General Member'};
+  const badge=document.createElement('span');badge.className='badge';badge.textContent=labels[role]||'🌟 General Member';authorName.append(badge);
 }
 
 /* PREMIUM MEMBERSHIP */
@@ -1729,32 +1759,12 @@ $('premiumButton').addEventListener('click',async()=>{
 
 function showPremiumStatus(membership) {
   activePremium=membership||null;
-
-  const badge=$('premiumBadge');
-  const status=$('premiumStatus');
-  const plans=$('premiumPlans');
-  const button=$('premiumButton');
-
-  if(!membership){
-    badge?.classList.add('hidden');
-    document.body.classList.remove('premium-active');
-    status?.classList.add('hidden');
-    plans?.classList.remove('hidden');
-    button?.classList.toggle('hidden',!isOwnProfile);
-    return;
-  }
-
-  badge?.classList.remove('hidden');
-  document.body.classList.add('premium-active');
-  status?.classList.remove('hidden');
-  plans?.classList.add('hidden');
-  button?.classList.toggle('hidden',!isOwnProfile);
-
-  if(membership.plan_type==='permanent'){
-    status.textContent='✦ Your Permanent Premium membership is active. You have no expiry date.';
-  }else{
-    status.textContent='✦ Your Monthly Premium membership is active until '+formatDate(membership.expires_at)+'.';
-  }
+  const status=$('premiumStatus'),plans=$('premiumPlans'),button=$('premiumButton');
+  const label=button?.querySelector('span:last-child');
+  if(!membership){document.body.classList.remove('premium-active');status?.classList.add('hidden');plans?.classList.remove('hidden');button?.classList.toggle('hidden',!isOwnProfile);if(label)label.textContent='Upgrade to Premium';return;}
+  document.body.classList.add('premium-active');status?.classList.remove('hidden');plans?.classList.add('hidden');button?.classList.toggle('hidden',!isOwnProfile);if(label)label.textContent='Premium';
+  if(membership.plan_type==='permanent')status.textContent='✦ Your Permanent Premium membership is active. You have no expiry date.';
+  else status.textContent='✦ Your Monthly Premium membership is active until '+formatDate(membership.expires_at)+'.';
 }
 
 async function refreshPremiumStatus() {
@@ -2450,8 +2460,7 @@ $('messageButton').addEventListener('click',()=>{
   if(isOwnProfile)return;
   location.href='./messages.html?user='+encodeURIComponent(currentProfile.id);
 });
-
-/* FOLLOWERS AND FOLLOWING LISTS */
+  /* FOLLOWERS AND FOLLOWING LISTS */
 
 async function openConnectionsList(type) {
   if(!currentProfile)return;
@@ -2643,69 +2652,25 @@ function makeActionButton(icon,label) {
    Deletion is restricted to the post owner. */
 
 function addPostMenu(card,post) {
-  const wrap=document.createElement('div');
-  wrap.className='post-menu-wrap';
-
-  const trigger=document.createElement('button');
-  trigger.type='button';
-  trigger.className='post-menu-trigger';
-  trigger.textContent='⋯';
-  trigger.setAttribute('aria-label','Post options');
-
-  const pop=document.createElement('div');
-  pop.className='post-menu-pop hidden';
-
-  const deleteButton=document.createElement('button');
-  deleteButton.type='button';
-  deleteButton.className='post-menu-item';
-  deleteButton.textContent='Delete Post';
-
-  if(!currentUser||post.user_id!==currentUser.id){
-    deleteButton.disabled=true;
-    deleteButton.title='You can only delete your own posts.';
-  }else{
-    deleteButton.addEventListener('click',async()=>{
-      pop.classList.add('hidden');
-
-      if(!confirm('Delete this post? This cannot be undone.'))return;
-
-      deleteButton.disabled=true;
-      deleteButton.textContent='Deleting...';
-
-      const {error}=await supabase
-        .from('posts')
-        .delete()
-        .eq('id',post.id)
-        .eq('user_id',currentUser.id);
-
-      if(error){
-        console.error('Delete post error:',error);
-        alert('This post could not be deleted. Please try again.');
-        deleteButton.disabled=false;
-        deleteButton.textContent='Delete Post';
-        return;
-      }
-
-      card.remove();
-      await loadCounts(currentProfile);
-    });
-  }
-
-  pop.append(deleteButton);
-  wrap.append(trigger,pop);
-
-  trigger.addEventListener('click',event=>{
-    event.stopPropagation();
-    document.querySelectorAll('.post-menu-pop').forEach(menu=>{
-      if(menu!==pop)menu.classList.add('hidden');
-    });
-    pop.classList.toggle('hidden');
+  const wrap=document.createElement('div');wrap.className='post-menu-wrap';
+  const trigger=document.createElement('button');trigger.type='button';trigger.className='post-menu-trigger';trigger.textContent='⋯';trigger.setAttribute('aria-label','Post options');
+  const pop=document.createElement('div');pop.className='post-menu-pop hidden';
+  const title=document.createElement('div');title.className='post-menu-title';title.textContent='Post options';
+  const note=document.createElement('div');note.className='post-menu-note';
+  const owner=!!currentUser&&post.user_id===currentUser.id;
+  note.textContent=owner?'You can remove this post from your profile.':'Only the person who published this post can delete it.';
+  const deleteButton=document.createElement('button');deleteButton.type='button';deleteButton.className='post-menu-item';deleteButton.textContent='Delete post';deleteButton.disabled=!owner;
+  if(owner)deleteButton.addEventListener('click',async()=>{
+    pop.classList.add('hidden');if(!confirm('Delete this post? This cannot be undone.'))return;
+    deleteButton.disabled=true;deleteButton.textContent='Deleting…';
+    const table=post._spotlight?'spotlight_videos':'posts';
+    const {error}=await supabase.from(table).delete().eq('id',post.id).eq('user_id',currentUser.id);
+    if(error){console.error('Delete post error:',error);alert('This post could not be deleted. Please try again.');deleteButton.disabled=false;deleteButton.textContent='Delete post';return;}
+    card.remove();await loadCounts(currentProfile);
   });
-
-  document.addEventListener('click',event=>{
-    if(!wrap.contains(event.target))pop.classList.add('hidden');
-  });
-
+  pop.append(title,note,deleteButton);wrap.append(trigger,pop);
+  trigger.addEventListener('click',event=>{event.stopPropagation();document.querySelectorAll('.post-menu-pop').forEach(menu=>{if(menu!==pop)menu.classList.add('hidden');});pop.classList.toggle('hidden');});
+  document.addEventListener('click',event=>{if(!wrap.contains(event.target))pop.classList.add('hidden');});
   return wrap;
 }
 
@@ -2935,7 +2900,7 @@ async function sharePostToMoment(post) {
 
   const {data:authors}=await supabase
     .from('profiles')
-    .select('id,username,full_name,avatar_url,role')
+    .select('id,username,full_name,avatar_url,role,school')
     .in('id',authorIds);
 
   const authorMap=new Map((authors||[]).map(person=>[person.id,person]));
@@ -2951,7 +2916,7 @@ async function sharePostToMoment(post) {
     if(item._type==='post'){
       container.append(await createPostCard(item,author));
     }else{
-      container.append(createSpotlightProfileCard(item,author));
+      container.append(await createSpotlightProfileCard(item,author));
     }
   }
 
@@ -2965,72 +2930,30 @@ async function sharePostToMoment(post) {
   }
 }
 
-function createSpotlightProfileCard(video,author) {
-  const card=document.createElement('article');
-  card.className='post-card spotlight-profile-card';
-  card.id='spotlight-'+video.id;
-
-  const header=document.createElement('div');
-  header.className='post-header';
-
-  const avatar=makeProfileAvatar(author,'post-avatar');
-
-  const info=document.createElement('div');
-  info.style.minWidth='0';
-
-  const authorName=document.createElement('a');
-  authorName.className='post-author';
-  authorName.href=profileLink(author.id);
-  authorName.textContent=author.full_name||author.username||'Campusora Member';
-
-  const role=(author.role||'general').toLowerCase();
-  const badge=document.createElement('span');
-  badge.className='role-badge';
-  badge.textContent=role==='student'?'🎓 Student':
-    role==='alumni'?'🏅 Alumni':'🌟 General Member';
-
-  authorName.append(badge);
-
-  const meta=document.createElement('div');
-  meta.className='post-meta';
-  meta.textContent='Spotlight · '+formatDate(video.created_at);
-
-  info.append(authorName,meta);
-  header.append(avatar,info);
-
-  if(currentUser&&video.user_id===currentUser.id){
-    header.append(addPostMenu(card,{
-      id:video.id,
-      user_id:video.user_id,
-      _spotlight:true
-    }));
+async function createSpotlightProfileCard(video,author) {
+  const card=document.createElement('article');card.className='post-card spotlight-profile-card';card.id='spotlight-'+video.id;
+  const header=document.createElement('div');header.className='post-header';const avatar=makeProfileAvatar(author,'post-avatar');
+  const info=document.createElement('div');info.style.minWidth='0';const authorName=document.createElement('a');authorName.className='post-author';authorName.href=profileLink(author.id);authorName.textContent=author.full_name||author.username||'Campusora Member';
+  const role=(author.role||'general').toLowerCase();const badge=document.createElement('span');badge.className='badge';badge.textContent=role==='student'?'🎓 Student':role==='alumni'?'🏅 Alumni':'🌟 General Member';authorName.append(badge);
+  const meta=document.createElement('div');meta.className='post-meta';meta.textContent='Spotlight · '+formatDate(video.created_at);info.append(authorName,meta);header.append(avatar,info);
+  if(currentUser&&video.user_id===currentUser.id)header.append(addPostMenu(card,{id:video.id,user_id:video.user_id,_spotlight:true}));card.append(header);
+  if(video.caption){const caption=document.createElement('div');caption.className='post-text';caption.textContent=video.caption;card.append(caption);}
+  const player=document.createElement('video');player.className='post-image spotlight-profile-video';player.src=video.video_url;player.controls=true;player.playsInline=true;player.preload='metadata';if(video.thumbnail_url)player.poster=video.thumbnail_url;card.append(player);
+  const stats=document.createElement('div');stats.className='post-stats';const likeStat=document.createElement('span');const commentStat=document.createElement('span');const viewStat=document.createElement('span');
+  const [likesResult,myLikeResult,commentsResult]=await Promise.all([supabase.from('spotlight_likes').select('video_id',{count:'exact',head:true}).eq('video_id',video.id),currentUser?supabase.from('spotlight_likes').select('video_id,reaction').eq('video_id',video.id).eq('user_id',currentUser.id).maybeSingle():Promise.resolve({data:null,error:null}),supabase.from('spotlight_comments').select('id',{count:'exact',head:true}).eq('video_id',video.id)]);
+  let likeCount=likesResult.count??0;let commentCount=commentsResult.count??0;let liked=!!myLikeResult.data;viewStat.textContent='▶ '+Number(video.view_count||0).toLocaleString()+' views';stats.append(likeStat,commentStat,viewStat);
+  const actions=document.createElement('div');actions.className='post-actions';const likeBtn=makeActionButton(liked?'♥':'♡',liked?'Liked':'Like');const commentBtn=makeActionButton('💬','Comment');const shareBtn=makeActionButton('↗','Share');actions.append(likeBtn,commentBtn,shareBtn);
+  const commentsArea=document.createElement('div');commentsArea.className='comments-area hidden';card.append(stats,actions,commentsArea);
+  function updateStats(){likeStat.textContent='❤️ '+likeCount+' '+(likeCount===1?'like':'likes');commentStat.textContent='💬 '+commentCount+' '+(commentCount===1?'comment':'comments');likeBtn.classList.toggle('liked',liked);likeBtn.querySelector('.action-icon').textContent=liked?'♥':'♡';likeBtn.querySelector('.action-label').textContent=liked?'Liked':'Like';}updateStats();
+  likeBtn.addEventListener('click',async()=>{if(!currentUser){location.href='./auth.html?mode=login';return;}likeBtn.disabled=true;if(liked){const {error}=await supabase.from('spotlight_likes').delete().eq('video_id',video.id).eq('user_id',currentUser.id);if(error)alert('Could not remove your like.');else{liked=false;likeCount=Math.max(0,likeCount-1);}}else{const {error}=await supabase.from('spotlight_likes').insert({video_id:video.id,user_id:currentUser.id,reaction:'like'});if(error){const {data}=await supabase.from('spotlight_likes').select('video_id').eq('video_id',video.id).eq('user_id',currentUser.id).maybeSingle();if(data)liked=true;else alert('Could not like this video. Please try again.');}else{liked=true;likeCount++;}}likeBtn.disabled=false;updateStats();});
+  commentBtn.addEventListener('click',async()=>{commentsArea.classList.toggle('hidden');if(!commentsArea.classList.contains('hidden'))await renderSpotlightComments();});
+  shareBtn.addEventListener('click',async()=>{const url=new URL('./spotlight.html',location.href);url.hash=video.id;try{if(navigator.share)await navigator.share({title:'Campusora Spotlight',text:'Watch this video on Campusora',url:url.href});else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(url.href);alert('Spotlight link copied.');}else prompt('Copy this Spotlight link:',url.href);}catch(error){if(error.name!=='AbortError')alert('Could not share this video.');}});
+  async function renderSpotlightComments(){commentsArea.replaceChildren();const form=document.createElement('form');form.className='comment-form';const input=document.createElement('textarea');input.className='comment-input';input.rows=1;input.maxLength=2000;input.placeholder=currentUser?'Write a comment…':'Log in to comment…';const send=document.createElement('button');send.className='comment-send';send.type='submit';send.textContent='Send';form.append(input,send);commentsArea.append(form);const list=document.createElement('div');commentsArea.append(list);
+    form.addEventListener('submit',async event=>{event.preventDefault();if(!currentUser){location.href='./auth.html?mode=login';return;}const content=input.value.trim();if(!content)return;send.disabled=true;send.textContent='Sending…';const {error}=await supabase.from('spotlight_comments').insert({video_id:video.id,user_id:currentUser.id,content});if(error){console.error('Spotlight comment error:',error);alert('Comment could not be saved. Please try again.');send.disabled=false;send.textContent='Send';return;}commentCount++;updateStats();await renderSpotlightComments();});
+    list.textContent='Loading comments…';const {data,error}=await supabase.from('spotlight_comments').select('id,user_id,content,created_at').eq('video_id',video.id).order('created_at',{ascending:true}).limit(100);list.replaceChildren();if(error){list.textContent='Comments could not be loaded.';return;}if(!data?.length){list.textContent='No comments yet. Be the first to comment!';return;}
+    const ids=[...new Set(data.map(item=>item.user_id))];const {data:people}=await supabase.from('profiles').select('id,username,full_name,avatar_url,role').in('id',ids);const map=new Map((people||[]).map(person=>[person.id,person]));
+    data.forEach(item=>{const person=map.get(item.user_id)||{id:item.user_id};const row=document.createElement('div');row.className='comment';const image=makeProfileAvatar(person);const body=document.createElement('div');body.className='comment-body';body.append(makeProfileName(person));const content=document.createElement('div');content.className='comment-text';content.textContent=item.content||'';const time=document.createElement('div');time.className='comment-time';time.textContent=formatDate(item.created_at);body.append(content,time);row.append(image,body);list.append(row);});
   }
-
-  card.append(header);
-
-  if(video.caption){
-    const caption=document.createElement('div');
-    caption.className='post-text';
-    caption.textContent=video.caption;
-    card.append(caption);
-  }
-
-  const player=document.createElement('video');
-  player.className='post-image spotlight-profile-video';
-  player.src=video.video_url;
-  player.controls=true;
-  player.playsInline=true;
-  player.preload='metadata';
-
-  if(video.thumbnail_url)player.poster=video.thumbnail_url;
-
-  card.append(player);
-
-  const views=document.createElement('div');
-  views.className='post-meta';
-  views.textContent='▶ '+Number(video.view_count||0).toLocaleString()+' views';
-  card.append(views);
-
   return card;
 }
 
@@ -3054,7 +2977,7 @@ async function createPostCard(post,author) {
 
   const role=(author.role||'general').toLowerCase();
   const badge=document.createElement('span');
-  badge.className='role-badge';
+  badge.className='badge';
   badge.textContent=role==='student'?'🎓 Student':
     role==='alumni'?'🏅 Alumni':'🌟 General Member';
 
