@@ -70,8 +70,6 @@ img{display:block;max-width:100%}
   to{width:90%}
 }
 
-/* PAGE */
-
 .page{
   width:min(100%,760px);
   margin:auto;
@@ -161,7 +159,7 @@ img{display:block;max-width:100%}
   color:white;
 }
 
-/* MOMENTS */
+/* CAMPUS MOMENTS */
 
 .section-card{
   background:var(--surface);
@@ -247,52 +245,6 @@ img{display:block;max-width:100%}
   font-size:25px;
 }
 
-/* YOUR MOMENT */
-
-.your-moment{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:9px 11px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  margin-bottom:9px;
-}
-
-.your-moment .avatar{
-  width:39px;
-  height:39px;
-}
-
-.your-moment-info{
-  flex:1;
-  min-width:0;
-}
-
-.your-moment-info strong{
-  display:block;
-  font-size:11px;
-}
-
-.your-moment-info small{
-  display:block;
-  margin-top:3px;
-  color:var(--muted);
-  font-size:9px;
-}
-
-.add-moment-button{
-  padding:8px 11px;
-  border:0;
-  border-radius:9px;
-  background:var(--gradient);
-  color:white;
-  font-size:10px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
 /* COMPOSER */
 
 .composer{
@@ -342,8 +294,6 @@ img{display:block;max-width:100%}
   border-color:var(--purple);
 }
 
-/* REAL COMPOSER ACTIONS */
-
 .composer-actions{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -367,14 +317,8 @@ img{display:block;max-width:100%}
   transition:.18s;
 }
 
-.composer-action:active{
-  transform:scale(.97);
-}
-
-.composer-action .icon{
-  font-size:15px;
-}
-
+.composer-action:active{transform:scale(.97)}
+.composer-action .icon{font-size:15px}
 .composer-action.photo .icon{color:#54d69b}
 .composer-action.video .icon{color:#53baff}
 .composer-action.poll .icon{color:#b795ff}
@@ -423,9 +367,7 @@ img{display:block;max-width:100%}
   font-size:8px;
 }
 
-.more-wrap{
-  position:relative;
-}
+.more-wrap{position:relative}
 
 .more-btn{
   width:30px;
@@ -436,8 +378,6 @@ img{display:block;max-width:100%}
   color:#aab2cb;
   font-size:21px;
 }
-
-.more-btn:hover{background:#ffffff0d}
 
 .post-menu{
   display:none;
@@ -479,9 +419,7 @@ img{display:block;max-width:100%}
   font-weight:700;
 }
 
-.post-body{
-  padding:0 11px 10px;
-}
+.post-body{padding:0 11px 10px}
 
 .post-body p{
   margin:0 0 9px;
@@ -799,7 +737,7 @@ img{display:block;max-width:100%}
   margin-top:3px;
 }
 
-/* STATUS */
+/* EMPTY FEED AND NOTICES */
 
 .empty-feed{
   padding:25px 14px;
@@ -843,6 +781,27 @@ img{display:block;max-width:100%}
   transform:translate(-50%,0);
 }
 
+/* NAVIGATION */
+
+.campusora-topnav{
+  z-index:12000!important;
+  pointer-events:auto!important;
+}
+
+.campusora-topnav button,
+.campusora-topnav a,
+.campusora-mainnav a,
+.campusora-mainnav button{
+  pointer-events:auto!important;
+}
+
+.campusora-mainnav{z-index:12000!important}
+
+.campusora-topnav.nav-hidden,
+.campusora-mainnav.nav-hidden{
+  pointer-events:none!important;
+}
+
 /* RESPONSIVE */
 
 @media(max-width:480px){
@@ -858,30 +817,6 @@ img{display:block;max-width:100%}
   .filter-button{min-width:94px;padding:8px}
   .composer-action{font-size:9px}
   .post-action{font-size:9px}
-}
-
-/* SHARED NAVIGATION LAYERING */
-.campusora-topnav{
-  position:sticky!important;
-  top:0!important;
-  z-index:12000!important;
-  pointer-events:auto!important;
-}
-
-.campusora-topnav button,
-.campusora-topnav a,
-.campusora-mainnav a,
-.campusora-mainnav button{
-  pointer-events:auto!important;
-}
-
-.campusora-mainnav{
-  z-index:12000!important;
-}
-
-.campusora-topnav.nav-hidden,
-.campusora-mainnav.nav-hidden{
-  pointer-events:none!important;
 }
 </style>
 </head>
@@ -900,19 +835,20 @@ img{display:block;max-width:100%}
       </div>
 
       <div class="filter-wrap">
-        <button class="filter-button" id="filterButton">
+        <button class="filter-button" id="filterButton" type="button">
           <span id="filterLabel">For You</span>
           <span>⌄</span>
         </button>
 
         <div class="filter-menu" id="filterMenu">
-          <button class="filter-option active" data-filter="for-you">For You</button>
-          <button class="filter-option" data-filter="popular">Popular</button>
-          <button class="filter-option" data-filter="campus">My Campus</button>
+          <button class="filter-option active" data-filter="for-you" type="button">For You</button>
+          <button class="filter-option" data-filter="popular" type="button">Popular</button>
+          <button class="filter-option" data-filter="campus" type="button">My Campus</button>
         </div>
       </div>
     </section>
 
+    <!-- CAMPUS MOMENTS -->
     <section class="section-card">
       <div class="section-heading">
         <h2>Campus Moments</h2>
@@ -927,15 +863,7 @@ img{display:block;max-width:100%}
       </div>
     </section>
 
-    <section class="your-moment">
-      <img id="currentAvatar" class="avatar" alt="Your profile">
-      <div class="your-moment-info">
-        <strong>Your Moments</strong>
-        <small>Share a photo or video that disappears after 24 hours.</small>
-      </div>
-      <a href="campus-moments.html" class="add-moment-button">+ Add Moment</a>
-    </section>
-
+    <!-- COMPOSER NOW COMES DIRECTLY AFTER CAMPUS MOMENTS -->
     <section class="composer">
       <div class="composer-title">What's happening in your campus?</div>
 
@@ -968,6 +896,7 @@ img{display:block;max-width:100%}
       </div>
     </section>
 
+    <!-- POSTS APPEAR BELOW THE COMPOSER -->
     <section id="feed">
       <div class="empty-feed">
         <strong>Loading your feed...</strong>
@@ -978,17 +907,17 @@ img{display:block;max-width:100%}
   </div>
 </main>
 
-<!-- SHARE MODAL -->
+<!-- SHARE PANEL -->
 
 <div class="modal-backdrop" id="shareBackdrop">
   <section class="share-modal">
     <div class="modal-head">
       <h3>Share this post</h3>
-      <button class="modal-close" id="closeShare">×</button>
+      <button class="modal-close" id="closeShare" type="button">×</button>
     </div>
 
     <div class="share-options">
-      <button class="share-option" data-share-type="profile">
+      <button class="share-option" data-share-type="profile" type="button">
         <span class="share-option-icon">◉</span>
         <span>
           <strong>Share to Profile</strong>
@@ -996,7 +925,7 @@ img{display:block;max-width:100%}
         </span>
       </button>
 
-      <button class="share-option" data-share-type="message">
+      <button class="share-option" data-share-type="message" type="button">
         <span class="share-option-icon">✉</span>
         <span>
           <strong>Share as Message</strong>
@@ -1004,7 +933,7 @@ img{display:block;max-width:100%}
         </span>
       </button>
 
-      <button class="share-option" data-share-type="community">
+      <button class="share-option" data-share-type="community" type="button">
         <span class="share-option-icon">♧</span>
         <span>
           <strong>Share to Communities</strong>
@@ -1041,8 +970,8 @@ let currentUser=null;
 let currentProfile=null;
 let activeFeed="for-you";
 let shareItem=null;
-let shareMode="";
 let loading=false;
+let currentItems=[]; // FIX: declared before use
 let profileCache=new Map();
 
 const fallbackAvatar=
@@ -1053,7 +982,11 @@ encodeURIComponent(
 
 function esc(value=""){
  return String(value).replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
  }[c]));
 }
 
@@ -1065,25 +998,42 @@ function profileURL(id){
 
 function timeAgo(value){
  if(!value)return "Recently";
- const seconds=Math.max(0,Math.floor((Date.now()-new Date(value).getTime())/1000));
+
+ const seconds=Math.max(
+  0,
+  Math.floor((Date.now()-new Date(value).getTime())/1000)
+ );
+
  if(seconds<60)return "Just now";
  if(seconds<3600)return Math.floor(seconds/60)+"m ago";
  if(seconds<86400)return Math.floor(seconds/3600)+"h ago";
  if(seconds<604800)return Math.floor(seconds/86400)+"d ago";
+
  return new Date(value).toLocaleDateString();
 }
 
 function toast(message){
  $("toast").textContent=message;
  $("toast").classList.add("show");
+
  clearTimeout(toast.timer);
- toast.timer=setTimeout(()=>$("toast").classList.remove("show"),2600);
+
+ toast.timer=setTimeout(
+  ()=>$("toast").classList.remove("show"),
+  2600
+ );
 }
 
-function startProgress(){progress.className="loading"}
+function startProgress(){
+ progress.className="loading";
+}
+
 function finishProgress(){
  progress.className="done";
- setTimeout(()=>progress.className="",350);
+
+ setTimeout(()=>{
+  progress.className="";
+ },350);
 }
 
 function showEmpty(title,message,retry=false){
@@ -1091,8 +1041,9 @@ function showEmpty(title,message,retry=false){
   <div class="empty-feed">
    <strong>${esc(title)}</strong>
    ${esc(message)}
-   ${retry?'<br><button class="filter-button" id="retryFeed">Try Again</button>':""}
+   ${retry?'<br><button class="filter-button" id="retryFeed" type="button">Try Again</button>':""}
   </div>`;
+
  $("retryFeed")?.addEventListener("click",loadFeed);
 }
 
@@ -1100,12 +1051,12 @@ function showEmpty(title,message,retry=false){
 
 async function loadMyProfile(){
  const {data:{session},error}=await supabase.auth.getSession();
+
  if(error)throw error;
 
  currentUser=session?.user||null;
 
  if(!currentUser){
-  $("currentAvatar").src=fallbackAvatar;
   $("composerAvatar").src=fallbackAvatar;
   return;
  }
@@ -1119,10 +1070,11 @@ async function loadMyProfile(){
  if(profileError)throw profileError;
 
  currentProfile=data;
- profileCache.set(currentUser.id,data);
+
+ if(data)profileCache.set(currentUser.id,data);
 
  const image=avatar(data?.avatar_url);
- $("currentAvatar").src=image;
+
  $("composerAvatar").src=image;
  $("myProfileLink").href=profileURL(currentUser.id);
 }
@@ -1140,13 +1092,14 @@ async function getProfiles(ids){
    .in("id",missing);
 
   if(error)throw error;
+
   (data||[]).forEach(p=>profileCache.set(p.id,p));
  }
 
  return profileCache;
 }
 
-/* MOMENTS */
+/* CAMPUS MOMENTS */
 
 async function loadMoments(){
  const {data,error}=await supabase
@@ -1159,60 +1112,76 @@ async function loadMoments(){
  if(error)throw error;
 
  const moments=data||[];
- if(!moments.length)return;
 
- const profiles=await getProfiles(moments.map(x=>x.user_id));
-
- momentList.innerHTML=`
+ const addButton=`
   <a class="moment add" href="campus-moments.html">
    <div class="moment-ring">+</div>
    <span class="moment-name">Add Moment</span>
-  </a>
-  ${moments.map(item=>{
-   const p=profiles.get(item.user_id)||{};
-   return `
-    <a class="moment" href="campus-moments.html">
-     <div class="moment-ring">
-      <img src="${esc(avatar(p.avatar_url))}" alt="" loading="lazy">
-     </div>
-     <span class="moment-name">${esc(p.full_name||p.username||"Member")}</span>
-    </a>`;
-  }).join("")}`;
+  </a>`;
+
+ if(!moments.length){
+  momentList.innerHTML=addButton;
+  return;
+ }
+
+ const profiles=await getProfiles(moments.map(x=>x.user_id));
+
+ momentList.innerHTML=addButton+moments.map(item=>{
+  const p=profiles.get(item.user_id)||{};
+
+  return `
+   <a class="moment" href="campus-moments.html">
+    <div class="moment-ring">
+     <img src="${esc(avatar(p.avatar_url))}" alt="" loading="lazy">
+    </div>
+    <span class="moment-name">
+     ${esc(p.full_name||p.username||"Member")}
+    </span>
+   </a>`;
+ }).join("");
 }
 
 /* FETCH POSTS */
 
 async function fetchPosts(){
- let query=supabase.from("posts")
+ let query=supabase
+  .from("posts")
   .select("*")
   .order("created_at",{ascending:false})
   .limit(60);
 
  if(activeFeed==="campus"){
   if(!currentProfile?.institution_id)return [];
+
   query=query.eq("institution_id",currentProfile.institution_id);
  }
 
  const {data,error}=await query;
+
  if(error)throw error;
+
  return data||[];
 }
 
-/* FETCH SPOTLIGHT */
+/* FETCH SPOTLIGHT VIDEOS */
 
 async function fetchVideos(){
- let query=supabase.from("spotlight_videos")
+ let query=supabase
+  .from("spotlight_videos")
   .select("id,user_id,caption,video_url,thumbnail_url,institution_id,view_count,created_at")
   .order("created_at",{ascending:false})
   .limit(30);
 
  if(activeFeed==="campus"){
   if(!currentProfile?.institution_id)return [];
+
   query=query.eq("institution_id",currentProfile.institution_id);
  }
 
  const {data,error}=await query;
+
  if(error)throw error;
+
  return data||[];
 }
 
@@ -1221,7 +1190,9 @@ async function fetchVideos(){
 async function fetchSponsored(){
  const now=new Date().toISOString();
 
- const [business,campaign]=await Promise.all([
+ const results=[];
+
+ const [business,campaign]=await Promise.allSettled([
   supabase.from("campusora_business_promotions")
    .select("*")
    .eq("status","active")
@@ -1238,16 +1209,14 @@ async function fetchSponsored(){
    .limit(4)
  ]);
 
- const results=[];
-
- if(!business.error){
-  (business.data||[]).forEach(data=>{
+ if(business.status==="fulfilled"&&!business.value.error){
+  (business.value.data||[]).forEach(data=>{
    results.push({kind:"business-ad",data});
   });
  }
 
- if(!campaign.error){
-  (campaign.data||[]).forEach(data=>{
+ if(campaign.status==="fulfilled"&&!campaign.value.error){
+  (campaign.value.data||[]).forEach(data=>{
    results.push({kind:"campaign-ad",data});
   });
  }
@@ -1255,14 +1224,39 @@ async function fetchSponsored(){
  return results;
 }
 
-/* SUPPORTING DATA */
+/* SUPPORTING DATA
+   These counts are supplementary. If one supporting table fails,
+   the actual posts should still be displayed.
+*/
+
+async function safeQuery(promise){
+ try{
+  const result=await promise;
+
+  if(result.error){
+   console.warn("Supporting feed data:",result.error);
+   return [];
+  }
+
+  return result.data||[];
+ }catch(error){
+  console.warn("Supporting feed data:",error);
+  return [];
+ }
+}
 
 async function supporting(items){
- const posts=items.filter(x=>x.kind==="post").map(x=>x.data);
- const videos=items.filter(x=>x.kind==="video").map(x=>x.data);
+ const posts=items
+  .filter(x=>x.kind==="post")
+  .map(x=>x.data);
+
+ const videos=items
+  .filter(x=>x.kind==="video")
+  .map(x=>x.data);
 
  const postIds=posts.map(x=>x.id);
  const videoIds=videos.map(x=>x.id);
+
  const userIds=[...new Set([
   ...posts.map(x=>x.user_id),
   ...videos.map(x=>x.user_id)
@@ -1270,51 +1264,82 @@ async function supporting(items){
 
  const requests=[
   userIds.length
-   ?supabase.from("profiles").select("id,username,full_name,avatar_url,role,school").in("id",userIds)
-   :Promise.resolve({data:[],error:null}),
+   ?safeQuery(
+     supabase.from("profiles")
+      .select("id,username,full_name,avatar_url,role,school")
+      .in("id",userIds)
+    )
+   :Promise.resolve([]),
 
   postIds.length
-   ?supabase.from("likes").select("post_id,user_id").in("post_id",postIds)
-   :Promise.resolve({data:[],error:null}),
+   ?safeQuery(
+     supabase.from("likes")
+      .select("post_id,user_id")
+      .in("post_id",postIds)
+    )
+   :Promise.resolve([]),
 
   postIds.length
-   ?supabase.from("comments").select("id,post_id,user_id,content,created_at,parent_comment_id").in("post_id",postIds).order("created_at")
-   :Promise.resolve({data:[],error:null}),
+   ?safeQuery(
+     supabase.from("comments")
+      .select("id,post_id,user_id,content,created_at,parent_comment_id")
+      .in("post_id",postIds)
+      .order("created_at")
+    )
+   :Promise.resolve([]),
 
   postIds.length
-   ?supabase.from("post_reposts").select("post_id,user_id").in("post_id",postIds)
-   :Promise.resolve({data:[],error:null}),
+   ?safeQuery(
+     supabase.from("post_reposts")
+      .select("post_id,user_id")
+      .in("post_id",postIds)
+    )
+   :Promise.resolve([]),
 
   videoIds.length
-   ?supabase.from("spotlight_video_reposts").select("video_id,user_id").in("video_id",videoIds)
-   :Promise.resolve({data:[],error:null})
+   ?safeQuery(
+     supabase.from("spotlight_video_reposts")
+      .select("video_id,user_id")
+      .in("video_id",videoIds)
+    )
+   :Promise.resolve([])
  ];
 
- const [profiles,likes,comments,reposts,videoReposts]=await Promise.all(requests);
+ const [
+  profiles,
+  likes,
+  comments,
+  reposts,
+  videoReposts
+ ]=await Promise.all(requests);
 
- for(const result of [profiles,likes,comments,reposts,videoReposts]){
-  if(result.error)throw result.error;
- }
-
- (profiles.data||[]).forEach(p=>profileCache.set(p.id,p));
+ profiles.forEach(p=>profileCache.set(p.id,p));
 
  return {
   profiles:profileCache,
-  likes:likes.data||[],
-  comments:comments.data||[],
-  reposts:reposts.data||[],
-  videoReposts:videoReposts.data||[]
+  likes,
+  comments,
+  reposts,
+  videoReposts
  };
 }
 
-/* BASIC RANKING */
+/* FEED RANKING */
 
 function rankItems(items,extra){
  const counts={};
 
- extra.likes.forEach(x=>counts[x.post_id]=(counts[x.post_id]||0)+2);
- extra.comments.forEach(x=>counts[x.post_id]=(counts[x.post_id]||0)+4);
- extra.reposts.forEach(x=>counts[x.post_id]=(counts[x.post_id]||0)+6);
+ extra.likes.forEach(x=>{
+  counts[x.post_id]=(counts[x.post_id]||0)+2;
+ });
+
+ extra.comments.forEach(x=>{
+  counts[x.post_id]=(counts[x.post_id]||0)+4;
+ });
+
+ extra.reposts.forEach(x=>{
+  counts[x.post_id]=(counts[x.post_id]||0)+6;
+ });
 
  return items.map(item=>{
   const date=new Date(item.data.created_at||Date.now()).getTime();
@@ -1329,13 +1354,17 @@ function rankItems(items,extra){
    score+=engagement*freshness;
   }
 
-  if(activeFeed==="popular")score*=2;
+  if(activeFeed==="popular"){
+   score+=engagement*0.5;
+  }
 
   return {...item,score};
+
  }).sort((a,b)=>{
   if(activeFeed==="for-you"||activeFeed==="popular"){
    return b.score-a.score;
   }
+
   return new Date(b.data.created_at)-new Date(a.data.created_at);
  });
 }
@@ -1343,84 +1372,144 @@ function rankItems(items,extra){
 /* COMMENTS */
 
 function renderComments(comments,profiles,postId){
- const roots=comments.filter(x=>x.post_id===postId&&!x.parent_comment_id);
+ const roots=comments.filter(
+  x=>x.post_id===postId&&!x.parent_comment_id
+ );
 
  function one(c){
   const p=profiles.get(c.user_id)||{};
-  const replies=comments.filter(x=>x.parent_comment_id===c.id);
+
+  const replies=comments.filter(
+   x=>x.parent_comment_id===c.id
+  );
 
   return `
    <div class="comment">
     <a href="${profileURL(c.user_id)}">
-     <img class="avatar" src="${esc(avatar(p.avatar_url))}" alt="">
+     <img class="avatar"
+      src="${esc(avatar(p.avatar_url))}" alt="">
     </a>
+
     <div class="comment-main">
-     <a href="${profileURL(c.user_id)}"><strong>${esc(p.full_name||p.username||"Member")}</strong></a>
+     <a href="${profileURL(c.user_id)}">
+      <strong>${esc(p.full_name||p.username||"Member")}</strong>
+     </a>
+
      <p>${esc(c.content)}</p>
+
      <div class="comment-actions">
-      <button class="small-action" data-comment-action="reply" data-comment-id="${esc(c.id)}">Reply</button>
-      ${currentUser?.id===c.user_id?`<button class="small-action" data-comment-action="delete" data-comment-id="${esc(c.id)}">Delete</button>`:""}
+      <button class="small-action"
+       data-comment-action="reply"
+       data-comment-id="${esc(c.id)}"
+       type="button">Reply</button>
+
+      ${currentUser?.id===c.user_id
+       ?`<button class="small-action"
+          data-comment-action="delete"
+          data-comment-id="${esc(c.id)}"
+          type="button">Delete</button>`
+       :""}
      </div>
+
      <form class="reply-form" data-parent-id="${esc(c.id)}">
-      <textarea name="content" placeholder="Write a reply..." required></textarea>
-      <button class="small-action">Send</button>
+      <textarea name="content"
+       placeholder="Write a reply..." required></textarea>
+      <button class="small-action" type="submit">Send</button>
      </form>
+
      ${replies.map(one).join("")}
     </div>
    </div>`;
  }
 
- return roots.map(one).join("")||'<small class="post-meta">No comments yet. Start the conversation.</small>';
+ return roots.map(one).join("")||
+  '<small class="post-meta">No comments yet. Start the conversation.</small>';
 }
 
 /* POST MENU */
 
 function renderMenu(post){
  if(currentUser?.id!==post.user_id)return "";
+
  return `
   <div class="more-wrap">
-   <button class="more-btn" data-action="menu" aria-label="Post menu">⋯</button>
+   <button class="more-btn"
+    data-action="menu"
+    aria-label="Post menu"
+    type="button">⋯</button>
+
    <div class="post-menu">
-    <button data-action="delete">⌫ Delete Post</button>
+    <button data-action="delete" type="button">
+     ⌫ Delete Post
+    </button>
    </div>
   </div>`;
 }
 
-/* RENDER POST */
+/* RENDER NORMAL POST */
 
 function renderPost(item,extra){
  const post=item.data;
+
  const author=extra.profiles.get(post.user_id)||{};
+
  const likes=extra.likes.filter(x=>x.post_id===post.id);
  const comments=extra.comments.filter(x=>x.post_id===post.id);
  const reposts=extra.reposts.filter(x=>x.post_id===post.id);
+
  const liked=likes.some(x=>x.user_id===currentUser?.id);
- const reposted=reposts.some(x=>x.user_id===currentUser?.id);
+
+ const reposted=reposts.some(
+  x=>x.user_id===currentUser?.id
+ );
 
  return `
   <article class="post" data-post-id="${esc(post.id)}">
-   ${item.repostedBy?`<div class="repost-label">⟳ ${esc(item.repostedBy)} reposted</div>`:""}
+
+   ${item.repostedBy
+    ?`<div class="repost-label">
+       ⟳ ${esc(item.repostedBy)} reposted
+      </div>`
+    :""}
 
    <div class="post-header">
     <a href="${profileURL(post.user_id)}">
-     <img class="avatar" src="${esc(avatar(author.avatar_url))}" alt="">
+     <img class="avatar"
+      src="${esc(avatar(author.avatar_url))}" alt="">
     </a>
+
     <div class="post-user">
      <a class="post-name" href="${profileURL(post.user_id)}">
       ${esc(author.full_name||author.username||"Campusora Member")}
      </a>
-     ${author.role?`<span class="post-badge">${esc(author.role)}</span>`:""}
+
+     ${author.role
+      ?`<span class="post-badge">${esc(author.role)}</span>`
+      :""}
+
      <div class="post-meta">
-      ${author.username?"@"+esc(author.username)+" · ":""}${timeAgo(post.created_at)}
+      ${author.username?"@"+esc(author.username)+" · ":""}
+      ${timeAgo(post.created_at)}
      </div>
     </div>
+
     ${renderMenu(post)}
    </div>
 
    <div class="post-body">
     ${post.content?`<p>${esc(post.content)}</p>`:""}
-    ${post.image_url?`<img class="post-image" src="${esc(post.image_url)}" loading="lazy" alt="Post image">`:""}
-    ${post.video_url?`<video class="post-video" controls playsinline preload="metadata" src="${esc(post.video_url)}"></video>`:""}
+
+    ${post.image_url
+     ?`<img class="post-image"
+        src="${esc(post.image_url)}"
+        loading="lazy" alt="Post image">`
+     :""}
+
+    ${post.video_url
+     ?`<video class="post-video"
+        controls playsinline preload="metadata"
+        src="${esc(post.video_url)}"></video>`
+     :""}
    </div>
 
    <div class="post-stats">
@@ -1429,54 +1518,88 @@ function renderPost(item,extra){
    </div>
 
    <div class="post-actions">
-    <button class="post-action ${liked?"liked":""}" data-action="like">
+    <button class="post-action ${liked?"liked":""}"
+     data-action="like" type="button">
      <span>${liked?"♥":"♡"}</span> Like
     </button>
-    <button class="post-action" data-action="comments">
+
+    <button class="post-action"
+     data-action="comments" type="button">
      <span>▢</span> Comment
     </button>
-    <button class="post-action ${reposted?"reposted":""}" data-action="repost">
+
+    <button class="post-action ${reposted?"reposted":""}"
+     data-action="repost" type="button">
      <span>⟳</span> Repost
     </button>
-    <button class="post-action" data-action="share">
+
+    <button class="post-action"
+     data-action="share" type="button">
      <span>↗</span> Share
     </button>
    </div>
 
    <section class="comment-area" id="comments-${esc(post.id)}">
+
     <form class="comment-form" data-post-id="${esc(post.id)}">
-     <textarea name="content" maxlength="2000" placeholder="Write a comment..." required></textarea>
-     <button>Send</button>
+     <textarea name="content"
+      maxlength="2000"
+      placeholder="Write a comment..." required></textarea>
+     <button type="submit">Send</button>
     </form>
-    <div class="comment-list">${renderComments(comments,extra.profiles,post.id)}</div>
+
+    <div class="comment-list">
+     ${renderComments(comments,extra.profiles,post.id)}
+    </div>
+
    </section>
   </article>`;
 }
 
-/* RENDER VIDEO */
+/* RENDER SPOTLIGHT VIDEO */
 
 function renderVideo(item,extra){
  const video=item.data;
+
  const author=extra.profiles.get(video.user_id)||{};
- const reposts=extra.videoReposts.filter(x=>x.video_id===video.id);
- const reposted=reposts.some(x=>x.user_id===currentUser?.id);
+
+ const reposts=extra.videoReposts.filter(
+  x=>x.video_id===video.id
+ );
+
+ const reposted=reposts.some(
+  x=>x.user_id===currentUser?.id
+ );
 
  return `
   <article class="post" data-video-id="${esc(video.id)}">
+
    <div class="post-header">
     <a href="${profileURL(video.user_id)}">
-     <img class="avatar" src="${esc(avatar(author.avatar_url))}" alt="">
+     <img class="avatar"
+      src="${esc(avatar(author.avatar_url))}" alt="">
     </a>
+
     <div class="post-user">
-     <a class="post-name" href="${profileURL(video.user_id)}">${esc(author.full_name||author.username||"Creator")}</a>
-     <div class="post-meta">✦ Spotlight · ${timeAgo(video.created_at)}</div>
+     <a class="post-name" href="${profileURL(video.user_id)}">
+      ${esc(author.full_name||author.username||"Creator")}
+     </a>
+
+     <div class="post-meta">
+      ✦ Spotlight · ${timeAgo(video.created_at)}
+     </div>
     </div>
    </div>
 
-   ${video.caption?`<div class="post-body"><p>${esc(video.caption)}</p></div>`:""}
+   ${video.caption
+    ?`<div class="post-body"><p>${esc(video.caption)}</p></div>`
+    :""}
 
-   <video class="post-video" controls playsinline preload="metadata"
-    ${video.thumbnail_url?`poster="${esc(video.thumbnail_url)}"`:""}
+   <video class="post-video"
+    controls playsinline preload="metadata"
+    ${video.thumbnail_url
+     ?`poster="${esc(video.thumbnail_url)}"`
+     :""}
     src="${esc(video.video_url)}"></video>
 
    <div class="post-stats">
@@ -1485,11 +1608,27 @@ function renderVideo(item,extra){
    </div>
 
    <div class="post-actions">
-    <a class="post-action" href="spotlight.html#${encodeURIComponent(video.id)}">▶ Watch</a>
-    <button class="post-action ${reposted?"reposted":""}" data-action="video-repost">⟳ Repost</button>
-    <button class="post-action" data-action="video-share">↗ Share</button>
-    <a class="post-action" href="spotlight.html#${encodeURIComponent(video.id)}">♡ Gifts</a>
+    <a class="post-action"
+     href="spotlight.html#${encodeURIComponent(video.id)}">
+     ▶ Watch
+    </a>
+
+    <button class="post-action ${reposted?"reposted":""}"
+     data-action="video-repost" type="button">
+     ⟳ Repost
+    </button>
+
+    <button class="post-action"
+     data-action="video-share" type="button">
+     ↗ Share
+    </button>
+
+    <a class="post-action"
+     href="spotlight.html#${encodeURIComponent(video.id)}">
+     ♡ Gifts
+    </a>
    </div>
+
   </article>`;
 }
 
@@ -1497,32 +1636,52 @@ function renderVideo(item,extra){
 
 function renderBusinessAd(ad){
  const media=ad.media_type==="video"
-  ?`<video class="post-video" controls playsinline preload="metadata" src="${esc(ad.media_path)}"></video>`
-  :`<img class="post-image" loading="lazy" src="${esc(ad.media_path)}" alt="Sponsored promotion">`;
+  ?`<video class="post-video"
+     controls playsinline preload="metadata"
+     src="${esc(ad.media_path)}"></video>`
+  :`<img class="post-image"
+     loading="lazy"
+     src="${esc(ad.media_path)}"
+     alt="Sponsored promotion">`;
 
  return `
   <article class="post">
    <div class="post-header">
     <div class="post-user">
-     <strong class="post-name">${esc(ad.business_name||"Campusora Partner")}</strong>
+     <strong class="post-name">
+      ${esc(ad.business_name||"Campusora Partner")}
+     </strong>
      <div class="post-meta">Sponsored</div>
     </div>
    </div>
+
    <div class="post-body">
     <span class="post-badge">SPONSORED</span>
     <p><strong>${esc(ad.promotion_title||"")}</strong></p>
     <p>${esc(ad.description||"")}</p>
     ${media}
-    ${ad.call_to_action&&ad.website_url?`<a class="filter-button" target="_blank" rel="noopener" href="${esc(ad.website_url)}">${esc(ad.call_to_action)}</a>`:""}
+
+    ${ad.call_to_action&&ad.website_url
+     ?`<a class="filter-button"
+        target="_blank" rel="noopener"
+        href="${esc(ad.website_url)}">
+        ${esc(ad.call_to_action)}
+       </a>`
+     :""}
    </div>
   </article>`;
 }
 
 function renderCampaignAd(ad){
  const media=ad.post_video_url
-  ?`<video class="post-video" controls playsinline preload="metadata" src="${esc(ad.post_video_url)}"></video>`
+  ?`<video class="post-video"
+     controls playsinline preload="metadata"
+     src="${esc(ad.post_video_url)}"></video>`
   :ad.post_image_url
-   ?`<img class="post-image" loading="lazy" src="${esc(ad.post_image_url)}" alt="Sponsored post">`
+   ?`<img class="post-image"
+      loading="lazy"
+      src="${esc(ad.post_image_url)}"
+      alt="Sponsored post">`
    :"";
 
  return `
@@ -1533,50 +1692,103 @@ function renderCampaignAd(ad){
      <div class="post-meta">Sponsored</div>
     </div>
    </div>
+
    <div class="post-body">
     <span class="post-badge">SPONSORED</span>
     <p>${esc(ad.post_content||"")}</p>
     ${media}
-    ${ad.destination_url?`<a class="filter-button" target="_blank" rel="noopener" href="${esc(ad.destination_url)}">Learn More</a>`:""}
+
+    ${ad.destination_url
+     ?`<a class="filter-button"
+        target="_blank" rel="noopener"
+        href="${esc(ad.destination_url)}">
+        Learn More
+       </a>`
+     :""}
    </div>
   </article>`;
 }
 
-/* FEED */
+/* MAIN FEED LOADER */
 
 async function loadFeed(){
  if(loading)return;
+
  loading=true;
  startProgress();
 
  try{
-  if(!currentUser&&currentProfile===null)await loadMyProfile();
+  if(!currentUser&&currentProfile===null){
+   await loadMyProfile();
+  }
 
   if(activeFeed==="campus"&&!currentProfile?.institution_id){
-   showEmpty("My Campus","Select your institution in your profile to see campus posts.");
+   currentItems=[];
+   showEmpty(
+    "My Campus",
+    "Select your institution in your profile to see campus posts."
+   );
    return;
   }
 
-  const [posts,videos,ads]=await Promise.all([
-   fetchPosts(),fetchVideos(),fetchSponsored()
+  /*
+   * Load normal posts separately.
+   * A Spotlight or advertising error must not hide normal posts.
+   */
+
+  const postResult=await fetchPosts();
+
+  let posts=postResult||[];
+  let videos=[];
+  let ads=[];
+
+  const secondary=await Promise.allSettled([
+   fetchVideos(),
+   fetchSponsored()
   ]);
+
+  if(secondary[0].status==="fulfilled"){
+   videos=secondary[0].value||[];
+  }else{
+   console.warn("Spotlight videos could not load:",secondary[0].reason);
+  }
+
+  if(secondary[1].status==="fulfilled"){
+   ads=secondary[1].value||[];
+  }else{
+   console.warn("Sponsored content could not load:",secondary[1].reason);
+  }
 
   let items=[
    ...posts.map(data=>({kind:"post",data})),
    ...videos.map(data=>({kind:"video",data})),
-   ...ads.map(item=>item)
+   ...ads
   ];
 
   if(!items.length){
-   showEmpty("Your feed is waiting for its first post!","Share something with Campusora to get the conversation started.");
+   currentItems=[];
+   showEmpty(
+    "Your feed is waiting for its first post!",
+    "Share something with Campusora to get the conversation started."
+   );
    return;
   }
 
-  const normal=items.filter(x=>x.kind==="post"||x.kind==="video");
+  /*
+   * Supporting data is optional.
+   * If likes, comments or repost counts fail,
+   * posts will still be displayed.
+   */
+
+  const normal=items.filter(
+   x=>x.kind==="post"||x.kind==="video"
+  );
+
   const extra=await supporting(normal);
 
   items=rankItems(items,extra);
 
+  // FIX: currentItems is declared above.
   currentItems=items;
 
   feed.innerHTML=items.map(item=>{
@@ -1584,12 +1796,19 @@ async function loadFeed(){
    if(item.kind==="video")return renderVideo(item,extra);
    if(item.kind==="business-ad")return renderBusinessAd(item.data);
    if(item.kind==="campaign-ad")return renderCampaignAd(item.data);
+
    return "";
   }).join("");
 
  }catch(error){
   console.error("Feed error:",error);
-  showEmpty("We couldn't load your feed",error.message||"Check your connection and try again.",true);
+
+  showEmpty(
+   "We couldn't load your feed",
+   error.message||"Check your connection and try again.",
+   true
+  );
+
  }finally{
   loading=false;
   finishProgress();
@@ -1599,35 +1818,67 @@ async function loadFeed(){
 /* LIKE */
 
 async function toggleLike(postId){
- if(!currentUser)return toast("Please log in to react.");
+ if(!currentUser){
+  return toast("Please log in to react.");
+ }
 
  const {data:existing,error:findError}=await supabase
-  .from("likes").select("id")
-  .eq("post_id",postId).eq("user_id",currentUser.id).maybeSingle();
+  .from("likes")
+  .select("id")
+  .eq("post_id",postId)
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
 
- if(findError)return toast("Could not update reaction.");
+ if(findError){
+  console.error(findError);
+  return toast("Could not update reaction.");
+ }
 
  const result=existing
-  ?await supabase.from("likes").delete().eq("post_id",postId).eq("user_id",currentUser.id)
-  :await supabase.from("likes").insert({post_id:postId,user_id:currentUser.id});
+  ?await supabase.from("likes")
+    .delete()
+    .eq("post_id",postId)
+    .eq("user_id",currentUser.id)
+  :await supabase.from("likes")
+    .insert({
+     post_id:postId,
+     user_id:currentUser.id
+    });
 
- if(result.error)return toast("Could not update reaction.");
+ if(result.error){
+  console.error(result.error);
+  return toast("Could not update reaction.");
+ }
+
  await loadFeed();
 }
 
-/* REPOST */
+/* REPOST NORMAL POST */
 
 async function toggleRepost(postId){
- if(!currentUser)return toast("Please log in to repost.");
+ if(!currentUser){
+  return toast("Please log in to repost.");
+ }
 
  const {data:existing,error}=await supabase
-  .from("post_reposts").select("id")
-  .eq("post_id",postId).eq("user_id",currentUser.id).maybeSingle();
+  .from("post_reposts")
+  .select("id")
+  .eq("post_id",postId)
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
 
- if(error)return toast("Could not check repost.");
+ if(error){
+  console.error(error);
+  return toast("Could not check repost.");
+ }
 
- const rpc=existing?"undo_campusora_repost":"repost_campusora_post";
- const result=await supabase.rpc(rpc,{p_post_id:postId});
+ const rpc=existing
+  ?"undo_campusora_repost"
+  :"repost_campusora_post";
+
+ const result=await supabase.rpc(rpc,{
+  p_post_id:postId
+ });
 
  if(result.error){
   console.error(result.error);
@@ -1635,20 +1886,36 @@ async function toggleRepost(postId){
  }
 
  toast(existing?"Repost removed.":"Post reposted.");
+
  await loadFeed();
 }
 
+/* REPOST SPOTLIGHT VIDEO */
+
 async function toggleVideoRepost(videoId){
- if(!currentUser)return toast("Please log in to repost.");
+ if(!currentUser){
+  return toast("Please log in to repost.");
+ }
 
  const {data:existing,error}=await supabase
-  .from("spotlight_video_reposts").select("id")
-  .eq("video_id",videoId).eq("user_id",currentUser.id).maybeSingle();
+  .from("spotlight_video_reposts")
+  .select("id")
+  .eq("video_id",videoId)
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
 
- if(error)return toast("Could not check repost.");
+ if(error){
+  console.error(error);
+  return toast("Could not check repost.");
+ }
 
- const rpc=existing?"undo_spotlight_video_repost":"repost_spotlight_video";
- const result=await supabase.rpc(rpc,{p_video_id:videoId});
+ const rpc=existing
+  ?"undo_spotlight_video_repost"
+  :"repost_spotlight_video";
+
+ const result=await supabase.rpc(rpc,{
+  p_video_id:videoId
+ });
 
  if(result.error){
   console.error(result.error);
@@ -1656,15 +1923,19 @@ async function toggleVideoRepost(videoId){
  }
 
  toast(existing?"Repost removed.":"Video reposted.");
+
  await loadFeed();
 }
 
-/* DELETE POST — NO CONFIRMATION */
+/* DELETE OWN POST — NO CONFIRMATION */
 
 async function deletePost(postId){
- if(!currentUser)return toast("Please log in.");
+ if(!currentUser){
+  return toast("Please log in.");
+ }
 
- const {error}=await supabase.from("posts")
+ const {error}=await supabase
+  .from("posts")
   .delete()
   .eq("id",postId)
   .eq("user_id",currentUser.id);
@@ -1675,16 +1946,18 @@ async function deletePost(postId){
  }
 
  toast("Post deleted.");
+
  await loadFeed();
 }
 
-/* SHARE MODAL */
+/* SHARE PANEL */
 
 function openShare(item){
  shareItem=item;
- shareMode="";
+
  shareList.classList.remove("show");
  $("shareSearch").value="";
+
  shareBackdrop.classList.add("show");
 }
 
@@ -1694,20 +1967,27 @@ function closeShare(){
 }
 
 $("closeShare").addEventListener("click",closeShare);
-shareBackdrop.addEventListener("click",e=>{
- if(e.target===shareBackdrop)closeShare();
+
+shareBackdrop.addEventListener("click",event=>{
+ if(event.target===shareBackdrop){
+  closeShare();
+ }
 });
 
-async function loadShareTargets(mode){
- if(!currentUser)return toast("Please log in to share.");
+/* LOAD SHARE TARGETS */
 
- shareMode=mode;
+async function loadShareTargets(mode){
+ if(!currentUser){
+  return toast("Please log in to share.");
+ }
+
  shareList.classList.add("show");
  shareResults.innerHTML='<div class="empty-feed">Loading...</div>';
 
  try{
   if(mode==="message"){
-   const {data,error}=await supabase.from("profiles")
+   const {data,error}=await supabase
+    .from("profiles")
     .select("id,username,full_name,avatar_url,school")
     .neq("id",currentUser.id)
     .order("full_name")
@@ -1716,17 +1996,25 @@ async function loadShareTargets(mode){
    if(error)throw error;
 
    shareResults.innerHTML=(data||[]).map(p=>`
-    <button class="share-person" data-target-id="${esc(p.id)}">
+    <button class="share-person"
+     data-target-id="${esc(p.id)}"
+     type="button">
+
      <img src="${esc(avatar(p.avatar_url))}" alt="">
-     <span>${esc(p.full_name||p.username||"Campusora member")}
+
+     <span>
+      ${esc(p.full_name||p.username||"Campusora member")}
       <small>${esc(p.school||"Campusora member")}</small>
      </span>
+
      <small>Send →</small>
-    </button>`).join("")||'<div class="empty-feed">No members found.</div>';
+    </button>
+   `).join("")||'<div class="empty-feed">No members found.</div>';
   }
 
   if(mode==="community"){
-   const {data,error}=await supabase.from("communities")
+   const {data,error}=await supabase
+    .from("communities")
     .select("id,name,school,description")
     .order("name")
     .limit(100);
@@ -1734,20 +2022,31 @@ async function loadShareTargets(mode){
    if(error)throw error;
 
    shareResults.innerHTML=(data||[]).map(c=>`
-    <button class="share-person" data-community-id="${esc(c.id)}">
+    <button class="share-person"
+     data-community-id="${esc(c.id)}"
+     type="button">
+
      <span class="share-option-icon">♧</span>
-     <span>${esc(c.name||"Campus community")}
+
+     <span>
+      ${esc(c.name||"Campus community")}
       <small>${esc(c.school||c.description||"Community")}</small>
      </span>
+
      <small>Share →</small>
-    </button>`).join("")||'<div class="empty-feed">No communities found.</div>';
+    </button>
+   `).join("")||'<div class="empty-feed">No communities found.</div>';
   }
 
  }catch(error){
   console.error(error);
-  shareResults.innerHTML='<div class="empty-feed">Could not load sharing options. Please try again.</div>';
+
+  shareResults.innerHTML=
+   '<div class="empty-feed">Could not load sharing options. Please try again.</div>';
  }
 }
+
+/* SHARE TO PROFILE */
 
 async function shareToProfile(){
  if(!currentUser||!shareItem)return;
@@ -1758,12 +2057,14 @@ async function shareToProfile(){
 
  const content="Shared from Campusora:\n"+link;
 
- const {error}=await supabase.from("posts").insert({
-  user_id:currentUser.id,
-  content,
-  post_type:"shared",
-  audience:"public"
- });
+ const {error}=await supabase
+  .from("posts")
+  .insert({
+   user_id:currentUser.id,
+   content,
+   post_type:"shared",
+   audience:"public"
+  });
 
  if(error){
   console.error(error);
@@ -1771,14 +2072,20 @@ async function shareToProfile(){
  }
 
  closeShare();
+
  toast("Shared to your profile.");
+
  await loadFeed();
 }
+
+/* SHARE AS MESSAGE */
 
 async function shareToMessage(targetId){
  if(!currentUser||!shareItem)return;
 
- if(targetId===currentUser.id)return toast("You cannot message yourself.");
+ if(targetId===currentUser.id){
+  return toast("You cannot message yourself.");
+ }
 
  const {data:conversationId,error:conversationError}=await supabase.rpc(
   "start_direct_conversation",
@@ -1794,11 +2101,13 @@ async function shareToMessage(targetId){
   ?new URL("spotlight.html#"+shareItem.id,location.href).href
   :new URL("home-feed.html#post-"+shareItem.id,location.href).href;
 
- const {error}=await supabase.from("messages").insert({
-  conversation_id:conversationId,
-  sender_id:currentUser.id,
-  content:"Check out this Campusora post: "+link
- });
+ const {error}=await supabase
+  .from("messages")
+  .insert({
+   conversation_id:conversationId,
+   sender_id:currentUser.id,
+   content:"Check out this Campusora post: "+link
+  });
 
  if(error){
   console.error(error);
@@ -1806,8 +2115,11 @@ async function shareToMessage(targetId){
  }
 
  closeShare();
+
  toast("Post sent as a message.");
 }
+
+/* SHARE TO COMMUNITY */
 
 async function shareToCommunity(communityId){
  if(!currentUser||!shareItem)return;
@@ -1818,13 +2130,15 @@ async function shareToCommunity(communityId){
 
  const content="Shared with this community:\n"+link;
 
- const {error}=await supabase.from("posts").insert({
-  user_id:currentUser.id,
-  content,
-  post_type:"shared",
-  audience:"public",
-  community_id:communityId
- });
+ const {error}=await supabase
+  .from("posts")
+  .insert({
+   user_id:currentUser.id,
+   content,
+   post_type:"shared",
+   audience:"public",
+   community_id:communityId
+  });
 
  if(error){
   console.error(error);
@@ -1832,6 +2146,7 @@ async function shareToCommunity(communityId){
  }
 
  closeShare();
+
  toast("Shared to community.");
 }
 
@@ -1841,7 +2156,11 @@ document.querySelectorAll("[data-share-type]").forEach(button=>{
  button.addEventListener("click",()=>{
   const mode=button.dataset.shareType;
 
-  if(mode==="profile")return shareToProfile();
+  if(mode==="profile"){
+   shareToProfile();
+   return;
+  }
+
   loadShareTargets(mode);
  });
 });
@@ -1850,8 +2169,13 @@ shareResults.addEventListener("click",event=>{
  const person=event.target.closest("[data-target-id]");
  const community=event.target.closest("[data-community-id]");
 
- if(person)shareToMessage(person.dataset.targetId);
- if(community)shareToCommunity(community.dataset.communityId);
+ if(person){
+  shareToMessage(person.dataset.targetId);
+ }
+
+ if(community){
+  shareToCommunity(community.dataset.communityId);
+ }
 });
 
 $("shareSearch").addEventListener("input",()=>{
@@ -1862,19 +2186,28 @@ $("shareSearch").addEventListener("input",()=>{
  });
 });
 
-/* FEED EVENTS */
+/* FEED BUTTON EVENTS */
 
 feed.addEventListener("click",async event=>{
  const button=event.target.closest("[data-action]");
+
  if(!button)return;
 
  const post=button.closest("[data-post-id]");
  const video=button.closest("[data-video-id]");
  const action=button.dataset.action;
 
- if(action==="like"&&post)return toggleLike(post.dataset.postId);
- if(action==="repost"&&post)return toggleRepost(post.dataset.postId);
- if(action==="video-repost"&&video)return toggleVideoRepost(video.dataset.videoId);
+ if(action==="like"&&post){
+  return toggleLike(post.dataset.postId);
+ }
+
+ if(action==="repost"&&post){
+  return toggleRepost(post.dataset.postId);
+ }
+
+ if(action==="video-repost"&&video){
+  return toggleVideoRepost(video.dataset.videoId);
+ }
 
  if(action==="comments"&&post){
   $("comments-"+post.dataset.postId)?.classList.toggle("open");
@@ -1882,18 +2215,26 @@ feed.addEventListener("click",async event=>{
  }
 
  if(action==="share"&&post){
-  return openShare({kind:"post",id:post.dataset.postId});
+  return openShare({
+   kind:"post",
+   id:post.dataset.postId
+  });
  }
 
  if(action==="video-share"&&video){
-  return openShare({kind:"video",id:video.dataset.videoId});
+  return openShare({
+   kind:"video",
+   id:video.dataset.videoId
+  });
  }
 
  if(action==="menu"&&post){
   const menu=button.parentElement.querySelector(".post-menu");
+
   document.querySelectorAll(".post-menu.open").forEach(x=>{
    if(x!==menu)x.classList.remove("open");
   });
+
   menu.classList.toggle("open");
   return;
  }
@@ -1903,39 +2244,60 @@ feed.addEventListener("click",async event=>{
  }
 
  const commentAction=event.target.closest("[data-comment-action]");
+
  if(commentAction){
   const type=commentAction.dataset.commentAction;
   const id=commentAction.dataset.commentId;
 
   if(type==="reply"){
-   const form=commentAction.closest(".comment-main").querySelector(":scope > .reply-form");
+   const form=commentAction
+    .closest(".comment-main")
+    .querySelector(":scope > .reply-form");
+
    form?.classList.toggle("open");
    form?.querySelector("textarea")?.focus();
   }
 
   if(type==="delete"){
-   const {error}=await supabase.from("comments")
-    .delete().eq("id",id).eq("user_id",currentUser.id);
+   if(!currentUser)return;
 
-   if(error)return toast("Could not delete comment.");
+   const {error}=await supabase
+    .from("comments")
+    .delete()
+    .eq("id",id)
+    .eq("user_id",currentUser.id);
+
+   if(error){
+    console.error(error);
+    return toast("Could not delete comment.");
+   }
+
    await loadFeed();
   }
  }
 });
 
+/* COMMENT AND REPLY SUBMISSION */
+
 feed.addEventListener("submit",async event=>{
  const form=event.target.closest(".comment-form,.reply-form");
+
  if(!form)return;
 
  event.preventDefault();
 
- if(!currentUser)return toast("Please log in to comment.");
+ if(!currentUser){
+  return toast("Please log in to comment.");
+ }
 
  const content=form.elements.content.value.trim();
+
  if(!content)return;
 
  const post=form.closest("[data-post-id]");
  const postId=post?.dataset.postId;
+
+ if(!postId)return;
 
  const values={
   post_id:postId,
@@ -1947,7 +2309,9 @@ feed.addEventListener("submit",async event=>{
   values.parent_comment_id=form.dataset.parentId;
  }
 
- const {error}=await supabase.from("comments").insert(values);
+ const {error}=await supabase
+  .from("comments")
+  .insert(values);
 
  if(error){
   console.error(error);
@@ -1955,10 +2319,11 @@ feed.addEventListener("submit",async event=>{
  }
 
  await loadFeed();
+
  $("comments-"+postId)?.classList.add("open");
 });
 
-/* FILTER */
+/* FEED FILTER */
 
 $("filterButton").addEventListener("click",()=>{
  $("filterMenu").classList.toggle("open");
@@ -1967,10 +2332,14 @@ $("filterButton").addEventListener("click",()=>{
 document.querySelectorAll(".filter-option").forEach(button=>{
  button.addEventListener("click",()=>{
   activeFeed=button.dataset.filter;
+
   $("filterLabel").textContent=button.textContent;
   $("filterMenu").classList.remove("open");
 
-  document.querySelectorAll(".filter-option").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".filter-option").forEach(x=>{
+   x.classList.remove("active");
+  });
+
   button.classList.add("active");
 
   loadFeed();
@@ -1981,8 +2350,11 @@ document.addEventListener("click",event=>{
  if(!event.target.closest(".filter-wrap")){
   $("filterMenu").classList.remove("open");
  }
+
  if(!event.target.closest(".more-wrap")){
-  document.querySelectorAll(".post-menu.open").forEach(x=>x.classList.remove("open"));
+  document.querySelectorAll(".post-menu.open").forEach(x=>{
+   x.classList.remove("open");
+  });
  }
 });
 
@@ -1993,13 +2365,19 @@ document.addEventListener("click",event=>{
  let previous=window.scrollY;
 
  function showNav(){
-  document.querySelector(".campusora-topnav")?.classList.remove("nav-hidden");
-  document.querySelector(".campusora-mainnav")?.classList.remove("nav-hidden");
+  document.querySelector(".campusora-topnav")
+   ?.classList.remove("nav-hidden");
+
+  document.querySelector(".campusora-mainnav")
+   ?.classList.remove("nav-hidden");
  }
 
  function hideNav(){
-  document.querySelector(".campusora-topnav")?.classList.add("nav-hidden");
-  document.querySelector(".campusora-mainnav")?.classList.add("nav-hidden");
+  document.querySelector(".campusora-topnav")
+   ?.classList.add("nav-hidden");
+
+  document.querySelector(".campusora-mainnav")
+   ?.classList.add("nav-hidden");
  }
 
  window.addEventListener("scroll",()=>{
@@ -2007,7 +2385,9 @@ document.addEventListener("click",event=>{
 
   if(Math.abs(current-previous)>1){
    hideNav();
+
    clearTimeout(timer);
+
    timer=setTimeout(showNav,350);
   }
 
@@ -2017,7 +2397,7 @@ document.addEventListener("click",event=>{
  showNav();
 })();
 
-/* INITIAL LOAD */
+/* START PAGE */
 
 async function startPage(){
  startProgress();
@@ -2025,14 +2405,25 @@ async function startPage(){
  try{
   await loadMyProfile();
 
-  await Promise.all([
+  /*
+   * The feed and moments load independently.
+   * A moments error must not stop posts from appearing.
+   */
+
+  await Promise.allSettled([
    loadFeed(),
-   loadMoments().catch(error=>console.warn("Moments:",error))
+   loadMoments()
   ]);
 
  }catch(error){
-  console.error(error);
-  showEmpty("Campusora could not load","Please refresh and try again.",true);
+  console.error("Campusora page error:",error);
+
+  showEmpty(
+   "Campusora could not load",
+   error.message||"Please refresh and try again.",
+   true
+  );
+
  }finally{
   finishProgress();
  }
