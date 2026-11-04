@@ -17,6 +17,118 @@ export default async function handler(req, res) {
     });
   }
 
+  const headers = {
+    apikey: SUPABASE_KEY,
+    Authorization: `Bearer ${SUPABASE_KEY}`,
+    "Content-Type": "application/json"
+  };
+
+  async function resendPendingMessages(userId) {
+    const pendingResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/campusora_pending_messages` +
+      `?user_id=eq.${encodeURIComponent(userId)}` +
+      `&sent_at=is.null` +
+      `&select=id,conversation_id,user_id,content,created_at` +
+      `&order=created_at.asc&limit=50`,
+      { headers }
+    );
+
+    if (!pendingResponse.ok) {
+      console.error(
+        "Pending message lookup failed:",
+        await pendingResponse.text()
+      );
+
+      return {
+        resent: 0,
+        failed: true
+      };
+    }
+
+    const pendingMessages = await pendingResponse.json();
+    let resent = 0;
+
+    for (const pending of pendingMessages) {
+      // Confirm the user still belongs to this conversation.
+      const memberResponse = await fetch(
+        `${SUPABASE_URL}/rest/v1/conversation_members` +
+        `?conversation_id=eq.${encodeURIComponent(pending.conversation_id)}` +
+        `&user_id=eq.${encodeURIComponent(userId)}` +
+        `&select=user_id`,
+        { headers }
+      );
+
+      if (!memberResponse.ok) continue;
+
+      const members = await memberResponse.json();
+
+      if (!members.length) continue;
+
+      // Send the original failed message.
+      const sendResponse = await fetch(
+        `${SUPABASE_URL}/rest/v1/messages`,
+        {
+          method: "POST",
+          headers: {
+            ...headers,
+            Prefer: "return=representation"
+          },
+          body: JSON.stringify({
+            conversation_id: pending.conversation_id,
+            sender_id: userId,
+            content: pending.content
+          })
+        }
+      );
+
+      if (!sendResponse.ok) {
+        console.error(
+          "Pending message resend failed:",
+          await sendResponse.text()
+        );
+
+        continue;
+      }
+
+      const sentMessages = await sendResponse.json();
+      const sentMessage = sentMessages[0];
+
+      if (!sentMessage?.id) continue;
+
+      // Mark the pending message as successfully resent.
+      const updateResponse = await fetch(
+        `${SUPABASE_URL}/rest/v1/campusora_pending_messages` +
+        `?id=eq.${encodeURIComponent(pending.id)}` +
+        `&user_id=eq.${encodeURIComponent(userId)}` +
+        `&sent_at=is.null`,
+        {
+          method: "PATCH",
+          headers: {
+            ...headers,
+            Prefer: "return=representation"
+          },
+          body: JSON.stringify({
+            sent_at: new Date().toISOString(),
+            message_id: sentMessage.id
+          })
+        }
+      );
+
+      if (updateResponse.ok) {
+        const updated = await updateResponse.json();
+
+        if (updated.length === 1) {
+          resent++;
+        }
+      }
+    }
+
+    return {
+      resent,
+      failed: false
+    };
+  }
+
   try {
     const authHeader = req.headers.authorization || "";
     const token = authHeader.startsWith("Bearer ")
@@ -29,7 +141,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Authenticate the user.
     const authResponse = await fetch(
       `${SUPABASE_URL}/auth/v1/user`,
       {
@@ -58,26 +169,15 @@ export default async function handler(req, res) {
       });
     }
 
-    // Find the pending membership belonging to this user.
     const membershipResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/premium_memberships` +
       `?user_id=eq.${encodeURIComponent(user.id)}` +
       `&payment_reference=eq.${encodeURIComponent(reference)}` +
       `&select=id,user_id,plan_type,amount_kobo,payment_reference,payment_verified,status,starts_at,expires_at`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`
-        }
-      }
+      { headers }
     );
 
     if (!membershipResponse.ok) {
-      console.error(
-        "Membership lookup failed:",
-        await membershipResponse.text()
-      );
-
       return res.status(500).json({
         error: "Could not check your Premium membership."
       });
@@ -92,14 +192,13 @@ export default async function handler(req, res) {
       });
     }
 
-    // Repeated verification must not activate a cancelled membership.
     if (membership.status === "cancelled") {
       return res.status(409).json({
         error: "This Premium checkout was cancelled."
       });
     }
 
-    // Handle an already verified payment safely.
+    // Already verified payments can still retry pending messages.
     if (membership.payment_verified === true) {
       const stillActive =
         membership.status === "active" &&
@@ -111,14 +210,21 @@ export default async function handler(req, res) {
           )
         );
 
+      if (!stillActive) {
+        return res.status(409).json({
+          error: "Your Premium membership is not currently active."
+        });
+      }
+
+      const resend = await resendPendingMessages(user.id);
+
       return res.status(200).json({
         success: true,
-        active: stillActive,
+        active: true,
         plan_type: membership.plan_type,
         expires_at: membership.expires_at,
-        message: stillActive
-          ? "Your Premium membership is already active."
-          : "This payment was already verified, but the membership is not currently active."
+        resent_count: resend.resent,
+        message: "Your Premium membership is active."
       });
     }
 
@@ -144,7 +250,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Ask Paystack directly whether the transaction succeeded.
     const paystackResponse = await fetch(
       `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
       {
@@ -171,7 +276,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Match the verified transaction to this user and membership.
     const metadata = transaction.metadata || {};
 
     if (
@@ -188,8 +292,6 @@ export default async function handler(req, res) {
 
     const startsAt = new Date();
 
-    // Monthly Premium lasts 30 days from activation.
-    // Permanent Premium has no expiry date.
     const expiresAt =
       membership.plan_type === "monthly"
         ? new Date(
@@ -197,7 +299,6 @@ export default async function handler(req, res) {
           ).toISOString()
         : null;
 
-    // Activate only the matching pending membership.
     const updateResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/premium_memberships` +
       `?id=eq.${encodeURIComponent(membership.id)}` +
@@ -208,9 +309,7 @@ export default async function handler(req, res) {
       {
         method: "PATCH",
         headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-          "Content-Type": "application/json",
+          ...headers,
           Prefer: "return=representation"
         },
         body: JSON.stringify({
@@ -224,13 +323,8 @@ export default async function handler(req, res) {
     );
 
     if (!updateResponse.ok) {
-      console.error(
-        "Premium activation failed:",
-        await updateResponse.text()
-      );
-
       return res.status(500).json({
-        error: "Payment was verified, but activation failed. Contact support before paying again."
+        error: "Payment was verified, but activation failed."
       });
     }
 
@@ -238,9 +332,12 @@ export default async function handler(req, res) {
 
     if (updatedMemberships.length !== 1) {
       return res.status(409).json({
-        error: "The membership was not activated. Please contact support before paying again."
+        error: "Membership activation could not be confirmed."
       });
     }
+
+    // Automatically resend the user's saved failed messages.
+    const resend = await resendPendingMessages(user.id);
 
     return res.status(200).json({
       success: true,
@@ -248,7 +345,8 @@ export default async function handler(req, res) {
       plan_type: membership.plan_type,
       starts_at: startsAt.toISOString(),
       expires_at: expiresAt,
-      message: "Your Campusora Premium membership is now active!"
+      resent_count: resend.resent,
+      message: "Your Premium membership is now active!"
     });
 
   } catch (error) {
@@ -258,4 +356,4 @@ export default async function handler(req, res) {
       error: "An unexpected verification error occurred."
     });
   }
-      }
+}
