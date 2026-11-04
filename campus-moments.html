@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b18">
 <title>Campus Moments | Campusora</title>
-
+  <link rel="stylesheet" href="./shared-nav.css">
+  
+/* CAMPUS MOMENTS: TOP NAVIGATION ONLY */
+.campusora-mainnav,
+.campusora-create-overlay {
+  display: none !important;
+}
 <style>
 :root{
   --bg:#080b18;
@@ -690,13 +696,6 @@ a{color:inherit;text-decoration:none}
 
 <body>
 
-<header class="topbar">
-  <a href="index.html" class="brand">
-    <span class="brand-icon">C</span>
-    <span>campusora</span>
-  </a>
-  <a href="index.html" class="back-link">← Home Feed</a>
-</header>
 
 <main class="page">
 
@@ -2022,7 +2021,12 @@ window.addEventListener('touchend',event=>{
 },{passive:true});
 
 init();
-</script>
+
+  </script>
+
+<script src="./shared-nav.js"></script>
 
 </body>
-  </html>
+</html>
+
+  
