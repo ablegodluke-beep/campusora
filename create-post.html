@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Create | Campusora</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Create | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./shared-nav.css">
-<style>
+<link rel="stylesheet" href="./shared-nav.css"><style>
 :root {
   --bg:#080b18;
   --surface:#101426;
@@ -36,36 +32,6 @@ body {
 
 button,textarea,input { font:inherit; }
 button { cursor:pointer; }
-
-.topbar {
-  height:62px;
-  padding:0 5%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid var(--border);
-  background:rgba(8,11,24,.94);
-}
-
-.brand {
-  font-size:21px;
-  font-weight:800;
-  letter-spacing:-.8px;
-  text-decoration:none;
-  color:white;
-}
-
-.brand span { color:var(--cyan); }
-
-.back-link {
-  text-decoration:none;
-  color:#c9d2ee;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  padding:9px 12px;
-  border-radius:10px;
-  font-size:11px;
-}
 
 .container {
   width:min(620px,94%);
@@ -197,6 +163,7 @@ button { cursor:pointer; }
 
 .media-icon { font-size:23px;margin-bottom:6px; }
 .media-title { font-size:12px;font-weight:700; }
+
 .media-description {
   font-size:10px;
   color:var(--muted);
@@ -386,210 +353,194 @@ input[type="file"] { display:none; }
   .media-options { gap:7px; }
   .media-option { padding:12px 6px; }
 }
-</style>
-</head>
 
-<body>
+/* CAMPUSORA TOP LOADING BAR */
 
-<main class="container">
-
-  <div class="heading">
-    <h1 id="pageTitle">Create a post </h1>
+#campusoraTopProgress {
+  position:fixed;
+  top:0;
+  left:0;
+  width:0;
+  height:3px;
+  z-index:99999;
+  opacity:0;
+  background:linear-gradient(90deg,#8b5cf6,#4388ff,#22d3ee);
+  box-shadow:0 0 10px rgba(34,211,238,.35);
+  transition:width .35s ease,opacity .3s ease;
+}
+</style></head><body><div id="campusoraTopProgress"></div><main class="container">  <div class="heading">
+    <h1 id="pageTitle">Create a post</h1>
     <p id="pageDescription">
       Share your thoughts, photos, videos and campus experiences.
     </p>
+  </div>  <section class="card"><div class="user-row">
+  <div class="avatar" id="avatar">C</div>
+  <div>
+    <div class="user-name" id="userName">Loading profile...</div>
+    <div class="user-school" id="userSchool">Preparing your post</div>
+  </div>
+</div>
+
+<form id="postForm">
+
+  <div class="field">
+    <label class="label" id="contentLabel" for="content">
+      What's happening?
+    </label>
+
+    <textarea
+      id="content"
+      class="textarea"
+      maxlength="5000"
+      placeholder="Share something with Campusora..."
+    ></textarea>
+
+    <div class="helper">
+      <span id="contentHelper">Be respectful. Be yourself.</span>
+      <span id="charCount">0 / 5000</span>
+    </div>
   </div>
 
-  <section class="card">
+  <div class="field" id="pollEditor" hidden>
+    <label class="label">Poll answer options</label>
 
-    <div class="user-row">
-      <div class="avatar" id="avatar">C</div>
-      <div>
-        <div class="user-name" id="userName">Loading profile...</div>
-        <div class="user-school" id="userSchool">Preparing your post</div>
+    <div class="poll-options" id="pollOptions">
+
+      <div class="poll-option-row">
+        <input
+          class="text-input poll-option"
+          type="text"
+          maxlength="100"
+          placeholder="Option 1"
+        >
       </div>
+
+      <div class="poll-option-row">
+        <input
+          class="text-input poll-option"
+          type="text"
+          maxlength="100"
+          placeholder="Option 2"
+        >
+      </div>
+
     </div>
 
-    <form id="postForm">
+    <button class="add-option" type="button" id="addOption">
+      + Add another option
+    </button>
 
-      <div class="field">
-        <label class="label" id="contentLabel" for="content">
-          What's happening?
+    <div class="option-count" id="optionCount">
+      2 of 6 options
+    </div>
+  </div>
+
+  <div class="field" id="mediaField">
+
+    <label class="label">Add media (optional)</label>
+
+    <div class="media-options">
+
+      <div class="media-option photo-option">
+        <label for="photoInput">
+          <div class="media-icon">📸</div>
+          <div class="media-title">Add photo</div>
+          <div class="media-description">
+            JPEG, PNG or WebP<br>Maximum 5 MB
+          </div>
         </label>
-
-        <textarea
-          id="content"
-          class="textarea"
-          maxlength="5000"
-          placeholder="Share something with Campusora..."
-        ></textarea>
-
-        <div class="helper">
-          <span id="contentHelper">Be respectful. Be yourself.</span>
-          <span id="charCount">0 / 5000</span>
-        </div>
       </div>
 
-      <!-- POLL OPTIONS -->
-
-      <div class="field" id="pollEditor" hidden>
-        <label class="label">Poll answer options</label>
-
-        <div class="poll-options" id="pollOptions">
-
-          <div class="poll-option-row">
-            <input
-              class="text-input poll-option"
-              type="text"
-              maxlength="100"
-              placeholder="Option 1"
-            >
+      <div class="media-option video-option">
+        <label for="videoInput">
+          <div class="media-icon">🎬</div>
+          <div class="media-title">Add video</div>
+          <div class="media-description">
+            MP4, WebM or MOV<br>Maximum 50 MB
           </div>
-
-          <div class="poll-option-row">
-            <input
-              class="text-input poll-option"
-              type="text"
-              maxlength="100"
-              placeholder="Option 2"
-            >
-          </div>
-
-        </div>
-
-        <button
-          class="add-option"
-          type="button"
-          id="addOption"
-        >
-          + Add another option
-        </button>
-
-        <div class="option-count" id="optionCount">
-          2 of 6 options
-        </div>
+        </label>
       </div>
 
-      <!-- MEDIA OPTIONS -->
-
-      <div class="field" id="mediaField">
-
-        <label class="label">Add media (optional)</label>
-
-        <div class="media-options">
-
-          <div class="media-option photo-option">
-            <label for="photoInput">
-              <div class="media-icon">📸</div>
-              <div class="media-title">Add photo</div>
-              <div class="media-description">
-                JPEG, PNG or WebP<br>Maximum 5 MB
-              </div>
-            </label>
-          </div>
-
-          <div class="media-option video-option">
-            <label for="videoInput">
-              <div class="media-icon">🎬</div>
-              <div class="media-title">Add video</div>
-              <div class="media-description">
-                MP4, WebM or MOV<br>Maximum 50 MB
-              </div>
-            </label>
-          </div>
-
-        </div>
-
-        <input
-          type="file"
-          id="photoInput"
-          accept="image/jpeg,image/png,image/webp"
-        >
-
-        <input
-          type="file"
-          id="videoInput"
-          accept="video/mp4,video/webm,video/quicktime"
-        >
-
-        <div class="preview-wrap" id="photoPreviewWrap">
-          <div class="preview-heading">
-            <span>📸 Photo preview</span>
-          </div>
-
-          <img
-            class="preview-image"
-            id="previewImage"
-            alt="Selected photo preview"
-          >
-
-          <button
-            class="remove-media"
-            id="removePhoto"
-            type="button"
-          >
-            Remove photo
-          </button>
-        </div>
-
-        <div class="preview-wrap" id="videoPreviewWrap">
-          <div class="preview-heading">
-            <span>🎬 Video preview</span>
-          </div>
-
-          <video
-            class="preview-video"
-            id="previewVideo"
-            controls
-            playsinline
-            preload="metadata"
-          ></video>
-
-          <div class="media-info" id="videoInfo"></div>
-
-          <button
-            class="remove-media"
-            id="removeVideo"
-            type="button"
-          >
-            Remove video
-          </button>
-        </div>
-
-      </div>
-
-      <div class="sharing-note" id="sharingNote">
-        🌍 <strong>Share with Campusora</strong><br>
-        Your post will be saved to your account.
-      </div>
-
-      <div
-        class="status"
-        id="status"
-        role="status"
-        aria-live="polite"
-      ></div>
-
-      <div class="progress-track" id="progressTrack">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-
-      <button class="submit-btn" id="submitBtn" type="submit">
-        Publish post 🚀
-      </button>
-
-    </form>
-
-    <div class="footer-note">
-      Keep Campusora safe and respectful.<br>
-      Don't upload private information or media you don't have permission to share.
     </div>
 
-  </section>
+    <input
+      type="file"
+      id="photoInput"
+      accept="image/jpeg,image/png,image/webp"
+    >
 
-</main>
+    <input
+      type="file"
+      id="videoInput"
+      accept="video/mp4,video/webm,video/quicktime"
+    >
 
-<script type="module">
+    <div class="preview-wrap" id="photoPreviewWrap">
+      <div class="preview-heading">
+        <span>📸 Photo preview</span>
+      </div>
+
+      <img
+        class="preview-image"
+        id="previewImage"
+        alt="Selected photo preview"
+      >
+
+      <button class="remove-media" id="removePhoto" type="button">
+        Remove photo
+      </button>
+    </div>
+
+    <div class="preview-wrap" id="videoPreviewWrap">
+      <div class="preview-heading">
+        <span>🎬 Video preview</span>
+      </div>
+
+      <video
+        class="preview-video"
+        id="previewVideo"
+        controls
+        playsinline
+        preload="metadata"
+      ></video>
+
+      <div class="media-info" id="videoInfo"></div>
+
+      <button class="remove-media" id="removeVideo" type="button">
+        Remove video
+      </button>
+    </div>
+
+  </div>
+
+  <div class="sharing-note" id="sharingNote">
+    🌍 <strong>Share with Campusora</strong><br>
+    Your post will be saved to your account.
+  </div>
+
+  <div
+    class="status"
+    id="status"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  <div class="progress-track" id="progressTrack">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" type="submit">
+    Publish post 🚀
+  </button>
+
+</form>
+
+<div class="footer-note">
+  Keep Campusora safe and respectful.<br>
+  Don't upload private information or media you don't have permission to share.
+</div>
+
+  </section></main><script type="module">
 import { supabase } from './supabase.js';
 
 /* PAGE MODE */
@@ -649,6 +600,48 @@ let selectedVideo = null;
 let photoPreviewUrl = null;
 let videoPreviewUrl = null;
 let publishing = false;
+
+/* TOP LOADING PROGRESS BAR */
+
+const topProgress = document.getElementById('campusoraTopProgress');
+let topProgressTimer = null;
+
+function startTopProgress() {
+  clearInterval(topProgressTimer);
+
+  topProgress.style.opacity = '1';
+  topProgress.style.width = '15%';
+
+  let progress = 15;
+
+  topProgressTimer = setInterval(() => {
+    if (progress < 85) {
+      progress += Math.random() * 8;
+      topProgress.style.width = `${Math.min(progress, 85)}%`;
+    }
+  }, 250);
+}
+
+function completeTopProgress() {
+  clearInterval(topProgressTimer);
+
+  topProgress.style.width = '100%';
+  topProgress.style.opacity = '1';
+
+  setTimeout(() => {
+    topProgress.style.opacity = '0';
+
+    setTimeout(() => {
+      topProgress.style.width = '0';
+    }, 350);
+  }, 350);
+}
+
+function stopTopProgress() {
+  clearInterval(topProgressTimer);
+  topProgress.style.width = '0';
+  topProgress.style.opacity = '0';
+}
 
 /* PAGE SETUP */
 
@@ -1149,11 +1142,35 @@ form.addEventListener('submit', async event => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Publishing...';
 
+  startTopProgress();
+
   let uploadedMediaPath = null;
   let uploadedBucket = null;
   let createdPostId = null;
 
   try {
+
+    /* VERIFY AUTHENTICATED USER */
+
+    const {
+      data: { user: verifiedUser },
+      error: verificationError
+    } = await supabase.auth.getUser();
+
+    if (verificationError || !verifiedUser) {
+      throw new Error(
+        'Your login session could not be verified. Please log out and log in again.'
+      );
+    }
+
+    if (verifiedUser.id !== currentProfile.id) {
+      throw new Error(
+        'Your login session and profile do not match. Please log out and log in again.'
+      );
+    }
+
+    currentUser = verifiedUser;
+
     let photoUrl = null;
     let videoUrl = null;
     let videoName = null;
@@ -1195,7 +1212,7 @@ form.addEventListener('submit', async event => {
     const { data: newPost, error: postError } = await supabase
       .from('posts')
       .insert({
-        user_id: currentUser.id,
+        user_id: verifiedUser.id,
         content: content,
         image_url: photoUrl,
         video_url: videoUrl,
@@ -1239,6 +1256,8 @@ form.addEventListener('submit', async event => {
       'success'
     );
 
+    completeTopProgress();
+
     form.reset();
     clearPhoto();
     clearVideo();
@@ -1250,6 +1269,7 @@ form.addEventListener('submit', async event => {
     }, 1300);
 
   } catch (error) {
+
     console.error('Campusora publishing error:', error);
 
     /*
@@ -1289,8 +1309,10 @@ form.addEventListener('submit', async event => {
     );
 
     hideProgress();
+    stopTopProgress();
 
   } finally {
+
     publishing = false;
     submitBtn.disabled = false;
 
@@ -1326,10 +1348,5 @@ async function initialise() {
 }
 
 initialise();
-</script>
-<script src="./shared-nav.js"></script>
-
-</body>
+</script><script src="./shared-nav.js"></script></body>
 </html>
-
-
