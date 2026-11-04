@@ -436,30 +436,6 @@ img{display:block;max-width:100%}
   border-radius:9px;
   object-fit:contain;
   background:#080b18;
-  cursor:zoom-in;
-}
-
-/* FULL-SCREEN POST IMAGE VIEWER */
-
-.photo-viewer{
-  position:fixed;
-  inset:0;
-  z-index:30000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-  background:rgba(0,0,0,.96);
-}
-
-.photo-viewer.show{display:flex}
-
-.photo-viewer img{
-  max-width:100%;
-  max-height:100%;
-  width:auto;
-  height:auto;
-  object-fit:contain;
 }
 
 .post-video{
@@ -974,11 +950,6 @@ img{display:block;max-width:100%}
   </section>
 </div>
 
-<!-- FULL-SCREEN IMAGE VIEWER -->
-<div class="photo-viewer" id="photoViewer">
-  <img id="photoViewerImage" src="" alt="Full-screen post image">
-</div>
-
 <div id="toast" class="toast"></div>
 
 <script src="./shared-nav.js"></script>
@@ -1000,7 +971,7 @@ let currentProfile=null;
 let activeFeed="for-you";
 let shareItem=null;
 let loading=false;
-let currentItems=[];
+let currentItems=[]; // FIX: declared before use
 let profileCache=new Map();
 
 const fallbackAvatar=
@@ -1817,6 +1788,7 @@ async function loadFeed(){
 
   items=rankItems(items,extra);
 
+  // FIX: currentItems is declared above.
   currentItems=items;
 
   feed.innerHTML=items.map(item=>{
@@ -2383,36 +2355,6 @@ document.addEventListener("click",event=>{
   document.querySelectorAll(".post-menu.open").forEach(x=>{
    x.classList.remove("open");
   });
- }
-});
-
-/* FULL-SCREEN IMAGE VIEWER BEHAVIOUR */
-
-const photoViewer=$("photoViewer");
-const photoViewerImage=$("photoViewerImage");
-
-document.addEventListener("click",event=>{
- const image=event.target.closest(".post-image");
-
- if(image){
-  photoViewerImage.src=image.src;
-  photoViewer.classList.add("show");
-  document.body.style.overflow="hidden";
-  return;
- }
-
- if(event.target===photoViewer){
-  photoViewer.classList.remove("show");
-  photoViewerImage.src="";
-  document.body.style.overflow="";
- }
-});
-
-document.addEventListener("keydown",event=>{
- if(event.key==="Escape"&&photoViewer.classList.contains("show")){
-  photoViewer.classList.remove("show");
-  photoViewerImage.src="";
-  document.body.style.overflow="";
  }
 });
 
