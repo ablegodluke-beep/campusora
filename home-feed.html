@@ -4,779 +4,932 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
+
 <title>Home Feed | Campusora</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="./shared-nav.css">
 
 <style>
 :root {
-  --bg: #080b18;
-  --panel: #101528;
-  --panel2: #151b32;
-  --border: #252c46;
-  --text: #f4f6ff;
-  --muted: #929bb8;
-  --purple: #8b5cf6;
-  --blue: #4f8cff;
-  --cyan: #36d9ff;
-  --danger: #ff6685;
+  --bg:#080b18;
+  --surface:#101426;
+  --surface2:#171c32;
+  --border:rgba(255,255,255,.085);
+  --text:#f5f6ff;
+  --muted:#929bb6;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
+  --gradient:linear-gradient(120deg,#925bff,#526dff,#39d7f5);
+  --radius:19px;
 }
 
-* { box-sizing: border-box; }
+* {box-sizing:border-box}
+
+html,body {
+  margin:0;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
 
 body {
-  margin: 0;
-  font-family: Inter, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  padding-bottom:100px;
+  overflow-x:hidden;
 }
 
-button, textarea { font: inherit; }
-button { cursor: pointer; }
+button,input,textarea,select {font:inherit}
+button {cursor:pointer;color:inherit}
+a {color:inherit;text-decoration:none}
+img {display:block;max-width:100%}
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* TOP LOADING PROGRESS BAR */
+
+#pageProgress {
+  position:fixed;
+  top:0;
+  left:0;
+  width:0;
+  height:3px;
+  z-index:20000;
+  opacity:0;
+  background:var(--gradient);
+  box-shadow:0 0 12px rgba(146,91,255,.6);
+  transition:width .25s ease,opacity .25s ease;
 }
 
-.topbar {
-  height: 68px;
-  padding: 0 5%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  background: rgba(8,11,24,.96);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 20;
+#pageProgress.loading {
+  opacity:1;
+  animation:progressMove 1.5s ease-in-out infinite;
 }
 
-.brand {
-  font-size: 23px;
-  font-weight: 800;
-  letter-spacing: -.8px;
-  background: linear-gradient(90deg, #a78bfa, #36d9ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+#pageProgress.done {
+  width:100%;
+  opacity:1;
 }
 
-.top-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+@keyframes progressMove {
+  0% {width:8%}
+  50% {width:75%}
+  100% {width:92%}
 }
 
-.top-link, .refresh-btn {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  color: var(--text);
-  padding: 10px 13px;
-  border-radius: 11px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.top-link:hover, .refresh-btn:hover {
-  border-color: var(--purple);
-}
+/* PAGE LAYOUT */
 
 .layout {
-  max-width: 1280px;
-  margin: 25px auto;
-  padding: 0 18px;
-  display: grid;
-  grid-template-columns: 220px minmax(0, 650px) 260px;
-  gap: 22px;
-  align-items: start;
+  width:100%;
+  max-width:1440px;
+  margin:auto;
+  padding:25px;
+  display:grid;
+  grid-template-columns:230px minmax(0,650px) 300px;
+  justify-content:center;
+  gap:28px;
+  align-items:start;
 }
 
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  overflow: hidden;
+.main-feed {min-width:0}
+
+/* LEFT SIDEBAR */
+
+.left-sidebar {
+  position:sticky;
+  top:90px;
 }
 
-.side-panel {
-  padding: 18px;
-  position: sticky;
-  top: 90px;
+.nav-label {
+  padding:0 12px;
+  margin:6px 0 12px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
 }
 
-.side-title {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1.1px;
-  margin: 4px 0 14px;
-}
+.nav-list {display:grid;gap:5px}
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 12px 11px;
-  margin: 5px 0;
-  color: #b8c0db;
-  border-radius: 11px;
-  font-size: 13px;
-  font-weight: 600;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:12px 13px;
+  color:#b4bbd2;
+  border-radius:13px;
+  font-size:13px;
+  font-weight:600;
 }
 
-.nav-item:hover, .nav-item.active {
-  background: linear-gradient(100deg, rgba(139,92,246,.2), rgba(79,140,255,.1));
-  color: white;
+.nav-item:hover,
+.nav-item.active {
+  background:linear-gradient(100deg,#8756ff23,#526dff12);
+  color:white;
 }
 
 .nav-icon {
-  width: 22px;
-  text-align: center;
-  font-size: 17px;
+  width:23px;
+  text-align:center;
+  font-size:19px;
 }
 
-.main-heading {
-  margin: 0 0 7px;
-  font-size: 25px;
-  font-weight: 800;
+.sidebar-note {
+  margin-top:25px;
+  padding:17px;
+  background:linear-gradient(145deg,#1b1740,#10172c);
+  border:1px solid #8b6cff24;
+  border-radius:17px;
 }
 
-.subtitle {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
+.sidebar-note h3 {font-size:14px;margin-bottom:8px}
+.sidebar-note p {
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.7;
 }
 
-.feed-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
+/* FEED HEADING */
+
+.feed-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
 }
 
-/* DISCOVER AND MY CAMPUS TABS */
-
-.feed-tabs {
-  display: flex;
-  gap: 9px;
-  padding: 5px;
-  margin-bottom: 17px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 13px;
+.feed-heading h1 {
+  font-size:24px;
+  letter-spacing:-.8px;
 }
 
-.feed-tab {
-  flex: 1;
-  padding: 13px 9px;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 800;
-  transition: .2s;
+.feed-heading p {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:5px;
 }
 
-.feed-tab.active {
-  color: white;
-  background: linear-gradient(100deg, var(--purple), var(--blue));
+.feed-filter {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:11px;
+  color:#dfe2f4;
+  padding:9px 11px;
+  font-size:12px;
+  outline:none;
+  max-width:130px;
 }
 
-.feed-tab:disabled {
-  opacity: .6;
-  cursor: wait;
+/* MOMENTS */
+
+.moments {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:17px 14px 13px;
+  margin-bottom:17px;
+  overflow:hidden;
 }
 
-.create-card {
-  padding: 17px;
-  margin-bottom: 18px;
+.section-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
 }
 
-.create-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.section-heading h2 {
+  font-size:15px;
+  font-weight:800;
+}
+
+.section-heading a,
+.section-heading button {
+  color:#ad91ff;
+  font-size:12px;
+  background:none;
+  border:0;
+}
+
+.moment-list {
+  display:flex;
+  gap:17px;
+  overflow-x:auto;
+  padding:2px 1px 5px;
+}
+
+.moment {
+  flex:0 0 65px;
+  text-align:center;
+  border:0;
+  background:none;
+  min-width:0;
+  padding:0;
+}
+
+.moment-ring {
+  width:61px;
+  height:61px;
+  padding:3px;
+  border-radius:50%;
+  background:var(--gradient);
+  margin:0 auto 8px;
+}
+
+.moment-ring img {
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:2px solid var(--surface);
+  object-fit:cover;
+}
+
+.moment.add .moment-ring {
+  background:#222940;
+  border:1px dashed #65709c;
+  display:grid;
+  place-items:center;
+  color:#b49cff;
+  font-size:27px;
+}
+
+.moment-name {
+  display:block;
+  font-size:10px;
+  color:#c5cbe0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* COMPOSER */
+
+.composer {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:17px;
+  margin-bottom:18px;
+}
+
+.composer-title {
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.composer-top {
+  display:flex;
+  gap:12px;
+  align-items:center;
 }
 
 .avatar {
-  width: 43px;
-  height: 43px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #252c46;
-  border: 1px solid #343c5b;
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  object-fit:cover;
+  flex-shrink:0;
+  background:#252c46;
 }
 
-.create-placeholder {
-  min-width: 0;
-  flex: 1;
-  color: var(--muted);
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 13px;
-  font-size: 12px;
+.composer-input {
+  width:100%;
+  min-width:0;
+  background:var(--surface2);
+  color:#dce0f2;
+  border:1px solid transparent;
+  border-radius:24px;
+  padding:13px 17px;
+  text-align:left;
+  font-size:13px;
 }
 
-.primary-btn {
-  border: 0;
-  color: white;
-  padding: 11px 15px;
-  border-radius: 11px;
-  font-size: 12px;
-  font-weight: 800;
-  background: linear-gradient(100deg, var(--purple), var(--blue));
+.composer-input:hover {border-color:#8060ff50}
+
+.composer-actions {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
 }
 
-.primary-btn:hover { filter: brightness(1.12); }
-
-.gradient-banner {
-  padding: 18px;
-  margin-bottom: 17px;
-  background: linear-gradient(120deg, rgba(139,92,246,.25), rgba(54,217,255,.09));
-  border: 1px solid #38315e;
-  border-radius: 16px;
+.composer-action {
+  background:transparent;
+  border:0;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#aeb6d0;
+  font-size:11px;
+  font-weight:700;
+  padding:5px;
 }
 
-.gradient-banner h2 {
-  font-size: 16px;
-  margin: 0 0 8px;
-}
+.composer-action span {font-size:17px}
 
-.gradient-banner p {
-  color: #c0c8e0;
-  font-size: 11px;
-  line-height: 1.8;
-  margin: 0;
-}
+/* POSTS */
 
 .post {
-  margin-bottom: 17px;
-  padding: 18px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin-bottom:18px;
+  overflow:hidden;
 }
 
-.post-author {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  min-width: 0;
+.post-header {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:17px 17px 12px;
 }
 
-.author-info {
-  min-width: 0;
-  flex: 1;
+.post-user {flex:1;min-width:0}
+
+.post-name {
+  font-size:13px;
+  font-weight:800;
 }
 
-.author-name {
-  font-size: 13px;
-  font-weight: 800;
-  overflow-wrap: anywhere;
+.post-meta {
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
 }
 
-.author-name:hover { color: var(--cyan); }
-
-.username {
-  margin-top: 4px;
-  font-size: 11px;
-  color: var(--muted);
-  overflow-wrap: anywhere;
+.post-badge {
+  display:inline-block;
+  font-size:9px;
+  color:#c6afff;
+  background:#845bff20;
+  border:1px solid #845bff35;
+  padding:3px 6px;
+  border-radius:6px;
+  margin-left:5px;
 }
 
-.post-time {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 10px;
+.more-btn {
+  background:none;
+  border:0;
+  font-size:22px;
+  color:var(--muted);
+  padding:0 4px;
 }
 
-.role-badge {
-  display: inline-block;
-  margin-left: 5px;
-  padding: 3px 6px;
-  font-size: 9px;
-  border-radius: 6px;
-  background: rgba(139,92,246,.18);
-  color: #c4b5fd;
-  vertical-align: middle;
-}
+.post-body {padding:0 17px 14px}
 
-.post-content {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  font-size: 13px;
-  line-height: 1.8;
-  margin: 17px 0;
+.post-body p {
+  font-size:13px;
+  line-height:1.8;
+  color:#e1e4f4;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  margin:0 0 12px;
 }
 
 .post-image {
-  width: 100%;
-  max-height: 540px;
-  object-fit: contain;
-  background: #080b18;
-  border-radius: 13px;
-  border: 1px solid var(--border);
-  margin-bottom: 13px;
+  width:100%;
+  max-height:490px;
+  object-fit:contain;
+  background:#171c32;
+  border-radius:10px;
 }
 
- .feed-spotlight-video {
-  display: block;
-  width: 100%;
-  max-height: 480px;
-  background: #000;
-  object-fit: contain;
-  border-radius: 13px;
-  margin: 12px 0;
- }
+.post-video {
+  display:block;
+  width:100%;
+  max-height:490px;
+  background:#000;
+  object-fit:contain;
+}
+
+.sponsored-label {
+  display:inline-block;
+  color:#b8a6ff;
+  background:#845bff20;
+  border:1px solid #845bff45;
+  padding:4px 8px;
+  border-radius:7px;
+  font-size:9px;
+  font-weight:800;
+  margin-bottom:10px;
+}
 
 .post-stats {
-  display: flex;
-  justify-content: space-between;
-  color: var(--muted);
-  font-size: 11px;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:12px 17px;
+  font-size:11px;
+  color:var(--muted);
 }
 
 .post-actions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 7px;
-  padding-top: 10px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  margin:0 12px;
+  border-top:1px solid var(--border);
+  padding:5px 0;
 }
 
-.action-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  color: #aab3d0;
-  padding: 10px 5px;
-  border-radius: 9px;
-  font-size: 11px;
-  font-weight: 700;
+.post-action {
+  background:none;
+  border:0;
+  border-radius:10px;
+  padding:11px 3px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  color:#aeb6cf;
+  font-size:11px;
+  font-weight:700;
 }
 
-.action-btn:hover {
-  background: var(--panel2);
-  color: white;
+.post-action:hover {background:#ffffff08}
+.post-action.liked {color:#ff6b9a}
+.post-action.reposted {color:#a991ff}
+
+/* COMMENTS */
+
+.comment-area {
+  display:none;
+  padding:12px 16px 16px;
+  border-top:1px solid var(--border);
 }
 
-.action-btn.liked { color: #ff6685; }
-
-.comments-area {
-  display: none;
-  border-top: 1px solid var(--border);
-  margin-top: 10px;
-  padding-top: 14px;
-}
-
-.comments-area.open { display: block; }
+.comment-area.open {display:block}
 
 .comment-form {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  margin-bottom: 17px;
+  display:flex;
+  gap:8px;
+  margin-bottom:13px;
 }
 
-.comment-input {
-  min-width: 0;
-  flex: 1;
-  resize: vertical;
-  min-height: 43px;
-  max-height: 130px;
-  padding: 12px;
-  border-radius: 11px;
-  color: white;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  outline: none;
-  font-size: 12px;
+.comment-form textarea {
+  min-width:0;
+  flex:1;
+  min-height:42px;
+  resize:vertical;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:11px;
+  color:white;
+  outline:none;
+  font-size:12px;
 }
 
-.comment-input:focus { border-color: var(--purple); }
-
-.comment-submit {
-  border: 0;
-  border-radius: 10px;
-  padding: 12px;
-  color: white;
-  background: var(--purple);
-  font-size: 11px;
-  font-weight: 800;
+.comment-form button {
+  background:#795aff;
+  border:0;
+  padding:0 13px;
+  border-radius:11px;
+  font-weight:700;
+  font-size:11px;
 }
+
+.comment-list {display:grid;gap:10px}
 
 .comment {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  margin: 13px 0;
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
 }
 
-.comment .avatar {
-  width: 32px;
-  height: 32px;
-}
+.comment .avatar {width:32px;height:32px}
 
 .comment-main {
-  min-width: 0;
-  flex: 1;
-  background: var(--panel2);
-  border-radius: 12px;
-  padding: 11px;
+  flex:1;
+  min-width:0;
+  background:var(--surface2);
+  padding:10px;
+  border-radius:12px;
 }
 
-.comment-author {
-  font-size: 11px;
-  font-weight: 800;
-  overflow-wrap: anywhere;
+.comment-main strong {font-size:11px}
+.comment-main p {
+  font-size:12px;
+  line-height:1.6;
+  margin:6px 0;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
 }
 
-.comment-text {
-  font-size: 12px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  margin-top: 7px;
-}
-
-.comment-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 9px;
+.comment-actions {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
 }
 
 .small-action {
-  color: var(--muted);
-  background: none;
-  border: 0;
-  padding: 0;
-  font-size: 10px;
-  font-weight: 700;
+  background:none;
+  border:0;
+  color:var(--muted);
+  padding:0;
+  font-size:10px;
+  font-weight:700;
 }
 
-.small-action:hover { color: var(--cyan); }
-
-.replies {
-  margin-left: 15px;
-  padding-left: 12px;
-  border-left: 1px solid #343c5b;
+.reply-list {
+  margin:9px 0 0 12px;
+  padding-left:10px;
+  border-left:1px solid #343c5b;
+  display:grid;
+  gap:9px;
 }
 
 .reply-form {
-  display: none;
-  gap: 7px;
-  margin: 10px 0;
+  display:none;
+  gap:6px;
+  margin-top:9px;
 }
 
-.reply-form.open { display: flex; }
+.reply-form.open {display:flex}
+.reply-form textarea {min-height:35px}
 
-.reply-form .comment-input { min-height: 38px; }
+/* RIGHT SIDEBAR */
 
-.status {
-  text-align: center;
-  padding: 40px 15px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-.status strong {
-  display: block;
-  color: white;
-  margin-bottom: 7px;
-  font-size: 15px;
+.right-sidebar {
+  display:grid;
+  gap:17px;
+  position:sticky;
+  top:94px;
 }
 
 .right-card {
-  padding: 16px;
-  margin-bottom: 15px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:17px;
 }
 
-.right-card h3 {
-  font-size: 13px;
-  margin: 0 0 10px;
-}
-
+.right-card h3 {font-size:13px;margin-bottom:9px}
 .right-card p {
-  font-size: 11px;
-  line-height: 1.8;
-  color: var(--muted);
-  margin: 0;
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.8;
 }
 
-footer {
-  text-align: center;
-  color: #6f7897;
-  padding: 25px 10px 40px;
-  font-size: 10px;
+/* STATUS */
+
+.empty-feed {
+  text-align:center;
+  padding:35px 15px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
 }
 
-@media (max-width: 1050px) {
+.empty-feed strong {
+  display:block;
+  color:white;
+  font-size:15px;
+  margin-bottom:7px;
+}
+
+.primary-btn {
+  display:inline-block;
+  border:0;
+  background:var(--gradient);
+  color:white;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:11px;
+  font-weight:800;
+  margin-top:10px;
+}
+
+.toast {
+  position:fixed;
+  left:50%;
+  bottom:90px;
+  z-index:19000;
+  transform:translate(-50%,20px);
+  background:#202640;
+  color:white;
+  padding:12px 18px;
+  border:1px solid #ffffff20;
+  border-radius:12px;
+  font-size:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  max-width:calc(100% - 32px);
+  text-align:center;
+}
+
+.toast.show {
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1180px) {
   .layout {
-    grid-template-columns: 190px minmax(0, 1fr);
+    grid-template-columns:205px minmax(0,650px);
+    gap:23px;
   }
-  .right-column { display: none; }
+  .right-sidebar {display:none}
 }
 
-@media (max-width: 680px) {
-  .topbar {
-    height: 60px;
-    padding: 0 14px;
-  }
-
-  .brand { font-size: 21px; }
-
-  .top-link, .refresh-btn {
-    padding: 9px 10px;
-    font-size: 11px;
-  }
-
+@media(max-width:760px) {
   .layout {
-    display: block;
-    margin: 20px auto;
-    padding: 0 11px;
+    display:block;
+    padding:18px 0 0;
   }
 
-  .left-column { display: none; }
-  .main-heading { font-size: 22px; }
+  .left-sidebar,.right-sidebar {display:none}
 
-  .post { padding: 13px; }
-  .create-card { padding: 13px; }
-  .create-placeholder { padding: 11px; }
-  .primary-btn { padding: 10px; }
-  .avatar { width: 38px; height: 38px; }
-  .post-content { font-size: 12px; }
-  .replies { margin-left: 5px; padding-left: 8px; }
+  .main-feed {width:100%}
 
-  .feed-tab {
-    padding: 12px 5px;
-    font-size: 11px;
+  .feed-heading {
+    padding:0 16px;
+    margin-bottom:15px;
   }
+
+  .feed-heading h1 {font-size:22px}
+  .feed-heading p {font-size:11px}
+
+  .moments {
+    margin:0 0 12px;
+    padding:15px 13px 12px;
+    border-radius:0;
+    border-left:0;
+    border-right:0;
+  }
+
+  .composer {
+    margin:0 0 12px;
+    border-radius:0;
+    padding:15px;
+    border-left:0;
+    border-right:0;
+  }
+
+  .post {
+    border-radius:0;
+    margin-bottom:10px;
+    border-left:0;
+    border-right:0;
+  }
+
+  .post-header {padding:15px 15px 11px}
+  .post-body {padding:0 15px 13px}
+  .post-actions {margin:0 7px}
+  .post-action {font-size:10px;padding:12px 1px}
+  .post-action span {font-size:14px}
 }
 
-@media (max-width: 380px) {
-  .top-link { display: none; }
-  .post-stats { font-size: 10px; }
+@media(max-width:370px) {
+  .feed-heading h1 {font-size:20px}
+  .feed-filter {max-width:112px;font-size:10px}
+  .post-action {font-size:9px}
 }
 </style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <a href="index.html" class="brand">Campusora</a>
-
-  <div class="top-actions">
-    <a class="top-link" href="profile.html">My Profile</a>
-    <button class="refresh-btn" id="refreshBtn">↻ Refresh</button>
-  </div>
-</header>
+<div id="pageProgress"></div>
 
 <div class="layout">
 
-<aside class="left-column">
-  <div class="panel side-panel">
+  <aside class="left-sidebar">
+    <div class="nav-label">Your Campusora</div>
 
-    <div class="side-title">Your Campusora</div>
-
-    <a class="nav-item active" href="home-feed.html">
-      <span class="nav-icon">🏠</span> Home Feed
-    </a>
-
-    <a class="nav-item" href="profile.html">
-      <span class="nav-icon">👤</span> My Profile
-    </a>
-
-    <a class="nav-item" href="create-post.html">
-      <span class="nav-icon">✏️</span> Create Post
-    </a>
-
-    <a class="nav-item" href="index.html">
-      <span class="nav-icon">🌐</span> Campusora Home
-    </a>
-
-    <div style="height:18px"></div>
-
-    <div class="side-title">Coming Soon</div>
-
-    <div class="nav-item">
-      <span class="nav-icon">🎬</span> Spotlight
-    </div>
-
-    <div class="nav-item">
-      <span class="nav-icon">👥</span> Communities
-    </div>
-
-    <div class="nav-item">
-      <span class="nav-icon">🛍️</span> Marketplace
-    </div>
-
-    <div class="nav-item">
-      <span class="nav-icon">🎮</span> Games
-    </div>
-
-  </div>
-</aside>
-
-<main>
-
-  <div class="feed-tabs">
-    <button class="feed-tab active" data-feed="discover">🌍 Discover</button>
-    <button class="feed-tab" data-feed="campus">🎓 My Campus</button>
-  </div>
-
-  <div class="panel create-card">
-    <div class="create-row">
-      <img id="currentAvatar" class="avatar" alt="Your profile">
-
-      <a href="create-post.html" class="create-placeholder">
-        What's happening on Campusora?
+    <nav class="nav-list">
+      <a class="nav-item active" href="home-feed.html">
+        <span class="nav-icon">⌂</span> Home Feed
       </a>
+      <a class="nav-item" href="profile.html">
+        <span class="nav-icon">◉</span> My Profile
+      </a>
+      <a class="nav-item" href="search.html">
+        <span class="nav-icon">⌕</span> Search
+      </a>
+      <a class="nav-item" href="spotlight.html">
+        <span class="nav-icon">▶</span> Spotlight
+      </a>
+      <a class="nav-item" href="communities.html">
+        <span class="nav-icon">♧</span> Communities
+      </a>
+      <a class="nav-item" href="events.html">
+        <span class="nav-icon">▦</span> Events
+      </a>
+      <a class="nav-item" href="messages.html">
+        <span class="nav-icon">✉</span> Messages
+      </a>
+    </nav>
 
-      <a href="create-post.html" class="primary-btn">Post</a>
+    <div class="sidebar-note">
+      <h3>Your campus. Your people.</h3>
+      <p>Connect with students, alumni and communities across Nigeria.</p>
     </div>
-  </div>
+  </aside>
 
+  <main class="main-feed">
 
-  <div id="feed">
-    <div class="panel status">
-      <strong>Loading your feed...</strong>
-      Please wait while we fetch Campusora posts.
+    <section class="feed-heading">
+      <div>
+        <h1>Your feed</h1>
+        <p>What's happening around your world</p>
+      </div>
+
+      <select id="feedFilter" class="feed-filter" aria-label="Choose feed">
+        <option value="for-you">For You</option>
+        <option value="popular">Popular</option>
+        <option value="campus">My Campus</option>
+      </select>
+    </section>
+
+    <section class="moments">
+      <div class="section-heading">
+        <h2>Campus Moments</h2>
+        <a href="campus-moments.html">See all</a>
+      </div>
+
+      <div class="moment-list" id="momentList">
+        <a class="moment add" href="campus-moments.html">
+          <div class="moment-ring">+</div>
+          <span class="moment-name">Your Moment</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="composer">
+      <div class="composer-title">What's happening in your campus?</div>
+
+      <div class="composer-top">
+        <a id="myProfileLink" href="profile.html">
+          <img id="currentAvatar" class="avatar" alt="Your profile">
+        </a>
+
+        <a href="create-post.html" class="composer-input">
+          Share something with Campusora...
+        </a>
+      </div>
+
+      <div class="composer-actions">
+        <a class="composer-action" href="create-post.html">
+          <span>▧</span> Photo
+        </a>
+
+        <a class="composer-action" href="create-post.html">
+          <span>▶</span> Video
+        </a>
+
+        <a class="composer-action" href="create-post.html?type=poll">
+          <span>▤</span> Poll
+        </a>
+
+        <a class="composer-action" href="create-post.html?type=question">
+          <span>?</span> Questions
+        </a>
+      </div>
+    </section>
+
+    <section id="feed">
+      <div class="empty-feed">
+        <strong>Loading your feed...</strong>
+        Getting your Campusora posts.
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="right-sidebar">
+    <div class="right-card">
+      <h3>Welcome to Campusora</h3>
+      <p>A social space connecting students, alumni and general members across Nigerian campuses.</p>
     </div>
-  </div>
 
-</main>
-
-<aside class="right-column">
-
-  <div class="panel right-card">
-    <h3>✨ Welcome to Campusora</h3>
-    <p>
-      A place for students, alumni, and general members to connect
-      beyond their campuses.
-    </p>
-  </div>
-
-  <div class="panel right-card">
-    <h3>📣 Build your presence</h3>
-    <p>
-      Complete your profile, publish posts, and join the conversation
-      with the Campusora community.
-    </p>
-
-    <a href="profile.html" class="primary-btn"
-       style="display:inline-block;margin-top:13px">
-      View Profile
-    </a>
-  </div>
-
-  <div class="panel right-card">
-    <h3>💡 Community Guidelines</h3>
-    <p>
-      Be respectful. Share helpful content. Protect your personal
-      information and treat other members fairly.
-    </p>
-  </div>
-
-</aside>
+    <div class="right-card">
+      <h3>Build your presence</h3>
+      <p>Share your ideas, connect with people and discover opportunities across campuses.</p>
+      <a href="profile.html" class="primary-btn">View Profile</a>
+    </div>
+  </aside>
 
 </div>
 
-<footer>
-  Campusora — Connecting students, alumni, and communities.
-</footer>
+<div id="toast" class="toast"></div>
 
-  <script type="module">
-import { supabase } from './supabase.js';
+<script src="./shared-nav.js"></script>
 
-const feed = document.getElementById('feed');
-const refreshBtn = document.getElementById('refreshBtn');
-const currentAvatar = document.getElementById('currentAvatar');
+<script type="module">
+import { supabase } from "./supabase.js";
 
-const feedTabs = document.querySelectorAll('.feed-tab');
+/* ELEMENTS */
+
+const feed = document.getElementById("feed");
+const filter = document.getElementById("feedFilter");
+const progress = document.getElementById("pageProgress");
+const momentList = document.getElementById("momentList");
+const currentAvatar = document.getElementById("currentAvatar");
+const toastBox = document.getElementById("toast");
 
 let currentUser = null;
 let currentProfile = null;
-let busy = false;
-let activeFeed = 'discover';
+let activeFeed = "for-you";
+let loading = false;
+let currentItems = [];
 
 const fallbackAvatar =
-  'data:image/svg+xml;charset=UTF-8,' +
+  "data:image/svg+xml;charset=UTF-8," +
   encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
-        <rect width="100" height="100" rx="50" fill="#252c46"/>
+      <rect width="100" height="100" rx="50" fill="#252c46"/>
       <circle cx="50" cy="36" r="18" fill="#9ca8ca"/>
       <path d="M15 95 Q15 62 50 62 Q85 62 85 95" fill="#9ca8ca"/>
     </svg>
   `);
 
-function escapeHTML(value = '') {
-  return String(value).replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[char]);
+/* HELPERS */
+
+function escapeHTML(value="") {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[c]);
 }
 
-function avatarURL(url) {
+function avatar(url) {
   return url || fallbackAvatar;
 }
 
-function profileLink(userId) {
-  return 'profile.html?id=' + encodeURIComponent(userId);
+function profileURL(id) {
+  return "profile.html?id=" + encodeURIComponent(id);
 }
 
-function timeAgo(dateValue) {
-  if (!dateValue) return 'Recently';
+function timeAgo(value) {
+  if (!value) return "Recently";
 
-  const date = new Date(dateValue);
+  const seconds = Math.max(0,Math.floor((Date.now()-new Date(value).getTime())/1000));
 
-  if (Number.isNaN(date.getTime())) return 'Recently';
+  if (seconds < 60) return "Just now";
+  if (seconds < 3600) return Math.floor(seconds/60)+"m ago";
+  if (seconds < 86400) return Math.floor(seconds/3600)+"h ago";
+  if (seconds < 604800) return Math.floor(seconds/86400)+"d ago";
 
-  const seconds = Math.max(
-    0,
-    Math.floor((Date.now() - date.getTime()) / 1000)
-  );
-
-  if (seconds < 60) return 'Just now';
-  if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
-  if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
-  if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
-
-  return date.toLocaleDateString();
+  return new Date(value).toLocaleDateString();
 }
 
-function showMessage(title, message, retry = false) {
+function toast(message) {
+  toastBox.textContent = message;
+  toastBox.classList.add("show");
+
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => {
+    toastBox.classList.remove("show");
+  },2600);
+}
+
+function startProgress() {
+  progress.className = "loading";
+}
+
+function finishProgress() {
+  progress.className = "done";
+
+  setTimeout(() => {
+    progress.className = "";
+    progress.style.width = "";
+  },350);
+}
+
+function showEmpty(title,message,retry=false) {
   feed.innerHTML = `
-    <div class="panel status">
+    <div class="empty-feed">
       <strong>${escapeHTML(title)}</strong>
       ${escapeHTML(message)}
-      ${retry ? '<br><br><button class="primary-btn" id="retryBtn">Try Again</button>' : ''}
+      ${retry ? '<br><button class="primary-btn" id="retryFeed">Try Again</button>' : ""}
     </div>
   `;
 
-  const retryBtn = document.getElementById('retryBtn');
-
-  if (retryBtn) {
-    retryBtn.addEventListener('click', loadFeed);
-  }
+  document.getElementById("retryFeed")?.addEventListener("click",loadFeed);
 }
 
-async function getMyProfile() {
-  const {
-    data: { session },
-    error: sessionError
-  } = await supabase.auth.getSession();
+/* USER PROFILE */
 
-  if (sessionError) throw sessionError;
+async function loadMyProfile() {
+  const {data:{session},error} = await supabase.auth.getSession();
+  if (error) throw error;
 
   currentUser = session?.user || null;
 
@@ -786,766 +939,894 @@ async function getMyProfile() {
     return;
   }
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', currentUser.id)
+  const {data,error:profileError} = await supabase
+    .from("profiles")
+    .select("id,username,full_name,avatar_url,school,role,institution_id")
+    .eq("id",currentUser.id)
     .maybeSingle();
+
+  if (profileError) throw profileError;
+
+  currentProfile = data;
+  currentAvatar.src = avatar(data?.avatar_url);
+
+  document.getElementById("myProfileLink").href =
+    profileURL(currentUser.id);
+}
+
+/* CAMPUS MEMBER IDS */
+
+async function getCampusMemberIds() {
+  if (!currentProfile?.institution_id) return [];
+
+  const {data,error} = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("institution_id",currentProfile.institution_id);
 
   if (error) throw error;
 
-  currentProfile = data || null;
-
-  currentAvatar.src = avatarURL(currentProfile?.avatar_url);
+  return (data || []).map(x => x.id);
 }
 
-/* GET POSTS FOR THE SELECTED TAB */
+/* MOMENTS */
 
-async function getSelectedPosts() {
+async function loadMoments() {
+  const {data,error} = await supabase
+    .from("campusora_moments")
+    .select("id,user_id,media_type,media_path,caption,created_at,expires_at")
+    .gt("expires_at",new Date().toISOString())
+    .order("created_at",{ascending:false})
+    .limit(25);
 
-  // DISCOVER: All posts visible to the current user
-  if (activeFeed === 'discover') {
+  if (error) throw error;
 
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(50);
+  const moments = data || [];
 
-    if (error) throw error;
+  if (!moments.length) return;
 
-    return data || [];
-  }
+  const ids = [...new Set(moments.map(x => x.user_id))];
 
-  // MY CAMPUS: Posts from people who selected the same school
+  const {data:profiles,error:profileError} = await supabase
+    .from("profiles")
+    .select("id,username,full_name,avatar_url")
+    .in("id",ids);
 
-  if (!currentUser) {
-    showMessage(
-      'Log in to view My Campus',
-      'Please log in to see posts from your selected campus.'
-    );
+  if (profileError) throw profileError;
 
-    return null;
-  }
+  const map = new Map((profiles || []).map(x => [x.id,x]));
 
-  if (!currentProfile?.school) {
-    showMessage(
-      'Select your campus first',
-      'Complete your profile and select your university or institution to use My Campus.'
-    );
+  momentList.innerHTML = `
+    <a class="moment add" href="campus-moments.html">
+      <div class="moment-ring">+</div>
+      <span class="moment-name">Your Moment</span>
+    </a>
+    ${moments.map(item => {
+      const p = map.get(item.user_id) || {};
+      return `
+        <a class="moment" href="campus-moments.html">
+          <div class="moment-ring">
+            <img src="${escapeHTML(avatar(p.avatar_url))}" alt="" loading="lazy">
+          </div>
+          <span class="moment-name">${escapeHTML(p.full_name || p.username || "Member")}</span>
+        </a>
+      `;
+    }).join("")}
+  `;
+}
 
-    return null;
-  }
+/* FETCH FEED DATA */
 
-  const { data: campusMembers, error: campusError } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('school', currentProfile.school);
-
-  if (campusError) throw campusError;
-
-  const campusIds = (campusMembers || []).map(member => member.id);
-
-  if (!campusIds.length) {
-    return [];
-  }
-
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .in('user_id', campusIds)
-    .order('created_at', { ascending: false })
+async function fetchPosts(campusIds) {
+  let query = supabase
+    .from("posts")
+    .select("*")
+    .order("created_at",{ascending:false})
     .limit(50);
 
+  if (activeFeed === "campus") {
+    if (!currentUser) return [];
+    if (!currentProfile?.institution_id) return [];
+
+    query = query.eq("institution_id",currentProfile.institution_id);
+  }
+
+  const {data,error} = await query;
   if (error) throw error;
 
   return data || [];
 }
 
-/* GET SPOTLIGHT VIDEOS FOR THE SELECTED FEED */
-async function getSelectedSpotlightVideos() {
-  const { data, error } = await supabase
-    .from('spotlight_videos')
-    .select('id,user_id,caption,video_url,thumbnail_url,view_count,created_at')
-    .order('created_at', { ascending: false })
-    .limit(40);
+async function fetchVideos(campusIds) {
+  let query = supabase
+    .from("spotlight_videos")
+    .select("id,user_id,caption,video_url,thumbnail_url,institution_id,view_count,created_at")
+    .order("created_at",{ascending:false})
+    .limit(25);
 
+  if (activeFeed === "campus") {
+    if (!currentProfile?.institution_id) return [];
+
+    query = query.eq("institution_id",currentProfile.institution_id);
+  }
+
+  const {data,error} = await query;
   if (error) throw error;
-  let videos = data || [];
 
-  if (activeFeed === 'campus') {
-    if (!currentUser || !currentProfile?.school) return [];
-    const { data: campusMembers, error: campusError } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('school', currentProfile.school);
-    if (campusError) throw campusError;
-    const campusIds = new Set((campusMembers || []).map(member => member.id));
-    videos = videos.filter(video => campusIds.has(video.user_id));
-  }
-  return videos;
+  return data || [];
 }
 
-/* LOAD THE FEED */
+/* SPONSORED CONTENT */
 
-async function loadFeed() {
+async function fetchSponsored() {
+  const results = [];
 
-  if (busy) return;
+  const businessRequest = supabase
+    .from("campusora_business_promotions")
+    .select("*")
+    .eq("status","active")
+    .order("priority",{ascending:false})
+    .limit(5);
 
-  busy = true;
+  const campaignRequest = supabase
+    .from("sponsored_campaigns")
+    .select("*")
+    .eq("status","active")
+    .eq("payment_verified",true)
+    .limit(5);
 
-  refreshBtn.disabled = true;
-  refreshBtn.textContent = 'Loading...';
+  const [businessResult,campaignResult] = await Promise.all([
+    businessRequest,
+    campaignRequest
+  ]);
 
-  feedTabs.forEach(tab => {
-    tab.disabled = true;
-  });
-
-  showMessage(
-    'Loading your feed...',
-    'Please wait while we fetch Campusora posts.'
-  );
-
-  try {
-
-    await getMyProfile();
-
-    const posts = await getSelectedPosts();
-    if (posts === null) return;
-
-    const videos = await getSelectedSpotlightVideos();
-
-    if (!posts.length && !videos.length) {
-      if (activeFeed === 'campus') {
-        showMessage('No campus posts yet 🌱',
-          'There are no posts or Spotlight videos from members of your selected campus yet.');
-      } else {
-        showMessage('Your feed is waiting for its first post! 🌱',
-          'Be the first to share something with the Campusora community.');
-      }
-      return;
-    }
-
-    const feedItems = [
-      ...posts.map(post => ({ kind: 'post', data: post })),
-      ...videos.map(video => ({ kind: 'video', data: video }))
-    ].sort((a, b) =>
-      new Date(b.data.created_at).getTime() - new Date(a.data.created_at).getTime()
-    );
-
-    const userIds = [
-      ...new Set(feedItems.map(item => item.data.user_id).filter(Boolean))
-    ];
-    const postIds = posts.map(post => post.id);
-
-    let profiles = [];
-    let likes = [];
-    let comments = [];
-    let myLikes = [];
-
-    if (userIds.length) {
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, username, full_name, avatar_url, role, school')
-        .in('id', userIds);
-
-      if (error) throw error;
-
-      profiles = data || [];
-    }
-
-    if (postIds.length) {
-
-      const { data, error } = await supabase
-        .from('likes')
-        .select('post_id, user_id')
-        .in('post_id', postIds);
-
-      if (error) throw error;
-
-      likes = data || [];
-
-      const {
-        data: commentData,
-        error: commentsError
-      } = await supabase
-        .from('comments')
-        .select('id, post_id, user_id, content, created_at, parent_comment_id')
-        .in('post_id', postIds)
-        .order('created_at', { ascending: true });
-
-      if (commentsError) throw commentsError;
-
-      comments = commentData || [];
-
-      if (currentUser) {
-        myLikes = likes.filter(
-          like => like.user_id === currentUser.id
-        );
-      }
-    }
-
-    const profileMap = new Map(
-      profiles.map(profile => [profile.id, profile])
-    );
-
-    const likeCountMap = new Map();
-    const myLikeSet = new Set(
-      myLikes.map(like => like.post_id)
-    );
-
-    const commentCountMap = new Map();
-
-    likes.forEach(like => {
-      likeCountMap.set(
-        like.post_id,
-        (likeCountMap.get(like.post_id) || 0) + 1
-      );
+  if (!businessResult.error) {
+    (businessResult.data || []).forEach(x => {
+      results.push({
+        kind:"business-ad",
+        data:x,
+        created_at:x.created_at
+      });
     });
-
-    comments.forEach(comment => {
-      commentCountMap.set(
-        comment.post_id,
-        (commentCountMap.get(comment.post_id) || 0) + 1
-      );
-    });
-
-    feed.innerHTML = feedItems.map(item => {
-      if (item.kind === 'video') {
-        const video = item.data;
-        const author = profileMap.get(video.user_id) || {};
-        const name = author.full_name || author.username || 'Campusora Member';
-        const username = author.username ? '@' + author.username : '';
-        return `
-          <article class="panel post spotlight-feed-post" data-video-id="${escapeHTML(video.id)}">
-            <div class="post-author">
-              <a href="${profileLink(video.user_id)}">
-                <img class="avatar" src="${escapeHTML(avatarURL(author.avatar_url))}" alt=""
-                  onerror="this.onerror=null;this.src='${fallbackAvatar}'">
-              </a>
-              <div class="author-info">
-                <a class="author-name" href="${profileLink(video.user_id)}">${escapeHTML(name)}</a>
-                <div class="username">${escapeHTML(username)} · ✦ Spotlight</div>
-                <div class="post-time">${escapeHTML(timeAgo(video.created_at))}</div>
-              </div>
-            </div>
-            ${video.caption ? `<div class="post-content">${escapeHTML(video.caption)}</div>` : ''}
-            <video class="post-image feed-spotlight-video" controls playsinline preload="metadata"
-              ${video.thumbnail_url ? `poster="${escapeHTML(video.thumbnail_url)}"` : ''}
-              src="${escapeHTML(video.video_url)}"></video>
-            <div class="post-actions">
-              <a class="action-btn" href="spotlight.html#${encodeURIComponent(video.id)}">▶ Watch in Spotlight</a>
-              <button class="action-btn" data-action="share-video">↗ Share</button>
-            </div>
-          </article>
-        `;
-      }
-
-      const post = item.data;
-      const author = profileMap.get(post.user_id) || {};
-
-      const name =
-        author.full_name ||
-        author.username ||
-        'Campusora Member';
-
-      const username = author.username
-        ? '@' + author.username
-        : '';
-
-      const role = author.role
-        ? `<span class="role-badge">${escapeHTML(author.role)}</span>`
-        : '';
-
-      const content = post.content
-        ? `<div class="post-content">${escapeHTML(post.content)}</div>`
-        : '';
-
-      const image = post.image_url
-        ? `<img class="post-image"
-             src="${escapeHTML(post.image_url)}"
-             alt="Post image"
-             loading="lazy"
-             onerror="this.style.display='none'">`
-        : '';
-
-      const liked = myLikeSet.has(post.id);
-
-      const likeCount = likeCountMap.get(post.id) || 0;
-      const commentCount = commentCountMap.get(post.id) || 0;
-
-      return `
-        <article class="panel post" data-post-id="${escapeHTML(post.id)}">
-
-          <div class="post-author">
-
-            <a href="${profileLink(post.user_id)}"
-               aria-label="View ${escapeHTML(name)}'s profile">
-
-              <img class="avatar"
-                   src="${escapeHTML(avatarURL(author.avatar_url))}"
-                   alt=""
-                   onerror="this.onerror=null;this.src='${fallbackAvatar}'">
-            </a>
-
-            <div class="author-info">
-
-              <a class="author-name"
-                 href="${profileLink(post.user_id)}">
-                ${escapeHTML(name)}${role}
-              </a>
-
-              <div class="username">
-                ${escapeHTML(username)}
-              </div>
-
-              <div class="post-time">
-                ${escapeHTML(timeAgo(post.created_at))}
-              </div>
-
-            </div>
-          </div>
-
-          ${content}
-          ${image}
-
-          <div class="post-stats">
-
-            <span class="like-count">
-              ${likeCount} ${likeCount === 1 ? 'like' : 'likes'}
-            </span>
-
-            <span class="comment-count">
-              ${commentCount} ${commentCount === 1 ? 'comment' : 'comments'}
-            </span>
-
-          </div>
-
-          <div class="post-actions">
-
-            <button class="action-btn ${liked ? 'liked' : ''}"
-                    data-action="like">
-              ${liked ? '❤️ Liked' : '♡ Like'}
-            </button>
-
-            <button class="action-btn" data-action="comments">
-              💬 Comments
-            </button>
-
-            <button class="action-btn" data-action="share">
-              ↗ Share
-            </button>
-
-          </div>
-
-                    <section class="comments-area"
-                   id="comments-${escapeHTML(post.id)}">
-
-            <form class="comment-form"
-                  data-post-id="${escapeHTML(post.id)}">
-
-              <img class="avatar"
-                   src="${escapeHTML(avatarURL(currentProfile?.avatar_url))}"
-                   alt="">
-
-              <textarea class="comment-input"
-                        name="content"
-                        maxlength="2000"
-                        placeholder="${currentUser ? 'Write a comment...' : 'Log in to comment...'}"
-                        required
-                        ${currentUser ? '' : 'disabled'}></textarea>
-
-              <button class="comment-submit"
-                      type="submit"
-                      ${currentUser ? '' : 'disabled'}>
-                Send
-              </button>
-
-            </form>
-
-            <div class="comments-list"
-                 data-comments-for="${escapeHTML(post.id)}">
-
-              ${renderComments(
-                comments.filter(comment => comment.post_id === post.id),
-                profileMap
-              )}
-
-            </div>
-
-          </section>
-
-        </article>
-      `;
-
-    }).join('');
-
-  } catch (error) {
-
-    console.error('Campusora feed error:', error);
-
-    showMessage(
-      'We could not load the feed.',
-      error.message || 'Check your internet connection and try again.',
-      true
-    );
-
-  } finally {
-
-    busy = false;
-
-    refreshBtn.disabled = false;
-    refreshBtn.textContent = '↻ Refresh';
-
-    feedTabs.forEach(tab => {
-      tab.disabled = false;
-    });
-
   }
+
+  if (!campaignResult.error) {
+    (campaignResult.data || []).forEach(x => {
+      results.push({
+        kind:"campaign-ad",
+        data:x,
+        created_at:x.published_at || x.created_at
+      });
+    });
+  }
+
+  return results;
 }
 
-/* DISPLAY COMMENTS AND REPLIES */
+/* FETCH SUPPORTING DATA */
 
-function renderComments(postComments, profileMap) {
+async function fetchSupportingData(items) {
+  const posts = items.filter(x => x.kind === "post").map(x => x.data);
+  const videos = items.filter(x => x.kind === "video").map(x => x.data);
 
-  if (!postComments.length) {
-    return '<div class="subtitle">No comments yet. Start the conversation!</div>';
+  const userIds = [...new Set(items
+    .filter(x => x.kind === "post" || x.kind === "video")
+    .map(x => x.data.user_id)
+    .filter(Boolean)
+  )];
+
+  const postIds = posts.map(x => x.id);
+  const videoIds = videos.map(x => x.id);
+
+  const requests = [
+    userIds.length
+      ? supabase.from("profiles")
+          .select("id,username,full_name,avatar_url,role,school")
+          .in("id",userIds)
+      : Promise.resolve({data:[],error:null}),
+
+    postIds.length
+      ? supabase.from("likes")
+          .select("post_id,user_id")
+          .in("post_id",postIds)
+      : Promise.resolve({data:[],error:null}),
+
+    postIds.length
+      ? supabase.from("comments")
+          .select("id,post_id,user_id,content,created_at,parent_comment_id")
+          .in("post_id",postIds)
+          .order("created_at",{ascending:true})
+      : Promise.resolve({data:[],error:null}),
+
+    postIds.length
+      ? supabase.from("post_reposts")
+          .select("post_id,user_id")
+          .in("post_id",postIds)
+      : Promise.resolve({data:[],error:null}),
+
+    videoIds.length
+      ? supabase.from("spotlight_video_reposts")
+          .select("video_id,user_id")
+          .in("video_id",videoIds)
+      : Promise.resolve({data:[],error:null})
+  ];
+
+  const [profiles,likes,comments,reposts,videoReposts] =
+    await Promise.all(requests);
+
+  for (const result of [profiles,likes,comments,reposts,videoReposts]) {
+    if (result.error) throw result.error;
   }
 
-  const roots = postComments.filter(
-    comment => !comment.parent_comment_id
-  );
+  return {
+    profiles:profiles.data || [],
+    likes:likes.data || [],
+    comments:comments.data || [],
+    reposts:reposts.data || [],
+    videoReposts:videoReposts.data || []
+  };
+}
 
-  const repliesByParent = new Map();
+/* FEED RANKING */
 
-  postComments.forEach(comment => {
+function rankItems(items,extra) {
+  const likeCounts = {};
+  const commentCounts = {};
+  const repostCounts = {};
 
-    if (comment.parent_comment_id) {
-
-      const list =
-        repliesByParent.get(comment.parent_comment_id) || [];
-
-      list.push(comment);
-
-      repliesByParent.set(comment.parent_comment_id, list);
-    }
-
+  extra.likes.forEach(x => {
+    likeCounts[x.post_id] = (likeCounts[x.post_id] || 0)+1;
   });
 
-  function renderOne(comment, isReply = false) {
+  extra.comments.forEach(x => {
+    commentCounts[x.post_id] = (commentCounts[x.post_id] || 0)+1;
+  });
 
-    const author = profileMap.get(comment.user_id) || {};
+  extra.reposts.forEach(x => {
+    repostCounts[x.post_id] = (repostCounts[x.post_id] || 0)+1;
+  });
 
-    const name =
-      author.full_name ||
-      author.username ||
-      'Campusora Member';
+  const followedIds = new Set();
 
-    const replies = repliesByParent.get(comment.id) || [];
+  return items.map(item => {
+    const date = new Date(item.data.created_at).getTime();
+    const ageHours = Math.max(1,(Date.now()-date)/3600000);
+
+    if (item.kind !== "post") {
+      return {...item,score:1/ageHours};
+    }
+
+    const id = item.data.id;
+    const likes = likeCounts[id] || 0;
+    const comments = commentCounts[id] || 0;
+    const reposts = repostCounts[id] || 0;
+
+    const engagement = likes*2 + comments*4 + reposts*6;
+    const freshness = 1/Math.pow(ageHours+2,.65);
+
+    let score = engagement*freshness + freshness;
+
+    if (activeFeed === "popular") {
+      score = engagement*freshness*2 + freshness;
+    }
+
+    if (currentUser && item.data.user_id === currentUser.id) {
+      score *= .75;
+    }
+
+    return {...item,score};
+  }).sort((a,b) => {
+    if (activeFeed === "for-you" || activeFeed === "popular") {
+      return b.score-a.score;
+    }
+
+    return new Date(b.data.created_at)-new Date(a.data.created_at);
+  });
+}
+
+/* RENDER COMMENTS */
+
+function renderComments(comments,profileMap,postId) {
+  const roots = comments.filter(x =>
+    x.post_id === postId && !x.parent_comment_id
+  );
+
+  function one(comment) {
+    const p = profileMap.get(comment.user_id) || {};
+    const replies = comments.filter(x => x.parent_comment_id === comment.id);
 
     return `
       <div class="comment" data-comment-id="${escapeHTML(comment.id)}">
-
-        <a href="${profileLink(comment.user_id)}">
-
-          <img class="avatar"
-               src="${escapeHTML(avatarURL(author.avatar_url))}"
-               alt=""
-               onerror="this.onerror=null;this.src='${fallbackAvatar}'">
-
+        <a href="${profileURL(comment.user_id)}">
+          <img class="avatar" src="${escapeHTML(avatar(p.avatar_url))}" alt="">
         </a>
 
         <div class="comment-main">
-
-          <a class="comment-author"
-             href="${profileLink(comment.user_id)}">
-            ${escapeHTML(name)}
+          <a href="${profileURL(comment.user_id)}">
+            <strong>${escapeHTML(p.full_name || p.username || "Member")}</strong>
           </a>
 
-          <div class="comment-text">
-            ${escapeHTML(comment.content)}
+          <p>${escapeHTML(comment.content)}</p>
+
+          <div class="comment-actions">
+            <button class="small-action" data-comment-action="react"
+              data-comment-id="${escapeHTML(comment.id)}">♡ React</button>
+
+            <button class="small-action" data-comment-action="reply"
+              data-comment-id="${escapeHTML(comment.id)}">Reply</button>
+
+            ${currentUser?.id === comment.user_id
+              ? `<button class="small-action" data-comment-action="delete"
+                  data-comment-id="${escapeHTML(comment.id)}">Delete</button>`
+              : ""}
           </div>
 
-          <div class="comment-meta">
-
-            <span class="subtitle">
-              ${escapeHTML(timeAgo(comment.created_at))}
-            </span>
-
-            <button class="small-action"
-                    data-comment-action="react"
-                    data-comment-id="${escapeHTML(comment.id)}">
-              ❤️ React
-            </button>
-
-            ${!isReply && currentUser
-              ? `<button class="small-action"
-                         data-comment-action="reply"
-                         data-comment-id="${escapeHTML(comment.id)}">
-                   ↩ Reply
-                 </button>`
-              : ''}
-
-            ${currentUser && currentUser.id === comment.user_id
-              ? `<button class="small-action"
-                         data-comment-action="delete"
-                         data-comment-id="${escapeHTML(comment.id)}">
-                   Delete
-                 </button>`
-              : ''}
-
-          </div>
-
-          <form class="reply-form"
-                data-parent-id="${escapeHTML(comment.id)}">
-
-            <textarea class="comment-input"
-                      name="content"
-                      maxlength="2000"
-                      placeholder="Write a reply..."
-                      required></textarea>
-
-            <button class="comment-submit" type="submit">
-              Reply
-            </button>
-
+          <form class="reply-form" data-parent-id="${escapeHTML(comment.id)}">
+            <textarea name="content" placeholder="Write a reply..." required></textarea>
+            <button class="small-action" type="submit">Send</button>
           </form>
 
-          <div class="subtitle reaction-summary"
-               data-reaction-summary="${escapeHTML(comment.id)}"></div>
-
           ${replies.length
-            ? `<div class="replies">
-                 ${replies.map(reply => renderOne(reply, true)).join('')}
-               </div>`
-            : ''}
-
+            ? `<div class="reply-list">${replies.map(one).join("")}</div>`
+            : ""}
         </div>
       </div>
     `;
   }
 
-  return roots.map(comment => renderOne(comment)).join('');
+  return roots.map(one).join("") ||
+    '<div class="post-meta">No comments yet. Start the conversation.</div>';
 }
 
-   /* LIKE AND UNLIKE POSTS */
+/* RENDER POSTS AND VIDEOS */
 
-async function toggleLike(postId, button, postElement) {
+function renderPost(item,extra,profileMap) {
+  const post = item.data;
+  const author = profileMap.get(post.user_id) || {};
 
-  if (!currentUser) {
-    alert('Please log in to like posts.');
-    return;
+  const likes = extra.likes.filter(x => x.post_id === post.id);
+  const comments = extra.comments.filter(x => x.post_id === post.id);
+  const reposts = extra.reposts.filter(x => x.post_id === post.id);
+
+  const liked = likes.some(x => x.user_id === currentUser?.id);
+  const reposted = reposts.some(x => x.user_id === currentUser?.id);
+
+  return `
+    <article class="post" data-post-id="${escapeHTML(post.id)}">
+
+      <div class="post-header">
+        <a href="${profileURL(post.user_id)}">
+          <img class="avatar" src="${escapeHTML(avatar(author.avatar_url))}" alt="">
+        </a>
+
+        <div class="post-user">
+          <a class="post-name" href="${profileURL(post.user_id)}">
+            ${escapeHTML(author.full_name || author.username || "Campusora Member")}
+          </a>
+
+          ${author.role
+            ? `<span class="post-badge">${escapeHTML(author.role)}</span>`
+            : ""}
+
+          <div class="post-meta">
+            ${author.username ? "@"+escapeHTML(author.username)+" · " : ""}
+            ${escapeHTML(timeAgo(post.created_at))}
+          </div>
+        </div>
+
+        <button class="more-btn" data-action="post-menu" aria-label="Post options">⋯</button>
+      </div>
+
+      <div class="post-body">
+        ${post.content ? `<p>${escapeHTML(post.content)}</p>` : ""}
+
+        ${post.image_url
+          ? `<img class="post-image" src="${escapeHTML(post.image_url)}"
+              alt="Post image" loading="eager">`
+          : ""}
+
+        ${post.video_url
+          ? `<video class="post-video" controls playsinline preload="metadata"
+              src="${escapeHTML(post.video_url)}"></video>`
+          : ""}
+
+        ${post.post_type === "poll"
+          ? `<div class="post-meta">Poll · Open the post to participate.</div>`
+          : ""}
+      </div>
+
+      <div class="post-stats">
+        <span>${likes.length} reactions</span>
+        <span>${comments.length} comments · ${reposts.length} reposts</span>
+      </div>
+
+      <div class="post-actions">
+        <button class="post-action ${liked ? "liked" : ""}" data-action="like">
+          <span>${liked ? "♥" : "♡"}</span> Like
+        </button>
+
+        <button class="post-action" data-action="comments">
+          <span>▢</span> Comment
+        </button>
+
+        <button class="post-action ${reposted ? "reposted" : ""}" data-action="repost">
+          <span>⟳</span> Repost
+        </button>
+
+        <button class="post-action" data-action="share">
+          <span>↗</span> Share
+        </button>
+      </div>
+
+      <section class="comment-area" id="comments-${escapeHTML(post.id)}">
+        <form class="comment-form" data-post-id="${escapeHTML(post.id)}">
+          <textarea name="content" maxlength="2000"
+            placeholder="Write a comment..." required></textarea>
+          <button type="submit">Send</button>
+        </form>
+
+        <div class="comment-list">
+          ${renderComments(comments,profileMap,post.id)}
+        </div>
+      </section>
+    </article>
+  `;
+}
+
+function renderVideo(item,extra,profileMap) {
+  const video = item.data;
+  const author = profileMap.get(video.user_id) || {};
+
+  const reposts = extra.videoReposts.filter(x => x.video_id === video.id);
+  const reposted = reposts.some(x => x.user_id === currentUser?.id);
+
+  return `
+    <article class="post" data-video-id="${escapeHTML(video.id)}">
+      <div class="post-header">
+        <a href="${profileURL(video.user_id)}">
+          <img class="avatar" src="${escapeHTML(avatar(author.avatar_url))}" alt="">
+        </a>
+
+        <div class="post-user">
+          <a class="post-name" href="${profileURL(video.user_id)}">
+            ${escapeHTML(author.full_name || author.username || "Campusora Member")}
+          </a>
+          <div class="post-meta">
+            ✦ Spotlight · ${escapeHTML(timeAgo(video.created_at))}
+          </div>
+        </div>
+
+        <button class="more-btn" data-action="video-menu">⋯</button>
+      </div>
+
+      ${video.caption
+        ? `<div class="post-body"><p>${escapeHTML(video.caption)}</p></div>`
+        : ""}
+
+      <video class="post-video" controls playsinline preload="metadata"
+        ${video.thumbnail_url ? `poster="${escapeHTML(video.thumbnail_url)}"` : ""}
+        src="${escapeHTML(video.video_url)}"></video>
+
+      <div class="post-stats">
+        <span>${Number(video.view_count || 0)} views</span>
+        <span>${reposts.length} reposts</span>
+      </div>
+
+      <div class="post-actions">
+        <a class="post-action" href="spotlight.html#${encodeURIComponent(video.id)}">
+          <span>▶</span> Watch
+        </a>
+
+        <button class="post-action ${reposted ? "reposted" : ""}"
+          data-action="video-repost">
+          <span>⟳</span> Repost
+        </button>
+
+        <button class="post-action" data-action="video-share">
+          <span>↗</span> Share
+        </button>
+
+        <a class="post-action" href="spotlight.html#${encodeURIComponent(video.id)}">
+          <span>♡</span> Gifts
+        </a>
+      </div>
+    </article>
+  `;
+}
+
+/* RENDER SPONSORED POSTS */
+
+function renderBusinessAd(item) {
+  const ad = item.data;
+
+  const media = ad.media_type === "video"
+    ? `<video class="post-video" controls playsinline preload="metadata"
+        src="${escapeHTML(ad.media_path)}"></video>`
+    : `<img class="post-image" src="${escapeHTML(ad.media_path)}"
+        alt="Sponsored promotion" loading="eager">`;
+
+  return `
+    <article class="post">
+      <div class="post-header">
+        <div class="post-user">
+          <strong class="post-name">${escapeHTML(ad.business_name || "Campusora Partner")}</strong>
+          <div class="post-meta">Sponsored</div>
+        </div>
+      </div>
+
+      <div class="post-body">
+        <span class="sponsored-label">SPONSORED</span>
+        <p><strong>${escapeHTML(ad.promotion_title || "")}</strong></p>
+        <p>${escapeHTML(ad.description || "")}</p>
+        ${media}
+        ${ad.call_to_action && ad.website_url
+          ? `<a class="primary-btn" href="${escapeHTML(ad.website_url)}"
+              target="_blank" rel="noopener">${escapeHTML(ad.call_to_action)}</a>`
+          : ""}
+      </div>
+    </article>
+  `;
+}
+
+function renderCampaignAd(item) {
+  const ad = item.data;
+
+  const media = ad.post_video_url
+    ? `<video class="post-video" controls playsinline preload="metadata"
+        src="${escapeHTML(ad.post_video_url)}"></video>`
+    : ad.post_image_url
+      ? `<img class="post-image" src="${escapeHTML(ad.post_image_url)}"
+          alt="Sponsored post" loading="eager">`
+      : "";
+
+  return `
+    <article class="post">
+      <div class="post-header">
+        <div class="post-user">
+          <strong class="post-name">Campusora Promotion</strong>
+          <div class="post-meta">Sponsored</div>
+        </div>
+      </div>
+
+      <div class="post-body">
+        <span class="sponsored-label">SPONSORED</span>
+        <p>${escapeHTML(ad.post_content || "")}</p>
+        ${media}
+        ${ad.destination_url
+          ? `<a class="primary-btn" href="${escapeHTML(ad.destination_url)}"
+              target="_blank" rel="noopener">Learn More</a>`
+          : ""}
+      </div>
+    </article>
+  `;
+}
+
+/* MAIN FEED LOAD */
+
+async function loadFeed() {
+  if (loading) return;
+
+  loading = true;
+  startProgress();
+
+  try {
+    if (!currentUser && currentProfile === null) {
+      await loadMyProfile();
+    }
+
+    let campusIds = [];
+
+    if (activeFeed === "campus") {
+      if (!currentUser) {
+        showEmpty("Log in to view My Campus",
+          "Please log in to see posts from your institution.");
+        return;
+      }
+
+      if (!currentProfile?.institution_id) {
+        showEmpty("Select your institution first",
+          "Your profile needs an institution before My Campus can show your campus posts.");
+        return;
+      }
+    }
+
+    const [posts,videos,sponsored] = await Promise.all([
+      fetchPosts(campusIds),
+      fetchVideos(campusIds),
+      fetchSponsored()
+    ]);
+
+    let items = [
+      ...posts.map(data => ({kind:"post",data})),
+      ...videos.map(data => ({kind:"video",data})),
+      ...sponsored
+    ];
+
+    if (!items.length) {
+      showEmpty("Your feed is waiting for its first post!",
+        "Be the first to share something with the Campusora community.");
+      return;
+    }
+
+    const normalItems = items.filter(x =>
+      x.kind === "post" || x.kind === "video"
+    );
+
+    const extra = await fetchSupportingData(normalItems);
+
+    const profileMap = new Map(
+      extra.profiles.map(x => [x.id,x])
+    );
+
+    items = rankItems(items,extra);
+
+    if (activeFeed === "popular") {
+      items = items.filter(x =>
+        x.kind === "post" || x.kind === "video" ||
+        x.kind === "business-ad" || x.kind === "campaign-ad"
+      );
+    }
+
+    currentItems = items;
+
+    feed.innerHTML = items.map(item => {
+      if (item.kind === "post") return renderPost(item,extra,profileMap);
+      if (item.kind === "video") return renderVideo(item,extra,profileMap);
+      if (item.kind === "business-ad") return renderBusinessAd(item);
+      if (item.kind === "campaign-ad") return renderCampaignAd(item);
+      return "";
+    }).join("");
+
+  } catch (error) {
+    console.error("Campusora feed error:",error);
+
+    showEmpty("We couldn't load your feed",
+      error.message || "Check your internet connection and try again.",true);
+
+  } finally {
+    loading = false;
+    finishProgress();
   }
+}
+
+/* LIKE POSTS */
+
+async function toggleLike(postId,button) {
+  if (!currentUser) return toast("Please log in to react.");
 
   button.disabled = true;
 
   try {
-
-    const { data: existing, error: findError } = await supabase
-      .from('likes')
-      .select('post_id')
-      .eq('post_id', postId)
-      .eq('user_id', currentUser.id)
+    const {data:existing,error:findError} = await supabase
+      .from("likes")
+      .select("id")
+      .eq("post_id",postId)
+      .eq("user_id",currentUser.id)
       .maybeSingle();
 
     if (findError) throw findError;
 
     if (existing) {
-
-      const { error } = await supabase
-        .from('likes')
+      const {error} = await supabase.from("likes")
         .delete()
-        .eq('post_id', postId)
-        .eq('user_id', currentUser.id);
+        .eq("post_id",postId)
+        .eq("user_id",currentUser.id);
 
       if (error) throw error;
-
     } else {
-
-      const { error } = await supabase
-        .from('likes')
-        .insert({
-          post_id: postId,
-          user_id: currentUser.id
-        });
+      const {error} = await supabase.from("likes")
+        .insert({post_id:postId,user_id:currentUser.id});
 
       if (error) throw error;
     }
 
-    const { count, error: countError } = await supabase
-      .from('likes')
-      .select('*', { count: 'exact', head: true })
-      .eq('post_id', postId);
-
-    if (countError) throw countError;
-
-    const isLiked = !existing;
-
-    button.classList.toggle('liked', isLiked);
-
-    button.textContent = isLiked
-      ? '❤️ Liked'
-      : '♡ Like';
-
-    const countElement = postElement.querySelector('.like-count');
-
-    countElement.textContent =
-      `${count || 0} ${(count || 0) === 1 ? 'like' : 'likes'}`;
+    await loadFeed();
 
   } catch (error) {
-
     console.error(error);
-
-    alert('Could not update your like. Please try again.');
-
+    toast("Could not update your reaction.");
   } finally {
-
     button.disabled = false;
   }
 }
 
-/* SUBMIT A COMMENT */
+/* REPOST NORMAL POSTS */
+
+async function toggleRepost(postId,button) {
+  if (!currentUser) return toast("Please log in to repost.");
+
+  button.disabled = true;
+
+  try {
+    const {data:existing,error:findError} = await supabase
+      .from("post_reposts")
+      .select("id")
+      .eq("post_id",postId)
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
+
+    if (findError) throw findError;
+
+    const functionName = existing
+      ? "undo_campusora_repost"
+      : "repost_campusora_post";
+
+    const {error} = await supabase.rpc(functionName,{
+      p_post_id:postId
+    });
+
+    if (error) throw error;
+
+    toast(existing ? "Repost removed." : "Post reposted.");
+    await loadFeed();
+
+  } catch (error) {
+    console.error(error);
+    toast("Could not repost this post.");
+  } finally {
+    button.disabled = false;
+  }
+}
+
+/* REPOST SPOTLIGHT VIDEO */
+
+async function toggleVideoRepost(videoId,button) {
+  if (!currentUser) return toast("Please log in to repost.");
+
+  button.disabled = true;
+
+  try {
+    const {data:existing,error:findError} = await supabase
+      .from("spotlight_video_reposts")
+      .select("id")
+      .eq("video_id",videoId)
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
+
+    if (findError) throw findError;
+
+    const functionName = existing
+      ? "undo_spotlight_video_repost"
+      : "repost_spotlight_video";
+
+    const {error} = await supabase.rpc(functionName,{
+      p_video_id:videoId
+    });
+
+    if (error) throw error;
+
+    toast(existing ? "Repost removed." : "Video reposted.");
+    await loadFeed();
+
+  } catch (error) {
+    console.error(error);
+    toast("Could not repost this video.");
+  } finally {
+    button.disabled = false;
+  }
+}
+
+/* SHARE */
+
+async function shareURL(url,title) {
+  try {
+    if (navigator.share) {
+      await navigator.share({title,text:"Check this out on Campusora!",url});
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url);
+      toast("Link copied.");
+    } else {
+      window.prompt("Copy this link:",url);
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      toast("Could not share this link.");
+    }
+  }
+}
+
+function sharePost(postId) {
+  const url = new URL("home-feed.html",location.href);
+  url.hash = "post-"+postId;
+  return shareURL(url.href,"Campusora Post");
+}
+
+function shareVideo(videoId) {
+  const url = new URL("spotlight.html",location.href);
+  url.hash = videoId;
+  return shareURL(url.href,"Campusora Spotlight");
+}
+
+/* COMMENTS */
 
 async function submitComment(form) {
+  if (!currentUser) return toast("Please log in to comment.");
 
-  if (!currentUser) {
-    alert('Please log in before commenting.');
-    return;
-  }
-
+  const content = form.elements.content.value.trim();
   const postId = form.dataset.postId;
-  const textarea = form.querySelector('textarea');
-  const content = textarea.value.trim();
 
   if (!content) return;
 
-  const submit = form.querySelector('button[type="submit"]');
-
-  submit.disabled = true;
+  const button = form.querySelector("button");
+  button.disabled = true;
 
   try {
-
-    const { error } = await supabase
-      .from('comments')
-      .insert({
-        post_id: postId,
-        user_id: currentUser.id,
-        content
-      });
+    const {error} = await supabase.from("comments").insert({
+      post_id:postId,
+      user_id:currentUser.id,
+      content
+    });
 
     if (error) throw error;
 
+    toast("Comment published.");
     await loadFeed();
 
-    const area = document.getElementById('comments-' + postId);
-
-    if (area) area.classList.add('open');
+    document.getElementById("comments-"+postId)?.classList.add("open");
 
   } catch (error) {
-
     console.error(error);
-
-    alert('Could not publish your comment. Please try again.');
-
+    toast("Could not publish your comment.");
   } finally {
-
-    submit.disabled = false;
+    button.disabled = false;
   }
 }
 
-/* SUBMIT A REPLY */
-
 async function submitReply(form) {
+  if (!currentUser) return toast("Please log in to reply.");
 
-  if (!currentUser) {
-    alert('Please log in before replying.');
-    return;
-  }
-
+  const content = form.elements.content.value.trim();
   const parentId = form.dataset.parentId;
-
-  const parentElement = form.closest('.post');
-  const postId = parentElement?.dataset.postId;
-
-  const textarea = form.querySelector('textarea');
-  const content = textarea.value.trim();
+  const postId = form.closest("[data-post-id]")?.dataset.postId;
 
   if (!content || !postId) return;
 
-  const submit = form.querySelector('button[type="submit"]');
-
-  submit.disabled = true;
-
   try {
-
-    const { error } = await supabase
-      .from('comments')
-      .insert({
-        post_id: postId,
-        user_id: currentUser.id,
-        content,
-        parent_comment_id: parentId
-      });
+    const {error} = await supabase.from("comments").insert({
+      post_id:postId,
+      user_id:currentUser.id,
+      content,
+      parent_comment_id:parentId
+    });
 
     if (error) throw error;
 
+    toast("Reply published.");
     await loadFeed();
-
-    const area = document.getElementById('comments-' + postId);
-
-    if (area) area.classList.add('open');
+    document.getElementById("comments-"+postId)?.classList.add("open");
 
   } catch (error) {
-
     console.error(error);
-
-    alert('Could not publish your reply. Please try again.');
-
-  } finally {
-
-    submit.disabled = false;
+    toast("Could not publish your reply.");
   }
 }
 
-/* REACT TO A COMMENT */
-
 async function reactToComment(commentId) {
-
-  if (!currentUser) {
-    alert('Please log in to react to comments.');
-    return;
-  }
+  if (!currentUser) return toast("Please log in to react.");
 
   try {
-
-    const { data: existing, error: findError } = await supabase
-      .from('comment_reactions')
-      .select('id')
-      .eq('comment_id', commentId)
-      .eq('user_id', currentUser.id)
+    const {data:existing,error:findError} = await supabase
+      .from("comment_reactions")
+      .select("id")
+      .eq("comment_id",commentId)
+      .eq("user_id",currentUser.id)
       .maybeSingle();
 
     if (findError) throw findError;
 
     if (existing) {
-
-      const { error } = await supabase
-        .from('comment_reactions')
+      const {error} = await supabase.from("comment_reactions")
         .delete()
-        .eq('comment_id', commentId)
-        .eq('user_id', currentUser.id);
+        .eq("comment_id",commentId)
+        .eq("user_id",currentUser.id);
 
       if (error) throw error;
-
     } else {
-
-      const { error } = await supabase
-        .from('comment_reactions')
+      const {error} = await supabase.from("comment_reactions")
         .insert({
-          comment_id: commentId,
-          user_id: currentUser.id,
-          reaction: '❤️'
+          comment_id:commentId,
+          user_id:currentUser.id,
+          reaction:"❤️"
         });
 
       if (error) throw error;
@@ -1554,251 +1835,156 @@ async function reactToComment(commentId) {
     await loadFeed();
 
   } catch (error) {
-
     console.error(error);
-
-    alert('Could not update the reaction. Please try again.');
+    toast("Could not update comment reaction.");
   }
 }
-
-/* DELETE YOUR COMMENT */
 
 async function deleteComment(commentId) {
-
   if (!currentUser) return;
 
-  if (!confirm('Delete this comment?')) return;
+  if (!confirm("Delete this comment?")) return;
 
-  try {
+  const {error} = await supabase.from("comments")
+    .delete()
+    .eq("id",commentId)
+    .eq("user_id",currentUser.id);
 
-    const { error } = await supabase
-      .from('comments')
-      .delete()
-      .eq('id', commentId)
-      .eq('user_id', currentUser.id);
-
-    if (error) throw error;
-
-    await loadFeed();
-
-  } catch (error) {
-
+  if (error) {
     console.error(error);
+    return toast("Could not delete comment.");
+  }
 
-    alert('Could not delete this comment. Please try again.');
+  await loadFeed();
+}
+
+/* POST MENU */
+
+function postMenu(postId) {
+  const choice = prompt(
+    "Post options:\n1. Copy post link\n2. Report post"
+  );
+
+  if (choice === "1") {
+    sharePost(postId);
+  } else if (choice === "2") {
+    toast("Use the reporting option on the post page.");
   }
 }
 
-/* SHARE A POST */
+/* CLICK HANDLERS */
 
-async function sharePost(postId) {
+feed.addEventListener("click",async event => {
+  const button = event.target.closest("[data-action]");
+  if (!button) return;
 
-  const shareURL = new URL(
-    'home-feed.html',
-    window.location.href
-  );
+  const action = button.dataset.action;
 
-  shareURL.hash = 'post-' + postId;
+  const post = button.closest("[data-post-id]");
+  const video = button.closest("[data-video-id]");
 
-  const shareData = {
-    title: 'Campusora Post',
-    text: 'Check out this post on Campusora!',
-    url: shareURL.href
-  };
-
-  try {
-
-    if (navigator.share) {
-
-      await navigator.share(shareData);
-
-    } else if (navigator.clipboard && window.isSecureContext) {
-
-      await navigator.clipboard.writeText(shareURL.href);
-
-      alert('Post link copied! You can now share it.');
-
-    } else {
-
-      window.prompt('Copy this post link:', shareURL.href);
-    }
-
-  } catch (error) {
-
-    if (error.name !== 'AbortError') {
-
-      console.error(error);
-
-      alert('Could not share this post.');
-    }
+  if (action === "like" && post) {
+    return toggleLike(post.dataset.postId,button);
   }
-}
 
-/* HANDLE POST BUTTONS AND COMMENT BUTTONS */
+  if (action === "repost" && post) {
+    return toggleRepost(post.dataset.postId,button);
+  }
 
-feed.addEventListener('click', async event => {
+  if (action === "video-repost" && video) {
+    return toggleVideoRepost(video.dataset.videoId,button);
+  }
 
-  const videoShareButton = event.target.closest('[data-action="share-video"]');
-  if (videoShareButton) {
-    const card = videoShareButton.closest('[data-video-id]');
-    const shareURL = new URL('spotlight.html', window.location.href);
-    shareURL.hash = card.dataset.videoId;
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'Campusora Spotlight', text: 'Watch this video on Campusora!', url: shareURL.href });
-      } else if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(shareURL.href);
-        alert('Video link copied!');
-      } else {
-        window.prompt('Copy this video link:', shareURL.href);
-      }
-    } catch (error) {
-      if (error.name !== 'AbortError') alert('Could not share this video.');
-    }
+  if (action === "comments" && post) {
+    document.getElementById("comments-"+post.dataset.postId)
+      ?.classList.toggle("open");
     return;
   }
 
-  const likeButton = event.target.closest('[data-action="like"]');
-
-  if (likeButton) {
-
-    const postElement = likeButton.closest('.post');
-
-    await toggleLike(
-      postElement.dataset.postId,
-      likeButton,
-      postElement
-    );
-
-    return;
+  if (action === "share" && post) {
+    return sharePost(post.dataset.postId);
   }
 
-  const commentsButton = event.target.closest(
-    '[data-action="comments"]'
-  );
-
-  if (commentsButton) {
-
-    const postElement = commentsButton.closest('.post');
-
-    const area = postElement.querySelector('.comments-area');
-
-    area.classList.toggle('open');
-
-    return;
+  if (action === "video-share" && video) {
+    return shareVideo(video.dataset.videoId);
   }
 
-  const shareButton = event.target.closest(
-    '[data-action="share"]'
-  );
-
-  if (shareButton) {
-
-    const postElement = shareButton.closest('.post');
-
-    await sharePost(postElement.dataset.postId);
-
-    return;
+  if (action === "post-menu" && post) {
+    return postMenu(post.dataset.postId);
   }
 
-  const commentAction = event.target.closest(
-    '[data-comment-action]'
-  );
+  if (action === "video-menu" && video) {
+    return shareVideo(video.dataset.videoId);
+  }
+
+  const commentAction = event.target.closest("[data-comment-action]");
 
   if (commentAction) {
+    const id = commentAction.dataset.commentId;
+    const type = commentAction.dataset.commentAction;
 
-    const action = commentAction.dataset.commentAction;
+    if (type === "react") return reactToComment(id);
+    if (type === "delete") return deleteComment(id);
 
-    const commentId = commentAction.dataset.commentId;
+    if (type === "reply") {
+      const form = commentAction.closest(".comment-main")
+        ?.querySelector(":scope > .reply-form");
 
-    if (action === 'reply') {
-
-      const comment = commentAction.closest('.comment');
-
-      const form = comment.querySelector(
-        ':scope > .comment-main > .reply-form'
-      );
-
-      if (form) {
-
-        form.classList.toggle('open');
-
-        if (form.classList.contains('open')) {
-          form.querySelector('textarea').focus();
-        }
-      }
-    }
-
-    if (action === 'react') {
-      await reactToComment(commentId);
-    }
-
-    if (action === 'delete') {
-      await deleteComment(commentId);
+      form?.classList.toggle("open");
+      form?.querySelector("textarea")?.focus();
     }
   }
 });
 
-/* HANDLE COMMENT AND REPLY FORMS */
-
-feed.addEventListener('submit', async event => {
-
-  const commentForm = event.target.closest('.comment-form');
+feed.addEventListener("submit",event => {
+  const commentForm = event.target.closest(".comment-form");
+  const replyForm = event.target.closest(".reply-form");
 
   if (commentForm) {
-
     event.preventDefault();
-
-    await submitComment(commentForm);
-
-    return;
+    submitComment(commentForm);
   }
-
-  const replyForm = event.target.closest('.reply-form');
 
   if (replyForm) {
-
     event.preventDefault();
-
-    await submitReply(replyForm);
+    submitReply(replyForm);
   }
 });
 
-/* SWITCH BETWEEN DISCOVER AND MY CAMPUS */
+/* FILTERS */
 
-feedTabs.forEach(button => {
-
-  button.addEventListener('click', () => {
-
-    if (busy || activeFeed === button.dataset.feed) return;
-
-    activeFeed = button.dataset.feed;
-
-    feedTabs.forEach(tab => {
-
-      tab.classList.toggle(
-        'active',
-        tab.dataset.feed === activeFeed
-      );
-
-    });
-
-    loadFeed();
-
-  });
-
+filter.addEventListener("change",() => {
+  activeFeed = filter.value;
+  loadFeed();
 });
 
-/* REFRESH */
+/* INITIAL LOAD */
 
-refreshBtn.addEventListener('click', loadFeed);
+async function startPage() {
+  startProgress();
 
-/* START THE FEED */
+  try {
+    await loadMyProfile();
 
-await loadFeed();
+    /* Main feed loads without waiting for Moments. */
+    await loadFeed();
+
+    /* Moments load separately in the background. */
+    loadMoments().catch(error => {
+      console.error("Moments loading error:",error);
+    });
+
+  } catch (error) {
+    console.error(error);
+    showEmpty("Campusora could not load",
+      "Please refresh the page and try again.",true);
+  } finally {
+    finishProgress();
+  }
+}
+
+startPage();
 
 </script>
-
 </body>
 </html>
-          
