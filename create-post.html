@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Create Post | Campusora</title>
+<title>Create | Campusora</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@ body {
   font-family:Inter,sans-serif;
 }
 
-button,textarea { font:inherit; }
+button,textarea,input { font:inherit; }
 button { cursor:pointer; }
 
 .topbar {
@@ -150,8 +150,22 @@ button { cursor:pointer; }
   line-height:1.7;
 }
 
-.textarea:focus { border-color:var(--purple); }
-.textarea::placeholder { color:#77809c; }
+.textarea:focus,
+.text-input:focus { border-color:var(--purple); }
+
+.textarea::placeholder,
+.text-input::placeholder { color:#77809c; }
+
+.text-input {
+  width:100%;
+  background:#0b1020;
+  border:1px solid var(--border);
+  color:white;
+  border-radius:11px;
+  padding:13px;
+  outline:none;
+  font-size:13px;
+}
 
 .helper {
   display:flex;
@@ -174,7 +188,6 @@ button { cursor:pointer; }
   border-radius:13px;
   background:#0b1020;
   text-align:center;
-  transition:.2s;
 }
 
 .media-option:active { transform:scale(.98); }
@@ -184,7 +197,12 @@ button { cursor:pointer; }
 
 .media-icon { font-size:23px;margin-bottom:6px; }
 .media-title { font-size:12px;font-weight:700; }
-.media-description { font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5; }
+.media-description {
+  font-size:10px;
+  color:var(--muted);
+  margin-top:5px;
+  line-height:1.5;
+}
 
 .media-option label { cursor:pointer;display:block; }
 
@@ -248,6 +266,50 @@ input[type="file"] { display:none; }
   font-size:11px;
   line-height:1.7;
   margin-bottom:17px;
+}
+
+.poll-options {
+  display:grid;
+  gap:10px;
+}
+
+.poll-option-row {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.poll-option-row input {
+  flex:1;
+  min-width:0;
+}
+
+.remove-option {
+  width:38px;
+  height:42px;
+  flex-shrink:0;
+  border:1px solid rgba(251,113,133,.2);
+  background:rgba(251,113,133,.08);
+  color:#fda4af;
+  border-radius:10px;
+  font-size:17px;
+}
+
+.add-option {
+  margin-top:10px;
+  padding:10px 13px;
+  background:rgba(139,92,246,.1);
+  color:#c4b5fd;
+  border:1px solid rgba(139,92,246,.25);
+  border-radius:10px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.option-count {
+  color:var(--muted);
+  font-size:10px;
+  margin-top:8px;
 }
 
 .status {
@@ -337,8 +399,10 @@ input[type="file"] { display:none; }
 <main class="container">
 
   <div class="heading">
-    <h1>Create a post ✨</h1>
-    <p>Share your thoughts, photos, videos and campus experiences.</p>
+    <h1 id="pageTitle">Create a post ✨</h1>
+    <p id="pageDescription">
+      Share your thoughts, photos, videos and campus experiences.
+    </p>
   </div>
 
   <section class="card">
@@ -354,7 +418,9 @@ input[type="file"] { display:none; }
     <form id="postForm">
 
       <div class="field">
-        <label class="label" for="content">What's happening?</label>
+        <label class="label" id="contentLabel" for="content">
+          What's happening?
+        </label>
 
         <textarea
           id="content"
@@ -364,12 +430,54 @@ input[type="file"] { display:none; }
         ></textarea>
 
         <div class="helper">
-          <span>Be respectful. Be yourself.</span>
+          <span id="contentHelper">Be respectful. Be yourself.</span>
           <span id="charCount">0 / 5000</span>
         </div>
       </div>
 
-      <div class="field">
+      <!-- POLL OPTIONS -->
+
+      <div class="field" id="pollEditor" hidden>
+        <label class="label">Poll answer options</label>
+
+        <div class="poll-options" id="pollOptions">
+
+          <div class="poll-option-row">
+            <input
+              class="text-input poll-option"
+              type="text"
+              maxlength="100"
+              placeholder="Option 1"
+            >
+          </div>
+
+          <div class="poll-option-row">
+            <input
+              class="text-input poll-option"
+              type="text"
+              maxlength="100"
+              placeholder="Option 2"
+            >
+          </div>
+
+        </div>
+
+        <button
+          class="add-option"
+          type="button"
+          id="addOption"
+        >
+          + Add another option
+        </button>
+
+        <div class="option-count" id="optionCount">
+          2 of 6 options
+        </div>
+      </div>
+
+      <!-- MEDIA OPTIONS -->
+
+      <div class="field" id="mediaField">
 
         <label class="label">Add media (optional)</label>
 
@@ -379,7 +487,9 @@ input[type="file"] { display:none; }
             <label for="photoInput">
               <div class="media-icon">📸</div>
               <div class="media-title">Add photo</div>
-              <div class="media-description">JPEG, PNG or WebP<br>Maximum 5 MB</div>
+              <div class="media-description">
+                JPEG, PNG or WebP<br>Maximum 5 MB
+              </div>
             </label>
           </div>
 
@@ -387,7 +497,9 @@ input[type="file"] { display:none; }
             <label for="videoInput">
               <div class="media-icon">🎬</div>
               <div class="media-title">Add video</div>
-              <div class="media-description">MP4, WebM or MOV<br>Maximum 50 MB</div>
+              <div class="media-description">
+                MP4, WebM or MOV<br>Maximum 50 MB
+              </div>
             </label>
           </div>
 
@@ -410,9 +522,17 @@ input[type="file"] { display:none; }
             <span>📸 Photo preview</span>
           </div>
 
-          <img class="preview-image" id="previewImage" alt="Selected photo preview">
+          <img
+            class="preview-image"
+            id="previewImage"
+            alt="Selected photo preview"
+          >
 
-          <button class="remove-media" id="removePhoto" type="button">
+          <button
+            class="remove-media"
+            id="removePhoto"
+            type="button"
+          >
             Remove photo
           </button>
         </div>
@@ -432,19 +552,28 @@ input[type="file"] { display:none; }
 
           <div class="media-info" id="videoInfo"></div>
 
-          <button class="remove-media" id="removeVideo" type="button">
+          <button
+            class="remove-media"
+            id="removeVideo"
+            type="button"
+          >
             Remove video
           </button>
         </div>
 
       </div>
 
-      <div class="sharing-note">
+      <div class="sharing-note" id="sharingNote">
         🌍 <strong>Share with Campusora</strong><br>
-        Your post will be saved to your account. Text can accompany a photo or video. Your media will be uploaded to Campusora storage.
+        Your post will be saved to your account.
       </div>
 
-      <div class="status" id="status" role="status" aria-live="polite"></div>
+      <div
+        class="status"
+        id="status"
+        role="status"
+        aria-live="polite"
+      ></div>
 
       <div class="progress-track" id="progressTrack">
         <div class="progress-bar" id="progressBar"></div>
@@ -468,6 +597,20 @@ input[type="file"] { display:none; }
 <script type="module">
 import { supabase } from './supabase.js';
 
+/* PAGE MODE */
+
+const params = new URLSearchParams(window.location.search);
+const requestedType = params.get('type');
+
+const postType = ['poll', 'question'].includes(requestedType)
+  ? requestedType
+  : 'regular';
+
+const isPoll = postType === 'poll';
+const isQuestion = postType === 'question';
+
+/* ELEMENTS */
+
 const form = document.getElementById('postForm');
 const contentInput = document.getElementById('content');
 const photoInput = document.getElementById('photoInput');
@@ -484,8 +627,13 @@ const videoInfo = document.getElementById('videoInfo');
 const progressTrack = document.getElementById('progressTrack');
 const progressBar = document.getElementById('progressBar');
 
+const pollEditor = document.getElementById('pollEditor');
+const pollOptions = document.getElementById('pollOptions');
+const addOptionBtn = document.getElementById('addOption');
+
 const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 50 * 1024 * 1024;
+const MAX_POLL_OPTIONS = 6;
 
 const ALLOWED_PHOTO_TYPES = [
   'image/jpeg',
@@ -506,6 +654,59 @@ let selectedVideo = null;
 let photoPreviewUrl = null;
 let videoPreviewUrl = null;
 let publishing = false;
+
+/* PAGE SETUP */
+
+function setupPageMode() {
+
+  const title = document.getElementById('pageTitle');
+  const description = document.getElementById('pageDescription');
+  const label = document.getElementById('contentLabel');
+  const helper = document.getElementById('contentHelper');
+  const sharingNote = document.getElementById('sharingNote');
+
+  if (isPoll) {
+    title.textContent = 'Create a Poll 📊';
+    description.textContent =
+      'Ask your campus community and let them vote.';
+    label.textContent = 'Your poll question';
+    contentInput.placeholder =
+      'What would you like people to vote on?';
+    helper.textContent =
+      'Keep your poll question clear and simple.';
+    pollEditor.hidden = false;
+    document.getElementById('mediaField').hidden = true;
+    sharingNote.innerHTML =
+      '📊 <strong>Campusora Poll</strong><br>' +
+      'Your poll will appear in the feed. Members can vote and view the results.';
+    submitBtn.textContent = 'Publish poll 📊';
+
+  } else if (isQuestion) {
+    title.textContent = 'Ask a Question ✧';
+    description.textContent =
+      'Ask something and get answers from your campus community.';
+    label.textContent = 'Your question';
+    contentInput.placeholder =
+      'What would you like to ask the Campusora community?';
+    helper.textContent =
+      'Make your question easy for others to understand.';
+    document.getElementById('mediaField').hidden = true;
+    sharingNote.innerHTML =
+      '✧ <strong>Ask Campusora</strong><br>' +
+      'Your question will appear in the feed. Other members can respond in the comments.';
+    submitBtn.textContent = 'Publish question ✨';
+
+  } else {
+    title.textContent = 'Create a post ✨';
+    description.textContent =
+      'Share your thoughts, photos, videos and campus experiences.';
+    submitBtn.textContent = 'Publish post 🚀';
+  }
+}
+
+setupPageMode();
+
+/* GENERAL HELPERS */
 
 function showStatus(message, type = 'info') {
   statusBox.textContent = message;
@@ -533,6 +734,87 @@ function hideProgress() {
   progressTrack.style.display = 'none';
   progressBar.style.width = '0%';
 }
+
+function formatFileSize(bytes) {
+  return bytes >= 1024 * 1024
+    ? `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+    : `${(bytes / 1024).toFixed(0)} KB`;
+}
+
+function formatDuration(seconds) {
+  const total = Math.floor(seconds);
+  const minutes = Math.floor(total / 60);
+  const remaining = total % 60;
+
+  return `${minutes}:${String(remaining).padStart(2, '0')}`;
+}
+
+/* POLL OPTIONS */
+
+function updateOptionCount() {
+  const count = pollOptions.querySelectorAll('.poll-option-row').length;
+
+  document.getElementById('optionCount').textContent =
+    `${count} of ${MAX_POLL_OPTIONS} options`;
+
+  addOptionBtn.disabled = count >= MAX_POLL_OPTIONS;
+  addOptionBtn.style.opacity = count >= MAX_POLL_OPTIONS ? '.5' : '1';
+}
+
+function addPollOption() {
+  const count = pollOptions.querySelectorAll('.poll-option-row').length;
+
+  if (count >= MAX_POLL_OPTIONS) return;
+
+  const row = document.createElement('div');
+  row.className = 'poll-option-row';
+
+  const input = document.createElement('input');
+  input.className = 'text-input poll-option';
+  input.type = 'text';
+  input.maxLength = 100;
+  input.placeholder = `Option ${count + 1}`;
+
+  const remove = document.createElement('button');
+  remove.type = 'button';
+  remove.className = 'remove-option';
+  remove.textContent = '×';
+  remove.setAttribute('aria-label', 'Remove option');
+
+  remove.addEventListener('click', () => {
+    row.remove();
+    updateOptionCount();
+    renumberOptions();
+  });
+
+  row.append(input, remove);
+  pollOptions.appendChild(row);
+
+  updateOptionCount();
+}
+
+function renumberOptions() {
+  const rows = pollOptions.querySelectorAll('.poll-option-row');
+
+  rows.forEach((row, index) => {
+    const input = row.querySelector('input');
+    input.placeholder = `Option ${index + 1}`;
+  });
+}
+
+addOptionBtn.addEventListener('click', addPollOption);
+
+function getPollOptions() {
+  return Array.from(
+    pollOptions.querySelectorAll('.poll-option')
+  )
+    .map(input => input.value.trim())
+    .filter(Boolean);
+}
+
+updateOptionCount();
+
+/* MEDIA CLEANUP */
 
 function clearPhoto() {
   selectedPhoto = null;
@@ -574,6 +856,8 @@ document.getElementById('removeVideo').addEventListener('click', () => {
   hideStatus();
 });
 
+/* PHOTO SELECTION */
+
 photoInput.addEventListener('change', () => {
   const file = photoInput.files?.[0];
 
@@ -591,7 +875,6 @@ photoInput.addEventListener('change', () => {
     return;
   }
 
-  // A post can have one media attachment at a time.
   clearVideo();
 
   selectedPhoto = file;
@@ -606,6 +889,8 @@ photoInput.addEventListener('change', () => {
 
   hideStatus();
 });
+
+/* VIDEO SELECTION */
 
 videoInput.addEventListener('change', () => {
   const file = videoInput.files?.[0];
@@ -624,7 +909,6 @@ videoInput.addEventListener('change', () => {
     return;
   }
 
-  // A post can have one media attachment at a time.
   clearPhoto();
 
   selectedVideo = file;
@@ -637,7 +921,7 @@ videoInput.addEventListener('change', () => {
   previewVideo.src = videoPreviewUrl;
 
   videoInfo.textContent =
-    `${file.name} · ${formatFileSize(file.size)} · Preparing video preview...`;
+    `${file.name} · ${formatFileSize(file.size)} · Preparing preview...`;
 
   videoPreviewWrap.style.display = 'block';
 
@@ -652,25 +936,13 @@ videoInput.addEventListener('change', () => {
 
   previewVideo.onerror = () => {
     videoInfo.textContent =
-      `${file.name} · ${formatFileSize(file.size)} · Preview unavailable in this browser.`;
+      `${file.name} · ${formatFileSize(file.size)} · Preview unavailable.`;
   };
 
   hideStatus();
 });
 
-function formatFileSize(bytes) {
-  return bytes >= 1024 * 1024
-    ? `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-    : `${(bytes / 1024).toFixed(0)} KB`;
-}
-
-function formatDuration(seconds) {
-  const total = Math.floor(seconds);
-  const minutes = Math.floor(total / 60);
-  const remaining = total % 60;
-
-  return `${minutes}:${String(remaining).padStart(2, '0')}`;
-}
+/* LOAD PROFILE */
 
 async function loadProfile() {
   const {
@@ -681,7 +953,7 @@ async function loadProfile() {
   if (sessionError) throw sessionError;
 
   if (!session) {
-    showStatus('Please log in before creating a post.', 'error');
+    showStatus('Please log in before creating content.', 'error');
     submitBtn.disabled = true;
 
     setTimeout(() => {
@@ -735,6 +1007,8 @@ async function loadProfile() {
   return true;
 }
 
+/* UPLOAD PHOTO */
+
 async function uploadPhoto(file) {
   const extensionMap = {
     'image/jpeg': 'jpg',
@@ -767,6 +1041,8 @@ async function uploadPhoto(file) {
 
   return data.publicUrl;
 }
+
+/* UPLOAD VIDEO */
 
 async function uploadVideo(file) {
   const extensionMap = {
@@ -804,6 +1080,8 @@ async function uploadVideo(file) {
   };
 }
 
+/* PUBLISH CONTENT */
+
 form.addEventListener('submit', async event => {
   event.preventDefault();
 
@@ -821,19 +1099,54 @@ form.addEventListener('submit', async event => {
 
   const content = contentInput.value.trim();
 
-  if (!content && !selectedPhoto && !selectedVideo) {
+  if (!content) {
     showStatus(
-      'Write something or choose a photo or video before publishing.',
+      isPoll
+        ? 'Please enter your poll question.'
+        : isQuestion
+          ? 'Please enter your question.'
+          : 'Please write something before publishing.',
       'error'
     );
     return;
   }
 
-  if (selectedPhoto && selectedVideo) {
-    showStatus(
-      'Please choose either a photo or a video for this post.',
-      'error'
+  let options = [];
+
+  if (isPoll) {
+    const rows = Array.from(
+      pollOptions.querySelectorAll('.poll-option')
     );
+
+    if (rows.some(input => !input.value.trim())) {
+      showStatus('Please complete or remove every empty poll option.', 'error');
+      return;
+    }
+
+    options = getPollOptions();
+
+    if (options.length < 2) {
+      showStatus('A poll needs at least two answer options.', 'error');
+      return;
+    }
+
+    if (options.length > MAX_POLL_OPTIONS) {
+      showStatus('A poll can have no more than six options.', 'error');
+      return;
+    }
+
+    const uniqueOptions = new Set(
+      options.map(option => option.toLowerCase())
+    );
+
+    if (uniqueOptions.size !== options.length) {
+      showStatus('Please remove duplicate poll options.', 'error');
+      return;
+    }
+  }
+
+  if (postType === 'regular' && !selectedPhoto && !selectedVideo && !content) {
+    showStatus('Write something or choose media before publishing.', 'error');
     return;
   }
 
@@ -843,6 +1156,7 @@ form.addEventListener('submit', async event => {
 
   let uploadedMediaPath = null;
   let uploadedBucket = null;
+  let createdPostId = null;
 
   try {
     let photoUrl = null;
@@ -854,7 +1168,9 @@ form.addEventListener('submit', async event => {
 
       photoUrl = await uploadPhoto(selectedPhoto);
 
-      uploadedMediaPath = photoUrl.split('/campusora-images/')[1];
+      uploadedMediaPath =
+        photoUrl.split('/campusora-images/')[1];
+
       uploadedBucket = 'campusora-images';
 
       updateProgress(100);
@@ -879,9 +1195,9 @@ form.addEventListener('submit', async event => {
       updateProgress(100);
     }
 
-    showStatus('Saving your post...', 'info');
+    showStatus('Saving your content...', 'info');
 
-    const { error } = await supabase
+    const { data: newPost, error: postError } = await supabase
       .from('posts')
       .insert({
         user_id: currentUser.id,
@@ -891,13 +1207,40 @@ form.addEventListener('submit', async event => {
         video_name: videoName,
         audience: 'public',
         institution_id: null,
-        community_id: null
-      });
+        community_id: null,
+        post_type: postType
+      })
+      .select('id')
+      .single();
 
-    if (error) throw error;
+    if (postError) throw postError;
+
+    createdPostId = newPost.id;
+
+    /* SAVE POLL OPTIONS */
+
+    if (isPoll) {
+      showStatus('Saving your poll options...', 'info');
+
+      const optionRows = options.map((option, index) => ({
+        post_id: createdPostId,
+        option_text: option,
+        position: index
+      }));
+
+      const { error: optionError } = await supabase
+        .from('poll_options')
+        .insert(optionRows);
+
+      if (optionError) throw optionError;
+    }
 
     showStatus(
-      'Your post was published successfully! 🎉 Returning to Campusora...',
+      isPoll
+        ? 'Your poll was published successfully! 🎉'
+        : isQuestion
+          ? 'Your question was published successfully! 🎉'
+          : 'Your post was published successfully! 🎉',
       'success'
     );
 
@@ -908,16 +1251,33 @@ form.addEventListener('submit', async event => {
     hideProgress();
 
     setTimeout(() => {
-      window.location.href = './index.html';
-    }, 1400);
+      window.location.href = './home-feed.html';
+    }, 1300);
 
   } catch (error) {
-    console.error('Campusora post error:', error);
+    console.error('Campusora publishing error:', error);
 
     /*
-      If media uploaded but saving the post failed,
-      remove the newly uploaded orphaned file.
+      If poll options fail after the post was created,
+      remove that incomplete poll post.
     */
+
+    if (createdPostId) {
+      try {
+        await supabase
+          .from('posts')
+          .delete()
+          .eq('id', createdPostId)
+          .eq('user_id', currentUser.id);
+      } catch (cleanupError) {
+        console.warn('Post cleanup failed:', cleanupError);
+      }
+    }
+
+    /*
+      Remove newly uploaded media if publishing failed.
+    */
+
     if (uploadedMediaPath && uploadedBucket) {
       try {
         await supabase.storage
@@ -938,9 +1298,16 @@ form.addEventListener('submit', async event => {
   } finally {
     publishing = false;
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Publish post 🚀';
+
+    submitBtn.textContent = isPoll
+      ? 'Publish poll 📊'
+      : isQuestion
+        ? 'Publish question ✨'
+        : 'Publish post 🚀';
   }
 });
+
+/* INITIALISE */
 
 async function initialise() {
   submitBtn.disabled = true;
@@ -967,4 +1334,4 @@ initialise();
 </script>
 
 </body>
-  </html>
+</html>
