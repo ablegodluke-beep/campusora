@@ -19,6 +19,7 @@ export default async function handler(req, res) {
 
   try {
     const authHeader = req.headers.authorization || "";
+
     const token = authHeader.startsWith("Bearer ")
       ? authHeader.slice(7)
       : "";
@@ -54,7 +55,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // Accept only plans defined by the server.
+    // Accept only valid Premium plans.
     const planType = req.body?.plan_type;
 
     const plans = {
@@ -76,7 +77,23 @@ export default async function handler(req, res) {
       });
     }
 
-    // Check whether this user already has active Premium.
+    // Only allow approved Campusora return destinations.
+    // This prevents an external or unsafe redirect.
+    const requestedDestination = req.body?.return_to;
+
+    const allowedDestinations = {
+      "messages.html":
+        "https://campusora-sigma.vercel.app/messages.html?premium_payment=1",
+
+      "profile.html":
+        "https://campusora-sigma.vercel.app/profile.html?premium_payment=1"
+    };
+
+    const callbackUrl =
+      allowedDestinations[requestedDestination] ||
+      allowedDestinations["profile.html"];
+
+    // Check whether the user already has active Premium.
     const existingResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/premium_memberships` +
       `?user_id=eq.${encodeURIComponent(user.id)}` +
@@ -97,7 +114,8 @@ export default async function handler(req, res) {
       });
     }
 
-    const existingMemberships = await existingResponse.json();
+    const existingMemberships =
+      await existingResponse.json();
 
     const hasActivePremium = existingMemberships.some(member => {
       if (member.plan_type === "permanent") {
@@ -117,11 +135,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // Create a unique reference before initializing checkout.
+    // Generate a unique payment reference.
     const reference =
       `premium_${user.id}_${Date.now()}`;
 
-    // Create a pending membership record.
+    // Create the pending membership record.
     const membershipResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/premium_memberships`,
       {
@@ -163,7 +181,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // Initialize payment using the server-controlled price.
+    // Start Paystack checkout.
     const paystackResponse = await fetch(
       "https://api.paystack.co/transaction/initialize",
       {
@@ -177,13 +195,17 @@ export default async function handler(req, res) {
           amount: plan.amount,
           currency: "NGN",
           reference,
-          callback_url:
-            "https://campusora-sigma.vercel.app/profile.html",
+
+          // Return the customer to the page
+          // where the Premium purchase started.
+          callback_url: callbackUrl,
+
           metadata: {
             purpose: "campusora_premium",
             membership_id: membership.id,
             user_id: user.id,
-            plan_type: planType
+            plan_type: planType,
+            return_to: requestedDestination || "profile.html"
           }
         })
       }
@@ -201,7 +223,7 @@ export default async function handler(req, res) {
         payment
       );
 
-      // Mark the unsuccessful checkout as cancelled.
+      // Cancel unsuccessful checkout.
       await fetch(
         `${SUPABASE_URL}/rest/v1/premium_memberships` +
         `?id=eq.${encodeURIComponent(membership.id)}` +
@@ -230,7 +252,8 @@ export default async function handler(req, res) {
       success: true,
       authorization_url: payment.data.authorization_url,
       reference,
-      plan_type: planType
+      plan_type: planType,
+      return_to: requestedDestination || "profile.html"
     });
 
   } catch (error) {
@@ -240,4 +263,4 @@ export default async function handler(req, res) {
       error: "An unexpected payment error occurred."
     });
   }
-        }
+}
