@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Messages | Campusora</title>
+<title>Chats | Campusora</title>
 
 <link rel="stylesheet" href="shared-nav.css">
 
 <style>
-:root {
+:root{
   --bg:#080b18;
   --panel:#101426;
   --panel2:#171d33;
   --border:#252d48;
-  --text:#ffffff;
+  --text:#fff;
   --muted:#929bb7;
   --purple:#9065ff;
   --blue:#548bff;
@@ -318,8 +318,7 @@ a{color:inherit;text-decoration:none}
   display:flex;
   flex-direction:column;
   gap:10px;
-  background:
-    radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
+  background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
 }
 
 .date-label{
@@ -358,7 +357,11 @@ a{color:inherit;text-decoration:none}
   background:linear-gradient(135deg,#6340a5,#365cbb);
   border-color:#7554c4;
   border-radius:14px 14px 4px 14px;
-  color:#fff;
+}
+
+.message-row.pending .message-bubble{
+  border:1px dashed #e5a64b;
+  background:#3a2b22;
 }
 
 .message-meta{
@@ -371,6 +374,50 @@ a{color:inherit;text-decoration:none}
 }
 
 .message-status{color:var(--cyan)}
+.pending-status{color:#ffc16a}
+
+.message-actions{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.message-menu-button{
+  border:0;
+  background:transparent;
+  color:#aab3ce;
+  font-size:17px;
+  padding:0 4px;
+}
+
+.message-menu{
+  position:absolute;
+  right:0;
+  bottom:22px;
+  z-index:20;
+  width:145px;
+  padding:5px;
+  background:#202943;
+  border:1px solid #3b4565;
+  border-radius:10px;
+  box-shadow:0 8px 25px #0008;
+}
+
+.message-menu button{
+  display:block;
+  width:100%;
+  padding:9px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:white;
+  text-align:left;
+  font-size:11px;
+}
+
+.message-menu button:hover{background:#343c5b}
+.message-menu .delete-option{color:#ff8585}
 
 .chat-empty{
   flex:1;
@@ -479,7 +526,7 @@ a{color:inherit;text-decoration:none}
   padding:11px 15px;
   border-radius:11px;
   font-size:11px;
-  z-index:999;
+  z-index:9999;
   opacity:0;
   pointer-events:none;
   transition:.2s;
@@ -488,6 +535,77 @@ a{color:inherit;text-decoration:none}
 }
 
 .toast.show{opacity:1;transform:translate(-50%,0)}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:#000b;
+}
+
+.modal-backdrop.show{display:flex}
+
+.premium-modal{
+  width:min(100%,390px);
+  padding:22px;
+  border:1px solid #493d75;
+  border-radius:18px;
+  background:#11162b;
+  box-shadow:0 20px 70px #0009;
+}
+
+.premium-modal h2{
+  font-size:19px;
+  margin-bottom:8px;
+}
+
+.premium-modal p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:17px;
+}
+
+.premium-plan{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:14px;
+  margin-top:9px;
+  border:1px solid #39415f;
+  border-radius:12px;
+  background:#1b2340;
+  color:white;
+  text-align:left;
+}
+
+.premium-plan:hover{
+  border-color:var(--purple);
+  background:#292044;
+}
+
+.premium-plan strong{font-size:13px}
+.premium-plan span{
+  color:#c6b5ff;
+  font-weight:800;
+  font-size:13px;
+}
+
+.modal-cancel{
+  width:100%;
+  margin-top:12px;
+  padding:11px;
+  border:1px solid #39415f;
+  border-radius:10px;
+  background:transparent;
+  color:#aab3ce;
+}
 
 @keyframes pop{
   from{opacity:0;transform:translateY(4px)}
@@ -508,7 +626,6 @@ a{color:inherit;text-decoration:none}
     border:0;
     border-radius:0;
   }
-
   .inbox{height:100%;border:0}
   .inbox-head{padding:15px 15px 10px}
   .conversation{padding:13px 14px}
@@ -534,102 +651,106 @@ a{color:inherit;text-decoration:none}
 <body>
 
 <div class="page">
+<main class="messaging" id="messaging">
 
-  <main class="messaging" id="messaging">
+<section class="inbox">
+  <div class="inbox-head">
+    <h1 class="inbox-title">
+      Chats
+      <span class="inbox-count" id="totalCount"></span>
+    </h1>
 
-    <section class="inbox">
+    <div class="inbox-tabs">
+      <button class="inbox-tab active" data-inbox-filter="all">
+        Messages
+      </button>
 
-      <div class="inbox-head">
-        <h1 class="inbox-title">
-          Messages
-          <span class="inbox-count" id="totalCount"></span>
-        </h1>
+      <button class="inbox-tab" data-inbox-filter="unread">
+        Message Requests
+      </button>
+    </div>
+  </div>
 
-        <div class="inbox-tabs">
-          <button class="inbox-tab active" data-inbox-filter="all">
-            All chats
-          </button>
+  <div class="conversation-list" id="conversationList">
+    <div class="panel-message">Loading your conversations...</div>
+  </div>
+</section>
 
-          <button class="inbox-tab" data-inbox-filter="unread">
-            Unread
-          </button>
-        </div>
-      </div>
+<section class="chat" id="chatPanel">
 
-      <div class="conversation-list" id="conversationList">
-        <div class="panel-message">Loading your conversations...</div>
-      </div>
+<header class="chat-head">
+  <button class="back-btn" id="backBtn" aria-label="Back to chats">‹</button>
 
-    </section>
+  <a href="#" class="chat-avatar-link" id="chatAvatarLink">
+    <div class="avatar" id="chatAvatar">C</div>
+  </a>
 
-    <section class="chat" id="chatPanel">
+  <div class="chat-person">
+    <a href="#" class="chat-name-link" id="chatNameLink">
+      <span id="chatName">Your messages</span>
+      <span id="chatRole"></span>
+    </a>
+    <div class="chat-status" id="chatStatus">Choose a conversation</div>
+  </div>
 
-      <header class="chat-head">
+  <div class="chat-tools">
+    <button id="refreshBtn" title="Refresh messages">↻</button>
+  </div>
+</header>
 
-        <button class="back-btn" id="backBtn" aria-label="Back to chats">
-          ‹
-        </button>
+<div class="chat-empty" id="welcomeState">
+  <div class="chat-empty-icon">✉</div>
+  <h3>Your campus connections</h3>
+  <p>
+    Message friends, meet students from other campuses,
+    and keep your conversations going on Campusora.
+  </p>
+</div>
 
-        <a href="#" class="chat-avatar-link" id="chatAvatarLink">
-          <div class="avatar" id="chatAvatar">C</div>
-        </a>
+<div class="messages-area" id="messagesArea" hidden></div>
 
-        <div class="chat-person">
-          <a href="#" class="chat-name-link" id="chatNameLink">
-            <span id="chatName">Your messages</span>
-            <span id="chatRole"></span>
-          </a>
+<form class="composer" id="messageForm" hidden>
+  <textarea
+    id="messageInput"
+    maxlength="5000"
+    rows="1"
+    placeholder="Write a message..."
+    aria-label="Write a message"
+  ></textarea>
 
-          <div class="chat-status" id="chatStatus">
-            Choose a conversation
-          </div>
-        </div>
+  <button class="send-btn" id="sendBtn" type="submit" aria-label="Send message">➤</button>
+</form>
 
-        <div class="chat-tools">
-          <button id="refreshBtn" title="Refresh messages">↻</button>
-        </div>
+<div class="phone-warning" id="phoneWarning">
+  Sharing phone numbers is currently restricted on Campusora
+</div>
 
-      </header>
-
-      <div class="chat-empty" id="welcomeState">
-        <div class="chat-empty-icon">✉</div>
-        <h3>Your campus connections</h3>
-        <p>
-          Message friends, meet students from other campuses,
-          and keep your conversations going on Campusora.
-        </p>
-      </div>
-
-      <div class="messages-area" id="messagesArea" hidden></div>
-
-      <form class="composer" id="messageForm" hidden>
-        <textarea
-          id="messageInput"
-          maxlength="5000"
-          rows="1"
-          placeholder="Write a message..."
-          aria-label="Write a message"
-        ></textarea>
-
-        <button
-          class="send-btn"
-          id="sendBtn"
-          type="submit"
-          aria-label="Send message"
-        >➤</button>
-      </form>
-
-      <div class="phone-warning" id="phoneWarning">
-        Sharing phone numbers is currently restricted on Campusora
-      </div>
-
-    </section>
-
-  </main>
-
+</section>
+</main>
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="modal-backdrop" id="premiumModal">
+  <div class="premium-modal">
+    <h2>Upgrade to Premium</h2>
+    <p>
+      Choose a Premium plan to continue
+    </p>
+
+    <button class="premium-plan" data-premium-plan="monthly">
+      <strong>Monthly Premium</strong>
+      <span>₦2,000 / 30 days</span>
+    </button>
+
+    <button class="premium-plan" data-premium-plan="permanent">
+      <strong>Permanent Premium</strong>
+      <span>₦10,000</span>
+    </button>
+
+    <button class="modal-cancel" id="closePremiumModal">Not now</button>
+  </div>
+</div>
 
 <script src="shared-nav.js"></script>
 
@@ -643,6 +764,7 @@ let conversations = [];
 let currentConversation = null;
 let currentOtherUser = null;
 let currentMessages = [];
+let currentPendingMessages = [];
 let currentFilter = 'all';
 let realtimeMessages = null;
 let realtimeInbox = null;
@@ -651,6 +773,7 @@ let refreshInterval = null;
 let profileCache = new Map();
 let sending = false;
 let loadingMessages = false;
+let pendingPremiumMessageId = null;
 
 function esc(value = '') {
   return String(value).replace(/[&<>"']/g, c => ({
@@ -815,16 +938,11 @@ async function loadInbox() {
 
   conversations = (convRows || []).map(c => {
     const myMembership = members.find(m => m.conversation_id === c.id);
-
     const participants = (allMembers || []).filter(
       m => m.conversation_id === c.id
     );
-
     const other = participants.find(m => m.user_id !== me.id);
-
-    const last = (messageRows || []).find(
-      m => m.conversation_id === c.id
-    ) || null;
+    const last = (messageRows || []).find(m => m.conversation_id === c.id) || null;
 
     return {
       ...c,
@@ -844,7 +962,6 @@ async function loadInbox() {
 
 function renderInbox() {
   const list = $('conversationList');
-
   let items = conversations;
 
   if (currentFilter === 'unread') {
@@ -858,7 +975,7 @@ function renderInbox() {
   if (!items.length) {
     list.innerHTML = `<div class="panel-message">${
       currentFilter === 'unread'
-        ? 'You have no unread messages.'
+        ? 'You have no message requests.'
         : 'No conversations yet. Visit a member profile and tap Message to start a conversation.'
     }</div>`;
     return;
@@ -866,10 +983,7 @@ function renderInbox() {
 
   list.innerHTML = items.map(c => {
     const profile = c.otherProfile;
-    const name = c.is_group
-      ? c.group_name || 'Group chat'
-      : profileName(profile);
-
+    const name = c.is_group ? c.group_name || 'Group chat' : profileName(profile);
     const last = c.lastMessage;
     const preview = last
       ? (last.sender_id === me.id ? 'You: ' : '') + last.content
@@ -881,9 +995,7 @@ function renderInbox() {
     return `
       <button class="conversation ${selected ? 'active' : ''}"
         data-conversation="${esc(c.id)}">
-
         <div class="avatar">${avatarHTML(profile)}</div>
-
         <div class="conv-main">
           <div class="conv-top">
             <span class="conv-name">
@@ -892,7 +1004,6 @@ function renderInbox() {
             </span>
             <span class="conv-time">${ago(last?.created_at || c.created_at)}</span>
           </div>
-
           <div class="conv-bottom">
             <span class="conv-preview">${esc(preview)}</span>
             ${count ? `<span class="unread-count">${count}</span>` : ''}
@@ -903,16 +1014,8 @@ function renderInbox() {
   }).join('');
 }
 
-function openProfile(profile) {
-  if (!profile) return;
-  window.location.href = profileURL(profile);
-}
-
 function updateChatHeader(profile,conversation) {
-  const avatar = $('chatAvatar');
-
-  avatar.innerHTML = avatarHTML(profile);
-
+  $('chatAvatar').innerHTML = avatarHTML(profile);
   $('chatAvatarLink').href = profileURL(profile);
   $('chatNameLink').href = profileURL(profile);
 
@@ -924,14 +1027,11 @@ function updateChatHeader(profile,conversation) {
     ? ''
     : roleBadge(profile?.role);
 
-  $('chatStatus').textContent =
-    profile?.school || 'Campusora member';
+  $('chatStatus').textContent = profile?.school || 'Campusora member';
 }
 
 async function openConversation(id) {
-  const conversation = conversations.find(
-    c => String(c.id) === String(id)
-  );
+  const conversation = conversations.find(c => String(c.id) === String(id));
 
   if (!conversation) {
     toast('Conversation could not be found.');
@@ -939,7 +1039,6 @@ async function openConversation(id) {
   }
 
   currentConversation = conversation;
-
   currentOtherUser = conversation.otherUserId
     ? profileCache.get(conversation.otherUserId) || null
     : null;
@@ -961,22 +1060,29 @@ async function openConversation(id) {
 
   await loadMessages(id,true);
   await markConversationRead(id);
-
   setupMessageRealtime(id);
 
   if (messagePoll) clearInterval(messagePoll);
 
   messagePoll = setInterval(() => {
-    if (currentConversation?.id === id) {
-      loadMessages(id,false);
-    }
+    if (currentConversation?.id === id) loadMessages(id,false);
   },10000);
 }
 
 function renderMessages() {
   const area = $('messagesArea');
+  const combined = [
+    ...currentMessages.map(m => ({...m,_pending:false})),
+    ...currentPendingMessages.map(m => ({
+      ...m,
+      id:'pending-' + m.id,
+      sender_id:me.id,
+      created_at:m.created_at,
+      _pending:true
+    }))
+  ].sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
 
-  if (!currentMessages.length) {
+  if (!combined.length) {
     area.innerHTML = `
       <div class="chat-empty">
         <div class="chat-empty-icon">✦</div>
@@ -989,7 +1095,7 @@ function renderMessages() {
   let previousDate = '';
   const output = [];
 
-  currentMessages.forEach(m => {
+  combined.forEach(m => {
     const date = new Date(m.created_at);
     const dateKey = date.toDateString();
 
@@ -998,29 +1104,42 @@ function renderMessages() {
         dateKey === new Date().toDateString()
           ? 'Today'
           : esc(date.toLocaleDateString(undefined,{
-              month:'short',
-              day:'numeric',
-              year:'numeric'
+              month:'short',day:'numeric',year:'numeric'
             }))
       }</div>`);
-
       previousDate = dateKey;
     }
 
     const mine = m.sender_id === me.id;
-    const messageText = m.deleted_at
-      ? 'This message was deleted'
-      : m.content;
+    const messageText = m._pending
+      ? m.content
+      : m.deleted_at ? 'This message was deleted' : m.content;
+
+    let actions = '';
+
+    if (mine && !m._pending && !m.deleted_at) {
+      actions = `
+        <div class="message-actions">
+          <button class="message-menu-button"
+            data-message-menu="${esc(m.id)}"
+            aria-label="Message options">⋮</button>
+          <div class="message-menu" id="menu-${esc(m.id)}" hidden>
+            <button data-edit-message="${esc(m.id)}">Edit Message</button>
+            <button class="delete-option" data-delete-message="${esc(m.id)}">Delete Message</button>
+          </div>
+        </div>`;
+    }
 
     output.push(`
-      <div class="message-row ${mine ? 'mine' : ''}"
+      <div class="message-row ${mine ? 'mine' : ''} ${m._pending ? 'pending' : ''}"
         data-message="${esc(m.id)}">
-
         <div class="message-bubble">${esc(messageText)}</div>
-
         <div class="message-meta">
           ${ago(m.created_at)}
-          ${mine ? '<span class="message-status">✓</span>' : ''}
+          ${m._pending
+            ? '<span class="pending-status">Not sent</span>'
+            : mine ? '<span class="message-status">✓</span>' : ''}
+          ${actions}
         </div>
       </div>
     `);
@@ -1045,7 +1164,6 @@ async function loadMessages(id,showLoading = false) {
 
   if (error) {
     console.error('Load messages:',error);
-
     if (currentConversation?.id === id) {
       $('messagesArea').innerHTML =
         '<div class="panel-message">Could not load messages. Please retry.</div>';
@@ -1056,7 +1174,26 @@ async function loadMessages(id,showLoading = false) {
   if (currentConversation?.id !== id) return;
 
   currentMessages = data || [];
+  await loadPendingMessages(id);
   renderMessages();
+}
+
+async function loadPendingMessages(id) {
+  const {data,error} = await supabase
+    .from('campusora_pending_messages')
+    .select('id,conversation_id,user_id,content,created_at,sent_at')
+    .eq('conversation_id',id)
+    .eq('user_id',me.id)
+    .is('sent_at',null)
+    .order('created_at',{ascending:true});
+
+  if (error) {
+    console.warn('Pending messages:',error.message);
+    currentPendingMessages = [];
+    return;
+  }
+
+  currentPendingMessages = data || [];
 }
 
 async function markConversationRead(id) {
@@ -1106,15 +1243,6 @@ function setupMessageRealtime(id) {
     .subscribe();
 }
 
-/*
- * Detect Nigerian mobile numbers in common formats.
- * Examples:
- * 08012345678
- * 080 1234 5678
- * 080-1234-5678
- * +2348012345678
- * 2348012345678
- */
 function containsPhoneNumber(text) {
   const candidates = String(text || '').match(
     /(?:\+?\d[\d\s().-]{8,}\d)/g
@@ -1127,14 +1255,7 @@ function containsPhoneNumber(text) {
       digits = '0' + digits.slice(3);
     }
 
-    if (
-      digits.length === 11 &&
-      /^0[789][01]\d{8}$/.test(digits)
-    ) {
-      return true;
-    }
-
-    return false;
+    return digits.length === 11 && /^0[789][01]\d{8}$/.test(digits);
   });
 }
 
@@ -1146,6 +1267,129 @@ function checkMessageInput() {
   $('phoneWarning').classList.toggle('show',restricted);
 
   return !restricted;
+}
+
+async function savePendingMessage(content) {
+  const {data,error} = await supabase
+    .from('campusora_pending_messages')
+    .insert({
+      conversation_id:currentConversation.id,
+      user_id:me.id,
+      content
+    })
+    .select('id,conversation_id,user_id,content,created_at,sent_at')
+    .single();
+
+  if (error) {
+    console.error('Save pending message:',error);
+    toast('The message could not be saved. Please try again.');
+    return false;
+  }
+
+  currentPendingMessages.push(data);
+  renderMessages();
+  return true;
+}
+
+function openPremiumModal(pendingId = null) {
+  pendingPremiumMessageId = pendingId;
+  $('premiumModal').classList.add('show');
+}
+
+function closePremiumModal() {
+  $('premiumModal').classList.remove('show');
+}
+
+async function startPremiumPayment(planType) {
+  const {data:{session},error:sessionError} = await supabase.auth.getSession();
+
+  if (sessionError || !session?.access_token) {
+    toast('Please sign in again.');
+    return;
+  }
+
+  const buttons = document.querySelectorAll('[data-premium-plan]');
+  buttons.forEach(button => button.disabled = true);
+
+  try {
+    const response = await fetch('/api/premium/initialize',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + session.access_token
+      },
+      body:JSON.stringify({
+        plan_type:planType,
+        return_to:'messages.html'
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.authorization_url) {
+      throw new Error(result.error || result.message || 'Payment could not be started.');
+    }
+
+    window.location.href = result.authorization_url;
+  } catch(error) {
+    console.error('Premium payment:',error);
+    toast(error.message || 'Could not start Premium payment.');
+    buttons.forEach(button => button.disabled = false);
+  }
+}
+
+async function verifyPremiumPayment() {
+  const params = new URLSearchParams(window.location.search);
+  const paymentFlag = params.get('premium_payment');
+  const reference = params.get('reference') || params.get('trxref');
+
+  if (paymentFlag !== '1' || !reference) return;
+
+  const {data:{session}} = await supabase.auth.getSession();
+
+  if (!session?.access_token) {
+    toast('Please sign in again to confirm your payment.');
+    return;
+  }
+
+  toast('Confirming your Premium payment...');
+
+  try {
+    const response = await fetch('/api/premium/verify',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + session.access_token
+      },
+      body:JSON.stringify({reference})
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || result.success !== true) {
+      throw new Error(result.error || result.message || 'Payment verification failed.');
+    }
+
+    window.history.replaceState({},'',window.location.pathname);
+
+    await loadInbox();
+
+    if (currentConversation) {
+      await loadMessages(currentConversation.id);
+    }
+
+    const sent = Number(result.resent_count || 0);
+
+    if (sent > 0) {
+      toast(`Premium activated. ${sent} saved message(s) sent.`);
+    } else {
+      toast('Premium activated successfully.');
+    }
+
+  } catch(error) {
+    console.error('Payment verification:',error);
+    toast(error.message || 'Could not verify payment. Please refresh.');
+  }
 }
 
 async function sendMessage(event) {
@@ -1180,6 +1424,21 @@ async function sendMessage(event) {
 
   if (error) {
     console.error('Send message:',error);
+
+    if (String(error.message || '').includes('MESSAGE_PREMIUM_REQUIRED')) {
+      const saved = await savePendingMessage(content);
+
+      if (saved) {
+        input.value = '';
+        input.style.height = '42px';
+        $('phoneWarning').classList.remove('show');
+        openPremiumModal(currentPendingMessages.at(-1)?.id || null);
+      }
+
+      checkMessageInput();
+      return;
+    }
+
     toast('Message could not be sent. Check your connection.');
     checkMessageInput();
     return;
@@ -1199,10 +1458,76 @@ async function sendMessage(event) {
   input.focus();
 }
 
-function setupInboxRealtime() {
-  if (realtimeInbox) {
-    supabase.removeChannel(realtimeInbox);
+async function editMessage(messageId) {
+  const message = currentMessages.find(m => String(m.id) === String(messageId));
+
+  if (!message || message.sender_id !== me.id) return;
+
+  const updated = prompt('Edit your message:',message.content);
+
+  if (updated === null) return;
+
+  const content = updated.trim();
+
+  if (!content) {
+    toast('A message cannot be empty.');
+    return;
   }
+
+  if (containsPhoneNumber(content)) {
+    toast('Sharing phone numbers is currently restricted on Campusora.');
+    return;
+  }
+
+  const {data,error} = await supabase
+    .from('messages')
+    .update({content})
+    .eq('id',messageId)
+    .eq('sender_id',me.id)
+    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+    .single();
+
+  if (error) {
+    console.error('Edit message:',error);
+    toast('Message could not be edited.');
+    return;
+  }
+
+  currentMessages = currentMessages.map(m =>
+    m.id === messageId ? data : m
+  );
+
+  renderMessages();
+  toast('Message updated.');
+}
+
+async function deleteMessage(messageId) {
+  const message = currentMessages.find(m => String(m.id) === String(messageId));
+
+  if (!message || message.sender_id !== me.id) return;
+
+  const {error} = await supabase
+    .from('messages')
+    .update({deleted_at:new Date().toISOString()})
+    .eq('id',messageId)
+    .eq('sender_id',me.id);
+
+  if (error) {
+    console.error('Delete message:',error);
+    toast('Message could not be deleted.');
+    return;
+  }
+
+  const target = currentMessages.find(m => String(m.id) === String(messageId));
+  if (target) target.deleted_at = new Date().toISOString();
+
+  renderMessages();
+  await loadInbox();
+  toast('Message deleted.');
+}
+
+function setupInboxRealtime() {
+  if (realtimeInbox) supabase.removeChannel(realtimeInbox);
 
   realtimeInbox = supabase
     .channel('campusora-inbox-' + me.id)
@@ -1211,9 +1536,7 @@ function setupInboxRealtime() {
       schema:'public',
       table:'messages'
     },payload => {
-      if (conversations.some(
-        c => c.id === payload.new.conversation_id
-      )) {
+      if (conversations.some(c => c.id === payload.new.conversation_id)) {
         loadInbox();
       }
     })
@@ -1224,7 +1547,6 @@ function setupEvents() {
   $('conversationList').addEventListener('click',async event => {
     const button = event.target.closest('[data-conversation]');
     if (!button) return;
-
     await openConversation(button.dataset.conversation);
   });
 
@@ -1237,6 +1559,39 @@ function setupEvents() {
       });
 
       renderInbox();
+    });
+  });
+
+  $('messagesArea').addEventListener('click',async event => {
+    const menuButton = event.target.closest('[data-message-menu]');
+    const editButton = event.target.closest('[data-edit-message]');
+    const deleteButton = event.target.closest('[data-delete-message]');
+
+    if (menuButton) {
+      const id = menuButton.dataset.messageMenu;
+      const menu = $('menu-' + id);
+      const wasHidden = menu.hidden;
+
+      document.querySelectorAll('.message-menu').forEach(item => {
+        item.hidden = true;
+      });
+
+      menu.hidden = !wasHidden;
+      return;
+    }
+
+    if (editButton) {
+      await editMessage(editButton.dataset.editMessage);
+      return;
+    }
+
+    if (deleteButton) {
+      await deleteMessage(deleteButton.dataset.deleteMessage);
+      return;
+    }
+
+    document.querySelectorAll('.message-menu').forEach(item => {
+      item.hidden = true;
     });
   });
 
@@ -1267,6 +1622,18 @@ function setupEvents() {
 
     await loadInbox();
     toast('Messages refreshed');
+  });
+
+  $('closePremiumModal').addEventListener('click',closePremiumModal);
+
+  $('premiumModal').addEventListener('click',event => {
+    if (event.target === $('premiumModal')) closePremiumModal();
+  });
+
+  document.querySelectorAll('[data-premium-plan]').forEach(button => {
+    button.addEventListener('click',() => {
+      startPremiumPayment(button.dataset.premiumPlan);
+    });
   });
 }
 
@@ -1314,9 +1681,7 @@ async function initialize() {
         <a href="auth.html" style="color:#b8a2ff">Sign in →</a>
       </div>`;
 
-    $('welcomeState').querySelector('h3').textContent =
-      'Sign in to connect';
-
+    $('welcomeState').querySelector('h3').textContent = 'Sign in to connect';
     $('welcomeState').querySelector('p').textContent =
       'Sign in to message students, alumni, and other Campusora members.';
 
@@ -1355,6 +1720,8 @@ async function initialize() {
     window.history.replaceState({},'',window.location.pathname);
   }
 
+  await verifyPremiumPayment();
+
   refreshInterval = setInterval(async () => {
     await loadInbox();
 
@@ -1378,4 +1745,4 @@ initialize().catch(error => {
 </script>
 
 </body>
-  </html>
+</html>
