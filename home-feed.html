@@ -439,7 +439,8 @@ img{display:block;max-width:100%}
   cursor:zoom-in;
 }
 
-/* FULL-SCREEN POST PHOTO VIEWER */
+/* FULL-SCREEN POST IMAGE VIEWER */
+
 .photo-viewer{
   position:fixed;
   inset:0;
@@ -447,31 +448,18 @@ img{display:block;max-width:100%}
   display:none;
   align-items:center;
   justify-content:center;
-  padding:18px;
+  padding:15px;
   background:rgba(0,0,0,.96);
 }
+
 .photo-viewer.show{display:flex}
+
 .photo-viewer img{
   max-width:100%;
   max-height:100%;
   width:auto;
   height:auto;
   object-fit:contain;
-  border-radius:3px;
-}
-.photo-viewer-close{
-  position:absolute;
-  top:max(14px,env(safe-area-inset-top));
-  right:15px;
-  width:42px;
-  height:42px;
-  border:1px solid #ffffff35;
-  border-radius:50%;
-  background:#171c32;
-  color:#fff;
-  font-size:27px;
-  line-height:1;
-  z-index:1;
 }
 
 .post-video{
@@ -892,10 +880,10 @@ img{display:block;max-width:100%}
       </div>
 
       <div class="moment-list" id="momentList">
-        <button class="moment add" id="addMomentButton" type="button">
+        <a class="moment add" href="campus-moments.html">
           <div class="moment-ring">+</div>
           <span class="moment-name">Add Moment</span>
-        </button>
+        </a>
       </div>
     </section>
 
@@ -986,16 +974,9 @@ img{display:block;max-width:100%}
   </section>
 </div>
 
-<input
-  type="file"
-  id="quickMomentFile"
-  accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
-  hidden
->
-
-<div class="photo-viewer" id="photoViewer" aria-hidden="true">
-  <button class="photo-viewer-close" id="closePhotoViewer" type="button" aria-label="Close photo">×</button>
-  <img id="photoViewerImage" src="" alt="Full-size post photo">
+<!-- FULL-SCREEN IMAGE VIEWER -->
+<div class="photo-viewer" id="photoViewer">
+  <img id="photoViewerImage" src="" alt="Full-screen post image">
 </div>
 
 <div id="toast" class="toast"></div>
@@ -1019,7 +1000,7 @@ let currentProfile=null;
 let activeFeed="for-you";
 let shareItem=null;
 let loading=false;
-let currentItems=[]; // FIX: declared before use
+let currentItems=[];
 let profileCache=new Map();
 
 const fallbackAvatar=
@@ -1162,10 +1143,10 @@ async function loadMoments(){
  const moments=data||[];
 
  const addButton=`
-  <button class="moment add" id="addMomentButton" type="button">
+  <a class="moment add" href="campus-moments.html">
    <div class="moment-ring">+</div>
    <span class="moment-name">Add Moment</span>
-  </button>`;
+  </a>`;
 
  if(!moments.length){
   momentList.innerHTML=addButton;
@@ -1188,167 +1169,6 @@ async function loadMoments(){
    </a>`;
  }).join("");
 }
-
-/* QUICK MOMENT UPLOAD FROM HOME FEED */
-
-const quickMomentFile=$("quickMomentFile");
-
-momentList.addEventListener("click",event=>{
- const addButton=event.target.closest("#addMomentButton");
- if(!addButton)return;
-
- if(!currentUser){
-  toast("Please log in to add a Moment.");
-  return;
- }
-
- quickMomentFile.click();
-});
-
-quickMomentFile.addEventListener("change",async()=>{
- const file=quickMomentFile.files?.[0];
- if(!file)return;
-
- const imageTypes=["image/jpeg","image/png","image/webp","image/gif"];
- const videoTypes=["video/mp4","video/webm","video/quicktime"];
- const isImage=imageTypes.includes(file.type);
- const isVideo=videoTypes.includes(file.type);
-
- if(!isImage&&!isVideo){
-  toast("Choose a JPG, PNG, WEBP, GIF, MP4 or MOV file.");
-  quickMomentFile.value="";
-  return;
- }
-
- const maxSize=isImage?15*1024*1024:50*1024*1024;
- if(file.size>maxSize){
-  toast(isImage?"Photos must be 15 MB or smaller.":"Videos must be 50 MB or smaller.");
-  quickMomentFile.value="";
-  return;
- }
-
- if(!currentUser){
-  toast("Please log in to add a Moment.");
-  quickMomentFile.value="";
-  return;
- }
-
- const extension=(file.name.split(".").pop()||"").toLowerCase();
- const safeExtension=extension.replace(/[^a-z0-9]/g,"")||
-  (isImage?"jpg":"mp4");
- const bucket=isImage?"campusora-images":"campusora-videos";
- const path=currentUser.id+"/moments/"+crypto.randomUUID()+"."+safeExtension;
-
- addButton.disabled=true;
- addButton.querySelector(".moment-name").textContent="Uploading…";
-
- toast("Uploading your Moment…");
-
- try{
-  const {data:uploadData,error:uploadError}=await supabase.storage
-   .from(bucket)
-   .upload(path,file,{
-    cacheControl:"3600",
-    upsert:false,
-    contentType:file.type
-   });
-
-  if(uploadError)throw uploadError;
-
-  const {data:publicData}=supabase.storage
-   .from(bucket)
-   .getPublicUrl(uploadData.path);
-
-  const mediaURL=publicData?.publicUrl;
-  if(!mediaURL)throw new Error("Could not create the Moment media link.");
-
-  const {error:insertError}=await supabase
-   .from("campusora_moments")
-   .insert({
-    user_id:currentUser.id,
-    media_type:isImage?"image":"video",
-    media_path:mediaURL,
-    caption:"",
-    audience:"public",
-    music_track_id:null,
-    music_start_seconds:0,
-    music_volume:0.65
-   });
-
-  if(insertError){
-   await supabase.storage.from(bucket).remove([uploadData.path]);
-   throw insertError;
-  }
-
-  toast("Moment uploaded successfully.");
-  await loadMoments();
-
- }catch(error){
-  console.error("Quick Moment upload failed:",error);
-  toast(error.message||"Could not upload your Moment.");
- }finally{
-  quickMomentFile.value="";
-  const button=$("addMomentButton");
-  if(button){
-   button.disabled=false;
-   const label=button.querySelector(".moment-name");
-   if(label)label.textContent="Add Moment";
-  }
- }
-});
-
-/* FULL-SCREEN POST PHOTO VIEWER */
-
-const photoViewer=$("photoViewer");
-const photoViewerImage=$("photoViewerImage");
-let photoViewerOpen=false;
-let photoViewerScrollY=0;
-
-function openPhotoViewer(src,alt="Post photo"){
- if(!src)return;
-
- photoViewerScrollY=window.scrollY;
- photoViewerImage.src=src;
- photoViewerImage.alt=alt;
- photoViewer.classList.add("show");
- photoViewer.setAttribute("aria-hidden","false");
- document.body.style.overflow="hidden";
- photoViewerOpen=true;
-
- history.pushState({campusoraPhotoViewer:true},"","#photo-viewer");
-}
-
-function hidePhotoViewer(){
- if(!photoViewerOpen)return;
-
- photoViewer.classList.remove("show");
- photoViewer.setAttribute("aria-hidden","true");
- photoViewerImage.src="";
- document.body.style.overflow="";
- photoViewerOpen=false;
- window.scrollTo(0,photoViewerScrollY);
-}
-
-function closePhotoViewer(){
- if(!photoViewerOpen)return;
- if(history.state?.campusoraPhotoViewer){
-  history.back();
- }else{
-  hidePhotoViewer();
- }
-}
-
-$("closePhotoViewer").addEventListener("click",closePhotoViewer);
-
-photoViewer.addEventListener("click",event=>{
- if(event.target===photoViewer)closePhotoViewer();
-});
-
-photoViewerImage.addEventListener("click",event=>event.stopPropagation());
-
-window.addEventListener("popstate",()=>{
- if(photoViewerOpen)hidePhotoViewer();
-});
 
 /* FETCH POSTS */
 
@@ -1997,7 +1817,6 @@ async function loadFeed(){
 
   items=rankItems(items,extra);
 
-  // FIX: currentItems is declared above.
   currentItems=items;
 
   feed.innerHTML=items.map(item=>{
@@ -2398,12 +2217,6 @@ $("shareSearch").addEventListener("input",()=>{
 /* FEED BUTTON EVENTS */
 
 feed.addEventListener("click",async event=>{
- const postImage=event.target.closest(".post-image");
- if(postImage){
-  openPhotoViewer(postImage.currentSrc||postImage.src,postImage.alt||"Post photo");
-  return;
- }
-
  const button=event.target.closest("[data-action]");
 
  if(!button)return;
@@ -2570,6 +2383,36 @@ document.addEventListener("click",event=>{
   document.querySelectorAll(".post-menu.open").forEach(x=>{
    x.classList.remove("open");
   });
+ }
+});
+
+/* FULL-SCREEN IMAGE VIEWER BEHAVIOUR */
+
+const photoViewer=$("photoViewer");
+const photoViewerImage=$("photoViewerImage");
+
+document.addEventListener("click",event=>{
+ const image=event.target.closest(".post-image");
+
+ if(image){
+  photoViewerImage.src=image.src;
+  photoViewer.classList.add("show");
+  document.body.style.overflow="hidden";
+  return;
+ }
+
+ if(event.target===photoViewer){
+  photoViewer.classList.remove("show");
+  photoViewerImage.src="";
+  document.body.style.overflow="";
+ }
+});
+
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"&&photoViewer.classList.contains("show")){
+  photoViewer.classList.remove("show");
+  photoViewerImage.src="";
+  document.body.style.overflow="";
  }
 });
 
