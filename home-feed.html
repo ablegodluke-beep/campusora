@@ -818,12 +818,83 @@ img{display:block;max-width:100%}
   .composer-action{font-size:9px}
   .post-action{font-size:9px}
 }
+  /* FULL-SCREEN IMAGE VIEWER */
+
+.image-viewer{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:55px 12px 20px;
+  background:rgba(0,0,0,.96);
+}
+
+.image-viewer.open{
+  display:flex;
+}
+
+.image-viewer img{
+  display:block;
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border-radius:5px;
+}
+
+.image-viewer-back{
+  position:absolute;
+  top:16px;
+  left:15px;
+  width:42px;
+  height:42px;
+  border:1px solid #ffffff35;
+  border-radius:50%;
+  background:#20202a;
+  color:#fff;
+  font-size:25px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.image-viewer-back:hover{
+  background:#39394a;
+}
+
+body.image-viewer-active{
+  overflow:hidden;
+}
 </style>
 </head>
 
 <body>
 
 <div id="pageProgress"></div>
+  <!-- FULL-SCREEN IMAGE VIEWER -->
+
+<div
+  class="image-viewer"
+  id="imageViewer"
+  aria-hidden="true"
+>
+  <button
+    class="image-viewer-back"
+    id="imageViewerBack"
+    type="button"
+    aria-label="Back to feed"
+  >←</button>
+
+  <img
+    id="imageViewerImage"
+    src=""
+    alt="Full-screen post image"
+  >
+</div>
 
 <main class="page">
   <div class="main-feed">
@@ -2357,7 +2428,91 @@ document.addEventListener("click",event=>{
   });
  }
 });
+/* FULL-SCREEN POST IMAGE VIEWER */
 
+(function(){
+
+  const viewer = document.getElementById("imageViewer");
+  const viewerImage = document.getElementById("imageViewerImage");
+  const backButton = document.getElementById("imageViewerBack");
+
+  if(!viewer || !viewerImage || !backButton) return;
+
+  function openImageViewer(src){
+
+    if(!src) return;
+
+    viewerImage.src = src;
+
+    viewer.classList.add("open");
+    viewer.setAttribute("aria-hidden","false");
+
+    document.body.classList.add("image-viewer-active");
+  }
+
+  function closeImageViewer(){
+
+    viewer.classList.remove("open");
+    viewer.setAttribute("aria-hidden","true");
+
+    viewerImage.src = "";
+
+    document.body.classList.remove("image-viewer-active");
+  }
+
+  /* Open an uploaded image */
+
+  document.addEventListener("click",function(event){
+
+    const image = event.target.closest(".post-image");
+
+    if(image){
+
+      event.preventDefault();
+
+      openImageViewer(image.currentSrc || image.src);
+
+      return;
+    }
+
+  });
+
+  /* Back button */
+
+  backButton.addEventListener("click",function(event){
+
+    event.stopPropagation();
+
+    closeImageViewer();
+
+  });
+
+  /* Tap outside the image to close */
+
+  viewer.addEventListener("click",function(event){
+
+    if(event.target === viewer){
+
+      closeImageViewer();
+
+    }
+
+  });
+
+  /* Escape key */
+
+  document.addEventListener("keydown",function(event){
+
+    if(event.key === "Escape" && viewer.classList.contains("open")){
+
+      closeImageViewer();
+
+    }
+
+  });
+
+})();
+  
 /* SHARED NAVIGATION SCROLL BEHAVIOUR */
 
 (function(){
