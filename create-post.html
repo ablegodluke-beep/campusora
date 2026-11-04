@@ -3,8 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Create | Campusora</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Create | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./shared-nav.css"><style>
 :root {
@@ -355,6 +354,8 @@ input[type="file"] { display:none; }
   .media-option { padding:12px 6px; }
 }
 
+/* CAMPUSORA TOP LOADING BAR */
+
 #campusoraTopProgress {
   position:fixed;
   top:0;
@@ -404,6 +405,7 @@ input[type="file"] { display:none; }
     <label class="label">Poll answer options</label>
 
     <div class="poll-options" id="pollOptions">
+
       <div class="poll-option-row">
         <input
           class="text-input poll-option"
@@ -421,6 +423,7 @@ input[type="file"] { display:none; }
           placeholder="Option 2"
         >
       </div>
+
     </div>
 
     <button class="add-option" type="button" id="addOption">
@@ -433,9 +436,11 @@ input[type="file"] { display:none; }
   </div>
 
   <div class="field" id="mediaField">
+
     <label class="label">Add media (optional)</label>
 
     <div class="media-options">
+
       <div class="media-option photo-option">
         <label for="photoInput">
           <div class="media-icon">📸</div>
@@ -455,6 +460,7 @@ input[type="file"] { display:none; }
           </div>
         </label>
       </div>
+
     </div>
 
     <input
@@ -504,6 +510,7 @@ input[type="file"] { display:none; }
         Remove video
       </button>
     </div>
+
   </div>
 
   <div class="sharing-note" id="sharingNote">
@@ -533,8 +540,7 @@ input[type="file"] { display:none; }
   Don't upload private information or media you don't have permission to share.
 </div>
 
-  </section>
-</main><script type="module">
+  </section></main><script type="module">
 import { supabase } from './supabase.js';
 
 /* PAGE MODE */
@@ -640,6 +646,7 @@ function stopTopProgress() {
 /* PAGE SETUP */
 
 function setupPageMode() {
+
   const title = document.getElementById('pageTitle');
   const description = document.getElementById('pageDescription');
   const label = document.getElementById('contentLabel');
@@ -1142,6 +1149,7 @@ form.addEventListener('submit', async event => {
   let createdPostId = null;
 
   try {
+
     /* VERIFY AUTHENTICATED USER */
 
     const {
@@ -1201,94 +1209,43 @@ form.addEventListener('submit', async event => {
 
     showStatus('Saving your content...', 'info');
 
-    /* TEMPORARY PUBLISHING DIAGNOSTIC */
+    const { data: newPost, error: postError } = await supabase
+      .from('posts')
+      .insert({
+        user_id: verifiedUser.id,
+        content: content,
+        image_url: photoUrl,
+        video_url: videoUrl,
+        video_name: videoName,
+        audience: 'public',
+        institution_id: null,
+        community_id: null,
+        post_type: postType
+      })
+      .select('id')
+      .single();
 
-    const {
-      data: { session: activeSession },
-      error: activeSessionError
-    } = await supabase.auth.getSession();
+    if (postError) throw postError;
 
-    const diagnostic = {
-      sessionExists: !!activeSession,
-      sessionUserId: activeSession?.user?.id || null,
-      verifiedUserId: verifiedUser.id,
-      profileId: currentProfile.id,
-      userIdsMatch:
-        !!activeSession &&
-        activeSession.user.id === verifiedUser.id &&
-        verifiedUser.id === currentProfile.id,
-      accessTokenPresent: !!activeSession?.access_token
-    };
+    createdPostId = newPost.id;
 
-    console.log(
-      'CAMPUSORA PUBLISH AUTH DIAGNOSTIC:',
-      diagnostic
-    );
-
-    if (activeSessionError) {
-      throw activeSessionError;
-    }
-
-    if (!activeSession || activeSession.user.id !== verifiedUser.id) {
-      throw new Error(
-        'Publishing stopped: active login session does not match verified account. ' +
-        JSON.stringify(diagnostic)
-      );
-    }
-
-    const postPayload = {
-      user_id: verifiedUser.id,
-      content: content,
-      image_url: photoUrl,
-      video_url: videoUrl,
-      video_name: videoName,
-      audience: 'public',
-      institution_id: null,
-      community_id: null,
-      post_type: postType
-    };
-
-    /*
-      TEMPORARY RLS TEST:
-      Use a normal text post for this test.
-      We intentionally do not request the inserted row back.
-      This isolates the posts INSERT policy from the SELECT policy.
-    */
+    /* SAVE POLL OPTIONS */
 
     if (isPoll) {
-      throw new Error(
-        'Temporary diagnostic: please test with a normal text post, not a poll.'
-      );
+      showStatus('Saving your poll options...', 'info');
+
+      const optionRows = options.map((option, index) => ({
+        post_id: createdPostId,
+        option_text: option,
+        position: index
+      }));
+
+      const { error: optionError } = await supabase
+        .from('poll_options')
+        .insert(optionRows);
+
+      if (optionError) throw optionError;
     }
-
-    const { error: postError } = await supabase
-      .from('posts')
-      .insert(postPayload);
-
-    if (postError) {
-      console.error('CAMPUSORA POST INSERT DIAGNOSTIC:', {
-        ...diagnostic,
-        errorMessage: postError.message,
-        errorCode: postError.code,
-        errorDetails: postError.details,
-        errorHint: postError.hint,
-        errorStatus: postError.status
-      });
-
-      throw new Error(
-        'Post publishing failed. ' +
-        'Message: ' + (postError.message || 'Unknown error') +
-        ' | Code: ' + (postError.code || 'Not provided') +
-        ' | Details: ' + (postError.details || 'Not provided') +
-        ' | Hint: ' + (postError.hint || 'Not provided') +
-        ' | Session user: ' + (diagnostic.sessionUserId || 'None') +
-        ' | Verified user: ' + diagnostic.verifiedUserId +
-        ' | Profile: ' + diagnostic.profileId +
-        ' | IDs match: ' + diagnostic.userIdsMatch
-      );
-    }
-
-    /* Poll option saving is skipped only during this temporary normal-post diagnostic. */
 
     showStatus(
       isPoll
@@ -1312,6 +1269,7 @@ form.addEventListener('submit', async event => {
     }, 1300);
 
   } catch (error) {
+
     console.error('Campusora publishing error:', error);
 
     /*
@@ -1350,15 +1308,11 @@ form.addEventListener('submit', async event => {
       'error'
     );
 
-    console.error(
-      'FULL CAMPUSORA PUBLISH ERROR:',
-      error
-    );
-
     hideProgress();
     stopTopProgress();
 
   } finally {
+
     publishing = false;
     submitBtn.disabled = false;
 
