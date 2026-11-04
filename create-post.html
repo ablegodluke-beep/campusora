@@ -1248,11 +1248,22 @@ form.addEventListener('submit', async event => {
       post_type: postType
     };
 
-    const { data: newPost, error: postError } = await supabase
+    /*
+      TEMPORARY RLS TEST:
+      Use a normal text post for this test.
+      We intentionally do not request the inserted row back.
+      This isolates the posts INSERT policy from the SELECT policy.
+    */
+
+    if (isPoll) {
+      throw new Error(
+        'Temporary diagnostic: please test with a normal text post, not a poll.'
+      );
+    }
+
+    const { error: postError } = await supabase
       .from('posts')
-      .insert(postPayload)
-      .select('id')
-      .single();
+      .insert(postPayload);
 
     if (postError) {
       console.error('CAMPUSORA POST INSERT DIAGNOSTIC:', {
@@ -1277,25 +1288,7 @@ form.addEventListener('submit', async event => {
       );
     }
 
-    createdPostId = newPost.id;
-
-    /* SAVE POLL OPTIONS */
-
-    if (isPoll) {
-      showStatus('Saving your poll options...', 'info');
-
-      const optionRows = options.map((option, index) => ({
-        post_id: createdPostId,
-        option_text: option,
-        position: index
-      }));
-
-      const { error: optionError } = await supabase
-        .from('poll_options')
-        .insert(optionRows);
-
-      if (optionError) throw optionError;
-    }
+    /* Poll option saving is skipped only during this temporary normal-post diagnostic. */
 
     showStatus(
       isPoll
