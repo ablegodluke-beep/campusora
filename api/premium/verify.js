@@ -23,114 +23,100 @@ export default async function handler(req, res) {
     "Content-Type": "application/json"
   };
 
+  // Automatically resend all saved pending messages.
   async function resendPendingMessages(userId) {
-    const pendingResponse = await fetch(
-      `${SUPABASE_URL}/rest/v1/campusora_pending_messages` +
-      `?user_id=eq.${encodeURIComponent(userId)}` +
-      `&sent_at=is.null` +
-      `&select=id,conversation_id,user_id,content,created_at` +
-      `&order=created_at.asc&limit=50`,
-      { headers }
-    );
-
-    if (!pendingResponse.ok) {
-      console.error(
-        "Pending message lookup failed:",
-        await pendingResponse.text()
-      );
-
-      return {
-        resent: 0,
-        failed: true
-      };
-    }
-
-    const pendingMessages = await pendingResponse.json();
     let resent = 0;
+    let alreadySent = 0;
+    let failed = 0;
+    let batches = 0;
 
-    for (const pending of pendingMessages) {
-      // Confirm the user still belongs to this conversation.
-      const memberResponse = await fetch(
-        `${SUPABASE_URL}/rest/v1/conversation_members` +
-        `?conversation_id=eq.${encodeURIComponent(pending.conversation_id)}` +
-        `&user_id=eq.${encodeURIComponent(userId)}` +
-        `&select=user_id`,
+    while (batches < 100) {
+      batches++;
+
+      const pendingResponse = await fetch(
+        `${SUPABASE_URL}/rest/v1/campusora_pending_messages` +
+        `?user_id=eq.${encodeURIComponent(userId)}` +
+        `&sent_at=is.null` +
+        `&select=id` +
+        `&order=created_at.asc` +
+        `&limit=100`,
         { headers }
       );
 
-      if (!memberResponse.ok) continue;
-
-      const members = await memberResponse.json();
-
-      if (!members.length) continue;
-
-      // Send the original failed message.
-      const sendResponse = await fetch(
-        `${SUPABASE_URL}/rest/v1/messages`,
-        {
-          method: "POST",
-          headers: {
-            ...headers,
-            Prefer: "return=representation"
-          },
-          body: JSON.stringify({
-            conversation_id: pending.conversation_id,
-            sender_id: userId,
-            content: pending.content
-          })
-        }
-      );
-
-      if (!sendResponse.ok) {
+      if (!pendingResponse.ok) {
         console.error(
-          "Pending message resend failed:",
-          await sendResponse.text()
+          "Pending message lookup failed:",
+          await pendingResponse.text()
         );
 
-        continue;
+        return {
+          resent,
+          already_sent: alreadySent,
+          failed: failed + 1
+        };
       }
 
-      const sentMessages = await sendResponse.json();
-      const sentMessage = sentMessages[0];
+      const pendingMessages = await pendingResponse.json();
 
-      if (!sentMessage?.id) continue;
+      if (!pendingMessages.length) {
+        break;
+      }
 
-      // Mark the pending message as successfully resent.
-      const updateResponse = await fetch(
-        `${SUPABASE_URL}/rest/v1/campusora_pending_messages` +
-        `?id=eq.${encodeURIComponent(pending.id)}` +
-        `&user_id=eq.${encodeURIComponent(userId)}` +
-        `&sent_at=is.null`,
-        {
-          method: "PATCH",
-          headers: {
-            ...headers,
-            Prefer: "return=representation"
-          },
-          body: JSON.stringify({
-            sent_at: new Date().toISOString(),
-            message_id: sentMessage.id
-          })
+      let successfulInBatch = 0;
+
+      for (const pending of pendingMessages) {
+        const resendResponse = await fetch(
+          `${SUPABASE_URL}/rest/v1/rpc/campusora_resend_pending_message`,
+          {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              p_pending_id: pending.id,
+              p_user_id: userId
+            })
+          }
+        );
+
+        if (!resendResponse.ok) {
+          console.error(
+            "Pending message resend failed:",
+            await resendResponse.text()
+          );
+
+          failed++;
+          continue;
         }
-      );
 
-      if (updateResponse.ok) {
-        const updated = await updateResponse.json();
+        const result = await resendResponse.json();
 
-        if (updated.length === 1) {
+        if (result.success && result.already_sent) {
+          alreadySent++;
+          successfulInBatch++;
+        } else if (result.success) {
           resent++;
+          successfulInBatch++;
+        } else {
+          failed++;
         }
+      }
+
+      // Avoid an endless loop if messages cannot be processed.
+      if (successfulInBatch === 0) {
+        break;
       }
     }
 
     return {
       resent,
-      failed: false
+      already_sent: alreadySent,
+      failed
     };
   }
 
   try {
+    // Authenticate the user.
     const authHeader = req.headers.authorization || "";
+
     const token = authHeader.startsWith("Bearer ")
       ? authHeader.slice(7)
       : "";
@@ -158,6 +144,13 @@ export default async function handler(req, res) {
     }
 
     const user = await authResponse.json();
+
+    if (!user.id) {
+      return res.status(401).json({
+        error: "Could not identify your account."
+      });
+    }
+
     const reference = req.body?.reference;
 
     if (
@@ -169,6 +162,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // Find this user's membership.
     const membershipResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/premium_memberships` +
       `?user_id=eq.${encodeURIComponent(user.id)}` +
@@ -198,45 +192,10 @@ export default async function handler(req, res) {
       });
     }
 
-    // Already verified payments can still retry pending messages.
-    if (membership.payment_verified === true) {
-      const stillActive =
-        membership.status === "active" &&
-        (
-          membership.plan_type === "permanent" ||
-          (
-            membership.expires_at &&
-            new Date(membership.expires_at).getTime() > Date.now()
-          )
-        );
-
-      if (!stillActive) {
-        return res.status(409).json({
-          error: "Your Premium membership is not currently active."
-        });
-      }
-
-      const resend = await resendPendingMessages(user.id);
-
-      return res.status(200).json({
-        success: true,
-        active: true,
-        plan_type: membership.plan_type,
-        expires_at: membership.expires_at,
-        resent_count: resend.resent,
-        message: "Your Premium membership is active."
-      });
-    }
-
-    if (membership.status !== "pending") {
-      return res.status(409).json({
-        error: "This membership is not awaiting payment verification."
-      });
-    }
-
+    // Check the plan price.
     const prices = {
-      permanent: 1000000,
-      monthly: 200000
+      monthly: 200000,
+      permanent: 1000000
     };
 
     const expectedAmount = prices[membership.plan_type];
@@ -250,6 +209,46 @@ export default async function handler(req, res) {
       });
     }
 
+    // If payment was verified before, check its current validity.
+    if (membership.payment_verified === true) {
+      const stillActive =
+        membership.status === "active" &&
+        (
+          membership.plan_type === "permanent" ||
+          (
+            membership.plan_type === "monthly" &&
+            membership.expires_at &&
+            new Date(membership.expires_at).getTime() > Date.now()
+          )
+        );
+
+      if (!stillActive) {
+        return res.status(409).json({
+          error: "Your Premium membership is no longer active."
+        });
+      }
+
+      const resend = await resendPendingMessages(user.id);
+
+      return res.status(200).json({
+        success: true,
+        active: true,
+        plan_type: membership.plan_type,
+        expires_at: membership.expires_at,
+        resent_count: resend.resent,
+        already_sent_count: resend.already_sent,
+        failed_count: resend.failed,
+        message: "Your Premium membership is active."
+      });
+    }
+
+    if (membership.status !== "pending") {
+      return res.status(409).json({
+        error: "This membership is not awaiting payment verification."
+      });
+    }
+
+    // Verify payment directly with Paystack.
     const paystackResponse = await fetch(
       `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
       {
@@ -276,6 +275,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // Confirm the Paystack transaction belongs to this purchase.
     const metadata = transaction.metadata || {};
 
     if (
@@ -290,6 +290,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // Calculate the membership period.
     const startsAt = new Date();
 
     const expiresAt =
@@ -299,6 +300,7 @@ export default async function handler(req, res) {
           ).toISOString()
         : null;
 
+    // Activate only after successful Paystack verification.
     const updateResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/premium_memberships` +
       `?id=eq.${encodeURIComponent(membership.id)}` +
@@ -323,6 +325,11 @@ export default async function handler(req, res) {
     );
 
     if (!updateResponse.ok) {
+      console.error(
+        "Membership activation failed:",
+        await updateResponse.text()
+      );
+
       return res.status(500).json({
         error: "Payment was verified, but activation failed."
       });
@@ -332,11 +339,11 @@ export default async function handler(req, res) {
 
     if (updatedMemberships.length !== 1) {
       return res.status(409).json({
-        error: "Membership activation could not be confirmed."
+        error: "Membership activation could not be confirmed. Please retry verification."
       });
     }
 
-    // Automatically resend the user's saved failed messages.
+    // Automatically resend pending messages after activation.
     const resend = await resendPendingMessages(user.id);
 
     return res.status(200).json({
@@ -346,6 +353,8 @@ export default async function handler(req, res) {
       starts_at: startsAt.toISOString(),
       expires_at: expiresAt,
       resent_count: resend.resent,
+      already_sent_count: resend.already_sent,
+      failed_count: resend.failed,
       message: "Your Premium membership is now active!"
     });
 
