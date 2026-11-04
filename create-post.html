@@ -1,1352 +1,2712 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b18">
-<title>Create | Campusora</title><link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./shared-nav.css"><style>
-:root {
+<title>Your Feed | Campusora</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./shared-nav.css">
+
+<style>
+:root{
   --bg:#080b18;
   --surface:#101426;
-  --surface2:#171d33;
-  --border:rgba(255,255,255,.09);
-  --text:#f5f7ff;
-  --muted:#929bb8;
-  --purple:#8b5cf6;
-  --blue:#4388ff;
-  --cyan:#22d3ee;
+  --surface2:#171c32;
+  --border:rgba(255,255,255,.085);
+  --text:#f5f6ff;
+  --muted:#929bb6;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
+  --gradient:linear-gradient(120deg,#925bff,#526dff,#39d7f5);
 }
 
-* { box-sizing:border-box; }
+*{box-sizing:border-box}
 
-body {
+html,body{
   margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(ellipse at top left,rgba(91,60,180,.13),transparent 45%),
-    var(--bg);
+  min-height:100%;
+  background:var(--bg);
   color:var(--text);
-  font-family:Inter,sans-serif;
+  font-family:"DM Sans",sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
 
-button,textarea,input { font:inherit; }
-button { cursor:pointer; }
-
-.container {
-  width:min(620px,94%);
-  margin:26px auto 50px;
+body{
+  padding-bottom:100px;
+  overflow-x:hidden;
 }
 
-.heading { margin-bottom:18px; }
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;color:inherit}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
 
-.heading h1 {
-  font-size:25px;
-  margin:0 0 7px;
-  letter-spacing:-.7px;
+#pageProgress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:3px;
+  width:0;
+  z-index:20000;
+  background:var(--gradient);
+  box-shadow:0 0 12px #925bff80;
+  transition:width .25s;
 }
 
-.heading p {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
+#pageProgress.loading{
+  width:75%;
+  animation:progress 1.2s ease-in-out infinite alternate;
+}
+
+#pageProgress.done{width:100%}
+
+@keyframes progress{
+  from{width:15%}
+  to{width:90%}
+}
+
+.page{
+  width:min(100%,760px);
+  margin:auto;
+  padding:12px 12px 30px;
+}
+
+.main-feed{min-width:0}
+
+/* FEED HEADING */
+
+.feed-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin:3px 0 11px;
+}
+
+.feed-heading h1{
   margin:0;
+  font-size:29px;
+  line-height:1.15;
+  letter-spacing:-1px;
+  font-weight:800;
 }
 
-.card {
-  background:rgba(16,20,38,.97);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:19px;
-  box-shadow:0 18px 60px rgba(0,0,0,.18);
+.feed-heading p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:11px;
 }
 
-.user-row {
+.filter-wrap{
+  position:relative;
+  flex:0 0 auto;
+}
+
+.filter-button{
   display:flex;
   align-items:center;
-  gap:11px;
-  padding-bottom:15px;
-  margin-bottom:17px;
-  border-bottom:1px solid var(--border);
-}
-
-.avatar {
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  object-fit:cover;
-  background:linear-gradient(135deg,var(--purple),var(--cyan));
-  display:grid;
-  place-items:center;
-  font-weight:800;
-  color:white;
-  flex-shrink:0;
-  overflow:hidden;
-}
-
-.avatar img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.user-name { font-weight:700;font-size:13px; }
-.user-school { color:var(--muted);font-size:11px;margin-top:4px; }
-
-.label {
-  display:block;
+  gap:8px;
+  min-width:105px;
+  justify-content:space-between;
+  padding:9px 11px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--surface);
+  color:#e5e5ff;
+  font-size:11px;
   font-weight:700;
+}
+
+.filter-button span:last-child{
+  color:#a995ff;
   font-size:12px;
+}
+
+.filter-menu{
+  display:none;
+  position:absolute;
+  right:0;
+  top:calc(100% + 7px);
+  z-index:100;
+  width:155px;
+  padding:5px;
+  border:1px solid #343052;
+  border-radius:12px;
+  background:#151a30;
+  box-shadow:0 12px 30px #0009;
+}
+
+.filter-menu.open{display:grid}
+
+.filter-option{
+  padding:10px;
+  border:0;
+  border-radius:8px;
+  text-align:left;
+  background:transparent;
+  color:#c8cde1;
+  font-size:11px;
+}
+
+.filter-option:hover,
+.filter-option.active{
+  background:#8b63ff22;
+  color:white;
+}
+
+/* CAMPUS MOMENTS */
+
+.section-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:11px;
   margin-bottom:9px;
 }
 
-.field { margin-bottom:19px; }
-
-.textarea {
-  width:100%;
-  min-height:125px;
-  resize:vertical;
-  background:#0b1020;
-  border:1px solid var(--border);
-  color:white;
-  border-radius:13px;
-  padding:14px;
-  outline:none;
-  font-size:13px;
-  line-height:1.7;
-}
-
-.textarea:focus,
-.text-input:focus { border-color:var(--purple); }
-
-.textarea::placeholder,
-.text-input::placeholder { color:#77809c; }
-
-.text-input {
-  width:100%;
-  background:#0b1020;
-  border:1px solid var(--border);
-  color:white;
-  border-radius:11px;
-  padding:13px;
-  outline:none;
-  font-size:13px;
-}
-
-.helper {
+.section-heading{
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  gap:10px;
-  margin-top:7px;
-  color:var(--muted);
+  gap:8px;
+  margin-bottom:9px;
+}
+
+.section-heading h2{
+  margin:0;
+  font-size:13px;
+  font-weight:800;
+}
+
+.section-heading a{
+  color:#b49cff;
   font-size:10px;
+  font-weight:700;
 }
 
-.media-options {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+.moment-list{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  overflow-x:auto;
+  padding:2px 1px 3px;
+  scrollbar-width:none;
 }
 
-.media-option {
-  padding:14px 10px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:#0b1020;
+.moment-list::-webkit-scrollbar{display:none}
+
+.moment{
+  flex:0 0 55px;
+  width:55px;
+  min-width:55px;
+  padding:0;
+  border:0;
+  background:none;
   text-align:center;
 }
 
-.media-option:active { transform:scale(.98); }
-
-.photo-option { border-color:rgba(139,92,246,.35); }
-.video-option { border-color:rgba(34,211,238,.3); }
-
-.media-icon { font-size:23px;margin-bottom:6px; }
-.media-title { font-size:12px;font-weight:700; }
-
-.media-description {
-  font-size:10px;
-  color:var(--muted);
-  margin-top:5px;
-  line-height:1.5;
+.moment-ring{
+  width:53px;
+  height:53px;
+  padding:2px;
+  border-radius:50%;
+  background:var(--gradient);
+  margin:0 auto 5px;
 }
 
-.media-option label { cursor:pointer;display:block; }
+.moment-ring img{
+  width:100%;
+  height:100%;
+  border:2px solid var(--surface);
+  border-radius:50%;
+  object-fit:cover;
+}
 
-input[type="file"] { display:none; }
+.moment-name{
+  display:block;
+  font-size:9px;
+  color:#cbd0e3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
 
-.preview-wrap {
-  display:none;
-  margin-top:12px;
-  padding:10px;
+.moment.add .moment-ring{
+  display:grid;
+  place-items:center;
+  background:#202944;
+  border:1px dashed #8c76cf;
+  color:#c2aaff;
+  font-size:25px;
+}
+
+.moment.add{
+  display:block;
+  cursor:pointer;
+}
+
+.moment.add:disabled{
+  opacity:.65;
+  cursor:wait;
+}
+
+/* COMPOSER */
+
+.composer{
+  background:var(--surface);
   border:1px solid var(--border);
   border-radius:13px;
-  background:#0b1020;
+  padding:11px;
+  margin-bottom:10px;
 }
 
-.preview-heading {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  font-size:11px;
-  font-weight:700;
+.composer-title{
+  font-size:13px;
+  font-weight:800;
   margin-bottom:9px;
 }
 
-.preview-image,
-.preview-video {
-  display:block;
-  width:100%;
-  max-height:360px;
-  object-fit:contain;
-  background:#050711;
-  border-radius:9px;
-}
-
-.preview-video { aspect-ratio:9/16; }
-
-.remove-media {
-  margin-top:9px;
-  padding:7px 10px;
-  background:rgba(251,113,133,.1);
-  color:#fda4af;
-  border:1px solid rgba(251,113,133,.2);
-  border-radius:8px;
-  font-size:10px;
-}
-
-.media-info {
-  margin-top:8px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.6;
-  overflow-wrap:anywhere;
-}
-
-.sharing-note {
-  padding:12px;
-  border-radius:11px;
-  background:rgba(139,92,246,.08);
-  border:1px solid rgba(139,92,246,.18);
-  color:#c7c9f9;
-  font-size:11px;
-  line-height:1.7;
-  margin-bottom:17px;
-}
-
-.poll-options {
-  display:grid;
-  gap:10px;
-}
-
-.poll-option-row {
+.composer-top{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:9px;
 }
 
-.poll-option-row input {
+.avatar{
+  width:40px;
+  height:40px;
+  flex:0 0 40px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#252c46;
+}
+
+.composer-input{
+  flex:1;
+  min-width:0;
+  min-height:39px;
+  display:flex;
+  align-items:center;
+  padding:9px 13px;
+  border-radius:22px;
+  border:1px solid var(--border);
+  background:var(--surface2);
+  color:#aeb6d0;
+  font-size:11px;
+}
+
+.composer-input:active{
+  border-color:var(--purple);
+}
+
+.composer-actions{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+  margin-top:7px;
+}
+
+.composer-action{
+  min-width:0;
+  min-height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border:1px solid transparent;
+  border-radius:9px;
+  background:var(--surface2);
+  color:#c5cbe0;
+  font-size:10px;
+  font-weight:700;
+  transition:.18s;
+}
+
+.composer-action:active{transform:scale(.97)}
+.composer-action .icon{font-size:15px}
+.composer-action.photo .icon{color:#54d69b}
+.composer-action.video .icon{color:#53baff}
+.composer-action.poll .icon{color:#b795ff}
+.composer-action.question .icon{color:#f4bd67}
+
+/* POSTS */
+
+.post{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:13px;
+  margin-bottom:9px;
+  overflow:hidden;
+}
+
+.post-header{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 11px 8px;
+}
+
+.post-user{
   flex:1;
   min-width:0;
 }
 
-.remove-option {
-  width:38px;
-  height:42px;
-  flex-shrink:0;
-  border:1px solid rgba(251,113,133,.2);
-  background:rgba(251,113,133,.08);
-  color:#fda4af;
-  border-radius:10px;
-  font-size:17px;
+.post-name{
+  font-size:11px;
+  font-weight:800;
 }
 
-.add-option {
-  margin-top:10px;
-  padding:10px 13px;
-  background:rgba(139,92,246,.1);
-  color:#c4b5fd;
-  border:1px solid rgba(139,92,246,.25);
+.post-meta{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.post-badge{
+  display:inline-block;
+  margin-left:4px;
+  padding:2px 5px;
+  border-radius:5px;
+  background:#8b63ff22;
+  color:#c4aaff;
+  font-size:8px;
+}
+
+.more-wrap{position:relative}
+
+.more-btn{
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#aab2cb;
+  font-size:21px;
+}
+
+.post-menu{
+  display:none;
+  position:absolute;
+  top:30px;
+  right:0;
+  z-index:50;
+  width:145px;
+  padding:5px;
+  border:1px solid #383454;
   border-radius:10px;
+  background:#171c32;
+  box-shadow:0 10px 25px #0009;
+}
+
+.post-menu.open{display:block}
+
+.post-menu button{
+  display:flex;
+  width:100%;
+  align-items:center;
+  gap:8px;
+  padding:10px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#ff929e;
+  text-align:left;
   font-size:11px;
   font-weight:700;
 }
 
-.option-count {
-  color:var(--muted);
-  font-size:10px;
-  margin-top:8px;
+.post-menu button:hover{background:#ff52651a}
+
+.repost-label{
+  padding:7px 11px 0;
+  color:#a995ff;
+  font-size:9px;
+  font-weight:700;
 }
 
-.status {
-  display:none;
-  margin:14px 0;
-  padding:11px 12px;
-  border-radius:10px;
-  font-size:11px;
-  line-height:1.7;
+.post-body{padding:0 11px 10px}
+
+.post-body p{
+  margin:0 0 9px;
+  color:#e2e5f4;
+  font-size:12px;
+  line-height:1.65;
+  white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
 
-.status.success {
-  display:block;
-  background:rgba(52,211,153,.09);
-  border:1px solid rgba(52,211,153,.22);
-  color:#6ee7b7;
+.post-image{
+  width:100%;
+  max-height:460px;
+  border-radius:9px;
+  object-fit:contain;
+  background:#080b18;
+  cursor:zoom-in;
 }
 
-.status.error {
-  display:block;
-  background:rgba(251,113,133,.09);
-  border:1px solid rgba(251,113,133,.22);
-  color:#fda4af;
-}
+/* FULL-SCREEN IMAGE VIEWER */
 
-.status.info {
-  display:block;
-  background:rgba(67,136,255,.09);
-  border:1px solid rgba(67,136,255,.22);
-  color:#93c5fd;
-}
-
-.progress-track {
+.image-viewer{
+  position:fixed;
+  inset:0;
+  z-index:30000;
   display:none;
-  height:5px;
-  background:#252b42;
-  border-radius:10px;
-  overflow:hidden;
+  align-items:center;
+  justify-content:center;
+  padding:54px 12px 20px;
+  background:rgba(0,0,0,.96);
+  touch-action:pan-y;
+}
+
+.image-viewer.show{display:flex}
+
+.image-viewer img{
+  display:block;
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border-radius:4px;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+.image-viewer-close{
+  position:absolute;
+  top:max(14px,env(safe-area-inset-top));
+  right:14px;
+  width:42px;
+  height:42px;
+  border:1px solid #ffffff35;
+  border-radius:50%;
+  background:#2229;
+  color:#fff;
+  font-size:28px;
+  line-height:1;
+}
+
+body.image-viewer-open{overflow:hidden}
+
+.post-video{
+  width:100%;
+  max-height:460px;
+  display:block;
+  background:#000;
+  border-radius:9px;
+  object-fit:contain;
+}
+
+.post-stats{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:8px 11px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.post-actions{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  margin:0 7px;
+  padding:4px 0;
+  border-top:1px solid var(--border);
+}
+
+.post-action{
+  min-width:0;
+  min-height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  padding:5px 2px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#b3bad0;
+  font-size:10px;
+  font-weight:700;
+}
+
+.post-action span{font-size:14px}
+.post-action:hover{background:#ffffff09}
+.post-action.liked{color:#ff739b}
+.post-action.reposted{color:#b49cff}
+
+/* COMMENTS */
+
+.comment-area{
+  display:none;
+  padding:10px;
+  border-top:1px solid var(--border);
+}
+
+.comment-area.open{display:block}
+
+.comment-form{
+  display:flex;
+  gap:7px;
+}
+
+.comment-form textarea{
+  flex:1;
+  min-width:0;
+  min-height:38px;
+  max-height:100px;
+  resize:vertical;
+  padding:9px 11px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--surface2);
+  color:white;
+  font-size:11px;
+}
+
+.comment-form button{
+  padding:0 12px;
+  border:0;
+  border-radius:9px;
+  background:var(--gradient);
+  color:white;
+  font-size:10px;
+  font-weight:800;
+}
+
+.comment-list{
+  display:grid;
+  gap:8px;
   margin-top:10px;
 }
 
-.progress-bar {
-  width:0;
-  height:100%;
-  background:linear-gradient(90deg,var(--purple),var(--cyan));
-  transition:width .2s;
+.comment{
+  display:flex;
+  align-items:flex-start;
+  gap:7px;
 }
 
-.submit-btn {
-  width:100%;
-  padding:14px;
+.comment .avatar{
+  width:29px;
+  height:29px;
+  flex-basis:29px;
+}
+
+.comment-main{
+  flex:1;
+  min-width:0;
+  padding:8px;
+  border-radius:10px;
+  background:var(--surface2);
+}
+
+.comment-main strong{font-size:10px}
+
+.comment-main p{
+  margin:4px 0;
+  font-size:11px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+
+.comment-actions{
+  display:flex;
+  gap:12px;
+}
+
+.small-action{
   border:0;
-  border-radius:12px;
-  background:linear-gradient(110deg,var(--purple),var(--blue));
-  color:white;
-  font-weight:800;
-  font-size:12px;
-  box-shadow:0 8px 25px rgba(91,92,246,.2);
+  padding:0;
+  background:none;
+  color:var(--muted);
+  font-size:9px;
 }
 
-.submit-btn:disabled { opacity:.55;cursor:not-allowed; }
+.reply-form{
+  display:none;
+  gap:6px;
+  margin-top:7px;
+}
 
-.footer-note {
+.reply-form.open{display:flex}
+.reply-form textarea{min-height:32px}
+
+/* SHARE PANEL */
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:15000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:#000b;
+  backdrop-filter:blur(7px);
+}
+
+.modal-backdrop.show{display:flex}
+
+.share-modal{
+  width:min(100%,390px);
+  max-height:85vh;
+  overflow-y:auto;
+  padding:15px;
+  border:1px solid #383454;
+  border-radius:16px;
+  background:#11182d;
+  box-shadow:0 20px 60px #0009;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.modal-head h3{
+  margin:0;
+  font-size:14px;
+}
+
+.modal-close{
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:8px;
+  background:#ffffff0c;
+  color:white;
+  font-size:18px;
+}
+
+.share-options{
+  display:grid;
+  gap:8px;
+}
+
+.share-option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#171d33;
+  color:white;
+  text-align:left;
+}
+
+.share-option:hover{
+  border-color:#8060df;
+  background:#211b3c;
+}
+
+.share-option-icon{
+  width:39px;
+  height:39px;
+  flex:0 0 39px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:#805bff20;
+  color:#c6adff;
+  font-size:19px;
+}
+
+.share-option strong{
+  display:block;
+  font-size:11px;
+}
+
+.share-option small{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.share-list{
+  display:none;
+  margin-top:12px;
+}
+
+.share-list.show{display:block}
+
+.share-search{
+  width:100%;
+  padding:10px 11px;
+  margin-bottom:8px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--surface2);
+  color:white;
+  font-size:11px;
+}
+
+.share-results{
+  display:grid;
+  gap:5px;
+  max-height:260px;
+  overflow-y:auto;
+}
+
+.share-person{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  width:100%;
+  padding:8px;
+  border:0;
+  border-radius:9px;
+  background:#ffffff06;
+  color:white;
+  text-align:left;
+}
+
+.share-person:hover{background:#805bff20}
+
+.share-person img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.share-person span{
+  flex:1;
+  font-size:11px;
+}
+
+.share-person small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-top:3px;
+}
+
+/* EMPTY FEED AND NOTICES */
+
+.empty-feed{
+  padding:25px 14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--surface);
   text-align:center;
   color:var(--muted);
-  font-size:10px;
+  font-size:11px;
   line-height:1.7;
-  margin-top:15px;
 }
 
-@media(max-width:400px) {
-  .card { padding:14px; }
-  .media-options { gap:7px; }
-  .media-option { padding:12px 6px; }
+.empty-feed strong{
+  display:block;
+  color:white;
+  font-size:13px;
+  margin-bottom:5px;
 }
 
-/* CAMPUSORA TOP LOADING BAR */
-
-#campusoraTopProgress {
+.toast{
   position:fixed;
-  top:0;
-  left:0;
-  width:0;
-  height:3px;
-  z-index:99999;
+  left:50%;
+  bottom:88px;
+  z-index:20000;
+  max-width:calc(100% - 30px);
+  padding:10px 14px;
+  border:1px solid #51417e;
+  border-radius:10px;
+  background:#25223a;
+  color:white;
+  font-size:11px;
+  text-align:center;
   opacity:0;
-  background:linear-gradient(90deg,#8b5cf6,#4388ff,#22d3ee);
-  box-shadow:0 0 10px rgba(34,211,238,.35);
-  transition:width .35s ease,opacity .3s ease;
+  pointer-events:none;
+  transform:translate(-50%,12px);
+  transition:.2s;
 }
-</style></head><body><div id="campusoraTopProgress"></div><main class="container">  <div class="heading">
-    <h1 id="pageTitle">Create a post</h1>
-    <p id="pageDescription">
-      Share your thoughts, photos, videos and campus experiences.
-    </p>
-  </div>  <section class="card"><div class="user-row">
-  <div class="avatar" id="avatar">C</div>
-  <div>
-    <div class="user-name" id="userName">Loading profile...</div>
-    <div class="user-school" id="userSchool">Preparing your post</div>
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* NAVIGATION */
+
+.campusora-topnav{
+  z-index:12000!important;
+  pointer-events:auto!important;
+}
+
+.campusora-topnav button,
+.campusora-topnav a,
+.campusora-mainnav a,
+.campusora-mainnav button{
+  pointer-events:auto!important;
+}
+
+.campusora-mainnav{z-index:12000!important}
+
+.campusora-topnav.nav-hidden,
+.campusora-mainnav.nav-hidden{
+  pointer-events:none!important;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:480px){
+  .page{padding:10px 9px 25px}
+  .feed-heading h1{font-size:27px}
+  .section-card{padding:10px}
+  .composer{padding:10px}
+  .post{border-radius:11px}
+}
+
+@media(max-width:350px){
+  .feed-heading h1{font-size:24px}
+  .filter-button{min-width:94px;padding:8px}
+  .composer-action{font-size:9px}
+  .post-action{font-size:9px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="pageProgress"></div>
+
+<main class="page">
+  <div class="main-feed">
+
+    <section class="feed-heading">
+      <div>
+        <h1>Your feed🌟</h1>
+        <p>What's happening around your world</p>
+      </div>
+
+      <div class="filter-wrap">
+        <button class="filter-button" id="filterButton" type="button">
+          <span id="filterLabel">For You</span>
+          <span>⌄</span>
+        </button>
+
+        <div class="filter-menu" id="filterMenu">
+          <button class="filter-option active" data-filter="for-you" type="button">For You</button>
+          <button class="filter-option" data-filter="popular" type="button">Popular</button>
+          <button class="filter-option" data-filter="campus" type="button">My Campus</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAMPUS MOMENTS -->
+    <section class="section-card">
+      <div class="section-heading">
+        <h2>Campus Moments</h2>
+        <a href="campus-moments.html">See all</a>
+      </div>
+
+      <div class="moment-list" id="momentList">
+        <button class="moment add" id="addMomentButton" type="button">
+          <div class="moment-ring">+</div>
+          <span class="moment-name">Add Moment</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- COMPOSER NOW COMES DIRECTLY AFTER CAMPUS MOMENTS -->
+    <section class="composer">
+      <div class="composer-title">What's happening in your campus?</div>
+
+      <div class="composer-top">
+        <a id="myProfileLink" href="profile.html">
+          <img id="composerAvatar" class="avatar" alt="Your profile">
+        </a>
+
+        <a href="create-post.html" class="composer-input">
+          Share something with Campusora...
+        </a>
+      </div>
+
+      <div class="composer-actions">
+        <a class="composer-action photo" href="create-post.html">
+          <span class="icon">▧</span> Photo
+        </a>
+
+        <a class="composer-action video" href="create-post.html">
+          <span class="icon">▶</span> Video
+        </a>
+
+        <a class="composer-action poll" href="create-post.html?type=poll">
+          <span class="icon">▤</span> Poll
+        </a>
+
+        <a class="composer-action question" href="create-post.html?type=question">
+          <span class="icon">?</span> Questions
+        </a>
+      </div>
+    </section>
+
+    <!-- POSTS APPEAR BELOW THE COMPOSER -->
+    <section id="feed">
+      <div class="empty-feed">
+        <strong>Loading your feed...</strong>
+        Getting your Campusora posts.
+      </div>
+    </section>
+
   </div>
+</main>
+
+<!-- SHARE PANEL -->
+
+<div class="modal-backdrop" id="shareBackdrop">
+  <section class="share-modal">
+    <div class="modal-head">
+      <h3>Share this post</h3>
+      <button class="modal-close" id="closeShare" type="button">×</button>
+    </div>
+
+    <div class="share-options">
+      <button class="share-option" data-share-type="profile" type="button">
+        <span class="share-option-icon">◉</span>
+        <span>
+          <strong>Share to Profile</strong>
+          <small>Publish this post on your profile.</small>
+        </span>
+      </button>
+
+      <button class="share-option" data-share-type="message" type="button">
+        <span class="share-option-icon">✉</span>
+        <span>
+          <strong>Share as Message</strong>
+          <small>Choose a person to send this post to.</small>
+        </span>
+      </button>
+
+      <button class="share-option" data-share-type="community" type="button">
+        <span class="share-option-icon">♧</span>
+        <span>
+          <strong>Share to Communities</strong>
+          <small>Choose a community to share this post with.</small>
+        </span>
+      </button>
+    </div>
+
+    <div class="share-list" id="shareList">
+      <input class="share-search" id="shareSearch"
+        placeholder="Search people or communities...">
+      <div class="share-results" id="shareResults"></div>
+    </div>
+  </section>
 </div>
 
-<form id="postForm">
+<input id="momentFileInput" type="file"
+  accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+  hidden>
 
-  <div class="field">
-    <label class="label" id="contentLabel" for="content">
-      What's happening?
-    </label>
+<div class="image-viewer" id="imageViewer" aria-hidden="true">
+  <button class="image-viewer-close" id="closeImageViewer"
+    type="button" aria-label="Close image">×</button>
+  <img id="imageViewerPhoto" src="" alt="Full-size post image">
+</div>
 
-    <textarea
-      id="content"
-      class="textarea"
-      maxlength="5000"
-      placeholder="Share something with Campusora..."
-    ></textarea>
+<div id="toast" class="toast"></div>
 
-    <div class="helper">
-      <span id="contentHelper">Be respectful. Be yourself.</span>
-      <span id="charCount">0 / 5000</span>
+<script src="./shared-nav.js"></script>
+
+<script type="module">
+import {supabase} from "./supabase.js";
+
+const $=id=>document.getElementById(id);
+
+const feed=$("feed");
+const progress=$("pageProgress");
+const momentList=$("momentList");
+const shareBackdrop=$("shareBackdrop");
+const shareList=$("shareList");
+const shareResults=$("shareResults");
+
+let currentUser=null;
+let currentProfile=null;
+let activeFeed="for-you";
+let shareItem=null;
+let loading=false;
+let currentItems=[]; // FIX: declared before use
+let profileCache=new Map();
+
+const fallbackAvatar=
+"data:image/svg+xml;charset=UTF-8,"+
+encodeURIComponent(
+"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='50' fill='#252c46'/><circle cx='50' cy='36' r='18' fill='#9ca8ca'/><path d='M15 95 Q15 62 50 62 Q85 62 85 95' fill='#9ca8ca'/></svg>"
+);
+
+function esc(value=""){
+ return String(value).replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ }[c]));
+}
+
+function avatar(url){return url||fallbackAvatar}
+
+function profileURL(id){
+ return "profile.html?id="+encodeURIComponent(id);
+}
+
+function timeAgo(value){
+ if(!value)return "Recently";
+
+ const seconds=Math.max(
+  0,
+  Math.floor((Date.now()-new Date(value).getTime())/1000)
+ );
+
+ if(seconds<60)return "Just now";
+ if(seconds<3600)return Math.floor(seconds/60)+"m ago";
+ if(seconds<86400)return Math.floor(seconds/3600)+"h ago";
+ if(seconds<604800)return Math.floor(seconds/86400)+"d ago";
+
+ return new Date(value).toLocaleDateString();
+}
+
+function toast(message){
+ $("toast").textContent=message;
+ $("toast").classList.add("show");
+
+ clearTimeout(toast.timer);
+
+ toast.timer=setTimeout(
+  ()=>$("toast").classList.remove("show"),
+  2600
+ );
+}
+
+function startProgress(){
+ progress.className="loading";
+}
+
+function finishProgress(){
+ progress.className="done";
+
+ setTimeout(()=>{
+  progress.className="";
+ },350);
+}
+
+function showEmpty(title,message,retry=false){
+ feed.innerHTML=`
+  <div class="empty-feed">
+   <strong>${esc(title)}</strong>
+   ${esc(message)}
+   ${retry?'<br><button class="filter-button" id="retryFeed" type="button">Try Again</button>':""}
+  </div>`;
+
+ $("retryFeed")?.addEventListener("click",loadFeed);
+}
+
+/* USER */
+
+async function loadMyProfile(){
+ const {data:{session},error}=await supabase.auth.getSession();
+
+ if(error)throw error;
+
+ currentUser=session?.user||null;
+
+ if(!currentUser){
+  $("composerAvatar").src=fallbackAvatar;
+  return;
+ }
+
+ const {data,error:profileError}=await supabase
+  .from("profiles")
+  .select("id,username,full_name,avatar_url,school,role,institution_id")
+  .eq("id",currentUser.id)
+  .maybeSingle();
+
+ if(profileError)throw profileError;
+
+ currentProfile=data;
+
+ if(data)profileCache.set(currentUser.id,data);
+
+ const image=avatar(data?.avatar_url);
+
+ $("composerAvatar").src=image;
+ $("myProfileLink").href=profileURL(currentUser.id);
+}
+
+/* PROFILES */
+
+async function getProfiles(ids){
+ const missing=[...new Set(ids.filter(Boolean))]
+  .filter(id=>!profileCache.has(id));
+
+ if(missing.length){
+  const {data,error}=await supabase
+   .from("profiles")
+   .select("id,username,full_name,avatar_url,role,school")
+   .in("id",missing);
+
+  if(error)throw error;
+
+  (data||[]).forEach(p=>profileCache.set(p.id,p));
+ }
+
+ return profileCache;
+}
+
+/* CAMPUS MOMENTS */
+
+async function loadMoments(){
+ const {data,error}=await supabase
+  .from("campusora_moments")
+  .select("id,user_id,media_type,media_path,caption,created_at,expires_at")
+  .gt("expires_at",new Date().toISOString())
+  .order("created_at",{ascending:false})
+  .limit(25);
+
+ if(error)throw error;
+
+ const moments=data||[];
+
+ const addButton=`
+  <button class="moment add" id="addMomentButton" type="button">
+   <div class="moment-ring">+</div>
+   <span class="moment-name">Add Moment</span>
+  </button>`;
+
+ if(!moments.length){
+  momentList.innerHTML=addButton;
+  return;
+ }
+
+ const profiles=await getProfiles(moments.map(x=>x.user_id));
+
+ momentList.innerHTML=addButton+moments.map(item=>{
+  const p=profiles.get(item.user_id)||{};
+
+  return `
+   <a class="moment" href="campus-moments.html">
+    <div class="moment-ring">
+     <img src="${esc(avatar(p.avatar_url))}" alt="" loading="lazy">
     </div>
-  </div>
+    <span class="moment-name">
+     ${esc(p.full_name||p.username||"Member")}
+    </span>
+   </a>`;
+ }).join("");
+}
 
-  <div class="field" id="pollEditor" hidden>
-    <label class="label">Poll answer options</label>
+/* ADD MOMENT DIRECTLY FROM HOME FEED */
 
-    <div class="poll-options" id="pollOptions">
+const momentFileInput=$("momentFileInput");
 
-      <div class="poll-option-row">
-        <input
-          class="text-input poll-option"
-          type="text"
-          maxlength="100"
-          placeholder="Option 1"
-        >
-      </div>
+async function uploadHomeMoment(file){
+ if(!currentUser){
+  toast("Please log in to add a Moment.");
+  return;
+ }
 
-      <div class="poll-option-row">
-        <input
-          class="text-input poll-option"
-          type="text"
-          maxlength="100"
-          placeholder="Option 2"
-        >
-      </div>
+ if(!file)return;
 
+ const imageTypes=["image/jpeg","image/png","image/webp","image/gif"];
+ const videoTypes=["video/mp4","video/webm","video/quicktime"];
+ const isImage=imageTypes.includes(file.type);
+ const isVideo=videoTypes.includes(file.type);
+
+ if(!isImage&&!isVideo){
+  toast("Choose a JPG, PNG, WEBP, GIF, MP4, WEBM or MOV file.");
+  return;
+ }
+
+ const maxSize=isImage?15*1024*1024:50*1024*1024;
+
+ if(file.size>maxSize){
+  toast(isImage?"Images must be 15MB or smaller.":"Videos must be 50MB or smaller.");
+  return;
+ }
+
+ const addButton=$("addMomentButton");
+ const label=addButton?.querySelector(".moment-name");
+
+ if(addButton)addButton.disabled=true;
+ if(label)label.textContent="Uploading...";
+
+ toast("Uploading your Moment...");
+
+ const extension=(file.name.split(".").pop()||(isImage?"jpg":"mp4"))
+  .toLowerCase().replace(/[^a-z0-9]/g,"")||(isImage?"jpg":"mp4");
+
+ const bucket=isImage?"campusora-images":"campusora-videos";
+
+ const filePath=currentUser.id+"/moments/"+
+  (crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2))+
+  "."+extension;
+
+ let uploadedPath=null;
+
+ try{
+  const {data:uploadData,error:uploadError}=await supabase.storage
+   .from(bucket)
+   .upload(filePath,file,{
+    cacheControl:"3600",
+    upsert:false,
+    contentType:file.type
+   });
+
+  if(uploadError)throw uploadError;
+
+  uploadedPath=uploadData.path;
+
+  const {data:publicData}=supabase.storage
+   .from(bucket)
+   .getPublicUrl(uploadData.path);
+
+  const mediaURL=publicData?.publicUrl;
+
+  if(!mediaURL)throw new Error("Could not create the Moment media link.");
+
+  const {error:insertError}=await supabase
+   .from("campusora_moments")
+   .insert({
+    user_id:currentUser.id,
+    media_type:isImage?"image":"video",
+    media_path:mediaURL,
+    caption:"",
+    audience:"public",
+    music_track_id:null,
+    music_start_seconds:0,
+    music_volume:0.65
+   });
+
+  if(insertError)throw insertError;
+
+  toast("Your Moment has been uploaded!");
+
+  await loadMoments();
+
+ }catch(error){
+  console.error("Moment upload error:",error);
+
+  if(uploadedPath){
+   await supabase.storage.from(bucket).remove([uploadedPath]);
+  }
+
+  toast(error.message||"Could not upload your Moment.");
+
+ }finally{
+  if(addButton)addButton.disabled=false;
+  if(label)label.textContent="Add Moment";
+  momentFileInput.value="";
+ }
+}
+
+momentList.addEventListener("click",event=>{
+ const addButton=event.target.closest("#addMomentButton");
+
+ if(!addButton)return;
+
+ event.preventDefault();
+
+ if(!currentUser){
+  toast("Please log in to add a Moment.");
+  return;
+ }
+
+ momentFileInput.click();
+});
+
+momentFileInput.addEventListener("change",()=>{
+ const file=momentFileInput.files?.[0];
+
+ if(file)uploadHomeMoment(file);
+});
+
+/* FETCH POSTS */
+
+async function fetchPosts(){
+ let query=supabase
+  .from("posts")
+  .select("*")
+  .order("created_at",{ascending:false})
+  .limit(60);
+
+ if(activeFeed==="campus"){
+  if(!currentProfile?.institution_id)return [];
+
+  query=query.eq("institution_id",currentProfile.institution_id);
+ }
+
+ const {data,error}=await query;
+
+ if(error)throw error;
+
+ return data||[];
+}
+
+/* FETCH SPOTLIGHT VIDEOS */
+
+async function fetchVideos(){
+ let query=supabase
+  .from("spotlight_videos")
+  .select("id,user_id,caption,video_url,thumbnail_url,institution_id,view_count,created_at")
+  .order("created_at",{ascending:false})
+  .limit(30);
+
+ if(activeFeed==="campus"){
+  if(!currentProfile?.institution_id)return [];
+
+  query=query.eq("institution_id",currentProfile.institution_id);
+ }
+
+ const {data,error}=await query;
+
+ if(error)throw error;
+
+ return data||[];
+}
+
+/* SPONSORED CONTENT */
+
+async function fetchSponsored(){
+ const now=new Date().toISOString();
+
+ const results=[];
+
+ const [business,campaign]=await Promise.allSettled([
+  supabase.from("campusora_business_promotions")
+   .select("*")
+   .eq("status","active")
+   .lte("start_at",now)
+   .gte("end_at",now)
+   .order("priority",{ascending:false})
+   .limit(4),
+
+  supabase.from("sponsored_campaigns")
+   .select("*")
+   .eq("status","active")
+   .eq("payment_verified",true)
+   .or(`ends_at.is.null,ends_at.gte.${now}`)
+   .limit(4)
+ ]);
+
+ if(business.status==="fulfilled"&&!business.value.error){
+  (business.value.data||[]).forEach(data=>{
+   results.push({kind:"business-ad",data});
+  });
+ }
+
+ if(campaign.status==="fulfilled"&&!campaign.value.error){
+  (campaign.value.data||[]).forEach(data=>{
+   results.push({kind:"campaign-ad",data});
+  });
+ }
+
+ return results;
+}
+
+/* SUPPORTING DATA
+   These counts are supplementary. If one supporting table fails,
+   the actual posts should still be displayed.
+*/
+
+async function safeQuery(promise){
+ try{
+  const result=await promise;
+
+  if(result.error){
+   console.warn("Supporting feed data:",result.error);
+   return [];
+  }
+
+  return result.data||[];
+
+ }catch(error){
+  console.warn("Supporting feed data:",error);
+  return [];
+ }
+}
+
+async function supporting(items){
+ const posts=items
+  .filter(x=>x.kind==="post")
+  .map(x=>x.data);
+
+ const videos=items
+  .filter(x=>x.kind==="video")
+  .map(x=>x.data);
+
+ const postIds=posts.map(x=>x.id);
+ const videoIds=videos.map(x=>x.id);
+
+ const userIds=[...new Set([
+  ...posts.map(x=>x.user_id),
+  ...videos.map(x=>x.user_id)
+ ])];
+
+ const requests=[
+  userIds.length
+   ?safeQuery(
+     supabase.from("profiles")
+      .select("id,username,full_name,avatar_url,role,school")
+      .in("id",userIds)
+    )
+   :Promise.resolve([]),
+
+  postIds.length
+   ?safeQuery(
+     supabase.from("likes")
+      .select("post_id,user_id")
+      .in("post_id",postIds)
+    )
+   :Promise.resolve([]),
+
+  postIds.length
+   ?safeQuery(
+     supabase.from("comments")
+      .select("id,post_id,user_id,content,created_at,parent_comment_id")
+      .in("post_id",postIds)
+      .order("created_at")
+    )
+   :Promise.resolve([]),
+
+  postIds.length
+   ?safeQuery(
+     supabase.from("post_reposts")
+      .select("post_id,user_id")
+      .in("post_id",postIds)
+    )
+   :Promise.resolve([]),
+
+  videoIds.length
+   ?safeQuery(
+     supabase.from("spotlight_video_reposts")
+      .select("video_id,user_id")
+      .in("video_id",videoIds)
+    )
+   :Promise.resolve([])
+ ];
+
+ const [
+  profiles,
+  likes,
+  comments,
+  reposts,
+  videoReposts
+ ]=await Promise.all(requests);
+
+ profiles.forEach(p=>profileCache.set(p.id,p));
+
+ return {
+  profiles:profileCache,
+  likes,
+  comments,
+  reposts,
+  videoReposts
+ };
+}
+
+/* FEED RANKING */
+
+function rankItems(items,extra){
+ const counts={};
+
+ extra.likes.forEach(x=>{
+  counts[x.post_id]=(counts[x.post_id]||0)+2;
+ });
+
+ extra.comments.forEach(x=>{
+  counts[x.post_id]=(counts[x.post_id]||0)+4;
+ });
+
+ extra.reposts.forEach(x=>{
+  counts[x.post_id]=(counts[x.post_id]||0)+6;
+ });
+
+ return items.map(item=>{
+  const date=new Date(item.data.created_at||Date.now()).getTime();
+  const age=Math.max(1,(Date.now()-date)/3600000);
+  const id=item.data.id;
+  const engagement=counts[id]||0;
+  const freshness=1/Math.pow(age+2,.65);
+
+  let score=freshness;
+
+  if(item.kind==="post"){
+   score+=engagement*freshness;
+  }
+
+  if(activeFeed==="popular"){
+   score+=engagement*0.5;
+  }
+
+  return {...item,score};
+
+ }).sort((a,b)=>{
+  if(activeFeed==="for-you"||activeFeed==="popular"){
+   return b.score-a.score;
+  }
+
+  return new Date(b.data.created_at)-new Date(a.data.created_at);
+ });
+}
+
+/* COMMENTS */
+
+function renderComments(comments,profiles,postId){
+ const roots=comments.filter(
+  x=>x.post_id===postId&&!x.parent_comment_id
+ );
+
+ function one(c){
+  const p=profiles.get(c.user_id)||{};
+
+  const replies=comments.filter(
+   x=>x.parent_comment_id===c.id
+  );
+
+  return `
+   <div class="comment">
+    <a href="${profileURL(c.user_id)}">
+     <img class="avatar"
+      src="${esc(avatar(p.avatar_url))}" alt="">
+    </a>
+
+    <div class="comment-main">
+     <a href="${profileURL(c.user_id)}">
+      <strong>${esc(p.full_name||p.username||"Member")}</strong>
+     </a>
+
+     <p>${esc(c.content)}</p>
+
+     <div class="comment-actions">
+      <button class="small-action"
+       data-comment-action="reply"
+       data-comment-id="${esc(c.id)}"
+       type="button">Reply</button>
+
+      ${currentUser?.id===c.user_id
+       ?`<button class="small-action"
+          data-comment-action="delete"
+          data-comment-id="${esc(c.id)}"
+          type="button">Delete</button>`
+       :""}
+     </div>
+
+     <form class="reply-form" data-parent-id="${esc(c.id)}">
+      <textarea name="content"
+       placeholder="Write a reply..." required></textarea>
+      <button class="small-action" type="submit">Send</button>
+     </form>
+
+     ${replies.map(one).join("")}
+    </div>
+   </div>`;
+ }
+
+ return roots.map(one).join("")||
+  '<small class="post-meta">No comments yet. Start the conversation.</small>';
+}
+
+/* POST MENU */
+
+function renderMenu(post){
+ if(currentUser?.id!==post.user_id)return "";
+
+ return `
+  <div class="more-wrap">
+   <button class="more-btn"
+    data-action="menu"
+    aria-label="Post menu"
+    type="button">⋯</button>
+
+   <div class="post-menu">
+    <button data-action="delete" type="button">
+     ⌫ Delete Post
+    </button>
+   </div>
+  </div>`;
+}
+
+/* RENDER NORMAL POST */
+
+function renderPost(item,extra){
+ const post=item.data;
+
+ const author=extra.profiles.get(post.user_id)||{};
+
+ const likes=extra.likes.filter(x=>x.post_id===post.id);
+ const comments=extra.comments.filter(x=>x.post_id===post.id);
+ const reposts=extra.reposts.filter(x=>x.post_id===post.id);
+
+ const liked=likes.some(x=>x.user_id===currentUser?.id);
+
+ const reposted=reposts.some(
+  x=>x.user_id===currentUser?.id
+ );
+
+ return `
+  <article class="post" data-post-id="${esc(post.id)}">
+
+   ${item.repostedBy
+    ?`<div class="repost-label">
+       ⟳ ${esc(item.repostedBy)} reposted
+      </div>`
+    :""}
+
+   <div class="post-header">
+    <a href="${profileURL(post.user_id)}">
+     <img class="avatar"
+      src="${esc(avatar(author.avatar_url))}" alt="">
+    </a>
+
+    <div class="post-user">
+     <a class="post-name" href="${profileURL(post.user_id)}">
+      ${esc(author.full_name||author.username||"Campusora Member")}
+     </a>
+
+     ${author.role
+      ?`<span class="post-badge">${esc(author.role)}</span>`
+      :""}
+
+     <div class="post-meta">
+      ${author.username?"@"+esc(author.username)+" · ":""}
+      ${timeAgo(post.created_at)}
+     </div>
     </div>
 
-    <button class="add-option" type="button" id="addOption">
-      + Add another option
+    ${renderMenu(post)}
+   </div>
+
+   <div class="post-body">
+    ${post.content?`<p>${esc(post.content)}</p>`:""}
+
+    ${post.image_url
+     ?`<img class="post-image"
+        src="${esc(post.image_url)}"
+        loading="lazy" alt="Post image">`
+     :""}
+
+    ${post.video_url
+     ?`<video class="post-video"
+        controls playsinline preload="metadata"
+        src="${esc(post.video_url)}"></video>`
+     :""}
+   </div>
+
+   <div class="post-stats">
+    <span>${likes.length} reactions</span>
+    <span>${comments.length} comments · ${reposts.length} reposts</span>
+   </div>
+
+   <div class="post-actions">
+    <button class="post-action ${liked?"liked":""}"
+     data-action="like" type="button">
+     <span>${liked?"♥":"♡"}</span> Like
     </button>
 
-    <div class="option-count" id="optionCount">
-      2 of 6 options
-    </div>
-  </div>
+    <button class="post-action"
+     data-action="comments" type="button">
+     <span>▢</span> Comment
+    </button>
 
-  <div class="field" id="mediaField">
+    <button class="post-action ${reposted?"reposted":""}"
+     data-action="repost" type="button">
+     <span>⟳</span> Repost
+    </button>
 
-    <label class="label">Add media (optional)</label>
+    <button class="post-action"
+     data-action="share" type="button">
+     <span>↗</span> Share
+    </button>
+   </div>
 
-    <div class="media-options">
+   <section class="comment-area" id="comments-${esc(post.id)}">
 
-      <div class="media-option photo-option">
-        <label for="photoInput">
-          <div class="media-icon">📸</div>
-          <div class="media-title">Add photo</div>
-          <div class="media-description">
-            JPEG, PNG or WebP<br>Maximum 5 MB
-          </div>
-        </label>
-      </div>
+    <form class="comment-form" data-post-id="${esc(post.id)}">
+     <textarea name="content"
+      maxlength="2000"
+      placeholder="Write a comment..." required></textarea>
+     <button type="submit">Send</button>
+    </form>
 
-      <div class="media-option video-option">
-        <label for="videoInput">
-          <div class="media-icon">🎬</div>
-          <div class="media-title">Add video</div>
-          <div class="media-description">
-            MP4, WebM or MOV<br>Maximum 50 MB
-          </div>
-        </label>
-      </div>
-
+    <div class="comment-list">
+     ${renderComments(comments,extra.profiles,post.id)}
     </div>
 
-    <input
-      type="file"
-      id="photoInput"
-      accept="image/jpeg,image/png,image/webp"
-    >
+   </section>
+  </article>`;
+}
 
-    <input
-      type="file"
-      id="videoInput"
-      accept="video/mp4,video/webm,video/quicktime"
-    >
+/* RENDER SPOTLIGHT VIDEO */
 
-    <div class="preview-wrap" id="photoPreviewWrap">
-      <div class="preview-heading">
-        <span>📸 Photo preview</span>
-      </div>
+function renderVideo(item,extra){
+ const video=item.data;
 
-      <img
-        class="preview-image"
-        id="previewImage"
-        alt="Selected photo preview"
-      >
+ const author=extra.profiles.get(video.user_id)||{};
 
-      <button class="remove-media" id="removePhoto" type="button">
-        Remove photo
-      </button>
+ const reposts=extra.videoReposts.filter(
+  x=>x.video_id===video.id
+ );
+
+ const reposted=reposts.some(
+  x=>x.user_id===currentUser?.id
+ );
+
+ return `
+  <article class="post" data-video-id="${esc(video.id)}">
+
+   <div class="post-header">
+    <a href="${profileURL(video.user_id)}">
+     <img class="avatar"
+      src="${esc(avatar(author.avatar_url))}" alt="">
+    </a>
+
+    <div class="post-user">
+     <a class="post-name" href="${profileURL(video.user_id)}">
+      ${esc(author.full_name||author.username||"Creator")}
+     </a>
+
+     <div class="post-meta">
+      ✦ Spotlight · ${timeAgo(video.created_at)}
+     </div>
     </div>
+   </div>
 
-    <div class="preview-wrap" id="videoPreviewWrap">
-      <div class="preview-heading">
-        <span>🎬 Video preview</span>
-      </div>
+   ${video.caption
+    ?`<div class="post-body"><p>${esc(video.caption)}</p></div>`
+    :""}
 
-      <video
-        class="preview-video"
-        id="previewVideo"
-        controls
-        playsinline
-        preload="metadata"
-      ></video>
+   <video class="post-video"
+    controls playsinline preload="metadata"
+    ${video.thumbnail_url
+     ?`poster="${esc(video.thumbnail_url)}"`
+     :""}
+    src="${esc(video.video_url)}"></video>
 
-      <div class="media-info" id="videoInfo"></div>
+   <div class="post-stats">
+    <span>${Number(video.view_count||0)} views</span>
+    <span>${reposts.length} reposts</span>
+   </div>
 
-      <button class="remove-media" id="removeVideo" type="button">
-        Remove video
-      </button>
+   <div class="post-actions">
+    <a class="post-action"
+     href="spotlight.html#${encodeURIComponent(video.id)}">
+     ▶ Watch
+    </a>
+
+    <button class="post-action ${reposted?"reposted":""}"
+     data-action="video-repost" type="button">
+     ⟳ Repost
+    </button>
+
+    <button class="post-action"
+     data-action="video-share" type="button">
+     ↗ Share
+    </button>
+
+    <a class="post-action"
+     href="spotlight.html#${encodeURIComponent(video.id)}">
+     ♡ Gifts
+    </a>
+   </div>
+
+  </article>`;
+}
+
+/* SPONSORED POSTS */
+
+function renderBusinessAd(ad){
+ const media=ad.media_type==="video"
+  ?`<video class="post-video"
+     controls playsinline preload="metadata"
+     src="${esc(ad.media_path)}"></video>`
+  :`<img class="post-image"
+     loading="lazy"
+     src="${esc(ad.media_path)}"
+     alt="Sponsored promotion">`;
+
+ return `
+  <article class="post">
+   <div class="post-header">
+    <div class="post-user">
+     <strong class="post-name">
+      ${esc(ad.business_name||"Campusora Partner")}
+     </strong>
+     <div class="post-meta">Sponsored</div>
     </div>
+   </div>
 
-  </div>
+   <div class="post-body">
+    <span class="post-badge">SPONSORED</span>
+    <p><strong>${esc(ad.promotion_title||"")}</strong></p>
+    <p>${esc(ad.description||"")}</p>
+    ${media}
 
-  <div class="sharing-note" id="sharingNote">
-    🌍 <strong>Share with Campusora</strong><br>
-    Your post will be saved to your account.
-  </div>
-
-  <div
-    class="status"
-    id="status"
-    role="status"
-    aria-live="polite"
-  ></div>
-
-  <div class="progress-track" id="progressTrack">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-
-  <button class="submit-btn" id="submitBtn" type="submit">
-    Publish post 🚀
-  </button>
-
-</form>
-
-<div class="footer-note">
-  Keep Campusora safe and respectful.<br>
-  Don't upload private information or media you don't have permission to share.
-</div>
-
-  </section></main><script type="module">
-import { supabase } from './supabase.js';
-
-/* PAGE MODE */
-
-const params = new URLSearchParams(window.location.search);
-const requestedType = params.get('type');
-
-const postType = ['poll', 'question'].includes(requestedType)
-  ? requestedType
-  : 'regular';
-
-const isPoll = postType === 'poll';
-const isQuestion = postType === 'question';
-
-/* ELEMENTS */
-
-const form = document.getElementById('postForm');
-const contentInput = document.getElementById('content');
-const photoInput = document.getElementById('photoInput');
-const videoInput = document.getElementById('videoInput');
-const submitBtn = document.getElementById('submitBtn');
-const statusBox = document.getElementById('status');
-
-const photoPreviewWrap = document.getElementById('photoPreviewWrap');
-const videoPreviewWrap = document.getElementById('videoPreviewWrap');
-const previewImage = document.getElementById('previewImage');
-const previewVideo = document.getElementById('previewVideo');
-const videoInfo = document.getElementById('videoInfo');
-
-const progressTrack = document.getElementById('progressTrack');
-const progressBar = document.getElementById('progressBar');
-
-const pollEditor = document.getElementById('pollEditor');
-const pollOptions = document.getElementById('pollOptions');
-const addOptionBtn = document.getElementById('addOption');
-
-const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
-const MAX_VIDEO_SIZE = 50 * 1024 * 1024;
-const MAX_POLL_OPTIONS = 6;
-
-const ALLOWED_PHOTO_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp'
-];
-
-const ALLOWED_VIDEO_TYPES = [
-  'video/mp4',
-  'video/webm',
-  'video/quicktime'
-];
-
-let currentUser = null;
-let currentProfile = null;
-let selectedPhoto = null;
-let selectedVideo = null;
-let photoPreviewUrl = null;
-let videoPreviewUrl = null;
-let publishing = false;
-
-/* TOP LOADING PROGRESS BAR */
-
-const topProgress = document.getElementById('campusoraTopProgress');
-let topProgressTimer = null;
-
-function startTopProgress() {
-  clearInterval(topProgressTimer);
-
-  topProgress.style.opacity = '1';
-  topProgress.style.width = '15%';
-
-  let progress = 15;
-
-  topProgressTimer = setInterval(() => {
-    if (progress < 85) {
-      progress += Math.random() * 8;
-      topProgress.style.width = `${Math.min(progress, 85)}%`;
-    }
-  }, 250);
+    ${ad.call_to_action&&ad.website_url
+     ?`<a class="filter-button"
+        target="_blank" rel="noopener"
+        href="${esc(ad.website_url)}">
+        ${esc(ad.call_to_action)}
+       </a>`
+     :""}
+   </div>
+  </article>`;
 }
 
-function completeTopProgress() {
-  clearInterval(topProgressTimer);
+function renderCampaignAd(ad){
+ const media=ad.post_video_url
+  ?`<video class="post-video"
+     controls playsinline preload="metadata"
+     src="${esc(ad.post_video_url)}"></video>`
+  :ad.post_image_url
+   ?`<img class="post-image"
+      loading="lazy"
+      src="${esc(ad.post_image_url)}"
+      alt="Sponsored post">`
+   :"";
 
-  topProgress.style.width = '100%';
-  topProgress.style.opacity = '1';
+ return `
+  <article class="post">
+   <div class="post-header">
+    <div class="post-user">
+     <strong class="post-name">Campusora Promotion</strong>
+     <div class="post-meta">Sponsored</div>
+    </div>
+   </div>
 
-  setTimeout(() => {
-    topProgress.style.opacity = '0';
+   <div class="post-body">
+    <span class="post-badge">SPONSORED</span>
+    <p>${esc(ad.post_content||"")}</p>
+    ${media}
 
-    setTimeout(() => {
-      topProgress.style.width = '0';
-    }, 350);
-  }, 350);
+    ${ad.destination_url
+     ?`<a class="filter-button"
+        target="_blank" rel="noopener"
+        href="${esc(ad.destination_url)}">
+        Learn More
+       </a>`
+     :""}
+   </div>
+  </article>`;
 }
 
-function stopTopProgress() {
-  clearInterval(topProgressTimer);
-  topProgress.style.width = '0';
-  topProgress.style.opacity = '0';
-}
+/* MAIN FEED LOADER */
 
-/* PAGE SETUP */
+async function loadFeed(){
+ if(loading)return;
 
-function setupPageMode() {
+ loading=true;
+ startProgress();
 
-  const title = document.getElementById('pageTitle');
-  const description = document.getElementById('pageDescription');
-  const label = document.getElementById('contentLabel');
-  const helper = document.getElementById('contentHelper');
-  const sharingNote = document.getElementById('sharingNote');
-
-  if (isPoll) {
-    title.textContent = 'Create a Poll 📊';
-    description.textContent =
-      'Ask your campus community and let them vote.';
-    label.textContent = 'Your poll question';
-    contentInput.placeholder =
-      'What would you like people to vote on?';
-    helper.textContent =
-      'Keep your poll question clear and simple.';
-    pollEditor.hidden = false;
-    document.getElementById('mediaField').hidden = true;
-    sharingNote.innerHTML =
-      '📊 <strong>Campusora Poll</strong><br>' +
-      'Your poll will appear in the feed. Members can vote and view the results.';
-    submitBtn.textContent = 'Publish poll 📊';
-
-  } else if (isQuestion) {
-    title.textContent = 'Ask a Question ✧';
-    description.textContent =
-      'Ask something and get answers from your campus community.';
-    label.textContent = 'Your question';
-    contentInput.placeholder =
-      'What would you like to ask the Campusora community?';
-    helper.textContent =
-      'Make your question easy for others to understand.';
-    document.getElementById('mediaField').hidden = true;
-    sharingNote.innerHTML =
-      '✧ <strong>Ask Campusora</strong><br>' +
-      'Your question will appear in the feed. Other members can respond in the comments.';
-    submitBtn.textContent = 'Publish question ✨';
-
-  } else {
-    title.textContent = 'Create a post ✨';
-    description.textContent =
-      'Share your thoughts, photos, videos and campus experiences.';
-    submitBtn.textContent = 'Publish post 🚀';
-  }
-}
-
-setupPageMode();
-
-/* GENERAL HELPERS */
-
-function showStatus(message, type = 'info') {
-  statusBox.textContent = message;
-  statusBox.className = 'status ' + type;
-}
-
-function hideStatus() {
-  statusBox.textContent = '';
-  statusBox.className = 'status';
-}
-
-function updateCharacterCount() {
-  document.getElementById('charCount').textContent =
-    `${contentInput.value.length} / 5000`;
-}
-
-contentInput.addEventListener('input', updateCharacterCount);
-
-function updateProgress(percent) {
-  progressTrack.style.display = 'block';
-  progressBar.style.width = `${percent}%`;
-}
-
-function hideProgress() {
-  progressTrack.style.display = 'none';
-  progressBar.style.width = '0%';
-}
-
-function formatFileSize(bytes) {
-  return bytes >= 1024 * 1024
-    ? `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-    : `${(bytes / 1024).toFixed(0)} KB`;
-}
-
-function formatDuration(seconds) {
-  const total = Math.floor(seconds);
-  const minutes = Math.floor(total / 60);
-  const remaining = total % 60;
-
-  return `${minutes}:${String(remaining).padStart(2, '0')}`;
-}
-
-/* POLL OPTIONS */
-
-function updateOptionCount() {
-  const count = pollOptions.querySelectorAll('.poll-option-row').length;
-
-  document.getElementById('optionCount').textContent =
-    `${count} of ${MAX_POLL_OPTIONS} options`;
-
-  addOptionBtn.disabled = count >= MAX_POLL_OPTIONS;
-  addOptionBtn.style.opacity = count >= MAX_POLL_OPTIONS ? '.5' : '1';
-}
-
-function addPollOption() {
-  const count = pollOptions.querySelectorAll('.poll-option-row').length;
-
-  if (count >= MAX_POLL_OPTIONS) return;
-
-  const row = document.createElement('div');
-  row.className = 'poll-option-row';
-
-  const input = document.createElement('input');
-  input.className = 'text-input poll-option';
-  input.type = 'text';
-  input.maxLength = 100;
-  input.placeholder = `Option ${count + 1}`;
-
-  const remove = document.createElement('button');
-  remove.type = 'button';
-  remove.className = 'remove-option';
-  remove.textContent = '×';
-  remove.setAttribute('aria-label', 'Remove option');
-
-  remove.addEventListener('click', () => {
-    row.remove();
-    updateOptionCount();
-    renumberOptions();
-  });
-
-  row.append(input, remove);
-  pollOptions.appendChild(row);
-
-  updateOptionCount();
-}
-
-function renumberOptions() {
-  const rows = pollOptions.querySelectorAll('.poll-option-row');
-
-  rows.forEach((row, index) => {
-    const input = row.querySelector('input');
-    input.placeholder = `Option ${index + 1}`;
-  });
-}
-
-addOptionBtn.addEventListener('click', addPollOption);
-
-function getPollOptions() {
-  return Array.from(
-    pollOptions.querySelectorAll('.poll-option')
-  )
-    .map(input => input.value.trim())
-    .filter(Boolean);
-}
-
-updateOptionCount();
-
-/* MEDIA CLEANUP */
-
-function clearPhoto() {
-  selectedPhoto = null;
-  photoInput.value = '';
-  photoPreviewWrap.style.display = 'none';
-
-  if (photoPreviewUrl) {
-    URL.revokeObjectURL(photoPreviewUrl);
-    photoPreviewUrl = null;
+ try{
+  if(!currentUser&&currentProfile===null){
+   await loadMyProfile();
   }
 
-  previewImage.removeAttribute('src');
+  if(activeFeed==="campus"&&!currentProfile?.institution_id){
+   currentItems=[];
+   showEmpty(
+    "My Campus",
+    "Select your institution in your profile to see campus posts."
+   );
+   return;
+  }
+
+  /*
+   * Load normal posts separately.
+   * A Spotlight or advertising error must not hide normal posts.
+   */
+
+  const postResult=await fetchPosts();
+
+  let posts=postResult||[];
+  let videos=[];
+  let ads=[];
+
+  const secondary=await Promise.allSettled([
+   fetchVideos(),
+   fetchSponsored()
+  ]);
+
+  if(secondary[0].status==="fulfilled"){
+   videos=secondary[0].value||[];
+  }else{
+   console.warn("Spotlight videos could not load:",secondary[0].reason);
+  }
+
+  if(secondary[1].status==="fulfilled"){
+   ads=secondary[1].value||[];
+  }else{
+   console.warn("Sponsored content could not load:",secondary[1].reason);
+  }
+
+  let items=[
+   ...posts.map(data=>({kind:"post",data})),
+   ...videos.map(data=>({kind:"video",data})),
+   ...ads
+  ];
+
+  if(!items.length){
+   currentItems=[];
+   showEmpty(
+    "Your feed is waiting for its first post!",
+    "Share something with Campusora to get the conversation started."
+   );
+   return;
+  }
+
+  /*
+   * Supporting data is optional.
+   * If likes, comments or repost counts fail,
+   * posts will still be displayed.
+   */
+
+  const normal=items.filter(
+   x=>x.kind==="post"||x.kind==="video"
+  );
+
+  const extra=await supporting(normal);
+
+  items=rankItems(items,extra);
+
+  // FIX: currentItems is declared above.
+  currentItems=items;
+
+  feed.innerHTML=items.map(item=>{
+   if(item.kind==="post")return renderPost(item,extra);
+   if(item.kind==="video")return renderVideo(item,extra);
+   if(item.kind==="business-ad")return renderBusinessAd(item.data);
+   if(item.kind==="campaign-ad")return renderCampaignAd(item.data);
+
+   return "";
+  }).join("");
+
+ }catch(error){
+  console.error("Feed error:",error);
+
+  showEmpty(
+   "We couldn't load your feed",
+   error.message||"Check your connection and try again.",
+   true
+  );
+
+ }finally{
+  loading=false;
+  finishProgress();
+ }
 }
 
-function clearVideo() {
-  selectedVideo = null;
-  videoInput.value = '';
-  videoPreviewWrap.style.display = 'none';
+/* LIKE */
 
-  previewVideo.pause();
-  previewVideo.removeAttribute('src');
-  previewVideo.load();
+async function toggleLike(postId){
+ if(!currentUser){
+  return toast("Please log in to react.");
+ }
 
-  if (videoPreviewUrl) {
-    URL.revokeObjectURL(videoPreviewUrl);
-    videoPreviewUrl = null;
-  }
+ const {data:existing,error:findError}=await supabase
+  .from("likes")
+  .select("id")
+  .eq("post_id",postId)
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
 
-  videoInfo.textContent = '';
-}
+ if(findError){
+  console.error(findError);
+  return toast("Could not update reaction.");
+ }
 
-document.getElementById('removePhoto').addEventListener('click', () => {
-  clearPhoto();
-  hideStatus();
-});
-
-document.getElementById('removeVideo').addEventListener('click', () => {
-  clearVideo();
-  hideStatus();
-});
-
-/* PHOTO SELECTION */
-
-photoInput.addEventListener('change', () => {
-  const file = photoInput.files?.[0];
-
-  if (!file) return;
-
-  if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
-    clearPhoto();
-    showStatus('Choose a JPEG, PNG or WebP image.', 'error');
-    return;
-  }
-
-  if (file.size > MAX_PHOTO_SIZE) {
-    clearPhoto();
-    showStatus('Your photo must be 5 MB or smaller.', 'error');
-    return;
-  }
-
-  clearVideo();
-
-  selectedPhoto = file;
-
-  if (photoPreviewUrl) {
-    URL.revokeObjectURL(photoPreviewUrl);
-  }
-
-  photoPreviewUrl = URL.createObjectURL(file);
-  previewImage.src = photoPreviewUrl;
-  photoPreviewWrap.style.display = 'block';
-
-  hideStatus();
-});
-
-/* VIDEO SELECTION */
-
-videoInput.addEventListener('change', () => {
-  const file = videoInput.files?.[0];
-
-  if (!file) return;
-
-  if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
-    clearVideo();
-    showStatus('Choose an MP4, WebM or MOV video.', 'error');
-    return;
-  }
-
-  if (file.size > MAX_VIDEO_SIZE) {
-    clearVideo();
-    showStatus('Your video must be 50 MB or smaller.', 'error');
-    return;
-  }
-
-  clearPhoto();
-
-  selectedVideo = file;
-
-  if (videoPreviewUrl) {
-    URL.revokeObjectURL(videoPreviewUrl);
-  }
-
-  videoPreviewUrl = URL.createObjectURL(file);
-  previewVideo.src = videoPreviewUrl;
-
-  videoInfo.textContent =
-    `${file.name} · ${formatFileSize(file.size)} · Preparing preview...`;
-
-  videoPreviewWrap.style.display = 'block';
-
-  previewVideo.onloadedmetadata = () => {
-    const duration = Number.isFinite(previewVideo.duration)
-      ? formatDuration(previewVideo.duration)
-      : 'Unknown duration';
-
-    videoInfo.textContent =
-      `${file.name} · ${formatFileSize(file.size)} · ${duration}`;
-  };
-
-  previewVideo.onerror = () => {
-    videoInfo.textContent =
-      `${file.name} · ${formatFileSize(file.size)} · Preview unavailable.`;
-  };
-
-  hideStatus();
-});
-
-/* LOAD PROFILE */
-
-async function loadProfile() {
-  const {
-    data: { session },
-    error: sessionError
-  } = await supabase.auth.getSession();
-
-  if (sessionError) throw sessionError;
-
-  if (!session) {
-    showStatus('Please log in before creating content.', 'error');
-    submitBtn.disabled = true;
-
-    setTimeout(() => {
-      window.location.href = './auth.html?mode=login';
-    }, 1800);
-
-    return false;
-  }
-
-  currentUser = session.user;
-
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('id, username, full_name, school, avatar_url')
-    .eq('id', currentUser.id)
-    .maybeSingle();
-
-  if (error) throw error;
-
-  if (!profile) {
-    showStatus('Please complete your profile first.', 'error');
-    submitBtn.disabled = true;
-
-    setTimeout(() => {
-      window.location.href = './profile-setup.html';
-    }, 1800);
-
-    return false;
-  }
-
-  currentProfile = profile;
-
-  const displayName =
-    profile.full_name || profile.username || 'Campusora Member';
-
-  document.getElementById('userName').textContent = displayName;
-  document.getElementById('userSchool').textContent =
-    profile.school || 'Campusora member';
-
-  const avatar = document.getElementById('avatar');
-
-  if (profile.avatar_url) {
-    const img = document.createElement('img');
-    img.src = profile.avatar_url;
-    img.alt = 'Profile photo';
-    avatar.replaceChildren(img);
-  } else {
-    avatar.textContent = displayName.charAt(0).toUpperCase();
-  }
-
-  return true;
-}
-
-/* UPLOAD PHOTO */
-
-async function uploadPhoto(file) {
-  const extensionMap = {
-    'image/jpeg': 'jpg',
-    'image/png': 'png',
-    'image/webp': 'webp'
-  };
-
-  const extension = extensionMap[file.type];
-
-  if (!extension) {
-    throw new Error('Unsupported photo format.');
-  }
-
-  const path =
-    `${currentUser.id}/posts/${crypto.randomUUID()}.${extension}`;
-
-  const { error } = await supabase.storage
-    .from('campusora-images')
-    .upload(path, file, {
-      cacheControl: '3600',
-      upsert: false,
-      contentType: file.type
+ const result=existing
+  ?await supabase.from("likes")
+    .delete()
+    .eq("post_id",postId)
+    .eq("user_id",currentUser.id)
+  :await supabase.from("likes")
+    .insert({
+     post_id:postId,
+     user_id:currentUser.id
     });
 
-  if (error) throw error;
+ if(result.error){
+  console.error(result.error);
+  return toast("Could not update reaction.");
+ }
 
-  const { data } = supabase.storage
-    .from('campusora-images')
-    .getPublicUrl(path);
-
-  return data.publicUrl;
+ await loadFeed();
 }
 
-/* UPLOAD VIDEO */
+/* REPOST NORMAL POST */
 
-async function uploadVideo(file) {
-  const extensionMap = {
-    'video/mp4': 'mp4',
-    'video/webm': 'webm',
-    'video/quicktime': 'mov'
-  };
+async function toggleRepost(postId){
+ if(!currentUser){
+  return toast("Please log in to repost.");
+ }
 
-  const extension = extensionMap[file.type];
+ const {data:existing,error}=await supabase
+  .from("post_reposts")
+  .select("id")
+  .eq("post_id",postId)
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
 
-  if (!extension) {
-    throw new Error('Unsupported video format.');
+ if(error){
+  console.error(error);
+  return toast("Could not check repost.");
+ }
+
+ const rpc=existing
+  ?"undo_campusora_repost"
+  :"repost_campusora_post";
+
+ const result=await supabase.rpc(rpc,{
+  p_post_id:postId
+ });
+
+ if(result.error){
+  console.error(result.error);
+  return toast("Could not repost this post.");
+ }
+
+ toast(existing?"Repost removed.":"Post reposted.");
+
+ await loadFeed();
+}
+
+/* REPOST SPOTLIGHT VIDEO */
+
+async function toggleVideoRepost(videoId){
+ if(!currentUser){
+  return toast("Please log in to repost.");
+ }
+
+ const {data:existing,error}=await supabase
+  .from("spotlight_video_reposts")
+  .select("id")
+  .eq("video_id",videoId)
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
+
+ if(error){
+  console.error(error);
+  return toast("Could not check repost.");
+ }
+
+ const rpc=existing
+  ?"undo_spotlight_video_repost"
+  :"repost_spotlight_video";
+
+ const result=await supabase.rpc(rpc,{
+  p_video_id:videoId
+ });
+
+ if(result.error){
+  console.error(result.error);
+  return toast("Could not repost this video.");
+ }
+
+ toast(existing?"Repost removed.":"Video reposted.");
+
+ await loadFeed();
+}
+
+/* DELETE OWN POST — NO CONFIRMATION */
+
+async function deletePost(postId){
+ if(!currentUser){
+  return toast("Please log in.");
+ }
+
+ const {error}=await supabase
+  .from("posts")
+  .delete()
+  .eq("id",postId)
+  .eq("user_id",currentUser.id);
+
+ if(error){
+  console.error(error);
+  return toast("Could not delete this post.");
+ }
+
+ toast("Post deleted.");
+
+ await loadFeed();
+}
+
+/* SHARE PANEL */
+
+function openShare(item){
+ shareItem=item;
+
+ shareList.classList.remove("show");
+ $("shareSearch").value="";
+
+ shareBackdrop.classList.add("show");
+}
+
+function closeShare(){
+ shareBackdrop.classList.remove("show");
+ shareItem=null;
+}
+
+$("closeShare").addEventListener("click",closeShare);
+
+shareBackdrop.addEventListener("click",event=>{
+ if(event.target===shareBackdrop){
+  closeShare();
+ }
+});
+
+/* LOAD SHARE TARGETS */
+
+async function loadShareTargets(mode){
+ if(!currentUser){
+  return toast("Please log in to share.");
+ }
+
+ shareList.classList.add("show");
+ shareResults.innerHTML='<div class="empty-feed">Loading...</div>';
+
+ try{
+  if(mode==="message"){
+   const {data,error}=await supabase
+    .from("profiles")
+    .select("id,username,full_name,avatar_url,school")
+    .neq("id",currentUser.id)
+    .order("full_name")
+    .limit(100);
+
+   if(error)throw error;
+
+   shareResults.innerHTML=(data||[]).map(p=>`
+    <button class="share-person"
+     data-target-id="${esc(p.id)}"
+     type="button">
+
+     <img src="${esc(avatar(p.avatar_url))}" alt="">
+
+     <span>
+      ${esc(p.full_name||p.username||"Campusora member")}
+      <small>${esc(p.school||"Campusora member")}</small>
+     </span>
+
+     <small>Send →</small>
+    </button>
+   `).join("")||'<div class="empty-feed">No members found.</div>';
   }
 
-  const path =
-    `${currentUser.id}/posts/${crypto.randomUUID()}.${extension}`;
+  if(mode==="community"){
+   const {data,error}=await supabase
+    .from("communities")
+    .select("id,name,school,description")
+    .order("name")
+    .limit(100);
 
-  const { error } = await supabase.storage
-    .from('campusora-videos')
-    .upload(path, file, {
-      cacheControl: '3600',
-      upsert: false,
-      contentType: file.type
-    });
+   if(error)throw error;
 
-  if (error) throw error;
+   shareResults.innerHTML=(data||[]).map(c=>`
+    <button class="share-person"
+     data-community-id="${esc(c.id)}"
+     type="button">
 
-  const { data } = supabase.storage
-    .from('campusora-videos')
-    .getPublicUrl(path);
+     <span class="share-option-icon">♧</span>
 
-  return {
-    url: data.publicUrl,
-    filename: file.name
-  };
+     <span>
+      ${esc(c.name||"Campus community")}
+      <small>${esc(c.school||c.description||"Community")}</small>
+     </span>
+
+     <small>Share →</small>
+    </button>
+   `).join("")||'<div class="empty-feed">No communities found.</div>';
+  }
+
+ }catch(error){
+  console.error(error);
+
+  shareResults.innerHTML=
+   '<div class="empty-feed">Could not load sharing options. Please try again.</div>';
+ }
 }
 
-/* PUBLISH CONTENT */
+/* SHARE TO PROFILE */
 
-form.addEventListener('submit', async event => {
+async function shareToProfile(){
+ if(!currentUser||!shareItem)return;
+
+ const link=shareItem.kind==="video"
+  ?new URL("spotlight.html#"+shareItem.id,location.href).href
+  :new URL("home-feed.html#post-"+shareItem.id,location.href).href;
+
+ const content="Shared from Campusora:\n"+link;
+
+ const {error}=await supabase
+  .from("posts")
+  .insert({
+   user_id:currentUser.id,
+   content,
+   post_type:"shared",
+   audience:"public"
+  });
+
+ if(error){
+  console.error(error);
+  return toast("Could not share to your profile.");
+ }
+
+ closeShare();
+
+ toast("Shared to your profile.");
+
+ await loadFeed();
+}
+
+/* SHARE AS MESSAGE */
+
+async function shareToMessage(targetId){
+ if(!currentUser||!shareItem)return;
+
+ if(targetId===currentUser.id){
+  return toast("You cannot message yourself.");
+ }
+
+ const {data:conversationId,error:conversationError}=await supabase.rpc(
+  "start_direct_conversation",
+  {target_user_id:targetId}
+ );
+
+ if(conversationError||!conversationId){
+  console.error(conversationError);
+  return toast("Could not open this conversation.");
+ }
+
+ const link=shareItem.kind==="video"
+  ?new URL("spotlight.html#"+shareItem.id,location.href).href
+  :new URL("home-feed.html#post-"+shareItem.id,location.href).href;
+
+ const {error}=await supabase
+  .from("messages")
+  .insert({
+   conversation_id:conversationId,
+   sender_id:currentUser.id,
+   content:"Check out this Campusora post: "+link
+  });
+
+ if(error){
+  console.error(error);
+  return toast("Message could not be sent. Open the chat to continue.");
+ }
+
+ closeShare();
+
+ toast("Post sent as a message.");
+}
+
+/* SHARE TO COMMUNITY */
+
+async function shareToCommunity(communityId){
+ if(!currentUser||!shareItem)return;
+
+ const link=shareItem.kind==="video"
+  ?new URL("spotlight.html#"+shareItem.id,location.href).href
+  :new URL("home-feed.html#post-"+shareItem.id,location.href).href;
+
+ const content="Shared with this community:\n"+link;
+
+ const {error}=await supabase
+  .from("posts")
+  .insert({
+   user_id:currentUser.id,
+   content,
+   post_type:"shared",
+   audience:"public",
+   community_id:communityId
+  });
+
+ if(error){
+  console.error(error);
+  return toast("Could not share to this community.");
+ }
+
+ closeShare();
+
+ toast("Shared to community.");
+}
+
+/* SHARE BUTTON EVENTS */
+
+document.querySelectorAll("[data-share-type]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  const mode=button.dataset.shareType;
+
+  if(mode==="profile"){
+   shareToProfile();
+   return;
+  }
+
+  loadShareTargets(mode);
+ });
+});
+
+shareResults.addEventListener("click",event=>{
+ const person=event.target.closest("[data-target-id]");
+ const community=event.target.closest("[data-community-id]");
+
+ if(person){
+  shareToMessage(person.dataset.targetId);
+ }
+
+ if(community){
+  shareToCommunity(community.dataset.communityId);
+ }
+});
+
+$("shareSearch").addEventListener("input",()=>{
+ const term=$("shareSearch").value.toLowerCase();
+
+ shareResults.querySelectorAll(".share-person").forEach(row=>{
+  row.hidden=!row.textContent.toLowerCase().includes(term);
+ });
+});
+
+/* FULL-SCREEN POST IMAGE VIEWER */
+
+const imageViewer=$("imageViewer");
+const imageViewerPhoto=$("imageViewerPhoto");
+
+let imageViewerOpen=false;
+
+function hideImageViewer(){
+ imageViewer.classList.remove("show");
+ imageViewer.setAttribute("aria-hidden","true");
+ imageViewerPhoto.src="";
+ document.body.classList.remove("image-viewer-open");
+ imageViewerOpen=false;
+}
+
+function openImageViewer(src){
+ if(!src)return;
+
+ imageViewerPhoto.src=src;
+ imageViewer.classList.add("show");
+ imageViewer.setAttribute("aria-hidden","false");
+ document.body.classList.add("image-viewer-open");
+
+ imageViewerOpen=true;
+
+ history.pushState(
+  {...history.state,campusoraImageViewer:true},
+  "",
+  location.pathname+location.search+"#image-viewer"
+ );
+}
+
+function closeImageViewer(){
+ if(!imageViewerOpen)return;
+
+ if(history.state?.campusoraImageViewer){
+  history.back();
+ }else{
+  hideImageViewer();
+ }
+}
+
+/* TAP OUTSIDE THE PHOTO TO CLOSE */
+
+imageViewer.addEventListener("click",event=>{
+ if(event.target===imageViewer){
+  closeImageViewer();
+ }
+});
+
+/* TAPPING THE PHOTO ITSELF DOES NOT CLOSE IT */
+
+imageViewerPhoto.addEventListener("click",event=>{
+ event.stopPropagation();
+});
+
+/* CLOSE BUTTON */
+
+$("closeImageViewer").addEventListener("click",closeImageViewer);
+
+/* ESCAPE KEY */
+
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"&&imageViewerOpen){
+  closeImageViewer();
+ }
+});
+
+/* ANDROID PHONE BACK BUTTON */
+
+window.addEventListener("popstate",()=>{
+ if(imageViewerOpen){
+  hideImageViewer();
+ }
+});
+
+/* FEED BUTTON EVENTS */
+
+feed.addEventListener("click",async event=>{
+
+ const tappedImage=event.target.closest(".post-image");
+
+ if(tappedImage){
   event.preventDefault();
+  openImageViewer(tappedImage.currentSrc||tappedImage.src);
+  return;
+ }
 
-  if (publishing) return;
+ const button=event.target.closest("[data-action]");
 
-  hideStatus();
+ if(!button)return;
 
-  if (!currentUser || !currentProfile) {
-    showStatus(
-      'Your account is not ready. Please reload the page.',
-      'error'
-    );
-    return;
+ const post=button.closest("[data-post-id]");
+ const video=button.closest("[data-video-id]");
+ const action=button.dataset.action;
+
+ if(action==="like"&&post){
+  return toggleLike(post.dataset.postId);
+ }
+
+ if(action==="repost"&&post){
+  return toggleRepost(post.dataset.postId);
+ }
+
+ if(action==="video-repost"&&video){
+  return toggleVideoRepost(video.dataset.videoId);
+ }
+
+ if(action==="comments"&&post){
+  $("comments-"+post.dataset.postId)?.classList.toggle("open");
+  return;
+ }
+
+ if(action==="share"&&post){
+  return openShare({
+   kind:"post",
+   id:post.dataset.postId
+  });
+ }
+
+ if(action==="video-share"&&video){
+  return openShare({
+   kind:"video",
+   id:video.dataset.videoId
+  });
+ }
+
+ if(action==="menu"&&post){
+  const menu=button.parentElement.querySelector(".post-menu");
+
+  document.querySelectorAll(".post-menu.open").forEach(x=>{
+   if(x!==menu)x.classList.remove("open");
+  });
+
+  menu.classList.toggle("open");
+  return;
+ }
+
+ if(action==="delete"&&post){
+  return deletePost(post.dataset.postId);
+ }
+
+ const commentAction=event.target.closest("[data-comment-action]");
+
+ if(commentAction){
+  const type=commentAction.dataset.commentAction;
+  const id=commentAction.dataset.commentId;
+
+  if(type==="reply"){
+   const form=commentAction
+    .closest(".comment-main")
+    .querySelector(":scope > .reply-form");
+
+   form?.classList.toggle("open");
+   form?.querySelector("textarea")?.focus();
   }
 
-  const content = contentInput.value.trim();
+  if(type==="delete"){
+   if(!currentUser)return;
 
-  if (!content) {
-    showStatus(
-      isPoll
-        ? 'Please enter your poll question.'
-        : isQuestion
-          ? 'Please enter your question.'
-          : 'Please write something before publishing.',
-      'error'
-    );
-    return;
+   const {error}=await supabase
+    .from("comments")
+    .delete()
+    .eq("id",id)
+    .eq("user_id",currentUser.id);
+
+   if(error){
+    console.error(error);
+    return toast("Could not delete comment.");
+   }
+
+   await loadFeed();
   }
-
-  let options = [];
-
-  if (isPoll) {
-    const rows = Array.from(
-      pollOptions.querySelectorAll('.poll-option')
-    );
-
-    if (rows.some(input => !input.value.trim())) {
-      showStatus('Please complete or remove every empty poll option.', 'error');
-      return;
-    }
-
-    options = getPollOptions();
-
-    if (options.length < 2) {
-      showStatus('A poll needs at least two answer options.', 'error');
-      return;
-    }
-
-    if (options.length > MAX_POLL_OPTIONS) {
-      showStatus('A poll can have no more than six options.', 'error');
-      return;
-    }
-
-    const uniqueOptions = new Set(
-      options.map(option => option.toLowerCase())
-    );
-
-    if (uniqueOptions.size !== options.length) {
-      showStatus('Please remove duplicate poll options.', 'error');
-      return;
-    }
-  }
-
-  if (postType === 'regular' && !selectedPhoto && !selectedVideo && !content) {
-    showStatus('Write something or choose media before publishing.', 'error');
-    return;
-  }
-
-  publishing = true;
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Publishing...';
-
-  startTopProgress();
-
-  let uploadedMediaPath = null;
-  let uploadedBucket = null;
-  let createdPostId = null;
-
-  try {
-
-    /* VERIFY AUTHENTICATED USER */
-
-    const {
-      data: { user: verifiedUser },
-      error: verificationError
-    } = await supabase.auth.getUser();
-
-    if (verificationError || !verifiedUser) {
-      throw new Error(
-        'Your login session could not be verified. Please log out and log in again.'
-      );
-    }
-
-    if (verifiedUser.id !== currentProfile.id) {
-      throw new Error(
-        'Your login session and profile do not match. Please log out and log in again.'
-      );
-    }
-
-    currentUser = verifiedUser;
-
-    let photoUrl = null;
-    let videoUrl = null;
-    let videoName = null;
-
-    if (selectedPhoto) {
-      showStatus('Uploading your photo...', 'info');
-
-      photoUrl = await uploadPhoto(selectedPhoto);
-
-      uploadedMediaPath =
-        photoUrl.split('/campusora-images/')[1];
-
-      uploadedBucket = 'campusora-images';
-
-      updateProgress(100);
-    }
-
-    if (selectedVideo) {
-      showStatus(
-        'Uploading your video. Please keep this page open...',
-        'info'
-      );
-
-      const uploaded = await uploadVideo(selectedVideo);
-
-      videoUrl = uploaded.url;
-      videoName = uploaded.filename;
-
-      uploadedMediaPath =
-        videoUrl.split('/campusora-videos/')[1];
-
-      uploadedBucket = 'campusora-videos';
-
-      updateProgress(100);
-    }
-
-    showStatus('Saving your content...', 'info');
-
-    const { data: newPost, error: postError } = await supabase
-      .from('posts')
-      .insert({
-        user_id: verifiedUser.id,
-        content: content,
-        image_url: photoUrl,
-        video_url: videoUrl,
-        video_name: videoName,
-        audience: 'public',
-        institution_id: null,
-        community_id: null,
-        post_type: postType
-      })
-      .select('id')
-      .single();
-
-    if (postError) throw postError;
-
-    createdPostId = newPost.id;
-
-    /* SAVE POLL OPTIONS */
-
-    if (isPoll) {
-      showStatus('Saving your poll options...', 'info');
-
-      const optionRows = options.map((option, index) => ({
-        post_id: createdPostId,
-        option_text: option,
-        position: index
-      }));
-
-      const { error: optionError } = await supabase
-        .from('poll_options')
-        .insert(optionRows);
-
-      if (optionError) throw optionError;
-    }
-
-    showStatus(
-      isPoll
-        ? 'Your poll was published successfully! 🎉'
-        : isQuestion
-          ? 'Your question was published successfully! 🎉'
-          : 'Your post was published successfully! 🎉',
-      'success'
-    );
-
-    completeTopProgress();
-
-    form.reset();
-    clearPhoto();
-    clearVideo();
-    updateCharacterCount();
-    hideProgress();
-
-    setTimeout(() => {
-      window.location.href = './home-feed.html';
-    }, 1300);
-
-  } catch (error) {
-
-    console.error('Campusora publishing error:', error);
-
-    /*
-      If poll options fail after the post was created,
-      remove that incomplete poll post.
-    */
-
-    if (createdPostId) {
-      try {
-        await supabase
-          .from('posts')
-          .delete()
-          .eq('id', createdPostId)
-          .eq('user_id', currentUser.id);
-      } catch (cleanupError) {
-        console.warn('Post cleanup failed:', cleanupError);
-      }
-    }
-
-    /*
-      Remove newly uploaded media if publishing failed.
-    */
-
-    if (uploadedMediaPath && uploadedBucket) {
-      try {
-        await supabase.storage
-          .from(uploadedBucket)
-          .remove([decodeURIComponent(uploadedMediaPath)]);
-      } catch (cleanupError) {
-        console.warn('Media cleanup failed:', cleanupError);
-      }
-    }
-
-    showStatus(
-      error.message || 'Something went wrong. Please try again.',
-      'error'
-    );
-
-    hideProgress();
-    stopTopProgress();
-
-  } finally {
-
-    publishing = false;
-    submitBtn.disabled = false;
-
-    submitBtn.textContent = isPoll
-      ? 'Publish poll 📊'
-      : isQuestion
-        ? 'Publish question ✨'
-        : 'Publish post 🚀';
-  }
+ }
 });
 
-/* INITIALISE */
+/* COMMENT AND REPLY SUBMISSION */
 
-async function initialise() {
-  submitBtn.disabled = true;
+feed.addEventListener("submit",async event=>{
+ const form=event.target.closest(".comment-form,.reply-form");
 
-  try {
-    const loggedIn = await loadProfile();
+ if(!form)return;
 
-    if (!loggedIn) return;
+ event.preventDefault();
 
-    updateCharacterCount();
-    submitBtn.disabled = false;
+ if(!currentUser){
+  return toast("Please log in to comment.");
+ }
 
-  } catch (error) {
-    console.error(error);
+ const content=form.elements.content.value.trim();
 
-    showStatus(
-      error.message || 'Could not load your profile. Please try again.',
-      'error'
-    );
+ if(!content)return;
+
+ const post=form.closest("[data-post-id]");
+ const postId=post?.dataset.postId;
+
+ if(!postId)return;
+
+ const values={
+  post_id:postId,
+  user_id:currentUser.id,
+  content
+ };
+
+ if(form.classList.contains("reply-form")){
+  values.parent_comment_id=form.dataset.parentId;
+ }
+
+ const {error}=await supabase
+  .from("comments")
+  .insert(values);
+
+ if(error){
+  console.error(error);
+  return toast("Could not publish your comment.");
+ }
+
+ await loadFeed();
+
+ $("comments-"+postId)?.classList.add("open");
+});
+
+/* FEED FILTER */
+
+$("filterButton").addEventListener("click",()=>{
+ $("filterMenu").classList.toggle("open");
+});
+
+document.querySelectorAll(".filter-option").forEach(button=>{
+ button.addEventListener("click",()=>{
+  activeFeed=button.dataset.filter;
+
+  $("filterLabel").textContent=button.textContent;
+  $("filterMenu").classList.remove("open");
+
+  document.querySelectorAll(".filter-option").forEach(x=>{
+   x.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  loadFeed();
+ });
+});
+
+document.addEventListener("click",event=>{
+ if(!event.target.closest(".filter-wrap")){
+  $("filterMenu").classList.remove("open");
+ }
+
+ if(!event.target.closest(".more-wrap")){
+  document.querySelectorAll(".post-menu.open").forEach(x=>{
+   x.classList.remove("open");
+  });
+ }
+});
+
+/* SHARED NAVIGATION SCROLL BEHAVIOUR */
+
+(function(){
+ let timer=null;
+ let previous=window.scrollY;
+
+ function showNav(){
+  document.querySelector(".campusora-topnav")
+   ?.classList.remove("nav-hidden");
+
+  document.querySelector(".campusora-mainnav")
+   ?.classList.remove("nav-hidden");
+ }
+
+ function hideNav(){
+  document.querySelector(".campusora-topnav")
+   ?.classList.add("nav-hidden");
+
+  document.querySelector(".campusora-mainnav")
+   ?.classList.add("nav-hidden");
+ }
+
+ window.addEventListener("scroll",()=>{
+  const current=window.scrollY;
+
+  if(Math.abs(current-previous)>1){
+   hideNav();
+
+   clearTimeout(timer);
+
+   timer=setTimeout(showNav,350);
   }
+
+  previous=current;
+ },{passive:true});
+
+ showNav();
+})();
+
+/* START PAGE */
+
+async function startPage(){
+ startProgress();
+
+ try{
+  await loadMyProfile();
+
+  /*
+   * The feed and moments load independently.
+   * A moments error must not stop posts from appearing.
+   */
+
+  await Promise.allSettled([
+   loadFeed(),
+   loadMoments()
+  ]);
+
+ }catch(error){
+  console.error("Campusora page error:",error);
+
+  showEmpty(
+   "Campusora could not load",
+   error.message||"Please refresh and try again.",
+   true
+  );
+
+ }finally{
+  finishProgress();
+ }
 }
 
-initialise();
-</script><script src="./shared-nav.js"></script></body>
+startPage();
+
+</script>
+</body>
 </html>
