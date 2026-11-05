@@ -1,12 +1,15 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
 <title>Settings | Campusora</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./shared-nav.css">
+
 <style>
 :root {
   --bg:#080b18;
@@ -20,6 +23,7 @@
   --cyan:#39d7f5;
   --green:#61e6b2;
   --red:#ff8294;
+  --gradient:linear-gradient(110deg,#925bff,#526dff,#39d7f5);
 }
 
 * {box-sizing:border-box}
@@ -35,6 +39,34 @@ body {
 button,input,textarea,select {font:inherit}
 button {cursor:pointer}
 a {color:inherit;text-decoration:none}
+
+/* TOP LOADING PROGRESS BAR */
+
+#pageProgress {
+  position:fixed;
+  top:0;
+  left:0;
+  height:3px;
+  width:0;
+  z-index:20000;
+  background:var(--gradient);
+  box-shadow:0 0 12px #925bff80;
+  transition:width .25s;
+}
+
+#pageProgress.loading {
+  width:75%;
+  animation:progress 1.2s ease-in-out infinite alternate;
+}
+
+#pageProgress.done {
+  width:100%;
+}
+
+@keyframes progress {
+  from {width:15%}
+  to {width:90%}
+}
 
 .container {
   width:min(700px,94%);
@@ -400,6 +432,8 @@ select option {background:var(--card)}
 
 <body>
 
+<div id="pageProgress" class="loading"></div>
+
 <main class="container">
 
   <div class="page-heading">
@@ -511,8 +545,7 @@ select option {background:var(--card)}
     </div>
 
   </section>
-
-  <div class="menu-label">Profile & Preferences</div>
+    <div class="menu-label">Profile & Preferences</div>
 
   <div class="settings-menu">
 
@@ -676,6 +709,8 @@ select option {background:var(--card)}
 <script type="module">
 import { supabase } from './supabase.js';
 
+const pageProgress = document.getElementById('pageProgress');
+
 const pageMessage = document.getElementById('pageMessage');
 const profileForm = document.getElementById('profileForm');
 const passwordForm = document.getElementById('passwordForm');
@@ -700,6 +735,33 @@ let existingAvatarUrl = '';
 let existingCoverUrl = '';
 let avatarObjectUrl = null;
 let coverObjectUrl = null;
+
+/* PROGRESS BAR */
+
+function finishProgress() {
+  pageProgress.classList.remove('loading');
+  pageProgress.classList.add('done');
+
+  setTimeout(() => {
+    pageProgress.style.opacity = '0';
+  }, 350);
+
+  setTimeout(() => {
+    pageProgress.classList.remove('done');
+    pageProgress.style.width = '0';
+    pageProgress.style.opacity = '1';
+  }, 700);
+}
+
+window.addEventListener('load', () => {
+  setTimeout(finishProgress, 250);
+});
+
+window.addEventListener('pageshow', () => {
+  pageProgress.style.opacity = '1';
+  pageProgress.classList.remove('done');
+  pageProgress.classList.add('loading');
+});
 
 /* OPEN SETTINGS SECTIONS ONLY WHEN CLICKED */
 
@@ -740,6 +802,8 @@ function clearMessage() {
   pageMessage.textContent = '';
   pageMessage.className = 'message';
 }
+
+/* PREVIEW FUNCTIONS */
 
 function setAvatarPreview(url) {
   if (!url) {
@@ -800,60 +864,65 @@ function validatePhoto(file) {
 /* LOAD ACCOUNT AND PROFILE */
 
 async function initialise() {
-  const {data,error} = await supabase.auth.getSession();
+  try {
+    const {data,error} = await supabase.auth.getSession();
 
-  if (error || !data.session) {
-    window.location.replace('./auth.html?mode=login');
-    return;
-  }
+    if (error || !data.session) {
+      window.location.replace('./auth.html?mode=login');
+      return;
+    }
 
-  currentUser = data.session.user;
+    currentUser = data.session.user;
 
-  document.getElementById('accountEmail').textContent =
-    currentUser.email || 'Email unavailable';
+    document.getElementById('accountEmail').textContent =
+      currentUser.email || 'Email unavailable';
 
-  const {data:profile,error:profileError} = await supabase
-    .from('profiles')
-    .select('id,full_name,username,school,role,bio,avatar_url,cover_url')
-    .eq('id',currentUser.id)
-    .maybeSingle();
+    const {data:profile,error:profileError} = await supabase
+      .from('profiles')
+      .select('id,full_name,username,school,role,bio,avatar_url,cover_url')
+      .eq('id',currentUser.id)
+      .maybeSingle();
 
-  if (profileError) {
+    if (profileError) throw profileError;
+
+    if (!profile) {
+      showMessage(
+        'Your profile has not been created yet. Please complete profile setup first.',
+        'error'
+      );
+      return;
+    }
+
+    document.getElementById('accountName').textContent =
+      profile.full_name || 'Campusora member';
+
+    document.getElementById('fullName').value = profile.full_name || '';
+    document.getElementById('username').value = profile.username || '';
+    document.getElementById('school').value = profile.school || '';
+    document.getElementById('role').value = profile.role || 'student';
+    document.getElementById('bio').value = profile.bio || '';
+
+    existingAvatarUrl = profile.avatar_url || '';
+    existingCoverUrl = profile.cover_url || '';
+
+    setAvatarPreview(existingAvatarUrl);
+    setCoverPreview(existingCoverUrl);
+
+    document.getElementById('profileLink').href =
+      './profile.html?id=' + encodeURIComponent(currentUser.id);
+
+  } catch(error) {
+    console.error('Settings initialisation error:',error);
+
     showMessage(
-      'We could not load your profile information. Please refresh the page.',
+      error.message || 'We could not load your account. Please refresh.',
       'error'
     );
-    return;
+  } finally {
+    finishProgress();
   }
-
-  if (!profile) {
-    showMessage(
-      'Your profile has not been created yet. Please complete profile setup first.',
-      'error'
-    );
-    return;
-  }
-
-  document.getElementById('accountName').textContent =
-    profile.full_name || 'Campusora member';
-
-  document.getElementById('fullName').value = profile.full_name || '';
-  document.getElementById('username').value = profile.username || '';
-  document.getElementById('school').value = profile.school || '';
-  document.getElementById('role').value = profile.role || 'student';
-  document.getElementById('bio').value = profile.bio || '';
-
-  existingAvatarUrl = profile.avatar_url || '';
-  existingCoverUrl = profile.cover_url || '';
-
-  setAvatarPreview(existingAvatarUrl);
-  setCoverPreview(existingCoverUrl);
-
-  document.getElementById('profileLink').href =
-    './profile.html?id=' + encodeURIComponent(currentUser.id);
 }
-
-/* PROFILE PICTURE PREVIEW */
+  /* PROFILE PICTURE PREVIEW */
 
 avatarFile.addEventListener('change',() => {
   const file = avatarFile.files[0];
@@ -895,15 +964,32 @@ coverFile.addEventListener('change',() => {
   setCoverPreview(coverObjectUrl);
 });
 
-/* UPLOAD PHOTO */
+/*
+  UPLOAD IMAGE
+  SAME METHOD AS PROFILE-SETUP.HTML
 
-async function uploadProfilePhoto(file,imageType) {
-  const extension = file.type === 'image/jpeg' ? 'jpg' :
-    file.type === 'image/png' ? 'png' : 'webp';
+  Profile picture folder: user-id/profile-timestamp.extension
+  Cover picture folder: user-id/cover-timestamp.extension
+*/
 
-  const filePath = currentUser.id + '/' + imageType + '-' +
-    Date.now() + '-' + Math.random().toString(36).slice(2,8) +
-    '.' + extension;
+async function uploadImage(file,imageType) {
+  if (!file) return null;
+
+  const validationError = validatePhoto(file);
+
+  if (validationError) {
+    throw new Error(validationError);
+  }
+
+  const extension = file.type === 'image/jpeg'
+    ? 'jpg'
+    : file.type === 'image/png'
+      ? 'png'
+      : 'webp';
+
+  const filePath =
+    currentUser.id + '/' + imageType + '-' +
+    Date.now() + '.' + extension;
 
   const {error:uploadError} = await supabase.storage
     .from('campusora-images')
@@ -919,10 +1005,14 @@ async function uploadProfilePhoto(file,imageType) {
     .from('campusora-images')
     .getPublicUrl(filePath);
 
+  if (!data || !data.publicUrl) {
+    throw new Error('The image uploaded, but its public URL could not be created.');
+  }
+
   return data.publicUrl;
 }
 
-/* SAVE PICTURES */
+/* SAVE PROFILE PICTURES */
 
 savePhotosBtn.addEventListener('click',async () => {
   clearMessage();
@@ -951,36 +1041,57 @@ savePhotosBtn.addEventListener('click',async () => {
   savePhotosBtn.textContent = 'Uploading...';
 
   try {
-    const updates = {};
-    const uploads = [];
+    let avatarUrl = existingAvatarUrl || null;
+    let coverUrl = existingCoverUrl || null;
+
+    /* SAME PROFILE IMAGE FOLDER AS PROFILE SETUP */
 
     if (avatar) {
-      uploads.push(
-        uploadProfilePhoto(avatar,'avatar').then(url => {
-          updates.avatar_url = url;
-        })
-      );
+      avatarUrl = await uploadImage(avatar,'profile');
     }
+
+    /* SAME COVER IMAGE FOLDER AS PROFILE SETUP */
 
     if (cover) {
-      uploads.push(
-        uploadProfilePhoto(cover,'cover').then(url => {
-          updates.cover_url = url;
-        })
-      );
+      coverUrl = await uploadImage(cover,'cover');
     }
 
-    await Promise.all(uploads);
+    showMessage('Saving your picture changes...','success');
 
-    const {error:updateError} = await supabase
+    /*
+      SAME UPSERT APPROACH AS PROFILE-SETUP.HTML.
+      Existing profile information is not overwritten.
+      Only the ID and picture URL fields are supplied.
+    */
+
+    const {data:savedProfile,error:saveError} = await supabase
       .from('profiles')
-      .update(updates)
-      .eq('id',currentUser.id);
+      .upsert({
+        id:currentUser.id,
+        avatar_url:avatarUrl,
+        cover_url:coverUrl
+      },{
+        onConflict:'id'
+      })
+      .select('id,avatar_url,cover_url')
+      .single();
 
-    if (updateError) throw updateError;
+    if (saveError) throw saveError;
 
-    if (updates.avatar_url) existingAvatarUrl = updates.avatar_url;
-    if (updates.cover_url) existingCoverUrl = updates.cover_url;
+    if (!savedProfile) {
+      throw new Error('The database did not confirm that your pictures were saved.');
+    }
+
+    if (avatar && savedProfile.avatar_url !== avatarUrl) {
+      throw new Error('Your profile picture was not confirmed as saved.');
+    }
+
+    if (cover && savedProfile.cover_url !== coverUrl) {
+      throw new Error('Your cover picture was not confirmed as saved.');
+    }
+
+    existingAvatarUrl = savedProfile.avatar_url || '';
+    existingCoverUrl = savedProfile.cover_url || '';
 
     avatarFile.value = '';
     coverFile.value = '';
@@ -1001,15 +1112,15 @@ savePhotosBtn.addEventListener('click',async () => {
     setCoverPreview(existingCoverUrl);
 
     if (avatar && cover) {
-      showMessage('Profile picture and cover picture updated successfully!');
+      showMessage('Profile picture and cover picture saved successfully!');
     } else if (avatar) {
-      showMessage('Profile picture updated successfully!');
+      showMessage('Profile picture saved successfully!');
     } else {
-      showMessage('Cover picture updated successfully!');
+      showMessage('Cover picture saved successfully!');
     }
 
   } catch(error) {
-    console.error('Picture upload error:',error);
+    console.error('Picture upload/save error:',error);
 
     showMessage(
       error.message || 'Could not save your pictures. Please try again.',
@@ -1175,7 +1286,10 @@ logoutBtn.addEventListener('click',async () => {
   window.location.replace('./auth.html?mode=login');
 });
 
+/* START */
+
 initialise();
+
 </script>
 
 </body>
