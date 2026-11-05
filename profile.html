@@ -1188,15 +1188,50 @@ body.premium-active .cover{
   border:1px solid #c28bff;
   box-shadow:0 0 12px rgba(194,139,255,.2)
 }
-
-.name-line{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px
+display:flex;
+align-items:center;
+flex-wrap:nowrap;
+gap:5px;
+width:100%;
+min-width:0;
+overflow:visible;
 }
 
-.name-line h1{margin:0}
+.name-line h1{
+  flex:0 1 auto;
+  min-width:0;
+  margin:0;
+  white-space:nowrap;
+  overflow:visible;
+  text-overflow:clip;
+  line-height:1.2;
+  font-size:22px;
+  font-weight:800;
+}
+
+.profile-rank-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  white-space:nowrap;
+  padding:2px 5px;
+  border-radius:20px;
+  font-size:8px;
+  line-height:1.2;
+  font-weight:900;
+}
+
+.profile-rank-badge.hidden{
+  display:none !important;
+}
+
+.get-ranks-btn{
+  flex:0 0 auto;
+  white-space:nowrap;
+  padding:4px 7px;
+  font-size:9px;
+}
 
 /* Profile connections and actions */
 .premium-under-cover{
@@ -1317,7 +1352,7 @@ body.premium-active .cover{
 </head>
 
 <body>
-
+<div id="pageProgress"></div>
 <main class="page">
   <div id="pageMessage" class="message hidden"></div>
   <div id="loading" class="loading">Loading Campusora profile...</div>
@@ -1346,18 +1381,18 @@ body.premium-active .cover{
   <div class="profile-main">
 
     <!-- Name and rank -->
-    <div class="name-line">
-      <h1 id="profileName">Campusora Member</h1>
+<div class="name-line">
+  <h1 id="profileName">Campusora Member</h1>
 
-      <button
-        id="getRanksButton"
-        class="get-ranks-btn"
-        type="button"
-        onclick="window.location.href='./profile-ranks.html'"
-      >👑 Get Ranks</button>
+  <span id="profileRankBadge" class="profile-rank-badge hidden"></span>
 
-      <span id="profileRankBadge" class="profile-rank-badge hidden"></span>
-    </div>
+  <button
+    id="getRanksButton"
+    class="get-ranks-btn"
+    type="button"
+    onclick="window.location.href='./profile-ranks.html'"
+  >👑 Get Ranks</button>
+</div>
 
     <!-- Username and school role -->
     <div class="username-line">
@@ -3707,5 +3742,29 @@ loadProfile().catch(error=>{
   showMessage('Something went wrong while loading the profile. Please refresh the page.',true);
 });
 </script>
+  
+  <script>
+function fitProfileName() {
+  const nameLine = document.querySelector('.name-line');
+  const name = document.getElementById('profileName');
+
+  if (!nameLine || !name) return;
+
+  let fontSize = 22;
+
+  name.style.fontSize = fontSize + 'px';
+
+  while (
+    name.scrollWidth > name.clientWidth &&
+    fontSize > 7
+  ) {
+    fontSize -= 0.5;
+    name.style.fontSize = fontSize + 'px';
+  }
+}
+
+window.addEventListener('load', fitProfileName);
+window.addEventListener('resize', fitProfileName);
+  </script>
 </body>
 </html>
