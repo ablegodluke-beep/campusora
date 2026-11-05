@@ -1014,11 +1014,11 @@ async function uploadImage(file,imageType) {
 
 /* SAVE PROFILE PICTURES */
 
-savePhotosBtn.addEventListener('click',async () => {
+savePhotosBtn.addEventListener('click', async () => {
   clearMessage();
 
   if (!currentUser) {
-    showMessage('Your session has expired. Please log in again.','error');
+    showMessage('Your session has expired. Please log in again.', 'error');
     return;
   }
 
@@ -1026,14 +1026,14 @@ savePhotosBtn.addEventListener('click',async () => {
   const cover = coverFile.files[0];
 
   if (!avatar && !cover) {
-    showMessage('Choose a new profile picture or cover picture first.','error');
+    showMessage('Choose a new profile picture or cover picture first.', 'error');
     return;
   }
 
   const validationError = validatePhoto(avatar) || validatePhoto(cover);
 
   if (validationError) {
-    showMessage(validationError,'error');
+    showMessage(validationError, 'error');
     return;
   }
 
@@ -1041,53 +1041,33 @@ savePhotosBtn.addEventListener('click',async () => {
   savePhotosBtn.textContent = 'Uploading...';
 
   try {
-    let avatarUrl = existingAvatarUrl || null;
-    let coverUrl = existingCoverUrl || null;
+    const updates = {};
 
-    /* SAME PROFILE IMAGE FOLDER AS PROFILE SETUP */
-
+    // Upload new profile picture
     if (avatar) {
-      avatarUrl = await uploadImage(avatar,'profile');
+      updates.avatar_url = await uploadImage(avatar, 'profile');
     }
 
-    /* SAME COVER IMAGE FOLDER AS PROFILE SETUP */
-
+    // Upload new cover picture
     if (cover) {
-      coverUrl = await uploadImage(cover,'cover');
+      updates.cover_url = await uploadImage(cover, 'cover');
     }
 
-    showMessage('Saving your picture changes...','success');
+    showMessage('Saving your picture changes...', 'success');
 
-    /*
-      SAME UPSERT APPROACH AS PROFILE-SETUP.HTML.
-      Existing profile information is not overwritten.
-      Only the ID and picture URL fields are supplied.
-    */
-
-    const {data:savedProfile,error:saveError} = await supabase
+    // UPDATE EXISTING PROFILE ONLY.
+    // Never insert a new profile or overwrite username.
+    const { data: savedProfile, error: saveError } = await supabase
       .from('profiles')
-      .upsert({
-        id:currentUser.id,
-        avatar_url:avatarUrl,
-        cover_url:coverUrl
-      },{
-        onConflict:'id'
-      })
-      .select('id,avatar_url,cover_url')
+      .update(updates)
+      .eq('id', currentUser.id)
+      .select('id, avatar_url, cover_url')
       .single();
 
     if (saveError) throw saveError;
 
     if (!savedProfile) {
-      throw new Error('The database did not confirm that your pictures were saved.');
-    }
-
-    if (avatar && savedProfile.avatar_url !== avatarUrl) {
-      throw new Error('Your profile picture was not confirmed as saved.');
-    }
-
-    if (cover && savedProfile.cover_url !== coverUrl) {
-      throw new Error('Your cover picture was not confirmed as saved.');
+      throw new Error('Your picture changes could not be confirmed.');
     }
 
     existingAvatarUrl = savedProfile.avatar_url || '';
@@ -1119,8 +1099,8 @@ savePhotosBtn.addEventListener('click',async () => {
       showMessage('Cover picture saved successfully!');
     }
 
-  } catch(error) {
-    console.error('Picture upload/save error:',error);
+  } catch (error) {
+    console.error('Picture upload/save error:', error);
 
     showMessage(
       error.message || 'Could not save your pictures. Please try again.',
@@ -1132,6 +1112,8 @@ savePhotosBtn.addEventListener('click',async () => {
     savePhotosBtn.textContent = 'Save picture changes';
   }
 });
+
+
 
 /* UPDATE PROFILE INFORMATION */
 
