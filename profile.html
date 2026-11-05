@@ -137,17 +137,47 @@ grid-row:1;
 .name-line{
   display:flex;
   align-items:center;
-  flex-wrap:wrap;
-  gap:7px;
+  flex-wrap:nowrap;
+  gap:5px;
+  width:100%;
   min-width:0;
-  margin-top:10px
+  overflow:visible;
 }
 
-h1{
-  font-size:23px;
-  line-height:1.35;
+.name-line h1{
+  flex:1 1 auto;
+  min-width:0;
   margin:0;
-  overflow-wrap:anywhere
+  white-space:nowrap;
+  overflow:visible;
+  text-overflow:clip;
+  line-height:1.2;
+  font-size:22px;
+  font-weight:800;
+}
+
+.profile-rank-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  white-space:nowrap;
+  padding:2px 5px;
+  border-radius:20px;
+  font-size:8px;
+  line-height:1.2;
+  font-weight:900;
+}
+
+.profile-rank-badge.hidden{
+  display:none !important;
+}
+
+.get-ranks-btn{
+  flex:0 0 auto;
+  white-space:nowrap;
+  padding:4px 7px;
+  font-size:9px;
 }
 
 .username-line{
@@ -1347,7 +1377,31 @@ overflow:visible;
   .profile-connect-actions{gap:7px;margin-top:12px}
   .profile-connect-btn{padding:9px 8px;font-size:11px}
 }
+/* TOP PAGE PROGRESS */
+  
+#pageProgress{
+  position:fixed;
+  top:0;
+  left:0;
+  width:0;
+  height:3px;
+  z-index:99999;
+  opacity:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,#8b5cf6,#3b82f6,#22d3ee);
+  box-shadow:0 0 8px rgba(59,130,246,.45);
+  transition:width .22s ease,opacity .25s ease;
+}
 
+#pageProgress.is-loading{
+  opacity:1;
+}
+
+#pageProgress.is-done{
+  width:100%;
+  opacity:0;
+}
+  
 </style>
 </head>
 
@@ -3744,27 +3798,138 @@ loadProfile().catch(error=>{
 </script>
   
   <script>
-function fitProfileName() {
-  const nameLine = document.querySelector('.name-line');
-  const name = document.getElementById('profileName');
+<script>
+(function(){
+  const bar=document.getElementById('pageProgress');
+  if(!bar)return;
 
-  if (!nameLine || !name) return;
+  let progress=8;
+  let timer=null;
 
-  let fontSize = 22;
+  function startProgress(){
+    clearInterval(timer);
+    bar.classList.remove('is-done');
+    bar.classList.add('is-loading');
+    progress=8;
+    bar.style.width='8%';
 
-  name.style.fontSize = fontSize + 'px';
-
-  while (
-    name.scrollWidth > name.clientWidth &&
-    fontSize > 7
-  ) {
-    fontSize -= 0.5;
-    name.style.fontSize = fontSize + 'px';
+    timer=setInterval(()=>{
+      progress=Math.min(
+        progress+Math.max(1,(90-progress)*0.08),
+        90
+      );
+      bar.style.width=progress+'%';
+    },180);
   }
-}
 
-window.addEventListener('load', fitProfileName);
-window.addEventListener('resize', fitProfileName);
-  </script>
+  function finishProgress(){
+    clearInterval(timer);
+    bar.style.width='100%';
+
+    setTimeout(()=>{
+      bar.classList.remove('is-loading');
+      bar.classList.add('is-done');
+
+      setTimeout(()=>{
+        bar.style.width='0%';
+        bar.classList.remove('is-done');
+      },280);
+    },180);
+  }
+
+  startProgress();
+
+  window.addEventListener('load',finishProgress,{once:true});
+  window.addEventListener('pageshow',finishProgress);
+
+  document.addEventListener('click',event=>{
+    const link=event.target.closest('a[href]');
+
+    if(!link||link.target==='_blank'||link.hasAttribute('download'))return;
+
+    const url=new URL(link.href,location.href);
+
+    if(url.origin!==location.origin||url.href===location.href)return;
+
+    startProgress();
+  });
+})();
+</script>
+
+<script>
+(function(){
+  const line=document.querySelector('.name-line');
+  const name=document.getElementById('profileName');
+
+  if(!line||!name)return;
+
+  function fitProfileName(){
+    name.style.transform='none';
+    name.style.fontSize='22px';
+    name.style.transformOrigin='left center';
+
+    const gap=parseFloat(getComputedStyle(line).columnGap)||5;
+
+    const badge=line.querySelector('#profileRankBadge:not(.hidden)');
+    const button=line.querySelector('#getRanksButton:not(.hidden)');
+    const action=badge||button;
+
+    let available=line.clientWidth;
+
+    if(action){
+      available-=action.getBoundingClientRect().width+gap;
+    }
+
+    available=Math.max(12,available);
+
+    name.style.flex='0 1 '+available+'px';
+    name.style.maxWidth=available+'px';
+
+    let size=22;
+
+    while(name.scrollWidth>available+1&&size>5){
+      size-=0.5;
+      name.style.fontSize=size+'px';
+    }
+
+    if(name.scrollWidth>available+1){
+      const scale=available/name.scrollWidth;
+      name.style.transform='scaleX('+Math.max(0.1,scale)+')';
+    }
+  }
+
+  let frame=0;
+
+  function scheduleFit(){
+    cancelAnimationFrame(frame);
+    frame=requestAnimationFrame(fitProfileName);
+  }
+
+  scheduleFit();
+
+  window.addEventListener('load',scheduleFit);
+  window.addEventListener('resize',scheduleFit);
+
+  if('ResizeObserver'in window){
+    const observer=new ResizeObserver(scheduleFit);
+    observer.observe(line);
+  }
+
+  const mutationObserver=new MutationObserver(scheduleFit);
+
+  mutationObserver.observe(line,{
+    childList:true,
+    subtree:true,
+    attributes:true,
+    attributeFilter:['class']
+  });
+
+  if(document.fonts&&document.fonts.ready){
+    document.fonts.ready.then(scheduleFit);
+  }
+
+  setTimeout(scheduleFit,300);
+})();
+</script>
 </body>
 </html>
