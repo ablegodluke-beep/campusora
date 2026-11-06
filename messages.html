@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
 <title>Chats | Campusora</title>
+<link rel="stylesheet" href="./shared-nav.css">
 
 
 <style>
@@ -349,7 +350,7 @@ a{color:inherit;text-decoration:none}
 }
 
 .message-bubble{
-  padding:10px 13px;
+    padding:10px 13px;
   border:1px solid #303956;
   border-radius:14px 14px 14px 4px;
   background:#202943;
@@ -652,7 +653,17 @@ a{color:inherit;text-decoration:none}
     transition-duration:.01ms!important;
   }
 }
-  /* Mobile full-screen chat and keyboard positioning */
+    /* Shared navigation: visible in inbox, hidden only inside an open chat */
+body:not(.chat-mode) .page{position:relative;width:min(100%,1100px);height:calc(100dvh - 45px);margin:0 auto;padding:12px 12px 88px;}
+body:not(.chat-mode) .messaging{position:relative;top:auto;left:auto;right:auto;width:100%;height:calc(100dvh - 125px);min-height:0;max-width:1100px;margin:0 auto;border-radius:16px;}
+body.chat-mode{overflow:hidden;}
+body.chat-mode .campusora-topnav,body.chat-mode .campusora-mainnav{display:none!important;}
+body.chat-mode .page{width:100%;height:100dvh;margin:0;padding:0;}
+body.chat-mode .messaging{position:fixed;inset:0;display:block;width:100%;height:100dvh;min-height:0;margin:0;border:0;border-radius:0;}
+body.chat-mode .inbox{display:none;}
+body.chat-mode .chat{display:flex;width:100%;height:100%;}
+
+/* Mobile full-screen chat and keyboard positioning */
 @media(max-width:560px){
   html,
   body{
@@ -768,7 +779,7 @@ a{color:inherit;text-decoration:none}
     <button id="refreshBtn" title="Refresh messages">↻</button>
   </div>
 </header>
-  
+
 <div class="messages-area" id="messagesArea" hidden></div>
 
 <form class="composer" id="messageForm" hidden>
@@ -881,7 +892,8 @@ function esc(value = '') {
 }
 
 function initials(name = 'C') {
-  return name.trim().split(/\s+/).filter(Boolean).slice(0,2)
+  return name.trim().split
+  (/\s+/).filter(Boolean).slice(0,2)
     .map(p => p[0]).join('').toUpperCase() || 'C';
 }
 
@@ -1080,7 +1092,7 @@ function renderInbox() {
     const profile = c.otherProfile;
     const name = c.is_group ? c.group_name || 'Group chat' : profileName(profile);
     const last = c.lastMessage;
-    const preview = last
+        const preview = last
       ? (last.sender_id === me.id ? 'You: ' : '') + last.content
       : 'Start a conversation';
 
@@ -1146,6 +1158,7 @@ async function openConversation(id) {
   updateChatHeader(currentOtherUser,conversation);
 
   $('messaging').classList.add('chat-open');
+  document.body.classList.add('chat-mode');
   $('welcomeState').hidden = true;
   $('messagesArea').hidden = false;
   $('messageForm').hidden = false;
@@ -1738,6 +1751,9 @@ function setupEvents() {
 
   $('backBtn').addEventListener('click',() => {
     $('messaging').classList.remove('chat-open');
+    document.body.classList.remove('chat-mode');
+    if (messagePoll) clearInterval(messagePoll);
+    messagePoll = null;
   });
 
   $('refreshBtn').addEventListener('click',async () => {
@@ -1868,6 +1884,7 @@ initialize().catch(error => {
   toast('Messages could not be initialized. Please refresh.');
 });
 </script>
+<script src="./shared-nav.js" defer></script>
 
 </body>
 </html>
