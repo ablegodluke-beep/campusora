@@ -3813,7 +3813,6 @@ loadProfile().catch(error=>{
   });
 })();
 </script>
-
 <script>
 (function(){
   const line=document.querySelector('.name-line');
@@ -3822,15 +3821,17 @@ loadProfile().catch(error=>{
   if(!line||!name)return;
 
   function fitProfileName(){
-    name.style.transform='none';
-    name.style.fontSize='22px';
-    name.style.transformOrigin='left center';
-
-    const gap=parseFloat(getComputedStyle(line).columnGap)||5;
-
     const badge=line.querySelector('#profileRankBadge:not(.hidden)');
     const button=line.querySelector('#getRanksButton:not(.hidden)');
     const action=badge||button;
+
+    const gap=parseFloat(getComputedStyle(line).columnGap)||5;
+
+    name.style.transform='none';
+    name.style.width='auto';
+    name.style.flex='0 1 auto';
+    name.style.fontSize='22px';
+    name.style.maxWidth='100%';
 
     let available=line.clientWidth;
 
@@ -3839,20 +3840,13 @@ loadProfile().catch(error=>{
     }
 
     available=Math.max(12,available);
-
-    name.style.flex='0 1 '+available+'px';
     name.style.maxWidth=available+'px';
 
     let size=22;
 
-    while(name.scrollWidth>available+1&&size>5){
+    while(name.scrollWidth>available+1&&size>7){
       size-=0.5;
       name.style.fontSize=size+'px';
-    }
-
-    if(name.scrollWidth>available+1){
-      const scale=available/name.scrollWidth;
-      name.style.transform='scaleX('+Math.max(0.1,scale)+')';
     }
   }
 
@@ -3864,7 +3858,6 @@ loadProfile().catch(error=>{
   }
 
   scheduleFit();
-
   window.addEventListener('load',scheduleFit);
   window.addEventListener('resize',scheduleFit);
 
