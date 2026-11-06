@@ -700,7 +700,7 @@ creators:{
   sub:'Create and manage business promotions across Campusora.',
   notice:'Create promotions, upload an image or video, choose placement and schedule when the promotion should run. Promotions are separate from paid Sponsored Campaigns.',
   fields:['id','business_name','promotion_title','media_type','media_path','placement','status','start_at','end_at','priority','created_at'],
-  actions:['edit','archive']
+  actions:['edit','archive','delete']
  },
 
  communities:{
@@ -932,6 +932,9 @@ function tableHTML(rows,fields,actions,apiName){
   }
   if(actions.includes('archive')){
    buttons+='<button class="btn tiny danger archive" data-id="'+safe(id)+'">Archive</button>';
+  }
+  if(actions.includes('delete')){
+ buttons+='<button class="btn tiny danger delete-promotion" data-id="'+safe(id)+'">Delete</button>';
   }
   if(actions.includes('removeAdmin')){
    buttons+='<button class="btn tiny danger remove-admin" data-id="'+safe(id)+'">Remove admin</button>';
@@ -1216,6 +1219,33 @@ async function archivePromotion(id){
     id
    })
   });
+  async function deletePromotion(id){
+
+ if(!confirm(
+  'PERMANENTLY DELETE this promotion? This cannot be undone.'
+ ))return;
+
+ try{
+
+  const d=await api('/api/admin?action=manage',{
+   method:'POST',
+   body:JSON.stringify({
+    section:'promotions',
+    operation:'delete_promotion',
+    id
+   })
+  });
+
+  msg($('sectionMessage'),d.message||'Promotion deleted.');
+
+  await loadPanel('promotions');
+
+ }catch(e){
+
+  msg($('sectionMessage'),e.message,'err');
+
+ }
+}
 
   msg($('sectionMessage'),d.message||'Promotion archived.');
   await loadPanel('promotions');
@@ -1646,6 +1676,9 @@ $('tableArea').addEventListener('click',e=>{
  }
  if(button.classList.contains('archive')){
   archivePromotion(id);
+ }
+ if(button.classList.contains('delete-promotion')){
+ deletePromotion(id);
  }
  if(button.classList.contains('remove-admin')){
   removeAdmin(id);
