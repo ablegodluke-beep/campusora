@@ -1,15 +1,18 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-<title>Discover People | Campusora</title>
+<title>Suggestions | Campusora</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
 :root {
   --bg:#080b18;
   --surface:#101426;
-  --surface2:#171d32;
   --border:rgba(255,255,255,.09);
   --text:#f5f6ff;
   --muted:#929bb6;
@@ -28,9 +31,7 @@
 body {
   min-height:100vh;
   padding:18px 13px 35px;
-  background:
-    radial-gradient(ellipse at 10% 0%,rgba(75,42,145,.18),transparent 38%),
-    var(--bg);
+  background:var(--bg);
   color:var(--text);
   font-family:"DM Sans",sans-serif;
 }
@@ -43,9 +44,44 @@ button {
   cursor:pointer;
 }
 
+.progress {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:3px;
+  z-index:1000;
+  background:transparent;
+  overflow:hidden;
+}
+
+.progress::after {
+  content:"";
+  display:block;
+  width:35%;
+  height:100%;
+  background:var(--gradient);
+  animation:loading 1.2s ease-in-out infinite;
+}
+
+.progress.done {
+  opacity:0;
+  transition:opacity .3s;
+}
+
+.progress.done::after {
+  animation:none;
+  width:100%;
+}
+
+@keyframes loading {
+  from {transform:translateX(-110%)}
+  to {transform:translateX(300%)}
+}
+
 .app {
   width:100%;
-  max-width:760px;
+  max-width:650px;
   margin:auto;
 }
 
@@ -54,153 +90,44 @@ button {
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding:5px 0 17px;
+  padding:8px 0 17px;
   border-bottom:1px solid var(--border);
 }
 
-.brand {
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.brand img {
-  width:38px;
-  height:38px;
-  object-fit:contain;
-  display:block;
-}
-
-.brand-name {
-  font-size:19px;
+h1 {
+  font-size:23px;
   font-weight:800;
   letter-spacing:-.6px;
 }
 
-.brand-name span {
+.skip {
   color:var(--cyan);
-}
-
-.skip-btn {
-  padding:9px 15px;
-  border:1px solid rgba(146,91,255,.4);
-  border-radius:10px;
-  background:#17172e;
-  color:white;
   font-size:12px;
-  font-weight:800;
+  font-weight:700;
   text-decoration:none;
-  white-space:nowrap;
-}
-
-.skip-btn:hover {
-  border-color:var(--cyan);
-}
-
-.intro {
-  padding:25px 0 20px;
-}
-
-.intro h1 {
-  font-size:23px;
-  font-weight:800;
-  letter-spacing:-.7px;
-  margin-bottom:7px;
-}
-
-.intro h1 span {
-  color:var(--cyan);
-}
-
-.intro p {
-  max-width:510px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-}
-
-.step-indicator {
-  display:flex;
-  align-items:center;
-  gap:7px;
-  margin-top:15px;
-}
-
-.step {
-  width:30px;
-  height:5px;
-  border-radius:10px;
-  background:#303650;
-}
-
-.step.active {
-  background:var(--gradient);
-}
-
-.step-label {
-  margin-left:5px;
-  color:#aab5d2;
-  font-size:10px;
-}
-
-.section-heading {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin:8px 0 13px;
-}
-
-.section-heading h2 {
-  font-size:14px;
-  font-weight:800;
-}
-
-.section-heading span {
-  color:var(--muted);
-  font-size:10px;
 }
 
 .people-list {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
+  display:flex;
+  flex-direction:column;
+  margin-top:10px;
 }
 
-.person-card {
-  min-width:0;
-  padding:15px;
-  border:1px solid var(--border);
-  border-radius:15px;
-  background:linear-gradient(145deg,#171d33,#101426);
-  animation:appear .25s ease both;
-}
-
-.person-card.featured {
-  border-color:rgba(146,91,255,.55);
-  background:
-    linear-gradient(145deg,rgba(85,55,150,.24),#101426 80%);
-  box-shadow:0 8px 30px rgba(103,69,200,.10);
-}
-
-.featured-label {
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:5px 8px;
-  margin-bottom:13px;
-  border-radius:7px;
-  background:rgba(146,91,255,.15);
-  color:#cbb8ff;
-  font-size:9px;
-  font-weight:800;
-}
-
-.person-top {
+.person {
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:11px;
   min-width:0;
+  padding:12px 2px;
+  border-bottom:1px solid var(--border);
+}
+
+.person.featured {
+  padding:14px 9px;
+  margin-bottom:5px;
+  border:1px solid rgba(146,91,255,.35);
+  border-radius:12px;
+  background:rgba(146,91,255,.08);
 }
 
 .avatar-link {
@@ -209,15 +136,15 @@ button {
 }
 
 .avatar {
-  width:55px;
-  height:55px;
+  width:48px;
+  height:48px;
   display:grid;
   place-items:center;
   overflow:hidden;
   border-radius:50%;
-  background:linear-gradient(135deg,var(--purple),var(--blue),var(--cyan));
+  background:var(--gradient);
   color:white;
-  font-size:19px;
+  font-size:18px;
   font-weight:800;
 }
 
@@ -228,273 +155,182 @@ button {
 }
 
 .person-info {
+  flex:1;
   min-width:0;
 }
 
 .person-name {
   display:block;
-  overflow-wrap:anywhere;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
   color:white;
   font-size:13px;
   font-weight:800;
   text-decoration:none;
-}
-
-.person-name:hover {
-  color:var(--cyan);
 }
 
 .username {
   margin-top:4px;
   color:var(--muted);
   font-size:11px;
-  overflow-wrap:anywhere;
-}
-
-.role-badge {
-  display:inline-block;
-  margin-top:7px;
-  padding:4px 8px;
-  border-radius:7px;
-  background:#34265e;
-  color:#c9b9ff;
-  font-size:10px;
-  font-weight:700;
-}
-
-.role-badge.alumni {
-  background:#16473e;
-  color:#7df0c6;
-}
-
-.role-badge.general {
-  background:#203951;
-  color:#8dd7ff;
 }
 
 .school {
-  display:flex;
-  align-items:flex-start;
-  gap:7px;
-  min-height:35px;
-  margin:15px 0 13px;
-  padding:8px 10px;
-  border:1px solid rgba(57,215,245,.14);
-  border-radius:9px;
-  background:rgba(57,215,245,.045);
-  color:#b8c6e0;
-  font-size:11px;
-  line-height:1.5;
-  overflow-wrap:anywhere;
+  margin-top:4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#aab5d2;
+  font-size:10px;
 }
 
-.school-icon {
+.follow-btn {
   flex-shrink:0;
-  color:var(--cyan);
-}
-
-.actions {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.action-btn {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-width:0;
-  padding:10px 5px;
-  border:1px solid #373f56;
+  min-width:85px;
+  padding:9px 12px;
+  border:0;
   border-radius:9px;
-  background:#1b2234;
+  background:var(--gradient);
   color:white;
   font-size:11px;
   font-weight:800;
-  text-align:center;
-  text-decoration:none;
 }
 
-.action-btn.follow {
-  border-color:transparent;
-  background:var(--gradient);
-}
-
-.action-btn.following {
+.follow-btn.following {
+  border:1px solid #286477;
   background:#172e36;
-  border-color:#286477;
   color:#8ce8f3;
 }
 
-.action-btn.message {
-  background:transparent;
-  border-color:rgba(57,215,245,.35);
-  color:var(--cyan);
-}
-
-.action-btn:disabled {
+.follow-btn:disabled {
   opacity:.6;
   cursor:wait;
 }
 
 .status {
-  grid-column:1/-1;
   padding:35px 15px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:var(--surface);
   color:var(--muted);
   text-align:center;
   font-size:12px;
   line-height:1.8;
 }
 
-.status-icon {
-  display:block;
-  margin-bottom:9px;
-  color:var(--cyan);
-  font-size:25px;
-}
-
 .message-box {
   display:none;
   padding:11px 13px;
-  margin-bottom:13px;
-  border-radius:10px;
+  margin-top:12px;
+  border-radius:9px;
   font-size:12px;
-  line-height:1.6;
 }
 
 .message-box.success {
   display:block;
   color:#9af1d0;
   background:#10352d;
-  border:1px solid #216b56;
 }
 
 .message-box.error {
   display:block;
   color:#ffb2c0;
   background:#391b29;
-  border:1px solid #79344b;
 }
 
-.finish-area {
-  margin-top:23px;
-  padding:17px;
+.finish {
+  margin-top:22px;
+  padding:15px;
   border:1px solid var(--border);
-  border-radius:14px;
-  background:rgba(255,255,255,.025);
+  border-radius:12px;
   text-align:center;
 }
 
-.finish-area p {
+.finish p {
+  margin-bottom:12px;
   color:var(--muted);
   font-size:11px;
   line-height:1.6;
-  margin-bottom:12px;
 }
 
-.finish-btn {
+.finish a {
   display:block;
-  width:100%;
-  padding:13px;
-  border:0;
-  border-radius:10px;
+  padding:12px;
+  border-radius:9px;
   background:var(--gradient);
   color:white;
-  font-size:13px;
+  font-size:12px;
   font-weight:800;
   text-decoration:none;
 }
 
-@keyframes appear {
-  from {
-    opacity:0;
-    transform:translateY(6px);
-  }
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-@media(max-width:560px) {
+@media(max-width:400px) {
   body {
-    padding:12px 10px 25px;
+    padding:15px 10px 25px;
   }
 
-  .people-list {
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
-  .person-card {
-    padding:14px;
-  }
-
-  .intro {
-    padding:21px 0 17px;
-  }
-
-  .intro h1 {
+  h1 {
     font-size:21px;
+  }
+
+  .avatar {
+    width:43px;
+    height:43px;
+  }
+
+  .follow-btn {
+    min-width:76px;
+    padding:9px 8px;
   }
 }
 
 @media(prefers-reduced-motion:reduce) {
   *,*::before,*::after {
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
+    animation:none!important;
+    transition:none!important;
   }
 }
-</style></head><body>
-<main class="app"><header class="topbar">
-  <div class="brand">
-    <img src="./campusora-logo.png" alt="Campusora">
-    <div class="brand-name">Campus<span>ora</span></div>
-  </div>  <a class="skip-btn" href="./home-feed.html">
-    Skip →
-  </a>
-</header><section class="intro">
-  <h1>Find your people on <span>Campusora</span> ✨</h1>  <p>
-    Follow students, alumni and other members to start building
-    your campus community. You can also message people directly.
-  </p>  <div class="step-indicator">
-    <span class="step active"></span>
-    <span class="step active"></span>
-    <span class="step active"></span>
-    <span class="step-label">Almost there · Discover people</span>
-  </div>
-</section><div id="messageBox" class="message-box" role="status" aria-live="polite"></div><div class="section-heading">
-  <h2>People to connect with</h2>
-  <span>Follow the people you know</span>
-</div><section class="people-list" id="peopleList">
-  <div class="status">
-    <span class="status-icon">✦</span>
-    Finding people across Campusora...
-  </div>
-</section><section class="finish-area">
-  <p>
-    You're ready to explore Campusora. You can always discover
-    and follow more people later.
-  </p>  <a href="./home-feed.html" class="finish-btn">
-    Continue to Home Feed →
-  </a>
-</section></main><script type="module">
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<main class="app">
+
+  <header class="topbar">
+    <h1>Suggestions</h1>
+    <a class="skip" href="./home-feed.html">Skip →</a>
+  </header>
+
+  <div id="messageBox" class="message-box" role="status"></div>
+
+  <section class="people-list" id="peopleList">
+    <div class="status">Finding people across Campusora...</div>
+  </section>
+
+  <section class="finish">
+    <p>
+      Discover more people and build your campus community.
+      You can follow more members anytime.
+    </p>
+    <a href="./home-feed.html">Continue to Home Feed →</a>
+  </section>
+
+</main>
+
+<script type="module">
 import { supabase } from './supabase.js';
 
 const peopleList = document.getElementById('peopleList');
 const messageBox = document.getElementById('messageBox');
+const progress = document.getElementById('progress');
+
+const FEATURED_USERNAME = 'Campusora';
 
 let currentUser = null;
 let profiles = [];
 let followingIds = new Set();
 let busyIds = new Set();
-
-// The official Campusora account is always featured first.
-// Keep its username as "campusora" even if its display name changes.
-const FEATURED_USERNAME = 'campusora';
 
 function escapeHTML(value = '') {
   return String(value).replace(/[&<>"']/g, char => ({
@@ -510,34 +346,14 @@ function getName(profile) {
   return profile.full_name || profile.username || 'Campusora Member';
 }
 
-function getInitial(profile) {
-  return getName(profile).trim().charAt(0).toUpperCase() || 'C';
-}
-
 function profileURL(profile) {
-  return 'profile.html?id=' + encodeURIComponent(profile.id);
-}
-
-function roleBadge(role) {
-  const safeRole = ['student','alumni','general'].includes(
-    String(role || '').toLowerCase()
-  ) ? String(role).toLowerCase() : 'general';
-
-  const labels = {
-    student:'Student',
-    alumni:'Alumni',
-    general:'General Member'
-  };
-
-  return `
-    <span class="role-badge ${safeRole}">
-      ${labels[safeRole]}
-    </span>
-  `;
+  return './profile.html?id=' + encodeURIComponent(profile.id);
 }
 
 function avatarHTML(profile) {
-  const initial = escapeHTML(getInitial(profile));
+  const initial = escapeHTML(
+    getName(profile).trim().charAt(0).toUpperCase() || 'C'
+  );
 
   if (!profile.avatar_url) {
     return `<div class="avatar">${initial}</div>`;
@@ -566,73 +382,49 @@ function showMessage(message,type='success') {
   },4000);
 }
 
-function createPersonCard(profile,featured=false) {
-  const isFollowing = followingIds.has(profile.id);
-  const isBusy = busyIds.has(profile.id);
+function isFeatured(profile) {
+  return String(profile.username || '').toLowerCase() ===
+    FEATURED_USERNAME.toLowerCase();
+}
 
-  const card = document.createElement('article');
-  card.className = 'person-card' + (featured ? ' featured' : '');
+function createPersonRow(profile) {
+  const following = followingIds.has(profile.id);
+  const busy = busyIds.has(profile.id);
+  const featured = isFeatured(profile);
 
-  const featuredLabel = featured
-    ? '<div class="featured-label">✦ Official Campusora Profile</div>'
-    : '';
+  const row = document.createElement('article');
 
-  card.innerHTML = `
-    ${featuredLabel}
+  row.className = 'person' + (featured ? ' featured' : '');
 
-    <div class="person-top">
+  row.innerHTML = `
+    <a class="avatar-link" href="${profileURL(profile)}">
+      ${avatarHTML(profile)}
+    </a>
 
-      <a class="avatar-link" href="${profileURL(profile)}">
-        ${avatarHTML(profile)}
+    <div class="person-info">
+      <a class="person-name" href="${profileURL(profile)}">
+        ${escapeHTML(getName(profile))}
       </a>
 
-      <div class="person-info">
+      <div class="username">
+        @${escapeHTML(profile.username || 'member')}
+      </div>
 
-        <a class="person-name" href="${profileURL(profile)}">
-          ${escapeHTML(getName(profile))}
-        </a>
-
-        <div class="username">
-          ${profile.username
-            ? '@' + escapeHTML(profile.username)
-            : 'Campusora member'}
-        </div>
-
-        ${roleBadge(profile.role)}
-
+      <div class="school">
+        ${escapeHTML(profile.school || 'School not added')}
       </div>
     </div>
 
-    <div class="school">
-      <span class="school-icon">◆</span>
-      <span>${escapeHTML(profile.school || 'School not added')}</span>
-    </div>
-
-    <div class="actions">
-
-      <button
-        class="action-btn ${isFollowing ? 'following' : 'follow'}"
-        data-follow="${escapeHTML(profile.id)}"
-        ${isBusy ? 'disabled' : ''}
-      >
-        ${isBusy
-          ? 'Please wait...'
-          : isFollowing
-            ? '✓ Following'
-            : '+ Follow'}
-      </button>
-
-      <a
-        class="action-btn message"
-        href="messages.html?user=${encodeURIComponent(profile.id)}"
-      >
-        Message
-      </a>
-
-    </div>
+    <button
+      class="follow-btn ${following ? 'following' : ''}"
+      data-follow="${escapeHTML(profile.id)}"
+      ${busy ? 'disabled' : ''}
+    >
+      ${busy ? 'Please wait...' : following ? '✓ Following' : '+ Follow'}
+    </button>
   `;
 
-  return card;
+  return row;
 }
 
 function renderPeople() {
@@ -641,32 +433,21 @@ function renderPeople() {
   if (!profiles.length) {
     peopleList.innerHTML = `
       <div class="status">
-        <span class="status-icon">◎</span>
-        No other members are available to suggest right now.
-        You can continue to your Home Feed.
+        No members are available to suggest right now.
       </div>
     `;
     return;
   }
 
   profiles.forEach(profile => {
-    const featured = profile.username &&
-      profile.username.toLowerCase() === FEATURED_USERNAME;
-
-    peopleList.appendChild(createPersonCard(profile,featured));
+    peopleList.appendChild(createPersonRow(profile));
   });
 }
 
 async function loadPeople() {
-  peopleList.innerHTML = `
-    <div class="status">
-      <span class="status-icon">✦</span>
-      Finding people across Campusora...
-    </div>
-  `;
-
   try {
-    const { data:userData,error:userError } = await supabase.auth.getUser();
+    const { data:userData,error:userError } =
+      await supabase.auth.getUser();
 
     if (userError) throw userError;
 
@@ -688,9 +469,7 @@ async function loadPeople() {
       (follows || []).map(row => row.following_id)
     );
 
-    // Load the official Campusora profile first.
-    let featuredProfile = null;
-
+    // Find Official Campusora using its username.
     const { data:featuredData,error:featuredError } = await supabase
       .from('profiles')
       .select('id,full_name,username,school,role,avatar_url')
@@ -699,11 +478,11 @@ async function loadPeople() {
 
     if (featuredError) throw featuredError;
 
-    featuredProfile = (featuredData || []).find(
+    const featuredProfile = (featuredData || []).find(
       profile => profile.id !== currentUser.id
     ) || null;
 
-    // Load other members in batches.
+    // Load the remaining profiles.
     const others = [];
     const PAGE_SIZE = 50;
     let offset = 0;
@@ -736,6 +515,8 @@ async function loadPeople() {
       if (batch.length < PAGE_SIZE) break;
     }
 
+    // Official Campusora always comes first for other members.
+    // It remains visible even after someone follows it.
     profiles = [
       ...(featuredProfile ? [featuredProfile] : []),
       ...others
@@ -745,19 +526,18 @@ async function loadPeople() {
 
     if (!featuredProfile) {
       showMessage(
-        'The official Campusora profile could not be found. Check that its username is campusora.',
+        'Could not find the profile with username Campusora. Please check the profile username.',
         'error'
       );
     }
 
   } catch (error) {
-    console.error('Onboarding suggestions error:',error);
+    console.error('Suggestions error:',error);
 
     peopleList.innerHTML = `
       <div class="status">
-        <span class="status-icon">!</span>
-        We couldn't load suggested members.<br>
-        Please refresh or continue to your Home Feed.
+        We couldn't load suggestions.<br>
+        Please refresh and try again.
       </div>
     `;
 
@@ -765,10 +545,11 @@ async function loadPeople() {
       error.message || 'Unable to load suggestions.',
       'error'
     );
+
+  } finally {
+    progress.classList.add('done');
   }
 }
-
-/* FOLLOW */
 
 async function followMember(profileId) {
   if (!currentUser || busyIds.has(profileId)) return;
@@ -790,15 +571,16 @@ async function followMember(profileId) {
 
     followingIds.add(profileId);
 
-    // Keep the official Campusora profile visible after following.
-    const profile = profiles.find(item => item.id === profileId);
+    const profile = profiles.find(
+      item => item.id === profileId
+    );
 
-    const isFeatured = profile &&
-      profile.username &&
-      profile.username.toLowerCase() === FEATURED_USERNAME;
-
-    if (!isFeatured) {
-      profiles = profiles.filter(item => item.id !== profileId);
+    // Keep Official Campusora at the top after following.
+    // Other followed members leave the suggestions list.
+    if (!profile || !isFeatured(profile)) {
+      profiles = profiles.filter(
+        item => item.id !== profileId
+      );
     }
 
     showMessage('You are now following this member.');
@@ -826,5 +608,7 @@ peopleList.addEventListener('click',event => {
 });
 
 loadPeople();
-</script></body>
+</script>
+
+</body>
 </html>
