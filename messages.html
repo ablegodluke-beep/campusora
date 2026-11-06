@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#080b18">
 <title>Chats | Campusora</title>
 
-<link rel="stylesheet" href="shared-nav.css">
 
 <style>
 :root{
@@ -37,14 +36,15 @@ button{cursor:pointer}
 a{color:inherit;text-decoration:none}
 
 .page{
-  max-width:1150px;
-  margin:auto;
-  padding:18px 14px 30px;
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:0;
 }
 
 .messaging{
-  height:min(760px,calc(100dvh - 115px));
-  min-height:460px;
+  height:100dvh;
+  min-height:0;
   display:grid;
   grid-template-columns:310px minmax(0,1fr);
   background:var(--panel);
@@ -255,11 +255,18 @@ a{color:inherit;text-decoration:none}
 }
 
 .back-btn{
-  display:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:28px;
+  flex-shrink:0;
+  padding:0;
   border:0;
   background:none;
   color:white;
-  font-size:24px;
+  font-size:20px;
+  line-height:1;
 }
 
 .chat-avatar-link{
@@ -297,7 +304,7 @@ a{color:inherit;text-decoration:none}
 }
 
 .chat-tools{
-  display:flex;
+  display:none;
   gap:7px;
 }
 
@@ -591,7 +598,7 @@ a{color:inherit;text-decoration:none}
 }
 
 .premium-plan strong{font-size:13px}
-.premium-plan span{
+  .premium-plan span{
   color:#c6b5ff;
   font-weight:800;
   font-size:13px;
@@ -613,15 +620,15 @@ a{color:inherit;text-decoration:none}
 }
 
 @media(max-width:800px){
-  .page{padding:12px 8px}
+  .page{padding:0}
   .messaging{grid-template-columns:260px minmax(0,1fr)}
 }
 
 @media(max-width:560px){
   .page{padding:0}
   .messaging{
-    height:calc(100dvh - 75px);
-    min-height:400px;
+    height:100dvh;
+    min-height:0;
     display:block;
     border:0;
     border-radius:0;
@@ -632,7 +639,7 @@ a{color:inherit;text-decoration:none}
   .chat{display:none;height:100%;width:100%}
   .messaging.chat-open .inbox{display:none}
   .messaging.chat-open .chat{display:flex}
-  .back-btn{display:block}
+  .back-btn{display:flex}
   .chat-head{min-height:64px;padding:9px 10px}
   .messages-area{padding:14px 11px}
   .message-row{max-width:88%}
@@ -752,7 +759,6 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-<script src="shared-nav.js"></script>
 
 <script type="module">
 import { supabase } from './supabase.js';
@@ -773,6 +779,7 @@ let refreshInterval = null;
 let profileCache = new Map();
 let sending = false;
 let loadingMessages = false;
+let editingMessageId = null;
 let pendingPremiumMessageId = null;
 
 function esc(value = '') {
@@ -973,7 +980,7 @@ function renderInbox() {
     : '';
 
   if (!items.length) {
-    list.innerHTML = `<div class="panel-message">${
+    list.innerHTML = `<div class="panel-message">${ 
       currentFilter === 'unread'
         ? 'You have no message requests.'
         : 'No conversations yet. Visit a member profile and tap Message to start a conversation.'
@@ -1110,10 +1117,10 @@ function renderMessages() {
       previousDate = dateKey;
     }
 
+    if (m.deleted_at && !m._pending) return;
+
     const mine = m.sender_id === me.id;
-    const messageText = m._pending
-      ? m.content
-      : m.deleted_at ? 'This message was deleted' : m.content;
+    const messageText = m.content;
 
     let actions = '';
 
@@ -1157,6 +1164,7 @@ async function loadMessages(id,showLoading = false) {
     .from('messages')
     .select('id,conversation_id,sender_id,content,created_at,deleted_at')
     .eq('conversation_id',id)
+    .is('deleted_at',null)
     .order('created_at',{ascending:true})
     .limit(300);
 
@@ -1195,8 +1203,7 @@ async function loadPendingMessages(id) {
 
   currentPendingMessages = data || [];
 }
-
-async function markConversationRead(id) {
+  async function markConversationRead(id) {
   const now = new Date().toISOString();
 
   const {error} = await supabase
@@ -1392,6 +1399,12 @@ async function verifyPremiumPayment() {
   }
 }
 
+function resetMessageEditor() {
+  editingMessageId = null;
+  $('sendBtn').textContent = '➤';
+  $('sendBtn').setAttribute('aria-label','Send message');
+}
+
 async function sendMessage(event) {
   event.preventDefault();
 
@@ -1409,6 +1422,42 @@ async function sendMessage(event) {
 
   sending = true;
   $('sendBtn').disabled = true;
+
+  if (editingMessageId) {
+    const messageId = editingMessageId;
+    const {data,error} = await supabase
+      .from('messages')
+      .update({content})
+      .eq('id',messageId)
+      .eq('sender_id',me.id)
+      .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+      .single();
+
+    sending = false;
+    $('sendBtn').disabled = false;
+
+    if (error) {
+      console.error('Edit message:',error);
+      toast('Message could not be edited. Please try again.');
+      checkMessageInput();
+      return;
+    }
+
+    currentMessages = currentMessages.map(m =>
+      String(m.id) === String(messageId) ? data : m
+    );
+
+    input.value = '';
+    input.style.height = '42px';
+    $('phoneWarning').classList.remove('show');
+    resetMessageEditor();
+    renderMessages();
+    toast('Message updated.');
+    await loadInbox();
+    input.focus();
+    checkMessageInput();
+    return;
+  }
 
   const {data,error} = await supabase
     .from('messages')
@@ -1456,49 +1505,34 @@ async function sendMessage(event) {
 
   await loadInbox();
   input.focus();
+  checkMessageInput();
 }
 
-async function editMessage(messageId) {
+function editMessage(messageId) {
   const message = currentMessages.find(m => String(m.id) === String(messageId));
 
   if (!message || message.sender_id !== me.id) return;
 
-  const updated = prompt('Edit your message:',message.content);
+  editingMessageId = message.id;
 
-  if (updated === null) return;
+  const input = $('messageInput');
+  input.value = message.content;
+  input.style.height = '42px';
+  input.style.height = Math.min(input.scrollHeight,120) + 'px';
 
-  const content = updated.trim();
+  $('sendBtn').textContent = '✓';
+  $('sendBtn').setAttribute('aria-label','Save edited message');
+  $('sendBtn').disabled = false;
 
-  if (!content) {
-    toast('A message cannot be empty.');
-    return;
-  }
+  document.querySelectorAll('.message-menu').forEach(item => {
+    item.hidden = true;
+  });
 
-  if (containsPhoneNumber(content)) {
-    toast('Sharing phone numbers is currently restricted on Campusora.');
-    return;
-  }
-
-  const {data,error} = await supabase
-    .from('messages')
-    .update({content})
-    .eq('id',messageId)
-    .eq('sender_id',me.id)
-    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-    .single();
-
-  if (error) {
-    console.error('Edit message:',error);
-    toast('Message could not be edited.');
-    return;
-  }
-
-  currentMessages = currentMessages.map(m =>
-    m.id === messageId ? data : m
-  );
-
-  renderMessages();
-  toast('Message updated.');
+  requestAnimationFrame(() => {
+    input.focus();
+    input.setSelectionRange(input.value.length,input.value.length);
+    input.scrollIntoView({block:'nearest',behavior:'smooth'});
+  });
 }
 
 async function deleteMessage(messageId) {
@@ -1506,20 +1540,23 @@ async function deleteMessage(messageId) {
 
   if (!message || message.sender_id !== me.id) return;
 
-  const {error} = await supabase
+  const {data,error} = await supabase
     .from('messages')
-    .update({deleted_at:new Date().toISOString()})
+    .delete()
     .eq('id',messageId)
-    .eq('sender_id',me.id);
+    .eq('sender_id',me.id)
+    .select('id')
+    .single();
 
-  if (error) {
+  if (error || !data) {
     console.error('Delete message:',error);
     toast('Message could not be deleted.');
     return;
   }
 
-  const target = currentMessages.find(m => String(m.id) === String(messageId));
-  if (target) target.deleted_at = new Date().toISOString();
+  currentMessages = currentMessages.filter(
+    m => String(m.id) !== String(messageId)
+  );
 
   renderMessages();
   await loadInbox();
