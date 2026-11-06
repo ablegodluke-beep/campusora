@@ -1897,8 +1897,9 @@ function openPremiumModal() {
 function closePremiumModal() {
   $('premiumModal').classList.add('hidden');
   document.body.style.overflow='';
-  $('closePremiumModal').addEventListener('click',closePremiumModal);
 }
+
+$('closePremiumModal').addEventListener('click',closePremiumModal);
 
 $('premiumButton').addEventListener('click',()=>{
   if(!currentUser){
