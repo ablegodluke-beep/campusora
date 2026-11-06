@@ -7,7 +7,6 @@
 <title>Chats | Campusora</title>
 <link rel="stylesheet" href="./shared-nav.css">
 
-
 <style>
 :root{
   --bg:#080b18;
@@ -212,7 +211,7 @@ a{color:inherit;text-decoration:none}
   gap:3px;
   padding:3px 7px;
   border-radius:20px;
-  font-size:9px;
+    font-size:9px;
   line-height:1;
   font-weight:800;
   white-space:nowrap;
@@ -350,7 +349,7 @@ a{color:inherit;text-decoration:none}
 }
 
 .message-bubble{
-    padding:10px 13px;
+  padding:10px 13px;
   border:1px solid #303956;
   border-radius:14px 14px 14px 4px;
   background:#202943;
@@ -653,17 +652,7 @@ a{color:inherit;text-decoration:none}
     transition-duration:.01ms!important;
   }
 }
-    /* Shared navigation: visible in inbox, hidden only inside an open chat */
-body:not(.chat-mode) .page{position:relative;width:min(100%,1100px);height:calc(100dvh - 45px);margin:0 auto;padding:12px 12px 88px;}
-body:not(.chat-mode) .messaging{position:relative;top:auto;left:auto;right:auto;width:100%;height:calc(100dvh - 125px);min-height:0;max-width:1100px;margin:0 auto;border-radius:16px;}
-body.chat-mode{overflow:hidden;}
-body.chat-mode .campusora-topnav,body.chat-mode .campusora-mainnav{display:none!important;}
-body.chat-mode .page{width:100%;height:100dvh;margin:0;padding:0;}
-body.chat-mode .messaging{position:fixed;inset:0;display:block;width:100%;height:100dvh;min-height:0;margin:0;border:0;border-radius:0;}
-body.chat-mode .inbox{display:none;}
-body.chat-mode .chat{display:flex;width:100%;height:100%;}
-
-/* Mobile full-screen chat and keyboard positioning */
+    /* Mobile full-screen chat and keyboard positioning */
 @media(max-width:560px){
   html,
   body{
@@ -727,6 +716,45 @@ body.chat-mode .chat{display:flex;width:100%;height:100%;}
     flex:0 0 auto;
   }
 }
+
+/* Shared navigation stays visible in the inbox and is hidden only inside a conversation. */
+body.has-shared-nav:not(.chat-mode) .messaging{
+  height:calc(100dvh - 125px);
+}
+body.chat-mode .campusora-topnav,
+body.chat-mode .campusora-mainnav,
+body.chat-mode .campusora-create-overlay{
+  display:none!important;
+}
+body.chat-mode .page{
+  width:100%;
+  height:100dvh;
+  margin:0;
+  padding:0;
+}
+body.chat-mode .messaging{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100dvh;
+  min-height:0;
+  margin:0;
+  border:0;
+  border-radius:0;
+  z-index:10001;
+}
+@media(max-width:560px){
+  body.has-shared-nav:not(.chat-mode) .page{
+    height:auto;
+  }
+  body.has-shared-nav:not(.chat-mode) .messaging{
+    position:relative;
+    top:auto;
+    left:auto;
+    right:auto;
+    height:calc(100dvh - 125px);
+  }
+}
 </style>
 </head>
 
@@ -779,11 +807,11 @@ body.chat-mode .chat{display:flex;width:100%;height:100%;}
     <button id="refreshBtn" title="Refresh messages">↻</button>
   </div>
 </header>
-
+  
 <div class="messages-area" id="messagesArea" hidden></div>
 
 <form class="composer" id="messageForm" hidden>
-  <textarea
+    <textarea
     id="messageInput"
     maxlength="5000"
     rows="1"
@@ -892,8 +920,7 @@ function esc(value = '') {
 }
 
 function initials(name = 'C') {
-  return name.trim().split
-  (/\s+/).filter(Boolean).slice(0,2)
+  return name.trim().split(/\s+/).filter(Boolean).slice(0,2)
     .map(p => p[0]).join('').toUpperCase() || 'C';
 }
 
@@ -1092,7 +1119,7 @@ function renderInbox() {
     const profile = c.otherProfile;
     const name = c.is_group ? c.group_name || 'Group chat' : profileName(profile);
     const last = c.lastMessage;
-        const preview = last
+    const preview = last
       ? (last.sender_id === me.id ? 'You: ' : '') + last.content
       : 'Start a conversation';
 
@@ -1752,8 +1779,6 @@ function setupEvents() {
   $('backBtn').addEventListener('click',() => {
     $('messaging').classList.remove('chat-open');
     document.body.classList.remove('chat-mode');
-    if (messagePoll) clearInterval(messagePoll);
-    messagePoll = null;
   });
 
   $('refreshBtn').addEventListener('click',async () => {
