@@ -324,6 +324,106 @@ img{display:block;max-width:100%}
 .composer-action.poll .icon{color:#b795ff}
 .composer-action.question .icon{color:#f4bd67}
 
+  /* COMPACT BUSINESS PROMOTION */
+
+.business-promo{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:13px;
+  margin-bottom:9px;
+  overflow:hidden;
+}
+
+.business-promo-header{
+  padding:10px 11px 5px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.business-promo-name{
+  font-size:11px;
+  font-weight:800;
+}
+
+.business-promo-label{
+  font-size:8px;
+  font-weight:800;
+  color:#c4aaff;
+  background:#8b63ff22;
+  padding:3px 6px;
+  border-radius:5px;
+}
+
+.business-promo-title{
+  padding:0 11px;
+  margin:2px 0 7px;
+  font-size:13px;
+  line-height:1.4;
+  font-weight:800;
+  color:#fff;
+}
+
+.business-promo-description{
+  padding:0 11px;
+  margin:0 0 9px;
+  color:#c6cce0;
+  font-size:11px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+
+.business-promo-media{
+  width:100%;
+  display:block;
+  max-height:380px;
+  object-fit:contain;
+  background:#05070e;
+}
+
+.business-promo-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  padding:9px 11px 11px;
+}
+
+.business-promo-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  min-height:32px;
+  padding:7px 12px;
+  border-radius:8px;
+  font-size:10px;
+  font-weight:800;
+  border:1px solid var(--border);
+  background:var(--surface2);
+  color:white;
+}
+
+.business-promo-btn.whatsapp{
+  background:#168b50;
+  border-color:#168b50;
+  color:white;
+}
+
+.business-promo-btn.website{
+  background:var(--gradient);
+  border:0;
+}
+
+.business-promo-btn.social{
+  background:#242c49;
+}
+
+@media(max-width:480px){
+  .business-promo{border-radius:11px}
+  .business-promo-media{max-height:320px}
+}
+
 /* POSTS */
 
 .post{
@@ -1704,43 +1804,136 @@ function renderVideo(item,extra){
 }
 
 /* SPONSORED POSTS */
-
 function renderBusinessAd(ad){
- const media=ad.media_type==="video"
-  ?`<video class="post-video"
-     controls playsinline preload="metadata"
-     src="${esc(ad.media_path)}"></video>`
-  :`<img class="post-image"
-     loading="lazy"
-     src="${esc(ad.media_path)}"
-     alt="Sponsored promotion">`;
 
- return `
-  <article class="post">
-   <div class="post-header">
-    <div class="post-user">
-     <strong class="post-name">
-      ${esc(ad.business_name||"Campusora Partner")}
-     </strong>
-     <div class="post-meta">Sponsored</div>
-    </div>
-   </div>
+  const bucket = "campusora-business-promotions";
 
-   <div class="post-body">
-    <span class="post-badge">SPONSORED</span>
-    <p><strong>${esc(ad.promotion_title||"")}</strong></p>
-    <p>${esc(ad.description||"")}</p>
-    ${media}
+  let media = "";
 
-    ${ad.call_to_action&&ad.website_url
-     ?`<a class="filter-button"
-        target="_blank" rel="noopener"
-        href="${esc(ad.website_url)}">
-        ${esc(ad.call_to_action)}
-       </a>`
-     :""}
-   </div>
-  </article>`;
+  if(ad.media_path){
+
+    const {data:publicData} = supabase
+      .storage
+      .from(bucket)
+      .getPublicUrl(ad.media_path);
+
+    const mediaUrl = publicData?.publicUrl || "";
+
+    if(mediaUrl){
+
+      if(ad.media_type === "video"){
+
+        media = `
+          <video
+            class="business-promo-media"
+            controls
+            playsinline
+            preload="metadata"
+            src="${esc(mediaUrl)}">
+          </video>
+        `;
+
+      }else{
+
+        media = `
+          <img
+            class="business-promo-media"
+            src="${esc(mediaUrl)}"
+            alt="${esc(ad.promotion_title || "Business promotion")}"
+            loading="lazy"
+            onerror="this.style.display='none'">
+        `;
+      }
+    }
+  }
+
+  const links = [];
+
+  if(ad.whatsapp_url){
+
+    links.push(`
+      <a
+        class="business-promo-btn whatsapp"
+        href="${esc(ad.whatsapp_url)}"
+        target="_blank"
+        rel="noopener noreferrer">
+        🟢 WhatsApp
+      </a>
+    `);
+  }
+
+  if(ad.website_url){
+
+    links.push(`
+      <a
+        class="business-promo-btn website"
+        href="${esc(ad.website_url)}"
+        target="_blank"
+        rel="noopener noreferrer">
+        🌐 Visit Website
+      </a>
+    `);
+  }
+
+  if(ad.social_media_url){
+
+    links.push(`
+      <a
+        class="business-promo-btn social"
+        href="${esc(ad.social_media_url)}"
+        target="_blank"
+        rel="noopener noreferrer">
+        Social Media
+      </a>
+    `);
+  }
+
+  if(ad.phone_number){
+
+    links.push(`
+      <a
+        class="business-promo-btn"
+        href="tel:${esc(ad.phone_number)}">
+        ☎ Call
+      </a>
+    `);
+  }
+
+  return `
+    <article class="business-promo">
+
+      <div class="business-promo-header">
+
+        <strong class="business-promo-name">
+          ${esc(ad.business_name || "Campusora Partner")}
+        </strong>
+
+        <span class="business-promo-label">
+          Sponsored
+        </span>
+
+      </div>
+
+      <h3 class="business-promo-title">
+        ${esc(ad.promotion_title || "")}
+      </h3>
+
+      ${ad.description ? `
+        <p class="business-promo-description">
+          ${esc(ad.description)}
+        </p>
+      ` : ""}
+
+      ${media}
+
+      ${links.length ? `
+        <div class="business-promo-actions">
+          ${links.join("")}
+        </div>
+      ` : ""}
+
+    </article>
+  `;
 }
 
 function renderCampaignAd(ad){
