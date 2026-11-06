@@ -652,6 +652,70 @@ a{color:inherit;text-decoration:none}
     transition-duration:.01ms!important;
   }
 }
+  /* Mobile full-screen chat and keyboard positioning */
+@media(max-width:560px){
+  html,
+  body{
+    width:100%;
+    height:100%;
+    min-height:0;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+  }
+
+  .page{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+  }
+
+  .messaging{
+    position:fixed;
+    top:var(--visual-viewport-top, 0px);
+    left:0;
+    right:0;
+    width:100%;
+    height:var(--visual-viewport-height, 100dvh);
+    min-height:0;
+    margin:0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    overflow:hidden;
+  }
+
+  .messaging.chat-open .chat{
+    height:100%;
+    min-height:0;
+    display:flex;
+    overflow:hidden;
+  }
+
+  .chat{
+    min-height:0;
+    height:100%;
+  }
+
+  .messages-area{
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+  }
+
+  .composer{
+    flex:0 0 auto;
+    order:3;
+    margin:0;
+    padding-bottom:max(9px, env(safe-area-inset-bottom));
+  }
+
+  .phone-warning{
+    order:2;
+    flex:0 0 auto;
+  }
+}
 </style>
 </head>
 
@@ -764,6 +828,39 @@ a{color:inherit;text-decoration:none}
 import { supabase } from './supabase.js';
 
 const $ = id => document.getElementById(id);
+  // Keep the chat fitted to the actual visible phone screen,
+// including when the Android keyboard opens.
+function updateChatViewport(){
+  const viewport = window.visualViewport;
+
+  if (!viewport) return;
+
+  document.documentElement.style.setProperty(
+    '--visual-viewport-height',
+    viewport.height + 'px'
+  );
+
+  document.documentElement.style.setProperty(
+    '--visual-viewport-top',
+    viewport.offsetTop + 'px'
+  );
+}
+
+if (window.visualViewport) {
+  updateChatViewport();
+
+  window.visualViewport.addEventListener(
+    'resize',
+    updateChatViewport
+  );
+
+  window.visualViewport.addEventListener(
+    'scroll',
+    updateChatViewport
+  );
+}
+
+window.addEventListener('resize', updateChatViewport);
 
 let me = null;
 let conversations = [];
