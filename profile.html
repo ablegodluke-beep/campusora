@@ -1899,25 +1899,25 @@ function closePremiumModal() {
   document.body.style.overflow='';
 }
 
-$('closePremiumModal').addEventListener('click',closePremiumModal);
-
-$('premiumModal').addEventListener('click',event=>{
-  if(event.target===$('premiumModal'))closePremiumModal();
-});
-
-$('premiumButton').addEventListener('click',async()=>{
+$('premiumButton').addEventListener('click',()=>{
   if(!currentUser){
     location.href='./auth.html?mode=login';
     return;
   }
+
   if(!isOwnProfile){
     alert('You can upgrade your own profile from your profile page.');
     return;
   }
-  await refreshPremiumStatus();
-  openPremiumModal();
-});
 
+  // Open the Premium window immediately.
+  openPremiumModal();
+
+  // Check membership in the background.
+  refreshPremiumStatus().catch(error=>{
+    console.error('Premium status refresh failed:',error);
+  });
+});
 function showPremiumStatus(membership) {
   activePremium=membership||null;
   const status=$('premiumStatus'),plans=$('premiumPlans'),button=$('premiumButton');
