@@ -486,7 +486,7 @@ tr:last-child td{border-bottom:0}
   <div class="stat"><small>Registered users</small><strong id="sUsers">—</strong><em>Total profiles</em></div>
   <div class="stat"><small>Posts</small><strong id="sPosts">—</strong><em>Platform posts</em></div>
   <div class="stat"><small>Spotlight videos</small><strong id="sVideos">—</strong><em>Uploaded videos</em></div>
-  <div class="stat"><small>Communities</small><strong id="sCommunities">—</strong><em>Campus communities</em></div>
+  <div class="stat"><small>Communities</small><strong id="sCommunities">—</strong><em>Platform communities</em></div>
   <div class="stat"><small>Events</small><strong id="sEvents">—</strong><em>Campus events</em></div>
   <div class="stat"><small>Verified live payments</small><strong id="sPayments">—</strong><em>Live verified transactions</em></div>
   <div class="stat"><small>Tracked revenue</small><strong id="sRevenue">—</strong><em>Live verified payments + gift platform share</em></div>
@@ -624,7 +624,7 @@ creators:{
         'payout_reference',
         'paid_at'
       ],
-      actions:[]
+           actions:[]
     },
     {
       api:'creatorPayouts',
@@ -934,7 +934,7 @@ function tableHTML(rows,fields,actions,apiName){
    buttons+='<button class="btn tiny danger archive" data-id="'+safe(id)+'">Archive</button>';
   }
   if(actions.includes('delete')){
- buttons+='<button class="btn tiny danger delete-promotion" data-id="'+safe(id)+'">Delete</button>';
+   buttons+='<button class="btn tiny danger delete-promotion" data-id="'+safe(id)+'">Delete</button>';
   }
   if(actions.includes('removeAdmin')){
    buttons+='<button class="btn tiny danger remove-admin" data-id="'+safe(id)+'">Remove admin</button>';
@@ -1206,8 +1206,7 @@ async function liftRestriction(id){
   msg($('sectionMessage'),e.message,'err');
  }
 }
-
-async function archivePromotion(id){
+  async function archivePromotion(id){
  if(!confirm('Archive this promotion? It will no longer be treated as an active promotion.'))return;
 
  try{
@@ -1219,7 +1218,16 @@ async function archivePromotion(id){
     id
    })
   });
-  async function deletePromotion(id){
+
+  msg($('sectionMessage'),d.message||'Promotion archived.');
+  await loadPanel('promotions');
+
+ }catch(e){
+  msg($('sectionMessage'),e.message,'err');
+ }
+}
+
+async function deletePromotion(id){
 
  if(!confirm(
   'PERMANENTLY DELETE this promotion? This cannot be undone.'
@@ -1244,14 +1252,6 @@ async function archivePromotion(id){
 
   msg($('sectionMessage'),e.message,'err');
 
- }
-}
-
-  msg($('sectionMessage'),d.message||'Promotion archived.');
-  await loadPanel('promotions');
-
- }catch(e){
-  msg($('sectionMessage'),e.message,'err');
  }
 }
 
@@ -1678,7 +1678,7 @@ $('tableArea').addEventListener('click',e=>{
   archivePromotion(id);
  }
  if(button.classList.contains('delete-promotion')){
- deletePromotion(id);
+  deletePromotion(id);
  }
  if(button.classList.contains('remove-admin')){
   removeAdmin(id);
