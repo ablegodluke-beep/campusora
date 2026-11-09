@@ -1244,45 +1244,79 @@ function updateChatHeader(profile,conversation) {
 }
 
 async function openConversation(id) {
-  const conversation = conversations.find(c => String(c.id) === String(id));
+  const conversation = conversations.find(
+    c => String(c.id) === String(id)
+  );
 
   if (!conversation) {
     toast('Conversation could not be found.');
     return;
   }
 
+  // Set the active conversation immediately.
   currentConversation = conversation;
+
   currentOtherUser = conversation.otherUserId
-    ? profileCache.get(conversation.otherUserId) || null
+    ? profileCache.get(conversation.otherUserId) ||
+      conversation.otherProfile ||
+      null
     : null;
 
-  if (!conversation.is_group && !currentOtherUser) {
-    await getProfiles([conversation.otherUserId]);
-    currentOtherUser = profileCache.get(conversation.otherUserId) || null;
-  }
-
-  updateChatHeader(currentOtherUser,conversation);
-
+  // Open the chat without waiting for network requests.
   $('messaging').classList.add('chat-open');
   document.body.classList.add('chat-mode');
   $('welcomeState').hidden = true;
   $('messagesArea').hidden = false;
   $('messageForm').hidden = false;
 
-  $('messagesArea').innerHTML =
-    '<div class="panel-message">Loading messages...</div>';
+  // Update the header using whatever profile is already available.
+  updateChatHeader(currentOtherUser, conversation);
 
-  await loadMessages(id,true);
-  await markConversationRead(id);
+  // Immediately display the latest message cached in the inbox.
+  currentMessages = conversation.lastMessage
+    ? [conversation.lastMessage]
+    : [];
+
+  currentPendingMessages = [];
+
+  renderMessages();
+
+  // Start realtime updates immediately.
   setupMessageRealtime(id);
 
+  // Mark the conversation as read in the background.
+  markConversationRead(id).catch(error => {
+    console.warn('Could not mark conversation as read:', error);
+  });
+
+  // Load the full latest messages in the background.
+  loadMessages(id, false);
+
+  // Load the other person's profile without blocking messages.
+  if (!conversation.is_group && !currentOtherUser) {
+    getProfiles([conversation.otherUserId])
+      .then(() => {
+        if (currentConversation?.id !== id) return;
+
+        currentOtherUser =
+          profileCache.get(conversation.otherUserId) || null;
+
+        updateChatHeader(currentOtherUser, conversation);
+      })
+      .catch(error => {
+        console.warn('Profile loading failed:', error);
+      });
+  }
+
+  // Refresh messages periodically.
   if (messagePoll) clearInterval(messagePoll);
 
   messagePoll = setInterval(() => {
-    if (currentConversation?.id === id) loadMessages(id,false);
-  },10000);
+    if (currentConversation?.id === id) {
+      loadMessages(id, false);
+    }
+  }, 10000);
 }
-
 function renderMessages() {
   const area = $('messagesArea');
   const combined = [
