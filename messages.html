@@ -1096,14 +1096,22 @@ async function getProfiles(ids) {
 async function loadInbox() {
   const list = $('conversationList');
 
-  const {data:members,error} = await supabase
+  // Prevent old requests from overwriting newer results.
+  const loadToken = (window.campusoraInboxToken || 0) + 1;
+  window.campusoraInboxToken = loadToken;
+
+  // Get this user's conversations.
+  const { data: members, error } = await supabase
     .from('conversation_members')
     .select('conversation_id,user_id,last_read_at,joined_at')
-    .eq('user_id',me.id);
+    .eq('user_id', me.id);
+
+  if (loadToken !== window.campusoraInboxToken) return;
 
   if (error) {
-    console.error('Inbox members:',error);
-    list.innerHTML = '<div class="panel-message">Could not load chats. Please refresh.</div>';
+    console.error('Inbox members:', error);
+    list.innerHTML =
+      '<div class="panel-message">Could not load chats. Please refresh.</div>';
     return;
   }
 
@@ -1115,62 +1123,110 @@ async function loadInbox() {
 
   const ids = members.map(m => m.conversation_id);
 
-  const {data:convRows,error:convError} = await supabase
-    .from('conversations')
-    .select('id,created_by,is_group,group_name,created_at')
-    .in('id',ids);
+  // Fetch conversations and participants simultaneously.
+  const [conversationResult, memberResult] = await Promise.all([
+    supabase
+      .from('conversations')
+      .select('id,created_by,is_group,group_name,created_at')
+      .in('id', ids),
 
-  if (convError) {
-    console.error('Conversation lookup:',convError);
-    list.innerHTML = '<div class="panel-message">Could not load conversations.</div>';
+    supabase
+      .from('conversation_members')
+      .select('conversation_id,user_id,last_read_at,joined_at')
+      .in('conversation_id', ids)
+  ]);
+
+  if (loadToken !== window.campusoraInboxToken) return;
+
+  if (conversationResult.error) {
+    console.error('Conversation lookup:', conversationResult.error);
+    list.innerHTML =
+      '<div class="panel-message">Could not load conversations.</div>';
     return;
   }
 
-  const {data:allMembers,error:memberError} = await supabase
-    .from('conversation_members')
-    .select('conversation_id,user_id,last_read_at,joined_at')
-    .in('conversation_id',ids);
+  const convRows = conversationResult.data || [];
+  const allMembers = memberResult.data || [];
 
-  if (memberError) console.warn(memberError.message);
+  if (memberResult.error) {
+    console.warn('Inbox participants:', memberResult.error);
+  }
 
-  const participantIds = [
-    ...new Set((allMembers || []).map(m => m.user_id))
-  ];
-
-  await getProfiles(participantIds);
-
-  const {data:messageRows,error:messageError} = await supabase
-    .from('messages')
-    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-    .in('conversation_id',ids)
-    .is('deleted_at',null)
-    .order('created_at',{ascending:false})
-    .limit(Math.min(500,ids.length * 30));
-
-  if (messageError) console.warn(messageError.message);
-
-  conversations = (convRows || []).map(c => {
-    const myMembership = members.find(m => m.conversation_id === c.id);
-    const participants = (allMembers || []).filter(
+  // Build and display conversations before loading extra details.
+  conversations = convRows.map(c => {
+    const myMembership = members.find(
       m => m.conversation_id === c.id
     );
-    const other = participants.find(m => m.user_id !== me.id);
-    const last = (messageRows || []).find(m => m.conversation_id === c.id) || null;
+
+    const participants = allMembers.filter(
+      m => m.conversation_id === c.id
+    );
+
+    const other = participants.find(
+      m => m.user_id !== me.id
+    );
 
     return {
       ...c,
       participants,
-      otherUserId:other?.user_id || null,
-      otherProfile:other ? profileCache.get(other.user_id) : null,
-      lastMessage:last,
-      lastReadAt:myMembership?.last_read_at || null
+      otherUserId: other?.user_id || null,
+      otherProfile: other
+        ? profileCache.get(other.user_id) || null
+        : null,
+      lastMessage: null,
+      lastReadAt: myMembership?.last_read_at || null
     };
-  }).sort((a,b) =>
-    new Date(b.lastMessage?.created_at || b.created_at) -
-    new Date(a.lastMessage?.created_at || a.created_at)
-  );
+  });
 
+  // Show the inbox immediately.
   renderInbox();
+
+  // Load profile information and message previews in the background.
+  Promise.all([
+    getProfiles(allMembers.map(m => m.user_id)),
+
+    supabase
+      .from('messages')
+      .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+      .in('conversation_id', ids)
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false })
+      .limit(Math.min(500, ids.length * 30))
+  ]).then(([profileResult, messageResult]) => {
+
+    if (loadToken !== window.campusoraInboxToken) return;
+
+    if (messageResult.error) {
+      console.warn('Inbox messages:', messageResult.error);
+    }
+
+    const messageRows = messageResult.data || [];
+    const latestMessages = new Map();
+
+    messageRows.forEach(message => {
+      if (!latestMessages.has(message.conversation_id)) {
+        latestMessages.set(message.conversation_id, message);
+      }
+    });
+
+    conversations = conversations.map(c => ({
+      ...c,
+      otherProfile: c.otherUserId
+        ? profileCache.get(c.otherUserId) || null
+        : null,
+      lastMessage: latestMessages.get(c.id) || null
+    }));
+
+    conversations.sort((a, b) =>
+      new Date(b.lastMessage?.created_at || b.created_at) -
+      new Date(a.lastMessage?.created_at || a.created_at)
+    );
+
+    renderInbox();
+
+  }).catch(error => {
+    console.error('Inbox background loading:', error);
+  });
 }
 
 function renderInbox() {
@@ -1996,7 +2052,7 @@ async function startConversation(userId) {
 async function initialize() {
   setupEvents();
 
-  const {data,error} = await supabase.auth.getUser();
+  const { data, error } = await supabase.auth.getUser();
 
   if (error || !data?.user) {
     $('conversationList').innerHTML = `
@@ -2005,7 +2061,9 @@ async function initialize() {
         <a href="auth.html" style="color:#b8a2ff">Sign in →</a>
       </div>`;
 
-    $('welcomeState').querySelector('h3').textContent = 'Sign in to connect';
+    $('welcomeState').querySelector('h3').textContent =
+      'Sign in to connect';
+
     $('welcomeState').querySelector('p').textContent =
       'Sign in to message students, alumni, and other Campusora members.';
 
@@ -2015,13 +2073,17 @@ async function initialize() {
 
   me = data.user;
 
-  await loadInbox();
+  // Start realtime before loading conversations.
   setupInboxRealtime();
+
+  // Load and display the inbox.
+  await loadInbox();
 
   const params = new URLSearchParams(window.location.search);
   const targetUserId = params.get('user');
   const productName = params.get('product');
 
+  // Open a requested conversation.
   if (targetUserId) {
     if (targetUserId === me.id) {
       toast('You cannot message yourself.');
@@ -2041,18 +2103,24 @@ async function initialize() {
       }
     }
 
-    window.history.replaceState({},'',window.location.pathname);
+    window.history.replaceState({}, '', window.location.pathname);
   }
 
-  await verifyPremiumPayment();
+  // Refresh the inbox in the background.
+  if (refreshInterval) clearInterval(refreshInterval);
 
-  refreshInterval = setInterval(async () => {
-    await loadInbox();
+  refreshInterval = setInterval(() => {
+    loadInbox();
 
     if (currentConversation) {
-      await loadMessages(currentConversation.id);
+      loadMessages(currentConversation.id);
     }
-  },30000);
+  }, 30000);
+
+  // Verify payment without delaying the inbox.
+  verifyPremiumPayment().catch(error => {
+    console.error('Premium payment verification:', error);
+  });
 }
 
 window.addEventListener('beforeunload',() => {
