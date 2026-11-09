@@ -984,6 +984,7 @@ let refreshInterval = null;
 let profileCache = new Map();
 let sending = false;
 let loadingMessages = false;
+let messageLoadToken = 0;
 let editingMessageId = null;
 let pendingPremiumMessageId = null;
 
@@ -1362,34 +1363,79 @@ function renderMessages() {
   area.scrollTop = area.scrollHeight;
 }
 
-async function loadMessages(id,showLoading = false) {
-  if (loadingMessages && showLoading) return;
-  if (showLoading) loadingMessages = true;
+async function loadMessages(id, showLoading = false) {
+  const loadToken = ++messageLoadToken;
 
-  const {data,error} = await supabase
-    .from('messages')
-    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-    .eq('conversation_id',id)
-    .is('deleted_at',null)
-    .order('created_at',{ascending:true})
-    .limit(300);
+  loadingMessages = true;
 
-  if (showLoading) loadingMessages = false;
-
-  if (error) {
-    console.error('Load messages:',error);
-    if (currentConversation?.id === id) {
-      $('messagesArea').innerHTML =
-        '<div class="panel-message">Could not load messages. Please retry.</div>';
-    }
-    return;
+  if (showLoading) {
+    $('messagesArea').innerHTML =
+      '<div class="panel-message">Loading your latest messages...</div>';
   }
 
-  if (currentConversation?.id !== id) return;
+  try {
+    // Fetch the newest 100 messages first.
+    const { data, error } = await supabase
+      .from('messages')
+      .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+      .eq('conversation_id', id)
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false })
+      .limit(100);
 
-  currentMessages = data || [];
-  await loadPendingMessages(id);
-  renderMessages();
+    if (error) {
+      console.error('Load messages:', error);
+
+      if (
+        currentConversation?.id === id &&
+        loadToken === messageLoadToken
+      ) {
+        $('messagesArea').innerHTML =
+          '<div class="panel-message">Could not load messages. Please retry.</div>';
+      }
+
+      return;
+    }
+
+    // Ignore results from an old conversation.
+    if (
+      currentConversation?.id !== id ||
+      loadToken !== messageLoadToken
+    ) {
+      return;
+    }
+
+    // Reverse the newest-first results for normal chat display.
+    currentMessages = (data || []).reverse();
+
+    // Display messages immediately.
+    renderMessages();
+
+    // Load pending messages after the real messages are visible.
+    await loadPendingMessages(id);
+
+    if (
+      currentConversation?.id === id &&
+      loadToken === messageLoadToken
+    ) {
+      renderMessages();
+    }
+
+  } catch (error) {
+    console.error('Message loading failed:', error);
+
+    if (
+      currentConversation?.id === id &&
+      loadToken === messageLoadToken
+    ) {
+      toast('Could not load messages. Please try again.');
+    }
+
+  } finally {
+    if (loadToken === messageLoadToken) {
+      loadingMessages = false;
+    }
+  }
 }
 
 async function loadPendingMessages(id) {
