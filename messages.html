@@ -1305,13 +1305,18 @@ async function loadInbox() {
   const loadToken = (window.campusoraInboxToken || 0) + 1;
   window.campusoraInboxToken = loadToken;
 
+  const ownerId = me.id;
+
   // Get this user's conversations.
   const { data: members, error } = await supabase
     .from('conversation_members')
     .select('conversation_id,user_id,last_read_at,joined_at')
-    .eq('user_id', me.id);
+    .eq('user_id', ownerId);
 
-  if (loadToken !== window.campusoraInboxToken) return;
+  if (
+    loadToken !== window.campusoraInboxToken ||
+    me?.id !== ownerId
+  ) return;
 
   if (error) {
     console.error('Inbox members:', error);
@@ -1329,7 +1334,7 @@ async function loadInbox() {
 
   const ids = members.map(m => m.conversation_id);
 
-  // Fetch conversations and participants simultaneously.
+  // Get conversations and participants.
   const [conversationResult, memberResult] = await Promise.all([
     supabase
       .from('conversations')
@@ -1342,7 +1347,10 @@ async function loadInbox() {
       .in('conversation_id', ids)
   ]);
 
-  if (loadToken !== window.campusoraInboxToken) return;
+  if (
+    loadToken !== window.campusoraInboxToken ||
+    me?.id !== ownerId
+  ) return;
 
   if (conversationResult.error) {
     console.error('Conversation lookup:', conversationResult.error);
@@ -1358,7 +1366,9 @@ async function loadInbox() {
     console.warn('Inbox participants:', memberResult.error);
   }
 
-  // Build conversations using previously cached information.
+  // Preserve cached previews and profile information.
+  const cachedConversations = conversations;
+
   conversations = convRows.map(c => {
     const myMembership = members.find(
       m => m.conversation_id === c.id
@@ -1369,10 +1379,10 @@ async function loadInbox() {
     );
 
     const other = participants.find(
-      m => m.user_id !== me.id
+      m => m.user_id !== ownerId
     );
 
-    const oldConversation = conversations.find(
+    const oldConversation = cachedConversations.find(
       old => old.id === c.id
     );
 
@@ -1390,62 +1400,113 @@ async function loadInbox() {
     };
   });
 
-  // Display and save the inbox immediately.
+  // Show cached conversations immediately.
+  renderInbox();
+
+  // Save the current inbox.
+  saveInboxCache();
+
+  // Fetch the latest message separately for every conversation.
+  let nextIndex = 0;
+
+  async function loadLatestMessages() {
+    while (nextIndex < conversations.length) {
+      if (
+        loadToken !== window.campusoraInboxToken ||
+        me?.id !== ownerId
+      ) return;
+
+      const conversation = conversations[nextIndex++];
+
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+          .eq('conversation_id', conversation.id)
+          .is('deleted_at', null)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (error) {
+          console.warn(
+            'Latest message lookup:',
+            conversation.id,
+            error
+          );
+          continue;
+        }
+
+        if (
+          loadToken !== window.campusoraInboxToken ||
+          me?.id !== ownerId
+        ) return;
+
+        const latestMessage = data?.[0] || null;
+
+        conversations = conversations.map(c =>
+          c.id === conversation.id
+            ? { ...c, lastMessage: latestMessage }
+            : c
+        );
+
+        // Update the inbox as each conversation is refreshed.
+        conversations.sort((a, b) =>
+          new Date(b.lastMessage?.created_at || b.created_at) -
+          new Date(a.lastMessage?.created_at || a.created_at)
+        );
+
+        renderInbox();
+        saveInboxCache();
+
+      } catch (error) {
+        console.warn('Latest message loading failed:', error);
+      }
+    }
+  }
+
+  // Fetch six conversations simultaneously.
+  const latestMessageLoading = Promise.all(
+    Array.from(
+      { length: Math.min(6, conversations.length) },
+      () => loadLatestMessages()
+    )
+  );
+
+  // Load profile information at the same time.
+  const profileLoading = getProfiles(
+    allMembers.map(m => m.user_id)
+  ).catch(error => {
+    console.warn('Inbox profile loading:', error);
+  });
+
+  await Promise.all([
+    latestMessageLoading,
+    profileLoading
+  ]);
+
+  if (
+    loadToken !== window.campusoraInboxToken ||
+    me?.id !== ownerId
+  ) return;
+
+  // Refresh names and pictures.
+  conversations = conversations.map(c => ({
+    ...c,
+    otherProfile: c.otherUserId
+      ? profileCache.get(c.otherUserId) || c.otherProfile
+      : null
+  }));
+
+  conversations.sort((a, b) =>
+    new Date(b.lastMessage?.created_at || b.created_at) -
+    new Date(a.lastMessage?.created_at || a.created_at)
+  );
+
   renderInbox();
   saveInboxCache();
 
-  // Load profile information and message previews afterwards.
-  Promise.all([
-    getProfiles(allMembers.map(m => m.user_id)),
-
-    supabase
-      .from('messages')
-      .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-      .in('conversation_id', ids)
-      .is('deleted_at', null)
-      .order('created_at', { ascending: false })
-      .limit(Math.min(500, ids.length * 30))
-  ]).then(([profileResult, messageResult]) => {
-
-    if (loadToken !== window.campusoraInboxToken) return;
-
-    if (messageResult.error) {
-      console.warn('Inbox messages:', messageResult.error);
-    }
-
-    const messageRows = messageResult.data || [];
-    const latestMessages = new Map();
-
-    messageRows.forEach(message => {
-      if (!latestMessages.has(message.conversation_id)) {
-        latestMessages.set(message.conversation_id, message);
-      }
-    });
-
-    conversations = conversations.map(c => ({
-      ...c,
-      otherProfile: c.otherUserId
-        ? profileCache.get(c.otherUserId) || c.otherProfile
-        : null,
-      lastMessage:
-        latestMessages.get(c.id) || c.lastMessage || null
-    }));
-
-    conversations.sort((a, b) =>
-      new Date(b.lastMessage?.created_at || b.created_at) -
-      new Date(a.lastMessage?.created_at || a.created_at)
-    );
-
-    renderInbox();
-
-    // Save refreshed conversations on this phone.
-    saveInboxCache();
-    // Preload previous messages for every conversation.
-preloadInboxChats(conversations.slice(), loadToken);
-
-  }).catch(error => {
-    console.error('Inbox background loading:', error);
-  });
+  // Prepare full chat history in the background.
+  preloadInboxChats(conversations.slice(), loadToken);
 }
 
 
