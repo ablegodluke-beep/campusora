@@ -1405,18 +1405,18 @@ async function loadInbox() {
 
   // Save the current inbox.
   saveInboxCache();
-
-  // Fetch the latest message separately for every conversation.
+  // Keep a fixed list so sorting the inbox cannot skip chats.
+  const conversationsToRefresh = conversations.slice();
   let nextIndex = 0;
 
   async function loadLatestMessages() {
-    while (nextIndex < conversations.length) {
+    while (nextIndex < conversationsToRefresh.length) {
       if (
         loadToken !== window.campusoraInboxToken ||
         me?.id !== ownerId
       ) return;
 
-      const conversation = conversations[nextIndex++];
+      const conversation = conversationsToRefresh[nextIndex++];
 
       try {
         const { data, error } = await supabase
@@ -1449,7 +1449,6 @@ async function loadInbox() {
             : c
         );
 
-        // Update the inbox as each conversation is refreshed.
         conversations.sort((a, b) =>
           new Date(b.lastMessage?.created_at || b.created_at) -
           new Date(a.lastMessage?.created_at || a.created_at)
@@ -1464,14 +1463,13 @@ async function loadInbox() {
     }
   }
 
-  // Fetch six conversations simultaneously.
+  // Fetch up to six conversations simultaneously.
   const latestMessageLoading = Promise.all(
     Array.from(
-      { length: Math.min(6, conversations.length) },
+      { length: Math.min(6, conversationsToRefresh.length) },
       () => loadLatestMessages()
     )
   );
-
   // Load profile information at the same time.
   const profileLoading = getProfiles(
     allMembers.map(m => m.user_id)
