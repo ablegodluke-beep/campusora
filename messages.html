@@ -1169,11 +1169,9 @@ async function getProfiles(ids) {
 
   (data || []).forEach(profile => profileCache.set(profile.id,profile));
 }
-
 async function loadInbox() {
   const list = $('conversationList');
 
-  // Prevent old requests from overwriting newer results.
   const loadToken = (window.campusoraInboxToken || 0) + 1;
   window.campusoraInboxToken = loadToken;
 
@@ -1193,11 +1191,12 @@ async function loadInbox() {
   }
 
   if (!members?.length) {
-  conversations = [];
-  renderInbox();
-  saveInboxCache();
-  return;
-}
+    conversations = [];
+    renderInbox();
+    saveInboxCache();
+    return;
+  }
+
   const ids = members.map(m => m.conversation_id);
 
   // Fetch conversations and participants simultaneously.
@@ -1229,7 +1228,7 @@ async function loadInbox() {
     console.warn('Inbox participants:', memberResult.error);
   }
 
-  // Build and display conversations before loading extra details.
+  // Build conversations using previously cached information.
   conversations = convRows.map(c => {
     const myMembership = members.find(
       m => m.conversation_id === c.id
@@ -1243,23 +1242,29 @@ async function loadInbox() {
       m => m.user_id !== me.id
     );
 
+    const oldConversation = conversations.find(
+      old => old.id === c.id
+    );
+
     return {
       ...c,
       participants,
       otherUserId: other?.user_id || null,
       otherProfile: other
-        ? profileCache.get(other.user_id) || null
+        ? profileCache.get(other.user_id) ||
+          oldConversation?.otherProfile ||
+          null
         : null,
-      lastMessage:
-  conversations.find(old => old.id === c.id)?.lastMessage || null,
+      lastMessage: oldConversation?.lastMessage || null,
       lastReadAt: myMembership?.last_read_at || null
     };
   });
 
-  // Show the inbox immediately.
+  // Display and save the inbox immediately.
   renderInbox();
+  saveInboxCache();
 
-  // Load profile information and message previews in the background.
+  // Load profile information and message previews afterwards.
   Promise.all([
     getProfiles(allMembers.map(m => m.user_id)),
 
@@ -1290,9 +1295,10 @@ async function loadInbox() {
     conversations = conversations.map(c => ({
       ...c,
       otherProfile: c.otherUserId
-        ? profileCache.get(c.otherUserId) || null
+        ? profileCache.get(c.otherUserId) || c.otherProfile
         : null,
-      lastMessage: latestMessages.get(c.id) || null
+      lastMessage:
+        latestMessages.get(c.id) || c.lastMessage || null
     }));
 
     conversations.sort((a, b) =>
@@ -1300,7 +1306,7 @@ async function loadInbox() {
       new Date(a.lastMessage?.created_at || a.created_at)
     );
 
-        renderInbox();
+    renderInbox();
 
     // Save refreshed conversations on this phone.
     saveInboxCache();
@@ -1309,6 +1315,7 @@ async function loadInbox() {
     console.error('Inbox background loading:', error);
   });
 }
+
 
 function renderInbox() {
   const list = $('conversationList');
