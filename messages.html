@@ -1169,6 +1169,136 @@ async function getProfiles(ids) {
 
   (data || []).forEach(profile => profileCache.set(profile.id,profile));
 }
+  async function preloadInboxChats(items, loadToken) {
+  const ownerId = me?.id;
+  if (!ownerId || !items.length) return;
+
+  const queue = items.filter(conversation => {
+    const readyKey =
+      `campusora_chat_ready_${ownerId}_${conversation.id}`;
+
+    let ready = null;
+
+    try {
+      ready = JSON.parse(localStorage.getItem(readyKey) || 'null');
+    } catch (error) {
+      ready = null;
+    }
+
+    const cached = restoreChatCache(conversation.id);
+
+    const cachedLastId = cached?.length
+      ? cached[cached.length - 1].id
+      : null;
+
+    const inboxLastId = conversation.lastMessage?.id || null;
+
+    // Skip conversations whose complete cache is already current.
+    return !(
+      ready &&
+      cached !== null &&
+      ready.latestId === cachedLastId &&
+      (!inboxLastId || ready.latestId === inboxLastId)
+    );
+  });
+
+  if (!queue.length) return;
+
+  const results = new Map();
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < queue.length) {
+      const conversation = queue[nextIndex++];
+
+      if (me?.id !== ownerId) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('id,conversation_id,sender_id,content,created_at,deleted_at')
+          .eq('conversation_id', conversation.id)
+          .is('deleted_at', null)
+          .order('created_at', { ascending: false })
+          .limit(100);
+
+        if (error) {
+          console.warn(
+            'Chat preload failed:',
+            conversation.id,
+            error
+          );
+          continue;
+        }
+
+        const messages = (data || []).reverse();
+
+        // Do not replace an existing cache with an unexpected empty result.
+        if (!messages.length && conversation.lastMessage) {
+          continue;
+        }
+
+        saveChatCache(conversation.id, messages);
+
+        const readyKey =
+          `campusora_chat_ready_${ownerId}_${conversation.id}`;
+
+        localStorage.setItem(
+          readyKey,
+          JSON.stringify({
+            latestId: messages.length
+              ? messages[messages.length - 1].id
+              : null
+          })
+        );
+
+        results.set(conversation.id, messages);
+
+      } catch (error) {
+        console.warn('Chat preload error:', error);
+      }
+    }
+  }
+
+  // Preload three conversations at a time.
+  await Promise.all(
+    Array.from(
+      { length: Math.min(3, queue.length) },
+      () => worker()
+    )
+  );
+
+  if (
+    me?.id !== ownerId ||
+    loadToken !== window.campusoraInboxToken ||
+    !results.size
+  ) {
+    return;
+  }
+
+  // Update inbox previews using the preloaded messages.
+  conversations = conversations.map(c => {
+    if (!results.has(c.id)) return c;
+
+    const messages = results.get(c.id);
+
+    return {
+      ...c,
+      lastMessage: messages.length
+        ? messages[messages.length - 1]
+        : null
+    };
+  });
+
+  conversations.sort((a, b) =>
+    new Date(b.lastMessage?.created_at || b.created_at) -
+    new Date(a.lastMessage?.created_at || a.created_at)
+  );
+
+  renderInbox();
+  saveInboxCache();
+}
+  
 async function loadInbox() {
   const list = $('conversationList');
 
@@ -1310,6 +1440,8 @@ async function loadInbox() {
 
     // Save refreshed conversations on this phone.
     saveInboxCache();
+    // Preload previous messages for every conversation.
+preloadInboxChats(conversations.slice(), loadToken);
 
   }).catch(error => {
     console.error('Inbox background loading:', error);
