@@ -2141,9 +2141,12 @@ async function startConversation(userId) {
 async function initialize() {
   setupEvents();
 
-  const { data, error } = await supabase.auth.getUser();
+  // Read the saved login session from this phone first.
+  const { data, error } = await supabase.auth.getSession();
 
-  if (error || !data?.user) {
+  const session = data?.session;
+
+  if (error || !session?.user) {
     $('conversationList').innerHTML = `
       <div class="panel-message">
         Sign in to use Campusora messages.<br><br>
@@ -2160,22 +2163,30 @@ async function initialize() {
     return;
   }
 
-  me = data.user;
+  me = session.user;
 
-// Display saved conversations immediately.
-restoreInboxCache();
+  // SHOW SAVED CONVERSATIONS IMMEDIATELY.
+  restoreInboxCache();
 
-// Start realtime before refreshing conversations.
-setupInboxRealtime();
+  // Start realtime updates.
+  setupInboxRealtime();
 
-// Refresh conversations from Supabase.
-await loadInbox();
+  // Refresh inbox without blocking the page.
+  loadInbox().catch(error => {
+    console.error('Inbox refresh:', error);
+  });
+
+  // Verify the session with Supabase in the background.
+  supabase.auth.getUser().then(({ error }) => {
+    if (error) {
+      console.warn('Background session verification:', error);
+    }
+  });
 
   const params = new URLSearchParams(window.location.search);
   const targetUserId = params.get('user');
   const productName = params.get('product');
 
-  // Open a requested conversation.
   if (targetUserId) {
     if (targetUserId === me.id) {
       toast('You cannot message yourself.');
@@ -2198,7 +2209,6 @@ await loadInbox();
     window.history.replaceState({}, '', window.location.pathname);
   }
 
-  // Refresh the inbox in the background.
   if (refreshInterval) clearInterval(refreshInterval);
 
   refreshInterval = setInterval(() => {
@@ -2209,7 +2219,6 @@ await loadInbox();
     }
   }, 30000);
 
-  // Verify payment without delaying the inbox.
   verifyPremiumPayment().catch(error => {
     console.error('Premium payment verification:', error);
   });
