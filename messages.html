@@ -987,6 +987,83 @@ let loadingMessages = false;
 let messageLoadToken = 0;
 let editingMessageId = null;
 let pendingPremiumMessageId = null;
+  // =====================================
+// CAMPUSORA LOCAL MESSAGE CACHE
+// =====================================
+
+function inboxCacheKey() {
+  return me ? `campusora_inbox_${me.id}` : null;
+}
+
+function chatCacheKey(id) {
+  return me ? `campusora_chat_${me.id}_${id}` : null;
+}
+
+function saveInboxCache() {
+  try {
+    const key = inboxCacheKey();
+    if (!key) return;
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(conversations.slice(0, 100))
+    );
+  } catch (error) {
+    console.warn('Inbox cache could not be saved:', error);
+  }
+}
+
+function restoreInboxCache() {
+  try {
+    const key = inboxCacheKey();
+    if (!key) return;
+
+    const saved = localStorage.getItem(key);
+    if (!saved) return;
+
+    const cached = JSON.parse(saved);
+
+    if (!Array.isArray(cached)) return;
+
+    conversations = cached;
+    renderInbox();
+
+  } catch (error) {
+    console.warn('Inbox cache could not be restored:', error);
+  }
+}
+
+function saveChatCache(id, messages = currentMessages) {
+  try {
+    const key = chatCacheKey(id);
+    if (!key) return;
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(messages.slice(-100))
+    );
+  } catch (error) {
+    console.warn('Chat cache could not be saved:', error);
+  }
+}
+
+function restoreChatCache(id) {
+  try {
+    const key = chatCacheKey(id);
+    if (!key) return null;
+
+    const saved = localStorage.getItem(key);
+    if (!saved) return null;
+
+    const messages = JSON.parse(saved);
+
+    return Array.isArray(messages) ? messages : null;
+
+  } catch (error) {
+    console.warn('Chat cache could not be restored:', error);
+    return null;
+  }
+}
 
 function esc(value = '') {
   return String(value).replace(/[&<>"']/g, c => ({
@@ -1116,11 +1193,11 @@ async function loadInbox() {
   }
 
   if (!members?.length) {
-    conversations = [];
-    renderInbox();
-    return;
-  }
-
+  conversations = [];
+  renderInbox();
+  saveInboxCache();
+  return;
+}
   const ids = members.map(m => m.conversation_id);
 
   // Fetch conversations and participants simultaneously.
@@ -1173,7 +1250,8 @@ async function loadInbox() {
       otherProfile: other
         ? profileCache.get(other.user_id) || null
         : null,
-      lastMessage: null,
+      lastMessage:
+  conversations.find(old => old.id === c.id)?.lastMessage || null,
       lastReadAt: myMembership?.last_read_at || null
     };
   });
@@ -1222,7 +1300,10 @@ async function loadInbox() {
       new Date(a.lastMessage?.created_at || a.created_at)
     );
 
-    renderInbox();
+        renderInbox();
+
+    // Save refreshed conversations on this phone.
+    saveInboxCache();
 
   }).catch(error => {
     console.error('Inbox background loading:', error);
@@ -1328,8 +1409,12 @@ async function openConversation(id) {
   // Update the header using whatever profile is already available.
   updateChatHeader(currentOtherUser, conversation);
 
-  // Immediately display the latest message cached in the inbox.
-  currentMessages = conversation.lastMessage
+// Display saved chat messages immediately.
+const savedMessages = restoreChatCache(id);
+
+currentMessages = savedMessages !== null
+  ? savedMessages
+  : conversation.lastMessage
     ? [conversation.lastMessage]
     : [];
 
@@ -1374,6 +1459,10 @@ async function openConversation(id) {
   }, 10000);
 }
 function renderMessages() {
+  if (currentConversation && me) {
+    saveChatCache(currentConversation.id);
+  }
+
   const area = $('messagesArea');
   const combined = [
     ...currentMessages.map(m => ({...m,_pending:false})),
@@ -2073,11 +2162,14 @@ async function initialize() {
 
   me = data.user;
 
-  // Start realtime before loading conversations.
-  setupInboxRealtime();
+// Display saved conversations immediately.
+restoreInboxCache();
 
-  // Load and display the inbox.
-  await loadInbox();
+// Start realtime before refreshing conversations.
+setupInboxRealtime();
+
+// Refresh conversations from Supabase.
+await loadInbox();
 
   const params = new URLSearchParams(window.location.search);
   const targetUserId = params.get('user');
