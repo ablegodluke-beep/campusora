@@ -1201,6 +1201,12 @@ let activeFeed="for-you";
 let shareItem=null;
 let loading=false;
 let currentItems=[]; // FIX: declared before use
+  const FEED_PAGE_SIZE = 30;
+
+let postOffset = 0;
+let hasMorePosts = true;
+let loadingMorePosts = false;
+let refreshingFeed = false;
 let profileCache=new Map();
 
 const fallbackAvatar=
@@ -1369,27 +1375,29 @@ async function loadMoments(){
    </a>`;
  }).join("");
 }
+async function fetchPosts(offset = 0){
 
-/* FETCH POSTS */
+  let query = supabase
+    .from("posts")
+    .select("*")
+    .order("created_at", {ascending:false})
+    .range(offset, offset + FEED_PAGE_SIZE - 1);
 
-async function fetchPosts(){
- let query=supabase
-  .from("posts")
-  .select("*")
-  .order("created_at",{ascending:false})
-  .limit(60);
+  if(activeFeed === "campus"){
 
- if(activeFeed==="campus"){
-  if(!currentProfile?.institution_id)return [];
+    if(!currentProfile?.institution_id) return [];
 
-  query=query.eq("institution_id",currentProfile.institution_id);
- }
+    query = query.eq(
+      "institution_id",
+      currentProfile.institution_id
+    );
+  }
 
- const {data,error}=await query;
+  const {data,error} = await query;
 
- if(error)throw error;
+  if(error) throw error;
 
- return data||[];
+  return data || [];
 }
 
 /* FETCH SPOTLIGHT VIDEOS */
@@ -2048,112 +2056,289 @@ function renderCampaignAd(ad){
    </div>
   </article>`;
 }
-
-/* MAIN FEED LOADER */
-
 async function loadFeed(){
- if(loading)return;
 
- loading=true;
- startProgress();
+  if(loading) return;
 
- try{
-  if(!currentUser&&currentProfile===null){
-   await loadMyProfile();
+  loading = true;
+
+  postOffset = 0;
+  hasMorePosts = true;
+
+  startProgress();
+
+  try{
+
+    if(!currentUser && currentProfile === null){
+      await loadMyProfile();
+    }
+
+    if(activeFeed === "campus" && !currentProfile?.institution_id){
+
+      currentItems = [];
+
+      showEmpty(
+        "My Campus",
+        "Select your institution in your profile to see campus posts."
+      );
+
+      return;
+    }
+
+    const postResult = await fetchPosts(0);
+
+    let posts = postResult || [];
+
+    postOffset = posts.length;
+    hasMorePosts = posts.length === FEED_PAGE_SIZE;
+
+    let videos = [];
+    let ads = [];
+
+    const secondary = await Promise.allSettled([
+      fetchVideos(),
+      fetchSponsored()
+    ]);
+
+    if(secondary[0].status === "fulfilled"){
+      videos = secondary[0].value || [];
+    }
+
+    if(secondary[1].status === "fulfilled"){
+      ads = secondary[1].value || [];
+    }
+
+    let items = [
+      ...posts.map(data => ({kind:"post",data})),
+      ...videos.map(data => ({kind:"video",data})),
+      ...ads
+    ];
+
+    if(!items.length){
+
+      currentItems = [];
+
+      showEmpty(
+        "Your feed is waiting for its first post!",
+        "Share something with Campusora to get the conversation started."
+      );
+
+      return;
+    }
+
+    const normal = items.filter(
+      x => x.kind === "post" || x.kind === "video"
+    );
+
+    const extra = await supporting(normal);
+
+    items = rankItems(items,extra);
+
+    currentItems = items;
+
+    feed.innerHTML = items.map(item => {
+
+      if(item.kind === "post") return renderPost(item,extra);
+
+      if(item.kind === "video") return renderVideo(item,extra);
+
+      if(item.kind === "business-ad") return renderBusinessAd(item.data);
+
+      if(item.kind === "campaign-ad") return renderCampaignAd(item.data);
+
+      return "";
+
+    }).join("");
+
+    if(hasMorePosts){
+      feed.insertAdjacentHTML(
+        "beforeend",
+        '<div id="feedMoreStatus" class="feed-more-status">Scroll down to load more posts</div>'
+      );
+    }
+
+  }catch(error){
+
+    console.error("Feed error:",error);
+
+    showEmpty(
+      "We couldn't load your feed",
+      error.message || "Check your connection and try again.",
+      true
+    );
+
+  }finally{
+
+    loading = false;
+
+    finishProgress();
   }
-
-  if(activeFeed==="campus"&&!currentProfile?.institution_id){
-   currentItems=[];
-   showEmpty(
-    "My Campus",
-    "Select your institution in your profile to see campus posts."
-   );
-   return;
-  }
-
-  /*
-   * Load normal posts separately.
-   * A Spotlight or advertising error must not hide normal posts.
-   */
-
-  const postResult=await fetchPosts();
-
-  let posts=postResult||[];
-  let videos=[];
-  let ads=[];
-
-  const secondary=await Promise.allSettled([
-   fetchVideos(),
-   fetchSponsored()
-  ]);
-
-  if(secondary[0].status==="fulfilled"){
-   videos=secondary[0].value||[];
-  }else{
-   console.warn("Spotlight videos could not load:",secondary[0].reason);
-  }
-
-  if(secondary[1].status==="fulfilled"){
-   ads=secondary[1].value||[];
-  }else{
-   console.warn("Sponsored content could not load:",secondary[1].reason);
-  }
-
-  let items=[
-   ...posts.map(data=>({kind:"post",data})),
-   ...videos.map(data=>({kind:"video",data})),
-   ...ads
-  ];
-
-  if(!items.length){
-   currentItems=[];
-   showEmpty(
-    "Your feed is waiting for its first post!",
-    "Share something with Campusora to get the conversation started."
-   );
-   return;
-  }
-
-  /*
-   * Supporting data is optional.
-   * If likes, comments or repost counts fail,
-   * posts will still be displayed.
-   */
-
-  const normal=items.filter(
-   x=>x.kind==="post"||x.kind==="video"
-  );
-
-  const extra=await supporting(normal);
-
-  items=rankItems(items,extra);
-
-  // FIX: currentItems is declared above.
-  currentItems=items;
-
-  feed.innerHTML=items.map(item=>{
-   if(item.kind==="post")return renderPost(item,extra);
-   if(item.kind==="video")return renderVideo(item,extra);
-   if(item.kind==="business-ad")return renderBusinessAd(item.data);
-   if(item.kind==="campaign-ad")return renderCampaignAd(item.data);
-
-   return "";
-  }).join("");
-
- }catch(error){
-  console.error("Feed error:",error);
-
-  showEmpty(
-   "We couldn't load your feed",
-   error.message||"Check your connection and try again.",
-   true
-  );
-
- }finally{
-  loading=false;
-  finishProgress();
- }
 }
+  /* INFINITE FEED SCROLLING */
+
+async function loadMorePosts(){
+
+  if(loading || loadingMorePosts || !hasMorePosts) return;
+
+  loadingMorePosts = true;
+
+  const status = $("feedMoreStatus");
+
+  if(status){
+    status.textContent = "Loading more posts...";
+  }
+
+  try{
+
+    const posts = await fetchPosts(postOffset);
+
+    if(!posts.length){
+
+      hasMorePosts = false;
+
+      if(status){
+        status.textContent = "You're all caught up.";
+      }
+
+      return;
+    }
+
+    postOffset += posts.length;
+
+    hasMorePosts = posts.length === FEED_PAGE_SIZE;
+
+    const existingIds = new Set(
+      currentItems
+        .filter(item => item.kind === "post")
+        .map(item => item.data.id)
+    );
+
+    const newPosts = posts.filter(
+      post => !existingIds.has(post.id)
+    );
+
+    if(newPosts.length){
+
+      const items = newPosts.map(data => ({
+        kind:"post",
+        data
+      }));
+
+      const extra = await supporting(items);
+
+      const ranked = rankItems(items,extra);
+
+      currentItems.push(...ranked);
+
+      feed.insertAdjacentHTML(
+        "beforeend",
+        ranked.map(item => renderPost(item,extra)).join("")
+      );
+    }
+
+    const updatedStatus = $("feedMoreStatus");
+
+    if(updatedStatus){
+
+      updatedStatus.textContent = hasMorePosts
+        ? "Scroll down to load more posts"
+        : "You're all caught up.";
+    }
+
+  }catch(error){
+
+    console.error("Could not load more posts:",error);
+
+    toast("Could not load more posts. Please try again.");
+
+  }finally{
+
+    loadingMorePosts = false;
+  }
+}
+
+window.addEventListener("scroll",()=>{
+
+  const nearBottom =
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - 700;
+
+  if(nearBottom){
+    loadMorePosts();
+  }
+
+},{passive:true});
+
+  /* AUTOMATIC NEW POST REFRESH */
+
+async function refreshNewPosts(){
+
+  if(
+    document.hidden ||
+    loading ||
+    loadingMorePosts ||
+    refreshingFeed
+  ) return;
+
+  refreshingFeed = true;
+
+  try{
+
+    const latestPosts = await fetchPosts(0);
+
+    const existingIds = new Set(
+      currentItems
+        .filter(item => item.kind === "post")
+        .map(item => item.data.id)
+    );
+
+    const newPosts = latestPosts.filter(
+      post => !existingIds.has(post.id)
+    );
+
+    if(!newPosts.length) return;
+
+    const items = newPosts.map(data => ({
+      kind:"post",
+      data
+    }));
+
+    const extra = await supporting(items);
+
+    const ranked = rankItems(items,extra);
+
+    postOffset += newPosts.length;
+
+    hasMorePosts = latestPosts.length === FEED_PAGE_SIZE;
+
+    currentItems.unshift(...ranked);
+
+    feed.querySelector(".empty-feed")?.remove();
+
+    feed.insertAdjacentHTML(
+      "afterbegin",
+      ranked.map(item => renderPost(item,extra)).join("")
+    );
+
+  }catch(error){
+
+    console.warn("Background feed refresh:",error);
+
+  }finally{
+
+    refreshingFeed = false;
+  }
+}
+
+setInterval(refreshNewPosts,60000);
+
+document.addEventListener("visibilitychange",()=>{
+
+  if(!document.hidden){
+    refreshNewPosts();
+  }
+
+});
 
 /* LIKE */
 
