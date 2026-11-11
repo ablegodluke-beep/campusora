@@ -1044,19 +1044,137 @@ renderInbox();
     console.warn('Inbox cache could not be restored:', error);
   }
 }
+// =====================================
+// CAMPUSORA CHAT CACHE
+// LOCAL STORAGE + INDEXEDDB
+// =====================================
+
+let campusoraChatDBPromise = null;
+
+function openCampusoraChatDB() {
+  if (campusoraChatDBPromise) {
+    return campusoraChatDBPromise;
+  }
+
+  campusoraChatDBPromise = new Promise((resolve, reject) => {
+    if (!window.indexedDB) {
+      reject(new Error('IndexedDB is not supported.'));
+      return;
+    }
+
+    const request = indexedDB.open(
+      'campusora-chat-history',
+      1
+    );
+
+    request.onupgradeneeded = event => {
+      const db = event.target.result;
+
+      if (!db.objectStoreNames.contains('chats')) {
+        db.createObjectStore('chats', {
+          keyPath: 'key'
+        });
+      }
+    };
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+
+  return campusoraChatDBPromise;
+}
+
+async function saveChatCacheToDB(id, messages) {
+  if (!me || !id || !Array.isArray(messages)) return;
+
+  try {
+    const db = await openCampusoraChatDB();
+
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction(
+        'chats',
+        'readwrite'
+      );
+
+      transaction.objectStore('chats').put({
+        key: `${me.id}_${id}`,
+        user_id: me.id,
+        conversation_id: id,
+        messages: messages.slice(-100),
+        updated_at: Date.now()
+      });
+
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
+    });
+
+  } catch (error) {
+    console.warn('IndexedDB chat save:', error);
+  }
+}
+
+async function restoreChatCacheFromDB(id) {
+  if (!me || !id) return null;
+
+  try {
+    const db = await openCampusoraChatDB();
+
+    const result = await new Promise((resolve, reject) => {
+      const transaction = db.transaction(
+        'chats',
+        'readonly'
+      );
+
+      const request = transaction
+        .objectStore('chats')
+        .get(`${me.id}_${id}`);
+
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error);
+    });
+
+    if (
+      result &&
+      result.user_id === me.id &&
+      Array.isArray(result.messages)
+    ) {
+      return result.messages;
+    }
+
+  } catch (error) {
+    console.warn('IndexedDB chat restore:', error);
+  }
+
+  return null;
+}
 
 function saveChatCache(id, messages = currentMessages) {
+  if (!id || !Array.isArray(messages)) return;
+
+  const safeMessages = messages.slice(-100);
+
+  // Fast local cache.
   try {
     const key = chatCacheKey(id);
-    if (!key) return;
 
-    localStorage.setItem(
-      key,
-      JSON.stringify(messages.slice(-100))
-    );
+    if (key) {
+      localStorage.setItem(
+        key,
+        JSON.stringify(safeMessages)
+      );
+    }
   } catch (error) {
-    console.warn('Chat cache could not be saved:', error);
+    console.warn('Local chat cache:', error);
   }
+
+  // Durable phone storage.
+  saveChatCacheToDB(id, safeMessages);
 }
 
 function restoreChatCache(id) {
@@ -1065,6 +1183,7 @@ function restoreChatCache(id) {
     if (!key) return null;
 
     const saved = localStorage.getItem(key);
+
     if (!saved) return null;
 
     const messages = JSON.parse(saved);
@@ -1072,19 +1191,9 @@ function restoreChatCache(id) {
     return Array.isArray(messages) ? messages : null;
 
   } catch (error) {
-    console.warn('Chat cache could not be restored:', error);
+    console.warn('Local chat restore:', error);
     return null;
   }
-}
-
-function esc(value = '') {
-  return String(value).replace(/[&<>"']/g, c => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  })[c]);
 }
 
 function initials(name = 'C') {
@@ -1679,32 +1788,34 @@ currentPendingMessages = [];
 
   renderMessages();
 
-  // Start realtime updates immediately.
-  setupMessageRealtime(id);
+// If localStorage has no history, check permanent phone storage.
+// Do not wait for this before opening the conversation.
+if (savedMessages === null) {
+  restoreChatCacheFromDB(id).then(cachedMessages => {
 
-  // Mark the conversation as read in the background.
-  markConversationRead(id).catch(error => {
-    console.warn('Could not mark conversation as read:', error);
+    // Only restore if the user is still viewing this conversation.
+    if (
+      !cachedMessages ||
+      currentConversation?.id !== id
+    ) {
+      return;
+    }
+
+    // Do not replace messages that have already loaded.
+    if (chatHistoryLoaded) return;
+
+    currentMessages = cachedMessages;
+    chatHistoryLoaded = true;
+
+    renderMessages();
+
+  }).catch(error => {
+    console.warn('Saved chat recovery:', error);
   });
+}
 
-  // Load the full latest messages in the background.
-  loadMessages(id, false);
-
-  // Load the other person's profile without blocking messages.
-  if (!conversation.is_group && !currentOtherUser) {
-    getProfiles([conversation.otherUserId])
-      .then(() => {
-        if (currentConversation?.id !== id) return;
-
-        currentOtherUser =
-          profileCache.get(conversation.otherUserId) || null;
-
-        updateChatHeader(currentOtherUser, conversation);
-      })
-      .catch(error => {
-        console.warn('Profile loading failed:', error);
-      });
-  }
+// Start realtime updates immediately.
+setupMessageRealtime(id);
 
   // Refresh messages periodically.
   if (messagePoll) clearInterval(messagePoll);
