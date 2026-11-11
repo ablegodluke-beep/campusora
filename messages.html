@@ -258,6 +258,76 @@ font-size:9px;
 }
 .message-status{color:var(--cyan)}
 .pending-status{color:#ffc16a}
+  .pending-premium-card{
+  width:min(310px,calc(100% - 8px));
+  margin:9px 0 5px auto;
+  padding:13px;
+  border:1px solid #59458f;
+  border-radius:14px;
+  background:linear-gradient(145deg,#211a3b,#151d35 75%);
+  box-shadow:0 8px 24px #0003;
+}
+
+.message-row:not(.mine) .pending-premium-card{
+  margin-left:0;
+  margin-right:auto;
+}
+
+.pending-premium-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:6px;
+  font-size:12px;
+  font-weight:800;
+  color:#fff;
+}
+
+.pending-premium-icon{
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:#39295e;
+  color:#d5c4ff;
+  font-size:15px;
+}
+
+.pending-premium-card p{
+  font-size:10px;
+  line-height:1.6;
+  color:#c2c8dc;
+  margin:0 0 11px;
+}
+
+.pending-premium-actions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:7px;
+}
+
+.pending-premium-actions button{
+  width:100%;
+  padding:10px 11px;
+  border:1px solid #65519a;
+  border-radius:9px;
+  background:linear-gradient(110deg,#7650d9,#426ee5);
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  text-align:left;
+}
+
+.pending-premium-actions button.secondary{
+  background:#202943;
+  border-color:#394766;
+}
+
+.pending-premium-actions button:disabled{
+  opacity:.5;
+  cursor:wait;
+}
 .message-actions{position:relative;display:flex;align-items:center;gap:5px}
 .message-menu-button{
 border:0;
@@ -1272,80 +1342,136 @@ if(currentConversation?.id===id)loadMessages(id,false);
 
 markConversationRead(id).catch(console.warn);
 }
-
 function renderMessages(){
-if(currentConversation&&me&&chatHistoryLoaded){
-saveChatCache(currentConversation.id);
+  if(currentConversation&&me&&chatHistoryLoaded){
+    saveChatCache(currentConversation.id);
+  }
+
+  const area=$('messagesArea');
+
+  const combined=[
+    ...currentMessages.map(m=>({...m,_pending:false})),
+    ...currentPendingMessages.map(m=>({
+      ...m,
+      id:'pending-'+m.id,
+      sender_id:me.id,
+      created_at:m.created_at,
+      _pending:true
+    }))
+  ].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+
+  if(!combined.length){
+    area.innerHTML=`
+      <div class="chat-empty">
+        <div class="chat-empty-icon">✦</div>
+        <h3>Say hello 👋</h3>
+        <p>Your conversation starts here. Send the first message.</p>
+      </div>`;
+    return;
+  }
+
+  let previousDate='';
+  const output=[];
+
+  combined.forEach(m=>{
+    const date=new Date(m.created_at);
+    const dateKey=date.toDateString();
+
+    if(dateKey!==previousDate){
+      output.push(`<div class="date-label">${
+        dateKey===new Date().toDateString()
+        ?'Today'
+        :esc(date.toLocaleDateString(undefined,{
+          month:'short',
+          day:'numeric',
+          year:'numeric'
+        }))
+      }</div>`);
+
+      previousDate=dateKey;
+    }
+
+    if(m.deleted_at&&!m._pending)return;
+
+    const mine=m.sender_id===me.id;
+    let actions='';
+
+    if(mine&&!m._pending&&!m.deleted_at){
+      actions=`
+        <div class="message-actions">
+          <button class="message-menu-button"
+            data-message-menu="${esc(m.id)}"
+            aria-label="Message options">⋮</button>
+
+          <div class="message-menu"
+            id="menu-${esc(m.id)}" hidden>
+
+            <button data-edit-message="${esc(m.id)}">
+              Edit Message
+            </button>
+
+            <button class="delete-option"
+              data-delete-message="${esc(m.id)}">
+              Delete Message
+            </button>
+          </div>
+        </div>`;
+    }
+
+    output.push(`
+      <div class="message-row ${mine?'mine':''} ${m._pending?'pending':''}"
+        data-message="${esc(m.id)}">
+
+        <div class="message-bubble">${esc(m.content)}</div>
+
+        <div class="message-meta">
+          ${ago(m.created_at)}
+          ${m._pending
+            ?'<span class="pending-status">Not sent</span>'
+            :mine?'<span class="message-status">✓</span>':''}
+          ${actions}
+        </div>
+
+        ${m._pending?`
+          <div class="pending-premium-card">
+
+            <div class="pending-premium-title">
+              <span class="pending-premium-icon">✦</span>
+              Message not sent
+            </div>
+
+            <p>
+              Subscribe to Premium to continue sending
+              messages on Campusora.
+            </p>
+
+            <div class="pending-premium-actions">
+
+              <button type="button"
+                data-premium-plan="monthly">
+                Subscribe monthly
+                <span>₦2,000 / 30 days</span>
+              </button>
+
+              <button type="button"
+                class="secondary"
+                data-premium-plan="permanent">
+                Get permanent Premium
+                <span>₦10,000 · One-time</span>
+              </button>
+
+            </div>
+          </div>
+        `:''}
+
+      </div>
+    `);
+  });
+
+  area.innerHTML=output.join('');
+  area.scrollTop=area.scrollHeight;
 }
 
-const area=$('messagesArea');
-const combined=[
-...currentMessages.map(m=>({...m,_pending:false})),
-...currentPendingMessages.map(m=>({
-...m,
-id:'pending-'+m.id,
-sender_id:me.id,
-created_at:m.created_at,
-_pending:true
-}))
-].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
-
-if(!combined.length){
-area.innerHTML=`
-<div class="chat-empty">
-<div class="chat-empty-icon">✦</div>
-<h3>Say hello 👋</h3>
-<p>Your conversation starts here. Send the first message.</p>
-</div>`;
-return;
-}
-
-let previousDate='';
-const output=[];
-
-combined.forEach(m=>{
-const date=new Date(m.created_at);
-const dateKey=date.toDateString();
-
-if(dateKey!==previousDate){
-output.push(`<div class="date-label">${
-dateKey===new Date().toDateString()
-?'Today'
-:esc(date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}))
-}</div>`);
-previousDate=dateKey;
-}
-
-if(m.deleted_at&&!m._pending)return;
-
-const mine=m.sender_id===me.id;
-let actions='';
-
-if(mine&&!m._pending&&!m.deleted_at){
-actions=`
-<div class="message-actions">
-<button class="message-menu-button" data-message-menu="${esc(m.id)}" aria-label="Message options">⋮</button>
-<div class="message-menu" id="menu-${esc(m.id)}" hidden>
-<button data-edit-message="${esc(m.id)}">Edit Message</button>
-<button class="delete-option" data-delete-message="${esc(m.id)}">Delete Message</button>
-</div>
-</div>`;
-}
-
-output.push(`
-<div class="message-row ${mine?'mine':''} ${m._pending?'pending':''}" data-message="${esc(m.id)}">
-<div class="message-bubble">${esc(m.content)}</div>
-<div class="message-meta">
-${ago(m.created_at)}
-${m._pending?'<span class="pending-status">Not sent</span>':mine?'<span class="message-status">✓</span>':''}
-${actions}
-</div>
-</div>`);
-});
-
-area.innerHTML=output.join('');
-area.scrollTop=area.scrollHeight;
-}
   // Refresh server messages without showing a loading screen.
 async function loadMessages(id,showLoading=false){
 const loadToken=++messageLoadToken;
@@ -1783,6 +1909,14 @@ renderInbox();
 });
 
 $('messagesArea').addEventListener('click',event=>{
+
+const premiumButton=event.target.closest('[data-premium-plan]');
+
+if(premiumButton){
+  startPremiumPayment(premiumButton.dataset.premiumPlan);
+  return;
+}
+
 const menuButton=event.target.closest('[data-message-menu]');
 const editButton=event.target.closest('[data-edit-message]');
 const deleteButton=event.target.closest('[data-delete-message]');
