@@ -7,6 +7,128 @@ window.CampusoraNavigationLoaded = true;
 const HOME = "home-feed.html";
 const MENU = "menu.html";
 const currentFile = location.pathname.split("/").pop() || HOME;
+/* =====================================
+   CAMPUSORA GLOBAL PAGE PROGRESS BAR
+===================================== */
+
+(function(){
+
+  // Pages that already have their own progress bar.
+  if(document.getElementById("pageProgress")) return;
+
+  // Prevent duplicate bars.
+  if(document.getElementById("campusoraRouteProgress")) return;
+
+  const style = document.createElement("style");
+
+  style.textContent = `
+    #campusoraRouteProgress {
+      position:fixed;
+      top:0;
+      left:0;
+      width:0;
+      height:3px;
+      z-index:999999;
+      opacity:1;
+      pointer-events:none;
+      background:linear-gradient(
+        90deg,
+        #9333ea,
+        #3b82f6,
+        #06b6d4
+      );
+      transition:
+        width .35s ease,
+        opacity .35s ease;
+    }
+
+    #campusoraRouteProgress.active {
+      width:75%;
+    }
+
+    #campusoraRouteProgress.complete {
+      width:100%;
+      opacity:0;
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  const bar = document.createElement("div");
+  bar.id = "campusoraRouteProgress";
+
+  document.body.appendChild(bar);
+
+  function startProgress(){
+
+    bar.classList.remove("complete");
+
+    bar.style.width = "0";
+    bar.style.opacity = "1";
+
+    requestAnimationFrame(() => {
+      bar.classList.add("active");
+    });
+
+  }
+
+  function finishProgress(){
+
+    bar.classList.remove("active");
+    bar.classList.add("complete");
+
+    setTimeout(() => {
+      bar.style.width = "0";
+      bar.classList.remove("complete");
+      bar.style.opacity = "1";
+    }, 450);
+
+  }
+
+  // Finish when the page finishes loading.
+  window.addEventListener("load", finishProgress);
+
+  // Show progress when someone navigates to another page.
+  document.addEventListener("click", function(event){
+
+    const link = event.target.closest("a");
+
+    if(!link) return;
+
+    if(
+      link.target === "_blank" ||
+      link.hasAttribute("download") ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.altKey
+    ) return;
+
+    const destination = new URL(link.href, location.href);
+
+    if(destination.origin !== location.origin) return;
+
+    if(
+      destination.pathname === location.pathname &&
+      destination.search === location.search
+    ) return;
+
+    startProgress();
+
+  }, true);
+
+  // Handle pages restored from browser history.
+  window.addEventListener("pageshow", function(){
+    finishProgress();
+  });
+
+  // Handle scripts loaded after the page has already finished.
+  if(document.readyState === "complete"){
+    finishProgress();
+  }
+
+})();
+  
 
 const icons = {
 home: `<svg viewBox="0 0 24 24"><path d="M2.5 10.2 12 2.5l9.5 7.7v9.5a1.8 1.8 0 0 1-1.8 1.8h-4.9v-7h-5.6v7H4.3a1.8 1.8 0 0 1-1.8-1.8z"/></svg>`,
