@@ -248,31 +248,11 @@ SHOW WHEN SCROLLING STOPS
 ===================================== */
 
 function setupNavigationScroll() {
-let scrollTimer = null;
 
-function hideNavigation() {
-topbar.classList.add("nav-hidden");
-mainNav.classList.add("nav-hidden");
-closeCreateMenu();
-}
+  // Keep the top navigation and bottom dock visible.
+  topbar.classList.remove("nav-hidden");
+  mainNav.classList.remove("nav-hidden");
 
-function showNavigation() {
-topbar.classList.remove("nav-hidden");
-mainNav.classList.remove("nav-hidden");
-}
-
-window.addEventListener("scroll", () => {
-hideNavigation();
-
-clearTimeout(scrollTimer);
-
-scrollTimer = setTimeout(() => {
-showNavigation();
-}, 300);
-
-}, { passive: true });
-
-showNavigation();
 }
 
 /* =====================================
