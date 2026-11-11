@@ -1069,18 +1069,12 @@ body.image-viewer-active{
         <p>What's happening around your world</p>
       </div>
 
-      <div class="filter-wrap">
-        <button class="filter-button" id="filterButton" type="button">
-          <span id="filterLabel">For You</span>
-          <span>⌄</span>
-        </button>
 <div class="filter-menu" id="filterMenu">
   <button class="filter-option active" data-filter="for-you" type="button">For You</button>
   <button class="filter-option" data-filter="popular" type="button">Popular</button>
-  <button class="filter-option" data-filter="campus" type="button">My Campus</button>
+  <button class="filter-option" data-filter="streaks" type="button">🔥 Streaks</button>
   <button class="filter-option" data-filter="spotlight" type="button">🎬 Spotlight</button>
 </div>
-      </div>
     </section>
 
     <!-- CAMPUS MOMENTS -->
@@ -2859,24 +2853,27 @@ feed.addEventListener("submit",async event=>{
 
  $("comments-"+postId)?.classList.add("open");
 });
-
 /* FEED FILTER */
 
 $("filterButton").addEventListener("click",()=>{
- $("filterMenu").classList.toggle("open");
+  $("filterMenu").classList.toggle("open");
 });
 
 document.querySelectorAll(".filter-option").forEach(button=>{
   button.addEventListener("click",()=>{
 
-    // Open the dedicated Spotlight video page
     if(button.dataset.filter==="spotlight"){
       $("filterMenu").classList.remove("open");
       window.location.href="spotlight.html";
       return;
     }
 
-    // Handle normal Home Feed filters
+    if(button.dataset.filter==="streaks"){
+      $("filterMenu").classList.remove("open");
+      window.location.href="streaks.html";
+      return;
+    }
+
     activeFeed=button.dataset.filter;
 
     $("filterLabel").textContent=button.textContent;
@@ -2893,15 +2890,15 @@ document.querySelectorAll(".filter-option").forEach(button=>{
 });
 
 document.addEventListener("click",event=>{
- if(!event.target.closest(".filter-wrap")){
-  $("filterMenu").classList.remove("open");
- }
+  if(!event.target.closest(".filter-wrap")){
+    $("filterMenu").classList.remove("open");
+  }
 
- if(!event.target.closest(".more-wrap")){
-  document.querySelectorAll(".post-menu.open").forEach(x=>{
-   x.classList.remove("open");
-  });
- }
+  if(!event.target.closest(".more-wrap")){
+    document.querySelectorAll(".post-menu.open").forEach(x=>{
+      x.classList.remove("open");
+    });
+  }
 });
 /* FULL-SCREEN SWIPEABLE POST IMAGE VIEWER */
 
