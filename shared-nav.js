@@ -417,7 +417,7 @@ window.dispatchEvent(
     const ownerId = user.id;
 
   // Prepare the 40 most recent conversations first.
-  const queue = conversations.slice(0, 40);
+  const queue = conversations.slice(0, 100);
   let nextIndex = 0;
 
   // Verify the account once.
@@ -500,13 +500,13 @@ window.dispatchEvent(
       }
     }
   }
-// Prepare eight conversations simultaneously.
+// Prepare twelve conversations simultaneously.
 await Promise.all(
   Array.from(
-    { length: Math.min(8, queue.length) },
-      () => worker()
-    )
-  );
+    { length: Math.min(12, queue.length) },
+    () => worker()
+  )
+);
 }
 async function getSupabase() {
 if (supabaseClient) return supabaseClient;
