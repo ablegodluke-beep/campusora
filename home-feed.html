@@ -2235,6 +2235,12 @@ async function loadMorePosts(){
         ranked.map(item => renderPost(item,extra)).join("")
       );
     }
+        // Keep the loading message below all posts.
+    const feedStatus = $("feedMoreStatus");
+
+    if(feedStatus){
+      feed.appendChild(feedStatus);
+                      }
 
     const updatedStatus = $("feedMoreStatus");
 
