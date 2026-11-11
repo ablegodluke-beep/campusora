@@ -414,9 +414,16 @@ window.dispatchEvent(
   async function preloadCampusoraChatHistories(supabase, user, conversations) {
   if (!user?.id || !Array.isArray(conversations)) return;
 
-  const ownerId = user.id;
-  const queue = conversations.slice(0, 100);
+    const ownerId = user.id;
+
+  // Prepare the 40 most recent conversations first.
+  const queue = conversations.slice(0, 40);
   let nextIndex = 0;
+
+  // Verify the account once.
+  const { data: { user: activeUser } } = await supabase.auth.getUser();
+
+  if (activeUser?.id !== ownerId) return;
 
   async function worker() {
     while (nextIndex < queue.length) {
@@ -472,11 +479,7 @@ window.dispatchEvent(
 
         if (!messages.length && conversation.lastMessage) continue;
 
-        const {
-          data: { user: currentUser }
-        } = await supabase.auth.getUser();
-
-        if (currentUser?.id !== ownerId) return;
+                if (activeUser?.id !== ownerId) return;
 
         localStorage.setItem(
           cacheKey,
@@ -497,11 +500,10 @@ window.dispatchEvent(
       }
     }
   }
-
-  // Prepare four conversations simultaneously.
-  await Promise.all(
-    Array.from(
-      { length: Math.min(4, queue.length) },
+// Prepare eight conversations simultaneously.
+await Promise.all(
+  Array.from(
+    { length: Math.min(8, queue.length) },
       () => worker()
     )
   );
