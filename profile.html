@@ -470,13 +470,58 @@ grid-row:1;
 
 .post-image{
   width:100%;
-  max-height:560px;
-  object-fit:contain;
+  height:100%;
+  min-width:0;
+  object-fit:cover;
   background:#090c18;
-  border-radius:12px;
+  border-radius:8px;
   display:block;
-  margin-bottom:15px;
-  cursor:zoom-in
+  cursor:zoom-in;
+}
+
+.profile-post-image-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:repeat(2,88px);
+  gap:4px;
+  width:100%;
+  height:180px;
+  margin:12px 0;
+  overflow:hidden;
+  border-radius:9px;
+}
+
+.profile-post-image-grid.count-1{
+  display:block;
+  height:180px;
+}
+
+.profile-post-image-grid.count-2{
+  grid-template-rows:180px;
+}
+
+.profile-post-image-grid.count-3 .post-image:first-child{
+  grid-row:span 2;
+}
+
+.profile-post-image-grid.count-5{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.profile-post-image-grid.count-5 .post-image:first-child{
+  grid-column:span 2;
+  grid-row:span 2;
+}
+
+@media(max-width:480px){
+  .profile-post-image-grid{
+    height:180px;
+    grid-template-rows:repeat(2,88px);
+  }
+
+  .profile-post-image-grid.count-2{
+    grid-template-rows:180px;
+  }
 }
 
 .post-stats{
@@ -1792,32 +1837,85 @@ function profileLink(userId) {
   return './profile.html?id='+encodeURIComponent(userId);
 }
 
-/* PHOTO VIEWER */
+let photoViewerImages = [];
+let photoViewerIndex = 0;
+let photoTouchStartX = 0;
+let photoTouchStartY = 0;
 
-function openPhotoViewer(url,alt='Photo') {
-  if(!url)return;
-  $('photoViewerImage').src=url;
-  $('photoViewerImage').alt=alt;
+function showProfileViewerImage(index) {
+  if (index < 0 || index >= photoViewerImages.length) return;
+
+  photoViewerIndex = index;
+  $('photoViewerImage').src = photoViewerImages[index];
+  $('photoViewerImage').alt = 'Post photo ' + (index + 1);
+}
+
+function openPhotoViewer(url, alt='Photo', allImages=null) {
+  if (!url) return;
+
+  photoViewerImages = Array.isArray(allImages) && allImages.length
+    ? allImages
+    : [url];
+
+  photoViewerIndex = Math.max(0, photoViewerImages.indexOf(url));
+
+  $('photoViewerImage').alt = alt;
+  showProfileViewerImage(photoViewerIndex);
+
   $('photoViewer').classList.remove('hidden');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
 
 function closePhotoViewer() {
   $('photoViewer').classList.add('hidden');
-  $('photoViewerImage').src='';
-  document.body.style.overflow='';
+  $('photoViewerImage').src = '';
+  photoViewerImages = [];
+  photoViewerIndex = 0;
+  document.body.style.overflow = '';
 }
 
-$('closePhotoViewer').addEventListener('click',closePhotoViewer);
+function nextProfilePhoto() {
+  if (photoViewerIndex < photoViewerImages.length - 1) {
+    showProfileViewerImage(photoViewerIndex + 1);
+  }
+}
 
-$('photoViewer').addEventListener('click',event=>{
-  if(event.target===$('photoViewer'))closePhotoViewer();
+function previousProfilePhoto() {
+  if (photoViewerIndex > 0) {
+    showProfileViewerImage(photoViewerIndex - 1);
+  }
+}
+
+$('photoViewerImage').addEventListener('touchstart', event => {
+  const touch = event.changedTouches[0];
+  photoTouchStartX = touch.clientX;
+  photoTouchStartY = touch.clientY;
+}, {passive:true});
+
+$('photoViewerImage').addEventListener('touchend', event => {
+  const touch = event.changedTouches[0];
+
+  const diffX = touch.clientX - photoTouchStartX;
+  const diffY = touch.clientY - photoTouchStartY;
+
+  if (Math.abs(diffX) < 50 || Math.abs(diffX) < Math.abs(diffY)) return;
+
+  if (diffX < 0) {
+    nextProfilePhoto();
+  } else {
+    previousProfilePhoto();
+  }
+}, {passive:true});
+
+$('closePhotoViewer').addEventListener('click', closePhotoViewer);
+
+$('photoViewer').addEventListener('click', event => {
+  if (event.target === $('photoViewer')) closePhotoViewer();
 });
 
-$('photoViewerImage').addEventListener('click',event=>{
+$('photoViewerImage').addEventListener('click', event => {
   event.stopPropagation();
 });
-
 $('profileAvatar').addEventListener('click',()=>{
   if(currentProfile?.avatar_url){
     openPhotoViewer(currentProfile.avatar_url,'Profile photo');
@@ -3145,7 +3243,7 @@ async function sharePostToMoment(post) {
 
   const [postsResult,spotlightResult]=await Promise.all([
     supabase.from('posts')
-      .select('id,user_id,content,image_url,video_url,created_at')
+      .select('id,user_id,content,image_url,image_urls,video_url,created_at')
       .eq('user_id',profile.id)
       .order('created_at',{ascending:false}),
     supabase.from('spotlight_videos')
@@ -3277,16 +3375,37 @@ async function createPostCard(post,author) {
     card.append(content);
   }
 
-  if(post.image_url){
-    const image=document.createElement('img');
-    image.className='post-image';
-    image.src=post.image_url;
-    image.alt='View post image';
-    image.loading='lazy';
-    image.addEventListener('click',()=>openPhotoViewer(post.image_url,'Post image'));
-    image.onerror=()=>image.remove();
-    card.append(image);
-  }
+  const postImages = Array.isArray(post.image_urls)
+  ? post.image_urls.filter(url => typeof url === 'string' && url)
+  : [];
+
+if (!postImages.length && post.image_url) {
+  postImages.push(post.image_url);
+}
+
+if (postImages.length) {
+  const grid = document.createElement('div');
+  grid.className = `profile-post-image-grid count-${postImages.length}`;
+
+  postImages.forEach((url, index) => {
+    const image = document.createElement('img');
+
+    image.className = 'post-image';
+    image.src = url;
+    image.alt = `Post photo ${index + 1}`;
+    image.loading = 'lazy';
+
+    image.addEventListener('click', () => {
+      openPhotoViewer(url, 'Post image', postImages);
+    });
+
+    image.onerror = () => image.remove();
+
+    grid.append(image);
+  });
+
+  card.append(grid);
+}
 
   if(post.video_url){
     const video=document.createElement('video');
