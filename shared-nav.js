@@ -342,7 +342,73 @@ let inboxSyncRunning = false;
 let badgeTimer = null;
 let refreshInProgress = false;
 let realtimeSetupPromise = null;
+// =====================================
+// PRELOAD INBOX AFTER LOGIN / SESSION RESTORE
+// =====================================
 
+let inboxPreloadRunning = false;
+
+async function preloadCampusoraInbox(supabase, user) {
+  if (!user?.id || inboxPreloadRunning) return;
+
+  const cacheKey = `campusora_inbox_${user.id}`;
+  const timeKey = `campusora_inbox_preload_at_${user.id}`;
+
+  // Avoid repeatedly requesting the same inbox.
+  const lastPreload = Number(localStorage.getItem(timeKey) || 0);
+
+  if (Date.now() - lastPreload < 30000) return;
+
+  inboxPreloadRunning = true;
+
+  try {
+    const { data, error } = await supabase.rpc(
+      "get_my_inbox_previews"
+    );
+
+    if (error) throw error;
+
+    if (!Array.isArray(data)) return;
+
+    // Do not cache another account's inbox.
+    const {
+      data: { user: currentUser }
+    } = await supabase.auth.getUser();
+
+    if (currentUser?.id !== user.id) return;
+
+    const conversations = data.map(item => ({
+      ...item,
+      participants: Array.isArray(item.participants)
+        ? item.participants
+        : [],
+      lastMessage: item.lastMessage || null,
+      lastReadAt: item.lastReadAt || null
+    }));
+
+    conversations.sort((a, b) =>
+      new Date(b.lastMessage?.created_at || b.created_at) -
+      new Date(a.lastMessage?.created_at || a.created_at)
+    );
+
+    localStorage.setItem(
+      cacheKey,
+      JSON.stringify(conversations.slice(0, 100))
+    );
+
+    localStorage.setItem(timeKey, String(Date.now()));
+
+    window.dispatchEvent(
+      new CustomEvent("campusora-inbox-preloaded")
+    );
+
+  } catch (error) {
+    console.warn("Campusora inbox preloading:", error);
+  } finally {
+    inboxPreloadRunning = false;
+  }
+}
+  
 async function getSupabase() {
 if (supabaseClient) return supabaseClient;
 
@@ -455,6 +521,8 @@ updateBadge("messages", 0);
 updateBadge("notifications", 0);
 return;
 }
+  // Prepare the inbox immediately after login/session restoration.
+preloadCampusoraInbox(supabase, user);
 
 if (messageChannel) {
 await supabase.removeChannel(messageChannel);
