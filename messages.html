@@ -1306,6 +1306,53 @@ async function loadInbox() {
   window.campusoraInboxToken = loadToken;
 
   const ownerId = me.id;
+    // Load the complete prepared inbox in one database request.
+  try {
+    const { data: preparedInbox, error: preparedError } =
+      await supabase.rpc('get_my_inbox_previews');
+
+    if (
+      !preparedError &&
+      Array.isArray(preparedInbox) &&
+      loadToken === window.campusoraInboxToken &&
+      me?.id === ownerId
+    ) {
+      conversations = preparedInbox.map(item => {
+        if (item.otherProfile?.id) {
+          profileCache.set(item.otherProfile.id, item.otherProfile);
+        }
+
+        return {
+          ...item,
+          participants: Array.isArray(item.participants)
+            ? item.participants
+            : [],
+          lastMessage: item.lastMessage || null,
+          lastReadAt: item.lastReadAt || null
+        };
+      });
+
+      conversations.sort((a, b) =>
+        new Date(b.lastMessage?.created_at || b.created_at) -
+        new Date(a.lastMessage?.created_at || a.created_at)
+      );
+
+      // Display conversations immediately.
+      renderInbox();
+      saveInboxCache();
+
+      // Prepare recent chat histories in the background.
+      preloadInboxChats(conversations.slice(), loadToken);
+
+      return;
+    }
+
+    if (preparedError) {
+      console.warn('Prepared inbox failed; using original loader:', preparedError);
+    }
+  } catch (error) {
+    console.warn('Prepared inbox error; using original loader:', error);
+  }
 
   // Get this user's conversations.
   const { data: members, error } = await supabase
