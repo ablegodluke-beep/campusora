@@ -3071,45 +3071,24 @@ document.addEventListener("click",event=>{
 
 })();
   
-/* SHARED NAVIGATION SCROLL BEHAVIOUR */
+/* SHARED NAVIGATION — ALWAYS VISIBLE */
 
 (function(){
- let timer=null;
- let previous=window.scrollY;
 
- function showNav(){
-  document.querySelector(".campusora-topnav")
-   ?.classList.remove("nav-hidden");
+  function keepNavigationVisible(){
 
-  document.querySelector(".campusora-mainnav")
-   ?.classList.remove("nav-hidden");
- }
+    document.querySelector(".campusora-topnav")
+      ?.classList.remove("nav-hidden");
 
- function hideNav(){
-  document.querySelector(".campusora-topnav")
-   ?.classList.add("nav-hidden");
+    document.querySelector(".campusora-mainnav")
+      ?.classList.remove("nav-hidden");
 
-  document.querySelector(".campusora-mainnav")
-   ?.classList.add("nav-hidden");
- }
-
- window.addEventListener("scroll",()=>{
-  const current=window.scrollY;
-
-  if(Math.abs(current-previous)>1){
-   hideNav();
-
-   clearTimeout(timer);
-
-   timer=setTimeout(showNav,350);
   }
 
-  previous=current;
- },{passive:true});
+  keepNavigationVisible();
 
- showNav();
 })();
-
+  
 /* START PAGE */
 
 async function startPage(){
