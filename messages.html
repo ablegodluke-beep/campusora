@@ -976,6 +976,7 @@ let currentConversation = null;
 let currentOtherUser = null;
 let currentMessages = [];
 let currentPendingMessages = [];
+let chatHistoryLoaded = false;
 let currentFilter = 'all';
 let realtimeMessages = null;
 let realtimeInbox = null;
@@ -1664,17 +1665,18 @@ async function openConversation(id) {
 
   // Update the header using whatever profile is already available.
   updateChatHeader(currentOtherUser, conversation);
-
-// Display saved chat messages immediately.
+// Display the saved full chat history immediately.
 const savedMessages = restoreChatCache(id);
 
-currentMessages = savedMessages !== null
+chatHistoryLoaded = savedMessages !== null;
+
+currentMessages = chatHistoryLoaded
   ? savedMessages
   : conversation.lastMessage
     ? [conversation.lastMessage]
     : [];
 
-  currentPendingMessages = [];
+currentPendingMessages = [];
 
   renderMessages();
 
@@ -1715,7 +1717,9 @@ currentMessages = savedMessages !== null
   }, 10000);
 }
 function renderMessages() {
-  if (currentConversation && me) {
+  // Only save when the complete chat history has loaded.
+  // This prevents a single inbox preview from replacing the full history.
+  if (currentConversation && me && chatHistoryLoaded) {
     saveChatCache(currentConversation.id);
   }
 
@@ -1839,12 +1843,14 @@ async function loadMessages(id, showLoading = false) {
     ) {
       return;
     }
+// Reverse the newest-first results for normal chat display.
+currentMessages = (data || []).reverse();
 
-    // Reverse the newest-first results for normal chat display.
-    currentMessages = (data || []).reverse();
+// The complete history has now loaded.
+chatHistoryLoaded = true;
 
-    // Display messages immediately.
-    renderMessages();
+// Save it and display it.
+renderMessages();
 
     // Load pending messages after the real messages are visible.
     await loadPendingMessages(id);
