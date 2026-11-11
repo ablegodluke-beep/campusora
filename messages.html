@@ -1271,14 +1271,13 @@ async function getProfiles(ids) {
       }
     }
   }
-
-  // Preload three conversations at a time.
-  await Promise.all(
-    Array.from(
-      { length: Math.min(3, queue.length) },
-      () => worker()
-    )
-  );
+// Prepare twelve conversations simultaneously.
+await Promise.all(
+  Array.from(
+    { length: Math.min(12, queue.length) },
+    () => worker()
+  )
+);
 
   if (
     me?.id !== ownerId ||
@@ -1823,19 +1822,20 @@ async function loadMessages(id, showLoading = false) {
       .limit(100);
 
     if (error) {
-      console.error('Load messages:', error);
+  console.error('Load messages:', error);
 
-      if (
-        currentConversation?.id === id &&
-        loadToken === messageLoadToken
-      ) {
-        $('messagesArea').innerHTML =
-          '<div class="panel-message">Could not load messages. Please retry.</div>';
-      }
+  // Never remove messages already displayed from local storage.
+  if (
+    currentConversation?.id === id &&
+    loadToken === messageLoadToken &&
+    (!Array.isArray(currentMessages) || !currentMessages.length)
+  ) {
+    $('messagesArea').innerHTML =
+      '<div class="panel-message">Your messages will appear when your connection is available.</div>';
+  }
 
-      return;
-    }
-
+  return;
+}
     // Ignore results from an old conversation.
     if (
       currentConversation?.id !== id ||
