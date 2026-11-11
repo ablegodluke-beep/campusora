@@ -399,7 +399,7 @@ async function preloadCampusoraInbox(supabase, user) {
     localStorage.setItem(timeKey, String(Date.now()));
 
 // Prepare actual chat histories before the user opens Messages.
-preloadCampusoraChatHistories(supabase, user, conversations);
+
 
 window.dispatchEvent(
   new CustomEvent("campusora-inbox-preloaded")
