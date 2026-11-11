@@ -1428,8 +1428,20 @@ async function loadInbox() {
   const ownerId = me.id;
     // Load the complete prepared inbox in one database request.
   try {
-    const { data: preparedInbox, error: preparedError } =
-      await supabase.rpc('get_my_inbox_previews');
+    // Prevent the inbox from getting stuck waiting for Supabase.
+const inboxPreviewRequest = supabase.rpc('get_my_inbox_previews');
+
+const inboxPreviewTimeout = new Promise((_, reject) => {
+  setTimeout(() => {
+    reject(new Error('Inbox preview timed out'));
+  }, 5000);
+});
+
+const { data: preparedInbox, error: preparedError } =
+  await Promise.race([
+    inboxPreviewRequest,
+    inboxPreviewTimeout
+  ]);
 
     if (
       !preparedError &&
