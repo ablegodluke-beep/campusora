@@ -398,9 +398,12 @@ async function preloadCampusoraInbox(supabase, user) {
 
     localStorage.setItem(timeKey, String(Date.now()));
 
-    window.dispatchEvent(
-      new CustomEvent("campusora-inbox-preloaded")
-    );
+// Prepare actual chat histories before the user opens Messages.
+preloadCampusoraChatHistories(supabase, user, conversations);
+
+window.dispatchEvent(
+  new CustomEvent("campusora-inbox-preloaded")
+);
 
   } catch (error) {
     console.warn("Campusora inbox preloading:", error);
@@ -408,7 +411,101 @@ async function preloadCampusoraInbox(supabase, user) {
     inboxPreloadRunning = false;
   }
 }
-  
+  async function preloadCampusoraChatHistories(supabase, user, conversations) {
+  if (!user?.id || !Array.isArray(conversations)) return;
+
+  const ownerId = user.id;
+  const queue = conversations.slice(0, 100);
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < queue.length) {
+      const conversation = queue[nextIndex++];
+
+      if (!conversation?.id) continue;
+
+      const cacheKey =
+        `campusora_chat_${ownerId}_${conversation.id}`;
+
+      const readyKey =
+        `campusora_chat_ready_${ownerId}_${conversation.id}`;
+
+      try {
+        let cached = null;
+        let ready = null;
+
+        try {
+          cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+          ready = JSON.parse(localStorage.getItem(readyKey) || "null");
+        } catch (_) {}
+
+        const cachedLastId =
+          Array.isArray(cached) && cached.length
+            ? cached[cached.length - 1].id
+            : null;
+
+        const inboxLastId = conversation.lastMessage?.id || null;
+
+        if (
+          Array.isArray(cached) &&
+          ready &&
+          ready.latestId === cachedLastId &&
+          (!inboxLastId || ready.latestId === inboxLastId)
+        ) {
+          continue;
+        }
+
+        const { data, error } = await supabase
+          .from("messages")
+          .select("id,conversation_id,sender_id,content,created_at,deleted_at")
+          .eq("conversation_id", conversation.id)
+          .is("deleted_at", null)
+          .order("created_at", { ascending: false })
+          .limit(100);
+
+        if (error) {
+          console.warn("Chat history preload:", error);
+          continue;
+        }
+
+        const messages = (data || []).reverse();
+
+        if (!messages.length && conversation.lastMessage) continue;
+
+        const {
+          data: { user: currentUser }
+        } = await supabase.auth.getUser();
+
+        if (currentUser?.id !== ownerId) return;
+
+        localStorage.setItem(
+          cacheKey,
+          JSON.stringify(messages)
+        );
+
+        localStorage.setItem(
+          readyKey,
+          JSON.stringify({
+            latestId: messages.length
+              ? messages[messages.length - 1].id
+              : null
+          })
+        );
+
+      } catch (error) {
+        console.warn("Chat preload failed:", error);
+      }
+    }
+  }
+
+  // Prepare four conversations simultaneously.
+  await Promise.all(
+    Array.from(
+      { length: Math.min(4, queue.length) },
+      () => worker()
+    )
+  );
+}
 async function getSupabase() {
 if (supabaseClient) return supabaseClient;
 
