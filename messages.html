@@ -1799,7 +1799,8 @@ if(saved){
 input.value='';
 input.style.height='42px';
 $('phoneWarning').classList.remove('show');
-openPremiumModal(currentPendingMessages.at(-1)?.id||null);
+  pendingPremiumMessageId=currentPendingMessages.at(-1)?.id||null;
+renderMessages();
 }
 checkMessageInput();
 return;
