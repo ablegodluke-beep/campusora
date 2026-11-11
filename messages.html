@@ -1026,7 +1026,18 @@ function restoreInboxCache() {
     if (!Array.isArray(cached)) return;
 
     conversations = cached;
-    renderInbox();
+
+// Restore names and profile pictures from the saved inbox.
+cached.forEach(conversation => {
+  if (conversation.otherProfile?.id) {
+    profileCache.set(
+      conversation.otherProfile.id,
+      conversation.otherProfile
+    );
+  }
+});
+
+renderInbox();
 
   } catch (error) {
     console.warn('Inbox cache could not be restored:', error);
