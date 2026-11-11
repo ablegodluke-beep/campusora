@@ -68,8 +68,8 @@ button { cursor:pointer; }
 }
 
 .container {
-  width:min(620px,94%);
-  margin:26px auto 50px;
+  width:min(520px,94%);
+  margin:20px auto 34px;
 }
 
 .heading { margin-bottom:18px; }
@@ -81,17 +81,14 @@ button { cursor:pointer; }
 }
 
 .heading p {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-  margin:0;
+  display:none;
 }
 
 .card {
   background:rgba(16,20,38,.97);
   border:1px solid var(--border);
-  border-radius:18px;
-  padding:19px;
+  border-radius:16px;
+  padding:15px;
   box-shadow:0 18px 60px rgba(0,0,0,.18);
 }
 
@@ -134,11 +131,11 @@ button { cursor:pointer; }
   margin-bottom:9px;
 }
 
-.field { margin-bottom:19px; }
+.field { margin-bottom:14px; }
 
 .textarea {
   width:100%;
-  min-height:125px;
+  min-height:92px;
   resize:vertical;
   background:#0b1020;
   border:1px solid var(--border);
@@ -235,6 +232,48 @@ input[type="file"] { display:none; }
   object-fit:contain;
   background:#050711;
   border-radius:9px;
+}
+
+.photo-preview-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.photo-preview-item {
+  position:relative;
+  min-width:0;
+  border-radius:10px;
+  overflow:hidden;
+  background:#050711;
+  border:1px solid var(--border);
+}
+
+.photo-preview-item img {
+  display:block;
+  width:100%;
+  height:150px;
+  object-fit:cover;
+}
+
+.photo-preview-remove {
+  position:absolute;
+  top:6px;
+  right:6px;
+  width:27px;
+  height:27px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:50%;
+  background:rgba(8,11,24,.88);
+  color:#fff;
+  font-size:17px;
+  line-height:1;
+}
+
+.photo-count {
+  color:var(--muted);
+  font-size:10px;
+  margin-top:8px;
 }
 
 .preview-video { aspect-ratio:9/16; }
@@ -373,14 +412,6 @@ input[type="file"] { display:none; }
 
 .submit-btn:disabled { opacity:.55;cursor:not-allowed; }
 
-.footer-note {
-  text-align:center;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.7;
-  margin-top:15px;
-}
-
 @media(max-width:400px) {
   .card { padding:14px; }
   .media-options { gap:7px; }
@@ -427,7 +458,7 @@ input[type="file"] { display:none; }
         <div class="helper">
           <span id="contentHelper">Be respectful. Be yourself.</span>
           <span id="charCount">0 / 5000</span>
-        </div>
+                  </div>
       </div>
 
       <!-- POLL OPTIONS -->
@@ -504,6 +535,7 @@ input[type="file"] { display:none; }
           type="file"
           id="photoInput"
           accept="image/jpeg,image/png,image/webp"
+          multiple
         >
 
         <input
@@ -514,22 +546,11 @@ input[type="file"] { display:none; }
 
         <div class="preview-wrap" id="photoPreviewWrap">
           <div class="preview-heading">
-            <span>📸 Photo preview</span>
+            <span>📸 Selected photos</span>
+            <span id="photoCount">0 / 5</span>
           </div>
-
-          <img
-            class="preview-image"
-            id="previewImage"
-            alt="Selected photo preview"
-          >
-
-          <button
-            class="remove-media"
-            id="removePhoto"
-            type="button"
-          >
-            Remove photo
-          </button>
+          <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+          <div class="photo-count">You can select up to 5 photos. Tap × to remove a photo.</div>
         </div>
 
         <div class="preview-wrap" id="videoPreviewWrap">
@@ -580,10 +601,6 @@ input[type="file"] { display:none; }
 
     </form>
 
-    <div class="footer-note">
-      Keep Campusora safe and respectful.<br>
-      Don't upload private information or media you don't have permission to share.
-    </div>
 
   </section>
 
@@ -615,7 +632,8 @@ const statusBox = document.getElementById('status');
 
 const photoPreviewWrap = document.getElementById('photoPreviewWrap');
 const videoPreviewWrap = document.getElementById('videoPreviewWrap');
-const previewImage = document.getElementById('previewImage');
+const photoPreviewGrid = document.getElementById('photoPreviewGrid');
+const photoCount = document.getElementById('photoCount');
 const previewVideo = document.getElementById('previewVideo');
 const videoInfo = document.getElementById('videoInfo');
 
@@ -627,6 +645,7 @@ const pollOptions = document.getElementById('pollOptions');
 const addOptionBtn = document.getElementById('addOption');
 
 const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
+const MAX_PHOTOS = 5;
 const MAX_VIDEO_SIZE = 50 * 1024 * 1024;
 const MAX_POLL_OPTIONS = 6;
 
@@ -644,9 +663,9 @@ const ALLOWED_VIDEO_TYPES = [
 
 let currentUser = null;
 let currentProfile = null;
-let selectedPhoto = null;
+let selectedPhotos = [];
+let photoPreviewUrls = [];
 let selectedVideo = null;
-let photoPreviewUrl = null;
 let videoPreviewUrl = null;
 let publishing = false;
 
@@ -811,17 +830,45 @@ updateOptionCount();
 
 /* MEDIA CLEANUP */
 
+function renderPhotoPreviews() {
+  photoPreviewGrid.replaceChildren();
+  photoCount.textContent = `${selectedPhotos.length} / ${MAX_PHOTOS}`;
+  photoPreviewWrap.style.display = selectedPhotos.length ? 'block' : 'none';
+
+  selectedPhotos.forEach((file, index) => {
+    const item = document.createElement('div');
+    item.className = 'photo-preview-item';
+
+    const image = document.createElement('img');
+    image.src = photoPreviewUrls[index];
+    image.alt = `Selected photo ${index + 1}`;
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'photo-preview-remove';
+    remove.textContent = '×';
+    remove.setAttribute('aria-label', `Remove photo ${index + 1}`);
+
+    remove.addEventListener('click', () => {
+      URL.revokeObjectURL(photoPreviewUrls[index]);
+      selectedPhotos.splice(index, 1);
+      photoPreviewUrls.splice(index, 1);
+      photoInput.value = '';
+      renderPhotoPreviews();
+      hideStatus();
+    });
+
+    item.append(image, remove);
+    photoPreviewGrid.appendChild(item);
+  });
+}
+
 function clearPhoto() {
-  selectedPhoto = null;
+  selectedPhotos = [];
   photoInput.value = '';
-  photoPreviewWrap.style.display = 'none';
-
-  if (photoPreviewUrl) {
-    URL.revokeObjectURL(photoPreviewUrl);
-    photoPreviewUrl = null;
-  }
-
-  previewImage.removeAttribute('src');
+  photoPreviewUrls.forEach(url => URL.revokeObjectURL(url));
+  photoPreviewUrls = [];
+  renderPhotoPreviews();
 }
 
 function clearVideo() {
@@ -841,11 +888,6 @@ function clearVideo() {
   videoInfo.textContent = '';
 }
 
-document.getElementById('removePhoto').addEventListener('click', () => {
-  clearPhoto();
-  hideStatus();
-});
-
 document.getElementById('removeVideo').addEventListener('click', () => {
   clearVideo();
   hideStatus();
@@ -854,34 +896,37 @@ document.getElementById('removeVideo').addEventListener('click', () => {
 /* PHOTO SELECTION */
 
 photoInput.addEventListener('change', () => {
-  const file = photoInput.files?.[0];
+  const files = Array.from(photoInput.files || []);
+  if (!files.length) return;
 
-  if (!file) return;
-
-  if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
-    clearPhoto();
-    showStatus('Choose a JPEG, PNG or WebP image.', 'error');
+  if (selectedPhotos.length + files.length > MAX_PHOTOS) {
+    photoInput.value = '';
+    showStatus('You can add a maximum of 5 photos to one post.', 'error');
     return;
   }
 
-  if (file.size > MAX_PHOTO_SIZE) {
-    clearPhoto();
-    showStatus('Your photo must be 5 MB or smaller.', 'error');
-    return;
+  for (const file of files) {
+    if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
+      photoInput.value = '';
+      showStatus('All photos must be JPEG, PNG or WebP images.', 'error');
+      return;
+    }
+
+    if (file.size > MAX_PHOTO_SIZE) {
+      photoInput.value = '';
+      showStatus(`${file.name} is larger than 5 MB.`, 'error');
+      return;
+    }
   }
+    clearVideo();
 
-  clearVideo();
+  files.forEach(file => {
+    selectedPhotos.push(file);
+    photoPreviewUrls.push(URL.createObjectURL(file));
+  });
 
-  selectedPhoto = file;
-
-  if (photoPreviewUrl) {
-    URL.revokeObjectURL(photoPreviewUrl);
-  }
-
-  photoPreviewUrl = URL.createObjectURL(file);
-  previewImage.src = photoPreviewUrl;
-  photoPreviewWrap.style.display = 'block';
-
+  photoInput.value = '';
+  renderPhotoPreviews();
   hideStatus();
 });
 
@@ -1140,7 +1185,7 @@ form.addEventListener('submit', async event => {
     }
   }
 
-  if (postType === 'regular' && !selectedPhoto && !selectedVideo && !content) {
+  if (postType === 'regular' && selectedPhotos.length === 0 && !selectedVideo && !content) {
     showStatus('Write something or choose media before publishing.', 'error');
     return;
   }
@@ -1149,26 +1194,30 @@ form.addEventListener('submit', async event => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Publishing...';
 
-  let uploadedMediaPath = null;
-  let uploadedBucket = null;
+  const uploadedMedia = [];
   let createdPostId = null;
 
   try {
-    let photoUrl = null;
+    const photoUrls = [];
     let videoUrl = null;
     let videoName = null;
 
-    if (selectedPhoto) {
-      showStatus('Uploading your photo...', 'info');
+    if (selectedPhotos.length) {
+      showStatus('Uploading your photos (0 of ' + selectedPhotos.length + ')...', 'info');
 
-      photoUrl = await uploadPhoto(selectedPhoto);
+      for (let index = 0; index < selectedPhotos.length; index++) {
+        const photoUrl = await uploadPhoto(selectedPhotos[index]);
+        photoUrls.push(photoUrl);
 
-      uploadedMediaPath =
-        photoUrl.split('/campusora-images/')[1];
+        uploadedMedia.push({
+          bucket: 'campusora-images',
+          path: photoUrl.split('/campusora-images/')[1]
+        });
 
-      uploadedBucket = 'campusora-images';
-
-      updateProgress(100);
+        const percent = Math.round(((index + 1) / selectedPhotos.length) * 80);
+        updateProgress(percent);
+        showStatus(`Uploading photo ${index + 1} of ${selectedPhotos.length}...`, 'info');
+      }
     }
 
     if (selectedVideo) {
@@ -1182,22 +1231,24 @@ form.addEventListener('submit', async event => {
       videoUrl = uploaded.url;
       videoName = uploaded.filename;
 
-      uploadedMediaPath =
-        videoUrl.split('/campusora-videos/')[1];
+      uploadedMedia.push({
+        bucket: 'campusora-videos',
+        path: videoUrl.split('/campusora-videos/')[1]
+      });
 
-      uploadedBucket = 'campusora-videos';
-
-      updateProgress(100);
+      updateProgress(85);
     }
 
     showStatus('Saving your content...', 'info');
+    updateProgress(92);
 
     const { data: newPost, error: postError } = await supabase
       .from('posts')
       .insert({
         user_id: currentUser.id,
         content: content,
-        image_url: photoUrl,
+        image_url: photoUrls[0] || null,
+        image_urls: photoUrls,
         video_url: videoUrl,
         video_name: videoName,
         audience: 'public',
@@ -1243,7 +1294,8 @@ form.addEventListener('submit', async event => {
     clearPhoto();
     clearVideo();
     updateCharacterCount();
-    hideProgress();
+    updateProgress(100);
+    setTimeout(hideProgress, 500);
 
     setTimeout(() => {
       window.location.href = './home-feed.html';
@@ -1270,14 +1322,16 @@ form.addEventListener('submit', async event => {
     }
 
     /*
-      Remove newly uploaded media if publishing failed.
+      Remove every newly uploaded file if publishing failed.
     */
 
-    if (uploadedMediaPath && uploadedBucket) {
+    for (const media of uploadedMedia) {
+      if (!media.path) continue;
+
       try {
         await supabase.storage
-          .from(uploadedBucket)
-          .remove([decodeURIComponent(uploadedMediaPath)]);
+          .from(media.bucket)
+          .remove([decodeURIComponent(media.path)]);
       } catch (cleanupError) {
         console.warn('Media cleanup failed:', cleanupError);
       }
