@@ -809,3 +809,10 @@ body::-webkit-scrollbar {
     transition: none !important;
   }
 }
+/* =========================================
+   BOTTOM SPACE — PREVENT NAVIGATION OVERLAP
+========================================= */
+
+body.has-shared-nav {
+  padding-bottom: calc(110px + env(safe-area-inset-bottom)) !important;
+}
