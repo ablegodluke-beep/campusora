@@ -1000,6 +1000,7 @@ img{display:block;max-width:100%}
   height:auto;
   object-fit:contain;
   border-radius:5px;
+  transition:opacity .15s ease;
 }
 
 .image-viewer-back{
@@ -2705,7 +2706,7 @@ document.addEventListener("click",event=>{
   });
  }
 });
-/* FULL-SCREEN POST IMAGE VIEWER */
+/* FULL-SCREEN SWIPEABLE POST IMAGE VIEWER */
 
 (function(){
 
@@ -2715,16 +2716,58 @@ document.addEventListener("click",event=>{
 
   if(!viewer || !viewerImage || !backButton) return;
 
-  function openImageViewer(src){
+  let images = [];
+  let currentIndex = 0;
+  let startX = 0;
+  let startY = 0;
 
-    if(!src) return;
+  function showImage(index){
 
-    viewerImage.src = src;
+    if(index < 0 || index >= images.length) return;
+
+    currentIndex = index;
+
+    viewerImage.style.opacity = "0";
+
+    const nextSrc = images[currentIndex];
+
+    const preload = new Image();
+
+    preload.onload = function(){
+      viewerImage.src = nextSrc;
+      viewerImage.style.opacity = "1";
+    };
+
+    preload.onerror = function(){
+      viewerImage.src = nextSrc;
+      viewerImage.style.opacity = "1";
+    };
+
+    preload.src = nextSrc;
+  }
+
+  function openImageViewer(clickedImage){
+
+    const grid = clickedImage.closest(".post-image-grid");
+
+    if(!grid) return;
+
+    images = Array.from(
+      grid.querySelectorAll(".post-image")
+    ).map(image => image.currentSrc || image.src);
+
+    currentIndex = Array.from(
+      grid.querySelectorAll(".post-image")
+    ).indexOf(clickedImage);
+
+    if(!images.length || currentIndex < 0) return;
 
     viewer.classList.add("open");
     viewer.setAttribute("aria-hidden","false");
 
     document.body.classList.add("image-viewer-active");
+
+    showImage(currentIndex);
   }
 
   function closeImageViewer(){
@@ -2733,57 +2776,104 @@ document.addEventListener("click",event=>{
     viewer.setAttribute("aria-hidden","true");
 
     viewerImage.src = "";
+    images = [];
+    currentIndex = 0;
 
     document.body.classList.remove("image-viewer-active");
   }
 
-  /* Open an uploaded image */
+  function nextImage(){
+    if(currentIndex < images.length - 1){
+      showImage(currentIndex + 1);
+    }
+  }
+
+  function previousImage(){
+    if(currentIndex > 0){
+      showImage(currentIndex - 1);
+    }
+  }
+
+  /* OPEN PHOTO */
 
   document.addEventListener("click",function(event){
 
     const image = event.target.closest(".post-image");
 
     if(image){
-
       event.preventDefault();
-
-      openImageViewer(image.currentSrc || image.src);
-
-      return;
+      openImageViewer(image);
     }
 
   });
 
-  /* Back button */
+  /* SWIPE LEFT AND RIGHT */
 
-  backButton.addEventListener("click",function(event){
+  viewer.addEventListener("touchstart",function(event){
 
-    event.stopPropagation();
+    if(!viewer.classList.contains("open")) return;
 
-    closeImageViewer();
+    const touch = event.changedTouches[0];
+
+    startX = touch.clientX;
+    startY = touch.clientY;
+
+  },{passive:true});
+
+  viewer.addEventListener("touchend",function(event){
+
+    if(!viewer.classList.contains("open")) return;
+
+    const touch = event.changedTouches[0];
+
+    const differenceX = touch.clientX - startX;
+    const differenceY = touch.clientY - startY;
+
+    if(Math.abs(differenceX) < 50) return;
+
+    if(Math.abs(differenceX) <= Math.abs(differenceY)) return;
+
+    if(differenceX < 0){
+      nextImage();
+    }else{
+      previousImage();
+    }
+
+  },{passive:true});
+
+  /* KEYBOARD NAVIGATION */
+
+  document.addEventListener("keydown",function(event){
+
+    if(!viewer.classList.contains("open")) return;
+
+    if(event.key === "ArrowRight"){
+      nextImage();
+    }
+
+    if(event.key === "ArrowLeft"){
+      previousImage();
+    }
+
+    if(event.key === "Escape"){
+      closeImageViewer();
+    }
 
   });
 
-  /* Tap outside the image to close */
+  /* BACK BUTTON */
+
+  backButton.addEventListener("click",function(event){
+    event.stopPropagation();
+    closeImageViewer();
+  });
+
+  /* TAP OUTSIDE TO CLOSE */
 
   viewer.addEventListener("click",function(event){
 
     if(event.target === viewer){
-
       closeImageViewer();
-
-    }
-
-  });
-
-  /* Escape key */
-
-  document.addEventListener("keydown",function(event){
-
-    if(event.key === "Escape" && viewer.classList.contains("open")){
-
-      closeImageViewer();
-
     }
 
   });
