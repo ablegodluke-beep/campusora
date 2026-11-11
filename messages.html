@@ -9,901 +9,617 @@
 
 <style>
 :root{
-  --bg:#080b18;
-  --panel:#101426;
-  --panel2:#171d33;
-  --border:#252d48;
-  --text:#fff;
-  --muted:#929bb7;
-  --purple:#9065ff;
-  --blue:#548bff;
-  --cyan:#38d9ff;
-  --green:#40dfa0;
+--bg:#080b18;
+--panel:#101426;
+--panel2:#171d33;
+--border:#252d48;
+--text:#fff;
+--muted:#929bb7;
+--purple:#9065ff;
+--blue:#548bff;
+--cyan:#38d9ff;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
-
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  font-size:13px;
-  min-height:100vh;
+background:var(--bg);
+color:var(--text);
+font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-size:13px;
+min-height:100vh;
 }
-
 button,input,textarea{font:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
-
-.page{
-  width:100%;
-  max-width:none;
-  margin:0;
-  padding:0;
-}
-
+.page{width:100%;max-width:none;margin:0;padding:0}
 .messaging{
-  height:100dvh;
-  min-height:0;
-  display:grid;
-  grid-template-columns:310px minmax(0,1fr);
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 15px 50px #0003;
+height:100dvh;
+min-height:0;
+display:grid;
+grid-template-columns:310px minmax(0,1fr);
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 15px 50px #0003;
 }
-
 .inbox{
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  border-right:1px solid var(--border);
+min-width:0;
+display:flex;
+flex-direction:column;
+border-right:1px solid var(--border);
 }
-
 .inbox-head{
-  padding:19px 16px 12px;
-  border-bottom:1px solid var(--border);
+padding:19px 16px 12px;
+border-bottom:1px solid var(--border);
 }
-
-.inbox-title{
-  font-size:19px;
-  font-weight:800;
-  letter-spacing:-.4px;
-}
-
-.inbox-count{
-  color:var(--muted);
-  font-size:11px;
-  margin-left:5px;
-}
-
-.inbox-tabs{
-  display:flex;
-  gap:20px;
-  margin-top:17px;
-}
-
+.inbox-title{font-size:19px;font-weight:800}
+.inbox-count{color:var(--muted);font-size:11px;margin-left:5px}
+.inbox-tabs{display:flex;gap:20px;margin-top:17px}
 .inbox-tab{
-  background:none;
-  border:0;
-  color:var(--muted);
-  padding:7px 0;
-  font-size:12px;
-  font-weight:700;
-  position:relative;
+background:none;
+border:0;
+color:var(--muted);
+padding:7px 0;
+font-size:12px;
+font-weight:700;
+position:relative;
 }
-
 .inbox-tab.active{color:#c8b7ff}
-
 .inbox-tab.active:after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:-1px;
-  height:2px;
-  border-radius:5px;
-  background:linear-gradient(90deg,var(--purple),var(--blue));
+content:"";
+position:absolute;
+left:0;right:0;bottom:-1px;
+height:2px;
+border-radius:5px;
+background:linear-gradient(90deg,var(--purple),var(--blue));
 }
-
-.conversation-list{
-  flex:1;
-  min-height:0;
-  overflow:auto;
-}
-
+.conversation-list{flex:1;min-height:0;overflow:auto}
 .conversation{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:13px 14px;
-  border:0;
-  border-bottom:1px solid #202842;
-  background:transparent;
-  color:white;
-  text-align:left;
-  transition:.18s;
+width:100%;
+display:flex;
+align-items:center;
+gap:11px;
+padding:13px 14px;
+border:0;
+border-bottom:1px solid #202842;
+background:transparent;
+color:white;
+text-align:left;
 }
-
 .conversation:hover{background:#171d32}
 .conversation.active{background:#272044}
-
 .avatar{
-  width:45px;
-  height:45px;
-  flex-shrink:0;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  background:linear-gradient(135deg,#7952ee,#2689ee);
-  border:1px solid #51477c;
-  color:white;
-  font-weight:800;
-  font-size:14px;
+width:45px;height:45px;
+flex-shrink:0;
+border-radius:50%;
+display:grid;
+place-items:center;
+overflow:hidden;
+background:linear-gradient(135deg,#7952ee,#2689ee);
+border:1px solid #51477c;
+color:white;
+font-weight:800;
+font-size:14px;
 }
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
+.avatar img{width:100%;height:100%;object-fit:cover}
 .conv-main{flex:1;min-width:0}
-
 .conv-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:6px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:6px;
 }
-
 .conv-name{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:5px;
-  font-size:12px;
-  font-weight:800;
-  min-width:0;
+display:flex;
+align-items:center;
+flex-wrap:wrap;
+gap:5px;
+font-size:12px;
+font-weight:800;
+min-width:0;
 }
-
-.conv-time{
-  color:#78819e;
-  font-size:9px;
-  white-space:nowrap;
-}
-
+.conv-time{color:#78819e;font-size:9px;white-space:nowrap}
 .conv-bottom{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:7px;
-  margin-top:5px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:7px;
+margin-top:5px;
 }
-
 .conv-preview{
-  color:#aab3ce;
-  font-size:11px;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+color:#aab3ce;
+font-size:11px;
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
 }
-
 .unread-count{
-  min-width:18px;
-  height:18px;
-  padding:0 5px;
-  display:grid;
-  place-items:center;
-  border-radius:20px;
-  background:linear-gradient(135deg,var(--purple),var(--blue));
-  color:white;
-  font-size:10px;
-  font-weight:800;
+min-width:18px;height:18px;
+padding:0 5px;
+display:grid;
+place-items:center;
+border-radius:20px;
+background:linear-gradient(135deg,var(--purple),var(--blue));
+color:white;
+font-size:10px;
+font-weight:800;
 }
-
 .role-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:3px;
-  padding:3px 7px;
-  border-radius:20px;
-    font-size:9px;
-  line-height:1;
-  font-weight:800;
-  white-space:nowrap;
-  border:1px solid #51427d;
-  background:#30234d;
-  color:#d4c4ff;
+display:inline-flex;
+align-items:center;
+gap:3px;
+padding:3px 7px;
+border-radius:20px;
+font-size:9px;
+line-height:1;
+font-weight:800;
+white-space:nowrap;
+border:1px solid #51427d;
+background:#30234d;
+color:#d4c4ff;
 }
-
-.role-badge.student{
-  background:#172d50;
-  border-color:#315b91;
-  color:#9bc8ff;
-}
-
-.role-badge.alumni{
-  background:#253a31;
-  border-color:#39745b;
-  color:#8de7b8;
-}
-
-.role-badge.general{
-  background:#30234d;
-  border-color:#51427d;
-  color:#d4c4ff;
-}
-
+.role-badge.student{background:#172d50;border-color:#315b91;color:#9bc8ff}
+.role-badge.alumni{background:#253a31;border-color:#39745b;color:#8de7b8}
+.role-badge.general{background:#30234d;border-color:#51427d;color:#d4c4ff}
 .chat{
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  position:relative;
+min-width:0;
+display:flex;
+flex-direction:column;
+position:relative;
 }
-
 .chat-head{
-  min-height:70px;
-  padding:10px 16px;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  border-bottom:1px solid var(--border);
+min-height:70px;
+padding:10px 16px;
+display:flex;
+align-items:center;
+gap:11px;
+border-bottom:1px solid var(--border);
 }
-
 .back-btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:22px;
-  height:28px;
-  flex-shrink:0;
-  padding:0;
-  border:0;
-  background:none;
-  color:white;
-  font-size:20px;
-  line-height:1;
+display:flex;
+align-items:center;
+justify-content:center;
+width:22px;height:28px;
+flex-shrink:0;
+padding:0;
+border:0;
+background:none;
+color:white;
+font-size:20px;
 }
-
-.chat-avatar-link{
-  display:block;
-  flex-shrink:0;
-  border-radius:50%;
-}
-
-.chat-avatar-link .avatar{
-  width:43px;
-  height:43px;
-}
-
-.chat-person{
-  flex:1;
-  min-width:0;
-}
-
+.chat-avatar-link{display:block;flex-shrink:0;border-radius:50%}
+.chat-avatar-link .avatar{width:43px;height:43px}
+.chat-person{flex:1;min-width:0}
 .chat-name-link{
-  display:inline-flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:7px;
-  color:white;
-  font-size:13px;
-  font-weight:800;
+display:inline-flex;
+align-items:center;
+flex-wrap:wrap;
+gap:7px;
+color:white;
+font-size:13px;
+font-weight:800;
 }
-
 .chat-name-link:hover{color:#c8b7ff}
-
-.chat-status{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.chat-tools{
-  display:none;
-  gap:7px;
-}
-
+.chat-status{color:var(--muted);font-size:10px;margin-top:4px}
+.chat-tools{display:none;gap:7px}
 .chat-tools button{
-  width:33px;
-  height:33px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:var(--panel2);
-  color:white;
+width:33px;height:33px;
+border:1px solid var(--border);
+border-radius:10px;
+background:var(--panel2);
+color:white;
 }
-
 .messages-area{
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
+flex:1;
+min-height:0;
+overflow-y:auto;
+padding:18px;
+display:flex;
+flex-direction:column;
+gap:10px;
+background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
 }
-
-.date-label{
-  text-align:center;
-  color:#8992ad;
-  font-size:10px;
-  margin:8px 0;
-}
-
+.date-label{text-align:center;color:#8992ad;font-size:10px;margin:8px 0}
 .message-row{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  max-width:82%;
-  animation:pop .18s ease;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+max-width:82%;
+animation:pop .18s ease;
 }
-
-.message-row.mine{
-  align-self:flex-end;
-  align-items:flex-end;
-}
-
+.message-row.mine{align-self:flex-end;align-items:flex-end}
 .message-bubble{
-  padding:10px 13px;
-  border:1px solid #303956;
-  border-radius:14px 14px 14px 4px;
-  background:#202943;
-  color:#fff;
-  font-size:13px;
-  line-height:1.55;
-  overflow-wrap:anywhere;
-  white-space:pre-wrap;
+padding:10px 13px;
+border:1px solid #303956;
+border-radius:14px 14px 14px 4px;
+background:#202943;
+color:#fff;
+font-size:13px;
+line-height:1.55;
+overflow-wrap:anywhere;
+white-space:pre-wrap;
 }
-
 .message-row.mine .message-bubble{
-  background:linear-gradient(135deg,#6340a5,#365cbb);
-  border-color:#7554c4;
-  border-radius:14px 14px 4px 14px;
+background:linear-gradient(135deg,#6340a5,#365cbb);
+border-color:#7554c4;
+border-radius:14px 14px 4px 14px;
 }
-
 .message-row.pending .message-bubble{
-  border:1px dashed #e5a64b;
-  background:#3a2b22;
+border:1px dashed #e5a64b;
+background:#3a2b22;
 }
-
 .message-meta{
-  display:flex;
-  gap:5px;
-  align-items:center;
-  margin:4px 4px 0;
-  color:#8992ad;
-  font-size:9px;
+display:flex;
+gap:5px;
+align-items:center;
+margin:4px 4px 0;
+color:#8992ad;
+font-size:9px;
 }
-
 .message-status{color:var(--cyan)}
 .pending-status{color:#ffc16a}
-
-.message-actions{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:5px;
-}
-
+.message-actions{position:relative;display:flex;align-items:center;gap:5px}
 .message-menu-button{
-  border:0;
-  background:transparent;
-  color:#aab3ce;
-  font-size:17px;
-  padding:0 4px;
+border:0;
+background:transparent;
+color:#aab3ce;
+font-size:17px;
+padding:0 4px;
 }
-
 .message-menu{
-  position:absolute;
-  right:0;
-  bottom:22px;
-  z-index:20;
-  width:145px;
-  padding:5px;
-  background:#202943;
-  border:1px solid #3b4565;
-  border-radius:10px;
-  box-shadow:0 8px 25px #0008;
+position:absolute;
+right:0;bottom:22px;
+z-index:20;
+width:145px;
+padding:5px;
+background:#202943;
+border:1px solid #3b4565;
+border-radius:10px;
+box-shadow:0 8px 25px #0008;
 }
-
 .message-menu button{
-  display:block;
-  width:100%;
-  padding:9px;
-  border:0;
-  border-radius:7px;
-  background:transparent;
-  color:white;
-  text-align:left;
-  font-size:11px;
+display:block;
+width:100%;
+padding:9px;
+border:0;
+border-radius:7px;
+background:transparent;
+color:white;
+text-align:left;
+font-size:11px;
 }
-
 .message-menu button:hover{background:#343c5b}
 .message-menu .delete-option{color:#ff8585}
-
 .chat-empty{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  text-align:center;
-  padding:25px;
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+text-align:center;
+padding:25px;
 }
-
 .chat-empty-icon{
-  width:55px;
-  height:55px;
-  border-radius:18px;
-  display:grid;
-  place-items:center;
-  background:#211b3a;
-  border:1px solid #45376c;
-  color:#c4adff;
-  font-size:24px;
-  margin-bottom:14px;
+width:55px;height:55px;
+border-radius:18px;
+display:grid;
+place-items:center;
+background:#211b3a;
+border:1px solid #45376c;
+color:#c4adff;
+font-size:24px;
+margin-bottom:14px;
 }
-
 .chat-empty h3{font-size:15px;margin-bottom:7px}
-
 .chat-empty p{
-  max-width:260px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
+max-width:260px;
+color:var(--muted);
+font-size:11px;
+line-height:1.7;
 }
-
 .composer{
-  padding:12px;
-  display:flex;
-  align-items:flex-end;
-  gap:9px;
-  background:#101426;
-  border-top:1px solid var(--border);
+padding:12px;
+display:flex;
+align-items:flex-end;
+gap:9px;
+background:#101426;
+border-top:1px solid var(--border);
 }
-
 .composer textarea{
-  flex:1;
-  min-width:0;
-  min-height:42px;
-  max-height:120px;
-  resize:none;
-  border:1px solid #303956;
-  border-radius:13px;
-  background:#1a2138;
-  color:white;
-  padding:12px;
-  outline:none;
-  font-size:13px;
-  line-height:1.4;
+flex:1;
+min-width:0;
+min-height:42px;
+max-height:120px;
+resize:none;
+border:1px solid #303956;
+border-radius:13px;
+background:#1a2138;
+color:white;
+padding:12px;
+outline:none;
+font-size:13px;
+line-height:1.4;
 }
-
 .composer textarea::placeholder{color:#8992ad}
 .composer textarea:focus{border-color:#8061df}
-
 .send-btn{
-  width:42px;
-  height:42px;
-  flex-shrink:0;
-  border:0;
-  border-radius:13px;
-  background:linear-gradient(135deg,var(--purple),var(--blue));
-  color:white;
-  font-size:18px;
+width:42px;height:42px;
+flex-shrink:0;
+border:0;
+border-radius:13px;
+background:linear-gradient(135deg,var(--purple),var(--blue));
+color:white;
+font-size:18px;
 }
-
-.send-btn:disabled{
-  opacity:.35;
-  cursor:not-allowed;
-}
-
+.send-btn:disabled{opacity:.35;cursor:not-allowed}
 .phone-warning{
-  display:none;
-  padding:0 13px 10px;
-  background:#101426;
-  color:#ffb6b6;
-  font-size:10px;
-  font-style:italic;
-  line-height:1.5;
+display:none;
+padding:0 13px 10px;
+background:#101426;
+color:#ffb6b6;
+font-size:10px;
+font-style:italic;
+line-height:1.5;
 }
-
 .phone-warning.show{display:block}
-
 .panel-message{
-  padding:24px 14px;
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
+padding:24px 14px;
+text-align:center;
+color:var(--muted);
+font-size:11px;
+line-height:1.7;
 }
-
 .toast{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translate(-50%,12px);
-  background:#25223a;
-  border:1px solid #51417e;
-  color:white;
-  padding:11px 15px;
-  border-radius:11px;
-  font-size:11px;
-  z-index:9999;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s;
-  max-width:calc(100% - 28px);
-  text-align:center;
+position:fixed;
+bottom:25px;left:50%;
+transform:translate(-50%,12px);
+background:#25223a;
+border:1px solid #51417e;
+color:white;
+padding:11px 15px;
+border-radius:11px;
+font-size:11px;
+z-index:9999;
+opacity:0;
+pointer-events:none;
+transition:.2s;
+max-width:calc(100% - 28px);
+text-align:center;
 }
-
 .toast.show{opacity:1;transform:translate(-50%,0)}
-
 .modal-backdrop{
-  position:fixed;
-  inset:0;
-  z-index:5000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  background:#000b;
+position:fixed;
+inset:0;
+z-index:5000;
+display:none;
+align-items:center;
+justify-content:center;
+padding:18px;
+background:#000b;
 }
-
 .modal-backdrop.show{display:flex}
-
 .premium-modal{
-  width:min(100%,390px);
-  padding:22px;
-  border:1px solid #493d75;
-  border-radius:18px;
-  background:#11162b;
-  box-shadow:0 20px 70px #0009;
+width:min(100%,390px);
+padding:22px;
+border:1px solid #493d75;
+border-radius:18px;
+background:#11162b;
+box-shadow:0 20px 70px #0009;
 }
-
-.premium-modal h2{
-  font-size:19px;
-  margin-bottom:8px;
-}
-
+.premium-modal h2{font-size:19px;margin-bottom:8px}
 .premium-modal p{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-  margin-bottom:17px;
+color:var(--muted);
+font-size:12px;
+line-height:1.6;
+margin-bottom:17px;
 }
-
 .premium-plan{
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:14px;
-  margin-top:9px;
-  border:1px solid #39415f;
-  border-radius:12px;
-  background:#1b2340;
-  color:white;
-  text-align:left;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:14px;
+margin-top:9px;
+border:1px solid #39415f;
+border-radius:12px;
+background:#1b2340;
+color:white;
+text-align:left;
 }
-
-.premium-plan:hover{
-  border-color:var(--purple);
-  background:#292044;
-}
-
+.premium-plan:hover{border-color:var(--purple);background:#292044}
 .premium-plan strong{font-size:13px}
-  .premium-plan span{
-  color:#c6b5ff;
-  font-weight:800;
-  font-size:13px;
-}
-
+.premium-plan span{color:#c6b5ff;font-weight:800;font-size:13px}
 .modal-cancel{
-  width:100%;
-  margin-top:12px;
-  padding:11px;
-  border:1px solid #39415f;
-  border-radius:10px;
-  background:transparent;
-  color:#aab3ce;
+width:100%;
+margin-top:12px;
+padding:11px;
+border:1px solid #39415f;
+border-radius:10px;
+background:transparent;
+color:#aab3ce;
 }
-
 @keyframes pop{
-  from{opacity:0;transform:translateY(4px)}
-  to{opacity:1;transform:translateY(0)}
+from{opacity:0;transform:translateY(4px)}
+to{opacity:1;transform:translateY(0)}
 }
-
 @media(max-width:800px){
-  .page{padding:0}
-  .messaging{grid-template-columns:260px minmax(0,1fr)}
+.page{padding:0}
+.messaging{grid-template-columns:260px minmax(0,1fr)}
 }
-
 @media(max-width:560px){
-  .page{padding:0}
-  .messaging{
-    height:100dvh;
-    min-height:0;
-    display:block;
-    border:0;
-    border-radius:0;
-  }
-  .inbox{height:100%;border:0}
-  .inbox-head{padding:15px 15px 10px}
-  .conversation{padding:13px 14px}
-  .chat{display:none;height:100%;width:100%}
-  .messaging.chat-open .inbox{display:none}
-  .messaging.chat-open .chat{display:flex}
-  .back-btn{display:flex}
-  .chat-head{min-height:64px;padding:9px 10px}
-  .messages-area{padding:14px 11px}
-  .message-row{max-width:88%}
-  .composer{padding:9px}
+html,body{
+width:100%;
+height:100%;
+min-height:0;
+margin:0;
+padding:0;
+overflow:hidden;
 }
-
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
-  }
+.page{width:100%;height:100%;margin:0;padding:0}
+.messaging{
+position:fixed;
+top:var(--visual-viewport-top,0px);
+left:0;right:0;
+width:100%;
+height:var(--visual-viewport-height,100dvh);
+min-height:0;
+display:block;
+margin:0;
+padding:0;
+border:0;
+border-radius:0;
+overflow:hidden;
 }
-    /* Mobile full-screen chat and keyboard positioning */
-@media(max-width:560px){
-  html,
-  body{
-    width:100%;
-    height:100%;
-    min-height:0;
-    margin:0;
-    padding:0;
-    overflow:hidden;
-  }
-
-  .page{
-    width:100%;
-    height:100%;
-    margin:0;
-    padding:0;
-  }
-
-  .messaging{
-    position:fixed;
-    top:var(--visual-viewport-top, 0px);
-    left:0;
-    right:0;
-    width:100%;
-    height:var(--visual-viewport-height, 100dvh);
-    min-height:0;
-    margin:0;
-    padding:0;
-    border:0;
-    border-radius:0;
-    overflow:hidden;
-  }
-
-  .messaging.chat-open .chat{
-    height:100%;
-    min-height:0;
-    display:flex;
-    overflow:hidden;
-  }
-
-  .chat{
-    min-height:0;
-    height:100%;
-  }
-
-  .messages-area{
-    flex:1 1 auto;
-    min-height:0;
-    overflow-y:auto;
-  }
-
-  .composer{
-    flex:0 0 auto;
-    order:3;
-    margin:0;
-    padding-bottom:max(9px, env(safe-area-inset-bottom));
-  }
-
-  .phone-warning{
-    order:2;
-    flex:0 0 auto;
-  }
+.inbox{height:100%;border:0}
+.inbox-head{padding:15px 15px 10px}
+.conversation{padding:13px 14px}
+.chat{display:none;height:100%;width:100%}
+.messaging.chat-open .inbox{display:none}
+.messaging.chat-open .chat{display:flex}
+.back-btn{display:flex}
+.chat-head{min-height:64px;padding:9px 10px}
+.messages-area{padding:14px 11px;flex:1 1 auto;min-height:0;overflow-y:auto}
+.message-row{max-width:88%}
+.composer{padding:9px;flex:0 0 auto}
+.phone-warning{flex:0 0 auto}
 }
-/* =========================================
-   CAMPUSORA MESSAGES — PHONE FIT
-========================================= */
-
-/* Inbox: fit between the shared top and bottom navigation */
 body.has-shared-nav:not(.chat-mode) .page{
-  width:100%;
-  height:calc(100dvh - 49px);
-  margin:0;
-  padding:0;
+width:100%;
+height:calc(100dvh - 49px);
+margin:0;
+padding:0;
 }
-
 body.has-shared-nav:not(.chat-mode) .messaging{
-  position:relative;
-  width:100%;
-  height:calc(100dvh - 125px);
-  min-height:0;
-  margin:0;
-  border-radius:0;
+position:relative;
+width:100%;
+height:calc(100dvh - 125px);
+min-height:0;
+margin:0;
+border-radius:0;
 }
-
-/* Hide shared navigation only inside an open conversation */
+body.chat-mode{
+overflow:hidden!important;
+}
 body.chat-mode .campusora-topnav,
 body.chat-mode .campusora-mainnav,
 body.chat-mode .campusora-create-overlay{
-  display:none!important;
+display:none!important;
 }
-
-body.chat-mode{
-  overflow:hidden!important;
-}
-
 body.chat-mode .page{
-  width:100%;
-  height:100%;
-  margin:0;
-  padding:0;
+width:100%;
+height:100%;
+margin:0;
+padding:0;
 }
-
-/* Fit chat to the actual visible phone screen */
 body.chat-mode .messaging{
-  position:fixed;
-  top:var(--visual-viewport-top, 0px);
-  left:0;
-  right:0;
-  bottom:auto;
-  width:100%;
-  height:var(--visual-viewport-height, 100dvh);
-  min-height:0;
-  margin:0;
-  padding:0;
-  border:0;
-  border-radius:0;
-  overflow:hidden;
-  z-index:10001;
+position:fixed;
+top:var(--visual-viewport-top,0px);
+left:0;right:0;
+bottom:auto;
+width:100%;
+height:var(--visual-viewport-height,100dvh);
+min-height:0;
+margin:0;
+padding:0;
+border:0;
+border-radius:0;
+overflow:hidden;
+z-index:10001;
 }
-
-/* Keep the person's name and back button visible */
 body.chat-mode .chat{
-  display:flex;
-  flex-direction:column;
-  width:100%;
-  height:100%;
-  min-height:0;
-  overflow:hidden;
+display:flex;
+flex-direction:column;
+width:100%;
+height:100%;
+min-height:0;
+overflow:hidden;
 }
-
 body.chat-mode .chat-head{
-  display:flex;
-  flex:0 0 auto;
-  min-height:64px;
-  padding:9px 10px;
-  position:relative;
-  z-index:5;
+display:flex;
+flex:0 0 auto;
+min-height:64px;
+padding:9px 10px;
+position:relative;
+z-index:5;
 }
-
-/* Only the messages should scroll */
 body.chat-mode .messages-area{
-  flex:1 1 0;
-  min-height:0;
-  overflow-y:auto;
-  overscroll-behavior:contain;
+flex:1 1 0;
+min-height:0;
+overflow-y:auto;
+overscroll-behavior:contain;
 }
-
-/* Keep the message box above the Android keyboard */
 body.chat-mode .composer{
-  flex:0 0 auto;
-  order:3;
-  margin:0;
-  padding:9px;
-  padding-bottom:max(9px, env(safe-area-inset-bottom));
-  position:relative;
-  z-index:5;
+flex:0 0 auto;
+order:3;
+margin:0;
+padding:9px;
+padding-bottom:max(9px,env(safe-area-inset-bottom));
+position:relative;
+z-index:5;
 }
-
-body.chat-mode .phone-warning{
-  flex:0 0 auto;
-  order:2;
-}
-
+body.chat-mode .phone-warning{flex:0 0 auto;order:2}
 @media(max-width:560px){
-  body.has-shared-nav:not(.chat-mode) .messaging{
-    display:block;
-  }
-
-  body.has-shared-nav:not(.chat-mode) .inbox{
-    height:100%;
-  }
-
-  body.chat-mode .chat-head{
-    min-height:64px;
-  }
-
-  body.chat-mode .messages-area{
-    padding:12px 10px;
-  }
+body.has-shared-nav:not(.chat-mode) .messaging{display:block}
+body.has-shared-nav:not(.chat-mode) .inbox{height:100%}
+body.chat-mode .chat-head{min-height:64px}
+body.chat-mode .messages-area{padding:12px 10px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="page">
 <main class="messaging" id="messaging">
 
 <section class="inbox">
-  <div class="inbox-head">
-    <h1 class="inbox-title">
-      Chats
-      <span class="inbox-count" id="totalCount"></span>
-    </h1>
+<div class="inbox-head">
+<h1 class="inbox-title">
+Chats <span class="inbox-count" id="totalCount"></span>
+</h1>
+<div class="inbox-tabs">
+<button class="inbox-tab active" data-inbox-filter="all">Messages</button>
+<button class="inbox-tab" data-inbox-filter="unread">Message Requests</button>
+</div>
+</div>
 
-    <div class="inbox-tabs">
-      <button class="inbox-tab active" data-inbox-filter="all">
-        Messages
-      </button>
-
-      <button class="inbox-tab" data-inbox-filter="unread">
-        Message Requests
-      </button>
-    </div>
-  </div>
-
-  <div class="conversation-list" id="conversationList">
-    <div class="panel-message">Loading your conversations...</div>
-  </div>
+<div class="conversation-list" id="conversationList">
+<div class="panel-message">Your conversations will appear here.</div>
+</div>
 </section>
 
 <section class="chat" id="chatPanel">
-
 <header class="chat-head">
-  <button class="back-btn" id="backBtn" aria-label="Back to chats">‹</button>
+<button class="back-btn" id="backBtn" aria-label="Back to chats">‹</button>
 
-  <a href="#" class="chat-avatar-link" id="chatAvatarLink">
-    <div class="avatar" id="chatAvatar">C</div>
-  </a>
+<a href="#" class="chat-avatar-link" id="chatAvatarLink">
+<div class="avatar" id="chatAvatar">C</div>
+</a>
 
-  <div class="chat-person">
-    <a href="#" class="chat-name-link" id="chatNameLink">
-      <span id="chatName">Your messages</span>
-      <span id="chatRole"></span>
-    </a>
-    <div class="chat-status" id="chatStatus">Choose a conversation</div>
-  </div>
+<div class="chat-person">
+<a href="#" class="chat-name-link" id="chatNameLink">
+<span id="chatName">Your messages</span>
+<span id="chatRole"></span>
+</a>
+<div class="chat-status" id="chatStatus">Choose a conversation</div>
+</div>
 
-  <div class="chat-tools">
-    <button id="refreshBtn" title="Refresh messages">↻</button>
-  </div>
+<div class="chat-tools">
+<button id="refreshBtn" title="Refresh messages">↻</button>
+</div>
 </header>
-  
+
 <div class="messages-area" id="messagesArea" hidden></div>
 
 <form class="composer" id="messageForm" hidden>
-    <textarea
-    id="messageInput"
-    maxlength="5000"
-    rows="1"
-    placeholder="Write a message..."
-    aria-label="Write a message"
-  ></textarea>
-
-  <button class="send-btn" id="sendBtn" type="submit" aria-label="Send message">➤</button>
+<textarea id="messageInput" maxlength="5000" rows="1"
+placeholder="Write a message..." aria-label="Write a message"></textarea>
+<button class="send-btn" id="sendBtn" type="submit" aria-label="Send message">➤</button>
 </form>
 
 <div class="phone-warning" id="phoneWarning">
-  Sharing phone numbers is currently restricted on Campusora
+Sharing phone numbers is currently restricted on Campusora
 </div>
-
 </section>
 </main>
 </div>
@@ -911,1717 +627,1377 @@ body.chat-mode .phone-warning{
 <div class="toast" id="toast"></div>
 
 <div class="modal-backdrop" id="premiumModal">
-  <div class="premium-modal">
-    <h2>Upgrade to Premium</h2>
-    <p>
-      Choose a Premium plan to continue
-    </p>
-
-    <button class="premium-plan" data-premium-plan="monthly">
-      <strong>Monthly Premium</strong>
-      <span>₦2,000 / 30 days</span>
-    </button>
-
-    <button class="premium-plan" data-premium-plan="permanent">
-      <strong>Permanent Premium</strong>
-      <span>₦10,000</span>
-    </button>
-
-    <button class="modal-cancel" id="closePremiumModal">Not now</button>
-  </div>
+<div class="premium-modal">
+<h2>Upgrade to Premium</h2>
+<p>Choose a Premium plan to continue</p>
+<button class="premium-plan" data-premium-plan="monthly">
+<strong>Monthly Premium</strong><span>₦2,000 / 30 days</span>
+</button>
+<button class="premium-plan" data-premium-plan="permanent">
+<strong>Permanent Premium</strong><span>₦10,000</span>
+</button>
+<button class="modal-cancel" id="closePremiumModal">Not now</button>
 </div>
-
+</div>
 
 <script type="module">
 import { supabase } from './supabase.js';
 
 const $ = id => document.getElementById(id);
-  // Keep the chat fitted to the actual visible phone screen,
-// including when the Android keyboard opens.
+
 function updateChatViewport(){
-  const viewport = window.visualViewport;
+const viewport=window.visualViewport;
+if(!viewport)return;
+document.documentElement.style.setProperty('--visual-viewport-height',viewport.height+'px');
+document.documentElement.style.setProperty('--visual-viewport-top',viewport.offsetTop+'px');
+}
+if(window.visualViewport){
+updateChatViewport();
+window.visualViewport.addEventListener('resize',updateChatViewport);
+window.visualViewport.addEventListener('scroll',updateChatViewport);
+}
+window.addEventListener('resize',updateChatViewport);
 
-  if (!viewport) return;
+let me=null;
+let authReady=false;
+let conversations=[];
+let currentConversation=null;
+let currentOtherUser=null;
+let currentMessages=[];
+let currentPendingMessages=[];
+let chatHistoryLoaded=false;
+let currentFilter='all';
+let realtimeMessages=null;
+let realtimeInbox=null;
+let messagePoll=null;
+let refreshInterval=null;
+let profileCache=new Map();
+let sending=false;
+let loadingMessages=false;
+let messageLoadToken=0;
+let editingMessageId=null;
+let pendingPremiumMessageId=null;
 
-  document.documentElement.style.setProperty(
-    '--visual-viewport-height',
-    viewport.height + 'px'
-  );
-
-  document.documentElement.style.setProperty(
-    '--visual-viewport-top',
-    viewport.offsetTop + 'px'
-  );
+function withTimeout(promise,ms,label){
+let timer;
+return Promise.race([
+Promise.resolve(promise),
+new Promise((resolve,reject)=>{
+timer=setTimeout(()=>reject(new Error(label||'Request timed out')),ms);
+})
+]).finally(()=>clearTimeout(timer));
 }
 
-if (window.visualViewport) {
-  updateChatViewport();
-
-  window.visualViewport.addEventListener(
-    'resize',
-    updateChatViewport
-  );
-
-  window.visualViewport.addEventListener(
-    'scroll',
-    updateChatViewport
-  );
+function esc(value){
+return String(value??'').replace(/[&<>"']/g,char=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[char]));
 }
 
-window.addEventListener('resize', updateChatViewport);
-
-let me = null;
-let conversations = [];
-let currentConversation = null;
-let currentOtherUser = null;
-let currentMessages = [];
-let currentPendingMessages = [];
-let chatHistoryLoaded = false;
-let currentFilter = 'all';
-let realtimeMessages = null;
-let realtimeInbox = null;
-let messagePoll = null;
-let refreshInterval = null;
-let profileCache = new Map();
-let sending = false;
-let loadingMessages = false;
-let messageLoadToken = 0;
-let editingMessageId = null;
-let pendingPremiumMessageId = null;
-  // =====================================
-// CAMPUSORA LOCAL MESSAGE CACHE
-// =====================================
-
-function inboxCacheKey() {
-  return me ? `campusora_inbox_${me.id}` : null;
+function inboxCacheKey(){
+return me?`campusora_inbox_${me.id}`:null;
+}
+function chatCacheKey(id){
+return me?`campusora_chat_${me.id}_${id}`:null;
 }
 
-function chatCacheKey(id) {
-  return me ? `campusora_chat_${me.id}_${id}` : null;
+function saveInboxCache(){
+try{
+const key=inboxCacheKey();
+if(!key)return;
+localStorage.setItem(key,JSON.stringify(conversations.slice(0,100)));
+}catch(error){console.warn('Inbox cache save:',error);}
 }
 
-function saveInboxCache() {
-  try {
-    const key = inboxCacheKey();
-    if (!key) return;
-
-    localStorage.setItem(
-      key,
-      JSON.stringify(conversations.slice(0, 100))
-    );
-  } catch (error) {
-    console.warn('Inbox cache could not be saved:', error);
-  }
+function restoreInboxCache(){
+try{
+const key=inboxCacheKey();
+if(!key)return false;
+const saved=localStorage.getItem(key);
+if(!saved)return false;
+const cached=JSON.parse(saved);
+if(!Array.isArray(cached))return false;
+conversations=cached;
+cached.forEach(c=>{
+if(c.otherProfile?.id)profileCache.set(c.otherProfile.id,c.otherProfile);
+});
+renderInbox();
+return true;
+}catch(error){
+console.warn('Inbox cache restore:',error);
+return false;
+}
 }
 
-function restoreInboxCache() {
-  try {
-    const key = inboxCacheKey();
-    if (!key) return;
+// Supabase's default browser storage key for this Campusora project.
+// This is used only to identify the local cache owner before auth finishes.
+// Actual messaging and database operations still wait for Supabase auth.
+function readCachedAuthUser(){
+try{
+const raw=localStorage.getItem('sb-ssdhygwozbroqjhuecgp-auth-token');
+if(!raw)return null;
+const stored=JSON.parse(raw);
+return stored?.user||stored?.session?.user||null;
+}catch(error){
+console.warn('Cached session read:',error);
+return null;
+}
+}
 
-    const saved = localStorage.getItem(key);
-    if (!saved) return;
+let campusoraChatDBPromise=null;
 
-    const cached = JSON.parse(saved);
+function openCampusoraChatDB(){
+if(campusoraChatDBPromise)return campusoraChatDBPromise;
+campusoraChatDBPromise=new Promise((resolve,reject)=>{
+if(!window.indexedDB){reject(new Error('IndexedDB unavailable'));return;}
+const request=indexedDB.open('campusora-chat-history',1);
+request.onupgradeneeded=event=>{
+const db=event.target.result;
+if(!db.objectStoreNames.contains('chats')){
+db.createObjectStore('chats',{keyPath:'key'});
+}
+};
+request.onsuccess=()=>resolve(request.result);
+request.onerror=()=>reject(request.error);
+});
+return campusoraChatDBPromise;
+}
 
-    if (!Array.isArray(cached)) return;
+async function saveChatCacheToDB(id,messages){
+if(!me||!id||!Array.isArray(messages))return;
+try{
+const db=await openCampusoraChatDB();
+await new Promise((resolve,reject)=>{
+const tx=db.transaction('chats','readwrite');
+tx.objectStore('chats').put({
+key:`${me.id}_${id}`,
+user_id:me.id,
+conversation_id:id,
+messages:messages.slice(-100),
+updated_at:Date.now()
+});
+tx.oncomplete=resolve;
+tx.onerror=()=>reject(tx.error);
+tx.onabort=()=>reject(tx.error);
+});
+}catch(error){console.warn('IndexedDB chat save:',error);}
+}
 
-    conversations = cached;
+async function restoreChatCacheFromDB(id){
+if(!me||!id)return null;
+try{
+const db=await openCampusoraChatDB();
+const result=await new Promise((resolve,reject)=>{
+const tx=db.transaction('chats','readonly');
+const request=tx.objectStore('chats').get(`${me.id}_${id}`);
+request.onsuccess=()=>resolve(request.result||null);
+request.onerror=()=>reject(request.error);
+});
+if(result&&result.user_id===me.id&&Array.isArray(result.messages)){
+return result.messages;
+}
+}catch(error){console.warn('IndexedDB chat restore:',error);}
+return null;
+}
 
-// Restore names and profile pictures from the saved inbox.
-cached.forEach(conversation => {
-  if (conversation.otherProfile?.id) {
-    profileCache.set(
-      conversation.otherProfile.id,
-      conversation.otherProfile
-    );
-  }
+function saveChatCache(id,messages=currentMessages){
+if(!id||!Array.isArray(messages))return;
+const safe=messages.slice(-100);
+try{
+const key=chatCacheKey(id);
+if(key)localStorage.setItem(key,JSON.stringify(safe));
+}catch(error){console.warn('Local chat save:',error);}
+saveChatCacheToDB(id,safe);
+}
+
+function restoreChatCache(id){
+try{
+const key=chatCacheKey(id);
+if(!key)return null;
+const saved=localStorage.getItem(key);
+if(!saved)return null;
+const messages=JSON.parse(saved);
+return Array.isArray(messages)?messages:null;
+}catch(error){console.warn('Local chat restore:',error);return null;}
+}
+
+function initials(name='C'){
+return name.trim().split(/\s+/).filter(Boolean).slice(0,2)
+.map(p=>p[0]).join('').toUpperCase()||'C';
+}
+function avatarHTML(profile){
+const name=profile?.full_name||profile?.username||'Member';
+return profile?.avatar_url
+?`<img src="${esc(profile.avatar_url)}" alt="">`
+:esc(initials(name));
+}
+function profileName(profile){
+return profile?.full_name||profile?.username||'Campusora member';
+}
+function profileURL(profile,fallbackId=null){
+const id=profile?.id||fallbackId;
+if(profile?.username)return `profile.html?username=${encodeURIComponent(profile.username)}`;
+return id?`profile.html?id=${encodeURIComponent(id)}`:'#';
+}
+function roleBadge(role){
+const value=String(role||'').toLowerCase();
+if(value.includes('student'))return '<span class="role-badge student">Student</span>';
+if(value.includes('alumni'))return '<span class="role-badge alumni">Alumni</span>';
+return '<span class="role-badge general">General Member</span>';
+}
+function toast(message){
+const el=$('toast');
+el.textContent=message;
+el.classList.add('show');
+clearTimeout(toast.timer);
+toast.timer=setTimeout(()=>el.classList.remove('show'),3000);
+}
+function ago(value){
+if(!value)return '';
+const date=new Date(value);
+const sec=Math.max(0,Math.floor((Date.now()-date.getTime())/1000));
+if(sec<60)return 'now';
+if(sec<3600)return Math.floor(sec/60)+'m';
+if(sec<86400)return Math.floor(sec/3600)+'h';
+if(sec<604800)return Math.floor(sec/86400)+'d';
+return date.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+}
+function unreadCount(conversation){
+if(!conversation.lastMessage)return 0;
+return conversation.lastMessage.sender_id!==me.id&&
+(!conversation.lastReadAt||
+new Date(conversation.lastMessage.created_at)>new Date(conversation.lastReadAt))?1:0;
+}
+  async function getProfiles(ids){
+const unique=[...new Set(ids.filter(Boolean))];
+const missing=unique.filter(id=>!profileCache.has(id));
+if(!missing.length)return;
+try{
+const {data,error}=await withTimeout(
+supabase.from('profiles')
+.select('id,username,full_name,avatar_url,school,role')
+.in('id',missing),
+8000,
+'Profile request timed out'
+);
+if(error){console.warn('Profile lookup:',error.message);return;}
+(data||[]).forEach(p=>profileCache.set(p.id,p));
+}catch(error){console.warn('Profile lookup:',error);}
+}
+
+async function preloadInboxChats(items,loadToken){
+const ownerId=me?.id;
+if(!ownerId||!items.length)return;
+
+const queue=items.filter(c=>{
+const readyKey=`campusora_chat_ready_${ownerId}_${c.id}`;
+let ready=null;
+try{ready=JSON.parse(localStorage.getItem(readyKey)||'null');}catch(e){}
+const cached=restoreChatCache(c.id);
+const cachedLastId=cached?.length?cached[cached.length-1].id:null;
+const inboxLastId=c.lastMessage?.id||null;
+return !(ready&&cached!==null&&ready.latestId===cachedLastId&&
+(!inboxLastId||ready.latestId===inboxLastId));
 });
 
+if(!queue.length)return;
+
+const results=new Map();
+let nextIndex=0;
+
+async function worker(){
+while(nextIndex<queue.length){
+const c=queue[nextIndex++];
+if(me?.id!==ownerId)return;
+try{
+const {data,error}=await withTimeout(
+supabase.from('messages')
+.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.eq('conversation_id',c.id)
+.is('deleted_at',null)
+.order('created_at',{ascending:false})
+.limit(100),
+10000,
+'Chat preload timed out'
+);
+if(error){console.warn('Chat preload:',error);continue;}
+const messages=(data||[]).reverse();
+if(!messages.length&&c.lastMessage)continue;
+
+saveChatCache(c.id,messages);
+
+localStorage.setItem(
+`campusora_chat_ready_${ownerId}_${c.id}`,
+JSON.stringify({latestId:messages.length?messages[messages.length-1].id:null})
+);
+results.set(c.id,messages);
+}catch(error){console.warn('Chat preload error:',error);}
+}
+}
+
+await Promise.all(Array.from({length:Math.min(6,queue.length)},()=>worker()));
+
+if(me?.id!==ownerId||loadToken!==window.campusoraInboxToken||!results.size)return;
+
+conversations=conversations.map(c=>{
+if(!results.has(c.id))return c;
+const messages=results.get(c.id);
+return {...c,lastMessage:messages.length?messages[messages.length-1]:null};
+});
+conversations.sort((a,b)=>
+new Date(b.lastMessage?.created_at||b.created_at)-
+new Date(a.lastMessage?.created_at||a.created_at)
+);
 renderInbox();
-
-  } catch (error) {
-    console.warn('Inbox cache could not be restored:', error);
-  }
-}
-// =====================================
-// CAMPUSORA CHAT CACHE
-// LOCAL STORAGE + INDEXEDDB
-// =====================================
-
-let campusoraChatDBPromise = null;
-
-function openCampusoraChatDB() {
-  if (campusoraChatDBPromise) {
-    return campusoraChatDBPromise;
-  }
-
-  campusoraChatDBPromise = new Promise((resolve, reject) => {
-    if (!window.indexedDB) {
-      reject(new Error('IndexedDB is not supported.'));
-      return;
-    }
-
-    const request = indexedDB.open(
-      'campusora-chat-history',
-      1
-    );
-
-    request.onupgradeneeded = event => {
-      const db = event.target.result;
-
-      if (!db.objectStoreNames.contains('chats')) {
-        db.createObjectStore('chats', {
-          keyPath: 'key'
-        });
-      }
-    };
-
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
-
-    request.onerror = () => {
-      reject(request.error);
-    };
-  });
-
-  return campusoraChatDBPromise;
+saveInboxCache();
 }
 
-async function saveChatCacheToDB(id, messages) {
-  if (!me || !id || !Array.isArray(messages)) return;
-
-  try {
-    const db = await openCampusoraChatDB();
-
-    await new Promise((resolve, reject) => {
-      const transaction = db.transaction(
-        'chats',
-        'readwrite'
-      );
-
-      transaction.objectStore('chats').put({
-        key: `${me.id}_${id}`,
-        user_id: me.id,
-        conversation_id: id,
-        messages: messages.slice(-100),
-        updated_at: Date.now()
-      });
-
-      transaction.oncomplete = resolve;
-      transaction.onerror = () => reject(transaction.error);
-      transaction.onabort = () => reject(transaction.error);
-    });
-
-  } catch (error) {
-    console.warn('IndexedDB chat save:', error);
-  }
-}
-
-async function restoreChatCacheFromDB(id) {
-  if (!me || !id) return null;
-
-  try {
-    const db = await openCampusoraChatDB();
-
-    const result = await new Promise((resolve, reject) => {
-      const transaction = db.transaction(
-        'chats',
-        'readonly'
-      );
-
-      const request = transaction
-        .objectStore('chats')
-        .get(`${me.id}_${id}`);
-
-      request.onsuccess = () => resolve(request.result || null);
-      request.onerror = () => reject(request.error);
-    });
-
-    if (
-      result &&
-      result.user_id === me.id &&
-      Array.isArray(result.messages)
-    ) {
-      return result.messages;
-    }
-
-  } catch (error) {
-    console.warn('IndexedDB chat restore:', error);
-  }
-
-  return null;
-}
-
-function saveChatCache(id, messages = currentMessages) {
-  if (!id || !Array.isArray(messages)) return;
-
-  const safeMessages = messages.slice(-100);
-
-  // Fast local cache.
-  try {
-    const key = chatCacheKey(id);
-
-    if (key) {
-      localStorage.setItem(
-        key,
-        JSON.stringify(safeMessages)
-      );
-    }
-  } catch (error) {
-    console.warn('Local chat cache:', error);
-  }
-
-  // Durable phone storage.
-  saveChatCacheToDB(id, safeMessages);
-}
-
-function restoreChatCache(id) {
-  try {
-    const key = chatCacheKey(id);
-    if (!key) return null;
-
-    const saved = localStorage.getItem(key);
-
-    if (!saved) return null;
-
-    const messages = JSON.parse(saved);
-
-    return Array.isArray(messages) ? messages : null;
-
-  } catch (error) {
-    console.warn('Local chat restore:', error);
-    return null;
-  }
-}
-
-function initials(name = 'C') {
-  return name.trim().split(/\s+/).filter(Boolean).slice(0,2)
-    .map(p => p[0]).join('').toUpperCase() || 'C';
-}
-
-function avatarHTML(profile) {
-  const name = profile?.full_name || profile?.username || 'Member';
-
-  if (profile?.avatar_url) {
-    return `<img src="${esc(profile.avatar_url)}" alt="">`;
-  }
-
-  return esc(initials(name));
-}
-
-function profileName(profile) {
-  return profile?.full_name || profile?.username || 'Campusora member';
-}
-
-function profileURL(profile) {
-  if (!profile) return '#';
-
-  return profile.username
-    ? `profile.html?username=${encodeURIComponent(profile.username)}`
-    : `profile.html?id=${encodeURIComponent(profile.id)}`;
-}
-
-function roleBadge(role) {
-  const value = String(role || '').toLowerCase();
-
-  if (value.includes('student')) {
-    return '<span class="role-badge student">Student</span>';
-  }
-
-  if (value.includes('alumni')) {
-    return '<span class="role-badge alumni">Alumni</span>';
-  }
-
-  return '<span class="role-badge general">General Member</span>';
-}
-
-function toast(message) {
-  const el = $('toast');
-  el.textContent = message;
-  el.classList.add('show');
-
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => el.classList.remove('show'),3000);
-}
-
-function ago(value) {
-  if (!value) return '';
-
-  const date = new Date(value);
-  const sec = Math.max(0,Math.floor((Date.now()-date.getTime())/1000));
-
-  if (sec < 60) return 'now';
-  if (sec < 3600) return Math.floor(sec/60)+'m';
-  if (sec < 86400) return Math.floor(sec/3600)+'h';
-  if (sec < 604800) return Math.floor(sec/86400)+'d';
-
-  return date.toLocaleDateString(undefined,{
-    month:'short',
-    day:'numeric'
-  });
-}
-
-function unreadCount(conversation) {
-  if (!conversation.lastMessage) return 0;
-
-  return conversation.lastMessage.sender_id !== me.id &&
-    (!conversation.lastReadAt ||
-    new Date(conversation.lastMessage.created_at) >
-    new Date(conversation.lastReadAt)) ? 1 : 0;
-}
-
-async function getProfiles(ids) {
-  const unique = [...new Set(ids.filter(Boolean))];
-  const missing = unique.filter(id => !profileCache.has(id));
-
-  if (!missing.length) return;
-
-  const {data,error} = await supabase
-    .from('profiles')
-    .select('id,username,full_name,avatar_url,school,role')
-    .in('id',missing);
-
-  if (error) {
-    console.warn('Profile lookup:',error.message);
-    return;
-  }
-
-  (data || []).forEach(profile => profileCache.set(profile.id,profile));
-}
-  async function preloadInboxChats(items, loadToken) {
-  const ownerId = me?.id;
-  if (!ownerId || !items.length) return;
-
-  const queue = items.filter(conversation => {
-    const readyKey =
-      `campusora_chat_ready_${ownerId}_${conversation.id}`;
-
-    let ready = null;
-
-    try {
-      ready = JSON.parse(localStorage.getItem(readyKey) || 'null');
-    } catch (error) {
-      ready = null;
-    }
-
-    const cached = restoreChatCache(conversation.id);
-
-    const cachedLastId = cached?.length
-      ? cached[cached.length - 1].id
-      : null;
-
-    const inboxLastId = conversation.lastMessage?.id || null;
-
-    // Skip conversations whose complete cache is already current.
-    return !(
-      ready &&
-      cached !== null &&
-      ready.latestId === cachedLastId &&
-      (!inboxLastId || ready.latestId === inboxLastId)
-    );
-  });
-
-  if (!queue.length) return;
-
-  const results = new Map();
-  let nextIndex = 0;
-
-  async function worker() {
-    while (nextIndex < queue.length) {
-      const conversation = queue[nextIndex++];
-
-      if (me?.id !== ownerId) return;
-
-      try {
-        const { data, error } = await supabase
-          .from('messages')
-          .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-          .eq('conversation_id', conversation.id)
-          .is('deleted_at', null)
-          .order('created_at', { ascending: false })
-          .limit(100);
-
-        if (error) {
-          console.warn(
-            'Chat preload failed:',
-            conversation.id,
-            error
-          );
-          continue;
-        }
-
-        const messages = (data || []).reverse();
-
-        // Do not replace an existing cache with an unexpected empty result.
-        if (!messages.length && conversation.lastMessage) {
-          continue;
-        }
-
-        saveChatCache(conversation.id, messages);
-
-        const readyKey =
-          `campusora_chat_ready_${ownerId}_${conversation.id}`;
-
-        localStorage.setItem(
-          readyKey,
-          JSON.stringify({
-            latestId: messages.length
-              ? messages[messages.length - 1].id
-              : null
-          })
-        );
-
-        results.set(conversation.id, messages);
-
-      } catch (error) {
-        console.warn('Chat preload error:', error);
-      }
-    }
-  }
-// Prepare twelve conversations simultaneously.
-await Promise.all(
-  Array.from(
-    { length: Math.min(12, queue.length) },
-    () => worker()
-  )
+async function loadInbox(){
+if(!me?.id)return;
+
+const loadToken=(window.campusoraInboxToken||0)+1;
+window.campusoraInboxToken=loadToken;
+const ownerId=me.id;
+
+// The saved inbox remains visible while all network requests run.
+try{
+const {data:preparedInbox,error:preparedError}=await withTimeout(
+supabase.rpc('get_my_inbox_previews'),
+4500,
+'Inbox preview timed out'
 );
 
-  if (
-    me?.id !== ownerId ||
-    loadToken !== window.campusoraInboxToken ||
-    !results.size
-  ) {
-    return;
-  }
+if(!preparedError&&Array.isArray(preparedInbox)&&
+loadToken===window.campusoraInboxToken&&me?.id===ownerId){
 
-  // Update inbox previews using the preloaded messages.
-  conversations = conversations.map(c => {
-    if (!results.has(c.id)) return c;
-
-    const messages = results.get(c.id);
-
-    return {
-      ...c,
-      lastMessage: messages.length
-        ? messages[messages.length - 1]
-        : null
-    };
-  });
-
-  conversations.sort((a, b) =>
-    new Date(b.lastMessage?.created_at || b.created_at) -
-    new Date(a.lastMessage?.created_at || a.created_at)
-  );
-
-  renderInbox();
-  saveInboxCache();
-}
-  
-async function loadInbox() {
-  const list = $('conversationList');
-
-  const loadToken = (window.campusoraInboxToken || 0) + 1;
-  window.campusoraInboxToken = loadToken;
-
-  const ownerId = me.id;
-    // Load the complete prepared inbox in one database request.
-  try {
-    // Prevent the inbox from getting stuck waiting for Supabase.
-const inboxPreviewRequest = supabase.rpc('get_my_inbox_previews');
-
-const inboxPreviewTimeout = new Promise((_, reject) => {
-  setTimeout(() => {
-    reject(new Error('Inbox preview timed out'));
-  }, 5000);
+conversations=preparedInbox.map(item=>{
+if(item.otherProfile?.id)profileCache.set(item.otherProfile.id,item.otherProfile);
+return {
+...item,
+participants:Array.isArray(item.participants)?item.participants:[],
+lastMessage:item.lastMessage||null,
+lastReadAt:item.lastReadAt||null
+};
 });
 
-const { data: preparedInbox, error: preparedError } =
-  await Promise.race([
-    inboxPreviewRequest,
-    inboxPreviewTimeout
-  ]);
+conversations.sort((a,b)=>
+new Date(b.lastMessage?.created_at||b.created_at)-
+new Date(a.lastMessage?.created_at||a.created_at)
+);
 
-    if (
-      !preparedError &&
-      Array.isArray(preparedInbox) &&
-      loadToken === window.campusoraInboxToken &&
-      me?.id === ownerId
-    ) {
-      conversations = preparedInbox.map(item => {
-        if (item.otherProfile?.id) {
-          profileCache.set(item.otherProfile.id, item.otherProfile);
-        }
+renderInbox();
+saveInboxCache();
 
-        return {
-          ...item,
-          participants: Array.isArray(item.participants)
-            ? item.participants
-            : [],
-          lastMessage: item.lastMessage || null,
-          lastReadAt: item.lastReadAt || null
-        };
-      });
-
-      conversations.sort((a, b) =>
-        new Date(b.lastMessage?.created_at || b.created_at) -
-        new Date(a.lastMessage?.created_at || a.created_at)
-      );
-
-      // Display conversations immediately.
-      renderInbox();
-      saveInboxCache();
-
-      // Prepare recent chat histories in the background.
-      preloadInboxChats(conversations.slice(), loadToken);
-
-      return;
-    }
-
-    if (preparedError) {
-      console.warn('Prepared inbox failed; using original loader:', preparedError);
-    }
-  } catch (error) {
-    console.warn('Prepared inbox error; using original loader:', error);
-  }
-
-  // Get this user's conversations.
-  const { data: members, error } = await supabase
-    .from('conversation_members')
-    .select('conversation_id,user_id,last_read_at,joined_at')
-    .eq('user_id', ownerId);
-
-  if (
-    loadToken !== window.campusoraInboxToken ||
-    me?.id !== ownerId
-  ) return;
-
-  if (error) {
-    console.error('Inbox members:', error);
-    list.innerHTML =
-      '<div class="panel-message">Could not load chats. Please refresh.</div>';
-    return;
-  }
-
-  if (!members?.length) {
-    conversations = [];
-    renderInbox();
-    saveInboxCache();
-    return;
-  }
-
-  const ids = members.map(m => m.conversation_id);
-
-  // Get conversations and participants.
-  const [conversationResult, memberResult] = await Promise.all([
-    supabase
-      .from('conversations')
-      .select('id,created_by,is_group,group_name,created_at')
-      .in('id', ids),
-
-    supabase
-      .from('conversation_members')
-      .select('conversation_id,user_id,last_read_at,joined_at')
-      .in('conversation_id', ids)
-  ]);
-
-  if (
-    loadToken !== window.campusoraInboxToken ||
-    me?.id !== ownerId
-  ) return;
-
-  if (conversationResult.error) {
-    console.error('Conversation lookup:', conversationResult.error);
-    list.innerHTML =
-      '<div class="panel-message">Could not load conversations.</div>';
-    return;
-  }
-
-  const convRows = conversationResult.data || [];
-  const allMembers = memberResult.data || [];
-
-  if (memberResult.error) {
-    console.warn('Inbox participants:', memberResult.error);
-  }
-
-  // Preserve cached previews and profile information.
-  const cachedConversations = conversations;
-
-  conversations = convRows.map(c => {
-    const myMembership = members.find(
-      m => m.conversation_id === c.id
-    );
-
-    const participants = allMembers.filter(
-      m => m.conversation_id === c.id
-    );
-
-    const other = participants.find(
-      m => m.user_id !== ownerId
-    );
-
-    const oldConversation = cachedConversations.find(
-      old => old.id === c.id
-    );
-
-    return {
-      ...c,
-      participants,
-      otherUserId: other?.user_id || null,
-      otherProfile: other
-        ? profileCache.get(other.user_id) ||
-          oldConversation?.otherProfile ||
-          null
-        : null,
-      lastMessage: oldConversation?.lastMessage || null,
-      lastReadAt: myMembership?.last_read_at || null
-    };
-  });
-
-  // Show cached conversations immediately.
-  renderInbox();
-
-  // Save the current inbox.
-  saveInboxCache();
-  // Keep a fixed list so sorting the inbox cannot skip chats.
-  const conversationsToRefresh = conversations.slice();
-  let nextIndex = 0;
-
-  async function loadLatestMessages() {
-    while (nextIndex < conversationsToRefresh.length) {
-      if (
-        loadToken !== window.campusoraInboxToken ||
-        me?.id !== ownerId
-      ) return;
-
-      const conversation = conversationsToRefresh[nextIndex++];
-
-      try {
-        const { data, error } = await supabase
-          .from('messages')
-          .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-          .eq('conversation_id', conversation.id)
-          .is('deleted_at', null)
-          .order('created_at', { ascending: false })
-          .limit(1);
-
-        if (error) {
-          console.warn(
-            'Latest message lookup:',
-            conversation.id,
-            error
-          );
-          continue;
-        }
-
-        if (
-          loadToken !== window.campusoraInboxToken ||
-          me?.id !== ownerId
-        ) return;
-
-        const latestMessage = data?.[0] || null;
-
-        conversations = conversations.map(c =>
-          c.id === conversation.id
-            ? { ...c, lastMessage: latestMessage }
-            : c
-        );
-
-        conversations.sort((a, b) =>
-          new Date(b.lastMessage?.created_at || b.created_at) -
-          new Date(a.lastMessage?.created_at || a.created_at)
-        );
-
-        renderInbox();
-        saveInboxCache();
-
-      } catch (error) {
-        console.warn('Latest message loading failed:', error);
-      }
-    }
-  }
-
-  // Fetch up to six conversations simultaneously.
-  const latestMessageLoading = Promise.all(
-    Array.from(
-      { length: Math.min(6, conversationsToRefresh.length) },
-      () => loadLatestMessages()
-    )
-  );
-  // Load profile information at the same time.
-  const profileLoading = getProfiles(
-    allMembers.map(m => m.user_id)
-  ).catch(error => {
-    console.warn('Inbox profile loading:', error);
-  });
-
-  await Promise.all([
-    latestMessageLoading,
-    profileLoading
-  ]);
-
-  if (
-    loadToken !== window.campusoraInboxToken ||
-    me?.id !== ownerId
-  ) return;
-
-  // Refresh names and pictures.
-  conversations = conversations.map(c => ({
-    ...c,
-    otherProfile: c.otherUserId
-      ? profileCache.get(c.otherUserId) || c.otherProfile
-      : null
-  }));
-
-  conversations.sort((a, b) =>
-    new Date(b.lastMessage?.created_at || b.created_at) -
-    new Date(a.lastMessage?.created_at || a.created_at)
-  );
-
-  renderInbox();
-  saveInboxCache();
-
-  // Prepare full chat history in the background.
-  preloadInboxChats(conversations.slice(), loadToken);
+// Prepare the messages before the user opens each chat.
+preloadInboxChats(conversations.slice(),loadToken).catch(console.warn);
+return;
 }
 
-
-function renderInbox() {
-  const list = $('conversationList');
-  let items = conversations;
-
-  if (currentFilter === 'unread') {
-    items = conversations.filter(c => unreadCount(c) > 0);
-  }
-
-  $('totalCount').textContent = conversations.length
-    ? `(${conversations.length})`
-    : '';
-
-  if (!items.length) {
-    list.innerHTML = `<div class="panel-message">${ 
-      currentFilter === 'unread'
-        ? 'You have no message requests.'
-        : 'No conversations yet. Visit a member profile and tap Message to start a conversation.'
-    }</div>`;
-    return;
-  }
-
-  list.innerHTML = items.map(c => {
-    const profile = c.otherProfile;
-    const name = c.is_group ? c.group_name || 'Group chat' : profileName(profile);
-    const last = c.lastMessage;
-    const preview = last
-      ? (last.sender_id === me.id ? 'You: ' : '') + last.content
-      : 'Start a conversation';
-
-    const count = unreadCount(c);
-    const selected = currentConversation?.id === c.id;
-
-    return `
-      <button class="conversation ${selected ? 'active' : ''}"
-        data-conversation="${esc(c.id)}">
-        <div class="avatar">${avatarHTML(profile)}</div>
-        <div class="conv-main">
-          <div class="conv-top">
-            <span class="conv-name">
-              ${esc(name)}
-              ${!c.is_group ? roleBadge(profile?.role) : ''}
-            </span>
-            <span class="conv-time">${ago(last?.created_at || c.created_at)}</span>
-          </div>
-          <div class="conv-bottom">
-            <span class="conv-preview">${esc(preview)}</span>
-            ${count ? `<span class="unread-count">${count}</span>` : ''}
-          </div>
-        </div>
-      </button>
-    `;
-  }).join('');
+if(preparedError)console.warn('Prepared inbox:',preparedError);
+}catch(error){
+console.warn('Prepared inbox unavailable; using direct loader:',error);
 }
 
-function updateChatHeader(profile,conversation) {
-  $('chatAvatar').innerHTML = avatarHTML(profile);
-  $('chatAvatarLink').href = profileURL(profile);
-  $('chatNameLink').href = profileURL(profile);
+if(loadToken!==window.campusoraInboxToken||me?.id!==ownerId)return;
 
-  $('chatName').textContent = conversation.is_group
-    ? conversation.group_name || 'Group chat'
-    : profileName(profile);
-
-  $('chatRole').innerHTML = conversation.is_group
-    ? ''
-    : roleBadge(profile?.role);
-
-  $('chatStatus').textContent = profile?.school || 'Campusora member';
+let membersResult;
+try{
+membersResult=await withTimeout(
+supabase.from('conversation_members')
+.select('conversation_id,user_id,last_read_at,joined_at')
+.eq('user_id',ownerId),
+8000,
+'Conversation list timed out'
+);
+}catch(error){
+console.warn('Conversation list request:',error);
+return;
 }
 
-async function openConversation(id) {
-  const conversation = conversations.find(
-    c => String(c.id) === String(id)
-  );
+if(loadToken!==window.campusoraInboxToken||me?.id!==ownerId)return;
 
-  if (!conversation) {
-    toast('Conversation could not be found.');
-    return;
-  }
-
-  // Set the active conversation immediately.
-  currentConversation = conversation;
-
-  currentOtherUser = conversation.otherUserId
-    ? profileCache.get(conversation.otherUserId) ||
-      conversation.otherProfile ||
-      null
-    : null;
-
-  // Open the chat without waiting for network requests.
-  $('messaging').classList.add('chat-open');
-  document.body.classList.add('chat-mode');
-  $('welcomeState').hidden = true;
-  $('messagesArea').hidden = false;
-  $('messageForm').hidden = false;
-
-  // Update the header using whatever profile is already available.
-  updateChatHeader(currentOtherUser, conversation);
-// Display the saved full chat history immediately.
-const savedMessages = restoreChatCache(id);
-
-chatHistoryLoaded = savedMessages !== null;
-
-currentMessages = chatHistoryLoaded
-  ? savedMessages
-  : conversation.lastMessage
-    ? [conversation.lastMessage]
-    : [];
-
-currentPendingMessages = [];
-
-  renderMessages();
-
-// If localStorage has no history, check permanent phone storage.
-// Do not wait for this before opening the conversation.
-if (savedMessages === null) {
-  restoreChatCacheFromDB(id).then(cachedMessages => {
-
-    // Only restore if the user is still viewing this conversation.
-    if (
-      !cachedMessages ||
-      currentConversation?.id !== id
-    ) {
-      return;
-    }
-
-    // Do not replace messages that have already loaded.
-    if (chatHistoryLoaded) return;
-
-    currentMessages = cachedMessages;
-    chatHistoryLoaded = true;
-
-    renderMessages();
-
-  }).catch(error => {
-    console.warn('Saved chat recovery:', error);
-  });
+const {data:members,error}=membersResult;
+if(error){
+console.error('Inbox members:',error);
+return;
 }
 
-// Start realtime updates immediately.
-setupMessageRealtime(id);
-
-  // Refresh messages periodically.
-  if (messagePoll) clearInterval(messagePoll);
-
-  messagePoll = setInterval(() => {
-    if (currentConversation?.id === id) {
-      loadMessages(id, false);
-    }
-  }, 10000);
-}
-function renderMessages() {
-  // Only save when the complete chat history has loaded.
-  // This prevents a single inbox preview from replacing the full history.
-  if (currentConversation && me && chatHistoryLoaded) {
-    saveChatCache(currentConversation.id);
-  }
-
-  const area = $('messagesArea');
-  const combined = [
-    ...currentMessages.map(m => ({...m,_pending:false})),
-    ...currentPendingMessages.map(m => ({
-      ...m,
-      id:'pending-' + m.id,
-      sender_id:me.id,
-      created_at:m.created_at,
-      _pending:true
-    }))
-  ].sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
-
-  if (!combined.length) {
-    area.innerHTML = `
-      <div class="chat-empty">
-        <div class="chat-empty-icon">✦</div>
-        <h3>Say hello 👋</h3>
-        <p>Your conversation starts here. Send the first message.</p>
-      </div>`;
-    return;
-  }
-
-  let previousDate = '';
-  const output = [];
-
-  combined.forEach(m => {
-    const date = new Date(m.created_at);
-    const dateKey = date.toDateString();
-
-    if (dateKey !== previousDate) {
-      output.push(`<div class="date-label">${
-        dateKey === new Date().toDateString()
-          ? 'Today'
-          : esc(date.toLocaleDateString(undefined,{
-              month:'short',day:'numeric',year:'numeric'
-            }))
-      }</div>`);
-      previousDate = dateKey;
-    }
-
-    if (m.deleted_at && !m._pending) return;
-
-    const mine = m.sender_id === me.id;
-    const messageText = m.content;
-
-    let actions = '';
-
-    if (mine && !m._pending && !m.deleted_at) {
-      actions = `
-        <div class="message-actions">
-          <button class="message-menu-button"
-            data-message-menu="${esc(m.id)}"
-            aria-label="Message options">⋮</button>
-          <div class="message-menu" id="menu-${esc(m.id)}" hidden>
-            <button data-edit-message="${esc(m.id)}">Edit Message</button>
-            <button class="delete-option" data-delete-message="${esc(m.id)}">Delete Message</button>
-          </div>
-        </div>`;
-    }
-
-    output.push(`
-      <div class="message-row ${mine ? 'mine' : ''} ${m._pending ? 'pending' : ''}"
-        data-message="${esc(m.id)}">
-        <div class="message-bubble">${esc(messageText)}</div>
-        <div class="message-meta">
-          ${ago(m.created_at)}
-          ${m._pending
-            ? '<span class="pending-status">Not sent</span>'
-            : mine ? '<span class="message-status">✓</span>' : ''}
-          ${actions}
-        </div>
-      </div>
-    `);
-  });
-
-  area.innerHTML = output.join('');
-  area.scrollTop = area.scrollHeight;
+if(!members?.length){
+conversations=[];
+renderInbox();
+saveInboxCache();
+return;
 }
 
-async function loadMessages(id, showLoading = false) {
-  const loadToken = ++messageLoadToken;
+const ids=members.map(m=>m.conversation_id);
 
-  loadingMessages = true;
-
-  if (showLoading) {
-    $('messagesArea').innerHTML =
-      '<div class="panel-message">Loading your latest messages...</div>';
-  }
-
-  try {
-    // Fetch the newest 100 messages first.
-    const { data, error } = await supabase
-      .from('messages')
-      .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-      .eq('conversation_id', id)
-      .is('deleted_at', null)
-      .order('created_at', { ascending: false })
-      .limit(100);
-
-    if (error) {
-  console.error('Load messages:', error);
-
-  // Never remove messages already displayed from local storage.
-  if (
-    currentConversation?.id === id &&
-    loadToken === messageLoadToken &&
-    (!Array.isArray(currentMessages) || !currentMessages.length)
-  ) {
-    $('messagesArea').innerHTML =
-      '<div class="panel-message">Your messages will appear when your connection is available.</div>';
-  }
-
-  return;
+let results;
+try{
+results=await withTimeout(
+Promise.all([
+supabase.from('conversations')
+.select('id,created_by,is_group,group_name,created_at')
+.in('id',ids),
+supabase.from('conversation_members')
+.select('conversation_id,user_id,last_read_at,joined_at')
+.in('conversation_id',ids)
+]),
+10000,
+'Conversation details timed out'
+);
+}catch(error){
+console.warn('Conversation details:',error);
+return;
 }
-    // Ignore results from an old conversation.
-    if (
-      currentConversation?.id !== id ||
-      loadToken !== messageLoadToken
-    ) {
-      return;
-    }
-// Reverse the newest-first results for normal chat display.
-currentMessages = (data || []).reverse();
 
-// The complete history has now loaded.
-chatHistoryLoaded = true;
+if(loadToken!==window.campusoraInboxToken||me?.id!==ownerId)return;
 
-// Save it and display it.
+const [conversationResult,memberResult]=results;
+
+if(conversationResult.error){
+console.error('Conversation lookup:',conversationResult.error);
+return;
+}
+
+const convRows=conversationResult.data||[];
+const allMembers=memberResult.data||[];
+if(memberResult.error)console.warn('Inbox participants:',memberResult.error);
+
+const cachedConversations=conversations;
+
+conversations=convRows.map(c=>{
+const myMembership=members.find(m=>m.conversation_id===c.id);
+const participants=allMembers.filter(m=>m.conversation_id===c.id);
+const other=participants.find(m=>m.user_id!==ownerId);
+const old=cachedConversations.find(x=>x.id===c.id);
+
+return {
+...c,
+participants,
+otherUserId:other?.user_id||null,
+otherProfile:other
+?(profileCache.get(other.user_id)||old?.otherProfile||null)
+:null,
+lastMessage:old?.lastMessage||null,
+lastReadAt:myMembership?.last_read_at||null
+};
+});
+
+// Show the list now; message previews and profile information update afterwards.
+renderInbox();
+saveInboxCache();
+
+const refreshList=conversations.slice();
+let next=0;
+
+async function refreshLatest(){
+while(next<refreshList.length){
+if(loadToken!==window.campusoraInboxToken||me?.id!==ownerId)return;
+const c=refreshList[next++];
+try{
+const {data,error}=await withTimeout(
+supabase.from('messages')
+.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.eq('conversation_id',c.id)
+.is('deleted_at',null)
+.order('created_at',{ascending:false})
+.limit(1),
+7000,
+'Latest message timed out'
+);
+if(error)continue;
+if(loadToken!==window.campusoraInboxToken||me?.id!==ownerId)return;
+const latest=data?.[0]||null;
+conversations=conversations.map(item=>
+item.id===c.id?{...item,lastMessage:latest}:item
+);
+conversations.sort((a,b)=>
+new Date(b.lastMessage?.created_at||b.created_at)-
+new Date(a.lastMessage?.created_at||a.created_at)
+);
+renderInbox();
+saveInboxCache();
+}catch(error){console.warn('Latest message:',error);}
+}
+}
+
+const latestLoading=Promise.all(
+Array.from({length:Math.min(6,refreshList.length)},()=>refreshLatest())
+);
+
+const profileLoading=getProfiles(allMembers.map(m=>m.user_id));
+
+await Promise.all([latestLoading,profileLoading]);
+
+if(loadToken!==window.campusoraInboxToken||me?.id!==ownerId)return;
+
+conversations=conversations.map(c=>({
+...c,
+otherProfile:c.otherUserId
+?profileCache.get(c.otherUserId)||c.otherProfile
+:null
+}));
+
+conversations.sort((a,b)=>
+new Date(b.lastMessage?.created_at||b.created_at)-
+new Date(a.lastMessage?.created_at||a.created_at)
+);
+
+renderInbox();
+saveInboxCache();
+
+preloadInboxChats(conversations.slice(),loadToken).catch(console.warn);
+}
+
+function renderInbox(){
+const list=$('conversationList');
+let items=conversations;
+
+if(currentFilter==='unread'){
+items=conversations.filter(c=>unreadCount(c)>0);
+}
+
+$('totalCount').textContent=conversations.length?`(${conversations.length})`:'';
+
+if(!items.length){
+list.innerHTML=`<div class="panel-message">${
+currentFilter==='unread'
+?'You have no message requests.'
+:'No conversations yet. Visit a member profile and tap Message to start a conversation.'
+}</div>`;
+return;
+}
+
+list.innerHTML=items.map(c=>{
+const profile=c.otherProfile;
+const name=c.is_group?c.group_name||'Group chat':profileName(profile);
+const last=c.lastMessage;
+const preview=last
+?(last.sender_id===me.id?'You: ':'')+last.content
+:'Start a conversation';
+const count=unreadCount(c);
+const selected=currentConversation?.id===c.id;
+
+return `
+<button class="conversation ${selected?'active':''}" data-conversation="${esc(c.id)}">
+<div class="avatar">${avatarHTML(profile)}</div>
+<div class="conv-main">
+<div class="conv-top">
+<span class="conv-name">
+${esc(name)}
+${!c.is_group?roleBadge(profile?.role):''}
+</span>
+<span class="conv-time">${ago(last?.created_at||c.created_at)}</span>
+</div>
+<div class="conv-bottom">
+<span class="conv-preview">${esc(preview)}</span>
+${count?`<span class="unread-count">${count}</span>`:''}
+</div>
+</div>
+</button>`;
+}).join('');
+}
+
+function updateChatHeader(profile,conversation){
+const fallbackId=conversation.otherUserId||null;
+const url=profileURL(profile,fallbackId);
+
+$('chatAvatar').innerHTML=avatarHTML(profile);
+$('chatAvatarLink').href=url;
+$('chatNameLink').href=url;
+
+$('chatName').textContent=conversation.is_group
+?conversation.group_name||'Group chat'
+:profileName(profile);
+
+$('chatRole').innerHTML=conversation.is_group?'':roleBadge(profile?.role);
+$('chatStatus').textContent=profile?.school||'Campusora member';
+}
+
+// Open the chat immediately from local storage.
+// The server refresh starts afterwards without replacing the screen with a loader.
+async function openConversation(id){
+const conversation=conversations.find(c=>String(c.id)===String(id));
+if(!conversation){toast('Conversation could not be found.');return;}
+
+currentConversation=conversation;
+currentOtherUser=conversation.otherUserId
+?(profileCache.get(conversation.otherUserId)||conversation.otherProfile||null)
+:null;
+
+$('messaging').classList.add('chat-open');
+document.body.classList.add('chat-mode');
+$('messagesArea').hidden=false;
+$('messageForm').hidden=false;
+
+updateChatHeader(currentOtherUser,conversation);
+
+const savedMessages=restoreChatCache(id);
+chatHistoryLoaded=savedMessages!==null;
+
+currentMessages=chatHistoryLoaded
+?savedMessages
+:conversation.lastMessage?[conversation.lastMessage]:[];
+
+currentPendingMessages=[];
 renderMessages();
 
-    // Load pending messages after the real messages are visible.
-    await loadPendingMessages(id);
-
-    if (
-      currentConversation?.id === id &&
-      loadToken === messageLoadToken
-    ) {
-      renderMessages();
-    }
-
-  } catch (error) {
-    console.error('Message loading failed:', error);
-
-    if (
-      currentConversation?.id === id &&
-      loadToken === messageLoadToken
-    ) {
-      toast('Could not load messages. Please try again.');
-    }
-
-  } finally {
-    if (loadToken === messageLoadToken) {
-      loadingMessages = false;
-    }
-  }
+// Recover IndexedDB history if localStorage has no copy.
+if(savedMessages===null){
+restoreChatCacheFromDB(id).then(cached=>{
+if(!cached||currentConversation?.id!==id||chatHistoryLoaded)return;
+currentMessages=cached;
+chatHistoryLoaded=true;
+renderMessages();
+}).catch(console.warn);
 }
 
-async function loadPendingMessages(id) {
-  const {data,error} = await supabase
-    .from('campusora_pending_messages')
-    .select('id,conversation_id,user_id,content,created_at,sent_at')
-    .eq('conversation_id',id)
-    .eq('user_id',me.id)
-    .is('sent_at',null)
-    .order('created_at',{ascending:true});
-
-  if (error) {
-    console.warn('Pending messages:',error.message);
-    currentPendingMessages = [];
-    return;
-  }
-
-  currentPendingMessages = data || [];
-}
-  async function markConversationRead(id) {
-  const now = new Date().toISOString();
-
-  const {error} = await supabase
-    .from('conversation_members')
-    .update({last_read_at:now})
-    .eq('conversation_id',id)
-    .eq('user_id',me.id);
-
-  if (error) console.warn('Read status:',error.message);
-
-  const c = conversations.find(item => item.id === id);
-  if (c) c.lastReadAt = now;
-
-  renderInbox();
+// Update the header profile quietly if it isn't already cached.
+if(!currentOtherUser&&conversation.otherUserId){
+getProfiles([conversation.otherUserId]).then(()=>{
+if(currentConversation?.id!==id)return;
+currentOtherUser=profileCache.get(conversation.otherUserId)||null;
+updateChatHeader(currentOtherUser,conversation);
+}).catch(console.warn);
 }
 
-function setupMessageRealtime(id) {
-  if (realtimeMessages) {
-    supabase.removeChannel(realtimeMessages);
-    realtimeMessages = null;
-  }
+// Start realtime and fetch the latest messages immediately in the background.
+setupMessageRealtime(id);
+loadMessages(id,false).catch(console.warn);
 
-  realtimeMessages = supabase
-    .channel('campusora-chat-' + id)
-    .on('postgres_changes',{
-      event:'INSERT',
-      schema:'public',
-      table:'messages',
-      filter:`conversation_id=eq.${id}`
-    },async payload => {
-      if (currentConversation?.id !== id) return;
+if(messagePoll)clearInterval(messagePoll);
+messagePoll=setInterval(()=>{
+if(currentConversation?.id===id)loadMessages(id,false);
+},10000);
 
-      if (!currentMessages.some(m => m.id === payload.new.id)) {
-        currentMessages.push(payload.new);
-        renderMessages();
-
-        if (payload.new.sender_id !== me.id) {
-          await markConversationRead(id);
-        }
-
-        await loadInbox();
-      }
-    })
-    .subscribe();
+markConversationRead(id).catch(console.warn);
 }
 
-function containsPhoneNumber(text) {
-  const candidates = String(text || '').match(
-    /(?:\+?\d[\d\s().-]{8,}\d)/g
-  ) || [];
-
-  return candidates.some(candidate => {
-    let digits = candidate.replace(/\D/g,'');
-
-    if (digits.startsWith('234')) {
-      digits = '0' + digits.slice(3);
-    }
-
-    return digits.length === 11 && /^0[789][01]\d{8}$/.test(digits);
-  });
+function renderMessages(){
+if(currentConversation&&me&&chatHistoryLoaded){
+saveChatCache(currentConversation.id);
 }
 
-function checkMessageInput() {
-  const text = $('messageInput').value;
-  const restricted = containsPhoneNumber(text);
+const area=$('messagesArea');
+const combined=[
+...currentMessages.map(m=>({...m,_pending:false})),
+...currentPendingMessages.map(m=>({
+...m,
+id:'pending-'+m.id,
+sender_id:me.id,
+created_at:m.created_at,
+_pending:true
+}))
+].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
 
-  $('sendBtn').disabled = restricted || !text.trim() || sending;
-  $('phoneWarning').classList.toggle('show',restricted);
-
-  return !restricted;
+if(!combined.length){
+area.innerHTML=`
+<div class="chat-empty">
+<div class="chat-empty-icon">✦</div>
+<h3>Say hello 👋</h3>
+<p>Your conversation starts here. Send the first message.</p>
+</div>`;
+return;
 }
 
-async function savePendingMessage(content) {
-  const {data,error} = await supabase
-    .from('campusora_pending_messages')
-    .insert({
-      conversation_id:currentConversation.id,
-      user_id:me.id,
-      content
-    })
-    .select('id,conversation_id,user_id,content,created_at,sent_at')
-    .single();
+let previousDate='';
+const output=[];
 
-  if (error) {
-    console.error('Save pending message:',error);
-    toast('The message could not be saved. Please try again.');
-    return false;
-  }
+combined.forEach(m=>{
+const date=new Date(m.created_at);
+const dateKey=date.toDateString();
 
-  currentPendingMessages.push(data);
-  renderMessages();
-  return true;
+if(dateKey!==previousDate){
+output.push(`<div class="date-label">${
+dateKey===new Date().toDateString()
+?'Today'
+:esc(date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}))
+}</div>`);
+previousDate=dateKey;
 }
 
-function openPremiumModal(pendingId = null) {
-  pendingPremiumMessageId = pendingId;
-  $('premiumModal').classList.add('show');
+if(m.deleted_at&&!m._pending)return;
+
+const mine=m.sender_id===me.id;
+let actions='';
+
+if(mine&&!m._pending&&!m.deleted_at){
+actions=`
+<div class="message-actions">
+<button class="message-menu-button" data-message-menu="${esc(m.id)}" aria-label="Message options">⋮</button>
+<div class="message-menu" id="menu-${esc(m.id)}" hidden>
+<button data-edit-message="${esc(m.id)}">Edit Message</button>
+<button class="delete-option" data-delete-message="${esc(m.id)}">Delete Message</button>
+</div>
+</div>`;
 }
 
-function closePremiumModal() {
-  $('premiumModal').classList.remove('show');
-}
-
-async function startPremiumPayment(planType) {
-  const {data:{session},error:sessionError} = await supabase.auth.getSession();
-
-  if (sessionError || !session?.access_token) {
-    toast('Please sign in again.');
-    return;
-  }
-
-  const buttons = document.querySelectorAll('[data-premium-plan]');
-  buttons.forEach(button => button.disabled = true);
-
-  try {
-    const response = await fetch('/api/premium/initialize',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer ' + session.access_token
-      },
-      body:JSON.stringify({
-        plan_type:planType,
-        return_to:'messages.html'
-      })
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.authorization_url) {
-      throw new Error(result.error || result.message || 'Payment could not be started.');
-    }
-
-    window.location.href = result.authorization_url;
-  } catch(error) {
-    console.error('Premium payment:',error);
-    toast(error.message || 'Could not start Premium payment.');
-    buttons.forEach(button => button.disabled = false);
-  }
-}
-
-async function verifyPremiumPayment() {
-  const params = new URLSearchParams(window.location.search);
-  const paymentFlag = params.get('premium_payment');
-  const reference = params.get('reference') || params.get('trxref');
-
-  if (paymentFlag !== '1' || !reference) return;
-
-  const {data:{session}} = await supabase.auth.getSession();
-
-  if (!session?.access_token) {
-    toast('Please sign in again to confirm your payment.');
-    return;
-  }
-
-  toast('Confirming your Premium payment...');
-
-  try {
-    const response = await fetch('/api/premium/verify',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer ' + session.access_token
-      },
-      body:JSON.stringify({reference})
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || result.success !== true) {
-      throw new Error(result.error || result.message || 'Payment verification failed.');
-    }
-
-    window.history.replaceState({},'',window.location.pathname);
-
-    await loadInbox();
-
-    if (currentConversation) {
-      await loadMessages(currentConversation.id);
-    }
-
-    const sent = Number(result.resent_count || 0);
-
-    if (sent > 0) {
-      toast(`Premium activated. ${sent} saved message(s) sent.`);
-    } else {
-      toast('Premium activated successfully.');
-    }
-
-  } catch(error) {
-    console.error('Payment verification:',error);
-    toast(error.message || 'Could not verify payment. Please refresh.');
-  }
-}
-
-function resetMessageEditor() {
-  editingMessageId = null;
-  $('sendBtn').textContent = '➤';
-  $('sendBtn').setAttribute('aria-label','Send message');
-}
-
-async function sendMessage(event) {
-  event.preventDefault();
-
-  if (sending || !currentConversation || !me) return;
-
-  const input = $('messageInput');
-  const content = input.value.trim();
-
-  if (!content) return;
-
-  if (!checkMessageInput()) {
-    toast('Sharing phone numbers is currently restricted on Campusora.');
-    return;
-  }
-
-  sending = true;
-  $('sendBtn').disabled = true;
-
-  if (editingMessageId) {
-    const messageId = editingMessageId;
-    const {data,error} = await supabase
-      .from('messages')
-      .update({content})
-      .eq('id',messageId)
-      .eq('sender_id',me.id)
-      .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-      .single();
-
-    sending = false;
-    $('sendBtn').disabled = false;
-
-    if (error) {
-      console.error('Edit message:',error);
-      toast('Message could not be edited. Please try again.');
-      checkMessageInput();
-      return;
-    }
-
-    currentMessages = currentMessages.map(m =>
-      String(m.id) === String(messageId) ? data : m
-    );
-
-    input.value = '';
-    input.style.height = '42px';
-    $('phoneWarning').classList.remove('show');
-    resetMessageEditor();
-    renderMessages();
-    toast('Message updated.');
-    await loadInbox();
-    input.focus();
-    checkMessageInput();
-    return;
-  }
-
-  const {data,error} = await supabase
-    .from('messages')
-    .insert({
-      conversation_id:currentConversation.id,
-      sender_id:me.id,
-      content
-    })
-    .select('id,conversation_id,sender_id,content,created_at,deleted_at')
-    .single();
-
-  sending = false;
-
-  if (error) {
-    console.error('Send message:',error);
-
-    if (String(error.message || '').includes('MESSAGE_PREMIUM_REQUIRED')) {
-      const saved = await savePendingMessage(content);
-
-      if (saved) {
-        input.value = '';
-        input.style.height = '42px';
-        $('phoneWarning').classList.remove('show');
-        openPremiumModal(currentPendingMessages.at(-1)?.id || null);
-      }
-
-      checkMessageInput();
-      return;
-    }
-
-    toast('Message could not be sent. Check your connection.');
-    checkMessageInput();
-    return;
-  }
-
-  input.value = '';
-  input.style.height = '42px';
-  $('phoneWarning').classList.remove('show');
-  $('sendBtn').disabled = false;
-
-  if (!currentMessages.some(m => m.id === data.id)) {
-    currentMessages.push(data);
-    renderMessages();
-  }
-
-  await loadInbox();
-  input.focus();
-  checkMessageInput();
-}
-
-function editMessage(messageId) {
-  const message = currentMessages.find(m => String(m.id) === String(messageId));
-
-  if (!message || message.sender_id !== me.id) return;
-
-  editingMessageId = message.id;
-
-  const input = $('messageInput');
-  input.value = message.content;
-  input.style.height = '42px';
-  input.style.height = Math.min(input.scrollHeight,120) + 'px';
-
-  $('sendBtn').textContent = '✓';
-  $('sendBtn').setAttribute('aria-label','Save edited message');
-  $('sendBtn').disabled = false;
-
-  document.querySelectorAll('.message-menu').forEach(item => {
-    item.hidden = true;
-  });
-
-  requestAnimationFrame(() => {
-    input.focus();
-    input.setSelectionRange(input.value.length,input.value.length);
-    input.scrollIntoView({block:'nearest',behavior:'smooth'});
-  });
-}
-
-async function deleteMessage(messageId) {
-  const message = currentMessages.find(m => String(m.id) === String(messageId));
-
-  if (!message || message.sender_id !== me.id) return;
-
-  const {data,error} = await supabase
-    .from('messages')
-    .delete()
-    .eq('id',messageId)
-    .eq('sender_id',me.id)
-    .select('id')
-    .single();
-
-  if (error || !data) {
-    console.error('Delete message:',error);
-    toast('Message could not be deleted.');
-    return;
-  }
-
-  currentMessages = currentMessages.filter(
-    m => String(m.id) !== String(messageId)
-  );
-
-  renderMessages();
-  await loadInbox();
-  toast('Message deleted.');
-}
-
-function setupInboxRealtime() {
-  if (realtimeInbox) supabase.removeChannel(realtimeInbox);
-
-  realtimeInbox = supabase
-    .channel('campusora-inbox-' + me.id)
-    .on('postgres_changes',{
-      event:'INSERT',
-      schema:'public',
-      table:'messages'
-    },payload => {
-      if (conversations.some(c => c.id === payload.new.conversation_id)) {
-        loadInbox();
-      }
-    })
-    .subscribe();
-}
-
-function setupEvents() {
-  $('conversationList').addEventListener('click',async event => {
-    const button = event.target.closest('[data-conversation]');
-    if (!button) return;
-    await openConversation(button.dataset.conversation);
-  });
-
-  document.querySelectorAll('[data-inbox-filter]').forEach(button => {
-    button.addEventListener('click',() => {
-      currentFilter = button.dataset.inboxFilter;
-
-      document.querySelectorAll('[data-inbox-filter]').forEach(tab => {
-        tab.classList.toggle('active',tab === button);
-      });
-
-      renderInbox();
-    });
-  });
-
-  $('messagesArea').addEventListener('click',async event => {
-    const menuButton = event.target.closest('[data-message-menu]');
-    const editButton = event.target.closest('[data-edit-message]');
-    const deleteButton = event.target.closest('[data-delete-message]');
-
-    if (menuButton) {
-      const id = menuButton.dataset.messageMenu;
-      const menu = $('menu-' + id);
-      const wasHidden = menu.hidden;
-
-      document.querySelectorAll('.message-menu').forEach(item => {
-        item.hidden = true;
-      });
-
-      menu.hidden = !wasHidden;
-      return;
-    }
-
-    if (editButton) {
-      await editMessage(editButton.dataset.editMessage);
-      return;
-    }
-
-    if (deleteButton) {
-      await deleteMessage(deleteButton.dataset.deleteMessage);
-      return;
-    }
-
-    document.querySelectorAll('.message-menu').forEach(item => {
-      item.hidden = true;
-    });
-  });
-
-  $('messageForm').addEventListener('submit',sendMessage);
-
-  $('messageInput').addEventListener('input',event => {
-    const input = event.target;
-    input.style.height = '42px';
-    input.style.height = Math.min(input.scrollHeight,120) + 'px';
-    checkMessageInput();
-  });
-
-  $('messageInput').addEventListener('keydown',event => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      $('messageForm').requestSubmit();
-    }
-  });
-
-  $('backBtn').addEventListener('click',() => {
-    $('messaging').classList.remove('chat-open');
-    document.body.classList.remove('chat-mode');
-  });
-
-  $('refreshBtn').addEventListener('click',async () => {
-    if (currentConversation) {
-      await loadMessages(currentConversation.id,true);
-    }
-
-    await loadInbox();
-    toast('Messages refreshed');
-  });
-
-  $('closePremiumModal').addEventListener('click',closePremiumModal);
-
-  $('premiumModal').addEventListener('click',event => {
-    if (event.target === $('premiumModal')) closePremiumModal();
-  });
-
-  document.querySelectorAll('[data-premium-plan]').forEach(button => {
-    button.addEventListener('click',() => {
-      startPremiumPayment(button.dataset.premiumPlan);
-    });
-  });
-}
-
-async function startConversation(userId) {
-  if (!userId || userId === me.id) {
-    toast('You cannot message yourself.');
-    return false;
-  }
-
-  const {data:conversationId,error} = await supabase.rpc(
-    'start_direct_conversation',
-    {target_user_id:userId}
-  );
-
-  if (error || !conversationId) {
-    console.error('Start conversation:',error);
-    toast(error?.message || 'Could not open conversation.');
-    return false;
-  }
-
-  await loadInbox();
-
-  const conversation = conversations.find(
-    c => String(c.id) === String(conversationId)
-  );
-
-  if (!conversation) {
-    toast('Conversation could not be loaded. Check permissions.');
-    return false;
-  }
-
-  await openConversation(conversation.id);
-  return true;
-}
-
-async function initialize() {
-  setupEvents();
-
-  // Read the saved login session from this phone first.
-  const { data, error } = await supabase.auth.getSession();
-
-  const session = data?.session;
-
-  if (error || !session?.user) {
-    $('conversationList').innerHTML = `
-      <div class="panel-message">
-        Sign in to use Campusora messages.<br><br>
-        <a href="auth.html" style="color:#b8a2ff">Sign in →</a>
-      </div>`;
-
-    $('welcomeState').querySelector('h3').textContent =
-      'Sign in to connect';
-
-    $('welcomeState').querySelector('p').textContent =
-      'Sign in to message students, alumni, and other Campusora members.';
-
-    $('messageForm').hidden = true;
-    return;
-  }
-
-  me = session.user;
-
-  // SHOW SAVED CONVERSATIONS IMMEDIATELY.
-  restoreInboxCache();
-
-  // Start realtime updates.
-  setupInboxRealtime();
-
-  // Refresh inbox without blocking the page.
-  loadInbox().catch(error => {
-    console.error('Inbox refresh:', error);
-  });
-
-  // Verify the session with Supabase in the background.
-  supabase.auth.getUser().then(({ error }) => {
-    if (error) {
-      console.warn('Background session verification:', error);
-    }
-  });
-
-  const params = new URLSearchParams(window.location.search);
-  const targetUserId = params.get('user');
-  const productName = params.get('product');
-
-  if (targetUserId) {
-    if (targetUserId === me.id) {
-      toast('You cannot message yourself.');
-    } else {
-      const opened = await startConversation(targetUserId);
-
-      if (opened && productName) {
-        const input = $('messageInput');
-
-        if (!input.value.trim()) {
-          input.value =
-            `Hi! I'm interested in your product "${productName}". Is it still available?`;
-
-          input.focus();
-          checkMessageInput();
-        }
-      }
-    }
-
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-
-  if (refreshInterval) clearInterval(refreshInterval);
-
-  refreshInterval = setInterval(() => {
-    loadInbox();
-
-    if (currentConversation) {
-      loadMessages(currentConversation.id);
-    }
-  }, 30000);
-
-  verifyPremiumPayment().catch(error => {
-    console.error('Premium payment verification:', error);
-  });
-}
-
-window.addEventListener('beforeunload',() => {
-  if (realtimeMessages) supabase.removeChannel(realtimeMessages);
-  if (realtimeInbox) supabase.removeChannel(realtimeInbox);
-  if (messagePoll) clearInterval(messagePoll);
-  if (refreshInterval) clearInterval(refreshInterval);
+output.push(`
+<div class="message-row ${mine?'mine':''} ${m._pending?'pending':''}" data-message="${esc(m.id)}">
+<div class="message-bubble">${esc(m.content)}</div>
+<div class="message-meta">
+${ago(m.created_at)}
+${m._pending?'<span class="pending-status">Not sent</span>':mine?'<span class="message-status">✓</span>':''}
+${actions}
+</div>
+</div>`);
 });
 
-initialize().catch(error => {
-  console.error('Campusora messages initialization failed:',error);
-  toast('Messages could not be initialized. Please refresh.');
+area.innerHTML=output.join('');
+area.scrollTop=area.scrollHeight;
+}
+  // Refresh server messages without showing a loading screen.
+async function loadMessages(id,showLoading=false){
+const loadToken=++messageLoadToken;
+loadingMessages=true;
+
+try{
+const {data,error}=await withTimeout(
+supabase.from('messages')
+.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.eq('conversation_id',id)
+.is('deleted_at',null)
+.order('created_at',{ascending:false})
+.limit(100),
+10000,
+'Message refresh timed out'
+);
+
+if(error){
+console.error('Load messages:',error);
+return;
+}
+
+if(currentConversation?.id!==id||loadToken!==messageLoadToken)return;
+
+const fresh=(data||[]).reverse();
+
+// Merge the server response with any locally displayed messages.
+// This avoids briefly removing messages already on the screen.
+const merged=new Map();
+currentMessages.forEach(m=>merged.set(String(m.id),m));
+fresh.forEach(m=>merged.set(String(m.id),m));
+
+currentMessages=Array.from(merged.values())
+.filter(m=>!m.deleted_at)
+.sort((a,b)=>new Date(a.created_at)-new Date(b.created_at))
+.slice(-100);
+
+chatHistoryLoaded=true;
+renderMessages();
+
+loadPendingMessages(id).then(()=>{
+if(currentConversation?.id===id&&loadToken===messageLoadToken){
+renderMessages();
+}
+}).catch(console.warn);
+
+}catch(error){
+console.warn('Message refresh:',error);
+}finally{
+if(loadToken===messageLoadToken)loadingMessages=false;
+}
+}
+
+async function loadPendingMessages(id){
+try{
+const {data,error}=await withTimeout(
+supabase.from('campusora_pending_messages')
+.select('id,conversation_id,user_id,content,created_at,sent_at')
+.eq('conversation_id',id)
+.eq('user_id',me.id)
+.is('sent_at',null)
+.order('created_at',{ascending:true}),
+8000,
+'Pending message request timed out'
+);
+
+if(error){
+console.warn('Pending messages:',error.message);
+return;
+}
+currentPendingMessages=data||[];
+}catch(error){console.warn('Pending messages:',error);}
+}
+
+async function markConversationRead(id){
+if(!authReady||!me)return;
+const now=new Date().toISOString();
+
+const {error}=await supabase
+.from('conversation_members')
+.update({last_read_at:now})
+.eq('conversation_id',id)
+.eq('user_id',me.id);
+
+if(error)console.warn('Read status:',error.message);
+
+const c=conversations.find(item=>item.id===id);
+if(c)c.lastReadAt=now;
+renderInbox();
+saveInboxCache();
+}
+
+function setupMessageRealtime(id){
+if(realtimeMessages){
+supabase.removeChannel(realtimeMessages);
+realtimeMessages=null;
+}
+
+realtimeMessages=supabase
+.channel('campusora-chat-'+id)
+.on('postgres_changes',{
+event:'INSERT',
+schema:'public',
+table:'messages',
+filter:`conversation_id=eq.${id}`
+},async payload=>{
+if(currentConversation?.id!==id)return;
+
+if(!currentMessages.some(m=>String(m.id)===String(payload.new.id))){
+currentMessages.push(payload.new);
+currentMessages.sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+chatHistoryLoaded=true;
+renderMessages();
+
+if(payload.new.sender_id!==me.id){
+markConversationRead(id).catch(console.warn);
+}
+}
+loadInbox().catch(console.warn);
+})
+.subscribe();
+}
+
+function containsPhoneNumber(text){
+const candidates=String(text||'').match(/(?:\+?\d[\d\s().-]{8,}\d)/g)||[];
+return candidates.some(candidate=>{
+let digits=candidate.replace(/\D/g,'');
+if(digits.startsWith('234'))digits='0'+digits.slice(3);
+return digits.length===11&&/^0[789][01]\d{8}$/.test(digits);
 });
+}
+
+function checkMessageInput(){
+const text=$('messageInput').value;
+const restricted=containsPhoneNumber(text);
+$('sendBtn').disabled=restricted||!text.trim()||sending||!authReady;
+$('phoneWarning').classList.toggle('show',restricted);
+return !restricted;
+}
+
+async function savePendingMessage(content){
+const {data,error}=await supabase
+.from('campusora_pending_messages')
+.insert({
+conversation_id:currentConversation.id,
+user_id:me.id,
+content
+})
+.select('id,conversation_id,user_id,content,created_at,sent_at')
+.single();
+
+if(error){
+console.error('Save pending message:',error);
+toast('The message could not be saved. Please try again.');
+return false;
+}
+currentPendingMessages.push(data);
+renderMessages();
+return true;
+}
+
+function openPremiumModal(pendingId=null){
+pendingPremiumMessageId=pendingId;
+$('premiumModal').classList.add('show');
+}
+function closePremiumModal(){
+$('premiumModal').classList.remove('show');
+}
+
+async function startPremiumPayment(planType){
+const {data:{session},error:sessionError}=await supabase.auth.getSession();
+if(sessionError||!session?.access_token){
+toast('Please sign in again.');
+return;
+}
+
+const buttons=document.querySelectorAll('[data-premium-plan]');
+buttons.forEach(button=>button.disabled=true);
+
+try{
+const response=await fetch('/api/premium/initialize',{
+method:'POST',
+headers:{
+'Content-Type':'application/json',
+'Authorization':'Bearer '+session.access_token
+},
+body:JSON.stringify({
+plan_type:planType,
+return_to:'messages.html'
+})
+});
+
+const result=await response.json();
+if(!response.ok||!result.authorization_url){
+throw new Error(result.error||result.message||'Payment could not be started.');
+}
+window.location.href=result.authorization_url;
+}catch(error){
+console.error('Premium payment:',error);
+toast(error.message||'Could not start Premium payment.');
+buttons.forEach(button=>button.disabled=false);
+}
+}
+
+async function verifyPremiumPayment(){
+const params=new URLSearchParams(window.location.search);
+const paymentFlag=params.get('premium_payment');
+const reference=params.get('reference')||params.get('trxref');
+if(paymentFlag!=='1'||!reference)return;
+
+const {data:{session}}=await supabase.auth.getSession();
+if(!session?.access_token){
+toast('Please sign in again to confirm your payment.');
+return;
+}
+
+toast('Confirming your Premium payment...');
+
+try{
+const response=await fetch('/api/premium/verify',{
+method:'POST',
+headers:{
+'Content-Type':'application/json',
+'Authorization':'Bearer '+session.access_token
+},
+body:JSON.stringify({reference})
+});
+
+const result=await response.json();
+if(!response.ok||result.success!==true){
+throw new Error(result.error||result.message||'Payment verification failed.');
+}
+
+window.history.replaceState({},'',window.location.pathname);
+loadInbox().catch(console.warn);
+
+if(currentConversation)loadMessages(currentConversation.id,false);
+
+const sent=Number(result.resent_count||0);
+toast(sent>0
+?`Premium activated. ${sent} saved message(s) sent.`
+:'Premium activated successfully.'
+);
+}catch(error){
+console.error('Payment verification:',error);
+toast(error.message||'Could not verify payment. Please refresh.');
+}
+}
+
+function resetMessageEditor(){
+editingMessageId=null;
+$('sendBtn').textContent='➤';
+$('sendBtn').setAttribute('aria-label','Send message');
+}
+
+async function sendMessage(event){
+event.preventDefault();
+if(sending||!currentConversation||!me||!authReady)return;
+
+const input=$('messageInput');
+const content=input.value.trim();
+if(!content)return;
+
+if(!checkMessageInput()){
+toast('Sharing phone numbers is currently restricted on Campusora.');
+return;
+}
+
+sending=true;
+$('sendBtn').disabled=true;
+
+if(editingMessageId){
+const messageId=editingMessageId;
+const {data,error}=await supabase
+.from('messages')
+.update({content})
+.eq('id',messageId)
+.eq('sender_id',me.id)
+.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.single();
+
+sending=false;
+$('sendBtn').disabled=false;
+
+if(error){
+console.error('Edit message:',error);
+toast('Message could not be edited. Please try again.');
+checkMessageInput();
+return;
+}
+
+currentMessages=currentMessages.map(m=>
+String(m.id)===String(messageId)?data:m
+);
+input.value='';
+input.style.height='42px';
+$('phoneWarning').classList.remove('show');
+resetMessageEditor();
+renderMessages();
+toast('Message updated.');
+loadInbox().catch(console.warn);
+input.focus();
+checkMessageInput();
+return;
+}
+
+const {data,error}=await supabase
+.from('messages')
+.insert({
+conversation_id:currentConversation.id,
+sender_id:me.id,
+content
+})
+.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.single();
+
+sending=false;
+
+if(error){
+console.error('Send message:',error);
+
+if(String(error.message||'').includes('MESSAGE_PREMIUM_REQUIRED')){
+const saved=await savePendingMessage(content);
+if(saved){
+input.value='';
+input.style.height='42px';
+$('phoneWarning').classList.remove('show');
+openPremiumModal(currentPendingMessages.at(-1)?.id||null);
+}
+checkMessageInput();
+return;
+}
+
+toast('Message could not be sent. Check your connection.');
+checkMessageInput();
+return;
+}
+
+input.value='';
+input.style.height='42px';
+$('phoneWarning').classList.remove('show');
+$('sendBtn').disabled=false;
+
+if(!currentMessages.some(m=>String(m.id)===String(data.id))){
+currentMessages.push(data);
+chatHistoryLoaded=true;
+renderMessages();
+}
+
+saveChatCache(currentConversation.id);
+loadInbox().catch(console.warn);
+input.focus();
+checkMessageInput();
+}
+
+function editMessage(messageId){
+const message=currentMessages.find(m=>String(m.id)===String(messageId));
+if(!message||message.sender_id!==me.id)return;
+
+editingMessageId=message.id;
+const input=$('messageInput');
+input.value=message.content;
+input.style.height='42px';
+input.style.height=Math.min(input.scrollHeight,120)+'px';
+
+$('sendBtn').textContent='✓';
+$('sendBtn').setAttribute('aria-label','Save edited message');
+$('sendBtn').disabled=false;
+
+document.querySelectorAll('.message-menu').forEach(item=>item.hidden=true);
+
+requestAnimationFrame(()=>{
+input.focus();
+input.setSelectionRange(input.value.length,input.value.length);
+input.scrollIntoView({block:'nearest',behavior:'smooth'});
+});
+}
+
+async function deleteMessage(messageId){
+const message=currentMessages.find(m=>String(m.id)===String(messageId));
+if(!message||message.sender_id!==me.id)return;
+
+const {data,error}=await supabase
+.from('messages')
+.delete()
+.eq('id',messageId)
+.eq('sender_id',me.id)
+.select('id')
+.single();
+
+if(error||!data){
+console.error('Delete message:',error);
+toast('Message could not be deleted.');
+return;
+}
+
+currentMessages=currentMessages.filter(m=>String(m.id)!==String(messageId));
+renderMessages();
+saveChatCache(currentConversation.id);
+loadInbox().catch(console.warn);
+toast('Message deleted.');
+}
+
+function setupInboxRealtime(){
+if(realtimeInbox)supabase.removeChannel(realtimeInbox);
+
+realtimeInbox=supabase
+.channel('campusora-inbox-'+me.id)
+.on('postgres_changes',{
+event:'INSERT',
+schema:'public',
+table:'messages'
+},()=>{
+// Refresh the list even if this is a newly created conversation.
+loadInbox().catch(console.warn);
+})
+.subscribe();
+}
+
+function setupEvents(){
+$('conversationList').addEventListener('click',event=>{
+const button=event.target.closest('[data-conversation]');
+if(!button)return;
+openConversation(button.dataset.conversation);
+});
+
+document.querySelectorAll('[data-inbox-filter]').forEach(button=>{
+button.addEventListener('click',()=>{
+currentFilter=button.dataset.inboxFilter;
+document.querySelectorAll('[data-inbox-filter]').forEach(tab=>{
+tab.classList.toggle('active',tab===button);
+});
+renderInbox();
+});
+});
+
+$('messagesArea').addEventListener('click',event=>{
+const menuButton=event.target.closest('[data-message-menu]');
+const editButton=event.target.closest('[data-edit-message]');
+const deleteButton=event.target.closest('[data-delete-message]');
+
+if(menuButton){
+const menu=$('menu-'+menuButton.dataset.messageMenu);
+if(!menu)return;
+const wasHidden=menu.hidden;
+document.querySelectorAll('.message-menu').forEach(item=>item.hidden=true);
+menu.hidden=!wasHidden;
+return;
+}
+if(editButton){editMessage(editButton.dataset.editMessage);return;}
+if(deleteButton){deleteMessage(deleteButton.dataset.deleteMessage);return;}
+document.querySelectorAll('.message-menu').forEach(item=>item.hidden=true);
+});
+
+$('messageForm').addEventListener('submit',sendMessage);
+
+$('messageInput').addEventListener('input',event=>{
+const input=event.target;
+input.style.height='42px';
+input.style.height=Math.min(input.scrollHeight,120)+'px';
+checkMessageInput();
+});
+
+$('messageInput').addEventListener('keydown',event=>{
+if(event.key==='Enter'&&!event.shiftKey){
+event.preventDefault();
+$('messageForm').requestSubmit();
+}
+});
+
+$('backBtn').addEventListener('click',()=>{
+$('messaging').classList.remove('chat-open');
+document.body.classList.remove('chat-mode');
+});
+
+$('refreshBtn').addEventListener('click',()=>{
+if(currentConversation)loadMessages(currentConversation.id,false);
+loadInbox().catch(console.warn);
+toast('Refreshing messages...');
+});
+
+$('closePremiumModal').addEventListener('click',closePremiumModal);
+
+$('premiumModal').addEventListener('click',event=>{
+if(event.target===$('premiumModal'))closePremiumModal();
+});
+
+document.querySelectorAll('[data-premium-plan]').forEach(button=>{
+button.addEventListener('click',()=>{
+startPremiumPayment(button.dataset.premiumPlan);
+});
+});
+}
+
+async function startConversation(userId){
+if(!userId||userId===me.id){
+toast('You cannot message yourself.');
+return false;
+}
+
+const {data:conversationId,error}=await supabase.rpc(
+'start_direct_conversation',
+{target_user_id:userId}
+);
+
+if(error||!conversationId){
+console.error('Start conversation:',error);
+toast(error?.message||'Could not open conversation.');
+return false;
+}
+
+await loadInbox();
+
+const conversation=conversations.find(c=>String(c.id)===String(conversationId));
+if(!conversation){
+toast('Conversation could not be loaded. Check permissions.');
+return false;
+}
+
+await openConversation(conversation.id);
+return true;
+}
+
+// Called after Supabase has confirmed the saved login session.
+function activateAuthenticatedUser(user){
+if(!user?.id)return;
+
+const changedUser=me?.id!==user.id;
+me=user;
+authReady=true;
+
+if(changedUser||!conversations.length){
+restoreInboxCache();
+}
+
+setupInboxRealtime();
+
+// Background refresh. It never blocks the visible inbox.
+loadInbox().catch(error=>console.warn('Inbox refresh:',error));
+
+if(refreshInterval)clearInterval(refreshInterval);
+refreshInterval=setInterval(()=>{
+loadInbox().catch(console.warn);
+if(currentConversation)loadMessages(currentConversation.id,false);
+},30000);
+
+const params=new URLSearchParams(window.location.search);
+const targetUserId=params.get('user');
+const productName=params.get('product');
+
+if(targetUserId){
+if(targetUserId===me.id){
+toast('You cannot message yourself.');
+}else{
+startConversation(targetUserId).then(opened=>{
+if(opened&&productName){
+const input=$('messageInput');
+if(!input.value.trim()){
+input.value=`Hi! I'm interested in your product "${productName}". Is it still available?`;
+input.focus();
+checkMessageInput();
+}
+}
+}).catch(console.warn);
+}
+window.history.replaceState({},'',window.location.pathname);
+}
+
+verifyPremiumPayment().catch(error=>{
+console.error('Premium payment verification:',error);
+});
+
+checkMessageInput();
+}
+
+// Restore the local inbox before waiting for Supabase authentication.
+async function initialize(){
+setupEvents();
+
+const cachedUser=readCachedAuthUser();
+
+if(cachedUser?.id){
+me=cachedUser;
+restoreInboxCache();
+}
+
+// Do not let authentication initialization hold the screen forever.
+const sessionRequest=supabase.auth.getSession();
+
+try{
+const result=await withTimeout(
+sessionRequest,
+8000,
+'Authentication is taking longer than expected'
+);
+
+const session=result?.data?.session;
+
+if(session?.user){
+activateAuthenticatedUser(session.user);
+return;
+}
+
+if(!me?.id){
+$('conversationList').innerHTML=`
+<div class="panel-message">
+Sign in to use Campusora messages.<br><br>
+<a href="auth.html" style="color:#b8a2ff">Sign in →</a>
+</div>`;
+return;
+}
+
+}catch(error){
+console.warn('Initial session check:',error);
+}
+
+// If auth takes longer, keep the saved inbox visible.
+// Activate normal database messaging when the session eventually returns.
+sessionRequest.then(result=>{
+const session=result?.data?.session;
+if(session?.user){
+activateAuthenticatedUser(session.user);
+}else if(!me?.id){
+$('conversationList').innerHTML=`
+<div class="panel-message">
+Sign in to use Campusora messages.<br><br>
+<a href="auth.html" style="color:#b8a2ff">Sign in →</a>
+</div>`;
+}
+}).catch(error=>console.warn('Delayed session check:',error));
+}
+
+document.addEventListener('visibilitychange',()=>{
+if(document.visibilityState!=='visible'||!authReady)return;
+loadInbox().catch(console.warn);
+if(currentConversation)loadMessages(currentConversation.id,false);
+});
+
+window.addEventListener('beforeunload',()=>{
+if(realtimeMessages)supabase.removeChannel(realtimeMessages);
+if(realtimeInbox)supabase.removeChannel(realtimeInbox);
+if(messagePoll)clearInterval(messagePoll);
+if(refreshInterval)clearInterval(refreshInterval);
+});
+
+initialize().catch(error=>{
+console.error('Campusora messages initialization failed:',error);
+toast('Messages could not be initialized. Please refresh.');
+});
+
 </script>
-<script src="./shared-nav.js" defer></script>
 
+<script src="./shared-nav.js" defer></script>
 </body>
 </html>
