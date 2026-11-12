@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b18">
+  <title>Opening Campusora...</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #080b18;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .launch-box {
+      text-align: center;
+    }
+
+    .loader {
+      width: 38px;
+      height: 38px;
+      margin: 0 auto 18px;
+      border: 3px solid #252b42;
+      border-top-color: #8b5cf6;
+      border-right-color: #06b6d4;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    p {
+      color: #aab1c5;
+      font-size: 14px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="launch-box">
+    <div class="loader"></div>
+    <p>Opening Campusora...</p>
+  </div>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    async function openCampusora() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) {
+          throw error;
+        }
+
+        if (data.session) {
+          window.location.replace('./home-feed.html');
+        } else {
+          window.location.replace('./auth.html');
+        }
+
+      } catch (error) {
+        console.error('Campusora launch error:', error);
+        window.location.replace('./auth.html');
+      }
+    }
+
+    openCampusora();
+  </script>
+</body>
+</html>
