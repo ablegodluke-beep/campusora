@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b18">
+  <link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./campusora-logo.png">
 <title>Your Feed | Campusora</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3132,5 +3134,13 @@ async function startPage(){
 startPage();
 
 </script>
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(error => console.warn("PWA registration:", error));
+  });
+}
+  </script>
 </body>
 </html>
