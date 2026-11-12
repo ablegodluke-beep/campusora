@@ -13,6 +13,8 @@
   --nav-blue: #5578ff;
   --nav-cyan: #39d7f5;
   --nav-gradient: linear-gradient(110deg, #925bff, #5578ff, #39d7f5);
+
+  --campusora-topnav-height: 56px;
 }
 
 /* =========================================
@@ -83,7 +85,7 @@ body::-webkit-scrollbar {
 .campusora-topnav-brandrow {
   width: 100%;
   min-width: 0;
-  min-height: 49px;
+  min-height: var(--campusora-topnav-height);
   padding: 6px 13px;
   display: flex;
   align-items: center;
@@ -96,15 +98,15 @@ body::-webkit-scrollbar {
   flex: 0 1 auto;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 9px;
   color: #f1f3ff;
   text-decoration: none;
   white-space: nowrap;
 }
 
 .campusora-brand img {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   flex-shrink: 0;
   filter: drop-shadow(0 0 5px rgba(146, 91, 255, .25));
@@ -112,9 +114,10 @@ body::-webkit-scrollbar {
 
 .campusora-brand-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: -.5px;
+  line-height: 1;
   background: linear-gradient(100deg, #fff, #c9d4ff);
   -webkit-background-clip: text;
   background-clip: text;
@@ -677,28 +680,58 @@ body::-webkit-scrollbar {
 }
 
 /* =========================================
+   PROGRESS BAR — BELOW TOP NAVIGATION
+========================================= */
+
+#campusoraRouteProgress {
+  position: fixed !important;
+  top: var(--campusora-topnav-height) !important;
+  left: 0;
+  width: 0;
+  height: 3px;
+  z-index: 999999;
+  opacity: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg, #9333ea, #3b82f6, #06b6d4);
+  transition: width .35s ease, opacity .35s ease;
+}
+
+#campusoraRouteProgress.active {
+  width: 75%;
+}
+
+#campusoraRouteProgress.complete {
+  width: 100%;
+  opacity: 0;
+}
+
+/* =========================================
    MOBILE
 ========================================= */
 
 @media (max-width: 600px) {
 
+  :root {
+    --campusora-topnav-height: 56px;
+  }
+
   .campusora-topnav-brandrow {
-    min-height: 45px;
-    padding: 5px 9px;
+    min-height: var(--campusora-topnav-height);
+    padding: 6px 10px;
     gap: 8px;
   }
 
   .campusora-brand {
-    gap: 5px;
+    gap: 8px;
   }
 
   .campusora-brand img {
-    width: 25px;
-    height: 25px;
+    width: 36px;
+    height: 36px;
   }
 
   .campusora-brand-name {
-    font-size: 13px;
+    font-size: 17px;
   }
 
   .campusora-header-search {
@@ -767,13 +800,17 @@ body::-webkit-scrollbar {
     gap: 5px;
   }
 
+  .campusora-brand {
+    gap: 6px;
+  }
+
   .campusora-brand img {
-    width: 22px;
-    height: 22px;
+    width: 33px;
+    height: 33px;
   }
 
   .campusora-brand-name {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .campusora-mainnav {
@@ -809,6 +846,7 @@ body::-webkit-scrollbar {
     transition: none !important;
   }
 }
+
 /* =========================================
    BOTTOM SPACE — PREVENT NAVIGATION OVERLAP
 ========================================= */
