@@ -47,19 +47,30 @@ a {
 
 .menu-heading {
   margin-bottom:19px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
 }
 
-.menu-heading h1 {
-  margin:0;
-  font-size:25px;
+.menu-heading-text {
+  min-width:0;
+}
+
+.install-campusora-button {
+  flex-shrink:0;
+  padding:9px 12px;
+  border:0;
+  border-radius:10px;
+  background:linear-gradient(110deg,#925bff,#5578ff,#39d7f5);
+  color:#fff;
+  font-size:11px;
   font-weight:800;
-  letter-spacing:-.6px;
+  white-space:nowrap;
 }
 
-.menu-heading p {
-  margin:5px 0 0;
-  color:var(--muted);
-  font-size:12px;
+.install-campusora-button[hidden] {
+  display:none !important;
 }
 
 .menu-profile {
@@ -285,11 +296,18 @@ a {
 <body>
 
 <main class="menu-container">
-
-  <div class="menu-heading">
+<div class="menu-heading">
+  <div class="menu-heading-text">
     <h1>Menu</h1>
     <p>Discover more of Campusora.</p>
   </div>
+
+  <button class="install-campusora-button"
+          id="installCampusoraButton"
+          hidden>
+    ↓ Install App
+  </button>
+</div>
 
   <!-- PROFILE CARD -->
   <a href="profile.html" class="menu-profile" id="profileCard">
@@ -552,6 +570,41 @@ const name = document.getElementById('menuName');
 const username = document.getElementById('menuUsername');
 const profileCard = document.getElementById('profileCard');
 const adminMenuSection = document.getElementById('adminMenuSection');
+  /* CAMPUSORA APP INSTALLATION */
+
+let deferredInstallPrompt = null;
+
+const installButton =
+  document.getElementById('installCampusoraButton');
+
+function isCampusoraInstalled() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true;
+}
+
+if (!isCampusoraInstalled()) {
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    installButton.hidden = false;
+  });
+}
+
+installButton.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+
+  deferredInstallPrompt.prompt();
+
+  const result = await deferredInstallPrompt.userChoice;
+
+  deferredInstallPrompt = null;
+  installButton.hidden = true;
+});
+
+window.addEventListener('appinstalled', () => {
+  installButton.hidden = true;
+  deferredInstallPrompt = null;
+});
 
 /* YOUR APPROVED PROFILE ID */
 const OWNER_PROFILE_ID = '4e2c55c4-e5ad-4bed-b7cb-60be8f9b1ccb';
