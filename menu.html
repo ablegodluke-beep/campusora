@@ -38,11 +38,10 @@ a {
   color:inherit;
   text-decoration:none;
 }
-
 .menu-container {
   width:min(100%,1050px);
   margin:0 auto;
-  padding:22px 18px 45px;
+  padding:8px 18px 45px;
 }
 
 .menu-heading {
@@ -55,6 +54,20 @@ a {
 
 .menu-heading-text {
   min-width:0;
+}
+  .menu-heading h1 {
+  margin:0;
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:-.6px;
+  line-height:1.2;
+}
+
+.menu-heading p {
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.4;
 }
 
 .install-campusora-button {
@@ -239,7 +252,7 @@ a {
 
 @media(max-width:600px) {
   .menu-container {
-    padding:17px 12px 35px;
+    padding:6px 12px 35px;
   }
 
   .menu-heading h1 {
