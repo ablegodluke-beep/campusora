@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080b18">
-  <title>Opening Campusora...</title>
-
-  <style>
+  <meta name="theme-color" content="#080b18">  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./campusora-logo.png">  <title>Opening Campusora...</title>  <style>
     * {
       box-sizing: border-box;
     }
@@ -47,17 +44,20 @@
         transform: rotate(360deg);
       }
     }
-  </style>
-</head>
-
-<body>
+  </style></head><body>
   <div class="launch-box">
     <div class="loader"></div>
     <p>Opening Campusora...</p>
-  </div>
-
-  <script type="module">
+  </div>  <script type="module">
     import { supabase } from './supabase.js';
+
+    // Register Campusora service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./service-worker.js")
+        .catch(error => {
+          console.warn("PWA registration:", error);
+        });
+    }
 
     async function openCampusora() {
       try {
@@ -80,6 +80,5 @@
     }
 
     openCampusora();
-  </script>
-</body>
+  </script></body>
 </html>
