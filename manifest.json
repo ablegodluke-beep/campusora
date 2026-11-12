@@ -1,0 +1,18 @@
+{
+  "id": "/",
+  "name": "Campusora",
+  "short_name": "Campusora",
+  "description": "Connect with students, alumni and communities across campuses.",
+  "start_url": "/launch.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080b18",
+  "theme_color": "#080b18",
+  "icons": [
+    {
+      "src": "/campusora-logo.png",
+      "type": "image/png"
+    }
+  ]
+}
