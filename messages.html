@@ -201,13 +201,24 @@ font-weight:800;
 }
 .chat-name-link:hover{color:#c8b7ff}
 .chat-status{color:var(--muted);font-size:10px;margin-top:4px}
-.chat-tools{display:none;gap:7px}
+.chat-tools{
+display:flex;
+align-items:center;
+gap:5px;
+flex-shrink:0;
+}
+
 .chat-tools button{
-width:33px;height:33px;
+width:30px;
+height:30px;
+display:grid;
+place-items:center;
 border:1px solid var(--border);
-border-radius:10px;
+border-radius:9px;
 background:var(--panel2);
 color:white;
+font-size:14px;
+padding:0;
 }
 .messages-area{
 flex:1;
@@ -412,6 +423,22 @@ line-height:1.4;
 }
 .composer textarea::placeholder{color:#8992ad}
 .composer textarea:focus{border-color:#8061df}
+  .composer-tool{
+width:38px;
+height:42px;
+flex-shrink:0;
+border:1px solid var(--border);
+border-radius:12px;
+background:#1a2138;
+color:#c8b7ff;
+font-size:17px;
+display:grid;
+place-items:center;
+}
+
+.composer-tool:disabled{
+opacity:.45;
+}
 .send-btn{
 width:42px;height:42px;
 flex-shrink:0;
@@ -673,15 +700,27 @@ Chats <span class="inbox-count" id="totalCount"></span>
 </a>
 <div class="chat-status" id="chatStatus">Choose a conversation</div>
 </div>
-
 <div class="chat-tools">
-<button id="refreshBtn" title="Refresh messages">↻</button>
+<button id="voiceCallBtn" type="button" title="Voice call" aria-label="Voice call">☎</button>
+<button id="videoCallBtn" type="button" title="Video call" aria-label="Video call">▣</button>
+<button id="refreshBtn" type="button" title="Refresh messages" aria-label="Refresh messages">↻</button>
 </div>
 </header>
 
 <div class="messages-area" id="messagesArea" hidden></div>
 
 <form class="composer" id="messageForm" hidden>
+  <input type="file" id="chatMediaInput" accept="image/*,video/*" hidden>
+
+  <button class="composer-tool" id="attachBtn" type="button" title="Send photo or video">＋</button>
+
+  <button class="composer-tool" id="recordBtn" type="button" title="Record voice message">🎙</button>
+
+  <textarea id="messageInput" maxlength="5000" rows="1"
+    placeholder="Write a message..." aria-label="Write a message"></textarea>
+
+  <button class="send-btn" id="sendBtn" type="submit" aria-label="Send message">➤</button>
+</form>
 <textarea id="messageInput" maxlength="5000" rows="1"
 placeholder="Write a message..." aria-label="Write a message"></textarea>
 <button class="send-btn" id="sendBtn" type="submit" aria-label="Send message">➤</button>
@@ -718,8 +757,13 @@ const $ = id => document.getElementById(id);
 function updateChatViewport(){
 const viewport=window.visualViewport;
 if(!viewport)return;
-document.documentElement.style.setProperty('--visual-viewport-height',viewport.height+'px');
-document.documentElement.style.setProperty('--visual-viewport-top',viewport.offsetTop+'px');
+
+if(document.body.classList.contains('chat-mode')){
+document.documentElement.style.setProperty(
+'--visual-viewport-height',
+Math.max(viewport.height,300)+'px'
+);
+}
 }
 if(window.visualViewport){
 updateChatViewport();
