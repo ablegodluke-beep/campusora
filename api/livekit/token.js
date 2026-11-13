@@ -4,21 +4,20 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed."
-    });
+    return res.status(405).json({ error: "Method not allowed." });
   }
 
-  const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  const LIVEKIT_URL = process.env.LIVEKIT_URL;
-  const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY;
-  const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET;
+  const {
+    SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY,
+    LIVEKIT_URL,
+    LIVEKIT_API_KEY,
+    LIVEKIT_API_SECRET
+  } = process.env;
 
   if (
     !SUPABASE_URL ||
-    !SUPABASE_KEY ||
+    !SUPABASE_SERVICE_ROLE_KEY ||
     !LIVEKIT_URL ||
     !LIVEKIT_API_KEY ||
     !LIVEKIT_API_SECRET
@@ -30,7 +29,6 @@ export default async function handler(req, res) {
 
   try {
     const authHeader = req.headers.authorization || "";
-
     const userToken = authHeader.startsWith("Bearer ")
       ? authHeader.slice(7)
       : "";
@@ -41,12 +39,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // Verify the logged-in Campusora user.
     const authResponse = await fetch(
       `${SUPABASE_URL}/auth/v1/user`,
       {
         headers: {
-          apikey: SUPABASE_KEY,
+          apikey: SUPABASE_SERVICE_ROLE_KEY,
           Authorization: `Bearer ${userToken}`
         }
       }
@@ -60,35 +57,68 @@ export default async function handler(req, res) {
 
     const user = await authResponse.json();
 
-    if (!user.id) {
-      return res.status(401).json({
-        error: "Could not identify your account."
-      });
-    }
-
     const conversationId = req.body?.conversation_id;
+    const invitationId = req.body?.call_invitation_id;
+
+    const uuidPattern =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
     if (
-      typeof conversationId !== "string" ||
-      !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(conversationId)
+      !uuidPattern.test(conversationId || "") ||
+      !uuidPattern.test(invitationId || "")
     ) {
       return res.status(400).json({
-        error: "Invalid conversation."
+        error: "Invalid call request."
       });
     }
 
-    // Confirm that this user belongs to the conversation.
+    const headers = {
+      apikey: SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
+    };
+
+    // Only participants in an accepted invitation can join.
+    const invitationResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/call_invitations` +
+      `?id=eq.${encodeURIComponent(invitationId)}` +
+      `&conversation_id=eq.${encodeURIComponent(conversationId)}` +
+      `&status=eq.accepted` +
+      `&select=id,conversation_id,caller_id,receiver_id,status` +
+      `&limit=1`,
+      { headers }
+    );
+
+    if (!invitationResponse.ok) {
+      return res.status(500).json({
+        error: "Could not verify the call invitation."
+      });
+    }
+
+    const invitations = await invitationResponse.json();
+    const invitation = invitations[0];
+
+    if (!invitation) {
+      return res.status(403).json({
+        error: "This call has not been accepted."
+      });
+    }
+
+    if (
+      user.id !== invitation.caller_id &&
+      user.id !== invitation.receiver_id
+    ) {
+      return res.status(403).json({
+        error: "You are not part of this call."
+      });
+    }
+
+    // Confirm that the user still belongs to the conversation.
     const membershipResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/conversation_members` +
       `?conversation_id=eq.${encodeURIComponent(conversationId)}` +
       `&user_id=eq.${encodeURIComponent(user.id)}` +
       `&select=user_id&limit=1`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`
-        }
-      }
+      { headers }
     );
 
     if (!membershipResponse.ok) {
@@ -105,23 +135,21 @@ export default async function handler(req, res) {
       });
     }
 
-    // Create a private room name without exposing the conversation ID.
+    // Each invitation receives its own private LiveKit room.
     const roomHash = createHash("sha256")
-      .update(conversationId)
+      .update(invitationId)
       .digest("hex")
       .slice(0, 32);
 
-    const roomName = `campusora-${roomHash}`;
+    const roomName = `campusora-call-${roomHash}`;
 
-    // Generate a short-lived LiveKit access token.
     const now = Math.floor(Date.now() / 1000);
 
     const payload = {
       iss: LIVEKIT_API_KEY,
       sub: user.id,
       nbf: now - 5,
-      exp: now + 600,
-
+      exp: now + 3600,
       video: {
         room: roomName,
         roomJoin: true,
@@ -150,7 +178,8 @@ export default async function handler(req, res) {
       success: true,
       server_url: LIVEKIT_URL,
       participant_token: participantToken,
-      room_name: roomName
+      room_name: roomName,
+      call_invitation_id: invitationId
     });
 
   } catch (error) {
