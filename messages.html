@@ -220,6 +220,83 @@ color:white;
 font-size:14px;
 padding:0;
 }
+  .call-picker{
+  position:absolute;
+  top:62px;
+  right:12px;
+  z-index:100;
+  width:220px;
+  padding:15px;
+  border:1px solid #514477;
+  border-radius:17px;
+  background:linear-gradient(145deg,#1b2040,#111629);
+  box-shadow:0 15px 45px #0009;
+  animation:pop .18s ease;
+}
+
+.call-picker[hidden]{display:none}
+
+.call-picker h3{
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.call-picker p{
+  color:var(--muted);
+  font-size:10px;
+  margin-bottom:13px;
+}
+
+.call-choice{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px;
+  margin-top:8px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#202943;
+  color:white;
+  text-align:left;
+}
+
+.call-choice:hover{
+  border-color:var(--purple);
+  background:#292448;
+}
+
+.call-choice-icon{
+  width:35px;
+  height:35px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:#392b62;
+  font-size:17px;
+}
+
+.call-choice strong{
+  display:block;
+  font-size:12px;
+}
+
+.call-choice small{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.call-picker-close{
+  position:absolute;
+  top:10px;
+  right:11px;
+  border:0;
+  background:none;
+  color:#aeb6ce;
+  font-size:19px;
+}
 .messages-area{
 flex:1;
 min-height:0;
@@ -733,11 +810,32 @@ Chats <span class="inbox-count" id="totalCount"></span>
 <div class="chat-status" id="chatStatus">Choose a conversation</div>
 </div>
 <div class="chat-tools">
-<button id="voiceCallBtn" type="button" title="Voice call" aria-label="Voice call">☎</button>
-<button id="videoCallBtn" type="button" title="Video call" aria-label="Video call">▣</button>
-<button id="refreshBtn" type="button" title="Refresh messages" aria-label="Refresh messages">↻</button>
+  <button id="callMenuBtn" type="button" title="Make a call" aria-label="Make a call">☎</button>
+  <button id="refreshBtn" type="button" title="Refresh messages" aria-label="Refresh messages">↻</button>
 </div>
 </header>
+  <div class="call-picker" id="callPicker" hidden>
+  <button type="button" class="call-picker-close" id="closeCallPicker">×</button>
+
+  <h3>Start a call</h3>
+  <p>Choose how you want to connect.</p>
+
+  <button type="button" class="call-choice" data-call-type="voice">
+    <span class="call-choice-icon">☎</span>
+    <span>
+      <strong>Audio Call</strong>
+      <small>Talk with your voice</small>
+    </span>
+  </button>
+
+  <button type="button" class="call-choice" data-call-type="video">
+    <span class="call-choice-icon">▣</span>
+    <span>
+      <strong>Video Call</strong>
+      <small>Talk face to face</small>
+    </span>
+  </button>
+</div>
 
 <div class="messages-area" id="messagesArea" hidden></div>
   <div class="reply-preview-bar" id="replyPreview" hidden>
@@ -2175,7 +2273,36 @@ function setupEvents(){
 $('attachBtn').addEventListener('click',()=>{
   $('chatMediaInput').click();
 });
+  
+// Open call selection panel.
+$('callMenuBtn').addEventListener('click',()=>{
+  if(!currentConversation){
+    toast('Choose a conversation first.');
+    return;
+  }
 
+  $('callPicker').hidden=!$('callPicker').hidden;
+});
+
+// Close call selection panel.
+$('closeCallPicker').addEventListener('click',()=>{
+  $('callPicker').hidden=true;
+});
+
+// Select the call type.
+document.querySelectorAll('[data-call-type]').forEach(button=>{
+  button.addEventListener('click',()=>{
+    const callType=button.dataset.callType;
+    $('callPicker').hidden=true;
+
+    // Call connection will be connected to this selection.
+    window.dispatchEvent(new CustomEvent('campusora-call-selected',{
+      detail:{callType,conversationId:currentConversation?.id}
+    }));
+    
+    toast(callType==='video'?'Video call selected':'Audio call selected');
+  });
+});
 // Upload the selected picture or video.
 $('chatMediaInput').addEventListener('change',event=>{
   const file=event.target.files?.[0];
