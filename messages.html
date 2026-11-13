@@ -283,6 +283,38 @@ font-size:9px;
   margin-left:0;
   margin-right:auto;
 }
+  .reply-preview-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:9px 13px;
+  background:#191d35;
+  border-top:1px solid var(--border);
+  border-left:3px solid var(--purple);
+}
+.reply-preview-bar[hidden]{display:none}
+.reply-preview-bar div{min-width:0;display:flex;flex-direction:column;gap:3px}
+.reply-preview-bar strong{font-size:10px;color:#c8b7ff}
+.reply-preview-bar span{font-size:11px;color:#aab3ce;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reply-preview-bar button{border:0;background:none;color:white;font-size:20px}
+.message-reply-context{
+  padding:7px 9px;
+  margin-bottom:7px;
+  border-left:3px solid #b49aff;
+  background:#101426;
+  border-radius:6px;
+  font-size:10px;
+  color:#c5cce0;
+}
+.message-media{
+  display:block;
+  max-width: min(260px, 100%);
+  max-height:300px;
+  border-radius:10px;
+  margin-top:5px;
+}
+.message-media video{width:100%;max-height:300px;border-radius:10px}
 
 .pending-premium-title{
   display:flex;
@@ -708,6 +740,13 @@ Chats <span class="inbox-count" id="totalCount"></span>
 </header>
 
 <div class="messages-area" id="messagesArea" hidden></div>
+  <div class="reply-preview-bar" id="replyPreview" hidden>
+  <div>
+    <strong id="replyPreviewName">Replying</strong>
+    <span id="replyPreviewText"></span>
+  </div>
+  <button type="button" id="cancelReplyBtn">×</button>
+</div>
 
 <form class="composer" id="messageForm" hidden>
   <input type="file" id="chatMediaInput" accept="image/*,video/*" hidden>
@@ -1760,7 +1799,131 @@ console.error('Payment verification:',error);
 toast(error.message||'Could not verify payment. Please refresh.');
 }
 }
+let selectedReply = null;
+const messageMediaUrls = new Map();
 
+function chooseReply(messageId){
+  const message=currentMessages.find(m=>String(m.id)===String(messageId));
+  if(!message)return;
+
+  selectedReply=message;
+
+  $('replyPreviewName').textContent=
+    message.sender_id===me.id?'You':'Replying to message';
+
+  $('replyPreviewText').textContent=
+    message.content || (message.attachment_type||'Media');
+
+  $('replyPreview').hidden=false;
+  $('messageInput').focus();
+}
+
+function clearReply(){
+  selectedReply=null;
+  $('replyPreview').hidden=true;
+}
+
+async function hydrateMessageMedia(){
+  if(!currentConversation)return;
+
+  const conversationId=currentConversation.id;
+
+  const items=currentMessages.filter(m=>m.attachment_path);
+
+  await Promise.all(items.map(async message=>{
+    const path=message.attachment_path;
+    if(messageMediaUrls.has(path))return;
+
+    const {data,error}=await supabase.storage
+      .from('campusora-chat-media')
+      .createSignedUrl(path,300);
+
+    if(!error&&data?.signedUrl){
+      messageMediaUrls.set(path,data.signedUrl);
+    }
+  }));
+
+  if(currentConversation?.id===conversationId){
+    renderMessages();
+  }
+}
+
+async function sendChatAttachment(file){
+  if(!file||!currentConversation||!me||!authReady||sending)return;
+
+  const isImage=file.type.startsWith('image/');
+  const isVideo=file.type.startsWith('video/');
+
+  if(!isImage&&!isVideo){
+    toast('Choose an image or video.');
+    return;
+  }
+
+  if(file.size>100*1024*1024){
+    toast('This file is larger than the 100MB limit.');
+    return;
+  }
+
+  sending=true;
+  $('attachBtn').disabled=true;
+
+  const conversationId=currentConversation.id;
+  const extension=(file.name.split('.').pop()||'file').replace(/[^a-z0-9]/gi,'');
+  const path=`${conversationId}/${me.id}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+
+  try{
+    const {error:uploadError}=await supabase.storage
+      .from('campusora-chat-media')
+      .upload(path,file,{
+        contentType:file.type,
+        upsert:false
+      });
+
+    if(uploadError)throw uploadError;
+
+    const {data,error}=await supabase
+      .from('messages')
+      .insert({
+        conversation_id:conversationId,
+        sender_id:me.id,
+        content:isImage?'Photo':'Video',
+        attachment_path:path,
+        attachment_type:isImage?'image':'video',
+        attachment_name:file.name,
+        attachment_size:file.size,
+        reply_to_id:selectedReply?.id||null
+      })
+      .select('id,conversation_id,sender_id,content,created_at,deleted_at,attachment_path,attachment_type,attachment_name,attachment_size,reply_to_id')
+      .single();
+
+    if(error){
+      await supabase.storage.from('campusora-chat-media').remove([path]);
+
+      if(String(error.message||'').includes('MESSAGE_PREMIUM_REQUIRED')){
+        toast('Premium is required to send messages now.');
+        return;
+      }
+
+      throw error;
+    }
+
+    currentMessages.push(data);
+    chatHistoryLoaded=true;
+    clearReply();
+    renderMessages();
+    await hydrateMessageMedia();
+    saveChatCache(conversationId);
+    loadInbox().catch(console.warn);
+    toast('Media sent.');
+  }catch(error){
+    console.error('Media upload:',error);
+    toast('Could not send this file. Please try again.');
+  }finally{
+    sending=false;
+    $('attachBtn').disabled=false;
+    $('chatMediaInput').value='';
+  }
+}
 function resetMessageEditor(){
 editingMessageId=null;
 $('sendBtn').textContent='➤';
@@ -1790,7 +1953,7 @@ const {data,error}=await supabase
 .update({content})
 .eq('id',messageId)
 .eq('sender_id',me.id)
-.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.select('id,conversation_id,sender_id,content,created_at,deleted_at,attachment_path,attachment_type,attachment_name,attachment_size,media_duration_seconds,is_view_once,reply_to_id')
 .single();
 
 sending=false;
