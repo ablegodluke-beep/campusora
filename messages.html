@@ -1559,7 +1559,7 @@ loadingMessages=true;
 try{
 const {data,error}=await withTimeout(
 supabase.from('messages')
-.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.select('id,conversation_id,sender_id,content,created_at,deleted_at,attachment_path,attachment_type,attachment_name,attachment_size,media_duration_seconds,is_view_once,reply_to_id')
 .eq('conversation_id',id)
 .is('deleted_at',null)
 .order('created_at',{ascending:false})
