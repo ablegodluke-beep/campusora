@@ -1662,6 +1662,7 @@ currentMessages=Array.from(merged.values())
 
 chatHistoryLoaded=true;
 renderMessages();
+hydrateMessageMedia().catch(console.warn);
 
 loadPendingMessages(id).then(()=>{
 if(currentConversation?.id===id&&loadToken===messageLoadToken){
@@ -2056,11 +2057,12 @@ return;
 const {data,error}=await supabase
 .from('messages')
 .insert({
-conversation_id:currentConversation.id,
-sender_id:me.id,
-content
+  conversation_id:currentConversation.id,
+  sender_id:me.id,
+  content,
+  reply_to_id:selectedReply?.id||null
 })
-.select('id,conversation_id,sender_id,content,created_at,deleted_at')
+.select('id,conversation_id,sender_id,content,created_at,deleted_at,attachment_path,attachment_type,attachment_name,attachment_size,media_duration_seconds,is_view_once,reply_to_id')
 .single();
 
 sending=false;
@@ -2089,6 +2091,7 @@ return;
 input.value='';
 input.style.height='42px';
 $('phoneWarning').classList.remove('show');
+  clearReply();
 $('sendBtn').disabled=false;
 
 if(!currentMessages.some(m=>String(m.id)===String(data.id))){
