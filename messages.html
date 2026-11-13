@@ -1421,12 +1421,15 @@ if(currentConversation?.id===id)loadMessages(id,false);
 
 markConversationRead(id).catch(console.warn);
 }
-function renderMessages(){
+  function renderMessages(){
   if(currentConversation&&me&&chatHistoryLoaded){
     saveChatCache(currentConversation.id);
   }
 
   const area=$('messagesArea');
+  const previousTop=area.scrollTop;
+  const wasNearBottom=!area.dataset.rendered||
+    area.scrollHeight-area.scrollTop-area.clientHeight<100;
 
   const combined=[
     ...currentMessages.map(m=>({...m,_pending:false})),
@@ -1446,6 +1449,8 @@ function renderMessages(){
         <h3>Say hello 👋</h3>
         <p>Your conversation starts here. Send the first message.</p>
       </div>`;
+
+    area.dataset.rendered='1';
     return;
   }
 
@@ -1497,11 +1502,70 @@ function renderMessages(){
         </div>`;
     }
 
+    let replyHtml='';
+
+    if(m.reply_to_id){
+      const original=currentMessages.find(
+        item=>String(item.id)===String(m.reply_to_id)
+      );
+
+      const replyName=original
+        ?(original.sender_id===me.id?'You':'Message')
+        :'Original message';
+
+      const replyText=original
+        ?(original.content||original.attachment_type||'Media')
+        :'This message may no longer be available';
+
+      replyHtml=`
+        <div class="message-reply-context">
+          <strong>${esc(replyName)}</strong><br>
+          ${esc(replyText)}
+        </div>`;
+    }
+
+    let mediaHtml='';
+
+    if(m.attachment_path){
+      const mediaUrl=messageMediaUrls.get(m.attachment_path);
+
+      if(!mediaUrl){
+        mediaHtml=`
+          <div class="message-media-placeholder">
+            Loading ${m.attachment_type==='video'?'video':'photo'}...
+          </div>`;
+      }else if(m.attachment_type==='image'){
+        mediaHtml=`
+          <img class="message-media"
+            src="${esc(mediaUrl)}"
+            alt="${esc(m.attachment_name||'Shared photo')}"
+            loading="lazy">`;
+      }else if(m.attachment_type==='video'){
+        mediaHtml=`
+          <video class="message-media"
+            controls
+            playsinline
+            preload="metadata">
+            <source src="${esc(mediaUrl)}">
+            Your browser cannot play this video.
+          </video>`;
+      }
+    }
+
+    const textContent=m.attachment_path&&
+      (m.content==='Photo'||m.content==='Video')
+      ?''
+      :esc(m.content||'');
+
     output.push(`
       <div class="message-row ${mine?'mine':''} ${m._pending?'pending':''}"
         data-message="${esc(m.id)}">
 
-        <div class="message-bubble">${esc(m.content)}</div>
+        <div class="message-bubble">
+          ${replyHtml}
+          ${mediaHtml}
+          ${textContent}
+        </div>
 
         <div class="message-meta">
           ${ago(m.created_at)}
@@ -1548,7 +1612,15 @@ function renderMessages(){
   });
 
   area.innerHTML=output.join('');
-  area.scrollTop=area.scrollHeight;
+  area.dataset.rendered='1';
+
+  requestAnimationFrame(()=>{
+    if(wasNearBottom){
+      area.scrollTop=area.scrollHeight;
+    }else{
+      area.scrollTop=previousTop;
+    }
+  });
 }
 
   // Refresh server messages without showing a loading screen.
@@ -2096,6 +2168,61 @@ loadInbox().catch(console.warn);
 }
 
 function setupEvents(){
+  // Open the phone gallery.
+$('attachBtn').addEventListener('click',()=>{
+  $('chatMediaInput').click();
+});
+
+// Upload the selected picture or video.
+$('chatMediaInput').addEventListener('change',event=>{
+  const file=event.target.files?.[0];
+  if(file)sendChatAttachment(file);
+});
+
+// Cancel a reply.
+$('cancelReplyBtn').addEventListener('click',clearReply);
+
+// Swipe a message sideways to reply.
+let replySwipeStart=null;
+
+$('messagesArea').addEventListener('touchstart',event=>{
+  const row=event.target.closest('.message-row[data-message]');
+
+  if(!row||row.classList.contains('pending'))return;
+
+  if(event.target.closest('button,a,video'))return;
+
+  const touch=event.touches[0];
+
+  replySwipeStart={
+    id:row.dataset.message,
+    x:touch.clientX,
+    y:touch.clientY,
+    row
+  };
+},{passive:true});
+
+$('messagesArea').addEventListener('touchend',event=>{
+  if(!replySwipeStart)return;
+
+  const touch=event.changedTouches[0];
+  const dx=touch.clientX-replySwipeStart.x;
+  const dy=touch.clientY-replySwipeStart.y;
+
+  if(
+    Math.abs(dx)>65&&
+    Math.abs(dy)<55&&
+    replySwipeStart.row.isConnected
+  ){
+    chooseReply(replySwipeStart.id);
+  }
+
+  replySwipeStart=null;
+},{passive:true});
+
+$('messagesArea').addEventListener('touchcancel',()=>{
+  replySwipeStart=null;
+},{passive:true});
 $('conversationList').addEventListener('click',event=>{
 const button=event.target.closest('[data-conversation]');
 if(!button)return;
