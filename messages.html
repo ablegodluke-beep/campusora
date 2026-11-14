@@ -1157,6 +1157,10 @@ let messagePoll=null;
 let refreshInterval=null;
 let profileCache=new Map();
 let sending=false;
+  let voiceRecorder=null;
+let voiceStream=null;
+let voiceChunks=[];
+let voiceStartedAt=0;
 let loadingMessages=false;
 let messageLoadToken=0;
 let editingMessageId=null;
@@ -2394,7 +2398,7 @@ markConversationRead(id).catch(console.warn);
       if(!mediaUrl){
         mediaHtml=`
           <div class="message-media-placeholder">
-            Loading ${m.attachment_type==='video'?'video':'photo'}...
+           Loading ${m.attachment_type==='video'?'video':m.attachment_type==='audio'?'voice message':'photo'}...
           </div>`;
       }else if(m.attachment_type==='image'){
         mediaHtml=`
@@ -2402,6 +2406,12 @@ markConversationRead(id).catch(console.warn);
             src="${esc(mediaUrl)}"
             alt="${esc(m.attachment_name||'Shared photo')}"
             loading="lazy">`;
+        }else if(m.attachment_type==='audio'){
+  mediaHtml=`
+    <audio class="message-audio" controls preload="metadata">
+      <source src="${esc(mediaUrl)}">
+      Your browser cannot play this voice message.
+    </audio>`;
       }else if(m.attachment_type==='video'){
         mediaHtml=`
           <video class="message-media"
@@ -2782,7 +2792,147 @@ async function hydrateMessageMedia(){
     renderMessages();
   }
 }
+async function startVoiceRecording(){
+  if(!currentConversation||!me||sending)return;
 
+  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){
+    toast('Voice recording is not supported by this browser.');
+    return;
+  }
+
+  try{
+    voiceStream=await navigator.mediaDevices.getUserMedia({
+      audio:{
+        echoCancellation:true,
+        noiseSuppression:true,
+        autoGainControl:true
+      }
+    });
+
+    let options={};
+
+    if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus')){
+      options.mimeType='audio/webm;codecs=opus';
+    }else if(MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')){
+      options.mimeType='audio/ogg;codecs=opus';
+    }
+
+    voiceChunks=[];
+    voiceRecorder=new MediaRecorder(voiceStream,options);
+    voiceStartedAt=Date.now();
+
+    voiceRecorder.ondataavailable=event=>{
+      if(event.data?.size)voiceChunks.push(event.data);
+    };
+
+    voiceRecorder.onstop=async()=>{
+      const duration=Math.max(1,Math.round((Date.now()-voiceStartedAt)/1000));
+      const mimeType=voiceRecorder?.mimeType||'audio/webm';
+      const extension=mimeType.includes('ogg')?'ogg':
+        mimeType.includes('mp4')?'m4a':'webm';
+
+      const blob=new Blob(voiceChunks,{type:mimeType});
+
+      voiceStream?.getTracks().forEach(track=>track.stop());
+      voiceStream=null;
+      voiceRecorder=null;
+      voiceChunks=[];
+
+      if(blob.size){
+        await sendVoiceRecording(blob,duration,extension);
+      }else{
+        toast('No voice was recorded.');
+      }
+
+      $('recordBtn').textContent='🎙';
+      $('recordBtn').classList.remove('recording');
+      $('recordBtn').disabled=false;
+    };
+
+    voiceRecorder.start(250);
+
+    $('recordBtn').textContent='■';
+    $('recordBtn').classList.add('recording');
+
+    toast('Recording started. Tap ■ to finish.');
+  }catch(error){
+    console.error('Voice recording:',error);
+
+    voiceStream?.getTracks().forEach(track=>track.stop());
+    voiceStream=null;
+
+    toast('Microphone access was denied or unavailable.');
+  }
+}
+
+async function stopVoiceRecording(){
+  if(voiceRecorder&&voiceRecorder.state!=='inactive'){
+    $('recordBtn').disabled=true;
+    voiceRecorder.stop();
+  }
+}
+
+async function sendVoiceRecording(blob,duration,extension){
+  if(!currentConversation||!me||sending)return;
+
+  sending=true;
+
+  const conversationId=currentConversation.id;
+  const path=`${conversationId}/${me.id}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+
+  try{
+    const {error:uploadError}=await supabase.storage
+      .from('campusora-chat-media')
+      .upload(path,blob,{
+        contentType:blob.type,
+        upsert:false
+      });
+
+    if(uploadError)throw uploadError;
+
+    const {data,error}=await supabase
+      .from('messages')
+      .insert({
+        conversation_id:conversationId,
+        sender_id:me.id,
+        content:'Voice message',
+        attachment_path:path,
+        attachment_type:'audio',
+        attachment_name:`Voice message.${extension}`,
+        attachment_size:blob.size,
+        media_duration_seconds:duration,
+        reply_to_id:selectedReply?.id||null
+      })
+      .select('id,conversation_id,sender_id,content,created_at,deleted_at,attachment_path,attachment_type,attachment_name,attachment_size,media_duration_seconds,reply_to_id')
+      .single();
+
+    if(error){
+      await supabase.storage.from('campusora-chat-media').remove([path]);
+
+      if(String(error.message||'').includes('MESSAGE_PREMIUM_REQUIRED')){
+        toast('Premium is required to send messages now.');
+        return;
+      }
+
+      throw error;
+    }
+
+    currentMessages.push(data);
+    chatHistoryLoaded=true;
+    clearReply();
+    renderMessages();
+    await hydrateMessageMedia();
+    saveChatCache(conversationId);
+    loadInbox().catch(console.warn);
+
+    toast('Voice message sent.');
+  }catch(error){
+    console.error('Voice upload:',error);
+    toast('Could not send voice message. Please try again.');
+  }finally{
+    sending=false;
+  }
+}
 async function sendChatAttachment(file){
   if(!file||!currentConversation||!me||!authReady||sending)return;
 
@@ -3108,6 +3258,13 @@ $('cameraCallBtn').addEventListener('click',async()=>{
 });
 // Upload the selected picture or video.
 $('chatMediaInput').addEventListener('change',event=>{
+  $('recordBtn').addEventListener('click',()=>{
+  if(voiceRecorder&&voiceRecorder.state==='recording'){
+    stopVoiceRecording();
+  }else{
+    startVoiceRecording();
+  }
+});
   const file=event.target.files?.[0];
   if(file)sendChatAttachment(file);
 });
