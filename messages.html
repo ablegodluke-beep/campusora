@@ -2596,10 +2596,16 @@ return;
 
 if(currentConversation?.id!==id||loadToken!==messageLoadToken)return;
 
-const fresh=(data||[]).reverse();
+// Keep a snapshot so unchanged messages do not redraw the page.
+const previousMessages=JSON.stringify(
+  currentMessages.map(m=>[
+    m.id,m.content,m.deleted_at,m.attachment_path,
+    m.attachment_type,m.attachment_name,m.is_view_once,
+    m.reply_to_id
+  ])
+);
 
-// Merge the server response with any locally displayed messages.
-// This avoids briefly removing messages already on the screen.
+// Merge the server response with locally displayed messages.
 const merged=new Map();
 currentMessages.forEach(m=>merged.set(String(m.id),m));
 fresh.forEach(m=>merged.set(String(m.id),m));
@@ -2610,13 +2616,29 @@ currentMessages=Array.from(merged.values())
 .slice(-100);
 
 chatHistoryLoaded=true;
-renderMessages();
+
+const updatedMessages=JSON.stringify(
+  currentMessages.map(m=>[
+    m.id,m.content,m.deleted_at,m.attachment_path,
+    m.attachment_type,m.attachment_name,m.is_view_once,
+    m.reply_to_id
+  ])
+);
+
+if(previousMessages!==updatedMessages){
+  renderMessages();
+}
+
 hydrateMessageMedia().catch(console.warn);
 
+const previousPending=JSON.stringify(currentPendingMessages);
+
 loadPendingMessages(id).then(()=>{
-if(currentConversation?.id===id&&loadToken===messageLoadToken){
-renderMessages();
-}
+  if(currentConversation?.id!==id||loadToken!==messageLoadToken)return;
+
+  if(previousPending!==JSON.stringify(currentPendingMessages)){
+    renderMessages();
+  }
 }).catch(console.warn);
 
 }catch(error){
@@ -2847,8 +2869,11 @@ function clearReply(){
 
 async function hydrateMessageMedia(){
   if(!currentConversation)return;
+async function hydrateMessageMedia(){
+  if(!currentConversation)return;
 
   const conversationId=currentConversation.id;
+  let addedNewUrl=false;
 
   const items=currentMessages.filter(m=>m.attachment_path);
 
@@ -2862,13 +2887,15 @@ async function hydrateMessageMedia(){
 
     if(!error&&data?.signedUrl){
       messageMediaUrls.set(path,data.signedUrl);
+      addedNewUrl=true;
     }
   }));
 
-  if(currentConversation?.id===conversationId){
+  if(currentConversation?.id===conversationId&&addedNewUrl){
     renderMessages();
   }
 }
+  
 async function startVoiceRecording(){
   if(!currentConversation||!me||sending)return;
 
