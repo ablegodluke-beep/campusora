@@ -309,28 +309,43 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
 }
 .date-label{text-align:center;color:#8992ad;font-size:10px;margin:8px 0}
 .message-row{
-display:flex;
-flex-direction:column;
-align-items:flex-start;
-max-width:82%;
-animation:pop .18s ease;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  width:fit-content;
+  max-width:82%;
+  animation:pop .18s ease;
 }
-.message-row.mine{align-self:flex-end;align-items:flex-end}
+
+.message-row.mine{
+  align-self:flex-end;
+  align-items:flex-end;
+}
+
 .message-bubble{
-padding:10px 13px;
-border:1px solid #303956;
-border-radius:14px 14px 14px 4px;
-background:#202943;
-color:#fff;
-font-size:13px;
-line-height:1.55;
-overflow-wrap:anywhere;
-white-space:pre-wrap;
+  display:inline-block;
+  width:fit-content;
+  max-width:100%;
+  padding:10px 13px;
+  border:1px solid #303956;
+  border-radius:14px 14px 14px 4px;
+  background:#202943;
+  color:#fff;
+  font-size:13px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
 }
+
 .message-row.mine .message-bubble{
-background:linear-gradient(135deg,#6340a5,#365cbb);
-border-color:#7554c4;
-border-radius:14px 14px 4px 14px;
+  background:linear-gradient(135deg,#6340a5,#365cbb);
+  border-color:#7554c4;
+  border-radius:14px 14px 4px 14px;
+}
+
+.message-row.pending .message-bubble{
+  border:1px dashed #e5a64b;
+  background:#3a2b22;
 }
 .message-row.pending .message-bubble{
 border:1px dashed #e5a64b;
@@ -386,12 +401,21 @@ font-size:9px;
 }
 .message-media{
   display:block;
-  max-width: min(260px, 100%);
-  max-height:300px;
+  width:auto;
+  max-width:min(220px,100%);
+  max-height:220px;
+  object-fit:cover;
   border-radius:10px;
   margin-top:5px;
 }
-.message-media video{width:100%;max-height:300px;border-radius:10px}
+
+.message-bubble video.message-media{
+  width:220px;
+  max-width:100%;
+  max-height:220px;
+  object-fit:contain;
+  background:#000;
+}
 
 .pending-premium-title{
   display:flex;
@@ -3147,10 +3171,9 @@ checkMessageInput();
 });
 
 $('messageInput').addEventListener('keydown',event=>{
-if(event.key==='Enter'&&!event.shiftKey){
-event.preventDefault();
-$('messageForm').requestSubmit();
-}
+  if(event.key==='Enter'&&!event.shiftKey){
+    return;
+  }
 });
 
 $('backBtn').addEventListener('click',()=>{
