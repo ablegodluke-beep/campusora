@@ -956,37 +956,37 @@ body.chat-mode .messages-area{padding:12px 10px}
   background:#b83d55;
   border-color:#b83d55;
 }
-  /* FORCE MESSAGE BUBBLES TO FIT THEIR TEXT */
+  /* WHATSAPP-STYLE MESSAGE ALIGNMENT */
 .messages-area .message-row{
   display:flex !important;
   flex-direction:column !important;
-  width:max-content !important;
-  max-width:75% !important;
+  align-items:flex-start !important;
+  width:100% !important;
+  max-width:100% !important;
   min-width:0 !important;
 }
 
 .messages-area .message-row.mine{
-  align-self:flex-end !important;
   align-items:flex-end !important;
 }
 
 .messages-area .message-row .message-bubble{
   display:inline-block !important;
-  flex:none !important;
   width:fit-content !important;
+  max-width:78% !important;
   min-width:0 !important;
-  max-width:100% !important;
-  padding:3px 5px !important;
+  flex:none !important;
+  padding:6px 9px !important;
   margin:0 !important;
   box-sizing:border-box !important;
-  font-size:12px !important;
-  line-height:1.25 !important;
+  font-size:13px !important;
+  line-height:1.35 !important;
   white-space:pre-wrap !important;
   overflow-wrap:anywhere !important;
 }
 
-.messages-area .message-row.mine .message-bubble{
-  align-self:flex-end !important;
+.messages-area .message-row .message-meta{
+  width:auto !important;
 }
 </style>
 </head>
