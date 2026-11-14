@@ -771,6 +771,105 @@ body.has-shared-nav:not(.chat-mode) .inbox{height:100%}
 body.chat-mode .chat-head{min-height:64px}
 body.chat-mode .messages-area{padding:12px 10px}
 }
+  .call-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:20000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:#050713ed;
+}
+.call-backdrop[hidden]{display:none}
+.call-card{
+  width:min(100%,430px);
+  padding:17px;
+  border:1px solid #514477;
+  border-radius:20px;
+  background:#111629;
+  box-shadow:0 20px 70px #000b;
+}
+.call-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+.call-card-head strong{font-size:16px}
+.call-card-head p{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11px;
+}
+.call-card-head button{
+  border:0;
+  background:none;
+  color:white;
+  font-size:25px;
+}
+.call-video-stage{
+  position:relative;
+  width:100%;
+  min-height:260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:15px;
+  background:#080b18;
+}
+#remoteCallVideo{
+  width:100%;
+  height:300px;
+  object-fit:contain;
+}
+#localCallVideo{
+  position:absolute;
+  right:10px;
+  bottom:10px;
+  width:95px;
+  height:125px;
+  object-fit:cover;
+  border:2px solid #a58aff;
+  border-radius:12px;
+  background:#202943;
+}
+.call-audio-avatar{
+  position:absolute;
+  width:75px;
+  height:75px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#30234d;
+  font-size:28px;
+}
+.call-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:17px;
+}
+.call-actions[hidden]{display:none}
+.call-actions button{
+  flex:1;
+  padding:12px 8px;
+  border:1px solid #394766;
+  border-radius:12px;
+  background:#202943;
+  color:white;
+  font-size:11px;
+  font-weight:800;
+}
+.call-actions .call-accept{
+  background:#238c60;
+  border-color:#238c60;
+}
+.call-actions .call-decline{
+  background:#b83d55;
+  border-color:#b83d55;
+}
 </style>
 </head>
 
