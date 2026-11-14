@@ -1064,6 +1064,7 @@ let liveKitRoom=null;
 let connectingCallId=null;
 let callEnding=false;
 let callRingTimeout=null;
+let callResultTimeout=null;  
 
 function showCallScreen(title,status){
   $('callOverlay').hidden=false;
@@ -1106,13 +1107,13 @@ function setupCallRealtime(){
 
 async function handleCallUpdate(call){
   if(!call||!me?.id)return;
-
-  if(
-    call.receiver_id===me.id&&
-    call.status==='ringing'&&
-    new Date(call.expires_at)>new Date()&&
-    !activeCall
-  ){
+if(
+  call.receiver_id===me.id&&
+  call.status==='ringing'&&
+  new Date(call.expires_at)>new Date()&&
+  !activeCall&&
+  !incomingCall
+){
     incomingCall=call;
 
     const {data}=await supabase
@@ -1149,12 +1150,41 @@ async function handleCallUpdate(call){
 
   connectLiveKitCall(call);
 }
+if(
+  ['declined','cancelled','missed','ended'].includes(call.status)
+){
+  if(callRingTimeout){
+    clearTimeout(callRingTimeout);
+    callRingTimeout=null;
+  }
 
-    if(
-      ['declined','cancelled','missed','ended'].includes(call.status)
-    ){
+  if(callResultTimeout){
+    clearTimeout(callResultTimeout);
+  }
+
+  let resultMessage='Call ended.';
+
+  if(call.status==='declined'){
+    resultMessage='Call declined.';
+  }else if(call.status==='missed'){
+    resultMessage='No answer. Call missed.';
+  }else if(call.status==='cancelled'){
+    resultMessage='Call cancelled.';
+  }
+
+  $('callStatus').textContent=resultMessage;
+
+  $('incomingCallActions').hidden=true;
+  $('activeCallActions').hidden=true;
+
+  toast(resultMessage);
+
+  callResultTimeout=setTimeout(()=>{
+    if(activeCall?.id===call.id){
       finishCall(false);
     }
+  },2200);
+}
   }
 }
 
@@ -1209,15 +1239,23 @@ if(callRingTimeout)clearTimeout(callRingTimeout);
 callRingTimeout=setTimeout(async()=>{
   if(!activeCall||activeCall.id!==data.id)return;
 
-  await supabase
+  const {data:missedData,error:missedError}=await supabase
     .from('call_invitations')
     .update({status:'missed'})
     .eq('id',data.id)
-    .eq('status','ringing');
+    .eq('status','ringing')
+    .select('id,status')
+    .maybeSingle();
 
-  if(activeCall?.id===data.id){
-    await finishCall(false);
-    toast('No answer. Call ended.');
+  if(missedError){
+    console.warn('Missed call update:',missedError);
+  }
+
+  if(missedData?.status==='missed'){
+    await handleCallUpdate({
+      ...data,
+      status:'missed'
+    });
   }
 },45000);
 
@@ -1408,6 +1446,10 @@ callEnding=true;
 if(callRingTimeout){
   clearTimeout(callRingTimeout);
   callRingTimeout=null;
+  if(callResultTimeout){
+  clearTimeout(callResultTimeout);
+  callResultTimeout=null;
+  }
 }
 
   const call=activeCall||incomingCall;
