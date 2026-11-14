@@ -776,65 +776,95 @@ body.chat-mode .messages-area{padding:12px 10px}
   inset:0;
   z-index:20000;
   display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-  background:#050713ed;
+  align-items:stretch;
+  justify-content:stretch;
+  padding:0;
+  background:#050713;
 }
+
 .call-backdrop[hidden]{display:none}
+
 .call-card{
-  width:min(100%,430px);
-  padding:17px;
-  border:1px solid #514477;
-  border-radius:20px;
-  background:#111629;
-  box-shadow:0 20px 70px #000b;
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:100dvh;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:#050713;
+  box-shadow:none;
+  overflow:hidden;
 }
+
 .call-card-head{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  z-index:5;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:15px;
+  margin:0;
+  padding:22px 18px 35px;
+  background:linear-gradient(#000b,transparent);
 }
+
 .call-card-head strong{font-size:16px}
+
 .call-card-head p{
   margin-top:5px;
-  color:var(--muted);
-  font-size:11px;
+  color:#ddd;
+  font-size:12px;
 }
+
 .call-card-head button{
   border:0;
-  background:none;
+  background:#ffffff22;
   color:white;
+  width:38px;
+  height:38px;
+  border-radius:50%;
   font-size:25px;
 }
+
 .call-video-stage{
-  position:relative;
+  position:absolute;
+  inset:0;
   width:100%;
-  min-height:260px;
+  height:100%;
+  min-height:0;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  border-radius:15px;
+  border-radius:0;
   background:#080b18;
 }
+
 #remoteCallVideo{
   width:100%;
-  height:300px;
-  object-fit:contain;
+  height:100%;
+  object-fit:cover;
+  background:#080b18;
 }
+
 #localCallVideo{
   position:absolute;
-  right:10px;
-  bottom:10px;
-  width:95px;
-  height:125px;
+  z-index:4;
+  top:85px;
+  right:14px;
+  bottom:auto;
+  width:105px;
+  height:145px;
   object-fit:cover;
-  border:2px solid #a58aff;
-  border-radius:12px;
+  border:2px solid #fff;
+  border-radius:15px;
   background:#202943;
+  box-shadow:0 4px 18px #0008;
 }
+
 .call-audio-avatar{
   position:absolute;
   width:75px;
@@ -845,27 +875,46 @@ body.chat-mode .messages-area{padding:12px 10px}
   background:#30234d;
   font-size:28px;
 }
+
+/* Remove the centre icon during video calls. */
+.call-backdrop.video-call .call-audio-avatar{
+  display:none!important;
+}
+
 .call-actions{
+  position:absolute;
+  z-index:6;
+  left:15px;
+  right:15px;
+  bottom:35px;
   display:flex;
   justify-content:center;
   gap:12px;
-  margin-top:17px;
+  margin:0;
+  padding:14px;
+  border-radius:18px;
+  background:#101629d9;
+  backdrop-filter:blur(12px);
 }
+
 .call-actions[hidden]{display:none}
+
 .call-actions button{
   flex:1;
-  padding:12px 8px;
+  padding:14px 8px;
   border:1px solid #394766;
-  border-radius:12px;
+  border-radius:14px;
   background:#202943;
   color:white;
-  font-size:11px;
+  font-size:12px;
   font-weight:800;
 }
+
 .call-actions .call-accept{
   background:#238c60;
   border-color:#238c60;
 }
+
 .call-actions .call-decline{
   background:#b83d55;
   border-color:#b83d55;
@@ -1161,6 +1210,7 @@ function showCallScreen(title,status){
 
 function hideCallScreen(){
   stopIncomingCallAlert();
+  $('callOverlay').classList.remove('video-call');
   $('callOverlay').hidden=true;
   $('incomingCallActions').hidden=true;
   $('activeCallActions').hidden=true;
@@ -1415,6 +1465,11 @@ async function connectLiveKitCall(call){
 
   connectingCallId=call.id;
   activeCall=call;
+  if(call.call_type==='video'){
+  $('callOverlay').classList.add('video-call');
+}else{
+  $('callOverlay').classList.remove('video-call');
+  }
 
   try{
     if(!window.LivekitClient){
