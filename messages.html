@@ -1259,7 +1259,7 @@ async function declineCampusoraCall(){
 }
 
 async function connectLiveKitCall(call){
-  if(!call||connectingCallId===call.id)return;
+ if(!call||connectingCallId===call.id||liveKitRoom)return;
 
   connectingCallId=call.id;
   activeCall=call;
@@ -2775,19 +2775,58 @@ $('closeCallPicker').addEventListener('click',()=>{
   $('callPicker').hidden=true;
 });
 
-// Select the call type.
+// Start the selected audio or video call.
 document.querySelectorAll('[data-call-type]').forEach(button=>{
   button.addEventListener('click',()=>{
     const callType=button.dataset.callType;
     $('callPicker').hidden=true;
-
-    // Call connection will be connected to this selection.
-    window.dispatchEvent(new CustomEvent('campusora-call-selected',{
-      detail:{callType,conversationId:currentConversation?.id}
-    }));
-    
-    toast(callType==='video'?'Video call selected':'Audio call selected');
+    startCampusoraCall(callType);
   });
+});
+
+// Accept incoming call.
+$('acceptCallBtn').addEventListener('click',()=>{
+  acceptCampusoraCall();
+});
+
+// Decline incoming call.
+$('declineCallBtn').addEventListener('click',()=>{
+  declineCampusoraCall();
+});
+
+// Close or end call.
+$('closeCallScreen').addEventListener('click',()=>{
+  if(incomingCall){
+    declineCampusoraCall();
+  }else{
+    finishCall(true);
+  }
+});
+
+$('endCallBtn').addEventListener('click',()=>{
+  finishCall(true);
+});
+
+// Mute and unmute microphone.
+$('muteCallBtn').addEventListener('click',async()=>{
+  if(!liveKitRoom)return;
+
+  const enabled=!liveKitRoom.localParticipant.isMicrophoneEnabled;
+
+  await liveKitRoom.localParticipant.setMicrophoneEnabled(enabled);
+
+  $('muteCallBtn').textContent=enabled?'🎙 Mute':'🔇 Unmute';
+});
+
+// Turn camera on and off.
+$('cameraCallBtn').addEventListener('click',async()=>{
+  if(!liveKitRoom)return;
+
+  const enabled=!liveKitRoom.localParticipant.isCameraEnabled;
+
+  await liveKitRoom.localParticipant.setCameraEnabled(enabled);
+
+  $('cameraCallBtn').textContent=enabled?'▣ Camera Off':'▣ Camera On';
 });
 // Upload the selected picture or video.
 $('chatMediaInput').addEventListener('change',event=>{
@@ -2963,6 +3002,22 @@ restoreInboxCache();
 }
 
 setupInboxRealtime();
+  // Activate incoming and outgoing call notifications.
+setupCallRealtime();
+
+supabase
+  .from('call_invitations')
+  .select('*')
+  .eq('receiver_id',me.id)
+  .eq('status','ringing')
+  .gt('expires_at',new Date().toISOString())
+  .order('created_at',{ascending:false})
+  .limit(1)
+  .maybeSingle()
+  .then(({data,error})=>{
+    if(error)console.warn('Pending call check:',error);
+    if(data)handleCallUpdate(data);
+  });
 
 // Background refresh. It never blocks the visible inbox.
 loadInbox().catch(error=>console.warn('Inbox refresh:',error));
