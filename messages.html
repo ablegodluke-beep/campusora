@@ -2640,6 +2640,7 @@ if(previousMessages!==updatedMessages){
 }
 
 hydrateMessageMedia().catch(console.warn);
+refreshMessageReadStatus(id).catch(console.warn);
 
 const previousPending=JSON.stringify(currentPendingMessages);
 
@@ -2920,7 +2921,6 @@ function clearReply(){
 }
 
 async function hydrateMessageMedia(){
-  refreshMessageReadStatus(id).catch(console.warn);
   if(!currentConversation)return;
 
 
