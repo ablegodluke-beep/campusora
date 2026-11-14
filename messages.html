@@ -1065,7 +1065,94 @@ let connectingCallId=null;
 let callEnding=false;
 let callRingTimeout=null;
 let callResultTimeout=null;  
+  let callAlertAudio=null;
+let callAlertInterval=null;
+let callVibrationInterval=null;
 
+  // Prepare audio after the user's first screen interaction.
+function prepareCallAlertAudio(){
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+
+  if(!AudioContextClass)return;
+
+  if(!callAlertAudio){
+    callAlertAudio=new AudioContextClass();
+  }
+
+  if(callAlertAudio.state==='suspended'){
+    callAlertAudio.resume().catch(()=>{});
+  }
+}
+
+// Play a short incoming-call ringtone.
+function playIncomingCallTone(){
+  if(!callAlertAudio)return;
+
+  if(callAlertAudio.state==='suspended'){
+    callAlertAudio.resume().catch(()=>{});
+    return;
+  }
+
+  const oscillator=callAlertAudio.createOscillator();
+  const gain=callAlertAudio.createGain();
+
+  oscillator.type='sine';
+  oscillator.frequency.value=880;
+
+  gain.gain.setValueAtTime(0.001,callAlertAudio.currentTime);
+  gain.gain.linearRampToValueAtTime(0.12,callAlertAudio.currentTime+0.04);
+  gain.gain.linearRampToValueAtTime(0.001,callAlertAudio.currentTime+0.35);
+
+  oscillator.connect(gain);
+  gain.connect(callAlertAudio.destination);
+
+  oscillator.start();
+  oscillator.stop(callAlertAudio.currentTime+0.36);
+}
+
+// Start ringtone and phone vibration.
+function startIncomingCallAlert(){
+  stopIncomingCallAlert();
+
+  prepareCallAlertAudio();
+  playIncomingCallTone();
+
+  callAlertInterval=setInterval(()=>{
+    playIncomingCallTone();
+  },1400);
+
+  if(navigator.vibrate){
+    navigator.vibrate([300,150,300]);
+
+    callVibrationInterval=setInterval(()=>{
+      navigator.vibrate([300,150,300]);
+    },1500);
+  }
+}
+
+// Stop ringtone and vibration.
+function stopIncomingCallAlert(){
+  if(callAlertInterval){
+    clearInterval(callAlertInterval);
+    callAlertInterval=null;
+  }
+
+  if(callVibrationInterval){
+    clearInterval(callVibrationInterval);
+    callVibrationInterval=null;
+  }
+
+  if(navigator.vibrate){
+    navigator.vibrate(0);
+  }
+}
+
+// Unlock audio on the user's first interaction.
+document.addEventListener(
+  'pointerdown',
+  prepareCallAlertAudio,
+  {once:true}
+);
 function showCallScreen(title,status){
   $('callOverlay').hidden=false;
   $('callTitle').textContent=title;
@@ -1073,6 +1160,7 @@ function showCallScreen(title,status){
 }
 
 function hideCallScreen(){
+  stopIncomingCallAlert();
   $('callOverlay').hidden=true;
   $('incomingCallActions').hidden=true;
   $('activeCallActions').hidden=true;
@@ -1131,6 +1219,7 @@ if(
       :'Incoming audio call...';
 
     $('incomingCallActions').hidden=false;
+     startIncomingCallAlert();
     $('activeCallActions').hidden=true;
     $('callOverlay').hidden=false;
     $('callAudioAvatar').hidden=false;
@@ -1275,6 +1364,7 @@ async function acceptCampusoraCall(){
   if(!incomingCall)return;
 
   const call=incomingCall;
+  stopIncomingCallAlert();
   activeCall=call;
   incomingCall=null;
 
@@ -1308,6 +1398,7 @@ async function declineCampusoraCall(){
   if(!incomingCall)return;
 
   const call=incomingCall;
+  stopIncomingCallAlert();
   incomingCall=null;
 
   await supabase
