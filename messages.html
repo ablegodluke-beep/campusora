@@ -1051,7 +1051,366 @@ let loadingMessages=false;
 let messageLoadToken=0;
 let editingMessageId=null;
 let pendingPremiumMessageId=null;
+  
+// =====================================
+// CAMPUSORA AUDIO AND VIDEO CALL SYSTEM
+// =====================================
 
+let callRealtime=null;
+let callRealtimeReady=Promise.resolve();
+let activeCall=null;
+let incomingCall=null;
+let liveKitRoom=null;
+let connectingCallId=null;
+let callEnding=false;
+
+function showCallScreen(title,status){
+  $('callOverlay').hidden=false;
+  $('callTitle').textContent=title;
+  $('callStatus').textContent=status;
+}
+
+function hideCallScreen(){
+  $('callOverlay').hidden=true;
+  $('incomingCallActions').hidden=true;
+  $('activeCallActions').hidden=true;
+  $('remoteCallVideo').srcObject=null;
+  $('localCallVideo').srcObject=null;
+  $('callAudioSink').innerHTML='';
+  $('callAudioAvatar').hidden=false;
+}
+
+function setupCallRealtime(){
+  if(!me?.id)return;
+
+  if(callRealtime)supabase.removeChannel(callRealtime);
+
+  callRealtimeReady=new Promise(resolve=>{
+    callRealtime=supabase
+      .channel('campusora-calls-'+me.id)
+      .on('postgres_changes',{
+        event:'*',
+        schema:'public',
+        table:'call_invitations'
+      },payload=>{
+        handleCallUpdate(payload.new);
+      })
+      .subscribe(status=>{
+        if(status==='SUBSCRIBED')resolve(true);
+      });
+
+    setTimeout(()=>resolve(false),10000);
+  });
+}
+
+async function handleCallUpdate(call){
+  if(!call||!me?.id)return;
+
+  if(
+    call.receiver_id===me.id&&
+    call.status==='ringing'&&
+    new Date(call.expires_at)>new Date()&&
+    !activeCall
+  ){
+    incomingCall=call;
+
+    const {data}=await supabase
+      .from('profiles')
+      .select('id,username,full_name,avatar_url,school')
+      .eq('id',call.caller_id)
+      .maybeSingle();
+
+    const callerName=data?.full_name||data?.username||'Campusora member';
+
+    $('callTitle').textContent=callerName;
+    $('callStatus').textContent=
+      call.call_type==='video'
+      ?'Incoming video call...'
+      :'Incoming audio call...';
+
+    $('incomingCallActions').hidden=false;
+    $('activeCallActions').hidden=true;
+    $('callOverlay').hidden=false;
+    $('callAudioAvatar').hidden=false;
+
+    return;
+  }
+
+  if(
+    activeCall&&
+    call.id===activeCall.id
+  ){
+    if(call.status==='accepted'){
+      connectLiveKitCall(call);
+    }
+
+    if(
+      ['declined','cancelled','missed','ended'].includes(call.status)
+    ){
+      finishCall(false);
+    }
+  }
+}
+
+async function startCampusoraCall(callType){
+  if(!me?.id||!currentConversation){
+    toast('Open a conversation first.');
+    return;
+  }
+
+  if(currentConversation.is_group){
+    toast('Calls are currently available for one-to-one chats.');
+    return;
+  }
+
+  if(activeCall||incomingCall){
+    toast('You already have an active call.');
+    return;
+  }
+
+  const receiverId=currentConversation.otherUserId;
+
+  if(!receiverId||receiverId===me.id){
+    toast('This member cannot receive the call.');
+    return;
+  }
+
+  await callRealtimeReady;
+
+  const {data,error}=await supabase
+    .from('call_invitations')
+    .insert({
+      conversation_id:currentConversation.id,
+      caller_id:me.id,
+      receiver_id:receiverId,
+      call_type:callType,
+      status:'ringing'
+    })
+    .select('*')
+    .single();
+
+  if(error||!data){
+    console.error('Call invitation:',error);
+    toast('Could not start the call. Please try again.');
+    return;
+  }
+
+  activeCall=data;
+  callEnding=false;
+
+  showCallScreen(
+    currentOtherUser?.full_name||
+    currentOtherUser?.username||
+    'Campusora member',
+    callType==='video'?'Calling...':'Audio calling...'
+  );
+
+  $('incomingCallActions').hidden=true;
+  $('activeCallActions').hidden=true;
+  $('callAudioAvatar').hidden=false;
+}
+
+async function acceptCampusoraCall(){
+  if(!incomingCall)return;
+
+  const call=incomingCall;
+  activeCall=call;
+  incomingCall=null;
+
+  $('incomingCallActions').hidden=true;
+  $('callStatus').textContent='Connecting...';
+
+  const {data,error}=await supabase
+    .from('call_invitations')
+    .update({
+      status:'accepted',
+      answered_at:new Date().toISOString()
+    })
+    .eq('id',call.id)
+    .eq('status','ringing')
+    .select('*')
+    .maybeSingle();
+
+  if(error||!data){
+    console.error('Accept call:',error);
+    activeCall=null;
+    hideCallScreen();
+    toast('This call is no longer available.');
+    return;
+  }
+
+  activeCall=data;
+  connectLiveKitCall(data);
+}
+
+async function declineCampusoraCall(){
+  if(!incomingCall)return;
+
+  const call=incomingCall;
+  incomingCall=null;
+
+  await supabase
+    .from('call_invitations')
+    .update({status:'declined'})
+    .eq('id',call.id)
+    .eq('status','ringing');
+
+  hideCallScreen();
+}
+
+async function connectLiveKitCall(call){
+  if(!call||connectingCallId===call.id)return;
+
+  connectingCallId=call.id;
+  activeCall=call;
+
+  try{
+    if(!window.LivekitClient){
+      throw new Error('Calling library did not load. Refresh the page.');
+    }
+
+    const {data:sessionData}=await supabase.auth.getSession();
+    const accessToken=sessionData?.session?.access_token;
+
+    if(!accessToken){
+      throw new Error('Your login session has expired.');
+    }
+
+    $('callStatus').textContent='Preparing secure connection...';
+
+    const response=await fetch('/api/livekit/token',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+accessToken
+      },
+      body:JSON.stringify({
+        conversation_id:call.conversation_id,
+        call_invitation_id:call.id
+      })
+    });
+
+    const tokenData=await response.json();
+
+    if(!response.ok){
+      throw new Error(tokenData.error||'Could not connect the call.');
+    }
+
+    const room=new LivekitClient.Room({
+      adaptiveStream:true,
+      dynacast:true
+    });
+
+    liveKitRoom=room;
+
+    room.on(
+      LivekitClient.RoomEvent.TrackSubscribed,
+      (track)=>{
+        if(track.kind==='video'){
+          const element=track.attach();
+          $('remoteCallVideo').replaceWith(element);
+          element.id='remoteCallVideo';
+          element.autoplay=true;
+          element.playsInline=true;
+          $('callAudioAvatar').hidden=true;
+        }
+
+        if(track.kind==='audio'){
+          const element=track.attach();
+          $('callAudioSink').appendChild(element);
+          element.play().catch(()=>{});
+        }
+      }
+    );
+
+    room.on(
+      LivekitClient.RoomEvent.TrackUnsubscribed,
+      (track)=>{
+        track.detach().forEach(element=>element.remove());
+      }
+    );
+
+    room.on(
+      LivekitClient.RoomEvent.Disconnected,
+      ()=>{
+        if(activeCall?.id===call.id){
+          finishCall(false);
+        }
+      }
+    );
+
+    await room.connect(
+      tokenData.server_url,
+      tokenData.participant_token
+    );
+
+    if(call.call_type==='video'){
+      await room.localParticipant.enableCameraAndMicrophone();
+
+      const cameraTrack=room.localParticipant
+        .getTrackPublication(
+          LivekitClient.Track.Source.Camera
+        )?.track;
+
+      if(cameraTrack){
+        const element=cameraTrack.attach();
+        $('localCallVideo').replaceWith(element);
+        element.id='localCallVideo';
+        element.muted=true;
+        element.autoplay=true;
+        element.playsInline=true;
+      }
+    }else{
+      await room.localParticipant.setMicrophoneEnabled(true);
+      $('localCallVideo').hidden=true;
+    }
+
+    $('callStatus').textContent='Connected';
+    $('incomingCallActions').hidden=true;
+    $('activeCallActions').hidden=false;
+
+  }catch(error){
+    console.error('LiveKit connection:',error);
+    toast(error.message||'Call connection failed.');
+    await finishCall(true);
+  }finally{
+    connectingCallId=null;
+  }
+}
+
+async function finishCall(updateDatabase=true){
+  if(callEnding)return;
+  callEnding=true;
+
+  const call=activeCall||incomingCall;
+
+  activeCall=null;
+  incomingCall=null;
+  connectingCallId=null;
+
+  if(liveKitRoom){
+    try{
+      await liveKitRoom.disconnect();
+    }catch(error){
+      console.warn('Call disconnect:',error);
+    }
+    liveKitRoom=null;
+  }
+
+  if(updateDatabase&&call?.id){
+    await supabase
+      .from('call_invitations')
+      .update({
+        status:'ended',
+        ended_at:new Date().toISOString()
+      })
+      .eq('id',call.id)
+      .in('status',['ringing','accepted']);
+  }
+
+  hideCallScreen();
+  callEnding=false;
+}
 function withTimeout(promise,ms,label){
 let timer;
 return Promise.race([
