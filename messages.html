@@ -3256,19 +3256,21 @@ $('cameraCallBtn').addEventListener('click',async()=>{
 
   $('cameraCallBtn').textContent=enabled?'▣ Camera Off':'▣ Camera On';
 });
+  
 // Upload the selected picture or video.
 $('chatMediaInput').addEventListener('change',event=>{
-  $('recordBtn').addEventListener('click',()=>{
+  const file=event.target.files?.[0];
+  if(file)sendChatAttachment(file);
+});
+
+// Start or stop voice recording.
+$('recordBtn').addEventListener('click',()=>{
   if(voiceRecorder&&voiceRecorder.state==='recording'){
     stopVoiceRecording();
   }else{
     startVoiceRecording();
   }
 });
-  const file=event.target.files?.[0];
-  if(file)sendChatAttachment(file);
-});
-
 // Cancel a reply.
 $('cancelReplyBtn').addEventListener('click',clearReply);
 
