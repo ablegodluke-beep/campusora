@@ -322,32 +322,38 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
   align-items:flex-end;
 }
   .message-bubble{
-  display:inline-block;
-  width:fit-content;
+  display:block;
+  flex:0 0 auto;
+  align-self:flex-start;
+  width:max-content;
   max-width:100%;
-  height:auto;
-  min-height:0;
-  padding:4px 7px;
+  min-width:0;
+  padding:3px 6px;
   margin:0;
   border:1px solid #303956;
-  border-radius:10px 10px 10px 3px;
+  border-radius:9px 9px 9px 3px;
   background:#202943;
   color:#fff;
   font-size:12px;
-  line-height:1.3;
+  line-height:1.25;
   overflow-wrap:anywhere;
   white-space:pre-wrap;
   box-sizing:border-box;
 }
 
 .message-row.mine .message-bubble{
-  width:fit-content;
-  height:auto;
-  min-height:0;
-  padding:4px 7px;
+  align-self:flex-end;
+  width:max-content;
+  max-width:100%;
+  padding:3px 6px;
   background:linear-gradient(135deg,#6340a5,#365cbb);
   border-color:#7554c4;
-  border-radius:10px 10px 3px 10px;
+  border-radius:9px 9px 3px 9px;
+}
+
+.message-row.pending .message-bubble{
+  border:1px dashed #e5a64b;
+  background:#3a2b22;
 }
 
 .message-row.pending .message-bubble{
