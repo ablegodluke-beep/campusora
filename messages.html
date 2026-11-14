@@ -1063,6 +1063,7 @@ let incomingCall=null;
 let liveKitRoom=null;
 let connectingCallId=null;
 let callEnding=false;
+let callRingTimeout=null;
 
 function showCallScreen(title,status){
   $('callOverlay').hidden=false;
@@ -1141,8 +1142,13 @@ async function handleCallUpdate(call){
     call.id===activeCall.id
   ){
     if(call.status==='accepted'){
-      connectLiveKitCall(call);
-    }
+  if(callRingTimeout){
+    clearTimeout(callRingTimeout);
+    callRingTimeout=null;
+  }
+
+  connectLiveKitCall(call);
+}
 
     if(
       ['declined','cancelled','missed','ended'].includes(call.status)
@@ -1196,7 +1202,24 @@ async function startCampusoraCall(callType){
   }
 
   activeCall=data;
-  callEnding=false;
+callEnding=false;
+
+if(callRingTimeout)clearTimeout(callRingTimeout);
+
+callRingTimeout=setTimeout(async()=>{
+  if(!activeCall||activeCall.id!==data.id)return;
+
+  await supabase
+    .from('call_invitations')
+    .update({status:'missed'})
+    .eq('id',data.id)
+    .eq('status','ringing');
+
+  if(activeCall?.id===data.id){
+    await finishCall(false);
+    toast('No answer. Call ended.');
+  }
+},45000);
 
   showCallScreen(
     currentOtherUser?.full_name||
@@ -1380,7 +1403,12 @@ async function connectLiveKitCall(call){
 
 async function finishCall(updateDatabase=true){
   if(callEnding)return;
-  callEnding=true;
+callEnding=true;
+
+if(callRingTimeout){
+  clearTimeout(callRingTimeout);
+  callRingTimeout=null;
+}
 
   const call=activeCall||incomingCall;
 
