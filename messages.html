@@ -865,7 +865,35 @@ Sharing phone numbers is currently restricted on Campusora
 </section>
 </main>
 </div>
+<div class="call-backdrop" id="callOverlay" hidden>
+  <div class="call-card">
+    <div class="call-card-head">
+      <div>
+        <strong id="callTitle">Campusora Call</strong>
+        <p id="callStatus">Connecting...</p>
+      </div>
+      <button id="closeCallScreen" type="button">×</button>
+    </div>
 
+    <div class="call-video-stage" id="callVideoStage">
+      <video id="remoteCallVideo" autoplay playsinline></video>
+      <video id="localCallVideo" autoplay muted playsinline></video>
+      <div id="callAudioSink"></div>
+      <div class="call-audio-avatar" id="callAudioAvatar">☎</div>
+    </div>
+
+    <div class="call-actions" id="incomingCallActions" hidden>
+      <button id="declineCallBtn" class="call-decline">Decline</button>
+      <button id="acceptCallBtn" class="call-accept">Accept</button>
+    </div>
+
+    <div class="call-actions" id="activeCallActions" hidden>
+      <button id="muteCallBtn">🎙 Mute</button>
+      <button id="cameraCallBtn">▣ Camera</button>
+      <button id="endCallBtn" class="call-decline">End Call</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <div class="modal-backdrop" id="premiumModal">
@@ -881,7 +909,7 @@ Sharing phone numbers is currently restricted on Campusora
 <button class="modal-cancel" id="closePremiumModal">Not now</button>
 </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
 <script type="module">
 import { supabase } from './supabase.js';
 
