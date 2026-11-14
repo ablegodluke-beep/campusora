@@ -370,7 +370,16 @@ margin:4px 4px 0;
 color:#8992ad;
 font-size:9px;
 }
-.message-status{color:var(--cyan)}
+  .message-status{
+  color:#8992ad;
+  font-size:11px;
+  letter-spacing:-3px;
+  font-weight:700;
+}
+
+.message-status.read{
+  color:#35b9ff;
+}
 .pending-status{color:#ffc16a}
   .pending-premium-card{
   width:min(310px,calc(100% - 8px));
@@ -2687,7 +2696,49 @@ if(c)c.lastReadAt=now;
 renderInbox();
 saveInboxCache();
 }
+async function refreshMessageReadStatus(id){
+  if(!me||currentConversation?.id!==id)return;
 
+  const {data,error}=await supabase
+    .from('conversation_members')
+    .select('last_read_at')
+    .eq('conversation_id',id)
+    .neq('user_id',me.id);
+
+  if(error){
+    console.warn('Message read receipt:',error);
+    return;
+  }
+
+  if(currentConversation?.id!==id)return;
+
+  const readTimes=(data||[])
+    .map(member=>member.last_read_at
+      ?new Date(member.last_read_at).getTime()
+      :0
+    );
+
+  document.querySelectorAll(
+    '#messagesArea .message-row.mine'
+  ).forEach(row=>{
+    const message=currentMessages.find(
+      m=>String(m.id)===row.dataset.message
+    );
+
+    const tick=row.querySelector('.message-status');
+
+    if(!message||!tick)return;
+
+    const messageTime=new Date(message.created_at).getTime();
+
+    const isRead=readTimes.some(
+      time=>time>=messageTime
+    );
+
+    tick.textContent=isRead?'✓✓':'✓';
+    tick.classList.toggle('read',isRead);
+  });
+}
 function setupMessageRealtime(id){
 if(realtimeMessages){
 supabase.removeChannel(realtimeMessages);
@@ -2869,6 +2920,7 @@ function clearReply(){
 }
 
 async function hydrateMessageMedia(){
+  refreshMessageReadStatus(id).catch(console.warn);
   if(!currentConversation)return;
 
 
