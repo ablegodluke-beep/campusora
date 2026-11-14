@@ -2595,6 +2595,7 @@ return;
 }
 
 if(currentConversation?.id!==id||loadToken!==messageLoadToken)return;
+  const fresh=(data||[]).reverse();
 
 // Keep a snapshot so unchanged messages do not redraw the page.
 const previousMessages=JSON.stringify(
@@ -2869,8 +2870,7 @@ function clearReply(){
 
 async function hydrateMessageMedia(){
   if(!currentConversation)return;
-async function hydrateMessageMedia(){
-  if(!currentConversation)return;
+
 
   const conversationId=currentConversation.id;
   let addedNewUrl=false;
