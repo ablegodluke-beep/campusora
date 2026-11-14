@@ -1442,14 +1442,15 @@ async function connectLiveKitCall(call){
 async function finishCall(updateDatabase=true){
   if(callEnding)return;
 callEnding=true;
-
+  
 if(callRingTimeout){
   clearTimeout(callRingTimeout);
   callRingTimeout=null;
-  if(callResultTimeout){
+}
+
+if(callResultTimeout){
   clearTimeout(callResultTimeout);
   callResultTimeout=null;
-  }
 }
 
   const call=activeCall||incomingCall;
