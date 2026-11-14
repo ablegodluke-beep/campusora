@@ -435,33 +435,54 @@ font-size:9px;
   background:#000;
 }
   
-.message-audio{
-  display:block;
-  width:220px;
-  max-width:100%;
-  height:38px;
-  margin-top:4px;
-  border-radius:20px;
-}
-
-#recordBtn.recording{
-  background:#642b39;
-  border-color:#ff647d;
-  color:#fff;
-  animation:recordPulse 1.2s infinite;
-}
-
-@keyframes recordPulse{
-  50%{box-shadow:0 0 0 5px #ff647d22}
-}
-.pending-premium-title{
+.voice-player{
   display:flex;
   align-items:center;
-  gap:8px;
-  margin-bottom:6px;
-  font-size:12px;
-  font-weight:800;
+  gap:6px;
+  width:150px;
+  max-width:100%;
+  height:30px;
+  margin-top:2px;
+  box-sizing:border-box;
+}
+
+.voice-play{
+  flex:0 0 25px;
+  width:25px;
+  height:25px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:#7654c4;
   color:#fff;
+  font-size:11px;
+  display:grid;
+  place-items:center;
+}
+
+.voice-progress{
+  flex:1;
+  min-width:0;
+  width:65px;
+  height:3px;
+  margin:0;
+  accent-color:#bba2ff;
+  cursor:pointer;
+}
+
+.voice-time{
+  flex:0 0 auto;
+  color:#c5cce0;
+  font-size:9px;
+  white-space:nowrap;
+}
+
+.message-row.mine .voice-time{
+  color:#fff;
+}
+
+.message-audio{
+  display:none;
 }
 
 .pending-premium-icon{
@@ -2408,10 +2429,22 @@ markConversationRead(id).catch(console.warn);
             loading="lazy">`;
         }else if(m.attachment_type==='audio'){
   mediaHtml=`
-    <audio class="message-audio" controls preload="metadata">
-      <source src="${esc(mediaUrl)}">
-      Your browser cannot play this voice message.
-    </audio>`;
+    <div class="voice-player">
+      <button type="button" class="voice-play">▶</button>
+
+      <input
+        type="range"
+        class="voice-progress"
+        min="0"
+        max="1000"
+        value="0">
+
+      <span class="voice-time">0:00</span>
+
+      <audio class="message-audio" preload="metadata">
+        <source src="${esc(mediaUrl)}">
+      </audio>
+    </div>`;
       }else if(m.attachment_type==='video'){
         mediaHtml=`
           <video class="message-media"
@@ -2484,6 +2517,79 @@ markConversationRead(id).catch(console.warn);
   });
 
   area.innerHTML=output.join('');
+    // Set up compact voice message players.
+area.querySelectorAll('.voice-player').forEach(player=>{
+  const audio=player.querySelector('audio');
+  const button=player.querySelector('.voice-play');
+  const progress=player.querySelector('.voice-progress');
+  const clock=player.querySelector('.voice-time');
+
+  if(!audio||!button||!progress||!clock)return;
+
+  const formatTime=seconds=>{
+    if(!Number.isFinite(seconds))return '0:00';
+
+    const minutes=Math.floor(seconds/60);
+    const remaining=Math.floor(seconds%60);
+
+    return minutes+':'+String(remaining).padStart(2,'0');
+  };
+
+  const updatePlayer=()=>{
+    const duration=audio.duration||0;
+    const current=audio.currentTime||0;
+
+    progress.value=duration
+      ?Math.round((current/duration)*1000)
+      :0;
+
+    clock.textContent=formatTime(current);
+  };
+
+  button.addEventListener('click',async()=>{
+    if(audio.paused){
+      document.querySelectorAll('.message-audio').forEach(other=>{
+        if(other!==audio){
+          other.pause();
+          const otherButton=other.parentElement.querySelector('.voice-play');
+          if(otherButton)otherButton.textContent='▶';
+        }
+      });
+
+      try{
+        await audio.play();
+        button.textContent='Ⅱ';
+      }catch(error){
+        console.error('Voice playback:',error);
+      }
+    }else{
+      audio.pause();
+      button.textContent='▶';
+    }
+  });
+
+  progress.addEventListener('input',()=>{
+    if(!Number.isFinite(audio.duration))return;
+
+    audio.currentTime=(Number(progress.value)/1000)*audio.duration;
+    updatePlayer();
+  });
+
+  audio.addEventListener('loadedmetadata',updatePlayer);
+  audio.addEventListener('timeupdate',updatePlayer);
+
+  audio.addEventListener('ended',()=>{
+    button.textContent='▶';
+    audio.currentTime=0;
+    updatePlayer();
+  });
+
+  audio.addEventListener('pause',()=>{
+    button.textContent='▶';
+  });
+
+  updatePlayer();
+});
   area.dataset.rendered='1';
 
   requestAnimationFrame(()=>{
