@@ -689,6 +689,135 @@ a{color:inherit;text-decoration:none}
 .dialog-confirm{background:linear-gradient(110deg,#7c3aed,#2563eb);color:#fff}
 @keyframes dialogFade{from{opacity:0}to{opacity:1}}
 @keyframes dialogPop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* MOMENT VIEWS BUTTON */
+.view-moment-btn{
+  border:1px solid #ffffff66;
+  background:#171d35;
+  color:#fff;
+  border-radius:18px;
+  padding:8px 11px;
+  font-size:10px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* MOMENT ACTIVITY PANEL */
+.moment-stats-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100001;
+  background:#020511dd;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.moment-stats-overlay.open{
+  display:flex;
+}
+
+.moment-stats-card{
+  width:min(430px,100%);
+  max-height:80vh;
+  overflow-y:auto;
+  background:#11182d;
+  border:1px solid #303958;
+  border-radius:17px;
+  padding:16px;
+  color:#fff;
+}
+
+.moment-stats-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding-bottom:13px;
+  border-bottom:1px solid #29314a;
+}
+
+.moment-stats-header h3{
+  font-size:15px;
+}
+
+.moment-stats-header p{
+  color:#9da8c4;
+  font-size:10px;
+  margin-top:4px;
+}
+
+.moment-stats-header button{
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:50%;
+  background:#252e49;
+  color:white;
+  font-size:20px;
+}
+
+.moment-stats-section{
+  margin-top:17px;
+}
+
+.moment-stats-section h4{
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.moment-stats-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.moment-stat-person{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px;
+  border-radius:10px;
+  background:#19223b;
+}
+
+.moment-stat-person img,
+.moment-stat-avatar{
+  width:35px;
+  height:35px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#303b60;
+}
+
+.moment-stat-info{
+  flex:1;
+  min-width:0;
+}
+
+.moment-stat-info strong{
+  display:block;
+  font-size:11px;
+  overflow-wrap:anywhere;
+}
+
+.moment-stat-info small{
+  display:block;
+  color:#9da8c4;
+  font-size:9px;
+  margin-top:3px;
+}
+
+.moment-stat-reaction{
+  font-size:19px;
+}
+
+.moment-stats-empty{
+  color:#9da8c4;
+  font-size:11px;
+  padding:10px 0;
+}
 </style>
 </head>
 
@@ -815,8 +944,10 @@ a{color:inherit;text-decoration:none}
           <button type="button" id="deleteMomentBtn">Delete moment</button>
         </div>
       </div>
-
-      <button class="viewer-close" id="closeViewer">×</button>
+      
+<button type="button" id="viewMomentStatsBtn" class="view-moment-btn" style="display:none">👁 Views</button>
+<button class="viewer-close" id="closeViewer">×</button>
+      
 
   </div>
 
@@ -855,7 +986,32 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
+<!-- MOMENT VIEWERS AND REACTIONS -->
+<div class="moment-stats-overlay" id="momentStatsOverlay">
+  <div class="moment-stats-card">
+    <div class="moment-stats-header">
+      <div>
+        <h3>Moment activity</h3>
+        <p id="momentStatsSummary">Loading activity...</p>
+      </div>
+      <button type="button" id="closeMomentStats">×</button>
+    </div>
 
+    <div class="moment-stats-section">
+      <h4>👁 People who viewed</h4>
+      <div id="momentViewersList" class="moment-stats-list">
+        Loading...
+      </div>
+    </div>
+
+    <div class="moment-stats-section">
+      <h4>❤️ Reactions</h4>
+      <div id="momentReactionsList" class="moment-stats-list">
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
 <div class="dialog-overlay" id="campusoraDialogOverlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog-card"><div class="dialog-icon" id="dialogIcon">✦</div><h3 class="dialog-title" id="dialogTitle">Confirm action</h3><p class="dialog-message" id="dialogMessage">Are you sure?</p><select class="dialog-select" id="dialogSelect" style="display:none"></select><div class="dialog-actions"><button class="dialog-cancel" id="dialogCancel" type="button">Cancel</button><button class="dialog-confirm" id="dialogConfirm" type="button">Continue</button></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -1407,7 +1563,141 @@ async function recordMomentView(moment){
     console.warn('Moment view tracking:',error);
   }
 }
+/* MOMENT VIEWERS AND REACTIONS */
 
+function closeMomentStats(){
+  $('momentStatsOverlay').classList.remove('open');
+}
+
+async function openMomentStats(){
+  const moment=currentMoment();
+
+  if(!moment||moment.user_id!==currentUser?.id){
+    toast('Only the moment owner can view this activity.');
+    return;
+  }
+
+  const overlay=$('momentStatsOverlay');
+  const viewersList=$('momentViewersList');
+  const reactionsList=$('momentReactionsList');
+
+  overlay.classList.add('open');
+
+  viewersList.innerHTML='<div class="moment-stats-empty">Loading viewers...</div>';
+  reactionsList.innerHTML='<div class="moment-stats-empty">Loading reactions...</div>';
+  $('momentStatsSummary').textContent='Loading activity...';
+
+  try{
+    const [viewsResult,reactionsResult]=await Promise.all([
+      supabase
+        .from('campusora_moment_views')
+        .select('viewer_id,viewed_at')
+        .eq('moment_id',moment.id)
+        .order('viewed_at',{ascending:false}),
+
+      supabase
+        .from('campusora_moment_reactions')
+        .select('user_id,reaction,created_at')
+        .eq('moment_id',moment.id)
+        .order('created_at',{ascending:false})
+    ]);
+
+    if(viewsResult.error)throw viewsResult.error;
+    if(reactionsResult.error)throw reactionsResult.error;
+
+    const views=viewsResult.data||[];
+    const reactions=reactionsResult.data||[];
+
+    const ids=[...new Set([
+      ...views.map(x=>x.viewer_id),
+      ...reactions.map(x=>x.user_id)
+    ])];
+
+    let profiles=[];
+
+    if(ids.length){
+      const profileResult=await supabase
+        .from('profiles')
+        .select('id,full_name,username,avatar_url')
+        .in('id',ids);
+
+      if(profileResult.error)throw profileResult.error;
+
+      profiles=profileResult.data||[];
+    }
+
+    const profileMap=new Map(
+      profiles.map(profile=>[profile.id,profile])
+    );
+
+    $('momentStatsSummary').textContent=
+      `${views.length} ${views.length===1?'view':'views'} · ${reactions.length} ${reactions.length===1?'reaction':'reactions'}`;
+
+    if(!views.length){
+      viewersList.innerHTML=
+        '<div class="moment-stats-empty">No views yet.</div>';
+    }else{
+      viewersList.innerHTML=views.map(view=>{
+        const profile=profileMap.get(view.viewer_id);
+        const name=profile?.full_name||
+          (profile?.username?'@'+profile.username:'Campusora member');
+
+        const avatar=profile?.avatar_url;
+
+        return `
+          <div class="moment-stat-person">
+            ${
+              avatar
+                ? `<img src="${esc(avatar)}" alt="">`
+                : `<div class="moment-stat-avatar"></div>`
+            }
+            <div class="moment-stat-info">
+              <strong>${esc(name)}</strong>
+              <small>${esc(view.viewed_at?timeAgo(view.viewed_at):'Viewed moment')}</small>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if(!reactions.length){
+      reactionsList.innerHTML=
+        '<div class="moment-stats-empty">No reactions yet.</div>';
+    }else{
+      reactionsList.innerHTML=reactions.map(item=>{
+        const profile=profileMap.get(item.user_id);
+        const name=profile?.full_name||
+          (profile?.username?'@'+profile.username:'Campusora member');
+
+        const avatar=profile?.avatar_url;
+
+        return `
+          <div class="moment-stat-person">
+            ${
+              avatar
+                ? `<img src="${esc(avatar)}" alt="">`
+                : `<div class="moment-stat-avatar"></div>`
+            }
+            <div class="moment-stat-info">
+              <strong>${esc(name)}</strong>
+              <small>Reacted to your moment</small>
+            </div>
+            <span class="moment-stat-reaction">${esc(item.reaction||'❤️')}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+  }catch(error){
+    console.error('Moment activity error:',error);
+    viewersList.innerHTML=
+      '<div class="moment-stats-empty">Could not load viewers.</div>';
+    reactionsList.innerHTML=
+      '<div class="moment-stats-empty">Could not load reactions.</div>';
+    $('momentStatsSummary').textContent='Could not load activity.';
+    toast(error.message||'Could not load moment activity.');
+  }
+}
 function showCurrentMoment(){
   stopProgress();
 
@@ -1432,6 +1722,8 @@ function showCurrentMoment(){
 
   $('viewerMenuWrap').style.display=
     moment.user_id===currentUser?.id?'block':'none';
+  $('viewMomentStatsBtn').style.display=
+  moment.user_id===currentUser?.id?'inline-flex':'none';
 
   $('viewerMenu').classList.remove('open');
 
@@ -1917,6 +2209,15 @@ $('viewerMenuBtn').addEventListener('click',event=>{
 });
 
 $('deleteMomentBtn').addEventListener('click',deleteCurrentMoment);
+  $('viewMomentStatsBtn').addEventListener('click',openMomentStats);
+
+$('closeMomentStats').addEventListener('click',closeMomentStats);
+
+$('momentStatsOverlay').addEventListener('click',event=>{
+  if(event.target===$('momentStatsOverlay')){
+    closeMomentStats();
+  }
+});
 $('previewMusicBtn').addEventListener('click',previewSelectedMusic);
 $('stopPreviewMusicBtn').addEventListener('click',stopMusicPreview);
 $('refreshMomentsBtn').addEventListener('click',loadMoments);
