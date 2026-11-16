@@ -2567,13 +2567,14 @@ markConversationRead(id).catch(console.warn);
   (m.content==='Photo'||m.content==='Video')
   ?''
   :esc(m.content||'');
+
 const messageTime=m.created_at
   ?new Date(m.created_at).toLocaleTimeString('en-NG',{
       hour:'numeric',
-      minute:'2-digit'
+      minute:'2-digit',
+      hour12:true
     })
   :'';
-
 const bubbleStatus=m._pending
   ?'<span class="pending-status">Not sent</span>'
   :mine?'<span class="message-status">✓</span>':'';
