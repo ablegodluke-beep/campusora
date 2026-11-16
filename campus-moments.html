@@ -961,7 +961,7 @@ a{color:inherit;text-decoration:none}
     <div class="viewer-counter" id="viewerCounter"></div>
 
     <div class="viewer-bottom">
-
+      <button type="button" id="momentMusicBtn" class="view-moment-btn" style="display:none">▶ Play music</button>
       <form class="reply-form" id="replyForm">
         <input
           type="text"
@@ -1787,31 +1787,39 @@ function showCurrentMoment(){
     startProgress(6000);
   }
 
-  if(moment.music_track_id){
-    const track=musicTracks.find(
-      item=>item.id===moment.music_track_id
-    );
+/* MOMENT MUSIC PLAYBACK */
+const musicButton=$('momentMusicBtn');
 
-    if(track){
-      supabase.storage
-        .from('campusora-music')
-        .createSignedUrl(track.file_path,3600)
-        .then(({data,error})=>{
-          if(error)throw error;
-          if(currentMoment()?.id!==moment.id)return;
+if(musicButton){
+  musicButton.style.display='none';
+  musicButton.textContent='▶ Play music';
+}
 
-          currentAudio=new Audio(data.signedUrl);
-          currentAudio.volume=Number(moment.music_volume??.65);
-          currentAudio.currentTime=Number(moment.music_start_seconds||0);
+if(moment.music_track_id){
+  const track=musicTracks.find(
+    item=>item.id===moment.music_track_id
+  );
 
-          currentAudio.play().catch(()=>{});
-        })
-        .catch(error=>{
-          console.warn('Moment music playback:',error);
-        });
-    }
+  if(track){
+    supabase.storage
+      .from('campusora-music')
+      .createSignedUrl(track.file_path,3600)
+      .then(({data,error})=>{
+        if(error)throw error;
+        if(currentMoment()?.id!==moment.id)return;
+
+        currentAudio=new Audio(data.signedUrl);
+        currentAudio.volume=Number(moment.music_volume??.65);
+        currentAudio.currentTime=Number(moment.music_start_seconds||0);
+
+        musicButton.style.display='inline-flex';
+      })
+      .catch(error=>{
+        console.error('Moment music playback:',error);
+        toast('Could not load this moment music.');
+      });
   }
-
+}
   $('replyInput').value='';
   currentReaction=null;
 
@@ -2210,6 +2218,22 @@ $('viewerMenuBtn').addEventListener('click',event=>{
 
 $('deleteMomentBtn').addEventListener('click',deleteCurrentMoment);
   $('viewMomentStatsBtn').addEventListener('click',openMomentStats);
+  $('momentMusicBtn').addEventListener('click',async()=>{
+  if(!currentAudio)return;
+
+  try{
+    if(currentAudio.paused){
+      await currentAudio.play();
+      $('momentMusicBtn').textContent='Ⅱ Pause music';
+    }else{
+      currentAudio.pause();
+      $('momentMusicBtn').textContent='▶ Play music';
+    }
+  }catch(error){
+    console.error('Music playback error:',error);
+    toast('Could not play this music. Tap again to try.');
+  }
+});
 
 $('closeMomentStats').addEventListener('click',closeMomentStats);
 
