@@ -2588,33 +2588,29 @@ async function loadShareTargets(mode){
 async function shareToProfile(){
  if(!currentUser||!shareItem)return;
 
- const link=shareItem.kind==="video"
-  ?new URL("spotlight.html#"+shareItem.id,location.href).href
-  :new URL("home-feed.html#post-"+shareItem.id,location.href).href;
-
- const content="Shared from Campusora:\n"+link;
+ if(shareItem.kind!=="post"){
+  return toast("Spotlight video sharing will be connected separately.");
+ }
 
  const {error}=await supabase
   .from("posts")
   .insert({
    user_id:currentUser.id,
-   content,
+   content:"",
    post_type:"shared",
-   audience:"public"
+   audience:"public",
+   shared_post_id:shareItem.id
   });
 
  if(error){
   console.error(error);
-  return toast("Could not share to your profile.");
+  return toast("Could not share this post.");
  }
 
  closeShare();
-
- toast("Shared to your profile.");
-
+ toast("Post shared to your profile.");
  await loadFeed();
 }
-
 /* SHARE AS MESSAGE */
 
 async function shareToMessage(targetId){
@@ -2622,6 +2618,10 @@ async function shareToMessage(targetId){
 
  if(targetId===currentUser.id){
   return toast("You cannot message yourself.");
+ }
+
+ if(shareItem.kind!=="post"){
+  return toast("Spotlight video sharing will be connected separately.");
  }
 
  const {data:conversationId,error:conversationError}=await supabase.rpc(
@@ -2634,47 +2634,43 @@ async function shareToMessage(targetId){
   return toast("Could not open this conversation.");
  }
 
- const link=shareItem.kind==="video"
-  ?new URL("spotlight.html#"+shareItem.id,location.href).href
-  :new URL("home-feed.html#post-"+shareItem.id,location.href).href;
-
  const {error}=await supabase
   .from("messages")
   .insert({
    conversation_id:conversationId,
    sender_id:currentUser.id,
-   content:"Check out this Campusora post: "+link
+   content:"Shared a post",
+   shared_post_id:shareItem.id
   });
 
  if(error){
   console.error(error);
-  return toast("Message could not be sent. Open the chat to continue.");
+  return toast("Post could not be sent.");
  }
 
  closeShare();
-
  toast("Post sent as a message.");
 }
+
 
 /* SHARE TO COMMUNITY */
 
 async function shareToCommunity(communityId){
  if(!currentUser||!shareItem)return;
 
- const link=shareItem.kind==="video"
-  ?new URL("spotlight.html#"+shareItem.id,location.href).href
-  :new URL("home-feed.html#post-"+shareItem.id,location.href).href;
-
- const content="Shared with this community:\n"+link;
+ if(shareItem.kind!=="post"){
+  return toast("Spotlight video sharing will be connected separately.");
+ }
 
  const {error}=await supabase
   .from("posts")
   .insert({
    user_id:currentUser.id,
-   content,
+   content:"",
    post_type:"shared",
    audience:"public",
-   community_id:communityId
+   community_id:communityId,
+   shared_post_id:shareItem.id
   });
 
  if(error){
@@ -2683,8 +2679,7 @@ async function shareToCommunity(communityId){
  }
 
  closeShare();
-
- toast("Shared to community.");
+ toast("Post shared to community.");
 }
 
 /* SHARE BUTTON EVENTS */
