@@ -34,12 +34,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { type, record } = req.body || {};
 
-    if (!record || !["messages", "call_invitations", "notifications"].includes(type)) {
-      return res.status(400).json({ error: "Invalid notification event." });
-    }
+const event = req.body || {};
+const type = event.table;
+const record = event.record;
 
+if (
+  event.type !== "INSERT" ||
+  !record ||
+  !["messages", "call_invitations", "notifications"].includes(type)
+) {
+  return res.status(400).json({
+    error: "Invalid notification event."
+  });
+}
     const headers = {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
       Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
