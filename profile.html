@@ -3147,7 +3147,7 @@ async function sharePostToCommunity(post) {
 
   const ids=memberships.map(row=>row.community_id);
 
-  const {data:communities, error:communityError}=await supabase
+  const {data:communities,error:communityError}=await supabase
     .from('communities')
     .select('id,name')
     .in('id',ids)
@@ -3166,8 +3166,7 @@ async function sharePostToCommunity(post) {
 
   if(answer===null)return;
 
-  const selectedIndex=Number(answer)-1;
-  const selected=communities[selectedIndex];
+  const selected=communities[Number(answer)-1];
 
   if(!selected){
     alert('That community number is not valid.');
@@ -3178,11 +3177,11 @@ async function sharePostToCommunity(post) {
     .from('posts')
     .insert({
       user_id:currentUser.id,
-      content:post.content||'',
-      image_url:post.image_url||null,
+      content:'',
+      post_type:'shared',
       audience:'community',
-      institution_id:null,
-      community_id:selected.id
+      community_id:selected.id,
+      shared_post_id:post.id
     });
 
   if(shareError){
@@ -3333,7 +3332,87 @@ async function createSpotlightProfileCard(video,author) {
   }
   return card;
 }
+  
+async function appendSharedPostPreview(card,post){
+  if(!post.shared_post_id)return;
 
+  const {data:original,error}=await supabase
+    .from('posts')
+    .select('id,user_id,content,image_url,image_urls,video_url,created_at,shared_post_id,post_type')
+    .eq('id',post.shared_post_id)
+    .maybeSingle();
+
+  if(error||!original){
+    const unavailable=document.createElement('div');
+    unavailable.className='post-text';
+    unavailable.textContent='This original post is no longer available.';
+    card.append(unavailable);
+    return;
+  }
+
+  const {data:originalAuthor}=await supabase
+    .from('profiles')
+    .select('id,username,full_name,avatar_url')
+    .eq('id',original.user_id)
+    .maybeSingle();
+
+  const preview=document.createElement('div');
+  preview.style.cssText='border:1px solid rgba(150,150,180,.2);border-radius:12px;padding:12px;margin:10px 0;';
+
+  const heading=document.createElement('div');
+  heading.style.cssText='font-size:12px;color:var(--muted);margin-bottom:9px;';
+  heading.textContent='Original post';
+
+  const name=document.createElement('strong');
+  name.textContent=originalAuthor?.full_name||
+    originalAuthor?.username||'Campusora Member';
+
+  const authorLine=document.createElement('div');
+  authorLine.style.cssText='font-size:13px;margin-bottom:8px;';
+  authorLine.append(name);
+
+  preview.append(heading,authorLine);
+
+  if(original.content){
+    const content=document.createElement('div');
+    content.className='post-text';
+    content.textContent=original.content;
+    preview.append(content);
+  }
+
+  const images=Array.isArray(original.image_urls)
+    ?original.image_urls.filter(Boolean)
+    :[];
+
+  if(!images.length&&original.image_url)images.push(original.image_url);
+
+  images.forEach(url=>{
+    const image=document.createElement('img');
+    image.src=url;
+    image.className='post-image';
+    image.loading='lazy';
+    image.style.cssText='width:100%;border-radius:9px;margin-top:8px;';
+    preview.append(image);
+  });
+
+  if(original.video_url){
+    const video=document.createElement('video');
+    video.src=original.video_url;
+    video.controls=true;
+    video.playsInline=true;
+    video.preload='metadata';
+    video.style.cssText='width:100%;border-radius:9px;margin-top:8px;';
+    preview.append(video);
+  }
+
+  preview.style.cursor='pointer';
+  preview.addEventListener('click',event=>{
+    if(event.target.tagName==='VIDEO'||event.target.tagName==='IMG')return;
+    location.href='./home-feed.html#post-'+original.id;
+  });
+
+  card.append(preview);
+}
 async function createPostCard(post,author) {
   const card=document.createElement('article');
   card.className='post-card';
@@ -3367,6 +3446,9 @@ async function createPostCard(post,author) {
   info.append(authorName,meta);
   header.append(avatar,info,addPostMenu(card,post));
   card.append(header);
+  if(post.shared_post_id){
+  await appendSharedPostPreview(card,post);
+  }
 
   if(post.content){
     const content=document.createElement('div');
