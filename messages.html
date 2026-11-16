@@ -313,8 +313,8 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
   flex-direction:column;
   align-items:flex-start;
   align-self:flex-start;
-  width:max-content;
-  max-width:40%;
+  width:fit-content;
+  max-width:78%;
   min-width:0;
   animation:pop .18s ease;
 }
@@ -325,18 +325,18 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
 }
 
 .message-bubble{
-  display:inline-block;
-  width:max-content;
+  display:block;
+  width:fit-content;
   max-width:100%;
   min-width:0;
-  padding:3px 5px;
+  padding:5px 8px;
   margin:0;
   border:1px solid #303956;
   border-radius:8px 8px 8px 3px;
   background:#202943;
   color:#fff;
   font-size:12px;
-  line-height:1.15;
+  line-height:1.25;
   overflow-wrap:anywhere;
   white-space:pre-wrap;
   box-sizing:border-box;
@@ -799,8 +799,16 @@ overflow:hidden;
 .messaging.chat-open .chat{display:flex}
 .back-btn{display:flex}
 .chat-head{min-height:64px;padding:9px 10px}
-.messages-area{padding:14px 11px;flex:1 1 auto;min-height:0;overflow-y:
- .message-row{max-width:40%}
+.messages-area{
+  padding:14px 11px;
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+}
+
+.message-row{
+  max-width:78%;
+}
 .composer{padding:9px;flex:0 0 auto}
 .phone-warning{flex:0 0 auto}
 }
