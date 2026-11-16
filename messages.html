@@ -2520,6 +2520,10 @@ markConversationRead(id).catch(console.warn);
           </video>`;
       }
     }
+    const textContent=m.attachment_path&&
+  (m.content==='Photo'||m.content==='Video')
+  ?''
+  :esc(m.content||'');
 const messageTime=m.created_at
   ?new Date(m.created_at).toLocaleTimeString('en-NG',{
       hour:'numeric',
