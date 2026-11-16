@@ -513,7 +513,12 @@ select option {background:var(--card)}
       <p class="card-description">Choose a new password for your Campusora account.</p>
 
       <form id="passwordForm">
-
+<div class="field">
+  <label for="oldPassword">Current password</label>
+  <input id="oldPassword" type="password"
+    autocomplete="current-password"
+    placeholder="Enter your current password" required>
+</div>
         <div class="field">
           <label for="newPassword">New password</label>
           <input id="newPassword" type="password" minlength="8"
@@ -1200,23 +1205,45 @@ passwordForm.addEventListener('submit',async event => {
   event.preventDefault();
   clearMessage();
 
+  const oldPassword = document.getElementById('oldPassword').value;
   const newPassword = document.getElementById('newPassword').value;
   const confirmPassword = document.getElementById('confirmPassword').value;
 
+  if (!oldPassword) {
+    showMessage('Enter your current password first.','error');
+    return;
+  }
+
   if (newPassword.length < 8) {
-    showMessage('Your password must contain at least 8 characters.','error');
+    showMessage('Your new password must contain at least 8 characters.','error');
     return;
   }
 
   if (newPassword !== confirmPassword) {
-    showMessage('The two passwords do not match.','error');
+    showMessage('The new passwords do not match.','error');
+    return;
+  }
+
+  if (oldPassword === newPassword) {
+    showMessage('Your new password must be different from your current password.','error');
     return;
   }
 
   changePasswordBtn.disabled = true;
-  changePasswordBtn.textContent = 'Updating password...';
+  changePasswordBtn.textContent = 'Verifying password...';
 
   try {
+    const {error:verifyError} = await supabase.auth.signInWithPassword({
+      email:currentUser.email,
+      password:oldPassword
+    });
+
+    if (verifyError) {
+      throw new Error('Your current password is incorrect.');
+    }
+
+    changePasswordBtn.textContent = 'Updating password...';
+
     const {error} = await supabase.auth.updateUser({
       password:newPassword
     });
@@ -1224,6 +1251,7 @@ passwordForm.addEventListener('submit',async event => {
     if (error) throw error;
 
     passwordForm.reset();
+
     showMessage('Your password has been changed successfully.');
 
   } catch(error) {
