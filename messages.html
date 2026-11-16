@@ -1031,8 +1031,9 @@ body.chat-mode .messages-area{padding:12px 10px}
   background:#b83d55;
   border-color:#b83d55;
 }
-/* TEXT-HUGGING MESSAGE BUBBLE */
+/* CAMPUSORA UNIQUE COMPACT MESSAGE DESIGN */
 #messagesArea .message-row{
+  display:flex !important;
   width:fit-content !important;
   max-width:75% !important;
   min-width:0 !important;
@@ -1043,14 +1044,29 @@ body.chat-mode .messages-area{padding:12px 10px}
   width:fit-content !important;
   max-width:100% !important;
   min-width:0 !important;
-  padding:0 !important;
+
+  padding:5px !important;
   margin:0 !important;
-  border-width:0 !important;
-  line-height:1 !important;
+
+  border:1px solid rgba(150,165,210,.22) !important;
+  border-radius:10px !important;
+
   font-size:12px !important;
-  box-sizing:border-box !important;
+  line-height:1.35 !important;
+
   white-space:pre-wrap !important;
   overflow-wrap:anywhere !important;
+  box-sizing:border-box !important;
+
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+#messagesArea .message-row.mine .message-bubble{
+  border-color:rgba(190,165,255,.35) !important;
+}
+
+#messagesArea .message-row:not(.mine) .message-bubble{
+  border-color:rgba(140,165,210,.25) !important;
 }
 </style>
 </head>
