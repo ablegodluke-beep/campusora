@@ -1031,26 +1031,29 @@ body.chat-mode .messages-area{padding:12px 10px}
   background:#b83d55;
   border-color:#b83d55;
 }
-/* EXTRA-SLIM MESSAGE BUBBLES */
+/* MESSAGE BOX MUST FIT ITS CONTENT */
 #messagesArea .message-row{
-  width:max-content !important;
+  display:flex !important;
+  width:fit-content !important;
   max-width:75% !important;
   min-width:0 !important;
+  flex-shrink:1 !important;
 }
 
 #messagesArea .message-bubble{
-  display:inline-block !important;
-  width:max-content !important;
+  display:block !important;
+  width:fit-content !important;
   max-width:100% !important;
   min-width:0 !important;
+  padding:2px 4px !important;
+  margin:0 !important;
   height:auto !important;
   min-height:0 !important;
-  padding:1px 2px !important;
-  margin:0 !important;
   font-size:12px !important;
-  line-height:1.1 !important;
-  box-sizing:border-box !important;
+  line-height:1.2 !important;
+  white-space:pre-wrap !important;
   overflow-wrap:anywhere !important;
+  box-sizing:border-box !important;
 }
 </style>
 </head>
