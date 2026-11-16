@@ -3242,7 +3242,7 @@ async function sharePostToMoment(post) {
 
   const [postsResult,spotlightResult]=await Promise.all([
     supabase.from('posts')
-      .select('id,user_id,content,image_url,image_urls,video_url,created_at')
+     .select('id,user_id,content,image_url,image_urls,video_url,created_at,shared_post_id,post_type')
       .eq('user_id',profile.id)
       .order('created_at',{ascending:false}),
     supabase.from('spotlight_videos')
