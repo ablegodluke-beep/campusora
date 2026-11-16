@@ -549,9 +549,35 @@ a{color:inherit;text-decoration:none}
   bottom:12px;
   z-index:7;
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px;
   align-items:center;
+  padding:7px;
+  border-radius:15px;
+  background:rgba(8,11,24,.58);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.reply-form{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.viewer-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:3px;
+}
+
+.viewer-action{
+  width:30px;
+  height:30px;
+  flex-shrink:0;
+  font-size:14px;
 }
 
 .reply-form{
@@ -961,7 +987,8 @@ a{color:inherit;text-decoration:none}
     <div class="viewer-counter" id="viewerCounter"></div>
 
     <div class="viewer-bottom">
-      <button type="button" id="momentMusicBtn" class="view-moment-btn" style="display:none">▶ Play music</button>
+      <div class="viewer-bottom" id="viewerBottom">
+     
       <form class="reply-form" id="replyForm">
         <input
           type="text"
@@ -1719,11 +1746,16 @@ function showCurrentMoment(){
   $('viewerNameLink').href=profileURL(profile.id);
   $('viewerTime').textContent=timeAgo(moment.created_at);
   $('viewerCaption').textContent=moment.caption||'';
+const isMomentOwner = moment.user_id === currentUser?.id;
 
-  $('viewerMenuWrap').style.display=
-    moment.user_id===currentUser?.id?'block':'none';
-  $('viewMomentStatsBtn').style.display=
-  moment.user_id===currentUser?.id?'inline-flex':'none';
+$('viewerMenuWrap').style.display =
+  isMomentOwner ? 'block' : 'none';
+
+$('viewMomentStatsBtn').style.display =
+  isMomentOwner ? 'inline-flex' : 'none';
+
+$('viewerBottom').style.display =
+  isMomentOwner ? 'none' : 'grid';
 
   $('viewerMenu').classList.remove('open');
 
