@@ -1589,6 +1589,8 @@ async function connectLiveKitCall(call){
 
   connectingCallId=call.id;
   activeCall=call;
+  currentCameraFacingMode='user';
+$('switchCameraBtn').textContent='🔄 Flip Camera';
   if(call.call_type==='video'){
   $('callOverlay').classList.add('video-call');
 }else{
