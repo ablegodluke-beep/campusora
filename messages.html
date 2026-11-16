@@ -314,7 +314,7 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
   align-items:flex-start;
   align-self:flex-start;
   width:fit-content;
-  max-width:78%;
+  max-width:min(68%,260px);
   min-width:0;
   animation:pop .18s ease;
 }
@@ -325,7 +325,7 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
 }
 
 .message-bubble{
-  display:block;
+  display:inline-block;
   width:fit-content;
   max-width:100%;
   min-width:0;
@@ -343,7 +343,6 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
 }
 
 .message-row.mine .message-bubble{
-  align-self:flex-end;
   background:linear-gradient(135deg,#6340a5,#365cbb);
   border-color:#7554c4;
   border-radius:9px 9px 3px 9px;
@@ -352,23 +351,6 @@ background:radial-gradient(ellipse at 50% 0%,#29204a30,transparent 65%);
 .message-row.pending .message-bubble{
   border:1px dashed #e5a64b;
   background:#3a2b22;
-}
-
-.message-row.pending .message-bubble{
-  border:1px dashed #e5a64b;
-  background:#3a2b22;
-}
-.message-row.pending .message-bubble{
-border:1px dashed #e5a64b;
-background:#3a2b22;
-}
-  /* TEMPORARY TEST: REMOVE MESSAGE BUBBLE */
-.message-row .message-bubble{
-  background:transparent!important;
-  border:0!important;
-  padding:0!important;
-  border-radius:0!important;
-  box-shadow:none!important;
 }
 .message-meta{
 display:flex;
@@ -815,7 +797,7 @@ overflow:hidden;
 }
 
 .message-row{
-  max-width:78%;
+  max-width:min(68%,260px);
 }
 .composer{padding:9px;flex:0 0 auto}
 .phone-warning{flex:0 0 auto}
