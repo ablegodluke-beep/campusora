@@ -1031,57 +1031,53 @@ body.chat-mode .messages-area{padding:12px 10px}
   background:#b83d55;
   border-color:#b83d55;
 }
-/* COMPACT WHATSAPP-STYLE MESSAGE BUBBLES */
-#messagesArea .message-row{
-  width:max-content !important;
-  max-width:75% !important;
-  min-width:0 !important;
-}
-
+/* COMPACT WHATSAPP MESSAGE BUBBLE */
 #messagesArea .message-bubble{
   display:block !important;
   width:fit-content !important;
   max-width:100% !important;
   min-width:0 !important;
-
   padding:5px !important;
   margin:0 !important;
-
   box-sizing:border-box !important;
   font-size:12px !important;
   line-height:1.3 !important;
-
-  white-space:pre-wrap !important;
   overflow-wrap:anywhere !important;
 }
 
-/* TIME AND TICKS BESIDE MESSAGE TEXT */
+/* TIME AND TICKS ON THE SAME LINE */
 #messagesArea .message-bubble-footer{
   display:inline-flex !important;
   float:none !important;
   align-items:center !important;
   justify-content:flex-end !important;
-
   gap:3px !important;
   margin:0 0 0 6px !important;
   padding:0 !important;
-
   white-space:nowrap !important;
   vertical-align:baseline !important;
 }
 
-/* COMPACT REPLY PREVIEW */
-#messagesArea .message-reply-context{
-  display:block !important;
-  width:auto !important;
-  max-width:100% !important;
+#messagesArea .message-bubble-time{
+  font-size:9px !important;
+  line-height:1 !important;
+  color:rgba(255,255,255,.68) !important;
+}
 
-  padding:4px 5px !important;
-  margin:0 0 4px !important;
-
-  box-sizing:border-box !important;
+#messagesArea .message-bubble-footer .message-status{
   font-size:10px !important;
-  line-height:1.25 !important;
+  line-height:1 !important;
+  letter-spacing:-2px !important;
+  color:#b9c5e0 !important;
+}
+
+#messagesArea .message-bubble-footer .message-status.read{
+  color:#35b9ff !important;
+}
+
+#messagesArea .message-bubble-footer .pending-status{
+  font-size:9px !important;
+  color:#ffc16a !important;
 }
 </style>
 </head>
