@@ -1233,6 +1233,7 @@ let callRealtimeReady=Promise.resolve();
 let activeCall=null;
 let incomingCall=null;
 let liveKitRoom=null;
+let currentCameraFacingMode='user';
 let connectingCallId=null;
 let callEnding=false;
 let callRingTimeout=null;
@@ -3441,17 +3442,63 @@ $('muteCallBtn').addEventListener('click',async()=>{
   $('muteCallBtn').textContent=enabled?'🎙 Mute':'🔇 Unmute';
 });
 
-// Turn camera on and off.
+  // Turn camera on and off.
 $('cameraCallBtn').addEventListener('click',async()=>{
   if(!liveKitRoom)return;
 
   const enabled=!liveKitRoom.localParticipant.isCameraEnabled;
 
-  await liveKitRoom.localParticipant.setCameraEnabled(enabled);
+  try{
+    await liveKitRoom.localParticipant.setCameraEnabled(
+      enabled,
+      enabled ? {facingMode:currentCameraFacingMode} : undefined
+    );
 
-  $('cameraCallBtn').textContent=enabled?'▣ Camera Off':'▣ Camera On';
+    $('cameraCallBtn').textContent=enabled?'▣ Camera Off':'▣ Camera On';
+  }catch(error){
+    console.error('Camera toggle:',error);
+    toast('Could not change camera.');
+  }
 });
-  
+
+// Switch between front and back cameras.
+$('switchCameraBtn').addEventListener('click',async()=>{
+  if(!liveKitRoom)return;
+
+  if(!liveKitRoom.localParticipant.isCameraEnabled){
+    toast('Turn your camera on first.');
+    return;
+  }
+
+  const publication=liveKitRoom.localParticipant.getTrackPublication(
+    LivekitClient.Track.Source.Camera
+  );
+
+  const track=publication?.videoTrack||publication?.track;
+
+  if(!track||typeof track.restartTrack!=='function'){
+    toast('Camera switching is not available.');
+    return;
+  }
+
+  const nextFacingMode=
+    currentCameraFacingMode==='user'?'environment':'user';
+
+  try{
+    await track.restartTrack({
+      facingMode:nextFacingMode
+    });
+
+    currentCameraFacingMode=nextFacingMode;
+
+    $('switchCameraBtn').textContent=
+      nextFacingMode==='user'?'🔄 Flip to Back':'🔄 Flip to Front';
+
+  }catch(error){
+    console.error('Camera switch:',error);
+    toast('Could not switch camera on this device.');
+  }
+});
 // Upload the selected picture or video.
 $('chatMediaInput').addEventListener('change',event=>{
   const file=event.target.files?.[0];
