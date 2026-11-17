@@ -1,1 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Free Digital Skills Class | Campusora</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#080b18;
+  --surface:#101426;
+  --surface2:#171c32;
+  --border:rgba(255,255,255,.09);
+  --text:#f5f6ff;
+  --muted:#929bb6;
+  --gradient:linear-gradient(110deg,#925bff,#526dff,#39d7f5);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  padding:18px 13px 35px;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(92,45,170,.16),transparent 35%),
+    radial-gradient(circle at 100% 100%,rgba(20,105,150,.12),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
+}
+
+.app{
+  width:100%;
+  max-width:560px;
+  margin:auto;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:5px 2px 17px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:25px;
+}
+
+.logo{
+  width:39px;
+  height:39px;
+  object-fit:contain;
+}
+
+.brand{
+  font-size:19px;
+  font-weight:800;
+}
+
+.brand span{
+  color:#39d7f5;
+}
+
+.card{
+  padding:22px 19px;
+  border:1px solid var(--border);
+  border-radius:19px;
+  background:rgba(16,20,38,.96);
+  box-shadow:0 15px 45px rgba(0,0,0,.25);
+}
+
+.tag{
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:30px;
+  background:rgba(57,215,160,.10);
+  border:1px solid rgba(57,215,160,.25);
+  color:#80edc2;
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:16px;
+}
+
+h1{
+  font-size:25px;
+  line-height:1.25;
+  letter-spacing:-.7px;
+  margin-bottom:10px;
+}
+
+.intro{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.event-box{
+  margin-top:22px;
+  padding:17px;
+  border:1px solid rgba(146,91,255,.28);
+  border-radius:14px;
+  background:linear-gradient(130deg,rgba(146,91,255,.12),rgba(57,215,245,.06));
+}
+
+.event-label{
+  color:#bba7ff;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  margin-bottom:13px;
+}
+
+.event-detail{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:13px;
+}
+
+.event-icon{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border-radius:11px;
+  background:rgba(255,255,255,.07);
+  font-size:19px;
+}
+
+.event-detail strong{
+  display:block;
+  font-size:13px;
+}
+
+.event-detail small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+}
+
+.countdown{
+  margin-top:19px;
+  padding:13px;
+  border-radius:11px;
+  background:rgba(255,255,255,.035);
+  text-align:center;
+}
+
+.countdown small{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.countdown strong{
+  display:block;
+  margin-top:5px;
+  font-size:17px;
+  color:#9bdfff;
+}
+
+.actions{
+  display:grid;
+  gap:10px;
+  margin-top:21px;
+}
+
+button,a{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.primary-btn{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:11px;
+  background:var(--gradient);
+  color:white;
+  font-size:13px;
+  font-weight:800;
+}
+
+.secondary-btn{
+  width:100%;
+  padding:13px;
+  border:1px solid rgba(146,91,255,.35);
+  border-radius:11px;
+  background:#171c32;
+  color:white;
+  font-size:12px;
+  font-weight:700;
+}
+
+.primary-btn:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.message{
+  display:none;
+  padding:12px;
+  margin-top:14px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+
+.message.success{
+  display:block;
+  color:#8df0c8;
+  background:rgba(57,215,160,.10);
+  border:1px solid rgba(57,215,160,.25);
+}
+
+.message.error{
+  display:block;
+  color:#ffabb7;
+  background:rgba(255,90,110,.10);
+  border:1px solid rgba(255,90,110,.25);
+}
+
+.note{
+  margin-top:18px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.7;
+  text-align:center;
+}
+
+.continue{
+  display:block;
+  margin-top:18px;
+  padding:13px;
+  border-radius:10px;
+  background:rgba(255,255,255,.045);
+  color:#c5cce0;
+  text-align:center;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:700;
+}
+
+@media(max-width:420px){
+  body{
+    padding:13px 10px 25px;
+  }
+
+  .card{
+    padding:19px 15px;
+  }
+
+  h1{
+    font-size:23px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <header class="topbar">
+    <img class="logo" src="./campusora-logo.png" alt="Campusora">
+    <div class="brand">Campus<span>ora</span></div>
+  </header>
+
+  <section class="card">
+
+    <div class="tag">🎓 FREE DIGITAL SKILLS CLASS</div>
+
+    <h1>Don't miss your free digital skills class!</h1>
+
+    <p class="intro">
+      Campusora is sponsoring students to learn digital skills.
+      Set a reminder so you don't forget when the class begins.
+    </p>
+
+    <div class="event-box">
+
+      <div class="event-label">Your class details</div>
+
+      <div class="event-detail">
+        <div class="event-icon">📅</div>
+        <div>
+          <strong>Sunday, November 22, 2026</strong>
+          <small>Class date</small>
+        </div>
+      </div>
+
+      <div class="event-detail">
+        <div class="event-icon">🕗</div>
+        <div>
+          <strong>8:00 PM</strong>
+          <small>West Africa Time (WAT)</small>
+        </div>
+      </div>
+
+      <div class="event-detail">
+        <div class="event-icon">💻</div>
+        <div>
+          <strong>Free Digital Skills Training</strong>
+          <small>Sponsored by Campusora</small>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="countdown">
+      <small>TIME UNTIL THE CLASS</small>
+      <strong id="countdown">Loading...</strong>
+    </div>
+
+    <div class="actions">
+
+      <button class="primary-btn" id="remindBtn">
+        🔔 Remind me about the class
+      </button>
+
+      <button class="secondary-btn" id="calendarBtn">
+        📅 Add to my calendar
+      </button>
+
+    </div>
+
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+
+    <p class="note">
+      Adding the class to your calendar allows your phone's calendar
+      app to alert you, even when Campusora is closed.
+    </p>
+
+    <a class="continue" href="./home-feed.html">
+      Continue to Home Feed →
+    </a>
+
+  </section>
+
+</main>
+
+<script type="module">
+
+import { supabase } from './supabase.js';
+
+const CLASS_KEY = 'digital-skills-class-2026-11-22';
+
+const CLASS_START = new Date(
+  '2026-11-22T20:00:00+01:00'
+);
+
+const remindBtn = document.getElementById('remindBtn');
+const calendarBtn = document.getElementById('calendarBtn');
+const message = document.getElementById('message');
+const countdown = document.getElementById('countdown');
+
+let currentUser = null;
+
+function showMessage(text,type='success'){
+  message.textContent = text;
+  message.className = 'message ' + type;
+}
+
+function updateCountdown(){
+
+  const difference = CLASS_START.getTime() - Date.now();
+
+  if(difference <= 0){
+    countdown.textContent = 'The class has started!';
+    return;
+  }
+
+  const days = Math.floor(difference / 86400000);
+  const hours = Math.floor((difference % 86400000) / 3600000);
+  const minutes = Math.floor((difference % 3600000) / 60000);
+
+  countdown.textContent =
+    days + ' days · ' +
+    hours + ' hours · ' +
+    minutes + ' minutes';
+}
+
+async function loadUser(){
+
+  const {data,error} = await supabase.auth.getUser();
+
+  if(error) throw error;
+
+  currentUser = data.user;
+
+  if(!currentUser){
+    window.location.replace('./auth.html?mode=login');
+    return;
+  }
+
+  const {data:existing,error:existingError} = await supabase
+    .from('campusora_class_reminders')
+    .select('id,remind_me')
+    .eq('user_id',currentUser.id)
+    .eq('class_key',CLASS_KEY)
+    .maybeSingle();
+
+  if(existingError) throw existingError;
+
+  if(existing?.remind_me){
+    remindBtn.textContent = '✓ You are reminded about this class';
+    showMessage(
+      'Your class reminder is saved. You can also add it to your phone calendar.',
+      'success'
+    );
+  }
+}
+
+remindBtn.addEventListener('click',async()=>{
+
+  remindBtn.disabled = true;
+  remindBtn.textContent = 'Saving reminder...';
+
+  try{
+
+    if(!currentUser){
+      await loadUser();
+    }
+
+    if(!currentUser) return;
+
+    const {error} = await supabase
+      .from('campusora_class_reminders')
+      .upsert({
+        user_id:currentUser.id,
+        class_key:CLASS_KEY,
+        remind_me:true
+      },{
+        onConflict:'user_id,class_key'
+      });
+
+    if(error) throw error;
+
+    remindBtn.textContent = '✓ Reminder saved';
+
+    showMessage(
+      'Your reminder has been saved successfully. We will use it for the class reminder.',
+      'success'
+    );
+
+  }catch(error){
+
+    console.error('Class reminder error:',error);
+
+    remindBtn.disabled = false;
+    remindBtn.textContent = '🔔 Remind me about the class';
+
+    showMessage(
+      error.message || 'We could not save your reminder. Please try again.',
+      'error'
+    );
+
+  }
+
+});
+
+function downloadCalendar(){
+
+  const now = new Date();
+
+  const stamp = now.toISOString()
+    .replace(/[-:]/g,'')
+    .replace(/\.\d{3}/,'');
+
+  const calendar = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Campusora//Digital Skills Class//EN',
+    'CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    'UID:campusora-digital-skills-class-20261122@campusora',
+    'DTSTAMP:' + stamp,
+    'DTSTART;TZID=Africa/Lagos:20261122T200000',
+    'DTEND;TZID=Africa/Lagos:20261122T210000',
+    'SUMMARY:Free Digital Skills Class - Campusora',
+    'DESCRIPTION:Join the free digital skills class sponsored by Campusora.',
+    'BEGIN:VALARM',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Your Campusora digital skills class starts in 30 minutes.',
+    'TRIGGER:-PT30M',
+    'END:VALARM',
+    'BEGIN:VALARM',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Your Campusora digital skills class is starting now.',
+    'TRIGGER:PT0S',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob = new Blob(
+    [calendar],
+    {type:'text/calendar;charset=utf-8'}
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'Campusora-Digital-Skills-Class.ics';
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+
+  showMessage(
+    'Your calendar event is ready. Open the downloaded file and add it to your phone calendar. Make sure calendar alerts are enabled.',
+    'success'
+  );
+}
+
+calendarBtn.addEventListener('click',downloadCalendar);
+
+updateCountdown();
+setInterval(updateCountdown,30000);
+
+loadUser().catch(error=>{
+  console.error('Could not load class reminder:',error);
+  showMessage(
+    'Please log in to save your reminder.',
+    'error'
+  );
+});
+
+</script>
+
+</body>
+</html>
