@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b18">
-
-<title>Campusora</title>
+<title>Free Digital Skills Class | Campusora</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,13 +12,11 @@
 <style>
 :root{
   --bg:#080b18;
-  --card:#11162a;
-  --card2:#191f36;
-  --border:rgba(255,255,255,.08);
+  --surface:#101426;
+  --surface2:#171c32;
+  --border:rgba(255,255,255,.09);
   --text:#f5f6ff;
   --muted:#929bb6;
-  --purple:#925bff;
-  --cyan:#39d7f5;
   --gradient:linear-gradient(110deg,#925bff,#526dff,#39d7f5);
 }
 
@@ -31,12 +28,13 @@
 
 body{
   min-height:100vh;
+  padding:18px 13px 35px;
   background:
-    radial-gradient(circle at 0 0,rgba(120,65,220,.13),transparent 35%),
+    radial-gradient(circle at 10% 0%,rgba(92,45,170,.16),transparent 35%),
+    radial-gradient(circle at 100% 100%,rgba(20,105,150,.12),transparent 35%),
     var(--bg);
   color:var(--text);
   font-family:"DM Sans",sans-serif;
-  padding:0 0 35px;
 }
 
 .app{
@@ -46,201 +44,133 @@ body{
 }
 
 .topbar{
-  height:65px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 17px;
+  gap:10px;
+  padding:5px 2px 17px;
   border-bottom:1px solid var(--border);
-  background:rgba(8,11,24,.95);
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:19px;
-  font-weight:800;
+  margin-bottom:25px;
 }
 
 .logo{
-  width:35px;
-  height:35px;
+  width:39px;
+  height:39px;
   object-fit:contain;
 }
 
-.brand span{
-  color:var(--cyan);
-}
-
-.top-label{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.content{
-  padding:19px 14px;
-}
-
-.heading{
-  margin-bottom:17px;
-}
-
-.heading small{
-  color:#a98aff;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.heading h1{
-  font-size:23px;
-  line-height:1.3;
-  margin-top:7px;
-  letter-spacing:-.5px;
-}
-
-.heading p{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-  margin-top:7px;
-}
-
-.event-card{
-  padding:17px;
-  border:1px solid rgba(146,91,255,.23);
-  border-radius:17px;
-  background:
-    linear-gradient(135deg,rgba(146,91,255,.13),rgba(57,215,245,.045)),
-    var(--card);
-}
-
-.event-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.event-top span:first-child{
-  font-size:11px;
-  font-weight:800;
-}
-
-.live-tag{
-  padding:5px 9px;
-  border-radius:20px;
-  color:#8df0c8;
-  background:rgba(57,215,160,.10);
-  font-size:9px;
-  font-weight:800;
-}
-
-.event-title{
+.brand{
   font-size:19px;
   font-weight:800;
-  line-height:1.35;
 }
 
-.event-description{
+.brand span{
+  color:#39d7f5;
+}
+
+.card{
+  padding:22px 19px;
+  border:1px solid var(--border);
+  border-radius:19px;
+  background:rgba(16,20,38,.96);
+  box-shadow:0 15px 45px rgba(0,0,0,.25);
+}
+
+.tag{
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:30px;
+  background:rgba(57,215,160,.10);
+  border:1px solid rgba(57,215,160,.25);
+  color:#80edc2;
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:16px;
+}
+
+h1{
+  font-size:25px;
+  line-height:1.25;
+  letter-spacing:-.7px;
+  margin-bottom:10px;
+}
+
+.intro{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.event-box{
+  margin-top:22px;
+  padding:17px;
+  border:1px solid rgba(146,91,255,.28);
+  border-radius:14px;
+  background:linear-gradient(130deg,rgba(146,91,255,.12),rgba(57,215,245,.06));
+}
+
+.event-label{
+  color:#bba7ff;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  margin-bottom:13px;
+}
+
+.event-detail{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:13px;
+}
+
+.event-icon{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border-radius:11px;
+  background:rgba(255,255,255,.07);
+  font-size:19px;
+}
+
+.event-detail strong{
+  display:block;
+  font-size:13px;
+}
+
+.event-detail small{
+  display:block;
   color:var(--muted);
   font-size:11px;
-  line-height:1.7;
-  margin-top:6px;
-}
-
-.details{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:18px;
-}
-
-.detail{
-  padding:12px;
-  border-radius:11px;
-  background:rgba(255,255,255,.045);
-}
-
-.detail small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  margin-bottom:6px;
-}
-
-.detail strong{
-  display:block;
-  font-size:12px;
+  margin-top:4px;
 }
 
 .countdown{
-  margin-top:13px;
+  margin-top:19px;
   padding:13px;
   border-radius:11px;
-  background:rgba(255,255,255,.04);
+  background:rgba(255,255,255,.035);
   text-align:center;
 }
 
 .countdown small{
   color:var(--muted);
-  font-size:9px;
-  font-weight:700;
+  font-size:10px;
 }
 
 .countdown strong{
   display:block;
   margin-top:5px;
+  font-size:17px;
   color:#9bdfff;
-  font-size:16px;
 }
 
-.reminder-card{
-  margin-top:15px;
-  padding:17px;
-  border:1px solid var(--border);
-  border-radius:16px;
-  background:var(--card);
-}
-
-.reminder-card h2{
-  font-size:15px;
-  margin-bottom:7px;
-}
-
-.reminder-card p{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
-}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding:11px;
-  margin-top:14px;
-  border-radius:10px;
-  background:rgba(255,255,255,.045);
-  font-size:11px;
-  color:#cbd2e9;
-}
-
-.status-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#858da6;
-  flex-shrink:0;
-}
-
-.status.active .status-dot{
-  background:#48dfa4;
-  box-shadow:0 0 9px rgba(72,223,164,.6);
+.actions{
+  display:grid;
+  gap:10px;
+  margin-top:21px;
 }
 
 button,a{
@@ -251,41 +181,28 @@ button{
   cursor:pointer;
 }
 
-.primary{
+.primary-btn{
   width:100%;
   padding:14px;
-  margin-top:15px;
   border:0;
   border-radius:11px;
   background:var(--gradient);
   color:white;
-  font-size:12px;
+  font-size:13px;
   font-weight:800;
 }
 
-.primary:disabled{
-  opacity:.65;
+.primary-btn:disabled{
+  opacity:.6;
   cursor:wait;
-}
-
-.secondary{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  background:var(--card2);
-  color:white;
-  font-size:11px;
-  font-weight:700;
 }
 
 .message{
   display:none;
-  margin-top:12px;
-  padding:11px;
+  padding:12px;
+  margin-top:14px;
   border-radius:10px;
-  font-size:11px;
+  font-size:12px;
   line-height:1.6;
   overflow-wrap:anywhere;
 }
@@ -293,45 +210,49 @@ button{
 .message.success{
   display:block;
   color:#8df0c8;
-  background:rgba(57,215,160,.09);
-  border:1px solid rgba(57,215,160,.2);
+  background:rgba(57,215,160,.10);
+  border:1px solid rgba(57,215,160,.25);
 }
 
 .message.error{
   display:block;
   color:#ffabb7;
-  background:rgba(255,90,110,.09);
-  border:1px solid rgba(255,90,110,.2);
+  background:rgba(255,90,110,.10);
+  border:1px solid rgba(255,90,110,.25);
 }
 
 .note{
+  margin-top:18px;
   color:var(--muted);
   font-size:10px;
   line-height:1.7;
   text-align:center;
-  margin-top:13px;
 }
 
 .continue{
   display:block;
-  margin-top:17px;
+  margin-top:18px;
   padding:13px;
-  text-align:center;
-  border-radius:11px;
+  border-radius:10px;
   background:rgba(255,255,255,.045);
-  color:#dce1f5;
+  color:#c5cce0;
+  text-align:center;
   text-decoration:none;
-  font-size:11px;
+  font-size:12px;
   font-weight:700;
 }
 
-@media(max-width:380px){
-  .heading h1{
-    font-size:21px;
+@media(max-width:420px){
+  body{
+    padding:13px 10px 25px;
   }
 
-  .event-title{
-    font-size:17px;
+  .card{
+    padding:19px 15px;
+  }
+
+  h1{
+    font-size:23px;
   }
 }
 </style>
@@ -341,107 +262,77 @@ button{
 
 <main class="app">
 
-<header class="topbar">
-  <div class="brand">
+  <header class="topbar">
     <img class="logo" src="./campusora-logo.png" alt="Campusora">
-    <div>Campus<span>ora</span></div>
-  </div>
+    <div class="brand">Campus<span>ora</span></div>
+  </header>
 
-  <span class="top-label">Campus Updates</span>
-</header>
+  <section class="card">
 
-<div class="content">
+    <div class="tag">🎓 FREE DIGITAL SKILLS CLASS</div>
 
-  <section class="heading">
-    <small>CAMPUSORA COMMUNITY</small>
-    <h1>Don't miss the class 🎓</h1>
-    <p>
-      We're sponsoring students to learn digital skills.
-      Turn on your reminder so Campusora can notify you before the class begins.
-    </p>
-  </section>
+    <h1>Don't miss your free digital skills class!</h1>
 
-  <section class="event-card">
-
-    <div class="event-top">
-      <span>🎓 FREE DIGITAL SKILLS CLASS</span>
-      <span class="live-tag">FREE TRAINING</span>
-    </div>
-
-    <div class="event-title">
-      Learn digital skills with Campusora
-    </div>
-
-    <p class="event-description">
-      A special training sponsored by Campusora for students.
+    <p class="intro">
+      Campusora is sponsoring students to learn digital skills.
+      Set a reminder so you don't forget when the class begins.
     </p>
 
-    <div class="details">
+    <div class="event-box">
 
-      <div class="detail">
-        <small>📅 CLASS DATE</small>
-        <strong>Sunday, Nov 22</strong>
+      <div class="event-label">Your class details</div>
+
+      <div class="event-detail">
+        <div class="event-icon">📅</div>
+        <div>
+          <strong>Sunday, November 22, 2026</strong>
+          <small>Class date</small>
+        </div>
       </div>
 
-      <div class="detail">
-        <small>🕗 START TIME</small>
-        <strong>8:00 PM WAT</strong>
+      <div class="event-detail">
+        <div class="event-icon">🕗</div>
+        <div>
+          <strong>8:00 PM</strong>
+          <small>West Africa Time (WAT)</small>
+        </div>
+      </div>
+
+      <div class="event-detail">
+        <div class="event-icon">💻</div>
+        <div>
+          <strong>Free Digital Skills Training</strong>
+          <small>Sponsored by Campusora</small>
+        </div>
       </div>
 
     </div>
 
     <div class="countdown">
-      <small>TIME UNTIL CLASS</small>
+      <small>TIME UNTIL THE CLASS</small>
       <strong id="countdown">Loading...</strong>
     </div>
 
-  </section>
+    <div class="actions">
 
-  <section class="reminder-card">
+      <button class="primary-btn" id="remindBtn">
+        🔔 Remind me about the class
+      </button>
 
-    <h2>🔔 Turn on class reminders</h2>
-
-    <p>
-      Allow Campusora to send notifications to your device.
-      We'll use this to remind you when your class is approaching.
-    </p>
-
-    <div class="status" id="pushStatus">
-      <span class="status-dot"></span>
-      <span id="statusText">Notifications not enabled yet</span>
     </div>
-
-    <button class="primary" id="remindBtn">
-      Enable class reminders
-    </button>
 
     <div class="message" id="message" role="status" aria-live="polite"></div>
 
     <p class="note">
-      You can manage notification permission from your phone settings.
+      Allow notifications so Campusora can remind you when the class is approaching.
     </p>
+
+    <a class="continue" href="./home-feed.html">
+      Continue to Home Feed →
+    </a>
 
   </section>
 
-  <section class="reminder-card">
-
-    <h2>📅 Personal calendar</h2>
-
-    <p>
-      You can also add the class to your phone calendar as an extra reminder.
-    </p>
-
-    <button class="secondary" id="calendarBtn">
-      Add to my calendar
-    </button>
-
-  </section>
-
-  <a class="continue" href="./home-feed.html">
-    Continue to Campusora Home Feed →
-  </a>
-
-</div>
 </main>
 
 <script type="module">
@@ -458,21 +349,14 @@ const VAPID_PUBLIC_KEY =
   'BP4w2JAACARzAxh5iSQtzu9FJNmVuPIEi3C2T0PFlymCjEiqm7gH9u2JapzHSzm0NefPErahHDu6U-mExTNw-Oc';
 
 const remindBtn = document.getElementById('remindBtn');
-const calendarBtn = document.getElementById('calendarBtn');
 const message = document.getElementById('message');
-const statusBox = document.getElementById('pushStatus');
-const statusText = document.getElementById('statusText');
+const countdown = document.getElementById('countdown');
 
 let currentUser = null;
 
 function showMessage(text,type='success'){
   message.textContent = text;
   message.className = 'message ' + type;
-}
-
-function setStatus(text,active=false){
-  statusText.textContent = text;
-  statusBox.classList.toggle('active',active);
 }
 
 function decodeVapidKey(value){
@@ -496,20 +380,15 @@ function updateCountdown(){
   const difference = CLASS_START.getTime() - Date.now();
 
   if(difference <= 0){
-    document.getElementById('countdown').textContent =
-      'The class has started!';
+    countdown.textContent = 'The class has started!';
     return;
   }
 
   const days = Math.floor(difference / 86400000);
-  const hours = Math.floor(
-    (difference % 86400000) / 3600000
-  );
-  const minutes = Math.floor(
-    (difference % 3600000) / 60000
-  );
+  const hours = Math.floor((difference % 86400000) / 3600000);
+  const minutes = Math.floor((difference % 3600000) / 60000);
 
-  document.getElementById('countdown').textContent =
+  countdown.textContent =
     days + ' days · ' +
     hours + ' hours · ' +
     minutes + ' minutes';
@@ -538,8 +417,9 @@ async function loadUser(){
   if(existingError) throw existingError;
 
   if(existing?.remind_me){
+    remindBtn.textContent = '✓ Your class reminder is saved';
     showMessage(
-      'Your class reminder is already saved.',
+      'Your class reminder is saved.',
       'success'
     );
   }
@@ -550,18 +430,9 @@ async function loadUser(){
   ){
     try{
       await registerDevice();
-      setStatus('Campusora notifications are enabled',true);
-      remindBtn.textContent = '✓ Notifications enabled';
     }catch(error){
-      console.error(error);
-      setStatus('Permission granted, but device registration needs attention');
+      console.error('Device registration:',error);
     }
-  }else if(
-    'Notification' in window &&
-    Notification.permission === 'denied'
-  ){
-    setStatus('Notifications are blocked in your browser settings');
-    remindBtn.textContent = 'Open notification settings';
   }
 }
 
@@ -573,12 +444,8 @@ async function registerDevice(){
     !('Notification' in window)
   ){
     throw new Error(
-      'Your browser does not support Campusora push notifications.'
+      'Your browser does not support Campusora notifications.'
     );
-  }
-
-  if(Notification.permission !== 'granted'){
-    throw new Error('Notification permission has not been granted.');
   }
 
   const {data,error} = await supabase.auth.getSession();
@@ -643,7 +510,7 @@ async function saveReminder(){
 remindBtn.addEventListener('click',async()=>{
 
   remindBtn.disabled = true;
-  remindBtn.textContent = 'Enabling reminders...';
+  remindBtn.textContent = 'Enabling your reminder...';
 
   try{
 
@@ -657,28 +524,19 @@ remindBtn.addEventListener('click',async()=>{
 
     if(!('Notification' in window)){
       throw new Error(
-        'Your browser does not support push notifications.'
+        'Your browser does not support notifications.'
       );
     }
 
     let permission = Notification.permission;
 
     if(permission !== 'granted'){
-
       permission = await Notification.requestPermission();
-
     }
 
     if(permission !== 'granted'){
-
-      if(permission === 'denied'){
-        throw new Error(
-          'Notifications are blocked. Enable them in your browser or phone settings.'
-        );
-      }
-
       throw new Error(
-        'Please allow notifications to receive class reminders.'
+        'Please allow notifications to receive your class reminder.'
       );
     }
 
@@ -686,9 +544,7 @@ remindBtn.addEventListener('click',async()=>{
 
     await saveReminder();
 
-    setStatus('Your device is registered for Campusora notifications',true);
-
-    remindBtn.textContent = '✓ Class reminders enabled';
+    remindBtn.textContent = '✓ Class reminder enabled';
 
     showMessage(
       'Success! Your device is registered and your class reminder is saved.',
@@ -697,19 +553,19 @@ remindBtn.addEventListener('click',async()=>{
 
   }catch(error){
 
-    console.error('Campusora class reminder:',error);
+    console.error('Class reminder error:',error);
 
     remindBtn.disabled = false;
-    remindBtn.textContent = 'Try enabling reminders again';
+    remindBtn.textContent = '🔔 Remind me about the class';
 
     showMessage(
-      error.message || 'Could not enable your class reminder.',
+      error.message || 'We could not enable your reminder. Please try again.',
       'error'
     );
 
   }finally{
 
-    if(remindBtn.textContent === '✓ Class reminders enabled'){
+    if(remindBtn.textContent === '✓ Class reminder enabled'){
       remindBtn.disabled = false;
     }
 
@@ -717,68 +573,11 @@ remindBtn.addEventListener('click',async()=>{
 
 });
 
-function downloadCalendar(){
-
-  const stamp = new Date().toISOString()
-    .replace(/[-:]/g,'')
-    .replace(/\.\d{3}/,'');
-
-  const calendar = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Campusora//Digital Skills Class//EN',
-    'CALSCALE:GREGORIAN',
-    'BEGIN:VEVENT',
-    'UID:campusora-digital-skills-class-20261122@campusora',
-    'DTSTAMP:' + stamp,
-    'DTSTART;TZID=Africa/Lagos:20261122T200000',
-    'DTEND;TZID=Africa/Lagos:20261122T210000',
-    'SUMMARY:Free Digital Skills Class - Campusora',
-    'DESCRIPTION:Free digital skills class sponsored by Campusora.',
-    'BEGIN:VALARM',
-    'ACTION:DISPLAY',
-    'DESCRIPTION:Your Campusora class starts in 30 minutes.',
-    'TRIGGER:-PT30M',
-    'END:VALARM',
-    'BEGIN:VALARM',
-    'ACTION:DISPLAY',
-    'DESCRIPTION:Your Campusora class is starting now.',
-    'TRIGGER:PT0S',
-    'END:VALARM',
-    'END:VEVENT',
-    'END:VCALENDAR'
-  ].join('\r\n');
-
-  const blob = new Blob(
-    [calendar],
-    {type:'text/calendar;charset=utf-8'}
-  );
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.href = url;
-  link.download = 'Campusora-Digital-Skills-Class.ics';
-
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
-
-  showMessage(
-    'Calendar file downloaded. Open it to add the class to your personal calendar.',
-    'success'
-  );
-}
-
-calendarBtn.addEventListener('click',downloadCalendar);
-
 updateCountdown();
 setInterval(updateCountdown,30000);
 
 loadUser().catch(error=>{
-  console.error(error);
+  console.error('Could not load class reminder:',error);
   showMessage(
     error.message || 'Could not load your reminder.',
     'error'
