@@ -530,6 +530,13 @@ img{display:block;max-width:100%}
   white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
+  .post-link{
+  color:#ad9aff;
+  text-decoration:underline;
+  text-decoration-color:#8068e8;
+  overflow-wrap:anywhere;
+  cursor:pointer;
+    }
 /* COMPACT SOCIAL PHOTO COLLAGE */
 
 .post-image-grid {
@@ -1230,6 +1237,47 @@ function esc(value=""){
   "'":"&#39;"
  }[c]));
 }
+  function linkifyText(value=""){
+  const text=String(value);
+  const pattern=/https?:\/\/[^\s<]+|www\.[^\s<]+/gi;
+
+  let output="";
+  let lastIndex=0;
+
+  for(const match of text.matchAll(pattern)){
+    let url=match[0];
+    let trailing="";
+
+    while(/[.,!?;:)\]}]$/.test(url)){
+      trailing=url.slice(-1)+trailing;
+      url=url.slice(0,-1);
+    }
+
+    output+=esc(text.slice(lastIndex,match.index));
+
+    if(!url){
+      output+=esc(trailing);
+      lastIndex=match.index+match[0].length;
+      continue;
+    }
+
+    const href=url.toLowerCase().startsWith("www.")
+      ?"https://"+url
+      :url;
+
+    output+=`
+      <a class="post-link"
+         href="${esc(href)}"
+         target="_blank"
+         rel="noopener noreferrer">${esc(url)}</a>${esc(trailing)}
+    `;
+
+    lastIndex=match.index+match[0].length;
+  }
+
+  output+=esc(text.slice(lastIndex));
+  return output;
+}
 
 function avatar(url){return url||fallbackAvatar}
 
@@ -1762,7 +1810,7 @@ const imageMarkup = postImages.length
    </div>
 
    <div class="post-body">
-    ${post.content?`<p>${esc(post.content)}</p>`:""}
+    ${post.content?`<p>${linkifyText(post.content)}</p>`:""}
 
     ${imageMarkup}
 
