@@ -1708,17 +1708,15 @@ async function supporting(items){
   sharedProfiles.forEach(p=>profileCache.set(p.id,p));
 
  profiles.forEach(p=>profileCache.set(p.id,p));
-
- return {
-  profiles:profileCache,
-  likes,
-  comments,
-  reposts,
-  videoReposts
- };
-  sharedPosts:new Map(sharedPosts.map(p=>[p.id,p])),
+  return {
+   profiles:profileCache,
+   likes,
+   comments,
+   reposts,
+   videoReposts,
+   sharedPosts:new Map(sharedPosts.map(p=>[p.id,p]))
+  };
 }
-  
 
 /* FEED RANKING */
 
