@@ -331,7 +331,7 @@ img{display:block;max-width:100%}
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:13px;
-  margin-bottom:9px;
+  margin-bottom:9px; 
   overflow:hidden;
 }
 
@@ -1531,6 +1531,44 @@ async function fetchPosts(offset = 0){
 
   return data || [];
 }
+  /* OFFICIAL CAMPUSORA POSTS */
+
+async function fetchOfficialPosts(){
+ try{
+  const {data:official,error:profileError}=await supabase
+   .from("profiles")
+   .select("id")
+   .eq("username","campusora")
+   .maybeSingle();
+
+  if(profileError)throw profileError;
+  if(!official?.id)return [];
+
+  let query=supabase
+   .from("posts")
+   .select("*")
+   .eq("user_id",official.id)
+   .order("created_at",{ascending:false})
+   .limit(5);
+
+  if(activeFeed==="campus"){
+   query=query.eq(
+    "institution_id",
+    currentProfile.institution_id
+   );
+  }
+
+  const {data,error}=await query;
+
+  if(error)throw error;
+
+  return data||[];
+
+ }catch(error){
+  console.warn("Official Campusora posts:",error);
+  return [];
+ }
+}
 
 /* FETCH SPOTLIGHT VIDEOS */
 
@@ -1717,9 +1755,6 @@ async function supporting(items){
    sharedPosts:new Map(sharedPosts.map(p=>[p.id,p]))
   };
 }
-
-/* FEED RANKING */
-
 function rankItems(items,extra){
  const counts={};
 
@@ -1755,6 +1790,11 @@ function rankItems(items,extra){
   return {...item,score};
 
  }).sort((a,b)=>{
+
+  if(a.isOfficial!==b.isOfficial){
+   return a.isOfficial?-1:1;
+  }
+
   if(activeFeed==="for-you"||activeFeed==="popular"){
    return b.score-a.score;
   }
@@ -2315,11 +2355,17 @@ async function loadFeed(){
 
       return;
     }
+const [postResult,officialPosts] = await Promise.all([
+ fetchPosts(0),
+ fetchOfficialPosts()
+]);
 
-    const postResult = await fetchPosts(0);
+let posts = postResult || [];
 
-    let posts = postResult || [];
-
+const officialIds=new Set(
+ officialPosts.map(post=>post.id)
+);
+    
     postOffset = posts.length;
     hasMorePosts = posts.length === FEED_PAGE_SIZE;
 
