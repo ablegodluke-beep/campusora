@@ -510,7 +510,7 @@ async function saveReminder(){
 remindBtn.addEventListener('click',async()=>{
 
   remindBtn.disabled = true;
-  remindBtn.textContent = 'Enabling your reminder...';
+  remindBtn.textContent = 'Setting your reminder...';
 
   try{
 
@@ -544,12 +544,16 @@ remindBtn.addEventListener('click',async()=>{
 
     await saveReminder();
 
-    remindBtn.textContent = '✓ Class reminder enabled';
+    remindBtn.textContent = '✓ Reminder successfully set';
 
     showMessage(
-      'Success! Your device is registered and your class reminder is saved.',
+      'Your reminder has been set successfully! Taking you to Campusora...',
       'success'
     );
+
+    setTimeout(()=>{
+      window.location.replace('./home-feed.html');
+    },2000);
 
   }catch(error){
 
@@ -559,15 +563,9 @@ remindBtn.addEventListener('click',async()=>{
     remindBtn.textContent = '🔔 Remind me about the class';
 
     showMessage(
-      error.message || 'We could not enable your reminder. Please try again.',
+      error.message || 'We could not set your reminder. Please try again.',
       'error'
     );
-
-  }finally{
-
-    if(remindBtn.textContent === '✓ Class reminder enabled'){
-      remindBtn.disabled = false;
-    }
 
   }
 
