@@ -129,6 +129,47 @@ body.has-shared-nav {
   55% {opacity:1;transform:translate(-50%,-50%) scale(1)}
   100% {opacity:0;transform:translate(-50%,-50%) scale(1)}
 }
+  /* VIDEO SEEK INDICATOR */
+
+.seek-indicator {
+  position:absolute;
+  z-index:8;
+  top:50%;
+  width:84px;
+  height:84px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:50%;
+  background:rgba(8,11,24,.7);
+  color:white;
+  font-size:17px;
+  font-weight:700;
+  opacity:0;
+  pointer-events:none;
+  backdrop-filter:blur(9px);
+}
+
+.seek-indicator.left {
+  left:10%;
+  transform:translateY(-50%) scale(.7);
+}
+
+.seek-indicator.right {
+  right:10%;
+  transform:translateY(-50%) scale(.7);
+}
+
+.seek-indicator.show {
+  animation:seekIndicator .55s ease forwards;
+}
+
+@keyframes seekIndicator {
+  0% {opacity:0;transform:translateY(-50%) scale(.7)}
+  30% {opacity:1;transform:translateY(-50%) scale(1.08)}
+  65% {opacity:1;transform:translateY(-50%) scale(1)}
+  100% {opacity:0;transform:translateY(-50%) scale(1)}
+}
 
 /* VIDEO TOP CONTROLS */
 
@@ -1249,7 +1290,7 @@ function renderVideos() {
           muted
         ></video>
 
-        <div class="play-indicator" aria-hidden="true">▶</div>
+        <div class="seek-indicator" aria-hidden="true"></div>
 
         <div class="video-top">
           <span class="spotlight-tag">✦ CAMPUSORA SPOTLIGHT</span>
@@ -1669,11 +1710,44 @@ async function toggleVideoPlayback(card) {
   }
 }
 
-/* DOUBLE TAP TO LIKE */
+/* DOUBLE TAP TO REWIND / FAST-FORWARD */
 
-async function handleVideoDoubleTap(card) {
-  const video=videos.find(item=>item.id===card.dataset.videoId);
-  if(video&&!video.liked)await setReaction(video.id,'like');
+let pendingVideoTap=null;
+
+function showSeekIndicator(card,direction) {
+  const indicator=card.querySelector('.seek-indicator');
+  if(!indicator)return;
+
+  indicator.textContent=direction<0?'↶ 5s':'5s ↷';
+  indicator.classList.remove('show','left','right');
+  indicator.classList.add(direction<0?'left':'right');
+
+  void indicator.offsetWidth;
+  indicator.classList.add('show');
+}
+
+function seekVideo(card,direction) {
+  if(commentsOpen)return;
+
+  const video=card.querySelector('video');
+  if(!video)return;
+
+  try {
+    const current=Number.isFinite(video.currentTime)
+      ?video.currentTime:0;
+
+    const duration=Number.isFinite(video.duration)
+      ?video.duration:Infinity;
+
+    video.currentTime=Math.max(
+      0,
+      Math.min(duration,current+(direction*5))
+    );
+
+    showSeekIndicator(card,direction);
+  } catch(error) {
+    console.warn('Video seeking unavailable:',error);
+  }
 }
 
 function isInteractiveSurface(target) {
@@ -1688,15 +1762,54 @@ function isInteractiveSurface(target) {
 
 function handleVideoSurfaceTap(event) {
   const card=event.target.closest('.video-card');
+
   if(!card||isInteractiveSurface(event.target))return;
-  toggleVideoPlayback(card);
+
+  const touch=event.changedTouches[0];
+  if(!touch)return;
+
+  const rect=card.getBoundingClientRect();
+  const side=touch.clientX<rect.left+(rect.width/2)
+    ?'left':'right';
+
+  if(
+    pendingVideoTap &&
+    pendingVideoTap.card===card &&
+    pendingVideoTap.side===side
+  ) {
+    clearTimeout(pendingVideoTap.timer);
+    pendingVideoTap=null;
+
+    seekVideo(card,side==='left'?-1:1);
+    return;
+  }
+
+  if(pendingVideoTap) {
+    clearTimeout(pendingVideoTap.timer);
+    toggleVideoPlayback(pendingVideoTap.card);
+    pendingVideoTap=null;
+  }
+
+  const tap={
+    card,
+    side,
+    timer:null
+  };
+
+  tap.timer=setTimeout(()=>{
+    if(pendingVideoTap===tap) {
+      pendingVideoTap=null;
+      toggleVideoPlayback(card);
+    }
+  },280);
+
+  pendingVideoTap=tap;
 }
 
 feed.addEventListener('touchend',event=>{
   if(event.changedTouches.length!==1)return;
   handleVideoSurfaceTap(event);
 },{passive:true});
-
 /* COMMENTS PANEL */
 
 async function openComments(videoId) {
