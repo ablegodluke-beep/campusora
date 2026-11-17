@@ -2384,10 +2384,18 @@ const officialIds=new Set(
     if(secondary[1].status === "fulfilled"){
       ads = secondary[1].value || [];
     }
-
     let items = [
-      ...posts.map(data => ({kind:"post",data})),
-      ...videos.map(data => ({kind:"video",data})),
+      ...officialPosts.map(data=>({
+        kind:"post",
+        data,
+        isOfficial:true
+      })),
+
+      ...posts
+        .filter(post=>!officialIds.has(post.id))
+        .map(data=>({kind:"post",data})),
+
+      ...videos.map(data=>({kind:"video",data})),
       ...ads
     ];
 
