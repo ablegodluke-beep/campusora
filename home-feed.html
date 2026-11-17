@@ -523,7 +523,7 @@ img{display:block;max-width:100%}
 .post-body{padding:0 11px 10px}
 
 .post-body p{
-  margin:0 0 4px;
+  margin:0;
   color:#e2e5f4;
   font-size:12px;
   line-height:1.65;
@@ -546,7 +546,7 @@ img{display:block;max-width:100%}
   gap:4px;
   width:100%;
   height:180px;
-  margin-top:4px;
+margin-top:0;
   overflow:hidden;
   border-radius:9px;
 }
@@ -1240,7 +1240,8 @@ function esc(value=""){
 function linkifyText(value=""){
   const text=String(value)
     .replace(/\r\n?/g,"\n")
-    .replace(/\n[ \t]*\n+/g,"\n");
+    .replace(/[ \t]*\n+[ \t]*/g," ")
+    .trim();
 
   const pattern=/https?:\/\/[^\s<]+|www\.[^\s<]+/gi;
 
