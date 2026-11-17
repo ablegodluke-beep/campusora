@@ -537,6 +537,85 @@ img{display:block;max-width:100%}
   overflow-wrap:anywhere;
   cursor:pointer;
     }
+  /* SHARED POST CARD */
+
+.shared-post-card{
+  margin-top:5px;
+  padding:10px;
+  border:1px solid rgba(160,145,255,.22);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+  overflow:hidden;
+}
+
+.shared-post-author{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:8px;
+}
+
+.shared-post-author img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.shared-post-author strong{
+  display:block;
+  color:#f1f1ff;
+  font-size:12px;
+}
+
+.shared-post-author small{
+  display:block;
+  color:#9299b3;
+  font-size:10px;
+  margin-top:2px;
+}
+
+.shared-post-content{
+  color:#e2e5f4;
+  font-size:12px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+  margin-bottom:5px;
+}
+
+.shared-post-images{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:4px;
+  margin-top:5px;
+  overflow:hidden;
+  border-radius:8px;
+}
+
+.shared-post-images img{
+  width:100%;
+  height:130px;
+  object-fit:cover;
+}
+
+.shared-post-images img:only-child{
+  grid-column:1/-1;
+  height:auto;
+  max-height:350px;
+}
+
+.shared-post-video{
+  width:100%;
+  max-height:350px;
+  margin-top:5px;
+  border-radius:8px;
+  background:#000;
+}
+
+.shared-post-unavailable{
+  color:#aab0c7;
+  font-size:12px;
+}
 /* COMPACT SOCIAL PHOTO COLLAGE */
 
 .post-image-grid {
@@ -1602,6 +1681,31 @@ async function supporting(items){
   reposts,
   videoReposts
  ]=await Promise.all(requests);
+    const sharedIds=[...new Set(
+    posts.map(x=>x.shared_post_id).filter(Boolean)
+  )];
+
+  const sharedPosts=sharedIds.length
+    ?await safeQuery(
+      supabase.from("posts")
+        .select("*")
+        .in("id",sharedIds)
+    )
+    :[];
+
+  const sharedUserIds=[...new Set(
+    sharedPosts.map(x=>x.user_id)
+  )];
+
+  const sharedProfiles=sharedUserIds.length
+    ?await safeQuery(
+      supabase.from("profiles")
+        .select("id,username,full_name,avatar_url,role,school")
+        .in("id",sharedUserIds)
+    )
+    :[];
+
+  sharedProfiles.forEach(p=>profileCache.set(p.id,p));
 
  profiles.forEach(p=>profileCache.set(p.id,p));
 
@@ -1612,7 +1716,9 @@ async function supporting(items){
   reposts,
   videoReposts
  };
+  sharedPosts:new Map(sharedPosts.map(p=>[p.id,p])),
 }
+  
 
 /* FEED RANKING */
 
@@ -1734,6 +1840,69 @@ function renderMenu(post){
     </button>
    </div>
   </div>`;
+}
+  /* RENDER SHARED ORIGINAL POST */
+
+function renderSharedPost(post,extra){
+  if(!post){
+    return `
+      <div class="shared-post-card">
+        <div class="shared-post-unavailable">
+          This original post is no longer available.
+        </div>
+      </div>
+    `;
+  }
+
+  const author=extra.profiles.get(post.user_id)||{};
+
+  const images=Array.isArray(post.image_urls)
+    ?post.image_urls.filter(Boolean)
+    :[];
+
+  if(!images.length&&post.image_url){
+    images.push(post.image_url);
+  }
+
+  return `
+    <div class="shared-post-card">
+
+      <div class="shared-post-author">
+        <img src="${esc(avatar(author.avatar_url))}" alt="">
+
+        <div>
+          <strong>${esc(author.full_name||author.username||"Campusora Member")}</strong>
+          <small>
+            ${author.username?"@"+esc(author.username)+" · ":""}
+            ${timeAgo(post.created_at)}
+          </small>
+        </div>
+      </div>
+
+      ${post.content
+        ?`<div class="shared-post-content">
+            ${linkifyText(post.content)}
+          </div>`
+        :""}
+
+      ${images.length
+        ?`<div class="shared-post-images">
+            ${images.map((url,index)=>`
+              <img src="${esc(url)}"
+                loading="lazy"
+                alt="Shared post image ${index+1}">
+            `).join("")}
+          </div>`
+        :""}
+
+      ${post.video_url
+        ?`<video class="shared-post-video"
+            controls playsinline preload="metadata"
+            src="${esc(post.video_url)}"></video>`
+        :""}
+
+    </div>
+  `;
 }
 
 /* RENDER NORMAL POST */
