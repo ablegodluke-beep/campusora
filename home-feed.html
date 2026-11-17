@@ -1909,6 +1909,12 @@ function renderSharedPost(post,extra){
 
 function renderPost(item,extra){
  const post=item.data;
+  const sharedMarkup=post.shared_post_id
+  ?renderSharedPost(
+      extra.sharedPosts?.get(post.shared_post_id),
+      extra
+    )
+  :"";
   const postImages = Array.isArray(post.image_urls)
   ? post.image_urls.filter(url => typeof url === "string" && url)
   : [];
@@ -1952,6 +1958,9 @@ const imageMarkup = postImages.length
        ⟳ ${esc(item.repostedBy)} reposted
       </div>`
     :""}
+    ${post.shared_post_id
+  ?`<div class="repost-label">↗ Shared a post</div>`
+  :""}
 
    <div class="post-header">
     <a href="${profileURL(post.user_id)}">
@@ -1980,7 +1989,9 @@ const imageMarkup = postImages.length
    <div class="post-body">
     ${post.content?`<p>${linkifyText(post.content)}</p>`:""}
 
-    ${imageMarkup}
+${sharedMarkup}
+
+${imageMarkup}
 
     ${post.video_url
      ?`<video class="post-video"
