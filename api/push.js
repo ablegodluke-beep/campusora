@@ -20,6 +20,10 @@ export default async function handler(req, res) {
     return handleSend(req, res);
   }
 
+  if (action === "class-reminder") {
+    return handleClassReminder(req, res);
+  }
+
   return res.status(400).json({
     error: "Invalid push action."
   });
@@ -341,6 +345,196 @@ async function handleSend(req, res) {
 
     return res.status(500).json({
       error: "Could not send notification."
+    });
+  }
+}
+
+
+/* SCHEDULED CLASS REMINDERS */
+
+async function handleClassReminder(req, res) {
+  const {
+    SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY,
+    VAPID_PUBLIC_KEY,
+    VAPID_PRIVATE_KEY,
+    VAPID_SUBJECT,
+    PUSH_WEBHOOK_SECRET
+  } = process.env;
+
+  if (
+    !SUPABASE_URL ||
+    !SUPABASE_SERVICE_ROLE_KEY ||
+    !VAPID_PUBLIC_KEY ||
+    !VAPID_PRIVATE_KEY ||
+    !VAPID_SUBJECT ||
+    !PUSH_WEBHOOK_SECRET
+  ) {
+    return res.status(500).json({
+      error: "Push service is not configured."
+    });
+  }
+
+  if (
+    req.headers["x-campusora-push-secret"] !==
+    PUSH_WEBHOOK_SECRET
+  ) {
+    return res.status(401).json({
+      error: "Unauthorized."
+    });
+  }
+
+  const {
+    class_key,
+    reminder_slot
+  } = req.body || {};
+
+  if (
+    class_key !== "digital-skills-class-2026-11-22" ||
+    !["30_minutes", "class_start"].includes(reminder_slot)
+  ) {
+    return res.status(400).json({
+      error: "Invalid class reminder."
+    });
+  }
+
+  const headers = {
+    apikey: SUPABASE_SERVICE_ROLE_KEY,
+    Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
+  };
+
+  try {
+    const remindersResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/campusora_class_reminders?class_key=eq.${encodeURIComponent(class_key)}&remind_me=eq.true&select=user_id`,
+      { headers }
+    );
+
+    if (!remindersResponse.ok) {
+      throw new Error("Could not load class reminders.");
+    }
+
+    const reminders = await remindersResponse.json();
+
+    webpush.setVapidDetails(
+      VAPID_SUBJECT,
+      VAPID_PUBLIC_KEY,
+      VAPID_PRIVATE_KEY
+    );
+
+    let sent = 0;
+    let skipped = 0;
+
+    for (const reminder of reminders) {
+      const userId = reminder.user_id;
+
+      const subscriptionsResponse = await fetch(
+        `${SUPABASE_URL}/rest/v1/campusora_push_subscriptions?user_id=eq.${encodeURIComponent(userId)}&select=id,endpoint,p256dh,auth`,
+        { headers }
+      );
+
+      if (!subscriptionsResponse.ok) continue;
+
+      const subscriptions = await subscriptionsResponse.json();
+
+      if (!subscriptions.length) continue;
+
+      const deliveryResponse = await fetch(
+        `${SUPABASE_URL}/rest/v1/campusora_class_reminder_deliveries`,
+        {
+          method: "POST",
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal"
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            class_key,
+            reminder_slot
+          })
+        }
+      );
+
+      if (!deliveryResponse.ok) {
+        skipped++;
+        continue;
+      }
+
+      let userSent = 0;
+
+      for (const sub of subscriptions) {
+        try {
+          await webpush.sendNotification(
+            {
+              endpoint: sub.endpoint,
+              keys: {
+                p256dh: sub.p256dh,
+                auth: sub.auth
+              }
+            },
+            JSON.stringify({
+              title: reminder_slot === "30_minutes"
+                ? "Campusora class starts in 30 minutes"
+                : "Your Campusora class is starting now",
+
+              body: reminder_slot === "30_minutes"
+                ? "Get ready! Your free digital skills class starts at 8:00 PM."
+                : "It's time! Join your free digital skills class now.",
+
+              icon: "/icon-192-1.png",
+              badge: "/icon-192-1.png",
+
+              tag: `campusora-class-${reminder_slot}`,
+
+              data: {
+                url: "/home-feed.html"
+              }
+            })
+          );
+
+          userSent++;
+          sent++;
+
+        } catch (error) {
+          console.error("Class reminder delivery error:", error);
+
+          if (
+            error.statusCode === 404 ||
+            error.statusCode === 410
+          ) {
+            await fetch(
+              `${SUPABASE_URL}/rest/v1/campusora_push_subscriptions?id=eq.${encodeURIComponent(sub.id)}`,
+              {
+                method: "DELETE",
+                headers
+              }
+            );
+          }
+        }
+      }
+
+      if (userSent === 0) {
+        await fetch(
+          `${SUPABASE_URL}/rest/v1/campusora_class_reminder_deliveries?user_id=eq.${encodeURIComponent(userId)}&class_key=eq.${encodeURIComponent(class_key)}&reminder_slot=eq.${encodeURIComponent(reminder_slot)}`,
+          {
+            method: "DELETE",
+            headers
+          }
+        );
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      sent,
+      skipped
+    });
+
+  } catch (error) {
+    console.error("Scheduled class reminder error:", error);
+
+    return res.status(500).json({
+      error: "Could not send class reminders."
     });
   }
 }
