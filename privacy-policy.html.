@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<meta name="description" content="Read Campusora's Privacy Policy to understand how we collect, use, protect and manage your personal information.">
+
+<title>Privacy Policy | Campusora</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#080b18;
+  --card:#111629;
+  --border:rgba(255,255,255,.08);
+  --text:#f4f5ff;
+  --muted:#a0a9c2;
+  --purple:#925bff;
+  --blue:#526dff;
+  --cyan:#39d7f5;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  line-height:1.8;
+}
+
+a {
+  color:#a99aff;
+  text-decoration:none;
+}
+
+a:hover {
+  text-decoration:underline;
+}
+
+.container {
+  width:min(850px,92%);
+  margin:35px auto 70px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:30px;
+  font-size:21px;
+  font-weight:800;
+}
+
+.brand span {
+  color:var(--cyan);
+}
+
+.heading {
+  margin-bottom:25px;
+}
+
+.tag {
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:30px;
+  background:rgba(146,91,255,.13);
+  border:1px solid rgba(146,91,255,.25);
+  color:#c9b8ff;
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+h1 {
+  font-size:clamp(28px,5vw,39px);
+  letter-spacing:-1px;
+  line-height:1.25;
+  margin-bottom:10px;
+}
+
+.updated {
+  color:var(--muted);
+  font-size:12px;
+}
+
+.intro {
+  background:linear-gradient(120deg,rgba(146,91,255,.15),rgba(57,215,245,.07));
+  border:1px solid rgba(146,91,255,.2);
+  border-radius:17px;
+  padding:22px;
+  margin-bottom:25px;
+  color:#dce1f5;
+  font-size:13px;
+}
+
+.section {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:21px;
+  margin-bottom:14px;
+}
+
+.section h2 {
+  font-size:16px;
+  margin-bottom:10px;
+  color:#fff;
+}
+
+.section p {
+  color:var(--muted);
+  font-size:12.5px;
+  margin-bottom:10px;
+}
+
+.section p:last-child {
+  margin-bottom:0;
+}
+
+.section ul {
+  padding-left:19px;
+  color:var(--muted);
+  font-size:12.5px;
+}
+
+.section li {
+  margin-bottom:7px;
+}
+
+.notice {
+  background:rgba(57,215,245,.06);
+  border:1px solid rgba(57,215,245,.18);
+  border-radius:13px;
+  padding:17px;
+  color:#c5eaf3;
+  font-size:12px;
+  margin-top:20px;
+}
+
+.contact {
+  margin-top:22px;
+  padding:22px;
+  border-radius:15px;
+  background:linear-gradient(120deg,rgba(146,91,255,.16),rgba(57,215,245,.08));
+  border:1px solid rgba(146,91,255,.2);
+}
+
+.contact h2 {
+  font-size:17px;
+  margin-bottom:8px;
+}
+
+.contact p {
+  color:var(--muted);
+  font-size:12.5px;
+  margin-bottom:12px;
+}
+
+.contact a {
+  display:inline-block;
+  margin:5px 12px 5px 0;
+  font-size:12px;
+  font-weight:700;
+}
+
+.footer {
+  text-align:center;
+  color:#737e9b;
+  font-size:11px;
+  margin-top:30px;
+}
+
+@media(max-width:600px) {
+  .container {
+    margin-top:23px;
+  }
+
+  .section {
+    padding:17px;
+  }
+
+  .intro {
+    padding:18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+  <div class="brand">
+    Campus<span>ora</span>
+  </div>
+
+  <header class="heading">
+    <span class="tag">YOUR PRIVACY MATTERS</span>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: 18 November 2026</p>
+  </header>
+
+  <div class="intro">
+    Campusora respects your privacy. This policy explains
+    what information we collect, how we use it, when it may
+    be shared and the choices available to you when using
+    the Campusora social platform.
+  </div>
+
+  <section class="section">
+    <h2>1. About Campusora</h2>
+    <p>
+      Campusora is a social platform designed to connect
+      students, alumni and general members across Nigerian
+      campuses and communities.
+    </p>
+    <p>
+      Through Campusora, members can create profiles,
+      publish posts, share media, communicate, discover
+      communities, explore opportunities and use other
+      platform features.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>2. Information We Collect</h2>
+    <p>
+      Depending on how you use Campusora, we may collect
+      the following categories of information:
+    </p>
+
+    <ul>
+      <li>
+        <strong>Account information:</strong>
+        Information such as your email address and
+        authentication details when you register or log in.
+      </li>
+
+      <li>
+        <strong>Profile information:</strong>
+        Your name, username, profile picture, cover photo,
+        institution, membership type, biography and other
+        details you choose to provide.
+      </li>
+
+      <li>
+        <strong>Content and activity:</strong>
+        Posts, comments, reactions, uploaded photos,
+        videos, stories, marketplace listings and other
+        content you create or share.
+      </li>
+
+      <li>
+        <strong>Communications:</strong>
+        Messages, call-related information and interactions
+        made through Campusora's communication features.
+      </li>
+
+      <li>
+        <strong>Transaction information:</strong>
+        Payment references, transaction amounts and
+        payment status associated with purchases,
+        subscriptions or promotions.
+      </li>
+
+      <li>
+        <strong>Device and technical information:</strong>
+        Information needed to operate the platform,
+        maintain sessions, troubleshoot problems and
+        support notifications.
+      </li>
+
+      <li>
+        <strong>Notification information:</strong>
+        Device notification subscription details when
+        you give permission to receive push notifications.
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>3. How We Use Your Information</h2>
+    <p>We use information to:</p>
+
+    <ul>
+      <li>Create and manage member accounts.</li>
+      <li>Display profiles and connect members.</li>
+      <li>Operate posts, comments, messages and communities.</li>
+      <li>Deliver notifications you have enabled.</li>
+      <li>Process and verify payments and purchases.</li>
+      <li>Manage promotions and marketplace activities.</li>
+      <li>Improve platform performance and user experience.</li>
+      <li>Detect abuse, fraud, spam and security problems.</li>
+      <li>Respond to support requests and enforce platform rules.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>4. Public Content and Visibility</h2>
+    <p>
+      Campusora is a social platform. Information you
+      publish publicly may be visible to other members
+      and, where accessible without signing in, people
+      outside Campusora.
+    </p>
+    <p>
+      This may include your public profile details,
+      posts, comments, uploaded media and other
+      interactions.
+    </p>
+    <p>
+      Please think carefully before sharing personal
+      information publicly. Other people may copy,
+      screenshot or share content you publish.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>5. Private Messages and Communications</h2>
+    <p>
+      Messages sent through Campusora are intended for
+      the participants in the relevant conversation.
+    </p>
+    <p>
+      We process communication information to operate
+      messaging, deliver notifications, maintain platform
+      security and support the service.
+    </p>
+    <p>
+      Do not share passwords, financial credentials or
+      other highly sensitive information in messages.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>6. Payments and Third-Party Services</h2>
+    <p>
+      Campusora uses third-party service providers to
+      operate certain platform features.
+    </p>
+    <p>
+      These include:
+    </p>
+    <ul>
+      <li>
+        <strong>Supabase:</strong>
+        Used for account authentication, database
+        services and related platform infrastructure.
+      </li>
+      <li>
+        <strong>Vercel:</strong>
+        Used to host and deliver parts of the platform.
+      </li>
+      <li>
+        <strong>Paystack:</strong>
+        Used to process payments where supported.
+      </li>
+    </ul>
+    <p>
+      Payments are handled through the payment provider.
+      Campusora may receive transaction references,
+      amounts, payment status and related information
+      needed to verify purchases.
+    </p>
+    <p>
+      Third-party providers process information under
+      their own applicable privacy policies and terms.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>7. Cookies and Local Storage</h2>
+    <p>
+      Campusora may use browser storage and similar
+      technologies to keep you signed in, remember
+      session information, support platform functions
+      and improve your experience.
+    </p>
+    <p>
+      Clearing browser storage may sign you out or
+      affect certain platform features.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>8. Push Notifications</h2>
+    <p>
+      If you allow notifications, Campusora may store
+      device subscription information so it can deliver
+      relevant messages, calls, activity updates and
+      reminders.
+    </p>
+    <p>
+      You can manage notification permission through
+      your browser or device settings. Turning off
+      notifications may prevent you from receiving
+      some updates.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>9. When We Share Information</h2>
+    <p>
+      We do not sell your personal information.
+      We may share information only where reasonably
+      necessary, including:
+    </p>
+    <ul>
+      <li>
+        With service providers that help operate
+        Campusora.
+      </li>
+      <li>
+        With payment providers to process transactions.
+      </li>
+      <li>
+        When required by applicable law or a valid
+        legal request.
+      </li>
+      <li>
+        To protect members, investigate abuse or
+        protect the security of the platform.
+      </li>
+      <li>
+        When you choose to share information or
+        interact with other members.
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>10. Data Security</h2>
+    <p>
+      We use technical and organisational measures
+      intended to protect information against
+      unauthorised access, loss, misuse or disclosure.
+    </p>
+    <p>
+      However, no online service or method of
+      electronic storage can be guaranteed to be
+      completely secure.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>11. Data Retention</h2>
+    <p>
+      We retain information for as long as reasonably
+      necessary to operate Campusora, provide services,
+      maintain security, resolve disputes and meet
+      applicable legal obligations.
+    </p>
+    <p>
+      Some information may remain in backups or records
+      for a limited period after an account or content
+      removal request.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>12. Your Privacy Choices and Rights</h2>
+    <p>
+      Depending on applicable law, you may have rights
+      to request access to, correction of, deletion of
+      or information about the personal data we hold
+      about you.
+    </p>
+    <p>
+      You may also manage certain profile details,
+      content and notification permissions through
+      available Campusora features and your device.
+    </p>
+    <p>
+      To make a privacy request, contact us using
+      the details below. We may need to verify your
+      identity before responding.
+    </p>
+    <p>
+      Some privacy settings within the platform may
+      not yet apply to every feature. Do not rely on
+      a setting to restrict access to content unless
+      the relevant feature clearly confirms that
+      restriction.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>13. Children's Privacy</h2>
+    <p>
+      Campusora is designed for a broad campus
+      community. Anyone who is not legally able to
+      consent to the processing of their personal
+      information should use the platform only with
+      the involvement and permission of a parent
+      or legal guardian where required by applicable law.
+    </p>
+    <p>
+      If you believe a child has provided personal
+      information inappropriately, please contact us.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>14. Changes to This Policy</h2>
+    <p>
+      We may update this Privacy Policy when our
+      services, technology or legal obligations change.
+    </p>
+    <p>
+      Updated versions will be published on this page.
+      The date at the top will show when the policy
+      was last revised.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>15. Contact Us</h2>
+    <p>
+      If you have questions, concerns or requests
+      about this Privacy Policy or how Campusora
+      handles personal information, contact us:
+    </p>
+    <p>
+      Email:
+      <a href="mailto:ablegodluke@gmail.com">
+        ablegodluke@gmail.com
+      </a>
+    </p>
+    <p>
+      WhatsApp:
+      <a href="https://wa.me/2349017579718"
+         target="_blank"
+         rel="noopener noreferrer">
+        Contact Campusora Support
+      </a>
+    </p>
+  </section>
+
+  <div class="notice">
+    By using Campusora, you acknowledge that you have
+    had the opportunity to read this Privacy Policy.
+    Where consent is required by law, we will seek
+    that consent separately.
+  </div>
+
+  <footer class="footer">
+    © 2026 Campusora. All rights reserved.
+    <br>
+    Connect. Learn. Grow. Together.
+  </footer>
+
+</main>
+
+</body>
+</html>
