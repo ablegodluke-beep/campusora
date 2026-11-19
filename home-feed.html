@@ -530,6 +530,30 @@ img{display:block;max-width:100%}
   white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
+
+.post-body p.post-text-collapsed{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:5;
+  line-clamp:5;
+  overflow:hidden;
+}
+
+.post-see-more{
+  display:inline-block;
+  margin-top:5px;
+  padding:0;
+  border:0;
+  background:none;
+  color:#a995ff;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+  .post-body p.post-text-expanded{
+  display:block;
+  overflow:visible;
+  }
   .post-link{
   color:#ad9aff;
   text-decoration:underline;
@@ -2025,7 +2049,17 @@ const imageMarkup = postImages.length
    </div>
 
    <div class="post-body">
-    ${post.content?`<p>${linkifyText(post.content)}</p>`:""}
+    ${post.content ? `
+  <p class="post-text-collapsed">
+    ${linkifyText(post.content)}
+  </p>
+  <button
+    class="post-see-more"
+    data-action="toggle-post-text"
+    type="button">
+    See More
+  </button>
+` : ""}
 
 ${sharedMarkup}
 
@@ -3003,6 +3037,19 @@ feed.addEventListener("click",async event=>{
  const button=event.target.closest("[data-action]");
 
  if(!button)return;
+   if(button.dataset.action==="toggle-post-text"){
+  const text=button.previousElementSibling;
+
+  if(!text)return;
+
+  const expanded=text.classList.toggle("post-text-expanded");
+
+  text.classList.toggle("post-text-collapsed",!expanded);
+
+  button.textContent=expanded?"See Less":"See More";
+
+  return;
+ }
 
  const post=button.closest("[data-post-id]");
  const video=button.closest("[data-video-id]");
