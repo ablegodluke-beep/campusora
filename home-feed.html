@@ -541,6 +541,28 @@ img{display:block;max-width:100%}
   line-clamp:5;
   overflow:hidden;
 }
+  /* COMPACT TEXT-ONLY POSTS */
+
+.post:not(:has(.post-image-grid))
+:not(:has(.post-video))
+:not(:has(.shared-post-card)) .post-body{
+  padding-bottom:3px;
+  min-height:0;
+}
+
+.post:not(:has(.post-image-grid))
+:not(:has(.post-video))
+:not(:has(.shared-post-card)) .post-body p{
+  min-height:0;
+  margin:0;
+}
+
+.post:not(:has(.post-image-grid))
+:not(:has(.post-video))
+:not(:has(.shared-post-card)) .post-stats{
+  padding-top:5px;
+  padding-bottom:6px;
+}
 
 .post-see-more{
   display:inline-block;
