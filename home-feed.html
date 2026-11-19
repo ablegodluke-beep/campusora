@@ -2662,10 +2662,11 @@ async function refreshNewPosts(){
     feed.insertAdjacentHTML(
       "afterbegin",
       ranked.map(item => renderPost(item,extra)).join("")
+      requestAnimationFrame(updatePostTextControls);
     );
 
   }catch(error){
-requestAnimationFrame(updatePostTextControls);
+
     console.warn("Background feed refresh:",error);
 
   }finally{
