@@ -2659,11 +2659,12 @@ async function refreshNewPosts(){
 
     feed.querySelector(".empty-feed")?.remove();
 
-    feed.insertAdjacentHTML(
+        feed.insertAdjacentHTML(
       "afterbegin",
       ranked.map(item => renderPost(item,extra)).join("")
-      requestAnimationFrame(updatePostTextControls);
     );
+
+    requestAnimationFrame(updatePostTextControls);
 
   }catch(error){
 
