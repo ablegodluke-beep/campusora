@@ -2049,7 +2049,7 @@ const imageMarkup = postImages.length
    </div>
 
    <div class="post-body">
-    ${post.content ? `
+ ${post.content ? `
   <p class="post-text-collapsed">
     ${linkifyText(post.content)}
   </p>
@@ -2115,7 +2115,24 @@ ${imageMarkup}
    </section>
   </article>`;
 }
+function updatePostTextControls(){
+  feed.querySelectorAll(".post-body p.post-text-collapsed").forEach(text=>{
+    const button=text.nextElementSibling;
 
+    if(!button || !button.classList.contains("post-see-more")) return;
+
+    text.classList.remove("post-text-collapsed");
+    const fullHeight=text.getBoundingClientRect().height;
+
+    text.classList.add("post-text-collapsed");
+    const collapsedHeight=text.getBoundingClientRect().height;
+
+    if(fullHeight <= collapsedHeight + 2){
+      text.classList.remove("post-text-collapsed");
+      button.remove();
+    }
+  });
+}
 /* RENDER SPOTLIGHT VIDEO */
 
 function renderVideo(item,extra){
@@ -2468,6 +2485,7 @@ const officialIds=new Set(
       return "";
 
     }).join("");
+    requestAnimationFrame(updatePostTextControls);
 
     if(hasMorePosts){
       feed.insertAdjacentHTML(
@@ -2556,6 +2574,7 @@ async function loadMorePosts(){
     }
         // Keep the loading message below all posts.
     const feedStatus = $("feedMoreStatus");
+    requestAnimationFrame(updatePostTextControls);
 
     if(feedStatus){
       feed.appendChild(feedStatus);
@@ -2646,7 +2665,7 @@ async function refreshNewPosts(){
     );
 
   }catch(error){
-
+requestAnimationFrame(updatePostTextControls);
     console.warn("Background feed refresh:",error);
 
   }finally{
