@@ -1783,51 +1783,59 @@ async function supporting(items){
   };
 }
 function rankItems(items,extra){
- const counts={};
 
- extra.likes.forEach(x=>{
-  counts[x.post_id]=(counts[x.post_id]||0)+2;
- });
+  const counts={};
 
- extra.comments.forEach(x=>{
-  counts[x.post_id]=(counts[x.post_id]||0)+4;
- });
+  extra.likes.forEach(x=>{
+    counts[x.post_id]=(counts[x.post_id]||0)+2;
+  });
 
- extra.reposts.forEach(x=>{
-  counts[x.post_id]=(counts[x.post_id]||0)+6;
- });
+  extra.comments.forEach(x=>{
+    counts[x.post_id]=(counts[x.post_id]||0)+4;
+  });
 
- return items.map(item=>{
-  const date=new Date(item.data.created_at||Date.now()).getTime();
-  const age=Math.max(1,(Date.now()-date)/3600000);
-  const id=item.data.id;
-  const engagement=counts[id]||0;
-  const freshness=1/Math.pow(age+2,.65);
+  extra.reposts.forEach(x=>{
+    counts[x.post_id]=(counts[x.post_id]||0)+6;
+  });
 
-  let score=freshness;
+  return items.map(item=>{
 
-  if(item.kind==="post"){
-   score+=engagement*freshness;
-  }
+    const date=new Date(item.data.created_at||Date.now()).getTime();
+    const age=Math.max(1,(Date.now()-date)/3600000);
+    const id=item.data.id;
+    const engagement=counts[id]||0;
+    const freshness=1/Math.pow(age+2,.65);
 
-  if(activeFeed==="popular"){
-   score+=engagement*0.5;
-  }
+    let score=freshness;
 
-  return {...item,score};
+    if(item.kind==="post"){
+      score+=engagement*freshness;
+    }
 
- }).sort((a,b)=>{
+    if(activeFeed==="popular"){
+      score+=engagement*0.5;
+    }
 
-  if(a.isOfficial!==b.isOfficial){
-   return a.isOfficial?-1:1;
-  }
+    return {...item,score};
 
-  if(activeFeed==="for-you"||activeFeed==="popular"){
-   return b.score-a.score;
-  }
+  }).sort((a,b)=>{
 
-  return new Date(b.data.created_at)-new Date(a.data.created_at);
- });
+    if(a.isOfficial!==b.isOfficial){
+      return a.isOfficial?-1:1;
+    }
+
+    // Popular remains engagement-based.
+    if(activeFeed==="popular"){
+      return b.score-a.score;
+    }
+
+    // For You and My Campus show newest posts first.
+    const dateA=new Date(a.data.created_at||0).getTime();
+    const dateB=new Date(b.data.created_at||0).getTime();
+
+    return dateB-dateA;
+
+  });
 }
 
 /* COMMENTS */
