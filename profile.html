@@ -119,6 +119,37 @@ a{color:inherit;text-decoration:none}
   cursor:zoom-in;
   display:block
 }
+  .profile-avatar-menu-wrap{
+  position:relative;
+  display:inline-block;
+}
+
+.official-profile-admin-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  z-index:100;
+  min-width:190px;
+  padding:7px;
+  background:#151a30;
+  border:1px solid #343b5c;
+  border-radius:12px;
+  box-shadow:0 8px 25px #0008;
+}
+
+.official-profile-admin-menu a,
+.official-profile-admin-menu button{
+  display:block;
+  width:100%;
+  padding:11px;
+  color:#fff;
+  background:transparent;
+  border:0;
+  text-align:left;
+  text-decoration:none;
+  font:inherit;
+  cursor:pointer;
+}
 
 .profile-heading{
 display:grid;
@@ -1468,12 +1499,18 @@ overflow:visible;
 
 </div>
     <div class="profile-content">
+<div class="profile-avatar-menu-wrap">
+  <img
+    id="profileAvatar"
+    class="avatar profile-avatar"
+    alt="View profile photo"
+  >
 
-      <img
-        id="profileAvatar"
-        class="avatar profile-avatar"
-        alt="View profile photo"
-      >
+  <div id="officialProfileAdminMenu" class="official-profile-admin-menu hidden">
+    <button type="button" id="viewOfficialProfilePhoto">View profile photo</button>
+    <a href="./admin.html">⚙️ Admin Dashboard</a>
+  </div>
+</div>
 <div class="profile-heading">
 
   <div class="profile-main">
