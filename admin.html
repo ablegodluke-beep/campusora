@@ -817,7 +817,7 @@ async function api(url,options={}){
  }
 
  if(!r.ok||!data.success){
-  throw Error(data.message||'Request failed.');
+ throw Error(data.message || ('Admin API returned HTTP ' + r.status + '.'));
  }
 
  return data;
