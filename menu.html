@@ -634,13 +634,11 @@ function showDefaultAvatar() {
       </svg>
     `);
 }
-
-/* VERIFY WHETHER THIS IS YOUR AUTHORIZED ADMIN ACCOUNT */
+/* VERIFY ADMIN ACCESS */
 async function checkOwnerAdminAccess(user, accessToken) {
   adminMenuSection.hidden = true;
 
-  // Do not even check other accounts.
-  if (user.id !== OWNER_PROFILE_ID) return;
+  if (!user || !accessToken) return;
 
   try {
     const response = await fetch('./api/admin?action=check', {
@@ -666,6 +664,7 @@ async function checkOwnerAdminAccess(user, accessToken) {
     console.error('Admin menu verification failed:', error);
   }
 }
+
 
 /* LOAD REAL PROFILE */
 async function loadMenuProfile() {
