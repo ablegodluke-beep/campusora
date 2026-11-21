@@ -3900,6 +3900,45 @@ async function loadProfile() {
 
   currentProfile=profile;
   isOwnProfile=!!currentUser&&currentUser.id===profile.id;
+  const adminDashboardLink = $('officialAdminDashboardLink');
+
+if (adminDashboardLink) {
+  adminDashboardLink.classList.add('hidden');
+
+  const OWNER_PROFILE_ID = '4e2c55c4-e5ad-4bed-b7cb-60be8f9b1ccb';
+  const isOfficialCampusoraProfile =
+    (profile.username || '').toLowerCase() === 'campusora';
+
+  if (
+    isOfficialCampusoraProfile &&
+    currentUser &&
+    currentUser.id === OWNER_PROFILE_ID &&
+    sessionData?.session?.access_token
+  ) {
+    try {
+      const adminResponse = await fetch('./api/admin?action=check', {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + sessionData.session.access_token
+        },
+        cache: 'no-store'
+      });
+
+      if (adminResponse.ok) {
+        const adminResult = await adminResponse.json();
+
+        if (
+          adminResult.success === true &&
+          ['super_admin', 'admin'].includes(adminResult.admin_role)
+        ) {
+          adminDashboardLink.classList.remove('hidden');
+        }
+      }
+    } catch (adminError) {
+      console.error('Admin dashboard verification failed:', adminError);
+    }
+  }
+}
 
   $('profileName').textContent=profile.full_name||profile.username||'Campusora Member';
   $('profileUsername').textContent=profile.username?'@'+profile.username:'';
