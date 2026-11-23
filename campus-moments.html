@@ -2467,13 +2467,10 @@ document.addEventListener('keydown',event=>{
 });
 
 /* START */
-
 async function init(){
   const {data,error}=await supabase.auth.getUser();
 
-  if(error){
-    console.warn('Session lookup:',error);
-  }
+  if(error)console.warn('Session lookup:',error);
 
   currentUser=data?.user||null;
 
@@ -2485,7 +2482,7 @@ async function init(){
       .maybeSingle();
 
     if(result.error){
-      console.warn('Your profile could not be loaded:',result.error);
+      console.warn('Profile loading:',result.error);
     }
 
     currentProfile=result.data||null;
@@ -2493,6 +2490,32 @@ async function init(){
 
   await loadMusicTracks();
   await loadMoments();
+
+  const params=new URLSearchParams(window.location.search);
+  const targetUser=params.get('user');
+  const createStory=params.get('create')==='1';
+
+  if(targetUser||createStory){
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+  }
+
+  if(createStory){
+    openUpload();
+  }else if(targetUser){
+    const index=momentGroups.findIndex(
+      group=>group.userId===targetUser
+    );
+
+    if(index!==-1){
+      openViewer(index);
+    }else{
+      toast('This moment is no longer available.');
+    }
+  }
 
   if(momentsChannel){
     supabase.removeChannel(momentsChannel);
