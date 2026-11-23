@@ -1753,72 +1753,95 @@ async function getProfiles(ids){
 
  return profileCache;
 }
-
-/* CAMPUS MOMENTS */
-
 async function loadMoments(){
- const {data,error}=await supabase
-  .from("campusora_moments")
-  .select("id,user_id,media_type,media_path,caption,created_at,expires_at")
-  .gt("expires_at",new Date().toISOString())
-  .order("created_at",{ascending:false})
-  .limit(25);
-
- if(error)throw error;
-
- const moments=data||[];
 
  const addButton=`
-  <a class="moment add" href="campus-moments.html">
+  <a class="moment add" href="campus-moments.html?create=1">
    <div class="moment-ring">+</div>
-   <span class="moment-name">Add Moment</span>
+   <span class="moment-name">Add Story</span>
   </a>`;
 
- if(!moments.length){
+ if(!currentUser){
   momentList.innerHTML=addButton;
   return;
  }
 
- const profiles=await getProfiles(moments.map(x=>x.user_id));
+ const {data:follows,error:followError}=await supabase
+  .from("follows")
+  .select("following_id")
+  .eq("follower_id",currentUser.id);
 
- momentList.innerHTML=addButton+moments.map(item=>{
+ if(followError)throw followError;
+
+ const followedIds=(follows||[]).map(row=>row.following_id);
+
+ const {data:official,error:officialError}=await supabase
+  .from("profiles")
+  .select("id")
+  .eq("username","campusora")
+  .maybeSingle();
+
+ if(officialError)throw officialError;
+
+ const visibleIds=[
+  ...new Set([
+   currentUser.id,
+   ...followedIds,
+   ...(official?.id?[official.id]:[])
+  ])
+ ];
+
+ const {data,error}=await supabase
+  .from("campusora_moments")
+  .select("id,user_id,media_type,media_path,caption,created_at,expires_at")
+  .in("user_id",visibleIds)
+  .gt("expires_at",new Date().toISOString())
+  .order("created_at",{ascending:false})
+  .limit(100);
+
+ if(error)throw error;
+
+ const grouped=new Map();
+
+ (data||[]).forEach(item=>{
+  if(!grouped.has(item.user_id)){
+   grouped.set(item.user_id,item);
+  }
+ });
+
+ const profiles=await getProfiles([...grouped.keys()]);
+
+ const ordered=[...grouped.values()].sort((a,b)=>{
+  if(a.user_id===currentUser.id)return -1;
+  if(b.user_id===currentUser.id)return 1;
+
+  const ap=profiles.get(a.user_id)||{};
+  const bp=profiles.get(b.user_id)||{};
+
+  if(ap.username==="campusora")return -1;
+  if(bp.username==="campusora")return 1;
+
+  return new Date(b.created_at)-new Date(a.created_at);
+ });
+
+ momentList.innerHTML=addButton+ordered.map(item=>{
   const p=profiles.get(item.user_id)||{};
+  const name=p.full_name||p.username||"Member";
 
   return `
-   <a class="moment" href="campus-moments.html">
+   <a class="moment"
+    href="campus-moments.html?user=${encodeURIComponent(item.user_id)}"
+    aria-label="View ${esc(name)}'s story">
+
     <div class="moment-ring">
      <img src="${esc(avatar(p.avatar_url))}" alt="" loading="lazy">
     </div>
-    <span class="moment-name">
-     ${esc(p.full_name||p.username||"Member")}
-    </span>
+
+    <span class="moment-name">${esc(name)}</span>
    </a>`;
  }).join("");
 }
-async function fetchPosts(offset = 0){
 
-  let query = supabase
-    .from("posts")
-    .select("*")
-    .order("created_at", {ascending:false})
-    .range(offset, offset + FEED_PAGE_SIZE - 1);
-
-  if(activeFeed === "campus"){
-
-    if(!currentProfile?.institution_id) return [];
-
-    query = query.eq(
-      "institution_id",
-      currentProfile.institution_id
-    );
-  }
-
-  const {data,error} = await query;
-
-  if(error) throw error;
-
-  return data || [];
-}
   /* OFFICIAL CAMPUSORA POSTS */
 
 async function fetchOfficialPosts(){
