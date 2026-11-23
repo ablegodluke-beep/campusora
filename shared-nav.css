@@ -246,7 +246,46 @@ body::-webkit-scrollbar {
   background: rgba(146, 91, 255, .2);
   color: #fff;
 }
+/* =========================================
+   TOP NOTIFICATION BELL
+========================================= */
 
+.campusora-top-notification {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: grid;
+  place-items: center;
+  color: #aeb8ce;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: background .2s ease, color .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.campusora-top-notification svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.campusora-top-notification:hover {
+  color: #fff;
+  background: rgba(146, 91, 255, .12);
+}
+
+.campusora-top-notification .campusora-nav-badge {
+  top: 1px;
+  right: 1px;
+  border-color: #080b18;
+  background: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, .3);
+}
 /* =========================================
    SEARCH RESULTS
 ========================================= */
