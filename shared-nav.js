@@ -204,7 +204,7 @@ topNotificationBadge.className = "campusora-nav-badge";
 topNotificationBadge.hidden = true;
 
 topNotificationLink.appendChild(topNotificationBadge);
-navLinks.notifications = topNotificationBadge;
+
 
 brandRow.append(brand, searchWrap, topNotificationLink);
 topbar.appendChild(brandRow);
@@ -219,6 +219,7 @@ mainNav.className = "campusora-mainnav";
 mainNav.setAttribute("aria-label", "Main navigation");
 
 const navLinks = {};
+navLinks.notifications = topNotificationBadge;
 
 function makeNavLink(label, file, icon) {
   const link = document.createElement("a");
