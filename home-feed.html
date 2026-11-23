@@ -1426,7 +1426,7 @@ body.image-viewer-active{
 .composer{
   background:#101329;
   border:1px solid rgba(160,165,255,.16);
-  border-radius:17px;
+  border-radius:20px;
   padding:0;
   margin:12px 0 13px;
   overflow:hidden;
@@ -1435,14 +1435,15 @@ body.image-viewer-active{
 .composer-top{
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:13px 14px;
+  gap:15px;
+  padding:18px 20px;
+  min-height:105px;
 }
 
 .composer-avatar-wrap{
-  width:48px;
-  height:48px;
-  flex:0 0 48px;
+  width:68px;
+  height:68px;
+  flex:0 0 68px;
   padding:3px;
   border-radius:50%;
   background:linear-gradient(135deg,#a000ff,#176cff,#00d9e9);
@@ -1458,28 +1459,35 @@ body.image-viewer-active{
 .composer-input{
   flex:1;
   min-width:0;
-  min-height:44px;
+  display:flex;
+  align-items:center;
+  min-height:65px;
   padding:0;
   border:0;
   background:transparent;
-  font-size:15px;
+  font-size:22px;
+  font-weight:500;
   color:#aeb4d0;
 }
 
 .composer-image-button{
-  width:38px;
-  height:38px;
-  flex:0 0 38px;
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
   display:grid;
   place-items:center;
-  border-radius:10px;
-  color:#bba0ff;
-  font-size:25px;
+  border-radius:12px;
+  color:#d9d9f5;
+}
+
+.composer-image-button svg{
+  width:42px;
+  height:42px;
 }
 
 .composer-divider{
   height:1px;
-  background:rgba(255,255,255,.09);
+  background:rgba(255,255,255,.10);
 }
 
 .composer-actions{
@@ -1487,20 +1495,22 @@ body.image-viewer-active{
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:0;
   margin:0;
-  padding:8px 4px;
+  padding:12px 5px;
 }
 
 .composer-action{
-  min-height:39px;
+  min-width:0;
+  min-height:58px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
+  gap:10px;
   border:0;
   border-radius:0;
   background:transparent;
-  font-size:12px;
-  color:#c5cbe0;
+  font-size:17px;
+  font-weight:500;
+  color:#d4d5ed;
 }
 
 .composer-action + .composer-action{
@@ -1508,11 +1518,63 @@ body.image-viewer-active{
 }
 
 .composer-action .icon{
-  font-size:19px;
-  color:#913cff;
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  color:#8b20ff;
 }
 
-@media(max-width:380px){
+.composer-action:active{
+  transform:scale(.96);
+}
+
+@media(max-width:480px){
+  .composer-top{
+    min-height:82px;
+    padding:12px 13px;
+    gap:11px;
+  }
+
+  .composer-avatar-wrap{
+    width:56px;
+    height:56px;
+    flex-basis:56px;
+  }
+
+  .composer-input{
+    min-height:52px;
+    font-size:17px;
+  }
+
+  .composer-image-button{
+    width:42px;
+    height:42px;
+    flex-basis:42px;
+  }
+
+  .composer-image-button svg{
+    width:34px;
+    height:34px;
+  }
+
+  .composer-actions{
+    padding:8px 2px;
+  }
+
+  .composer-action{
+    min-height:48px;
+    gap:6px;
+    font-size:12px;
+  }
+
+  .composer-action .icon{
+    width:23px;
+    height:23px;
+    flex-basis:23px;
+  }
+}
+
+@media(max-width:360px){
   .composer-action{
     font-size:10px;
     gap:4px;
