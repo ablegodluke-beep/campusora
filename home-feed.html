@@ -1127,7 +1127,7 @@ margin-top:0;
   /* FULL-SCREEN IMAGE VIEWER */
 
 .image-viewer{
-  position:fixed;
+  position:fixed; 
   inset:0;
   z-index:99999;
   display:none;
@@ -1421,6 +1421,103 @@ body.image-viewer-active{
     grid-template-rows:repeat(2,85px);
   }
 }
+  /* CAMPUSORA SOCIAL POST COMPOSER */
+
+.composer{
+  background:#101329;
+  border:1px solid rgba(160,165,255,.16);
+  border-radius:17px;
+  padding:0;
+  margin:12px 0 13px;
+  overflow:hidden;
+}
+
+.composer-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 14px;
+}
+
+.composer-avatar-wrap{
+  width:48px;
+  height:48px;
+  flex:0 0 48px;
+  padding:3px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#a000ff,#176cff,#00d9e9);
+}
+
+.composer-avatar-wrap .avatar{
+  width:100%;
+  height:100%;
+  display:block;
+  border:2px solid #101329;
+}
+
+.composer-input{
+  flex:1;
+  min-width:0;
+  min-height:44px;
+  padding:0;
+  border:0;
+  background:transparent;
+  font-size:15px;
+  color:#aeb4d0;
+}
+
+.composer-image-button{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  color:#bba0ff;
+  font-size:25px;
+}
+
+.composer-divider{
+  height:1px;
+  background:rgba(255,255,255,.09);
+}
+
+.composer-actions{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0;
+  margin:0;
+  padding:8px 4px;
+}
+
+.composer-action{
+  min-height:39px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  font-size:12px;
+  color:#c5cbe0;
+}
+
+.composer-action + .composer-action{
+  border-left:1px solid rgba(255,255,255,.13);
+}
+
+.composer-action .icon{
+  font-size:19px;
+  color:#913cff;
+}
+
+@media(max-width:380px){
+  .composer-action{
+    font-size:10px;
+    gap:4px;
+  }
+}
 </style>
 </head>
 
@@ -1473,38 +1570,48 @@ body.image-viewer-active{
   <button class="feed-tab" type="button" data-filter="streaks">🔥 Streaks</button>
   <button class="feed-tab" type="button" data-filter="spotlight">Spotlight</button>
 </nav>
-    <!-- COMPOSER NOW COMES DIRECTLY AFTER CAMPUS MOMENTS -->
-    <section class="composer">
-      <div class="composer-title">What's happening in your campus?</div>
+    <!-- POST COMPOSER -->
+<section class="composer">
 
-      <div class="composer-top">
-        <a id="myProfileLink" href="profile.html">
-          <img id="composerAvatar" class="avatar" alt="Your profile">
-        </a>
+  <div class="composer-top">
 
-        <a href="create-post.html" class="composer-input">
-          Share something with Campusora...
-        </a>
-      </div>
+    <a id="myProfileLink" class="composer-avatar-wrap" href="profile.html">
+      <img id="composerAvatar" class="avatar" alt="Your profile">
+    </a>
 
-      <div class="composer-actions">
-        <a class="composer-action photo" href="create-post.html">
-          <span class="icon">▧</span> Photo
-        </a>
+    <a href="create-post.html" class="composer-input">
+      What's happening?
+    </a>
 
-        <a class="composer-action video" href="create-post.html">
-          <span class="icon">▶</span> Video
-        </a>
+    <a href="create-post.html" class="composer-image-button" aria-label="Add photo">
+      ▧
+    </a>
 
-        <a class="composer-action poll" href="create-post.html?type=poll">
-          <span class="icon">▤</span> Poll
-        </a>
+  </div>
 
-        <a class="composer-action question" href="create-post.html?type=question">
-          <span class="icon">?</span> Questions
-        </a>
-      </div>
-    </section>
+  <div class="composer-divider"></div>
+
+  <div class="composer-actions">
+
+    <a class="composer-action photo" href="create-post.html">
+      <span class="icon">▣</span> Photo
+    </a>
+
+    <a class="composer-action video" href="create-post.html">
+      <span class="icon">▶</span> Video
+    </a>
+
+    <a class="composer-action poll" href="create-post.html?type=poll">
+      <span class="icon">▥</span> Poll
+    </a>
+
+    <a class="composer-action question" href="create-post.html?type=question">
+      <span class="icon">?</span> Question
+    </a>
+
+  </div>
+
+</section>
 
     <!-- POSTS APPEAR BELOW THE COMPOSER -->
     <section id="feed">
