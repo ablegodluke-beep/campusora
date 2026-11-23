@@ -162,44 +162,28 @@ img{display:block;max-width:100%}
 
 /* CAMPUS MOMENTS */
 
-.section-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:11px;
-  margin-bottom:9px;
-}
-
-.section-heading{
+.moments-strip{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  margin-bottom:9px;
-}
-
-.section-heading h2{
-  margin:0;
-  font-size:13px;
-  font-weight:800;
-}
-
-.section-heading a{
-  color:#b49cff;
-  font-size:10px;
-  font-weight:700;
+  gap:9px;
+  margin:0 0 12px;
+  padding:3px 0 7px;
 }
 
 .moment-list{
   display:flex;
   align-items:flex-start;
   gap:11px;
+  flex:1;
+  min-width:0;
   overflow-x:auto;
   padding:2px 1px 3px;
   scrollbar-width:none;
 }
 
-.moment-list::-webkit-scrollbar{display:none}
+.moment-list::-webkit-scrollbar{
+  display:none;
+}
 
 .moment{
   flex:0 0 55px;
@@ -209,6 +193,7 @@ img{display:block;max-width:100%}
   border:0;
   background:none;
   text-align:center;
+  text-decoration:none;
 }
 
 .moment-ring{
@@ -223,7 +208,7 @@ img{display:block;max-width:100%}
 .moment-ring img{
   width:100%;
   height:100%;
-  border:2px solid var(--surface);
+  border:2px solid #0b1020;
   border-radius:50%;
   object-fit:cover;
 }
@@ -240,11 +225,34 @@ img{display:block;max-width:100%}
 .moment.add .moment-ring{
   display:grid;
   place-items:center;
-  background:#202944;
-  border:1px dashed #8c76cf;
-  color:#c2aaff;
-  font-size:25px;
+  background:var(--gradient);
+  border:0;
+  color:white;
+  font-size:27px;
+  font-weight:400;
 }
+
+.moment.add .moment-name{
+  color:#d6c9ff;
+}
+
+.moments-see-all{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:3px;
+  color:#b49cff;
+  font-size:10px;
+  font-weight:700;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.moments-see-all span{
+  font-size:16px;
+}
+
+/* COMPOSER */
 
 /* COMPOSER */
 
@@ -1450,21 +1458,21 @@ body.image-viewer-active{
       </div>
 <div class="feed-heading-mark" aria-hidden="true">✦</div>
     </section>
+<!-- CAMPUS MOMENTS -->
+<div class="moments-strip">
 
-    <!-- CAMPUS MOMENTS -->
-    <section class="section-card">
-      <div class="section-heading">
-        <h2>Campus Moments</h2>
-        <a href="campus-moments.html">See all</a>
-      </div>
+  <div class="moment-list" id="momentList">
+    <a class="moment add" href="campus-moments.html?create=1">
+      <div class="moment-ring">+</div>
+      <span class="moment-name">Add Story</span>
+    </a>
+  </div>
 
-      <div class="moment-list" id="momentList">
-        <a class="moment add" href="campus-moments.html">
-          <div class="moment-ring">+</div>
-          <span class="moment-name">Add Moment</span>
-        </a>
-      </div>
-    </section>
+  <a class="moments-see-all" href="campus-moments.html">
+    See all <span>›</span>
+  </a>
+
+</div>
 <nav class="feed-tabs" id="feedTabs" aria-label="Feed categories">
   <button class="feed-tab active" type="button" data-filter="for-you">For You</button>
   <button class="feed-tab" type="button" data-filter="popular">Popular</button>
