@@ -193,7 +193,20 @@ searchResults.hidden = true;
 searchForm.append(searchInput, searchClose);
 searchWrap.append(searchToggle, searchForm, searchResults);
 
-brandRow.append(brand, searchWrap);
+const topNotificationLink = document.createElement("a");
+topNotificationLink.className = "campusora-top-notification";
+topNotificationLink.href = "notifications.html";
+topNotificationLink.setAttribute("aria-label", "Notifications");
+topNotificationLink.innerHTML = icons.notifications;
+
+const topNotificationBadge = document.createElement("span");
+topNotificationBadge.className = "campusora-nav-badge";
+topNotificationBadge.hidden = true;
+
+topNotificationLink.appendChild(topNotificationBadge);
+navLinks.notifications = topNotificationBadge;
+
+brandRow.append(brand, searchWrap, topNotificationLink);
 topbar.appendChild(brandRow);
 
 
@@ -226,22 +239,11 @@ function makeNavLink(label, file, icon) {
 mainNav.appendChild(makeNavLink("Home", HOME, "home"));
 
 
-/* NOTIFICATIONS */
+/* DISCOVER */
 
-const notificationLink = makeNavLink(
-  "Notifications",
-  "notifications.html",
-  "notifications"
+mainNav.appendChild(
+  makeNavLink("Discover", "explore.html", "discover")
 );
-
-const notificationBadge = document.createElement("span");
-notificationBadge.className = "campusora-nav-badge";
-notificationBadge.hidden = true;
-
-notificationLink.appendChild(notificationBadge);
-navLinks.notifications = notificationBadge;
-
-mainNav.appendChild(notificationLink);
 
 
 /* CREATE BUTTON */
