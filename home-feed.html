@@ -1842,6 +1842,32 @@ async function loadMoments(){
    </a>`;
  }).join("");
 }
+  /* LOAD HOME FEED POSTS */
+
+async function fetchPosts(offset = 0){
+
+  let query = supabase
+    .from("posts")
+    .select("*")
+    .order("created_at", {ascending:false})
+    .range(offset, offset + FEED_PAGE_SIZE - 1);
+
+  if(activeFeed === "campus"){
+
+    if(!currentProfile?.institution_id) return [];
+
+    query = query.eq(
+      "institution_id",
+      currentProfile.institution_id
+    );
+  }
+
+  const {data,error} = await query;
+
+  if(error) throw error;
+
+  return data || [];
+}
 
   /* OFFICIAL CAMPUSORA POSTS */
 
