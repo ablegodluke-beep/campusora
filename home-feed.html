@@ -549,6 +549,34 @@ img{display:block;max-width:100%}
   line-clamp:5;
   overflow:hidden;
 }
+  /* SEE MORE / SEE LESS BUTTON */
+
+.post-see-more{
+  display:inline-block;
+  margin-top:5px;
+  padding:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#a995ff;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.4;
+  cursor:pointer;
+  box-shadow:none;
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+.post-see-more:hover{
+  color:#c4b5fd;
+  background:transparent;
+}
+
+.post-see-more:focus{
+  outline:none;
+  background:transparent;
+}
 /* COMPACT TEXT-ONLY POSTS */
 
 .post:not(:has(.post-image-grid)):not(:has(.post-video)):not(:has(.shared-post-card)) .post-body{
