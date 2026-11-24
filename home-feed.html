@@ -2647,45 +2647,40 @@ ${imageMarkup}
     <span>${likes.length} reactions</span>
     <span>${comments.length} comments · ${reposts.length} reposts</span>
    </div>
+<div class="post-actions">
 
-   <div class="post-actions">
-    <button class="post-action ${liked?"liked":""}"
-     data-action="like" type="button">
-     <span>${liked?"♥":"♡"}</span> Like
-    </button>
+  <button class="post-action ${liked?"liked":""}"
+    data-action="like" type="button" aria-label="Like">
+    <svg viewBox="0 0 24 24">
+      <path d="M7 10v11H4V10h3Zm0 0 5-8c2 0 3 2 2 4l-1 4h6a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 2H7"/>
+    </svg>
+    <span class="action-count">${likes.length}</span>
+  </button>
 
-    <button class="post-action"
-     data-action="comments" type="button">
-     <span>▢</span> Comment
-    </button>
+  <button class="post-action"
+    data-action="comments" type="button" aria-label="Comments">
+    <svg viewBox="0 0 24 24">
+      <path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9 9 0 0 1-4-.9L3 21l1.9-4.5A8.5 8.5 0 1 1 21 11.5Z"/>
+    </svg>
+    <span class="action-count">${comments.length}</span>
+  </button>
 
-    <button class="post-action ${reposted?"reposted":""}"
-     data-action="repost" type="button">
-     <span>⟳</span> Repost
-    </button>
+  <button class="post-action ${reposted?"reposted":""}"
+    data-action="repost" type="button" aria-label="Repost">
+    <svg viewBox="0 0 24 24">
+      <path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4m14-1v2a3 3 0 0 1-3 3H3"/>
+    </svg>
+    <span class="action-count">${reposts.length}</span>
+  </button>
 
-    <button class="post-action"
-     data-action="share" type="button">
-     <span>↗</span> Share
-    </button>
-   </div>
+  <button class="post-action"
+    data-action="share" type="button" aria-label="Share">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 16V3m-5 5 5-5 5 5M5 13v7h14v-7"/>
+    </svg>
+  </button>
 
-   <section class="comment-area" id="comments-${esc(post.id)}">
-
-    <form class="comment-form" data-post-id="${esc(post.id)}">
-     <textarea name="content"
-      maxlength="2000"
-      placeholder="Write a comment..." required></textarea>
-     <button type="submit">Send</button>
-    </form>
-
-    <div class="comment-list">
-     ${renderComments(comments,extra.profiles,post.id)}
-    </div>
-
-   </section>
-  </article>`;
-}
+</div>
 function updatePostTextControls(){
   feed.querySelectorAll(".post-body p.post-text-collapsed").forEach(text=>{
     const button=text.nextElementSibling;
