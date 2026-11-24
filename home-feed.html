@@ -3642,8 +3642,9 @@ $("shareSearch").addEventListener("input",()=>{
 
 feed.addEventListener("click",async event=>{
  const button=event.target.closest("[data-action]");
+const commentAction=event.target.closest("[data-comment-action]");
 
- if(!button)return;
+if(!button && !commentAction)return;
    if(button.dataset.action==="toggle-post-text"){
   const text=button.previousElementSibling;
 
@@ -3707,8 +3708,6 @@ feed.addEventListener("click",async event=>{
  if(action==="delete"&&post){
   return deletePost(post.dataset.postId);
  }
-
- const commentAction=event.target.closest("[data-comment-action]");
 
  if(commentAction){
   const type=commentAction.dataset.commentAction;
