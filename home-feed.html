@@ -1580,38 +1580,38 @@ body.image-viewer-active{
     gap:3px;
   }
 }
- /* SOCIAL POST ACTION BUTTONS */
+/* SOCIAL POST ACTION BUTTONS */
 
 .post-actions{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   align-items:center;
   margin:0 12px;
-  padding:10px 0;
+  padding:4px 0;
   border-top:1px solid rgba(255,255,255,.08);
 }
 
 .post-action{
   min-width:0;
-  min-height:42px;
+  min-height:34px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
-  padding:5px 2px;
+  gap:6px;
+  padding:3px 2px;
   border:0;
-  border-radius:9px;
+  border-radius:8px;
   background:transparent;
   color:#aeb6ce;
-  font-size:12px;
+  font-size:11px;
   font-weight:600;
   transition:background .2s ease,color .2s ease;
 }
 
 .post-action svg{
-  width:23px;
-  height:23px;
-  flex:0 0 23px;
+  width:19px;
+  height:19px;
+  flex:0 0 19px;
   fill:none;
   stroke:currentColor;
   stroke-width:1.8;
@@ -1624,7 +1624,7 @@ body.image-viewer-active{
 }
 
 .post-action .action-count{
-  font-size:12px;
+  font-size:11px;
   line-height:1;
 }
 
@@ -1642,19 +1642,6 @@ body.image-viewer-active{
 
 .post-action:active{
   transform:scale(.96);
-}
-
-@media(max-width:380px){
-  .post-action{
-    gap:5px;
-    font-size:11px;
-  }
-
-  .post-action svg{
-    width:21px;
-    height:21px;
-    flex-basis:21px;
-  }
 }
 </style>
 </head>
