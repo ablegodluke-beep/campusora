@@ -1585,21 +1585,22 @@ body.image-viewer-active{
 .post-actions{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:center;
   margin:0 12px;
-  padding:7px 0;
-  border-top:1px solid rgba(255,255,255,.09);
+  padding:10px 0;
+  border-top:1px solid rgba(255,255,255,.08);
 }
 
 .post-action{
   min-width:0;
-  min-height:43px;
+  min-height:42px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:7px;
-  padding:6px 2px;
+  gap:8px;
+  padding:5px 2px;
   border:0;
-  border-radius:8px;
+  border-radius:9px;
   background:transparent;
   color:#aeb6ce;
   font-size:12px;
@@ -1607,8 +1608,23 @@ body.image-viewer-active{
   transition:background .2s ease,color .2s ease;
 }
 
-.post-action span{
-  font-size:19px;
+.post-action svg{
+  width:23px;
+  height:23px;
+  flex:0 0 23px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.post-action:first-child svg{
+  color:#925bff;
+}
+
+.post-action .action-count{
+  font-size:12px;
   line-height:1;
 }
 
@@ -1617,7 +1633,7 @@ body.image-viewer-active{
 }
 
 .post-action.liked{
-  color:#ff668f;
+  color:#a879ff;
 }
 
 .post-action.reposted{
@@ -1630,12 +1646,14 @@ body.image-viewer-active{
 
 @media(max-width:380px){
   .post-action{
-    font-size:10px;
-    gap:4px;
+    gap:5px;
+    font-size:11px;
   }
 
-  .post-action span{
-    font-size:17px;
+  .post-action svg{
+    width:21px;
+    height:21px;
+    flex-basis:21px;
   }
 }
 </style>
@@ -2642,11 +2660,10 @@ ${imageMarkup}
         src="${esc(post.video_url)}"></video>`
      :""}
    </div>
-
-   <div class="post-stats">
-    <span>${likes.length} reactions</span>
-    <span>${comments.length} comments · ${reposts.length} reposts</span>
-   </div>
+<div class="post-stats">
+  <span>${likes.length} reactions</span>
+  <span>${comments.length} comments · ${reposts.length} reposts</span>
+</div>
 <div class="post-actions">
 
   <button class="post-action ${liked?"liked":""}"
