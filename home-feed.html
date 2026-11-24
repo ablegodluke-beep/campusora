@@ -549,51 +549,23 @@ img{display:block;max-width:100%}
   line-clamp:5;
   overflow:hidden;
 }
-  /* COMPACT TEXT-ONLY POSTS */
+/* COMPACT TEXT-ONLY POSTS */
 
-.post:not(:has(.post-image-grid))
-:not(:has(.post-video))
-:not(:has(.shared-post-card)) .post-body{
+.post:not(:has(.post-image-grid)):not(:has(.post-video)):not(:has(.shared-post-card)) .post-body{
   padding-bottom:3px;
   min-height:0;
 }
 
-.post:not(:has(.post-image-grid))
-:not(:has(.post-video))
-:not(:has(.shared-post-card)) .post-body p{
+.post:not(:has(.post-image-grid)):not(:has(.post-video)):not(:has(.shared-post-card)) .post-body p{
   min-height:0;
   margin:0;
 }
 
-.post:not(:has(.post-image-grid))
-:not(:has(.post-video))
-:not(:has(.shared-post-card)) .post-stats{
+.post:not(:has(.post-image-grid)):not(:has(.post-video)):not(:has(.shared-post-card)) .post-stats{
   padding-top:5px;
   padding-bottom:6px;
 }
-
-.post-see-more{
-  display:inline-block;
-  margin-top:5px;
-  padding:0;
-  border:0;
-  background:none;
-  color:#a995ff;
-  font-size:11px;
-  font-weight:700;
-  cursor:pointer;
-}
-  .post-body p.post-text-expanded{
-  display:block;
-  overflow:visible;
-  }
-  .post-link{
-  color:#ad9aff;
-  text-decoration:underline;
-  text-decoration-color:#8068e8;
-  overflow-wrap:anywhere;
-  cursor:pointer;
-    }
+  
   /* SHARED POST CARD */
 
 .shared-post-card{
