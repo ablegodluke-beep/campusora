@@ -3645,7 +3645,7 @@ feed.addEventListener("click",async event=>{
 const commentAction=event.target.closest("[data-comment-action]");
 
 if(!button && !commentAction)return;
-   if(button.dataset.action==="toggle-post-text"){
+   if(button?.dataset.action==="toggle-post-text"){
   const text=button.previousElementSibling;
 
   if(!text)return;
@@ -3659,9 +3659,9 @@ if(!button && !commentAction)return;
   return;
  }
 
- const post=button.closest("[data-post-id]");
- const video=button.closest("[data-video-id]");
- const action=button.dataset.action;
+ const post=button?.closest("[data-post-id]");
+ const video=button?.closest("[data-video-id]");
+ const action=button?.dataset.action;
 
  if(action==="like"&&post){
   return toggleLike(post.dataset.postId);
