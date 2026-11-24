@@ -2682,6 +2682,22 @@ ${imageMarkup}
   </button>
 
 </div>
+<div class="comment-area" id="comments-${post.id}">
+
+  <form class="comment-form">
+    <textarea
+      name="content"
+      placeholder="Write a comment..."
+      required></textarea>
+
+    <button type="submit">Send</button>
+  </form>
+
+  <div class="comment-list">
+    ${renderComments(extra.comments, extra.profiles, post.id)}
+  </div>
+
+</div>
 </article>
 `;
 }
